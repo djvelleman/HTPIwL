@@ -1,0 +1,36 @@
+# Sentential Logic
+
+Chapter 1 of *How To Prove It* introduces the following symbols of logic:
+
+::: {style="margin: 0% 20%"}
+| Symbol | Meaning |
+|:------:|:-------:|
+| $\neg$ | not |
+| $\wedge$ | and |
+| $\vee$ | or |
+| $\to$ | if ... then |
+| $\leftrightarrow$ | if and only if |
+:::
+
+As we will see, Lean uses the same symbols, with the same meanings.  This chapter also establishes a number of logical equivalences that will be useful to us later:
+
+| Name | | Equivalence | |
+|:---------|:-----:|:-----:|:-----:|
+| De Morgan's Laws | $\neg (P \wedge Q)$ | is equivalent to | $\neg P \vee \neg Q$ |
+|                  | $\neg (P \vee Q)$ | is equivalent to | $\neg P \wedge \neg Q$ |
+| Double Negation Law | $\neg\neg P$ | is equivalent to | $P$ |
+| Conditional Laws | $P \to Q$ | is equivalent to | $\neg P \vee Q$ |
+|                  | $P \to Q$ | is equivalent to | $\neg(P \wedge \neg Q)$ |
+| Contrapositive Law | $P \to Q$ | is equivalent to | $\neg Q \to \neg P$ |
+
+Finally, Chapter 1 of *HTPI* introduces some concepts from set theory.  A *set* is a collection of objects; the objects in the collection are called *elements* of the set.  If $P(x)$ is a statement about $x$, then $\{x \mid P(x)\}$ denotes the set whose elements are the objects $x$ for which $P(x)$ is true.  The notation $x \in A$ means that $x$ is an element of $A$. Two sets $A$ and $B$ are *equal* if they have exactly the same elements.  We say that $A$ is a *subset* of $B$, denoted $A \subseteq B$, if every element of $A$ is an element of $B$.  And we have the following operations on sets:
+
+::: {style="margin-left: 10%" id="prop-laws"}
+$A \cap B = \{x \mid x \in A \wedge x \in B\} = {}$ the *intersection* of $A$ and $B$,
+
+$A \cup B = \{x \mid x \in A \vee x \in B\} = {}$ the *union* of $A$ and $B$,
+
+$A \setminus B = \{x \mid x \in A \wedge x \notin B\} = {}$ the *difference* of $A$ and $B$,
+
+$A \bigtriangleup B = (A \setminus B) \cup (B \setminus A) = {}$ the *symmetric difference* of $A$ and $B$.
+:::

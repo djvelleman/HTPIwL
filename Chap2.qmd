@@ -1,0 +1,38 @@
+# Quantificational Logic
+
+Chapter 2 of *How To Prove It* introduces two more symbols of logic, the quantifiers $\forall$ and $\exists$.  If $P(x)$ is a statement about an object $x$, then
+
+::: {style="margin-left: 10%"}
+$\forall x\ P(x)$ means "for all $x$, $P(x)$,"
+:::
+
+and
+
+::: {style="margin-left: 10%"}
+$\exists x\ P(x)$ means "there exists some $x$ such that $P(x)$."
+:::
+
+Lean also uses these symbols, although we will see that quantified statements are written slightly differently in Lean from the way they are written in *HTPI*.
+
+Once again, there are logical equivalences involving these symbols that will be useful to us later:
+
+| Name | | Equivalence | |
+|:---------|:-----:|:-----:|:-----:|
+| Quantifier Negation Laws | $\neg \exists x\ P(x)$ | is equivalent to | $\forall x\ \neg P(x)$ |
+|  | $\neg \forall x\ P(x)$ | is equivalent to | $\exists x\ \neg P(x)$ |
+
+Chapter 2 of *HTPI* also introduces some more advanced set theory operations.  For any set $A$,
+
+::: {style="margin-left: 10%"}
+$\mathscr{P}(A) = \{X \mid X \subseteq A\} = {}$ the *power set* of $A$.
+:::
+
+Also, if $\mathcal{F}$ is a family of sets---that is, a set whose elements are sets---then
+
+::: {style="margin-left: 10%"}
+$\bigcap \mathcal{F} = \{x \mid \forall A(A \in \mathcal{F} \to x \in A)\} = {}$ the *intersection* of the family $\mathcal{F}$,
+
+$\bigcup \mathcal{F} = \{x \mid \exists A(A \in \mathcal{F} \wedge x \in A)\} = {}$ the *union* of the family $\mathcal{F}$.
+:::
+
+Finally, Chapter 2 introduces the notation $\exists ! x\ P(x)$ to mean "there is exactly one $x$ such that $P(x).$"  This can be thought of as an abbreviation for $\exists x(P(x) \wedge \neg\exists y(P(y) \wedge y \ne x))$.  By the quantifier negation, De Morgan, and conditional laws, this is equivalent to $\exists x(P(x) \wedge \forall y(P(y) \to y = x))$.

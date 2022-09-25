@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE language SYSTEM "language.dtd">
+<language name="state" version="1.0" section="Sources" extensions="">
+<highlighting>
+<contexts>
+<context attribute="Ids" lineEndContext="#pop" name="Ids" >
+<DetectChar attribute="Types" context="types" char=":" />
+<DetectChar attribute="Types" context="types" char="⊢" />
+<DetectChar attribute="Delim" context="types" char="-" />
+</context>
+<context attribute="Types" lineEndContext="#pop" name="types">
+</context>
+</contexts>
+<itemDatas>
+<itemData name="Ids" defStyleNum="dsInformation" />
+<itemData name="Types" defStyleNum="dsNormal"/>
+<itemData name="Delim" defStyleNum="dsSpecialChar"/>
+</itemDatas>
+</highlighting>
+</language>

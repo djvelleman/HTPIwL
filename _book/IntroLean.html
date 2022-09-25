@@ -1,0 +1,688 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.1.189">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>How To Prove It With Lean - Introduction to Lean</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1.6em;
+  vertical-align: middle;
+}
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href="./Chap3.html" rel="next">
+<link href="./Chap2.html" rel="prev">
+<script src="site_libs/quarto-html/quarto.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit"
+  }
+}</script>
+
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<link rel="stylesheet" href="HTPIwLstyles.css">
+</head>
+
+<body class="nav-sidebar floating">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+    <div class="container-fluid d-flex justify-content-between">
+      <h1 class="quarto-secondary-nav-title">Introduction to Lean</h1>
+      <button type="button" class="quarto-btn-toggle btn" aria-label="Show secondary navigation">
+        <i class="bi bi-chevron-right"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="./">How To Prove It With Lean</a> 
+    </div>
+      </div>
+      <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+      </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">About This Book</a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Chap1.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Sentential Logic</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Chap2.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Quantificational Logic</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IntroLean.html" class="sidebar-item-text sidebar-link active">Introduction to Lean</a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Chap3.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Proofs</span></a>
+  </div>
+</li>
+    </ul>
+    </div>
+</nav>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#a-first-example" id="toc-a-first-example" class="nav-link active" data-scroll-target="#a-first-example">A First Example</a></li>
+  <li><a href="#term-mode" id="toc-term-mode" class="nav-link" data-scroll-target="#term-mode">Term Mode</a></li>
+  <li><a href="#tactic-mode" id="toc-tactic-mode" class="nav-link" data-scroll-target="#tactic-mode">Tactic Mode</a></li>
+  <li><a href="#types" id="toc-types" class="nav-link" data-scroll-target="#types">Types</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title d-none d-lg-block">Introduction to Lean</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+    
+  </div>
+  
+
+</header>
+
+<p>If you are reading this book in conjunction with <em>How To Prove It</em>, you should complete Section 3.2 of <em>HTPI</em> before reading this chapter. Once you have reached that point in <em>HTPI</em>, you are ready to start learning about Lean. In this chapter we’ll explain the basics of writing proofs in Lean and getting feedback from Lean.</p>
+<section id="a-first-example" class="level2">
+<h2 class="anchored" data-anchor-id="a-first-example">A First Example</h2>
+<p>We’ll start with Example 3.2.4 in <em>How To Prove It</em>. Here is how the theorem and proof in that example appear in <em>HTPI</em> (consult <em>HTPI</em> if you want to see how this proof was constructed):</p>
+<p><strong>Theorem</strong>. <em>Suppose <span class="math inline">\(P \to (Q \to R)\)</span>. Then <span class="math inline">\(\neg R \to (P \to \neg Q)\)</span></em>.</p>
+<p>Proof. Suppose <span class="math inline">\(\neg R\)</span>. Suppose <span class="math inline">\(P\)</span>. Since <span class="math inline">\(P\)</span> and <span class="math inline">\(P \to (Q \to R)\)</span>, it follows that <span class="math inline">\(Q \to R\)</span>. But then, since <span class="math inline">\(\neg R\)</span>, we can conclude <span class="math inline">\(\neg Q\)</span>. Thus, <span class="math inline">\(P \to \neg Q\)</span>. Therefore <span class="math inline">\(\neg R \to (P \to \neg Q)\)</span>.</p>
+<p>And here is how we would write the proof in Lean:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Example_3_2_4</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>(P Q R : <span class="kw">Prop</span>) (h : P → (Q → R)) : ¬R → (P → ¬Q) := <span class="kw">by</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>  <span class="kw">assume</span> h2 : ¬R</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>  <span class="kw">assume</span> h3 : P</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>  <span class="kw">have</span> h4 : Q → R := h h3</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>  <span class="kw">contrapos</span> <span class="kw">at</span> h4            <span class="co">--Now h4 : ¬R → ¬Q</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>  <span class="kw">show</span> ¬Q <span class="kw">from</span> h4 h2</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Let’s go through this Lean proof line-by-line and see what it means. The first line tells Lean that we are going to prove a theorem, and it gives the theorem a name, <code>Example_3_2_4</code>. The next line states the theorem. In the theorem as stated in <em>HTPI</em>, the letters <span class="math inline">\(P\)</span>, <span class="math inline">\(Q\)</span>, and <span class="math inline">\(R\)</span> are used to stand for statements that are either true or false. In logic, such statements are often called <em>propositions</em>. The expression <code>(P Q R : Prop)</code> on the second line tells Lean that <code>P</code>, <code>Q</code>, and <code>R</code> will be used in this theorem to stand for propositions. The next parenthetical expression, <code>(h : P → (Q → R))</code>, states the hypothesis of the theorem and gives it the name <code>h</code>; the technical term that Lean uses is that <code>h</code> is an <em>identifier</em> for the hypothesis. Assigning an identifier to the hypothesis gives us a way to refer to it when it is used later in the proof. Almost any string of characters that doesn’t begin with a digit can be used as an identifier, but it is traditional to use identifiers beginning with the letter <code>h</code> for hypotheses. After the statement of the hypothesis there is a colon followed by the conclusion of the theorem, <code>¬R → (P → ¬Q)</code>. Finally, at the end of the second line, the expression <code>:= by</code> signals the beginning of the proof.</p>
+<p>Each of the remaining lines is a step in the proof. The first line of the proof introduces the assumption <code>¬R</code> and gives it the identifier <code>h2</code>. Of course, this corresponds precisely to the first sentence of the proof in <em>HTPI</em>. Similarly, the second line, corresponding to the second sentence of the <em>HTPI</em> proof, assigns the identifier <code>h3</code> to the assumption <code>P</code>. The next line makes the inference <code>Q → R</code>, giving it the identifier <code>h4</code>. The inference is justified by combining statements <code>h</code> and <code>h3</code>—that is, the statements <code>P → (Q → R)</code> and <code>P</code>—exactly as in the third sentence of the proof in <em>HTPI</em>.</p>
+<p>The next step of the proof in <em>HTPI</em> combines the statements <span class="math inline">\(Q \to R\)</span> and <span class="math inline">\(\neg R\)</span> to draw the inference <span class="math inline">\(\neg Q\)</span>. This reasoning is justified by the contrapositive law, which says that <span class="math inline">\(Q \to R\)</span> is equivalent to its contrapositive, <span class="math inline">\(\neg R \to \neg Q\)</span>. In the Lean proof, this inference is broken up into two steps. In the fourth line of the proof, we ask Lean to rewrite statement <code>h4</code>—that is, <code>Q → R</code>—using the contrapositive law. Two hyphens in a row tell Lean that the rest of the line is a comment. Lean ignores comments and displays them in green. The comment on line four serves as a reminder that <code>h4</code> now stands for the statement <code>¬R → ¬Q</code>. Finally, in the last line of the proof, we combine the new <code>h4</code> with <code>h2</code> to infer <code>¬Q</code>. There is no need to give this statement an identifier, because it completes the proof. In the proof in <em>HTPI</em>, there are a couple of final sentences explaining <em>why</em> this completes the proof, but Lean doesn’t require this explanation.</p>
+</section>
+<section id="term-mode" class="level2">
+<h2 class="anchored" data-anchor-id="term-mode">Term Mode</h2>
+<p>Now that you have seen an example of a proof in Lean, it is time for you to write your first proof. Lean has two modes for writing proofs, called <em>term mode</em> and <em>tactic mode</em>. The example above was written in tactic mode, and that is the mode we will use for most proofs in this book. But before we study the construction of proofs in tactic mode, it will be helpful to learn a bit about term mode. Term mode is best for simple proofs, so we begin with a few very short proofs.</p>
+<p>If you have not yet installed Lean on your computer, go back and follow the <a href="index.html#installing-lean">instructions</a> for installing it now. [*** further instructions for opening an empty file with import HTPIdefs***]</p>
+<p>Now type in the following theorem and proof:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> extremely_easy (P : <span class="kw">Prop</span>) (h : P) : P := h</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>This theorem and proof are so short we have put everything on one line. In this theorem, the letter <code>P</code> is used to stand for a proposition. The theorem has one hypothesis, <code>P</code>, which has been given the identifier <code>h</code>, and the conclusion of the theorem is also <code>P</code>. The notation <code>:=</code> indicates that what follows will be a proof in term mode.</p>
+<p>Of course, the proof of the theorem is extremely easy: to prove <code>P</code>, we just have to point out that it is given as the hypothesis <code>h</code>. And so the proof in Lean consists of just one letter: <code>h</code>.</p>
+<p>Even though this example is a triviality, there are some things to be learned from it. First of all, although we have been describing the letter <code>h</code> as an <em>identifier</em> for the hypothesis <code>P</code>, this example illustrates that Lean also considers <code>h</code> to be a <em>proof</em> of <code>P</code>. In general, when we see <code>h : P</code> in a Lean proof, where <code>P</code> is a proposition, we can think of it as meaning, not just that <code>h</code> is an identifier for the statement <code>P</code>, but also that <code>h</code> is a proof of <code>P</code>.</p>
+<p>We can learn something else from this example by changing it slightly. If you change the final <code>h</code> to a different letter—say, <code>f</code>—you will see that Lean puts a red squiggly line under the <code>f</code>, like this:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> extremely_easy (P : <span class="kw">Prop</span>) (h : P) : P := <span class="sc">!!</span><span class="er">f</span><span class="sc">!!</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>This indicates that Lean has detected an error in the proof. Lean always indicates errors by putting a red squiggle under the offending text. Lean also puts a message in the Lean Infoview pane explaining what the error is. (If you don’t see the Infoview pane, choose “Command Palette …” in the “View” menu, and then type “Lean” in the text box that appears. You will see a list of commands that start with “Lean”. Click on “Lean 4: Infoview: Toggle” to make the Infoview pane appear.) In this case, the message is <code>unknown identifier 'f'</code>. The message is introduced by a heading, in red, that identifies the file, the line number, and the character position on that line where the error appears. If you change <code>f</code> back to <code>h</code>, the red squiggle and error message go away.</p>
+<p>Let’s try a slightly less trivial example. To type the <code>→</code> symbol in the next example, type <code>\to</code> and then hit either the space bar or the tab key; when you type either space or tab, the <code>\to</code> will change to <code>→</code>. Alternatively, you can type <code>\r</code> (short for “right arrow”) or <code>\imp</code> (short for “implies”), again followed by either space or tab. Or, you can type <code>-&gt;</code>, and Lean will interpret it as <code>→</code>.</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> very_easy</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>(P Q : <span class="kw">Prop</span>) (h1 : P → Q) (h2 : P) : Q := h1 h2</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>This time there are two hypotheses, <code>h1 : P → Q</code> and <code>h2 : P</code>. As explained in Section 3.2 of <em>HTPI</em>, the conclusion <code>Q</code> follows from these hypotheses by the logical rule <em>modus ponens</em>. To use modus ponens to complete this proof in term mode, we simply write the identifiers of the two hypotheses—which, as we have just seen, can also be thought of as proofs of the two hypotheses—one after the other, with a space between them. It is important to write the proof of the conditional hypothesis first, so the proof is written <code>h1 h2</code>; if you try writing this proof as <code>h2 h1</code>, you will get a red squiggle. In general, if <code>a</code> is a proof of any conditional statement <code>X → Y</code>, and <code>b</code> is a proof of the antecedent <code>X</code>, then <code>a b</code> is a proof of the consequent <code>Y</code>. The proofs <code>a</code> and <code>b</code> need not be simply identifiers; any proofs of a conditional statement and its antecedent can be combined in this way.</p>
+<p>We’ll try one more proof in term mode:</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> easy (P Q R : <span class="kw">Prop</span>) (h1 : P → Q)</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>(h2 : Q → R) (h3 : P) : R :=</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Note that in the statement of the theorem, you can break the lines however you please; this time we have put the declaration of <code>P</code>, <code>Q</code>, and <code>R</code> and the first hypothesis on the first line and the other two hypotheses on the second line. How can we prove the conclusion <code>R</code>? Well, we have <code>h2 : Q → R</code>, so if we could prove <code>Q</code> then we could use modus ponens to reach the desired conclusion. In other words, <code>h2 _</code> will be a proof of <code>R</code>, if we can fill in the blank with a proof of <code>Q</code>. Can we prove <code>Q</code>? Yes, <code>Q</code> follows from <code>P → Q</code> and <code>P</code> by modus ponens, so <code>h1 h3</code> is a proof of <code>Q</code>. Filling in the blank, we conclude that <code>h2 (h1 h3)</code> is a proof of <code>R</code>. Type it in, and you’ll see that Lean will accept it. Note that the parentheses are important; if you write <code>h2 h1 h3</code> then Lean will interpret it as <code>(h2 h1) h3</code>, which doesn’t make sense, and you’ll get an error.</p>
+</section>
+<section id="tactic-mode" class="level2">
+<h2 class="anchored" data-anchor-id="tactic-mode">Tactic Mode</h2>
+<p>For more complicated proofs, it is easier to use tactic mode. Type the following theorem into Lean; to type the symbol <code>¬</code>, type <code>\not</code>, followed again by either space or tab. Alternatively, if you type <code>Not P</code>, Lean will interpret it as meaning <code>¬P</code>.</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> two_imp (P Q R : <span class="kw">Prop</span>)</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>(h1 : P → Q) (h2 : Q → ¬R) : R → ¬P :=</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Lean is now waiting for you to type a proof in term mode. To switch to tactic mode, type <code>by</code> after <code>:=</code>. One of the advantages of tactic mode is that Lean displays, in the Lean Infoview pane, information about the status of the proof as your write it. As soon as you type <code>by</code>, Lean displays what it calls the “tactic state” in the Infoview pane. Your screen should look like this:</p>
+<div class="inout">
+<p class="hdr">
+Lean File
+</p>
+<p class="hdr">
+Tactic State in Infoview
+</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> two_imp (P Q R : <span class="kw">Prop</span>)</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>(h1 : P → Q) (h2 : Q → ¬R) : R → ¬P := <span class="sc">!!</span><span class="wa">by</span><span class="sc">!!</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode state code-with-copy"><code class="sourceCode state"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="in">P Q R </span>: Prop</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="in">h1 </span>: P → Q</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="in">h2 </span>: Q → ¬R</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>⊢ R → ¬P</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>The red squiggle under <code>by</code> indicates that Lean knows that the proof is incomplete. The tactic state in the Infoview pane is very similar to the lists of givens and goals that are used in <em>HTPI</em>. The tactic state above says that <code>P</code>, <code>Q</code>, and <code>R</code> stand for propositions, and we have two givens, <code>h1 : P → Q</code> and <code>h2 : Q → ¬R</code>. The symbol <code>⊢</code> in the last line labels the goal, <code>R → ¬P</code>.</p>
+<p>Although it is not necessary, we find it helpful to set off a tactic proof from the surrounding text by indenting it. To indent the proof, begin the next line with a tab; VS Code will indent two spaces. You won’t have to type tab to indent later lines; VS Code maintains the same indenting until you delete the tab at the beginning of a line to return to unindented text.</p>
+<p>From the hypotheses <code>h1</code> and <code>h2</code> it shouldn’t be hard to prove <code>P → ¬R</code>, but the goal is <code>R → ¬P</code>. This suggests that we should prove the contrapositive of the goal. Type <code>contrapos</code> to tell Lean that you want to replace the goal with its contrapositive. As soon as you type <code>contrapos</code>, Lean will update the tactic state to reflect the change in the goal. You should now see this:</p>
+<div class="inout">
+<p class="hdr">
+Lean File
+</p>
+<p class="hdr">
+Tactic State in Infoview
+</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> two_imp (P Q R : <span class="kw">Prop</span>)</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>(h1 : P → Q) (h2 : Q → ¬R) : R → ¬P := <span class="sc">!!</span><span class="wa">by</span><span class="sc">!!</span></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>  <span class="kw">contrapos</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb10"><pre class="sourceCode state code-with-copy"><code class="sourceCode state"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="in">P Q R </span>: Prop</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="in">h1 </span>: P → Q</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="in">h2 </span>: Q → ¬R</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>⊢ P → ¬R</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>If you want to make your proof a little more readable, you could add a comment saying that the goal has been changed to <code>P → ¬R</code>. To prove the new goal, we will assume <code>P</code> and prove <code>¬R</code>. So type <code>assume h3 : P</code> on the next line. Once again, the tactic state is immediately updated. Lean adds the new given <code>h3 : P</code>, and it knows, without having to be told, that the goal should now be <code>¬R</code>:</p>
+<div class="inout">
+<p class="hdr">
+Lean File
+</p>
+<p class="hdr">
+Tactic State in Infoview
+</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> two_imp (P Q R : <span class="kw">Prop</span>)</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>(h1 : P → Q) (h2 : Q → ¬R) : R → ¬P := <span class="sc">!!</span><span class="wa">by</span><span class="sc">!!</span></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>  <span class="kw">contrapos</span>           <span class="co">--Goal is now P → ¬R</span></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>  <span class="kw">assume</span> h3 : P</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb12"><pre class="sourceCode state code-with-copy"><code class="sourceCode state"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="in">P Q R </span>: Prop</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="in">h1 </span>: P → Q</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="in">h2 </span>: Q → ¬R</span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a><span class="in">h3 </span>: P</span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>⊢ ¬R</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>We can now use modus ponens to infer <code>Q</code> from <code>h1 : P → Q</code> and <code>h3 : P</code>. As we saw earlier, this means that <code>h1 h3</code> is a term-mode proof of <code>Q</code>. So on the next line, type <code>have h4 : Q := h1 h3</code>. To make an inference, you need to provide a justification, so <code>:=</code> here is followed by the term-mode proof of <code>Q</code>. Usually we will use <code>have</code> to make easy inferences for which we can give simple term-mode proofs. (We’ll see later that it is also possible to use <code>have</code> to make an inference justified by a tactic-mode proof.) Of course, Lean updates the tactic state by adding the new given <code>h4 : Q</code>:</p>
+<div class="inout">
+<p class="hdr">
+Lean File
+</p>
+<p class="hdr">
+Tactic State in Infoview
+</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> two_imp (P Q R : <span class="kw">Prop</span>)</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>(h1 : P → Q) (h2 : Q → ¬R) : R → ¬P := <span class="sc">!!</span><span class="wa">by</span><span class="sc">!!</span></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>  <span class="kw">contrapos</span>           <span class="co">--Goal is now P → ¬R</span></span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>  <span class="kw">assume</span> h3 : P</span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>  <span class="kw">have</span> h4 : Q := h1 h3</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb14"><pre class="sourceCode state code-with-copy"><code class="sourceCode state"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="in">P Q R </span>: Prop</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="in">h1 </span>: P → Q</span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="in">h2 </span>: Q → ¬R</span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a><span class="in">h3 </span>: P</span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a><span class="in">h4 </span>: Q</span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>⊢ ¬R</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Finally, to complete the proof, we can infer the goal <code>¬R</code> from <code>h2 : Q → ¬R</code> and <code>h4 : Q</code>, using the term-mode proof <code>h2 h4</code>. Type <code>show ¬R from h2 h4</code> to complete the proof. You’ll notice two changes in the display: the red squiggle will disappear from the word <code>by</code>, and the tactic state will say “Goals accomplished”:</p>
+<div class="inout">
+<p class="hdr">
+Lean File
+</p>
+<p class="hdr">
+Tactic State in Infoview
+</p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> two_imp (P Q R : <span class="kw">Prop</span>)</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>(h1 : P → Q) (h2 : Q → ¬R) : R → ¬P := <span class="kw">by</span></span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>  <span class="kw">contrapos</span>           <span class="co">--Goal is now P → ¬R</span></span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>  <span class="kw">assume</span> h3 : P</span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>  <span class="kw">have</span> h4 : Q := h1 h3</span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>  <span class="kw">show</span> ¬R <span class="kw">from</span> h2 h4</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb16"><pre class="sourceCode state code-with-copy"><code class="sourceCode state"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="sc">-</span>Goals accomplished 🎉</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Congratulations! You’ve written your first proof in tactic mode. If you want to try another example, you could try typing in the first example in this chapter.</p>
+<p>We have now seen four tactics: <code>contrapos</code>, <code>assume</code>, <code>have</code>, and <code>show</code>. If the goal is a conditional statement, the <code>contrapos</code> tactic replaces it with its contrapositive. If <code>h</code> is a given that is a conditional statement, then <code>contrapos at h</code> will replace <code>h</code> with its contrapositive. If the goal is a conditional statement <code>P → Q</code>, you can use the <code>assume</code> tactic to assume the antecedent <code>P</code>, and Lean will set the goal to be the consequent <code>Q</code>. You can use the <code>have</code> tactic to make an inference from your givens, as long as you can justify the inference with a proof. The <code>show</code> tactic is similar, but it is used to infer the goal, thus completing the proof. And we have learned how to use one rule of inference in term mode: modus ponens. In the rest of this book we will learn about other tactics and other term-mode rules.</p>
+<p>Before continuing, it might be useful to summarize how you type statements into Lean. We have already told you how to type the symbols <code>→</code> and <code>¬</code>, but you will want to know how to type all of the logical connectives. In each case, the command to produce the symbol must be followed by space or tab, but there is also a plain text alternative:</p>
+<div style="margin: 0% 10%">
+<table class="table">
+<thead>
+<tr class="header">
+<th style="text-align: center;">Symbol</th>
+<th style="text-align: center;">How To Type It</th>
+<th style="text-align: center;">Plain Text Alternative</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;"><code>¬</code></td>
+<td style="text-align: center;"><code>\not</code> or <code>\n</code></td>
+<td style="text-align: center;"><code>Not</code></td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"><code>∧</code></td>
+<td style="text-align: center;"><code>\and</code></td>
+<td style="text-align: center;"><code>/\</code></td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;"><code>∨</code></td>
+<td style="text-align: center;"><code>\or</code> or <code>\v</code></td>
+<td style="text-align: center;"><code>\/</code></td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"><code>→</code></td>
+<td style="text-align: center;"><code>\to</code> or <code>\r</code> or <code>\imp</code></td>
+<td style="text-align: center;"><code>-&gt;</code></td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;"><code>↔︎</code></td>
+<td style="text-align: center;"><code>\iff</code> or <code>\lr</code></td>
+<td style="text-align: center;"><code>&lt;-&gt;</code></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>Lean has conventions that it follows to interpret a logical statement when there are not enough parentheses to indicate how terms are grouped in the statement, . For our purposes, the most important of these conventions is that <code>P → Q → R</code> is interpreted as <code>P → (Q → R)</code>, not <code>(P → Q) → R</code>. The reason for this is simply that statements of the form <code>P → (Q → R)</code> come up much more often in proofs than statements of the form <code>(P → Q) → R</code>. Of course, when in doubt about how to type a statement, you can always put in extra parentheses to avoid confusion.</p>
+<p>We will be using tactics to apply several logical equivalences. Here are tactics corresponding to all of the <a href="Chap1.html#prop-laws">logical laws</a> listed in Chapter 1:</p>
+<table class="table">
+<colgroup>
+<col style="width: 29%">
+<col style="width: 14%">
+<col style="width: 18%">
+<col style="width: 18%">
+<col style="width: 18%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Logical Law</th>
+<th style="text-align: left;">Tactic</th>
+<th style="text-align: center;"></th>
+<th style="text-align: center;">Transformation</th>
+<th style="text-align: center;"></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Contrapositive Law</td>
+<td style="text-align: left;"><code>contrapos</code></td>
+<td style="text-align: center;"><code>P → Q</code></td>
+<td style="text-align: center;">is changed to</td>
+<td style="text-align: center;"><code>¬Q → ¬P</code></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">De Morgan’s Laws</td>
+<td style="text-align: left;"><code>demorgan</code></td>
+<td style="text-align: center;"><code>¬(P ∧ Q)</code></td>
+<td style="text-align: center;">is changed to</td>
+<td style="text-align: center;"><code>¬P ∨ ¬Q</code></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: center;"><code>¬(P ∨ Q)</code></td>
+<td style="text-align: center;">is changed to</td>
+<td style="text-align: center;"><code>¬P ∧ ¬Q</code></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: center;"><code>P ∧ Q</code></td>
+<td style="text-align: center;">is changed to</td>
+<td style="text-align: center;"><code>¬(¬P ∨ ¬Q)</code></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: center;"><code>P ∨ Q</code></td>
+<td style="text-align: center;">is changed to</td>
+<td style="text-align: center;"><code>¬(¬P ∧ ¬Q)</code></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Conditional Laws</td>
+<td style="text-align: left;"><code>conditional</code></td>
+<td style="text-align: center;"><code>P → Q</code></td>
+<td style="text-align: center;">is changed to</td>
+<td style="text-align: center;"><code>¬P ∨ Q</code></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: center;"><code>¬(P → Q)</code></td>
+<td style="text-align: center;">is changed to</td>
+<td style="text-align: center;"><code>P ∧ ¬Q</code></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: center;"><code>P ∨ Q</code></td>
+<td style="text-align: center;">is changed to</td>
+<td style="text-align: center;"><code>¬P → Q</code></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: center;"><code>P ∧ Q</code></td>
+<td style="text-align: center;">is changed to</td>
+<td style="text-align: center;"><code>¬(P → ¬Q)</code></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Double Negation Law</td>
+<td style="text-align: left;"><code>double_neg</code></td>
+<td style="text-align: center;"><code>¬¬P</code></td>
+<td style="text-align: center;">is changed to</td>
+<td style="text-align: center;"><code>P</code></td>
+</tr>
+</tbody>
+</table>
+<p>All of these tactics work the same way as the <code>contrapos</code> tactic: by default, the transformation is applied to the goal; to apply it to a given <code>h</code>, add <code>at h</code> after the tactic name.</p>
+</section>
+<section id="types" class="level2">
+<h2 class="anchored" data-anchor-id="types">Types</h2>
+<p>All of our examples so far have just used letters to stand for propositions. To prove theorems with mathematical content, we will need to introduce one more idea.</p>
+<p>The underlying theory on which Lean is based is called <em>type theory</em>. We won’t go very deeply into type theory, but we will need to make use of the central idea of the theory: every variable in Lean must have a type. What this means is that, when you introduce a variable to stand for a mathematical object in a theorem or proof, you must specify what type of object the variable stands for. We have already seen this idea in action: in our first example, the expression <code>(P Q R : Prop)</code> told Lean that the variables <code>P</code>, <code>Q</code>, and <code>R</code> have type <code>Prop</code>, which means they stand for propositions. There are types for many kinds of mathematical objects. For example, <code>Nat</code> is the type of natural numbers, and <code>Real</code> is the type of real numbers. So if you want to state a theorem about real numbers <code>x</code> and <code>y</code>, the statement of your theorem might start with <code>(x y : Real)</code>. You must include such a type declaration before you can use the variables <code>x</code> and <code>y</code> as free variables in the hypotheses or conclusion of your theorem.</p>
+<p>What about sets? If you want to prove a theorem about a set <code>A</code>, can you say that <code>A</code> has type <code>Set</code>? No, Lean is fussier than that. Lean wants to know, not only that <code>A</code> is a set, but also what the type of the elements of <code>A</code> is. So you can say that <code>A</code> has type <code>Set Nat</code> if <code>A</code> is a set whose elements are natural numbers, or <code>Set Real</code> if it is a set of real numbers, or even <code>Set (Set Nat)</code> if it is a set whose elements are sets of natural numbers. Here is an example of a simple theorem about sets; it is a simplified version of Example 3.2.5 in <em>HTPI</em>. To type the symbols <code>∈</code>, <code>∉</code>, and <code>\</code> in this theorem, type <code>\in</code>, <code>\notin</code>, and <code>\\</code>, respectively.</p>
+<div class="inout">
+<p class="hdr">
+Lean File
+</p>
+<p class="hdr">
+Tactic State in Infoview
+</p>
+<div class="sourceCode" id="cb17"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Example_3_2_5_simple</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>(A B : Set Nat) (a : Nat)</span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>(h1 : a ∈ A) (h2 : a ∉ A \ B) : a ∈ B := <span class="sc">!!</span><span class="wa">by</span><span class="sc">!!</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb18"><pre class="sourceCode state code-with-copy"><code class="sourceCode state"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="in">A B </span>: Set ℕ</span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="in">a </span>: ℕ</span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a><span class="in">h1 </span>: a ∈ A</span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a><span class="in">h2 </span>: ¬a ∈ A \ B</span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>⊢ a ∈ B</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>The second line of this theorem statement declares that the variables <code>A</code> and <code>B</code> stand for sets of natural numbers, and <code>a</code> stands for a natural number. The third line states the two hypotheses of the theorem, <code>a ∈ A</code> and <code>a ∉ A \ B</code>, and the conclusion, <code>a ∈ B</code>.</p>
+<p>To figure out this proof, we’ll imitate the reasoning in Example 3.2.5 in <em>HTPI</em>. We begin by writing out the meaning of the given <code>h2</code>. Fortunately, we have a tactic for that. The tactic <code>define</code> writes out the definition of the goal, and as usual we can add <code>at</code> to apply the tactic to a given rather than the goal. Here’s the situation after using the tactic <code>define at h2</code>:</p>
+<div class="inout">
+<p class="hdr">
+Lean File
+</p>
+<p class="hdr">
+Tactic State in Infoview
+</p>
+<div class="sourceCode" id="cb19"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Example_3_2_5_simple</span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>(A B : Set Nat) (a : Nat)</span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>(h1 : a ∈ A) (h2 : a ∉ A \ B) : a ∈ B := <span class="sc">!!</span><span class="wa">by</span><span class="sc">!!</span></span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>  <span class="kw">define</span> <span class="kw">at</span> h2       <span class="co">--Now h2 : ¬(a ∈ A ∧ ¬a ∈ B)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb20"><pre class="sourceCode state code-with-copy"><code class="sourceCode state"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="in">A B </span>: Set ℕ</span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a><span class="in">a </span>: ℕ</span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a><span class="in">h1 </span>: a ∈ A</span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a><span class="in">h2 </span>: ¬(a ∈ A ∧ ¬a ∈ B)</span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a>⊢ a ∈ B</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>We see that Lean has written out the meaning of set difference in <code>h2</code>. And now we can see that, as in Example 3.2.5 in <em>HTPI</em>, we can put <code>h2</code> into a more useful form by applying first one of De Morgan’s laws to rewrite it as <code>¬a ∈ A ∨ a ∈ B</code> and then a conditional law to change it to <code>a ∈ A → a ∈ B</code>:</p>
+<div class="inout">
+<p class="hdr">
+Lean File
+</p>
+<p class="hdr">
+Tactic State in Infoview
+</p>
+<div class="sourceCode" id="cb21"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Example_3_2_5_simple</span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>(A B : Set Nat) (a : Nat)</span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>(h1 : a ∈ A) (h2 : a ∉ A \ B) : a ∈ B := <span class="sc">!!</span><span class="wa">by</span><span class="sc">!!</span></span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>  <span class="kw">define</span> <span class="kw">at</span> h2       <span class="co">--Now h2 : ¬(a ∈ A ∧ ¬a ∈ B)</span></span>
+<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a>  <span class="kw">demorgan</span> <span class="kw">at</span> h2     <span class="co">--Now h2 : ¬a ∈ A ∨ a ∈ B</span></span>
+<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a>  <span class="kw">conditional</span> <span class="kw">at</span> h2  <span class="co">--Now h2 : a ∈ A → a ∈ B</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb22"><pre class="sourceCode state code-with-copy"><code class="sourceCode state"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="in">A B </span>: Set ℕ</span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a><span class="in">a </span>: ℕ</span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a><span class="in">h1 </span>: a ∈ A</span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a><span class="in">h2 </span>: a ∈ A → a ∈ B</span>
+<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a>⊢ a ∈ B</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Now the rest is easy: we can apply modus ponens to reach the goal:</p>
+<div class="inout">
+<p class="hdr">
+Lean File
+</p>
+<p class="hdr">
+Tactic State in Infoview
+</p>
+<div class="sourceCode" id="cb23"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Example_3_2_5_simple</span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>(A B : Set Nat) (a : Nat)</span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>(h1 : a ∈ A) (h2 : a ∉ A \ B) : a ∈ B := <span class="kw">by</span></span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a>  <span class="kw">define</span> <span class="kw">at</span> h2       <span class="co">--Now h2 : ¬(a ∈ A ∧ ¬a ∈ B)</span></span>
+<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a>  <span class="kw">demorgan</span> <span class="kw">at</span> h2     <span class="co">--Now h2 : ¬a ∈ A ∨ a ∈ B</span></span>
+<span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a>  <span class="kw">conditional</span> <span class="kw">at</span> h2  <span class="co">--Now h2 : a ∈ A → a ∈ B</span></span>
+<span id="cb23-7"><a href="#cb23-7" aria-hidden="true" tabindex="-1"></a>  <span class="kw">show</span> a ∈ B <span class="kw">from</span> h2 h1</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb24"><pre class="sourceCode state code-with-copy"><code class="sourceCode state"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="sc">-</span>Goals accomplished 🎉</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>There is one unfortunate feature of this theorem: We have stated it as a theorem about sets of natural numbers, but the proof has nothing to do with natural numbers. Exactly the same reasoning would prove a similar theorem about sets of real numbers, or sets of objects of any other type. Do we need to write a different theorem for each of these cases? No, fortunately there is a way to write one theorem that covers all the cases:</p>
+<div class="sourceCode" id="cb25"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Example_3_2_5_simple_general</span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>(U : Type) (A B : Set U) (a : U)</span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>(h1 : a ∈ A) (h2 : a ∉ A \ B) : a ∈ B := <span class="sc">!!</span><span class="wa">by</span><span class="sc">!!</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>In this version of the theorem, we have introduced a new variable <code>U</code>, whose type is … Type! So <code>U</code> can stand for any type. You can think of the variable <code>U</code> as playing the role of the universe of discourse, an idea that was introduced in Section 1.3 of <em>HTPI</em>. The sets <code>A</code> and <code>B</code> contain elements from that universe of discourse, and <code>a</code> belongs to the universe. You can prove the new version of the theorem by using exactly the same sequence of tactics as before.</p>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    setTimeout(function() {
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const cites = ref.parentNode.getAttribute('data-cites').split(' ');
+    tippyHover(ref, function() {
+      var popup = window.document.createElement('div');
+      cites.forEach(function(cite) {
+        var citeDiv = window.document.createElement('div');
+        citeDiv.classList.add('hanging-indent');
+        citeDiv.classList.add('csl-entry');
+        var biblioDiv = window.document.getElementById('ref-' + cite);
+        if (biblioDiv) {
+          citeDiv.innerHTML = biblioDiv.innerHTML;
+        }
+        popup.appendChild(citeDiv);
+      });
+      return popup.innerHTML;
+    });
+  }
+});
+</script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="./Chap2.html" class="pagination-link">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Quantificational Logic</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="./Chap3.html" class="pagination-link">
+        <span class="nav-page-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Proofs</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+</body></html>
