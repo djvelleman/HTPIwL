@@ -81,7 +81,7 @@ theorem two_imp (P Q R : Prop)
 (h1 : P → Q) (h2 : Q → ¬R) : R → ¬P :=
 ```
 
-Lean is now waiting for you to type a proof in term mode.  To switch to tactic mode, type `by` after `:=`.  One of the advantages of tactic mode is that Lean displays, in the Lean Infoview pane, information about the status of the proof as your write it.  As soon as you type `by`, Lean displays what it calls the "tactic state" in the Infoview pane.  Your screen should look like this:
+Lean is now waiting for you to type a proof in term mode.  To switch to tactic mode, type `by` after `:=`.  [Maybe:  Tell user to add "done"?]  One of the advantages of tactic mode is that Lean displays, in the Lean Infoview pane, information about the status of the proof as your write it.  As soon as you type `by`, Lean displays what it calls the "tactic state" in the Infoview pane.  Your screen should look like this:
 
 :::: {.inout}
 
