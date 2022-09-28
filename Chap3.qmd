@@ -1,16 +1,19 @@
 # Proofs
 
-The first proof strategies in *How To Prove It* are presented in Section 3.2, so that is where we begin.
+## 3.1 & 3.2. Proofs Involving Negations and Conditionals {.unnumbered}
 
-## 3.2. Proofs Involving Negations and Conditionals {.unnumbered}
+Sections 3.1 and 3.2 of *How To Prove It* present strategies for dealing with givens and goals involving negations and conditionals.  We restate those strategies here, and explain how to use them with Lean.
 
-When stating proof strategies, can give before and after versions of tactic state:
+Section 3.1 gives two strategies for proving a goal of the form `P → Q`:
 
-::: {.befaft}
+### To prove a goal of the form `P → Q`:
 
-<p class="hdr">Tactic state before using strategy</p>
+1.  Assume `P` is true and prove `Q`.
+2.  Assume `Q` is false and prove that `P` is false.
 
-<p class="hdr">Tactic state after using strategy</p>
+We've already seen how to carry out both of these strategies in Lean.  For the first strategy, use the `assume` tactic to introduce the assumption `P` and assign an identifier to it; Lean will automaticall set `Q` as the goal.  We can summarize the effect of using this strategy by showing how the tactic state changes if you use the tactic `assume h : P`:
+
+{{< include _befaft.qmd >}}
 
 ```state
 - ⋮
@@ -22,4 +25,331 @@ When stating proof strategies, can give before and after versions of tactic stat
 h : P
 ⊢ Q
 ```
+:::
+
+The second strategy is justified by the contrapositive law.  In Lean, you can use the `contrapos` tactic to rewrite the goal as `¬Q → ¬P`; then use the tactic `assume h : ¬Q` to get this result:
+
+{{< include _befaft.qmd >}}
+
+```state
+- ⋮
+⊢ P → Q
+```
+
+```state
+- ⋮
+h : ¬Q
+⊢ ¬P
+```
+
+:::
+
+Section 3.2 gives two strategies for using givens of the form `P → Q`, with the second once again being a variation on the first based on the contrapositive law:
+
+### To use a given of the form `P → Q`:
+
+1.  If you are also given `P`, or you can prove that `P` is true, then you can use this given to conclude that `Q` is true.
+2.  If you are also given `¬Q`, or you can prove that `Q` is false, then you can use this given to conclude that `P` is false.
+
+The first strategy is the modus ponens rule of inference, and we saw in the last chapter that if you have `h1 : P → Q` and `h2 : P`, then `h1 h2` is a (term-mode) proof of `Q`; often we use this rule with the `have` or `show` tactic.  For the second strategy, if you have `h1 : P → Q` and `h2 : ¬Q`, then the `contrapos at h1` tactic will change `h1` to `h1 : ¬Q → ¬P`, and then `h1 h2` will be a proof of `¬P`.
+
+All of the strategies listed above for working with conditional statements as givens or goals were illustrated in examples in the last chapter.
+
+Section 3.2 of *HTPI* offers two strategies for proving negative goals:
+
+### To prove a goal of the form `¬P`:
+
+1.  Reexpress the goal in some other form.
+2.  Use proof by contradiction: assume `P` is true and try to deduce a contradiction.
+
+For the first strategy, the tactics `demorgan`, `conditional`, and `double_neg` may be useful, and we saw how those tactics work in the last chapter.  But how do you write a proof by contradiction in Lean?  The answer is to use a tactic called `by_contra`.  If the goal is `¬P`, then the tactic `by_contra h` will introduce the assumption `h : P` and set the goal to be `False`, like this:
+
+{{< include _befaft.qmd >}}
+
+```state
+- ⋮
+⊢ ¬P
+```
+
+```state
+- ⋮
+h : P
+⊢ False
+```
+
+:::
+
+In Lean, `False` represents a statement that is always false---that is, a contradiction, as that term is defined in Section 1.2 of *HTPI*.  The `by_contra` tactic can actually be used even if the goal is not a negative statement.  If the goal is a statement `P` that is not a negative statement, then `by_contra h` will initiate a proof by contradiction by introducing the assumption `h : ¬P` and setting the goal to be `False`.
+
+You will usually complete a proof by contradiction by deducing two contradictory statements---say, `h1 : Q` and `h2 : ¬Q`.  But how do you convince Lean that the proof is over?  You must be able to prove the goal `False` from the two givens `h1` and `h2`.  There are two ways to do this.  The first is based on the fact that Lean treats a statement of the form `¬Q` as meaning the same thing as `Q → False`.  This makes sense, because these statements are logically equivalent, as shown by the following truth table:
+
+::: {style="margin: 0% 20%"}
+| `Q` | `¬Q` | `(Q` | `→` | `False)`|
+|:----------:|:----------:|-:|:-:|:--|
+| F | T | F &nbsp; | T | &nbsp;&nbsp;&nbsp; F |
+| T | F | T &nbsp; | F | &nbsp;&nbsp;&nbsp; F |
+:::
+
+Thinking of `h2 : ¬Q` as meaning `h2 : Q → False`, we can combine it with `h1 : Q` using modus ponens to deduce `False`.  In other words, `h2 h1` is a proof of `False`.
+
+But there is a second way of completing the proof that it is worthwhile to know about.  From contradictory statements `h1 : Q` and `h2 : ¬Q` you can validly deduce *any* statement.  This follows from the definition of a *valid argument* in Section 1.1 of *HTPI*.  According to that definition, you can validly infer a conclusion `R` from premises `h1 : Q` and `h2 : ¬Q` if the premises cannot both be true without the conclusion also being true.  In this case, that standard is met, for the simple reason that the premises cannot both be true!  (This gives part of the answer to exercise 18 in Section 1.2 of *HTPI*.)  Thus, Lean has a rule that allows you to prove any statement from contradictory premises.  If you have `h1 : Q` and `h2 : ¬Q`, then Lean will recognize `absurd h1 h2` as a (term-mode) proof of *any* statement.
+
+To summarize, if you have `h1 : Q` and `h2 : ¬Q`, then there are two ways to prove `False`.  Lean will recognize `h2 h1` as a proof of `False`, and it will recognize `absurd h1 h2` as a proof of any statement, including `False`.  Notice the difference in the order in which `h1` and `h2` are listed in these two proofs: In the first one, the negative statement `h2` must come first, just as the conditional statement must come first in an application of modus ponens.  But in a proof using `absurd`, the negative statement must come second.
+
+To illustrate proof by contradiction in Lean, let's redo our first example from the last Chapter in a different way.  That example was based on Example 3.2.4 in *HTPI*.  We'll begin with the same first two steps, introducing two assumptions.  (We won't bother to include the `done` line in the displays below.)
+
+{{< include _inout.qmd >}}
+
+```lean
+theorem Example_3_2_4_v2 (P Q R : Prop)
+(h : P → (Q → R)) : ¬R → (P → ¬Q) := by
+  assume h2 : ¬R
+  assume h3 : P
+```
+
+```state
+P Q R : Prop
+h : P → Q → R
+h2 : ¬R
+h3 : P
+⊢ ¬Q
+```
+
+:::
+
+Now the goal is a negative statement, so we use the tactic `by_contra h4` to introduce the assumption `h4 : Q` and set the goal to be `False`:
+
+{{< include _inout.qmd >}}
+
+```lean
+theorem Example_3_2_4_v2 (P Q R : Prop)
+(h : P → (Q → R)) : ¬R → (P → ¬Q) := by
+  assume h2 : ¬R
+  assume h3 : P
+  by_contra h4
+```
+
+```state
+P Q R : Prop
+h : P → Q → R
+h2 : ¬R
+h3 : P
+h4 : Q
+⊢ False
+```
+
+:::
+
+Using the givens `h`, `h3`, and `h4` we can deduce first `Q → R` and then `R` by two applications of modus ponens:
+
+{{< include _inout.qmd >}}
+
+```lean
+theorem Example_3_2_4_v2 (P Q R : Prop)
+(h : P → (Q → R)) : ¬R → (P → ¬Q) := by
+  assume h2 : ¬R
+  assume h3 : P
+  by_contra h4
+  have h5 : Q → R := h h3
+  have h6 : R := h5 h4
+```
+
+```state
+P Q R : Prop
+h : P → Q → R
+h2 : ¬R
+h3 : P
+h4 : Q
+h5 : Q → R
+h6 : R
+⊢ False
+```
+
+:::
+
+Now we have a contradiction: `h2 : ¬R` and `h6 : R`.  To complete the proof, we deduce `False` from these two givens.  Either `h2 h6` or `absurd h6 h2` would be accepted by Lean as a proof of `False`:
+
+{{< include _inout.qmd >}}
+
+```lean
+theorem Example_3_2_4_v2 (P Q R : Prop)
+(h : P → (Q → R)) : ¬R → (P → ¬Q) := by
+  assume h2 : ¬R
+  assume h3 : P
+  by_contra h4
+  have h5 : Q → R := h h3
+  have h6 : R := h5 h4
+  show False from h2 h6
+```
+
+{{< include _finish.qmd >}}
+
+:::
+
+Finally, we have two strategies for using a given that is a negative statement:
+
+### To use a given of the form `¬P`:
+
+1.  Reexpress the given in some other form.
+2.  If you are doing a proof by contradiction, you can achieve a contradiction by proving `P`, since that would contradict the given `¬P`.
+
+Of course, strategy 1 suggests the use of the `demorgan`, `conditional`, and `double_neg` tactics, if they apply.  For strategy 2, if you are doing a proof by contradiction and you have a given `h : ¬P`, then the tactic `contradict h` will set the goal to be `P`, which will complete the proof by contradicting `h`.  In fact, this tactic can be used with any given; if you have a given `h : P`, where `P` is not a negative statement, then `contradict h` will set the goal to be `¬P`.  If you're not doing a proof by contradiction, then the tactic `contradict h with h'` will first initiate a proof by contradiction by assuming the negation of the goal, giving that assumption the identifier `h'`, and then it will set the goal to be the negation of `h`.  In other words, `contradict h with h'` is shorthand for `by_contra h'; contradict h`.
+
+We can illustrate this with yet another way to write the proof from Example 3.2.4.  Our first three steps will be the same as last time:
+
+{{< include _inout.qmd >}}
+
+```lean
+theorem Example_3_2_4_v3 (P Q R : Prop)
+(h : P → (Q → R)) : ¬R → (P → ¬Q) := by
+  assume h2 : ¬R
+  assume h3 : P
+  by_contra h4
+```
+
+```state
+P Q R : Prop
+h : P → Q → R
+h2 : ¬R
+h3 : P
+h4 : Q
+⊢ False
+```
+
+:::
+
+Since we are now doing a proof by contradiction and the given `h2 : ¬R` is a negative statement, a likely way to proceed is to try to prove `R`, which would contradict `h2`.  So we use the tactic `contradict h2`:
+
+{{< include _inout.qmd >}}
+
+```lean
+theorem Example_3_2_4_v3 (P Q R : Prop)
+(h : P → (Q → R)) : ¬R → (P → ¬Q) := by
+  assume h2 : ¬R
+  assume h3 : P
+  by_contra h4
+  contradict h2
+```
+
+```state
+P Q R : Prop
+h : P → Q → R
+h2 : ¬R
+h3 : P
+h4 : Q
+⊢ R
+```
+
+:::
+
+As before, we can now prove `R` by combining `h`, `h3`, and `h4`.  In fact, we could do it in one step: by modus ponens, `h h3` is a proof of `Q → R`, and therefore, by another application of modus ponens, `(h h3) h4` is a proof of `R`.  The parentheses here are not necessary; Lean will interpret `h h3 h4` as `(h h3) h4`, so we can complete the proof like this:
+
+{{< include _inout.qmd >}}
+
+```lean
+theorem Example_3_2_4_v3 (P Q R : Prop)
+(h : P → (Q → R)) : ¬R → (P → ¬Q) := by
+  assume h2 : ¬R
+  assume h3 : P
+  by_contra h4
+  contradict h2
+  show R from h h3 h4
+```
+
+{{< include _finish.qmd >}}
+
+:::
+
+You could shorten this proof slightly by replacing the lines `by_contra h4` and `contradict h2` with the single line `contradict h2 with h4`.
+
+There is one more idea that is introduced in Section 3.2 of *HTPI*.  The last example in that section illustrates how you can sometimes use rules of inference to work backwards.  Here's a similar example in Lean:
+
+{{< include _inout.qmd >}}
+
+```lean
+theorem Like_Example_3_2_5
+(U : Type) (A B C : Set U) (a : U)
+(h1 : a ∈ A) (h2 : a ∉ A \ B)
+(h3 : a ∈ B → a ∈ C) : a ∈ C := by
+```
+
+```state
+U : Type
+A B C : Set U
+a : U
+h1 : a ∈ A
+h2 : ¬a ∈ A \ B
+h3 : a ∈ B → a ∈ C
+⊢ a ∈ C
+```
+
+:::
+
+The goal is `a ∈ C`, and the only given that even mentions `C` is `h3 : a ∈ B → a ∈ C`.  If only we could prove `a ∈ B`, then we could apply `h3`, using modus ponens, to reach our goal.  The tactic `apply h3` asks Lean to work backwards, seeing if it can find a way to apply `h3` to reach the goal. You might think of this tactic as asking Lean the question: If we want `h3 _` to be a proof of `a ∈ C`, what do we have to put in the blank?  Lean is able to figure out that the answer is: a proof of `a ∈ B`.  So it sets the goal to be `a ∈ B`, since a proof of that goal, when combined with `h3`, would prove the theorem:
+
+{{< include _inout.qmd >}}
+
+```lean
+theorem Like_Example_3_2_5
+(U : Type) (A B C : Set U) (a : U)
+(h1 : a ∈ A) (h2 : a ∉ A \ B)
+(h3 : a ∈ B → a ∈ C) : a ∈ C := by
+  apply h3
+```
+
+```state
+U : Type
+A B C: Set U
+a : U
+h1 : a ∈ A
+h2 : ¬a ∈ A \ B
+h3 : a ∈ B → a ∈ C
+⊢ a ∈ B
+```
+
+:::
+
+It may not be clear what to do next, but the given `h2` is a negative statement, so perhaps reexpressing it will help.  Writing out the definition of set difference, `h2` means `¬(a ∈ A ∧ a ∉ B)`, and then one of De Morgan's laws and a conditional law allow us to rewrite it first as `(a ∉ A ∨ a ∈ B)` and then as `(a ∈ A → a ∈ B)`.  Of course, we have tactics to accomplish all of these reexpressions:
+
+{{< include _inout.qmd >}}
+
+```lean
+theorem Like_Example_3_2_5
+(U : Type) (A B C : Set U) (a : U)
+(h1 : a ∈ A) (h2 : a ∉ A \ B)
+(h3 : a ∈ B → a ∈ C) : a ∈ C := by
+  apply h3
+  define at h2
+  demorgan at h2; conditional at h2
+```
+
+```state
+U : Type
+A B C : Set U
+a : U
+h1 : a ∈ A
+h2 : a ∈ A → a ∈ B
+h3 : a ∈ B → a ∈ C
+⊢ a ∈ B
+```
+
+:::
+
+And now it is easy to complete the proof by applying modus ponens, using `h2` and `h1`:
+
+{{< include _inout.qmd >}}
+
+```lean
+theorem Like_Example_3_2_5
+(U : Type) (A B C : Set U) (a : U)
+(h1 : a ∈ A) (h2 : a ∉ A \ B)
+(h3 : a ∈ B → a ∈ C) : a ∈ C := by
+  apply h3
+  define at h2
+  demorgan at h2; conditional at h2
+  show a ∈ B from h2 h1
+```
+
+{{< include _finish.qmd >}}
+
 :::

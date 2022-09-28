@@ -1,2 +1,2 @@
-# How_To_Prove_It_With_Lean
+# How To Prove It With Lean
  Book about using Lean with How To Prove It

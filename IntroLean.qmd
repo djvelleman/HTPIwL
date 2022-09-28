@@ -32,7 +32,7 @@ The next step of the proof in *HTPI* combines the statements $Q \to R$ and $\neg
 
 Now that you have seen an example of a proof in Lean, it is time for you to write your first proof.  Lean has two modes for writing proofs, called *term mode* and *tactic mode*.  The example above was written in tactic mode, and that is the mode we will use for most proofs in this book.  But before we study the construction of proofs in tactic mode, it will be helpful to learn a bit about term mode.  Term mode is best for simple proofs, so we begin with a few very short proofs.
 
-If you have not yet installed Lean on your computer, go back and follow the [instructions](#installing-lean) for installing it now.  [*** further instructions for opening an empty file with import HTPIdefs***]
+If you have not yet installed Lean on your computer, go back and follow the [instructions](#installing-lean) for installing it now.  Then in VS Code, open the folder for the HTPI Lean Package that you downloaded and click on the file Blank.lean.  The file starts with the line "import HTPIDefs".  Click on the blank line at the end of the file; this is where you will be typing your first proofs.
 
 Now type in the following theorem and proof:
 
@@ -81,17 +81,17 @@ theorem two_imp (P Q R : Prop)
 (h1 : P → Q) (h2 : Q → ¬R) : R → ¬P :=
 ```
 
-Lean is now waiting for you to type a proof in term mode.  To switch to tactic mode, type `by` after `:=`.  [Maybe:  Tell user to add "done"?]  One of the advantages of tactic mode is that Lean displays, in the Lean Infoview pane, information about the status of the proof as your write it.  As soon as you type `by`, Lean displays what it calls the "tactic state" in the Infoview pane.  Your screen should look like this:
+Lean is now waiting for you to type a proof in term mode.  To switch to tactic mode, type `by` after `:=`.  Although it is not necessary, we find it helpful to set off a tactic proof from the surrounding text by indenting it, and also by marking where the proof ends.  To do this, leave a blank line after the statement of the theorem and begin the next line with a tab; VS Code will indent two spaces.  Then type `done`.  You will type your proof between the statement of the theorem and the line containing `done`, so click on the blank line between them to position the cursor there.
 
-:::: {.inout}
+One of the advantages of tactic mode is that Lean displays, in the Lean Infoview pane, information about the status of the proof as your write it.  As soon as you position your cursor on the blank line, Lean displays what it calls the "tactic state" in the Infoview pane.  Your screen should look like this:
 
-<p class="hdr">Lean File</p>
-
-<p class="hdr">Tactic State in Infoview</p>
+{{< include _inout.qmd >}}
 
 ```lean
 theorem two_imp (P Q R : Prop)
-(h1 : P → Q) (h2 : Q → ¬R) : R → ¬P := !!by!!
+(h1 : P → Q) (h2 : Q → ¬R) : R → ¬P := by
+
+  !!done!!
 ```
 
 ```state
@@ -100,24 +100,19 @@ h1 : P → Q
 h2 : Q → ¬R
 ⊢ R → ¬P
 ```
-::::
+:::
 
-The red squiggle under `by` indicates that Lean knows that the proof is incomplete.  The tactic state in the Infoview pane is very similar to the lists of givens and goals that are used in *HTPI*.  The tactic state above says that `P`, `Q`, and `R` stand for propositions, and we have two givens, `h1 : P → Q` and `h2 : Q → ¬R`.  The symbol `⊢` in the last line labels the goal, `R → ¬P`.
+The red squiggle under `done` indicates that Lean knows that the proof isn't done.  The tactic state in the Infoview pane is very similar to the lists of givens and goals that are used in *HTPI*.  The tactic state above says that `P`, `Q`, and `R` stand for propositions, and we have two givens, `h1 : P → Q` and `h2 : Q → ¬R`.  The symbol `⊢` in the last line labels the goal, `R → ¬P`.
 
-Although it is not necessary, we find it helpful to set off a tactic proof from the surrounding text by indenting it.  To indent the proof, begin the next line with a tab; VS Code will indent two spaces.  You won't have to type tab to indent later lines; VS Code maintains the same indenting until you delete the tab at the beginning of a line to return to unindented text.
+From the hypotheses `h1` and `h2` it shouldn't be hard to prove `P → ¬R`, but the goal is `R → ¬P`.  This suggests that we should prove the contrapositive of the goal.  Type tab to indent two spaces and then `contrapos` to tell Lean that you want to replace the goal with its contrapositive.  (You won't have to type tab to indent later lines; VS Code maintains the same indenting until you delete the tab at the beginning of a line to return to unindented text.)  As soon as you type `contrapos`, Lean will update the tactic state to reflect the change in the goal.  You should now see this:
 
-From the hypotheses `h1` and `h2` it shouldn't be hard to prove `P → ¬R`, but the goal is `R → ¬P`.  This suggests that we should prove the contrapositive of the goal.  Type `contrapos` to tell Lean that you want to replace the goal with its contrapositive.  As soon as you type `contrapos`, Lean will update the tactic state to reflect the change in the goal.  You should now see this:
-
-:::: {.inout}
-
-<p class="hdr">Lean File</p>
-
-<p class="hdr">Tactic State in Infoview</p>
+{{< include _inout.qmd >}}
 
 ```lean
 theorem two_imp (P Q R : Prop)
 (h1 : P → Q) (h2 : Q → ¬R) : R → ¬P := !!by!!
   contrapos
+  !!done!!
 ```
 
 ```state
@@ -126,21 +121,18 @@ h1 : P → Q
 h2 : Q → ¬R
 ⊢ P → ¬R
 ```
-::::
+:::
 
-If you want to make your proof a little more readable, you could add a comment saying that the goal has been changed to `P → ¬R`.  To prove the new goal, we will assume `P` and prove `¬R`.  So type `assume h3 : P` on the next line.  Once again, the tactic state is immediately updated.  Lean adds the new given `h3 : P`, and it knows, without having to be told, that the goal should now be `¬R`:
+If you want to make your proof a little more readable, you could add a comment saying that the goal has been changed to `P → ¬R`.  To prove the new goal, we will assume `P` and prove `¬R`.  So type `assume h3 : P` on a new line (after `contrapos`, but before `done`).  Once again, the tactic state is immediately updated.  Lean adds the new given `h3 : P`, and it knows, without having to be told, that the goal should now be `¬R`:
 
-:::: {.inout}
-
-<p class="hdr">Lean File</p>
-
-<p class="hdr">Tactic State in Infoview</p>
+{{< include _inout.qmd >}}
 
 ```lean
 theorem two_imp (P Q R : Prop)
 (h1 : P → Q) (h2 : Q → ¬R) : R → ¬P := !!by!!
   contrapos           --Goal is now P → ¬R
   assume h3 : P
+  !!done!!
 ```
 
 ```state
@@ -150,15 +142,11 @@ h2 : Q → ¬R
 h3 : P
 ⊢ ¬R
 ```
-::::
+:::
 
 We can now use modus ponens to infer `Q` from `h1 : P → Q` and `h3 : P`.  As we saw earlier, this means that `h1 h3` is a term-mode proof of `Q`.  So on the next line, type `have h4 : Q := h1 h3`.  To make an inference, you need to provide a justification, so `:=` here is followed by the term-mode proof of `Q`.  Usually we will use `have` to make easy inferences for which we can give simple term-mode proofs.  (We'll see later that it is also possible to use `have` to make an inference justified by a tactic-mode proof.)  Of course, Lean updates the tactic state by adding the new given `h4 : Q`:
 
-:::: {.inout}
-
-<p class="hdr">Lean File</p>
-
-<p class="hdr">Tactic State in Infoview</p>
+{{< include _inout.qmd >}}
 
 ```lean
 theorem two_imp (P Q R : Prop)
@@ -166,6 +154,7 @@ theorem two_imp (P Q R : Prop)
   contrapos           --Goal is now P → ¬R
   assume h3 : P
   have h4 : Q := h1 h3
+  !!done!!
 ```
 
 ```state
@@ -176,15 +165,11 @@ h3 : P
 h4 : Q
 ⊢ ¬R
 ```
-::::
+:::
 
-Finally, to complete the proof, we can infer the goal `¬R` from `h2 : Q → ¬R` and `h4 : Q`, using the term-mode proof `h2 h4`.  Type `show ¬R from h2 h4` to complete the proof.  You'll notice two changes in the display: the red squiggle will disappear from the word `by`, and the tactic state will say "Goals accomplished":
+Finally, to complete the proof, we can infer the goal `¬R` from `h2 : Q → ¬R` and `h4 : Q`, using the term-mode proof `h2 h4`.  Type `show ¬R from h2 h4` to complete the proof.  You'll notice two changes in the display: the red squiggle will disappear from the word `done`, and the tactic state will say "Goals accomplished":
 
-:::: {.inout}
-
-<p class="hdr">Lean File</p>
-
-<p class="hdr">Tactic State in Infoview</p>
+{{< include _inout.qmd >}}
 
 ```lean
 theorem two_imp (P Q R : Prop)
@@ -193,6 +178,7 @@ theorem two_imp (P Q R : Prop)
   assume h3 : P
   have h4 : Q := h1 h3
   show ¬R from h2 h4
+  done
 ```
 
 ```state
@@ -243,16 +229,14 @@ The underlying theory on which Lean is based is called *type theory*.  We won't 
 
 What about sets?  If you want to prove a theorem about a set `A`, can you say that `A` has type `Set`?  No, Lean is fussier than that.  Lean wants to know, not only that `A` is a set, but also what the type of the elements of `A` is.  So you can say that `A` has type `Set Nat` if `A` is a set whose elements are natural numbers, or `Set Real` if it is a set of real numbers, or even `Set (Set Nat)` if it is a set whose elements are sets of natural numbers.  Here is an example of a simple theorem about sets; it is a simplified version of Example 3.2.5 in *HTPI*.  To type the symbols `∈`, `∉`, and `\` in this theorem, type `\in`, `\notin`, and `\\`, respectively.
 
-::: {.inout}
-
-<p class="hdr">Lean File</p>
-
-<p class="hdr">Tactic State in Infoview</p>
+{{< include _inout.qmd >}}
 
 ```lean
 theorem Example_3_2_5_simple
 (A B : Set Nat) (a : Nat)
-(h1 : a ∈ A) (h2 : a ∉ A \ B) : a ∈ B := !!by!!
+(h1 : a ∈ A) (h2 : a ∉ A \ B) : a ∈ B := by
+
+  !!done!!
 ```
 
 ```state
@@ -268,17 +252,14 @@ The second line of this theorem statement declares that the variables `A` and `B
 
 To figure out this proof, we'll imitate the reasoning in Example 3.2.5 in *HTPI*.  We begin by writing out the meaning of the given `h2`.  Fortunately, we have a tactic for that.  The tactic `define` writes out the definition of the goal, and as usual we can add `at` to apply the tactic to a given rather than the goal.  Here's the situation after using the tactic `define at h2`:
 
-::: {.inout}
-
-<p class="hdr">Lean File</p>
-
-<p class="hdr">Tactic State in Infoview</p>
+{{< include _inout.qmd >}}
 
 ```lean
 theorem Example_3_2_5_simple
 (A B : Set Nat) (a : Nat)
-(h1 : a ∈ A) (h2 : a ∉ A \ B) : a ∈ B := !!by!!
+(h1 : a ∈ A) (h2 : a ∉ A \ B) : a ∈ B := by
   define at h2       --Now h2 : ¬(a ∈ A ∧ ¬a ∈ B)
+  !!done!!
 ```
 
 ```state
@@ -292,19 +273,16 @@ h2 : ¬(a ∈ A ∧ ¬a ∈ B)
 
 We see that Lean has written out the meaning of set difference in `h2`.  And now we can see that, as in Example 3.2.5 in *HTPI*, we can put `h2` into a more useful form by applying first one of De Morgan's laws to rewrite it as `¬a ∈ A ∨ a ∈ B` and then a conditional law to change it to `a ∈ A → a ∈ B`:
 
-::: {.inout}
-
-<p class="hdr">Lean File</p>
-
-<p class="hdr">Tactic State in Infoview</p>
+{{< include _inout.qmd >}}
 
 ```lean
 theorem Example_3_2_5_simple
 (A B : Set Nat) (a : Nat)
-(h1 : a ∈ A) (h2 : a ∉ A \ B) : a ∈ B := !!by!!
+(h1 : a ∈ A) (h2 : a ∉ A \ B) : a ∈ B := by
   define at h2       --Now h2 : ¬(a ∈ A ∧ ¬a ∈ B)
   demorgan at h2     --Now h2 : ¬a ∈ A ∨ a ∈ B
   conditional at h2  --Now h2 : a ∈ A → a ∈ B
+  !!done!!
 ```
 
 ```state
@@ -316,22 +294,19 @@ h2 : a ∈ A → a ∈ B
 ```
 :::
 
-Now the rest is easy: we can apply modus ponens to reach the goal:
+Occasionally, you may feel that the application of two tactics one after the other should be thought of as a single step.  To allow for this, Lean allows you to put two tactics on the same line, separated by a semicolon.  For example, in this proof you could write the use of De Morgan's law and the conditional law as a single step by writing `demorgan at h2; conditional at h2`.  Now the rest is easy: we can apply modus ponens to reach the goal:
 
-::: {.inout}
-
-<p class="hdr">Lean File</p>
-
-<p class="hdr">Tactic State in Infoview</p>
+{{< include _inout.qmd >}}
 
 ```lean
 theorem Example_3_2_5_simple
 (A B : Set Nat) (a : Nat)
 (h1 : a ∈ A) (h2 : a ∉ A \ B) : a ∈ B := by
   define at h2       --Now h2 : ¬(a ∈ A ∧ ¬a ∈ B)
-  demorgan at h2     --Now h2 : ¬a ∈ A ∨ a ∈ B
-  conditional at h2  --Now h2 : a ∈ A → a ∈ B
+  demorgan at h2; conditional at h2
+                     --Now h2 : a ∈ A → a ∈ B
   show a ∈ B from h2 h1
+  done
 ```
 
 ```state
@@ -345,7 +320,7 @@ There is one unfortunate feature of this theorem:  We have stated it as a theore
 ```lean
 theorem Example_3_2_5_simple_general
 (U : Type) (A B : Set U) (a : U)
-(h1 : a ∈ A) (h2 : a ∉ A \ B) : a ∈ B := !!by!!
+(h1 : a ∈ A) (h2 : a ∉ A \ B) : a ∈ B := by
 ```
 
 In this version of the theorem, we have introduced a new variable `U`, whose type is ... Type!  So `U` can stand for any type.  You can think of the variable `U` as playing the role of the universe of discourse, an idea that was introduced in Section 1.3 of *HTPI*.  The sets `A` and `B` contain elements from that universe of discourse, and `a` belongs to the universe.  You can prove the new version of the theorem by using exactly the same sequence of tactics as before.

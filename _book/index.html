@@ -173,15 +173,27 @@ ul.task-list li input[type="checkbox"] {
 </section>
 <section id="installing-lean" class="level2">
 <h2 class="anchored" data-anchor-id="installing-lean">Installing Lean</h2>
-<p>We will be using Visual Studio Code to run Lean, so you will need to install VS Code first. VS Code is free and can be downloaded <a href="https://code.visualstudio.com">here</a>. You will also need the Lean package that accompanies this book, which can be downloaded here (<strong><em>add link</em></strong>).</p>
-<p>When you first start VS Code, you should see a window that looks something like this:</p>
+<p>We will be using Visual Studio Code to run Lean, so you will need to install VS Code first. VS Code is free and can be downloaded <a href="https://code.visualstudio.com">here</a>.</p>
+<p>You will also need the Lean package that accompanies this book, which can be downloaded from <a href="https://github.com/djvelleman/HTPILeanPackage">https://github.com/djvelleman/HTPILeanPackage</a>. After following the link, click on the green “Code” button and, in the pop-up menu, select “Download ZIP”. Open the downloaded zip file to create a folder containing the HTPI Lean package.</p>
+<p>Now open VS Code. You should see a window that looks something like this:</p>
 <p><img src="Images/VSCodeStart.png" class="img-fluid"></p>
 <p>Click on the <em>Extensions</em> icon on the left side of the window, which is circled in red in the image above. That will bring up a list of available extensions:</p>
 <p><img src="Images/FindExtension.png" class="img-fluid"></p>
 <p>In the <em>Search Extensions in Marketplace</em> field, type “lean4”. VS Code should find the Lean 4 extension and display it:</p>
 <p><img src="Images/InstallExtension.png" class="img-fluid"></p>
 <p>Click on “Install” to install the Lean 4 extension.</p>
-<p>Further steps: Open my Lean package in VS Code. Should get a message saying “Failed to start ‘lean’ language server.” Click on the “Install Lean using Elan” button, and Lean should be installed. Will Infoview automatically open at that point?</p>
+<p>Next, in VS Code, select “Open Folder …” from the File menu and open the folder containing the HTPI Lean package that you downloaded earlier. Under the heading “Explorer” on the left side of the window, you should see a list of the files in the package. (If you don’t see the list, try clicking on the <em>Explorer</em> icon, circled in red below.)</p>
+<p><img src="Images/OpenPackage.png" class="img-fluid"></p>
+<p>Click on the file “Blank.lean” in the file list. You should see a warning that VS Code failed to start the ‘lean’ language server:</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="Images/Install-elan.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+<p>Click on the “Install Lean using Elan” button, and the Lean server should be installed. This may take a while, and there may be messages asking you to do things. If anything goes wrong, try quiting VS Code and restarting. Eventually your window should look like this:</p>
+<p><img src="Images/Ready.png" class="img-fluid"></p>
+<p>If you don’t see the Infoview pane on the right side of the window, click on the icon circled in red in the image above, and the Infoview pane should appear.</p>
+<p>Your installation is now complete.</p>
 
 
 </section>

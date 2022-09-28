@@ -16,9 +16,11 @@ Of course, to make this possible you must type your proof in a format that Lean 
 
 ## Installing Lean
 
-We will be using Visual Studio Code to run Lean, so you will need to install VS Code first.  VS Code is free and can be downloaded [here](https://code.visualstudio.com).  You will also need the Lean package that accompanies this book, which can be downloaded here (***add link***).
+We will be using Visual Studio Code to run Lean, so you will need to install VS Code first.  VS Code is free and can be downloaded [here](https://code.visualstudio.com).
 
-When you first start VS Code, you should see a window that looks something like this:
+You will also need the Lean package that accompanies this book, which can be downloaded from [https://github.com/djvelleman/HTPILeanPackage](https://github.com/djvelleman/HTPILeanPackage).  After following the link, click on the green "Code" button and, in the pop-up menu, select "Download ZIP".  Open the downloaded zip file to create a folder containing the HTPI Lean package.
+
+Now open VS Code.  You should see a window that looks something like this:
 
 ![](Images/VSCodeStart.png)
 
@@ -32,4 +34,18 @@ In the *Search Extensions in Marketplace* field, type "lean4".  VS Code should f
 
 Click on "Install" to install the Lean 4 extension.
 
-Further steps:  Open my Lean package in VS Code.  Should get a message saying "Failed to start 'lean' language server."  Click on the "Install Lean using Elan" button, and Lean should be installed.  Will Infoview automatically open at that point?
+Next, in VS Code, select "Open Folder ..." from the File menu and open the folder containing the HTPI Lean package that you downloaded earlier.  Under the heading "Explorer" on the left side of the window, you should see a list of the files in the package.  (If you don't see the list, try clicking on the *Explorer* icon, circled in red below.)
+
+![](Images/OpenPackage.png)
+
+Click on the file "Blank.lean" in the file list.  You should see a warning that VS Code failed to start the 'lean' language server:
+
+![](Images/Install-elan.png){fig-align="center"}
+
+Click on the "Install Lean using Elan" button, and the Lean server should be installed.  This may take a while, and there may be messages asking you to do things.  If anything goes wrong, try quiting VS Code and restarting.  Eventually your window should look like this:
+
+![](Images/Ready.png)
+
+If you don't see the Infoview pane on the right side of the window, click on the icon circled in red in the image above, and the Infoview pane should appear.
+
+Your installation is now complete.
