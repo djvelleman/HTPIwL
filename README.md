@@ -1,2 +1,2 @@
 # How To Prove It With Lean
- Book about using Lean with How To Prove It
+ This is a book about using Lean with How To Prove It
