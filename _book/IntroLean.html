@@ -554,7 +554,7 @@ Tactic State in Infoview
 <span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a><span class="in">h2 </span>: a ∈ A → a ∈ B</span>
 <span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a>⊢ a ∈ B</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>Occasionally, you may feel that the application of two tactics one after the other should be thought of as a single step. To allow for this, Lean allows you to put two tactics on the same line, separated by a semicolon. For example, in this proof you could write the use of De Morgan’s law and the conditional law as a single step by writing <code>demorgan at h2; conditional at h2</code>. Now the rest is easy: we can apply modus ponens to reach the goal:</p>
+<p>Occasionally, you may feel that the application of two tactics one after the other should be thought of as a single step. To allow for this, Lean lets you put two tactics on the same line, separated by a semicolon. For example, in this proof you could write the use of De Morgan’s law and the conditional law as a single step by writing <code>demorgan at h2; conditional at h2</code>. Now the rest is easy: we can apply modus ponens to reach the goal:</p>
 <div class="inout">
 <p class="hdr">
 Lean File

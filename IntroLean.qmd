@@ -294,7 +294,7 @@ h2 : a ∈ A → a ∈ B
 ```
 :::
 
-Occasionally, you may feel that the application of two tactics one after the other should be thought of as a single step.  To allow for this, Lean allows you to put two tactics on the same line, separated by a semicolon.  For example, in this proof you could write the use of De Morgan's law and the conditional law as a single step by writing `demorgan at h2; conditional at h2`.  Now the rest is easy: we can apply modus ponens to reach the goal:
+Occasionally, you may feel that the application of two tactics one after the other should be thought of as a single step.  To allow for this, Lean lets you put two tactics on the same line, separated by a semicolon.  For example, in this proof you could write the use of De Morgan's law and the conditional law as a single step by writing `demorgan at h2; conditional at h2`.  Now the rest is easy: we can apply modus ponens to reach the goal:
 
 {{< include _inout.qmd >}}
 

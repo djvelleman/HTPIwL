@@ -27,7 +27,7 @@ h : P
 ```
 :::
 
-The second strategy is justified by the contrapositive law.  In Lean, you can use the `contrapos` tactic to rewrite the goal as `¬Q → ¬P`; then use the tactic `assume h : ¬Q` to get this result:
+The second strategy is justified by the contrapositive law.  In Lean, you can use the `contrapos` tactic to rewrite the goal as `¬Q → ¬P` and then use the tactic `assume h : ¬Q`.  The net effect of these two tactics is:
 
 {{< include _befaft.qmd >}}
 
@@ -353,3 +353,5 @@ theorem Like_Example_3_2_5
 {{< include _finish.qmd >}}
 
 :::
+
+We will see many more uses of the `apply` tactic later in this book.

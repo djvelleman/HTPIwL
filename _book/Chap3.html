@@ -243,7 +243,7 @@ Tactic state after using strategy
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="in">h </span>: P</span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>⊢ Q</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>The second strategy is justified by the contrapositive law. In Lean, you can use the <code>contrapos</code> tactic to rewrite the goal as <code>¬Q → ¬P</code>; then use the tactic <code>assume h : ¬Q</code> to get this result:</p>
+<p>The second strategy is justified by the contrapositive law. In Lean, you can use the <code>contrapos</code> tactic to rewrite the goal as <code>¬Q → ¬P</code> and then use the tactic <code>assume h : ¬Q</code>. The net effect of these two tactics is:</p>
 <div class="befaft">
 <p class="hdr">
 Tactic state before using strategy
@@ -553,6 +553,7 @@ Tactic State in Infoview
 <span id="cb27-8"><a href="#cb27-8" aria-hidden="true" tabindex="-1"></a>  <span class="kw">show</span> a ∈ B <span class="kw">from</span> h2 h1</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="sourceCode" id="cb28"><pre class="sourceCode state code-with-copy"><code class="sourceCode state"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="sc">-</span>Goals accomplished 🎉</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
+<p>We will see many more uses of the <code>apply</code> tactic later in this book.</p>
 
 
 </section>
