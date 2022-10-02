@@ -491,7 +491,8 @@ Tactic State in Infoview
 <span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a><span class="in">h3 </span>: a ∈ B → a ∈ C</span>
 <span id="cb22-7"><a href="#cb22-7" aria-hidden="true" tabindex="-1"></a>⊢ a ∈ C</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>The goal is <code>a ∈ C</code>, and the only given that even mentions <code>C</code> is <code>h3 : a ∈ B → a ∈ C</code>. If only we could prove <code>a ∈ B</code>, then we could apply <code>h3</code>, using modus ponens, to reach our goal. The tactic <code>apply h3</code> asks Lean to work backwards, seeing if it can find a way to apply <code>h3</code> to reach the goal. You might think of this tactic as asking Lean the question: If we want <code>h3 _</code> to be a proof of <code>a ∈ C</code>, what do we have to put in the blank? Lean is able to figure out that the answer is: a proof of <code>a ∈ B</code>. So it sets the goal to be <code>a ∈ B</code>, since a proof of that goal, when combined with <code>h3</code>, would prove the theorem:</p>
+<p>The goal is <code>a ∈ C</code>, and the only given that even mentions <code>C</code> is <code>h3 : a ∈ B → a ∈ C</code>. If only we could prove <code>a ∈ B</code>, then we could apply <code>h3</code>, using modus ponens, to reach our goal. So it would make sense to work toward the goal of proving <code>a ∈ B</code>.</p>
+<p>To get Lean to use this proof strategy, we use the tactic <code>apply h3 _</code>. The underscore here represents a blank to be filled in by Lean. You might think of this tactic as asking Lean the question: If we want <code>h3 _</code> to be a proof of the goal <code>a ∈ C</code>, what do we have to put in the blank? Lean is able to figure out that the answer is: a proof of <code>a ∈ B</code>. So it sets the goal to be <code>a ∈ B</code>, since a proof of that goal, when inserted into the blank in <code>h3 _</code>, would prove the original goal <code>a ∈ C</code>:</p>
 <div class="inout">
 <p class="hdr">
 Lean File
@@ -503,7 +504,7 @@ Tactic State in Infoview
 <span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>(U : Type) (A B C : Set U) (a : U)</span>
 <span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>(h1 : a ∈ A) (h2 : a ∉ A \ B)</span>
 <span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a>(h3 : a ∈ B → a ∈ C) : a ∈ C := <span class="kw">by</span></span>
-<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a>  <span class="kw">apply</span> h3</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a>  <span class="kw">apply</span> h3 _</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="sourceCode" id="cb24"><pre class="sourceCode state code-with-copy"><code class="sourceCode state"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="in">U </span>: Type</span>
 <span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a><span class="in">A B C</span>: Set U</span>
 <span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a><span class="in">a </span>: U</span>
@@ -524,7 +525,7 @@ Tactic State in Infoview
 <span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>(U : Type) (A B C : Set U) (a : U)</span>
 <span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>(h1 : a ∈ A) (h2 : a ∉ A \ B)</span>
 <span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a>(h3 : a ∈ B → a ∈ C) : a ∈ C := <span class="kw">by</span></span>
-<span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a>  <span class="kw">apply</span> h3</span>
+<span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a>  <span class="kw">apply</span> h3 _</span>
 <span id="cb25-6"><a href="#cb25-6" aria-hidden="true" tabindex="-1"></a>  <span class="kw">define</span> <span class="kw">at</span> h2</span>
 <span id="cb25-7"><a href="#cb25-7" aria-hidden="true" tabindex="-1"></a>  <span class="kw">demorgan</span> <span class="kw">at</span> h2; <span class="kw">conditional</span> <span class="kw">at</span> h2</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="sourceCode" id="cb26"><pre class="sourceCode state code-with-copy"><code class="sourceCode state"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="in">U </span>: Type</span>
@@ -547,13 +548,14 @@ Tactic State in Infoview
 <span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>(U : Type) (A B C : Set U) (a : U)</span>
 <span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a>(h1 : a ∈ A) (h2 : a ∉ A \ B)</span>
 <span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a>(h3 : a ∈ B → a ∈ C) : a ∈ C := <span class="kw">by</span></span>
-<span id="cb27-5"><a href="#cb27-5" aria-hidden="true" tabindex="-1"></a>  <span class="kw">apply</span> h3</span>
+<span id="cb27-5"><a href="#cb27-5" aria-hidden="true" tabindex="-1"></a>  <span class="kw">apply</span> h3 _</span>
 <span id="cb27-6"><a href="#cb27-6" aria-hidden="true" tabindex="-1"></a>  <span class="kw">define</span> <span class="kw">at</span> h2</span>
 <span id="cb27-7"><a href="#cb27-7" aria-hidden="true" tabindex="-1"></a>  <span class="kw">demorgan</span> <span class="kw">at</span> h2; <span class="kw">conditional</span> <span class="kw">at</span> h2</span>
 <span id="cb27-8"><a href="#cb27-8" aria-hidden="true" tabindex="-1"></a>  <span class="kw">show</span> a ∈ B <span class="kw">from</span> h2 h1</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="sourceCode" id="cb28"><pre class="sourceCode state code-with-copy"><code class="sourceCode state"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="sc">-</span>Goals accomplished 🎉</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>We will see many more uses of the <code>apply</code> tactic later in this book.</p>
+<p>Sections 3.1 and 3.2 of <em>HTPI</em> contain several proofs that involve algebraic reasoning. Although one can do such proofs in Lean, it requires ideas that we are not ready to introduce yet. So for the moment we will stick to proofs involving only logic and set theory.</p>
 
 
 </section>

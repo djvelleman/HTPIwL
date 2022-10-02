@@ -285,7 +285,9 @@ h3 : a ∈ B → a ∈ C
 
 :::
 
-The goal is `a ∈ C`, and the only given that even mentions `C` is `h3 : a ∈ B → a ∈ C`.  If only we could prove `a ∈ B`, then we could apply `h3`, using modus ponens, to reach our goal.  The tactic `apply h3` asks Lean to work backwards, seeing if it can find a way to apply `h3` to reach the goal. You might think of this tactic as asking Lean the question: If we want `h3 _` to be a proof of `a ∈ C`, what do we have to put in the blank?  Lean is able to figure out that the answer is: a proof of `a ∈ B`.  So it sets the goal to be `a ∈ B`, since a proof of that goal, when combined with `h3`, would prove the theorem:
+The goal is `a ∈ C`, and the only given that even mentions `C` is `h3 : a ∈ B → a ∈ C`.  If only we could prove `a ∈ B`, then we could apply `h3`, using modus ponens, to reach our goal.  So it would make sense to work toward the goal of proving `a ∈ B`.
+
+To get Lean to use this proof strategy, we use the tactic `apply h3 _`.  The underscore here represents a blank to be filled in by Lean.  You might think of this tactic as asking Lean the question: If we want `h3 _` to be a proof of the goal `a ∈ C`, what do we have to put in the blank?  Lean is able to figure out that the answer is: a proof of `a ∈ B`.  So it sets the goal to be `a ∈ B`, since a proof of that goal, when inserted into the blank in `h3 _`, would prove the original goal `a ∈ C`:
 
 {{< include _inout.qmd >}}
 
@@ -294,7 +296,7 @@ theorem Like_Example_3_2_5
 (U : Type) (A B C : Set U) (a : U)
 (h1 : a ∈ A) (h2 : a ∉ A \ B)
 (h3 : a ∈ B → a ∈ C) : a ∈ C := by
-  apply h3
+  apply h3 _
 ```
 
 ```state
@@ -318,7 +320,7 @@ theorem Like_Example_3_2_5
 (U : Type) (A B C : Set U) (a : U)
 (h1 : a ∈ A) (h2 : a ∉ A \ B)
 (h3 : a ∈ B → a ∈ C) : a ∈ C := by
-  apply h3
+  apply h3 _
   define at h2
   demorgan at h2; conditional at h2
 ```
@@ -344,7 +346,7 @@ theorem Like_Example_3_2_5
 (U : Type) (A B C : Set U) (a : U)
 (h1 : a ∈ A) (h2 : a ∉ A \ B)
 (h3 : a ∈ B → a ∈ C) : a ∈ C := by
-  apply h3
+  apply h3 _
   define at h2
   demorgan at h2; conditional at h2
   show a ∈ B from h2 h1
@@ -355,3 +357,5 @@ theorem Like_Example_3_2_5
 :::
 
 We will see many more uses of the `apply` tactic later in this book.
+
+Sections 3.1 and 3.2 of *HTPI* contain several proofs that involve algebraic reasoning.  Although one can do such proofs in Lean, it requires ideas that we are not ready to introduce yet.  So for the moment we will stick to proofs involving only logic and set theory.
