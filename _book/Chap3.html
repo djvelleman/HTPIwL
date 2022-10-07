@@ -158,7 +158,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
     <ul class="list-unstyled mt-1">
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./index.html" class="sidebar-item-text sidebar-link">About This Book</a>
+  <a href="./index.html" class="sidebar-item-text sidebar-link">Preface</a>
   </div>
 </li>
         <li class="sidebar-item">
@@ -230,32 +230,31 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li>Assume <code>Q</code> is false and prove that <code>P</code> is false.</li>
 </ol>
 <p>We’ve already seen how to carry out both of these strategies in Lean. For the first strategy, use the <code>assume</code> tactic to introduce the assumption <code>P</code> and assign an identifier to it; Lean will automaticall set <code>Q</code> as the goal. We can summarize the effect of using this strategy by showing how the tactic state changes if you use the tactic <code>assume h : P</code>:</p>
-<div class="befaft">
-<p class="hdr">
-Tactic state before using strategy
-</p>
-<p class="hdr">
-Tactic state after using strategy
-</p>
+<div class="lftrt">
+<div class="lft">
+<p><u>Tactic state before using strategy</u></p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode state code-with-copy"><code class="sourceCode state"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="sc">-</span> ⋮</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>⊢ P → Q</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="rt">
+<p><u>Tactic state after using strategy</u></p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode state code-with-copy"><code class="sourceCode state"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="sc">-</span> ⋮</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="in">h </span>: P</span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>⊢ Q</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
+</div>
 <p>The second strategy is justified by the contrapositive law. In Lean, you can use the <code>contrapos</code> tactic to rewrite the goal as <code>¬Q → ¬P</code> and then use the tactic <code>assume h : ¬Q</code>. The net effect of these two tactics is:</p>
-<div class="befaft">
-<p class="hdr">
-Tactic state before using strategy
-</p>
-<p class="hdr">
-Tactic state after using strategy
-</p>
+<div class="lftrt">
+<div class="lft">
+<p><u>Tactic state before using strategy</u></p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode state code-with-copy"><code class="sourceCode state"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="sc">-</span> ⋮</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>⊢ P → Q</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="sourceCode" id="cb4"><pre class="sourceCode state code-with-copy"><code class="sourceCode state"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="sc">-</span> ⋮</span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="in">h </span>: ¬Q</span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>⊢ ¬P</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="rt">
+<p><u>Tactic state after using strategy</u></p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode state code-with-copy"><code class="sourceCode state"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="in">h </span>: ¬Q</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>⊢ ¬P</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
 </div>
 <p>Section 3.2 gives two strategies for using givens of the form <code>P → Q</code>, with the second once again being a variation on the first based on the contrapositive law:</p>
 </section>
@@ -325,21 +324,21 @@ Tactic state after using strategy
 <p>To summarize, if you have <code>h1 : Q</code> and <code>h2 : ¬Q</code>, then there are two ways to prove <code>False</code>. Lean will recognize <code>h2 h1</code> as a proof of <code>False</code>, and it will recognize <code>absurd h1 h2</code> as a proof of any statement, including <code>False</code>. Notice the difference in the order in which <code>h1</code> and <code>h2</code> are listed in these two proofs: In the first one, the negative statement <code>h2</code> must come first, just as the conditional statement must come first in an application of modus ponens. But in a proof using <code>absurd</code>, the negative statement must come second.</p>
 <p>To illustrate proof by contradiction in Lean, let’s redo our first example from the last Chapter in a different way. That example was based on Example 3.2.4 in <em>HTPI</em>. We’ll begin with the same first two steps, introducing two assumptions. (We won’t bother to include the <code>done</code> line in the displays below.)</p>
 <div class="inout">
-<p class="hdr">
-Lean File
-</p>
-<p class="hdr">
-Tactic State in Infoview
-</p>
+<div class="inpt">
+<p><u>Lean file</u></p>
 <div class="sourceCode" id="cb7"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Example_3_2_4_v2 (P Q R : <span class="kw">Prop</span>)</span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>(h : P → (Q → R)) : ¬R → (P → ¬Q) := <span class="kw">by</span></span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>  <span class="kw">assume</span> h2 : ¬R</span>
 <span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>  <span class="kw">assume</span> h3 : P</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="outpt">
+<p><u>Tactic state in Infoview</u></p>
 <div class="sourceCode" id="cb8"><pre class="sourceCode state code-with-copy"><code class="sourceCode state"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="in">P Q R </span>: Prop</span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="in">h </span>: P → Q → R</span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="in">h2 </span>: ¬R</span>
 <span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="in">h3 </span>: P</span>
 <span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>⊢ ¬Q</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
 </div>
 <p>Now the goal is a negative statement, so we use the tactic <code>by_contra h4</code> to introduce the assumption <code>h4 : Q</code> and set the goal to be <code>False</code>:</p>
 <div class="inout">

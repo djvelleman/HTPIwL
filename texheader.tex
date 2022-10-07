@@ -1,0 +1,47 @@
+\usepackage{mathrsfs}
+\usepackage{twemojis}
+\usepackage{myunixode}
+\usepackage[normalem]{ulem}
+
+\makeatletter
+\def\squiggly{\bgroup \markoverwith{\textcolor{red}{\lower3.5\p@\hbox{\sixly \char58}}}\ULon}
+\makeatother
+
+\renewcommand{\KeywordTok}[1]{\textcolor[HTML]{0000FF}{#1}}
+\renewcommand{\SpecialCharTok}[1]{}
+\renewcommand{\ErrorTok}[1]{\squiggly{#1}}
+\renewcommand{\WarningTok}[1]{\squiggly{\textcolor[HTML]{0000FF}{#1}}}
+\renewcommand{\StringTok}[1]{\textcolor[HTML]{A52A2A}{#1}}
+\renewcommand{\CommentTok}[1]{\textcolor[HTML]{008000}{#1}}
+\renewcommand{\InformationTok}[1]{\textcolor[HTML]{D2691E}{\textbf{#1}}}
+
+%Got from an answer on internet:
+\def\useignorespacesandallpars#1\ignorespaces\fi{%
+#1\fi\ignorespacesandallpars}
+
+\makeatletter
+\def\ignorespacesandallpars{%
+  \@ifnextchar\par
+    {\expandafter\ignorespacesandallpars\@gobble}%
+    {}%
+}
+\makeatother
+
+\newenvironment{inpt}
+	{\noindent\begin{minipage}[t]{0.66\textwidth}}
+	{\end{minipage}\hfill\useignorespacesandallpars}
+
+\newenvironment{outpt}
+	{\begin{minipage}[t]{0.33\textwidth}}
+	{\end{minipage}}
+
+\newenvironment{lft}
+	{\noindent\begin{minipage}[t]{0.49\textwidth}}
+	{\end{minipage}\hfill\useignorespacesandallpars}
+
+\newenvironment{rt}
+	{\begin{minipage}[t]{0.49\textwidth}}
+	{\end{minipage}}
+
+\newcommand{\excl}[1]{}
+\newcommand{\incl}[1]{#1}

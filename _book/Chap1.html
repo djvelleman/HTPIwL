@@ -97,7 +97,7 @@ ul.task-list li input[type="checkbox"] {
     <ul class="list-unstyled mt-1">
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./index.html" class="sidebar-item-text sidebar-link">About This Book</a>
+  <a href="./index.html" class="sidebar-item-text sidebar-link">Preface</a>
   </div>
 </li>
         <li class="sidebar-item">
@@ -180,6 +180,7 @@ ul.task-list li input[type="checkbox"] {
 </table>
 </div>
 <p>As we will see, Lean uses the same symbols, with the same meanings. This chapter also establishes a number of logical equivalences that will be useful to us later:</p>
+<div id="prop-laws">
 <table class="table">
 <colgroup>
 <col style="width: 32%">
@@ -234,12 +235,13 @@ ul.task-list li input[type="checkbox"] {
 </tr>
 </tbody>
 </table>
+</div>
 <p>Finally, Chapter 1 of <em>HTPI</em> introduces some concepts from set theory. A <em>set</em> is a collection of objects; the objects in the collection are called <em>elements</em> of the set. If <span class="math inline">\(P(x)\)</span> is a statement about <span class="math inline">\(x\)</span>, then <span class="math inline">\(\{x \mid P(x)\}\)</span> denotes the set whose elements are the objects <span class="math inline">\(x\)</span> for which <span class="math inline">\(P(x)\)</span> is true. The notation <span class="math inline">\(x \in A\)</span> means that <span class="math inline">\(x\)</span> is an element of <span class="math inline">\(A\)</span>. Two sets <span class="math inline">\(A\)</span> and <span class="math inline">\(B\)</span> are <em>equal</em> if they have exactly the same elements. We say that <span class="math inline">\(A\)</span> is a <em>subset</em> of <span class="math inline">\(B\)</span>, denoted <span class="math inline">\(A \subseteq B\)</span>, if every element of <span class="math inline">\(A\)</span> is an element of <span class="math inline">\(B\)</span>. And we have the following operations on sets:</p>
-<div id="prop-laws" style="margin-left: 10%">
+<div class="quote">
 <p><span class="math inline">\(A \cap B = \{x \mid x \in A \wedge x \in B\} = {}\)</span> the <em>intersection</em> of <span class="math inline">\(A\)</span> and <span class="math inline">\(B\)</span>,</p>
 <p><span class="math inline">\(A \cup B = \{x \mid x \in A \vee x \in B\} = {}\)</span> the <em>union</em> of <span class="math inline">\(A\)</span> and <span class="math inline">\(B\)</span>,</p>
-<p><span class="math inline">\(A \setminus B = \{x \mid x \in A \wedge x \notin B\} = {}\)</span> the <em>difference</em> of <span class="math inline">\(A\)</span> and <span class="math inline">\(B\)</span>,</p>
-<p><span class="math inline">\(A \bigtriangleup B = (A \setminus B) \cup (B \setminus A) = {}\)</span> the <em>symmetric difference</em> of <span class="math inline">\(A\)</span> and <span class="math inline">\(B\)</span>.</p>
+<p><span class="math inline">\(A \mathbin{\backslash} B = \{x \mid x \in A \wedge x \notin B\} = {}\)</span> the <em>difference</em> of <span class="math inline">\(A\)</span> and <span class="math inline">\(B\)</span>,</p>
+<p><span class="math inline">\(A \bigtriangleup B = (A \mathbin{\backslash} B) \cup (B \mathbin{\backslash} A) = {}\)</span> the <em>symmetric difference</em> of <span class="math inline">\(A\)</span> and <span class="math inline">\(B\)</span>.</p>
 </div>
 
 
@@ -346,7 +348,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
       <a href="./index.html" class="pagination-link">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">About This Book</span>
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Preface</span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">

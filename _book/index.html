@@ -96,7 +96,7 @@ ul.task-list li input[type="checkbox"] {
     <ul class="list-unstyled mt-1">
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./index.html" class="sidebar-item-text sidebar-link active">About This Book</a>
+  <a href="./index.html" class="sidebar-item-text sidebar-link active">Preface</a>
   </div>
 </li>
         <li class="sidebar-item">
@@ -128,9 +128,12 @@ ul.task-list li input[type="checkbox"] {
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#about-this-book" id="toc-about-this-book" class="nav-link active" data-scroll-target="#about-this-book">About This Book</a></li>
+  <li><a href="#preface" id="toc-preface" class="nav-link active" data-scroll-target="#preface">Preface</a>
+  <ul class="collapse">
+  <li><a href="#about-this-book" id="toc-about-this-book" class="nav-link" data-scroll-target="#about-this-book">About This Book</a></li>
   <li><a href="#about-lean" id="toc-about-lean" class="nav-link" data-scroll-target="#about-lean">About Lean</a></li>
   <li><a href="#installing-lean" id="toc-installing-lean" class="nav-link" data-scroll-target="#installing-lean">Installing Lean</a></li>
+  </ul></li>
   </ul>
 </nav>
     </div>
@@ -159,6 +162,8 @@ ul.task-list li input[type="checkbox"] {
 
 </header>
 
+<section id="preface" class="level1 unnumbered">
+<h1 class="unnumbered">Preface</h1>
 <section id="about-this-book" class="level2 unnumbered">
 <h2 class="unnumbered anchored" data-anchor-id="about-this-book">About This Book</h2>
 <p>This book is intended to accompany my book <a href="https://www.cambridge.org/highereducation/books/how-to-prove-it/6D2965D625C6836CD4A785A2C843B3DA#overview"><em>How To Prove It</em></a> (henceforth called <em>HTPI</em>), which is published by Cambridge University Press. Although this book is self-contained, we will sometimes have occasion to refer to passages in <em>HTPI</em>, so this book will be easiest to understand if you have a copy of <em>HTPI</em> available to you.</p>
@@ -174,7 +179,7 @@ ul.task-list li input[type="checkbox"] {
 <section id="installing-lean" class="level2">
 <h2 class="anchored" data-anchor-id="installing-lean">Installing Lean</h2>
 <p>We will be using Visual Studio Code to run Lean, so you will need to install VS Code first. VS Code is free and can be downloaded <a href="https://code.visualstudio.com">here</a>.</p>
-<p>You will also need the Lean package that accompanies this book, which can be downloaded from <a href="https://github.com/djvelleman/HTPILeanPackage">https://github.com/djvelleman/HTPILeanPackage</a>. After following the link, click on the green “Code” button and, in the pop-up menu, select “Download ZIP”. Open the downloaded zip file to create a folder containing the HTPI Lean package.</p>
+<p>You will also need the Lean package that accompanies this book, which can be downloaded from <a href="https://github.com/djvelleman/HTPILeanPackage">https://github.com/djvelleman/HTPILeanPackage</a>. After following the link, click on the green “Code” button and, in the pop-up menu, select “Download ZIP”. Open the downloaded zip file to create a folder containing the HTPI Lean package. You can put this folder wherever you want on your computer.</p>
 <p>Now open VS Code. You should see a window that looks something like this:</p>
 <p><img src="Images/VSCodeStart.png" class="img-fluid"></p>
 <p>Click on the <em>Extensions</em> icon on the left side of the window, which is circled in red in the image above. That will bring up a list of available extensions:</p>
@@ -196,6 +201,7 @@ ul.task-list li input[type="checkbox"] {
 <p>Your installation is now complete.</p>
 
 
+</section>
 </section>
 
 </main> <!-- /main -->

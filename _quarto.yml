@@ -11,8 +11,6 @@ book:
     - IntroLean.qmd
     - Chap3.qmd
 
-
-
 format:
   html:
     theme: cosmo
@@ -21,3 +19,13 @@ format:
     number-depth: 0
   pdf:
     documentclass: scrreprt
+    toc-depth: 2
+    syntax-definitions: [lean.xml,state.xml]
+    include-in-header: texheader.tex
+    monofont: JuliaMono
+    keep-tex: true
+
+filters:
+  - latex-environment
+environments: [quote, inpt, outpt, lft, rt]
+commands: excl

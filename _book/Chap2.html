@@ -97,7 +97,7 @@ ul.task-list li input[type="checkbox"] {
     <ul class="list-unstyled mt-1">
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./index.html" class="sidebar-item-text sidebar-link">About This Book</a>
+  <a href="./index.html" class="sidebar-item-text sidebar-link">Preface</a>
   </div>
 </li>
         <li class="sidebar-item">
@@ -147,11 +147,11 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 <p>Chapter 2 of <em>How To Prove It</em> introduces two more symbols of logic, the quantifiers <span class="math inline">\(\forall\)</span> and <span class="math inline">\(\exists\)</span>. If <span class="math inline">\(P(x)\)</span> is a statement about an object <span class="math inline">\(x\)</span>, then</p>
-<div style="margin-left: 10%">
+<div class="quote">
 <p><span class="math inline">\(\forall x\ P(x)\)</span> means “for all <span class="math inline">\(x\)</span>, <span class="math inline">\(P(x)\)</span>,”</p>
 </div>
 <p>and</p>
-<div style="margin-left: 10%">
+<div class="quote">
 <p><span class="math inline">\(\exists x\ P(x)\)</span> means “there exists some <span class="math inline">\(x\)</span> such that <span class="math inline">\(P(x)\)</span>.”</p>
 </div>
 <p>Lean also uses these symbols, although we will see that quantified statements are written slightly differently in Lean from the way they are written in <em>HTPI</em>. In the statement <span class="math inline">\(P(x)\)</span>, the variable <span class="math inline">\(x\)</span> is called a <em>free variable</em>. But in <span class="math inline">\(\forall x\ P(x)\)</span> or <span class="math inline">\(\exists x\ P(x)\)</span>, it is a <em>bound variable</em>; we say that the quantifiers <span class="math inline">\(\forall\)</span> and <span class="math inline">\(\exists\)</span> <em>bind</em> the variable.</p>
@@ -187,11 +187,11 @@ ul.task-list li input[type="checkbox"] {
 </tbody>
 </table>
 <p>Chapter 2 of <em>HTPI</em> also introduces some more advanced set theory operations. For any set <span class="math inline">\(A\)</span>,</p>
-<div style="margin-left: 10%">
+<div class="quote">
 <p><span class="math inline">\(\mathscr{P}(A) = \{X \mid X \subseteq A\} = {}\)</span> the <em>power set</em> of <span class="math inline">\(A\)</span>.</p>
 </div>
 <p>Also, if <span class="math inline">\(\mathcal{F}\)</span> is a family of sets—that is, a set whose elements are sets—then</p>
-<div style="margin-left: 10%">
+<div class="quote">
 <p><span class="math inline">\(\bigcap \mathcal{F} = \{x \mid \forall A(A \in \mathcal{F} \to x \in A)\} = {}\)</span> the <em>intersection</em> of the family <span class="math inline">\(\mathcal{F}\)</span>,</p>
 <p><span class="math inline">\(\bigcup \mathcal{F} = \{x \mid \exists A(A \in \mathcal{F} \wedge x \in A)\} = {}\)</span> the <em>union</em> of the family <span class="math inline">\(\mathcal{F}\)</span>.</p>
 </div>

@@ -13,12 +13,18 @@ Section 3.1 gives two strategies for proving a goal of the form `P → Q`:
 
 We've already seen how to carry out both of these strategies in Lean.  For the first strategy, use the `assume` tactic to introduce the assumption `P` and assign an identifier to it; Lean will automaticall set `Q` as the goal.  We can summarize the effect of using this strategy by showing how the tactic state changes if you use the tactic `assume h : P`:
 
-{{< include _befaft.qmd >}}
+::: {.lftrt}
+::: {.lft}
+[Tactic state before using strategy]{.ul}
 
 ```state
 - ⋮
 ⊢ P → Q
 ```
+:::
+
+::: {.rt}
+[Tactic state after using strategy]{.ul}
 
 ```state
 - ⋮
@@ -26,22 +32,28 @@ h : P
 ⊢ Q
 ```
 :::
+:::
 
 The second strategy is justified by the contrapositive law.  In Lean, you can use the `contrapos` tactic to rewrite the goal as `¬Q → ¬P` and then use the tactic `assume h : ¬Q`.  The net effect of these two tactics is:
 
-{{< include _befaft.qmd >}}
+::: {.lftrt}
+::: {.lft}
+[Tactic state before using strategy]{.ul}
 
 ```state
 - ⋮
 ⊢ P → Q
 ```
+:::
+
+::: {.rt}
+[Tactic state after using strategy]{.ul}
 
 ```state
-- ⋮
 h : ¬Q
 ⊢ ¬P
 ```
-
+:::
 :::
 
 Section 3.2 gives two strategies for using givens of the form `P → Q`, with the second once again being a variation on the first based on the contrapositive law:
@@ -98,7 +110,9 @@ To summarize, if you have `h1 : Q` and `h2 : ¬Q`, then there are two ways to pr
 
 To illustrate proof by contradiction in Lean, let's redo our first example from the last Chapter in a different way.  That example was based on Example 3.2.4 in *HTPI*.  We'll begin with the same first two steps, introducing two assumptions.  (We won't bother to include the `done` line in the displays below.)
 
-{{< include _inout.qmd >}}
+::: {.inout}
+::: {.inpt}
+[Lean file]{.ul}
 
 ```lean
 theorem Example_3_2_4_v2 (P Q R : Prop)
@@ -106,6 +120,10 @@ theorem Example_3_2_4_v2 (P Q R : Prop)
   assume h2 : ¬R
   assume h3 : P
 ```
+:::
+
+::: {.outpt}
+[Tactic state in Infoview]{.ul}
 
 ```state
 P Q R : Prop
@@ -114,7 +132,7 @@ h2 : ¬R
 h3 : P
 ⊢ ¬Q
 ```
-
+:::
 :::
 
 Now the goal is a negative statement, so we use the tactic `by_contra h4` to introduce the assumption `h4 : Q` and set the goal to be `False`:
