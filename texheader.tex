@@ -1,12 +1,12 @@
 \usepackage{mathrsfs}
 \usepackage{twemojis}
 \usepackage{myunixode}
-\usepackage[normalem]{ulem}
 
 \makeatletter
 \def\squiggly{\bgroup \markoverwith{\textcolor{red}{\lower3.5\p@\hbox{\sixly \char58}}}\ULon}
 \makeatother
 
+\renewcommand{\NormalTok}[1]{\textcolor[HTML]{000000}{#1}}
 \renewcommand{\KeywordTok}[1]{\textcolor[HTML]{0000FF}{#1}}
 \renewcommand{\SpecialCharTok}[1]{}
 \renewcommand{\ErrorTok}[1]{\squiggly{#1}}
@@ -15,7 +15,13 @@
 \renewcommand{\CommentTok}[1]{\textcolor[HTML]{008000}{#1}}
 \renewcommand{\InformationTok}[1]{\textcolor[HTML]{D2691E}{\textbf{#1}}}
 
-%Got from an answer on internet:
+%redefines Shaded so it can't break
+\newcommand{\nobreakShaded}{\renewenvironment{Shaded}
+	{\begin{tcolorbox}[frame hidden, enhanced, interior hidden, boxrule=0pt,
+		borderline west={3pt}{0pt}{shadecolor}, sharp corners]}
+	{\end{tcolorbox}}}
+
+%Make end of environment ignore pars that come after it
 \def\useignorespacesandallpars#1\ignorespaces\fi{%
 #1\fi\ignorespacesandallpars}
 
@@ -28,19 +34,19 @@
 \makeatother
 
 \newenvironment{inpt}
-	{\noindent\begin{minipage}[t]{0.66\textwidth}}
+	{\nobreakShaded\noindent\begin{minipage}[t]{0.63\textwidth}}
 	{\end{minipage}\hfill\useignorespacesandallpars}
 
 \newenvironment{outpt}
-	{\begin{minipage}[t]{0.33\textwidth}}
+	{\nobreakShaded\begin{minipage}[t]{0.32\textwidth}}
 	{\end{minipage}}
 
 \newenvironment{lft}
-	{\noindent\begin{minipage}[t]{0.49\textwidth}}
+	{\nobreakShaded\noindent\begin{minipage}[t]{0.475\textwidth}}
 	{\end{minipage}\hfill\useignorespacesandallpars}
 
 \newenvironment{rt}
-	{\begin{minipage}[t]{0.49\textwidth}}
+	{\nobreakShaded\begin{minipage}[t]{0.475\textwidth}}
 	{\end{minipage}}
 
 \newcommand{\excl}[1]{}

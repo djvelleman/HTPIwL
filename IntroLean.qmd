@@ -32,7 +32,7 @@ The next step of the proof in *HTPI* combines the statements $Q \to R$ and $\neg
 
 Now that you have seen an example of a proof in Lean, it is time for you to write your first proof.  Lean has two modes for writing proofs, called *term mode* and *tactic mode*.  The example above was written in tactic mode, and that is the mode we will use for most proofs in this book.  But before we study the construction of proofs in tactic mode, it will be helpful to learn a bit about term mode.  Term mode is best for simple proofs, so we begin with a few very short proofs.
 
-If you have not yet installed Lean on your computer, go back and follow the [instructions](#installing-lean) for installing it now.  Then in VS Code, open the folder for the HTPI Lean Package that you downloaded and click on the file Blank.lean.  The file starts with the line "import HTPIDefs".  Click on the blank line at the end of the file; this is where you will be typing your first proofs.
+If you have not yet installed Lean on your computer, go back and follow the [instructions](#installing-lean) for installing it now.  Then in VS Code, open the folder for the HTPI Lean Package that you downloaded and click on the file Blank.lean.  The file starts with the line `import HTPIDefs`.  Click on the blank line at the end of the file; this is where you will be typing your first proofs.
 
 Now type in the following theorem and proof:
 
@@ -87,7 +87,7 @@ One of the advantages of tactic mode is that Lean displays, in the Lean Infoview
 
 ::: {.inout}
 ::: {.inpt}
-[Lean file]{.ul}
+[Lean File]{.ul}
 
 ```lean
 theorem two_imp (P Q R : Prop)
@@ -98,7 +98,7 @@ theorem two_imp (P Q R : Prop)
 :::
 
 ::: {.outpt}
-[Tactic state in Infoview]{.ul}
+[Tactic State in Infoview]{.ul}
 
 ```state
 P Q R : Prop
@@ -115,18 +115,18 @@ From the hypotheses `h1` and `h2` it shouldn't be hard to prove `P → ¬R`, but
 
 ::: {.inout}
 ::: {.inpt}
-[Lean file]{.ul}
+[Lean File]{.ul}
 
 ```lean
 theorem two_imp (P Q R : Prop)
-(h1 : P → Q) (h2 : Q → ¬R) : R → ¬P := !!by!!
+(h1 : P → Q) (h2 : Q → ¬R) : R → ¬P := by
   contrapos
   !!done!!
 ```
 :::
 
 ::: {.outpt}
-[Tactic state in Infoview]{.ul}
+[Tactic State in Infoview]{.ul}
 
 ```state
 P Q R : Prop
@@ -141,11 +141,11 @@ If you want to make your proof a little more readable, you could add a comment s
 
 ::: {.inout}
 ::: {.inpt}
-[Lean file]{.ul}
+[Lean File]{.ul}
 
 ```lean
 theorem two_imp (P Q R : Prop)
-(h1 : P → Q) (h2 : Q → ¬R) : R → ¬P := !!by!!
+(h1 : P → Q) (h2 : Q → ¬R) : R → ¬P := by
   contrapos           --Goal is now P → ¬R
   assume h3 : P
   !!done!!
@@ -153,7 +153,7 @@ theorem two_imp (P Q R : Prop)
 :::
 
 ::: {.outpt}
-[Tactic state in Infoview]{.ul}
+[Tactic State in Infoview]{.ul}
 
 ```state
 P Q R : Prop
@@ -169,11 +169,11 @@ We can now use modus ponens to infer `Q` from `h1 : P → Q` and `h3 : P`.  As w
 
 ::: {.inout}
 ::: {.inpt}
-[Lean file]{.ul}
+[Lean File]{.ul}
 
 ```lean
 theorem two_imp (P Q R : Prop)
-(h1 : P → Q) (h2 : Q → ¬R) : R → ¬P := !!by!!
+(h1 : P → Q) (h2 : Q → ¬R) : R → ¬P := by
   contrapos           --Goal is now P → ¬R
   assume h3 : P
   have h4 : Q := h1 h3
@@ -182,7 +182,7 @@ theorem two_imp (P Q R : Prop)
 :::
 
 ::: {.outpt}
-[Tactic state in Infoview]{.ul}
+[Tactic State in Infoview]{.ul}
 
 ```state
 P Q R : Prop
@@ -199,7 +199,7 @@ Finally, to complete the proof, we can infer the goal `¬R` from `h2 : Q → ¬R
 
 ::: {.inout}
 ::: {.inpt}
-[Lean file]{.ul}
+[Lean File]{.ul}
 
 ```lean
 theorem two_imp (P Q R : Prop)
@@ -213,15 +213,15 @@ theorem two_imp (P Q R : Prop)
 :::
 
 ::: {.outpt}
-[Tactic state in Infoview]{.ul}
+[Tactic State in Infoview]{.ul}
 
 ```state
--Goals accomplished 🎉
+!!Goals accomplished 🎉
 ```
 :::
 :::
 
-Congratulations!  You've written your first proof in tactic mode.  If you want to try another example, you could try typing in the first example in this chapter.
+Congratulations!  You've written your first proof in tactic mode.  If you move your cursor around in the proof, you will see that Lean always displays in the Infoview the tactic state at the point in the proof where the cursor is located.  Try clicking on different lines of the proof to see how the tactic state changes over the course of the proof.  If you want to try another example, you could try typing in the first example in this chapter.
 
 We have now seen four tactics: `contrapos`, `assume`, `have`, and `show`.  If the goal is a conditional statement, the `contrapos` tactic replaces it with its contrapositive.  If `h` is a given that is a conditional statement, then `contrapos at h` will replace `h` with its contrapositive.  If the goal is a conditional statement `P → Q`, you can use the `assume` tactic to assume the antecedent `P`, and Lean will set the goal to be the consequent `Q`.  You can use the `have` tactic to make an inference from your givens, as long as you can justify the inference with a proof.  The `show` tactic is similar, but it is used to infer the goal, thus completing the proof.  And we have learned how to use one rule of inference in term mode: modus ponens.  In the rest of this book we will learn about other tactics and other term-mode rules.
 
@@ -266,7 +266,7 @@ What about sets?  If you want to prove a theorem about a set `A`, can you say th
 
 ::: {.inout}
 ::: {.inpt}
-[Lean file]{.ul}
+[Lean File]{.ul}
 
 ```lean
 theorem Example_3_2_5_simple
@@ -278,7 +278,7 @@ theorem Example_3_2_5_simple
 :::
 
 ::: {.outpt}
-[Tactic state in Infoview]{.ul}
+[Tactic State in Infoview]{.ul}
 
 ```state
 A B : Set ℕ
@@ -296,7 +296,7 @@ To figure out this proof, we'll imitate the reasoning in Example 3.2.5 in *HTPI*
 
 ::: {.inout}
 ::: {.inpt}
-[Lean file]{.ul}
+[Lean File]{.ul}
 
 ```lean
 theorem Example_3_2_5_simple
@@ -308,7 +308,7 @@ theorem Example_3_2_5_simple
 :::
 
 ::: {.outpt}
-[Tactic state in Infoview]{.ul}
+[Tactic State in Infoview]{.ul}
 
 ```state
 A B : Set ℕ
@@ -324,7 +324,7 @@ We see that Lean has written out the meaning of set difference in `h2`.  And now
 
 ::: {.inout}
 ::: {.inpt}
-[Lean file]{.ul}
+[Lean File]{.ul}
 
 ```lean
 theorem Example_3_2_5_simple
@@ -338,7 +338,7 @@ theorem Example_3_2_5_simple
 :::
 
 ::: {.outpt}
-[Tactic state in Infoview]{.ul}
+[Tactic State in Infoview]{.ul}
 
 ```state
 A B : Set ℕ
@@ -354,7 +354,7 @@ Occasionally, you may feel that the application of two tactics one after the oth
 
 ::: {.inout}
 ::: {.inpt}
-[Lean file]{.ul}
+[Lean File]{.ul}
 
 ```lean
 theorem Example_3_2_5_simple
@@ -369,10 +369,10 @@ theorem Example_3_2_5_simple
 :::
 
 ::: {.outpt}
-[Tactic state in Infoview]{.ul}
+[Tactic State in Infoview]{.ul}
 
 ```state
--Goals accomplished 🎉
+!!Goals accomplished 🎉
 ```
 :::
 :::

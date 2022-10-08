@@ -148,13 +148,13 @@ ul.task-list li input[type="checkbox"] {
 
 <p>Chapter 2 of <em>How To Prove It</em> introduces two more symbols of logic, the quantifiers <span class="math inline">\(\forall\)</span> and <span class="math inline">\(\exists\)</span>. If <span class="math inline">\(P(x)\)</span> is a statement about an object <span class="math inline">\(x\)</span>, then</p>
 <div class="quote">
-<p><span class="math inline">\(\forall x\ P(x)\)</span> means “for all <span class="math inline">\(x\)</span>, <span class="math inline">\(P(x)\)</span>,”</p>
+<p><span class="math inline">\(\forall x\,P(x)\)</span> means “for all <span class="math inline">\(x\)</span>, <span class="math inline">\(P(x)\)</span>,”</p>
 </div>
 <p>and</p>
 <div class="quote">
-<p><span class="math inline">\(\exists x\ P(x)\)</span> means “there exists some <span class="math inline">\(x\)</span> such that <span class="math inline">\(P(x)\)</span>.”</p>
+<p><span class="math inline">\(\exists x\,P(x)\)</span> means “there exists some <span class="math inline">\(x\)</span> such that <span class="math inline">\(P(x)\)</span>.”</p>
 </div>
-<p>Lean also uses these symbols, although we will see that quantified statements are written slightly differently in Lean from the way they are written in <em>HTPI</em>. In the statement <span class="math inline">\(P(x)\)</span>, the variable <span class="math inline">\(x\)</span> is called a <em>free variable</em>. But in <span class="math inline">\(\forall x\ P(x)\)</span> or <span class="math inline">\(\exists x\ P(x)\)</span>, it is a <em>bound variable</em>; we say that the quantifiers <span class="math inline">\(\forall\)</span> and <span class="math inline">\(\exists\)</span> <em>bind</em> the variable.</p>
+<p>Lean also uses these symbols, although we will see that quantified statements are written slightly differently in Lean from the way they are written in <em>HTPI</em>. In the statement <span class="math inline">\(P(x)\)</span>, the variable <span class="math inline">\(x\)</span> is called a <em>free variable</em>. But in <span class="math inline">\(\forall x\,P(x)\)</span> or <span class="math inline">\(\exists x\,P(x)\)</span>, it is a <em>bound variable</em>; we say that the quantifiers <span class="math inline">\(\forall\)</span> and <span class="math inline">\(\exists\)</span> <em>bind</em> the variable.</p>
 <p>Once again, there are logical equivalences involving these symbols that will be useful to us later:</p>
 <table class="table">
 <colgroup>
@@ -174,15 +174,15 @@ ul.task-list li input[type="checkbox"] {
 <tbody>
 <tr class="odd">
 <td style="text-align: left;">Quantifier Negation Laws</td>
-<td style="text-align: center;"><span class="math inline">\(\neg \exists x\ P(x)\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(\neg \exists x\,P(x)\)</span></td>
 <td style="text-align: center;">is equivalent to</td>
-<td style="text-align: center;"><span class="math inline">\(\forall x\ \neg P(x)\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(\forall x\,\neg P(x)\)</span></td>
 </tr>
 <tr class="even">
 <td style="text-align: left;"></td>
-<td style="text-align: center;"><span class="math inline">\(\neg \forall x\ P(x)\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(\neg \forall x\,P(x)\)</span></td>
 <td style="text-align: center;">is equivalent to</td>
-<td style="text-align: center;"><span class="math inline">\(\exists x\ \neg P(x)\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(\exists x\,\neg P(x)\)</span></td>
 </tr>
 </tbody>
 </table>
@@ -195,7 +195,7 @@ ul.task-list li input[type="checkbox"] {
 <p><span class="math inline">\(\bigcap \mathcal{F} = \{x \mid \forall A(A \in \mathcal{F} \to x \in A)\} = {}\)</span> the <em>intersection</em> of the family <span class="math inline">\(\mathcal{F}\)</span>,</p>
 <p><span class="math inline">\(\bigcup \mathcal{F} = \{x \mid \exists A(A \in \mathcal{F} \wedge x \in A)\} = {}\)</span> the <em>union</em> of the family <span class="math inline">\(\mathcal{F}\)</span>.</p>
 </div>
-<p>Finally, Chapter 2 introduces the notation <span class="math inline">\(\exists ! x\ P(x)\)</span> to mean “there is exactly one <span class="math inline">\(x\)</span> such that <span class="math inline">\(P(x).\)</span>” This can be thought of as an abbreviation for <span class="math inline">\(\exists x(P(x) \wedge \neg\exists y(P(y) \wedge y \ne x))\)</span>. By the quantifier negation, De Morgan, and conditional laws, this is equivalent to <span class="math inline">\(\exists x(P(x) \wedge \forall y(P(y) \to y = x))\)</span>.</p>
+<p>Finally, Chapter 2 introduces the notation <span class="math inline">\(\exists ! x\,P(x)\)</span> to mean “there is exactly one <span class="math inline">\(x\)</span> such that <span class="math inline">\(P(x).\)</span>” This can be thought of as an abbreviation for <span class="math inline">\(\exists x(P(x) \wedge \neg\exists y(P(y) \wedge y \ne x))\)</span>. By the quantifier negation, De Morgan, and conditional laws, this is equivalent to <span class="math inline">\(\exists x(P(x) \wedge \forall y(P(y) \to y = x))\)</span>.</p>
 
 
 
