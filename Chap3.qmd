@@ -1,12 +1,12 @@
 # Proofs
 
-## 3.1 & 3.2. Proofs Involving Negations and Conditionals {.unnumbered}
+## 3.1 & 3.2. Proofs Involving Negations and Conditionals
 
 Sections 3.1 and 3.2 of *How To Prove It* present strategies for dealing with givens and goals involving negations and conditionals.  We restate those strategies here, and explain how to use them with Lean.
 
 Section 3.1 gives two strategies for proving a goal of the form `P → Q`:
 
-### To prove a goal of the form `P → Q`: {.unnumbered}
+### To prove a goal of the form `P → Q`:
 
 1.  Assume `P` is true and prove `Q`.
 2.  Assume `Q` is false and prove that `P` is false.
@@ -59,7 +59,7 @@ h : ¬Q
 
 Section 3.2 gives two strategies for using givens of the form `P → Q`, with the second once again being a variation on the first based on the contrapositive law:
 
-### To use a given of the form `P → Q`: {.unnumbered}
+### To use a given of the form `P → Q`:
 
 1.  If you are also given `P`, or you can prove that `P` is true, then you can use this given to conclude that `Q` is true.
 2.  If you are also given `¬Q`, or you can prove that `Q` is false, then you can use this given to conclude that `P` is false.
@@ -70,7 +70,7 @@ All of the strategies listed above for working with conditional statements as gi
 
 Section 3.2 of *HTPI* offers two strategies for proving negative goals:
 
-### To prove a goal of the form `¬P`: {.unnumbered}
+### To prove a goal of the form `¬P`:
 
 1.  Reexpress the goal in some other form.
 2.  Use proof by contradiction: assume `P` is true and try to deduce a contradiction.
@@ -233,7 +233,7 @@ theorem Example_3_2_4_v2 (P Q R : Prop)
 
 Finally, we have two strategies for using a given that is a negative statement:
 
-### To use a given of the form `¬P`: {.unnumbered}
+### To use a given of the form `¬P`:
 
 1.  Reexpress the given in some other form.
 2.  If you are doing a proof by contradiction, you can achieve a contradiction by proving `P`, since that would contradict the given `¬P`.

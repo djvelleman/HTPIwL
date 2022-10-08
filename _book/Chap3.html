@@ -189,14 +189,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
         <nav id="TOC" role="doc-toc" class="toc-active">
     <h2 id="toc-title">Table of contents</h2>
    
-  <ul>
-  <li><a href="#proofs-involving-negations-and-conditionals" id="toc-proofs-involving-negations-and-conditionals" class="nav-link active" data-scroll-target="#proofs-involving-negations-and-conditionals">3.1 &amp; 3.2. Proofs Involving Negations and Conditionals</a>
   <ul class="collapse">
-  <li><a href="#to-prove-a-goal-of-the-form-p-q" id="toc-to-prove-a-goal-of-the-form-p-q" class="nav-link" data-scroll-target="#to-prove-a-goal-of-the-form-p-q">To prove a goal of the form <code>P → Q</code>:</a></li>
-  <li><a href="#to-use-a-given-of-the-form-p-q" id="toc-to-use-a-given-of-the-form-p-q" class="nav-link" data-scroll-target="#to-use-a-given-of-the-form-p-q">To use a given of the form <code>P → Q</code>:</a></li>
-  <li><a href="#to-prove-a-goal-of-the-form-p" id="toc-to-prove-a-goal-of-the-form-p" class="nav-link" data-scroll-target="#to-prove-a-goal-of-the-form-p">To prove a goal of the form <code>¬P</code>:</a></li>
-  <li><a href="#to-use-a-given-of-the-form-p" id="toc-to-use-a-given-of-the-form-p" class="nav-link" data-scroll-target="#to-use-a-given-of-the-form-p">To use a given of the form <code>¬P</code>:</a></li>
-  </ul></li>
+  <li><a href="#proofs-involving-negations-and-conditionals" id="toc-proofs-involving-negations-and-conditionals" class="nav-link active" data-scroll-target="#proofs-involving-negations-and-conditionals">3.1 &amp; 3.2. Proofs Involving Negations and Conditionals</a></li>
   </ul>
 </nav>
     </div>
@@ -219,12 +213,12 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
 </header>
 
-<section id="proofs-involving-negations-and-conditionals" class="level2 unnumbered">
-<h2 class="unnumbered anchored" data-anchor-id="proofs-involving-negations-and-conditionals">3.1 &amp; 3.2. Proofs Involving Negations and Conditionals</h2>
+<section id="proofs-involving-negations-and-conditionals" class="level2">
+<h2 class="anchored" data-anchor-id="proofs-involving-negations-and-conditionals">3.1 &amp; 3.2. Proofs Involving Negations and Conditionals</h2>
 <p>Sections 3.1 and 3.2 of <em>How To Prove It</em> present strategies for dealing with givens and goals involving negations and conditionals. We restate those strategies here, and explain how to use them with Lean.</p>
 <p>Section 3.1 gives two strategies for proving a goal of the form <code>P → Q</code>:</p>
-<section id="to-prove-a-goal-of-the-form-p-q" class="level3 unnumbered">
-<h3 class="unnumbered anchored" data-anchor-id="to-prove-a-goal-of-the-form-p-q">To prove a goal of the form <code>P → Q</code>:</h3>
+<section id="to-prove-a-goal-of-the-form-p-q" class="level3">
+<h3 class="anchored" data-anchor-id="to-prove-a-goal-of-the-form-p-q">To prove a goal of the form <code>P → Q</code>:</h3>
 <ol type="1">
 <li>Assume <code>P</code> is true and prove <code>Q</code>.</li>
 <li>Assume <code>Q</code> is false and prove that <code>P</code> is false.</li>
@@ -259,8 +253,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </div>
 <p>Section 3.2 gives two strategies for using givens of the form <code>P → Q</code>, with the second once again being a variation on the first based on the contrapositive law:</p>
 </section>
-<section id="to-use-a-given-of-the-form-p-q" class="level3 unnumbered">
-<h3 class="unnumbered anchored" data-anchor-id="to-use-a-given-of-the-form-p-q">To use a given of the form <code>P → Q</code>:</h3>
+<section id="to-use-a-given-of-the-form-p-q" class="level3">
+<h3 class="anchored" data-anchor-id="to-use-a-given-of-the-form-p-q">To use a given of the form <code>P → Q</code>:</h3>
 <ol type="1">
 <li>If you are also given <code>P</code>, or you can prove that <code>P</code> is true, then you can use this given to conclude that <code>Q</code> is true.</li>
 <li>If you are also given <code>¬Q</code>, or you can prove that <code>Q</code> is false, then you can use this given to conclude that <code>P</code> is false.</li>
@@ -269,8 +263,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>All of the strategies listed above for working with conditional statements as givens or goals were illustrated in examples in the last chapter.</p>
 <p>Section 3.2 of <em>HTPI</em> offers two strategies for proving negative goals:</p>
 </section>
-<section id="to-prove-a-goal-of-the-form-p" class="level3 unnumbered">
-<h3 class="unnumbered anchored" data-anchor-id="to-prove-a-goal-of-the-form-p">To prove a goal of the form <code>¬P</code>:</h3>
+<section id="to-prove-a-goal-of-the-form-p" class="level3">
+<h3 class="anchored" data-anchor-id="to-prove-a-goal-of-the-form-p">To prove a goal of the form <code>¬P</code>:</h3>
 <ol type="1">
 <li>Reexpress the goal in some other form.</li>
 <li>Use proof by contradiction: assume <code>P</code> is true and try to deduce a contradiction.</li>
@@ -405,8 +399,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </div>
 <p>Finally, we have two strategies for using a given that is a negative statement:</p>
 </section>
-<section id="to-use-a-given-of-the-form-p" class="level3 unnumbered">
-<h3 class="unnumbered anchored" data-anchor-id="to-use-a-given-of-the-form-p">To use a given of the form <code>¬P</code>:</h3>
+<section id="to-use-a-given-of-the-form-p" class="level3">
+<h3 class="anchored" data-anchor-id="to-use-a-given-of-the-form-p">To use a given of the form <code>¬P</code>:</h3>
 <ol type="1">
 <li>Reexpress the given in some other form.</li>
 <li>If you are doing a proof by contradiction, you can achieve a contradiction by proving <code>P</code>, since that would contradict the given <code>¬P</code>.</li>

@@ -191,7 +191,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
         <nav id="TOC" role="doc-toc" class="toc-active">
     <h2 id="toc-title">Table of contents</h2>
    
-  <ul>
+  <ul class="collapse">
   <li><a href="#a-first-example" id="toc-a-first-example" class="nav-link active" data-scroll-target="#a-first-example">A First Example</a></li>
   <li><a href="#term-mode" id="toc-term-mode" class="nav-link" data-scroll-target="#term-mode">Term Mode</a></li>
   <li><a href="#tactic-mode" id="toc-tactic-mode" class="nav-link" data-scroll-target="#tactic-mode">Tactic Mode</a></li>
@@ -576,7 +576,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div class="sourceCode" id="cb25"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Example_3_2_5_simple_general</span>
 <span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>(U : Type) (A B : Set U) (a : U)</span>
 <span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>(h1 : a ∈ A) (h2 : a ∉ A \ B) : a ∈ B := <span class="kw">by</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>In this version of the theorem, we have introduced a new variable <code>U</code>, whose type is … Type! So <code>U</code> can stand for any type. You can think of the variable <code>U</code> as playing the role of the universe of discourse, an idea that was introduced in Section 1.3 of <em>HTPI</em>. The sets <code>A</code> and <code>B</code> contain elements from that universe of discourse, and <code>a</code> belongs to the universe. You can prove the new version of the theorem by using exactly the same sequence of tactics as before.</p>
+<p>In this version of the theorem, we have introduced a new variable <code>U</code>, whose type is … <code>Type</code>! So <code>U</code> can stand for any type. You can think of the variable <code>U</code> as playing the role of the universe of discourse, an idea that was introduced in Section 1.3 of <em>HTPI</em>. The sets <code>A</code> and <code>B</code> contain elements from that universe of discourse, and <code>a</code> belongs to the universe. You can prove the new version of the theorem by using exactly the same sequence of tactics as before.</p>
 
 
 </section>
