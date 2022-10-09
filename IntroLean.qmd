@@ -6,9 +6,13 @@ If you are reading this book in conjunction with *How To Prove It*, you should c
 
 We'll start with Example 3.2.4 in *How To Prove It*.  Here is how the theorem and proof in that example appear in *HTPI* (consult *HTPI* if you want to see how this proof was constructed):
 
-**Theorem**. *Suppose $P \to (Q \to R)$.  Then $\neg R \to (P \to \neg Q)$*.
+::: {.thm}
+Suppose $P \to (Q \to R)$.  Then $\neg R \to (P \to \neg Q)$.
+:::
 
-Proof.  Suppose $\neg R$.  Suppose $P$.  Since $P$ and $P \to (Q \to R)$, it follows that $Q \to R$.  But then, since $\neg R$, we can conclude $\neg Q$.  Thus, $P \to \neg Q$.  Therefore $\neg R \to (P \to \neg Q)$.
+::: {.proof}
+Suppose $\neg R$.  Suppose $P$.  Since $P$ and $P \to (Q \to R)$, it follows that $Q \to R$.  But then, since $\neg R$, we can conclude $\neg Q$.  Thus, $P \to \neg Q$.  Therefore $\neg R \to (P \to \neg Q)$.\qedhere
+:::
 
 And here is how we would write the proof in Lean:
 

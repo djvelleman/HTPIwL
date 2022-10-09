@@ -222,8 +222,12 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <section id="a-first-example" class="level2">
 <h2 class="anchored" data-anchor-id="a-first-example">A First Example</h2>
 <p>We’ll start with Example 3.2.4 in <em>How To Prove It</em>. Here is how the theorem and proof in that example appear in <em>HTPI</em> (consult <em>HTPI</em> if you want to see how this proof was constructed):</p>
-<p><strong>Theorem</strong>. <em>Suppose <span class="math inline">\(P \to (Q \to R)\)</span>. Then <span class="math inline">\(\neg R \to (P \to \neg Q)\)</span></em>.</p>
-<p>Proof. Suppose <span class="math inline">\(\neg R\)</span>. Suppose <span class="math inline">\(P\)</span>. Since <span class="math inline">\(P\)</span> and <span class="math inline">\(P \to (Q \to R)\)</span>, it follows that <span class="math inline">\(Q \to R\)</span>. But then, since <span class="math inline">\(\neg R\)</span>, we can conclude <span class="math inline">\(\neg Q\)</span>. Thus, <span class="math inline">\(P \to \neg Q\)</span>. Therefore <span class="math inline">\(\neg R \to (P \to \neg Q)\)</span>.</p>
+<div class="thm">
+<p>Suppose <span class="math inline">\(P \to (Q \to R)\)</span>. Then <span class="math inline">\(\neg R \to (P \to \neg Q)\)</span>.</p>
+</div>
+<div class="proof">
+<p><span class="proof-title"><em>Proof</em>. </span>Suppose <span class="math inline">\(\neg R\)</span>. Suppose <span class="math inline">\(P\)</span>. Since <span class="math inline">\(P\)</span> and <span class="math inline">\(P \to (Q \to R)\)</span>, it follows that <span class="math inline">\(Q \to R\)</span>. But then, since <span class="math inline">\(\neg R\)</span>, we can conclude <span class="math inline">\(\neg Q\)</span>. Thus, <span class="math inline">\(P \to \neg Q\)</span>. Therefore <span class="math inline">\(\neg R \to (P \to \neg Q)\)</span>.</p>
+</div>
 <p>And here is how we would write the proof in Lean:</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Example_3_2_4</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>(P Q R : <span class="kw">Prop</span>) (h : P → (Q → R)) : ¬R → (P → ¬Q) := <span class="kw">by</span></span>

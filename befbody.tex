@@ -1,0 +1,13 @@
+%Can't be in preamble because Quarto loads amsthm too late.
+\theoremstyle{plain}
+\newtheorem*{thm}{Theorem}
+\newcommand{\thmnm}{Theorem}
+\newtheorem*{namedthm}{\thmnm}
+
+\newenvironment{nthm}[1]
+  {\renewcommand{\thmnm}{#1}\begin{namedthm}}
+  {\end{namedthm}}
+
+% Usage:
+% ::: {.thm} will create an unnumbered thm environment with title Theorem.
+% ::: {.nthm arguments="Name of Theorem"} will create an unnumbered theorem whose title is Name of Theorem.

@@ -23,11 +23,12 @@ format:
     toc-depth: 2
     number-depth: 0
     syntax-definitions: [lean.xml,state.xml]
-    include-in-header: texheader.tex
+    include-in-header: inpreamble.tex
+    include-before-body: befbody.tex
     monofont: JuliaMono
     keep-tex: true
 
 filters:
   - latex-environment
-environments: [quote, inpt, outpt, lft, rt]
+environments: [quote, inpt, outpt, lft, rt, thm, nthm]
 commands: excl

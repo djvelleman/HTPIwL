@@ -63,3 +63,27 @@ code span.in {       /* identifiers in Infoview */
 .quote {
   margin-left: 10%
 }
+
+.thm {
+  font-style: italic
+}
+
+.thm::before {
+  content: "Theorem.";
+  font-style: normal;
+  font-weight: bold;
+  padding-right: 0.4em;
+  float: left;
+}
+
+.nthm {
+  font-style: italic
+}
+
+.nthm::before {
+  content: attr(data-arguments)".";
+  font-style: normal;
+  font-weight: bold;
+  padding-right: 0.4em;
+  float: left
+}
