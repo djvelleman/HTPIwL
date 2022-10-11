@@ -264,7 +264,7 @@
 % ::: {.thm} will create an unnumbered thm environment with title Theorem.
 % ::: {.nthm arguments="Name of Theorem"} will create an unnumbered theorem whose title is Name of Theorem.
 
-\ifdefined\Shaded\renewenvironment{Shaded}{\begin{tcolorbox}[boxrule=0pt, borderline west={3pt}{0pt}{shadecolor}, enhanced, breakable, interior hidden, sharp corners, frame hidden]}{\end{tcolorbox}}\fi
+\ifdefined\Shaded\renewenvironment{Shaded}{\begin{tcolorbox}[boxrule=0pt, borderline west={3pt}{0pt}{shadecolor}, interior hidden, enhanced, sharp corners, breakable, frame hidden]}{\end{tcolorbox}}\fi
 
 \renewcommand*\contentsname{Table of contents}
 {
@@ -1080,7 +1080,7 @@ or \texttt{\textbackslash{}imp} &
 
 Lean has conventions that it follows to interpret a logical statement
 when there are not enough parentheses to indicate how terms are grouped
-in the statement, . For our purposes, the most important of these
+in the statement. For our purposes, the most important of these
 conventions is that \texttt{P\ →\ Q\ →\ R} is interpreted as
 \texttt{P\ →\ (Q\ →\ R)}, not \texttt{(P\ →\ Q)\ →\ R}. The reason for
 this is simply that statements of the form \texttt{P\ →\ (Q\ →\ R)} come

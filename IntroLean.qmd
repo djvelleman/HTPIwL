@@ -241,7 +241,7 @@ Before continuing, it might be useful to summarize how you type statements into 
 | `↔` | `\iff` or `\lr` | [`<->`]{.excl}\texttt{<-\null>} |
 :::
 
-Lean has conventions that it follows to interpret a logical statement when there are not enough parentheses to indicate how terms are grouped in the statement, .  For our purposes, the most important of these conventions is that `P → Q → R` is interpreted as `P → (Q → R)`, not `(P → Q) → R`.  The reason for this is simply that statements of the form `P → (Q → R)` come up much more often in proofs than statements of the form `(P → Q) → R`.  Of course, when in doubt about how to type a statement, you can always put in extra parentheses to avoid confusion.
+Lean has conventions that it follows to interpret a logical statement when there are not enough parentheses to indicate how terms are grouped in the statement.  For our purposes, the most important of these conventions is that `P → Q → R` is interpreted as `P → (Q → R)`, not `(P → Q) → R`.  The reason for this is simply that statements of the form `P → (Q → R)` come up much more often in proofs than statements of the form `(P → Q) → R`.  Of course, when in doubt about how to type a statement, you can always put in extra parentheses to avoid confusion.
 
 We will be using tactics to apply several logical equivalences.  Here are tactics corresponding to all of the [logical laws](Chap1.html#prop-laws) listed in Chapter 1:
 

@@ -400,7 +400,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </tbody>
 </table>
 </div>
-<p>Lean has conventions that it follows to interpret a logical statement when there are not enough parentheses to indicate how terms are grouped in the statement, . For our purposes, the most important of these conventions is that <code>P → Q → R</code> is interpreted as <code>P → (Q → R)</code>, not <code>(P → Q) → R</code>. The reason for this is simply that statements of the form <code>P → (Q → R)</code> come up much more often in proofs than statements of the form <code>(P → Q) → R</code>. Of course, when in doubt about how to type a statement, you can always put in extra parentheses to avoid confusion.</p>
+<p>Lean has conventions that it follows to interpret a logical statement when there are not enough parentheses to indicate how terms are grouped in the statement. For our purposes, the most important of these conventions is that <code>P → Q → R</code> is interpreted as <code>P → (Q → R)</code>, not <code>(P → Q) → R</code>. The reason for this is simply that statements of the form <code>P → (Q → R)</code> come up much more often in proofs than statements of the form <code>(P → Q) → R</code>. Of course, when in doubt about how to type a statement, you can always put in extra parentheses to avoid confusion.</p>
 <p>We will be using tactics to apply several logical equivalences. Here are tactics corresponding to all of the <a href="Chap1.html#prop-laws">logical laws</a> listed in Chapter 1:</p>
 <table class="table">
 <colgroup>
