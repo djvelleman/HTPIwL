@@ -1,6 +1,7 @@
 \usepackage{mathrsfs}
 \usepackage{twemojis}
 \usepackage{myunixode}
+\usepackage[normalem]{ulem}
 
 \makeatletter
 \def\squiggly{\bgroup \markoverwith{\textcolor{red}{\lower3.5\p@\hbox{\sixly \char58}}}\ULon}
@@ -34,19 +35,23 @@
 \makeatother
 
 \newenvironment{inpt}
-	{\nobreakShaded\noindent\begin{minipage}[t]{0.63\textwidth}}
+	{\nobreakShaded\noindent\begin{minipage}[t]{0.63\textwidth}
+		\uline{Lean File}}
 	{\end{minipage}\hfill\useignorespacesandallpars}
 
 \newenvironment{outpt}
-	{\nobreakShaded\begin{minipage}[t]{0.32\textwidth}}
+	{\nobreakShaded\begin{minipage}[t]{0.32\textwidth}
+		\uline{Tactic State in Infoview}}
 	{\end{minipage}}
 
-\newenvironment{lft}
-	{\nobreakShaded\noindent\begin{minipage}[t]{0.475\textwidth}}
+\newenvironment{bef}
+	{\nobreakShaded\noindent\begin{minipage}[t]{0.475\textwidth}
+		\uline{Tactic State Before Using Strategy}}
 	{\end{minipage}\hfill\useignorespacesandallpars}
 
-\newenvironment{rt}
-	{\nobreakShaded\begin{minipage}[t]{0.475\textwidth}}
+\newenvironment{aft}
+	{\nobreakShaded\begin{minipage}[t]{0.475\textwidth}
+		\uline{Tactic State After Using Strategy}}
 	{\end{minipage}}
 
 \newcommand{\excl}[1]{}

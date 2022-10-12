@@ -14,18 +14,14 @@ Section 3.1 gives two strategies for proving a goal of the form `P → Q`:
 We've already seen how to carry out both of these strategies in Lean.  For the first strategy, use the `assume` tactic to introduce the assumption `P` and assign an identifier to it; Lean will automaticall set `Q` as the goal.  We can summarize the effect of using this strategy by showing how the tactic state changes if you use the tactic `assume h : P`:
 
 ::: {.lftrt}
-::: {.lft}
-[Tactic State Before Using Strategy]{.ul}
-
+::: {.bef}
 ```state
 !! ⋮
 ⊢ P → Q
 ```
 :::
 
-::: {.rt}
-[Tactic State After Using Strategy]{.ul}
-
+::: {.aft}
 ```state
 !! ⋮
 h : P
@@ -37,18 +33,14 @@ h : P
 The second strategy is justified by the contrapositive law.  In Lean, you can use the `contrapos` tactic to rewrite the goal as `¬Q → ¬P` and then use the tactic `assume h : ¬Q`.  The net effect of these two tactics is:
 
 ::: {.lftrt}
-::: {.lft}
-[Tactic State Before Using Strategy]{.ul}
-
+::: {.bef}
 ```state
 !! ⋮
 ⊢ P → Q
 ```
 :::
 
-::: {.rt}
-[Tactic State After Using Strategy]{.ul}
-
+::: {.aft}
 ```state
 !! ⋮
 h : ¬Q
@@ -78,18 +70,14 @@ Section 3.2 of *HTPI* offers two strategies for proving negative goals:
 For the first strategy, the tactics `demorgan`, `conditional`, and `double_neg` may be useful, and we saw how those tactics work in the last chapter.  But how do you write a proof by contradiction in Lean?  The answer is to use a tactic called `by_contra`.  If the goal is `¬P`, then the tactic `by_contra h` will introduce the assumption `h : P` and set the goal to be `False`, like this:
 
 ::: {.lftrt}
-::: {.lft}
-[Tactic State Before Using Strategy]{.ul}
-
+::: {.bef}
 ```state
 !! ⋮
 ⊢ ¬P
 ```
 :::
 
-::: {.rt}
-[Tactic State After Using Strategy]{.ul}
-
+::: {.aft}
 ```state
 !! ⋮
 h : P
@@ -119,8 +107,6 @@ To illustrate proof by contradiction in Lean, let's redo our first example from 
 
 ::: {.inout}
 ::: {.inpt}
-[Lean File]{.ul}
-
 ```lean
 theorem Example_3_2_4_v2 (P Q R : Prop)
 (h : P → (Q → R)) : ¬R → (P → ¬Q) := by
@@ -130,8 +116,6 @@ theorem Example_3_2_4_v2 (P Q R : Prop)
 :::
 
 ::: {.outpt}
-[Tactic State in Infoview]{.ul}
-
 ```state
 P Q R : Prop
 h : P → Q → R
@@ -146,8 +130,6 @@ Now the goal is a negative statement, so we use the tactic `by_contra h4` to int
 
 ::: {.inout}
 ::: {.inpt}
-[Lean File]{.ul}
-
 ```lean
 theorem Example_3_2_4_v2 (P Q R : Prop)
 (h : P → (Q → R)) : ¬R → (P → ¬Q) := by
@@ -158,8 +140,6 @@ theorem Example_3_2_4_v2 (P Q R : Prop)
 :::
 
 ::: {.outpt}
-[Tactic State in Infoview]{.ul}
-
 ```state
 P Q R : Prop
 h : P → Q → R
@@ -175,8 +155,6 @@ Using the givens `h`, `h3`, and `h4` we can deduce first `Q → R` and then `R` 
 
 ::: {.inout}
 ::: {.inpt}
-[Lean File]{.ul}
-
 ```lean
 theorem Example_3_2_4_v2 (P Q R : Prop)
 (h : P → (Q → R)) : ¬R → (P → ¬Q) := by
@@ -189,8 +167,6 @@ theorem Example_3_2_4_v2 (P Q R : Prop)
 :::
 
 ::: {.outpt}
-[Tactic State in Infoview]{.ul}
-
 ```state
 P Q R : Prop
 h : P → Q → R
@@ -208,8 +184,6 @@ Now we have a contradiction: `h2 : ¬R` and `h6 : R`.  To complete the proof, we
 
 ::: {.inout}
 ::: {.inpt}
-[Lean File]{.ul}
-
 ```lean
 theorem Example_3_2_4_v2 (P Q R : Prop)
 (h : P → (Q → R)) : ¬R → (P → ¬Q) := by
@@ -223,8 +197,6 @@ theorem Example_3_2_4_v2 (P Q R : Prop)
 :::
 
 ::: {.outpt}
-[Tactic State in Infoview]{.ul}
-
 ```state
 !!Goals accomplished 🎉
 ```
@@ -244,8 +216,6 @@ We can illustrate this with yet another way to write the proof from Example 3.2.
 
 ::: {.inout}
 ::: {.inpt}
-[Lean File]{.ul}
-
 ```lean
 theorem Example_3_2_4_v3 (P Q R : Prop)
 (h : P → (Q → R)) : ¬R → (P → ¬Q) := by
@@ -256,8 +226,6 @@ theorem Example_3_2_4_v3 (P Q R : Prop)
 :::
 
 ::: {.outpt}
-[Tactic State in Infoview]{.ul}
-
 ```state
 P Q R : Prop
 h : P → Q → R
@@ -273,8 +241,6 @@ Since we are now doing a proof by contradiction and the given `h2 : ¬R` is a ne
 
 ::: {.inout}
 ::: {.inpt}
-[Lean File]{.ul}
-
 ```lean
 theorem Example_3_2_4_v3 (P Q R : Prop)
 (h : P → (Q → R)) : ¬R → (P → ¬Q) := by
@@ -286,8 +252,6 @@ theorem Example_3_2_4_v3 (P Q R : Prop)
 :::
 
 ::: {.outpt}
-[Tactic State in Infoview]{.ul}
-
 ```state
 P Q R : Prop
 h : P → Q → R
@@ -303,8 +267,6 @@ As before, we can now prove `R` by combining `h`, `h3`, and `h4`.  In fact, we c
 
 ::: {.inout}
 ::: {.inpt}
-[Lean File]{.ul}
-
 ```lean
 theorem Example_3_2_4_v3 (P Q R : Prop)
 (h : P → (Q → R)) : ¬R → (P → ¬Q) := by
@@ -317,8 +279,6 @@ theorem Example_3_2_4_v3 (P Q R : Prop)
 :::
 
 ::: {.outpt}
-[Tactic State in Infoview]{.ul}
-
 ```state
 !!Goals accomplished 🎉
 ```
@@ -331,8 +291,6 @@ There is one more idea that is introduced in Section 3.2 of *HTPI*.  The last ex
 
 ::: {.inout}
 ::: {.inpt}
-[Lean File]{.ul}
-
 ```lean
 theorem Like_Example_3_2_5
 (U : Type) (A B C : Set U) (a : U)
@@ -342,8 +300,6 @@ theorem Like_Example_3_2_5
 :::
 
 ::: {.outpt}
-[Tactic State in Infoview]{.ul}
-
 ```state
 U : Type
 A B C : Set U
@@ -362,8 +318,6 @@ To get Lean to use this proof strategy, we use the tactic `apply h3 _`.  The und
 
 ::: {.inout}
 ::: {.inpt}
-[Lean File]{.ul}
-
 ```lean
 theorem Like_Example_3_2_5
 (U : Type) (A B C : Set U) (a : U)
@@ -374,8 +328,6 @@ theorem Like_Example_3_2_5
 :::
 
 ::: {.outpt}
-[Tactic State in Infoview]{.ul}
-
 ```state
 U : Type
 A B C: Set U
@@ -392,8 +344,6 @@ It may not be clear what to do next, but the given `h2` is a negative statement,
 
 ::: {.inout}
 ::: {.inpt}
-[Lean File]{.ul}
-
 ```lean
 theorem Like_Example_3_2_5
 (U : Type) (A B C : Set U) (a : U)
@@ -406,8 +356,6 @@ theorem Like_Example_3_2_5
 :::
 
 ::: {.outpt}
-[Tactic State in Infoview]{.ul}
-
 ```state
 U : Type
 A B C : Set U
@@ -424,8 +372,6 @@ And now it is easy to complete the proof by applying modus ponens, using `h2` an
 
 ::: {.inout}
 ::: {.inpt}
-[Lean File]{.ul}
-
 ```lean
 theorem Like_Example_3_2_5
 (U : Type) (A B C : Set U) (a : U)
@@ -439,8 +385,6 @@ theorem Like_Example_3_2_5
 :::
 
 ::: {.outpt}
-[Tactic State in Infoview]{.ul}
-
 ```state
 !!Goals accomplished 🎉
 ```

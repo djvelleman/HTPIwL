@@ -38,7 +38,6 @@
   \KOMAoptions{parskip=half}}
 \makeatother
 \usepackage{xcolor}
-\usepackage[normalem]{ulem}
 \setlength{\emergencystretch}{3em} % prevent overfull lines
 \setcounter{secnumdepth}{0}
 % Make \paragraph and \subparagraph free-standing
@@ -120,6 +119,7 @@
 \usepackage{mathrsfs}
 \usepackage{twemojis}
 \usepackage{myunixode}
+\usepackage[normalem]{ulem}
 
 \makeatletter
 \def\squiggly{\bgroup \markoverwith{\textcolor{red}{\lower3.5\p@\hbox{\sixly \char58}}}\ULon}
@@ -153,19 +153,23 @@
 \makeatother
 
 \newenvironment{inpt}
-	{\nobreakShaded\noindent\begin{minipage}[t]{0.63\textwidth}}
+	{\nobreakShaded\noindent\begin{minipage}[t]{0.63\textwidth}
+		\uline{Lean File}}
 	{\end{minipage}\hfill\useignorespacesandallpars}
 
 \newenvironment{outpt}
-	{\nobreakShaded\begin{minipage}[t]{0.32\textwidth}}
+	{\nobreakShaded\begin{minipage}[t]{0.32\textwidth}
+		\uline{Tactic State in Infoview}}
 	{\end{minipage}}
 
-\newenvironment{lft}
-	{\nobreakShaded\noindent\begin{minipage}[t]{0.475\textwidth}}
+\newenvironment{bef}
+	{\nobreakShaded\noindent\begin{minipage}[t]{0.475\textwidth}
+		\uline{Tactic State Before Using Strategy}}
 	{\end{minipage}\hfill\useignorespacesandallpars}
 
-\newenvironment{rt}
-	{\nobreakShaded\begin{minipage}[t]{0.475\textwidth}}
+\newenvironment{aft}
+	{\nobreakShaded\begin{minipage}[t]{0.475\textwidth}
+		\uline{Tactic State After Using Strategy}}
 	{\end{minipage}}
 
 \newcommand{\excl}[1]{}
@@ -264,7 +268,7 @@
 % ::: {.thm} will create an unnumbered thm environment with title Theorem.
 % ::: {.nthm arguments="Name of Theorem"} will create an unnumbered theorem whose title is Name of Theorem.
 
-\ifdefined\Shaded\renewenvironment{Shaded}{\begin{tcolorbox}[boxrule=0pt, borderline west={3pt}{0pt}{shadecolor}, interior hidden, enhanced, sharp corners, breakable, frame hidden]}{\end{tcolorbox}}\fi
+\ifdefined\Shaded\renewenvironment{Shaded}{\begin{tcolorbox}[frame hidden, enhanced, breakable, boxrule=0pt, interior hidden, borderline west={3pt}{0pt}{shadecolor}, sharp corners]}{\end{tcolorbox}}\fi
 
 \renewcommand*\contentsname{Table of contents}
 {
@@ -829,8 +833,6 @@ should look like this:
 
 \begin{inpt}
 
-\uline{Lean File}
-
 \begin{Shaded}
 \begin{Highlighting}[]
 \KeywordTok{theorem}\NormalTok{ two\_imp (P Q R : }\KeywordTok{Prop}\NormalTok{)}
@@ -843,8 +845,6 @@ should look like this:
 \end{inpt}
 
 \begin{outpt}
-
-\uline{Tactic State in Infoview}
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -878,8 +878,6 @@ now see this:
 
 \begin{inpt}
 
-\uline{Lean File}
-
 \begin{Shaded}
 \begin{Highlighting}[]
 \KeywordTok{theorem}\NormalTok{ two\_imp (P Q R : }\KeywordTok{Prop}\NormalTok{)}
@@ -892,8 +890,6 @@ now see this:
 \end{inpt}
 
 \begin{outpt}
-
-\uline{Tactic State in Infoview}
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -916,8 +912,6 @@ without having to be told, that the goal should now be \texttt{¬R}:
 
 \begin{inpt}
 
-\uline{Lean File}
-
 \begin{Shaded}
 \begin{Highlighting}[]
 \KeywordTok{theorem}\NormalTok{ two\_imp (P Q R : }\KeywordTok{Prop}\NormalTok{)}
@@ -931,8 +925,6 @@ without having to be told, that the goal should now be \texttt{¬R}:
 \end{inpt}
 
 \begin{outpt}
-
-\uline{Tactic State in Infoview}
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -960,8 +952,6 @@ course, Lean updates the tactic state by adding the new given
 
 \begin{inpt}
 
-\uline{Lean File}
-
 \begin{Shaded}
 \begin{Highlighting}[]
 \KeywordTok{theorem}\NormalTok{ two\_imp (P Q R : }\KeywordTok{Prop}\NormalTok{)}
@@ -976,8 +966,6 @@ course, Lean updates the tactic state by adding the new given
 \end{inpt}
 
 \begin{outpt}
-
-\uline{Tactic State in Infoview}
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -1001,8 +989,6 @@ say ``Goals accomplished'':
 
 \begin{inpt}
 
-\uline{Lean File}
-
 \begin{Shaded}
 \begin{Highlighting}[]
 \KeywordTok{theorem}\NormalTok{ two\_imp (P Q R : }\KeywordTok{Prop}\NormalTok{)}
@@ -1018,8 +1004,6 @@ say ``Goals accomplished'':
 \end{inpt}
 
 \begin{outpt}
-
-\uline{Tactic State in Infoview}
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -1173,8 +1157,6 @@ theorem about sets; it is a simplified version of Example 3.2.5 in
 
 \begin{inpt}
 
-\uline{Lean File}
-
 \begin{Shaded}
 \begin{Highlighting}[]
 \KeywordTok{theorem}\NormalTok{ Example\_3\_2\_5\_simple}
@@ -1188,8 +1170,6 @@ theorem about sets; it is a simplified version of Example 3.2.5 in
 \end{inpt}
 
 \begin{outpt}
-
-\uline{Tactic State in Infoview}
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -1219,8 +1199,6 @@ Here's the situation after using the tactic \texttt{define\ at\ h2}:
 
 \begin{inpt}
 
-\uline{Lean File}
-
 \begin{Shaded}
 \begin{Highlighting}[]
 \KeywordTok{theorem}\NormalTok{ Example\_3\_2\_5\_simple}
@@ -1234,8 +1212,6 @@ Here's the situation after using the tactic \texttt{define\ at\ h2}:
 \end{inpt}
 
 \begin{outpt}
-
-\uline{Tactic State in Infoview}
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -1258,8 +1234,6 @@ first one of De Morgan's laws to rewrite it as
 
 \begin{inpt}
 
-\uline{Lean File}
-
 \begin{Shaded}
 \begin{Highlighting}[]
 \KeywordTok{theorem}\NormalTok{ Example\_3\_2\_5\_simple}
@@ -1275,8 +1249,6 @@ first one of De Morgan's laws to rewrite it as
 \end{inpt}
 
 \begin{outpt}
-
-\uline{Tactic State in Infoview}
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -1300,8 +1272,6 @@ we can apply modus ponens to reach the goal:
 
 \begin{inpt}
 
-\uline{Lean File}
-
 \begin{Shaded}
 \begin{Highlighting}[]
 \KeywordTok{theorem}\NormalTok{ Example\_3\_2\_5\_simple}
@@ -1318,8 +1288,6 @@ we can apply modus ponens to reach the goal:
 \end{inpt}
 
 \begin{outpt}
-
-\uline{Tactic State in Infoview}
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -1390,9 +1358,7 @@ automaticall set \texttt{Q} as the goal. We can summarize the effect of
 using this strategy by showing how the tactic state changes if you use
 the tactic \texttt{assume\ h\ :\ P}:
 
-\begin{lft}
-
-\uline{Tactic State Before Using Strategy}
+\begin{bef}
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -1401,11 +1367,9 @@ the tactic \texttt{assume\ h\ :\ P}:
 \end{Highlighting}
 \end{Shaded}
 
-\end{lft}
+\end{bef}
 
-\begin{rt}
-
-\uline{Tactic State After Using Strategy}
+\begin{aft}
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -1415,16 +1379,14 @@ the tactic \texttt{assume\ h\ :\ P}:
 \end{Highlighting}
 \end{Shaded}
 
-\end{rt}
+\end{aft}
 
 The second strategy is justified by the contrapositive law. In Lean, you
 can use the \texttt{contrapos} tactic to rewrite the goal as
 \texttt{¬Q\ →\ ¬P} and then use the tactic \texttt{assume\ h\ :\ ¬Q}.
 The net effect of these two tactics is:
 
-\begin{lft}
-
-\uline{Tactic State Before Using Strategy}
+\begin{bef}
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -1433,11 +1395,9 @@ The net effect of these two tactics is:
 \end{Highlighting}
 \end{Shaded}
 
-\end{lft}
+\end{bef}
 
-\begin{rt}
-
-\uline{Tactic State After Using Strategy}
+\begin{aft}
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -1447,7 +1407,7 @@ The net effect of these two tactics is:
 \end{Highlighting}
 \end{Shaded}
 
-\end{rt}
+\end{aft}
 
 Section 3.2 gives two strategies for using givens of the form
 \texttt{P\ →\ Q}, with the second once again being a variation on the
@@ -1508,9 +1468,7 @@ by contradiction in Lean? The answer is to use a tactic called
 \texttt{by\_contra\ h} will introduce the assumption \texttt{h\ :\ P}
 and set the goal to be \texttt{False}, like this:
 
-\begin{lft}
-
-\uline{Tactic State Before Using Strategy}
+\begin{bef}
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -1519,11 +1477,9 @@ and set the goal to be \texttt{False}, like this:
 \end{Highlighting}
 \end{Shaded}
 
-\end{lft}
+\end{bef}
 
-\begin{rt}
-
-\uline{Tactic State After Using Strategy}
+\begin{aft}
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -1533,7 +1489,7 @@ and set the goal to be \texttt{False}, like this:
 \end{Highlighting}
 \end{Shaded}
 
-\end{rt}
+\end{aft}
 
 In Lean, \texttt{False} represents a statement that is always
 false---that is, a contradiction, as that term is defined in Section 1.2
@@ -1601,8 +1557,6 @@ steps, introducing two assumptions. (We won't bother to include the
 
 \begin{inpt}
 
-\uline{Lean File}
-
 \begin{Shaded}
 \begin{Highlighting}[]
 \KeywordTok{theorem}\NormalTok{ Example\_3\_2\_4\_v2 (P Q R : }\KeywordTok{Prop}\NormalTok{)}
@@ -1615,8 +1569,6 @@ steps, introducing two assumptions. (We won't bother to include the
 \end{inpt}
 
 \begin{outpt}
-
-\uline{Tactic State in Infoview}
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -1636,8 +1588,6 @@ and set the goal to be \texttt{False}:
 
 \begin{inpt}
 
-\uline{Lean File}
-
 \begin{Shaded}
 \begin{Highlighting}[]
 \KeywordTok{theorem}\NormalTok{ Example\_3\_2\_4\_v2 (P Q R : }\KeywordTok{Prop}\NormalTok{)}
@@ -1651,8 +1601,6 @@ and set the goal to be \texttt{False}:
 \end{inpt}
 
 \begin{outpt}
-
-\uline{Tactic State in Infoview}
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -1673,8 +1621,6 @@ ponens:
 
 \begin{inpt}
 
-\uline{Lean File}
-
 \begin{Shaded}
 \begin{Highlighting}[]
 \KeywordTok{theorem}\NormalTok{ Example\_3\_2\_4\_v2 (P Q R : }\KeywordTok{Prop}\NormalTok{)}
@@ -1690,8 +1636,6 @@ ponens:
 \end{inpt}
 
 \begin{outpt}
-
-\uline{Tactic State in Infoview}
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -1715,8 +1659,6 @@ Lean as a proof of \texttt{False}:
 
 \begin{inpt}
 
-\uline{Lean File}
-
 \begin{Shaded}
 \begin{Highlighting}[]
 \KeywordTok{theorem}\NormalTok{ Example\_3\_2\_4\_v2 (P Q R : }\KeywordTok{Prop}\NormalTok{)}
@@ -1733,8 +1675,6 @@ Lean as a proof of \texttt{False}:
 \end{inpt}
 
 \begin{outpt}
-
-\uline{Tactic State in Infoview}
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -1783,8 +1723,6 @@ Example 3.2.4. Our first three steps will be the same as last time:
 
 \begin{inpt}
 
-\uline{Lean File}
-
 \begin{Shaded}
 \begin{Highlighting}[]
 \KeywordTok{theorem}\NormalTok{ Example\_3\_2\_4\_v3 (P Q R : }\KeywordTok{Prop}\NormalTok{)}
@@ -1798,8 +1736,6 @@ Example 3.2.4. Our first three steps will be the same as last time:
 \end{inpt}
 
 \begin{outpt}
-
-\uline{Tactic State in Infoview}
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -1821,8 +1757,6 @@ use the tactic \texttt{contradict\ h2}:
 
 \begin{inpt}
 
-\uline{Lean File}
-
 \begin{Shaded}
 \begin{Highlighting}[]
 \KeywordTok{theorem}\NormalTok{ Example\_3\_2\_4\_v3 (P Q R : }\KeywordTok{Prop}\NormalTok{)}
@@ -1837,8 +1771,6 @@ use the tactic \texttt{contradict\ h2}:
 \end{inpt}
 
 \begin{outpt}
-
-\uline{Tactic State in Infoview}
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -1863,8 +1795,6 @@ complete the proof like this:
 
 \begin{inpt}
 
-\uline{Lean File}
-
 \begin{Shaded}
 \begin{Highlighting}[]
 \KeywordTok{theorem}\NormalTok{ Example\_3\_2\_4\_v3 (P Q R : }\KeywordTok{Prop}\NormalTok{)}
@@ -1880,8 +1810,6 @@ complete the proof like this:
 \end{inpt}
 
 \begin{outpt}
-
-\uline{Tactic State in Infoview}
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -1901,8 +1829,6 @@ rules of inference to work backwards. Here's a similar example in Lean:
 
 \begin{inpt}
 
-\uline{Lean File}
-
 \begin{Shaded}
 \begin{Highlighting}[]
 \KeywordTok{theorem}\NormalTok{ Like\_Example\_3\_2\_5}
@@ -1915,8 +1841,6 @@ rules of inference to work backwards. Here's a similar example in Lean:
 \end{inpt}
 
 \begin{outpt}
-
-\uline{Tactic State in Infoview}
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -1950,8 +1874,6 @@ goal \texttt{a\ ∈\ C}:
 
 \begin{inpt}
 
-\uline{Lean File}
-
 \begin{Shaded}
 \begin{Highlighting}[]
 \KeywordTok{theorem}\NormalTok{ Like\_Example\_3\_2\_5}
@@ -1965,8 +1887,6 @@ goal \texttt{a\ ∈\ C}:
 \end{inpt}
 
 \begin{outpt}
-
-\uline{Tactic State in Infoview}
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -1993,8 +1913,6 @@ all of these reexpressions:
 
 \begin{inpt}
 
-\uline{Lean File}
-
 \begin{Shaded}
 \begin{Highlighting}[]
 \KeywordTok{theorem}\NormalTok{ Like\_Example\_3\_2\_5}
@@ -2010,8 +1928,6 @@ all of these reexpressions:
 \end{inpt}
 
 \begin{outpt}
-
-\uline{Tactic State in Infoview}
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -2032,8 +1948,6 @@ And now it is easy to complete the proof by applying modus ponens, using
 
 \begin{inpt}
 
-\uline{Lean File}
-
 \begin{Shaded}
 \begin{Highlighting}[]
 \KeywordTok{theorem}\NormalTok{ Like\_Example\_3\_2\_5}
@@ -2050,8 +1964,6 @@ And now it is easy to complete the proof by applying modus ponens, using
 \end{inpt}
 
 \begin{outpt}
-
-\uline{Tactic State in Infoview}
 
 \begin{Shaded}
 \begin{Highlighting}[]

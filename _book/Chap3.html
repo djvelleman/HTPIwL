@@ -225,13 +225,11 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </ol>
 <p>We’ve already seen how to carry out both of these strategies in Lean. For the first strategy, use the <code>assume</code> tactic to introduce the assumption <code>P</code> and assign an identifier to it; Lean will automaticall set <code>Q</code> as the goal. We can summarize the effect of using this strategy by showing how the tactic state changes if you use the tactic <code>assume h : P</code>:</p>
 <div class="lftrt">
-<div class="lft">
-<p><u>Tactic State Before Using Strategy</u></p>
+<div class="bef">
 <div class="sourceCode" id="cb1"><pre class="sourceCode state code-with-copy"><code class="sourceCode state"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="sc">!!</span> ⋮</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>⊢ P → Q</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div class="rt">
-<p><u>Tactic State After Using Strategy</u></p>
+<div class="aft">
 <div class="sourceCode" id="cb2"><pre class="sourceCode state code-with-copy"><code class="sourceCode state"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="sc">!!</span> ⋮</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="in">h </span>: P</span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>⊢ Q</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -239,13 +237,11 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </div>
 <p>The second strategy is justified by the contrapositive law. In Lean, you can use the <code>contrapos</code> tactic to rewrite the goal as <code>¬Q → ¬P</code> and then use the tactic <code>assume h : ¬Q</code>. The net effect of these two tactics is:</p>
 <div class="lftrt">
-<div class="lft">
-<p><u>Tactic State Before Using Strategy</u></p>
+<div class="bef">
 <div class="sourceCode" id="cb3"><pre class="sourceCode state code-with-copy"><code class="sourceCode state"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="sc">!!</span> ⋮</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>⊢ P → Q</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div class="rt">
-<p><u>Tactic State After Using Strategy</u></p>
+<div class="aft">
 <div class="sourceCode" id="cb4"><pre class="sourceCode state code-with-copy"><code class="sourceCode state"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="sc">!!</span> ⋮</span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="in">h </span>: ¬Q</span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>⊢ ¬P</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -271,13 +267,11 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </ol>
 <p>For the first strategy, the tactics <code>demorgan</code>, <code>conditional</code>, and <code>double_neg</code> may be useful, and we saw how those tactics work in the last chapter. But how do you write a proof by contradiction in Lean? The answer is to use a tactic called <code>by_contra</code>. If the goal is <code>¬P</code>, then the tactic <code>by_contra h</code> will introduce the assumption <code>h : P</code> and set the goal to be <code>False</code>, like this:</p>
 <div class="lftrt">
-<div class="lft">
-<p><u>Tactic State Before Using Strategy</u></p>
+<div class="bef">
 <div class="sourceCode" id="cb5"><pre class="sourceCode state code-with-copy"><code class="sourceCode state"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="sc">!!</span> ⋮</span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>⊢ ¬P</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div class="rt">
-<p><u>Tactic State After Using Strategy</u></p>
+<div class="aft">
 <div class="sourceCode" id="cb6"><pre class="sourceCode state code-with-copy"><code class="sourceCode state"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="sc">!!</span> ⋮</span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="in">h </span>: P</span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>⊢ False</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -320,14 +314,12 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>To illustrate proof by contradiction in Lean, let’s redo our first example from the last Chapter in a different way. That example was based on Example 3.2.4 in <em>HTPI</em>. We’ll begin with the same first two steps, introducing two assumptions. (We won’t bother to include the <code>done</code> line in the displays below.)</p>
 <div class="inout">
 <div class="inpt">
-<p><u>Lean File</u></p>
 <div class="sourceCode" id="cb7"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Example_3_2_4_v2 (P Q R : <span class="kw">Prop</span>)</span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>(h : P → (Q → R)) : ¬R → (P → ¬Q) := <span class="kw">by</span></span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>  <span class="kw">assume</span> h2 : ¬R</span>
 <span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>  <span class="kw">assume</span> h3 : P</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="outpt">
-<p><u>Tactic State in Infoview</u></p>
 <div class="sourceCode" id="cb8"><pre class="sourceCode state code-with-copy"><code class="sourceCode state"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="in">P Q R </span>: Prop</span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="in">h </span>: P → Q → R</span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="in">h2 </span>: ¬R</span>
@@ -338,7 +330,6 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>Now the goal is a negative statement, so we use the tactic <code>by_contra h4</code> to introduce the assumption <code>h4 : Q</code> and set the goal to be <code>False</code>:</p>
 <div class="inout">
 <div class="inpt">
-<p><u>Lean File</u></p>
 <div class="sourceCode" id="cb9"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Example_3_2_4_v2 (P Q R : <span class="kw">Prop</span>)</span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>(h : P → (Q → R)) : ¬R → (P → ¬Q) := <span class="kw">by</span></span>
 <span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>  <span class="kw">assume</span> h2 : ¬R</span>
@@ -346,7 +337,6 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>  <span class="kw">by_contra</span> h4</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="outpt">
-<p><u>Tactic State in Infoview</u></p>
 <div class="sourceCode" id="cb10"><pre class="sourceCode state code-with-copy"><code class="sourceCode state"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="in">P Q R </span>: Prop</span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="in">h </span>: P → Q → R</span>
 <span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="in">h2 </span>: ¬R</span>
@@ -358,7 +348,6 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>Using the givens <code>h</code>, <code>h3</code>, and <code>h4</code> we can deduce first <code>Q → R</code> and then <code>R</code> by two applications of modus ponens:</p>
 <div class="inout">
 <div class="inpt">
-<p><u>Lean File</u></p>
 <div class="sourceCode" id="cb11"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Example_3_2_4_v2 (P Q R : <span class="kw">Prop</span>)</span>
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>(h : P → (Q → R)) : ¬R → (P → ¬Q) := <span class="kw">by</span></span>
 <span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>  <span class="kw">assume</span> h2 : ¬R</span>
@@ -368,7 +357,6 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>  <span class="kw">have</span> h6 : R := h5 h4</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="outpt">
-<p><u>Tactic State in Infoview</u></p>
 <div class="sourceCode" id="cb12"><pre class="sourceCode state code-with-copy"><code class="sourceCode state"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="in">P Q R </span>: Prop</span>
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="in">h </span>: P → Q → R</span>
 <span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="in">h2 </span>: ¬R</span>
@@ -382,7 +370,6 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>Now we have a contradiction: <code>h2 : ¬R</code> and <code>h6 : R</code>. To complete the proof, we deduce <code>False</code> from these two givens. Either <code>h2 h6</code> or <code>absurd h6 h2</code> would be accepted by Lean as a proof of <code>False</code>:</p>
 <div class="inout">
 <div class="inpt">
-<p><u>Lean File</u></p>
 <div class="sourceCode" id="cb13"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Example_3_2_4_v2 (P Q R : <span class="kw">Prop</span>)</span>
 <span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>(h : P → (Q → R)) : ¬R → (P → ¬Q) := <span class="kw">by</span></span>
 <span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>  <span class="kw">assume</span> h2 : ¬R</span>
@@ -393,7 +380,6 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a>  <span class="kw">show</span> False <span class="kw">from</span> h2 h6</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="outpt">
-<p><u>Tactic State in Infoview</u></p>
 <div class="sourceCode" id="cb14"><pre class="sourceCode state code-with-copy"><code class="sourceCode state"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="sc">!!</span>Goals accomplished 🎉</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </div>
@@ -409,7 +395,6 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>We can illustrate this with yet another way to write the proof from Example 3.2.4. Our first three steps will be the same as last time:</p>
 <div class="inout">
 <div class="inpt">
-<p><u>Lean File</u></p>
 <div class="sourceCode" id="cb15"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Example_3_2_4_v3 (P Q R : <span class="kw">Prop</span>)</span>
 <span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>(h : P → (Q → R)) : ¬R → (P → ¬Q) := <span class="kw">by</span></span>
 <span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>  <span class="kw">assume</span> h2 : ¬R</span>
@@ -417,7 +402,6 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>  <span class="kw">by_contra</span> h4</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="outpt">
-<p><u>Tactic State in Infoview</u></p>
 <div class="sourceCode" id="cb16"><pre class="sourceCode state code-with-copy"><code class="sourceCode state"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="in">P Q R </span>: Prop</span>
 <span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="in">h </span>: P → Q → R</span>
 <span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a><span class="in">h2 </span>: ¬R</span>
@@ -429,7 +413,6 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>Since we are now doing a proof by contradiction and the given <code>h2 : ¬R</code> is a negative statement, a likely way to proceed is to try to prove <code>R</code>, which would contradict <code>h2</code>. So we use the tactic <code>contradict h2</code>:</p>
 <div class="inout">
 <div class="inpt">
-<p><u>Lean File</u></p>
 <div class="sourceCode" id="cb17"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Example_3_2_4_v3 (P Q R : <span class="kw">Prop</span>)</span>
 <span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>(h : P → (Q → R)) : ¬R → (P → ¬Q) := <span class="kw">by</span></span>
 <span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>  <span class="kw">assume</span> h2 : ¬R</span>
@@ -438,7 +421,6 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>  <span class="kw">contradict</span> h2</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="outpt">
-<p><u>Tactic State in Infoview</u></p>
 <div class="sourceCode" id="cb18"><pre class="sourceCode state code-with-copy"><code class="sourceCode state"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="in">P Q R </span>: Prop</span>
 <span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="in">h </span>: P → Q → R</span>
 <span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a><span class="in">h2 </span>: ¬R</span>
@@ -450,7 +432,6 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>As before, we can now prove <code>R</code> by combining <code>h</code>, <code>h3</code>, and <code>h4</code>. In fact, we could do it in one step: by modus ponens, <code>h h3</code> is a proof of <code>Q → R</code>, and therefore, by another application of modus ponens, <code>(h h3) h4</code> is a proof of <code>R</code>. The parentheses here are not necessary; Lean will interpret <code>h h3 h4</code> as <code>(h h3) h4</code>, so we can complete the proof like this:</p>
 <div class="inout">
 <div class="inpt">
-<p><u>Lean File</u></p>
 <div class="sourceCode" id="cb19"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Example_3_2_4_v3 (P Q R : <span class="kw">Prop</span>)</span>
 <span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>(h : P → (Q → R)) : ¬R → (P → ¬Q) := <span class="kw">by</span></span>
 <span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>  <span class="kw">assume</span> h2 : ¬R</span>
@@ -460,7 +441,6 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a>  <span class="kw">show</span> R <span class="kw">from</span> h h3 h4</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="outpt">
-<p><u>Tactic State in Infoview</u></p>
 <div class="sourceCode" id="cb20"><pre class="sourceCode state code-with-copy"><code class="sourceCode state"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="sc">!!</span>Goals accomplished 🎉</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </div>
@@ -468,14 +448,12 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>There is one more idea that is introduced in Section 3.2 of <em>HTPI</em>. The last example in that section illustrates how you can sometimes use rules of inference to work backwards. Here’s a similar example in Lean:</p>
 <div class="inout">
 <div class="inpt">
-<p><u>Lean File</u></p>
 <div class="sourceCode" id="cb21"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Like_Example_3_2_5</span>
 <span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>(U : Type) (A B C : Set U) (a : U)</span>
 <span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>(h1 : a ∈ A) (h2 : a ∉ A \ B)</span>
 <span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>(h3 : a ∈ B → a ∈ C) : a ∈ C := <span class="kw">by</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="outpt">
-<p><u>Tactic State in Infoview</u></p>
 <div class="sourceCode" id="cb22"><pre class="sourceCode state code-with-copy"><code class="sourceCode state"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="in">U </span>: Type</span>
 <span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a><span class="in">A B C </span>: Set U</span>
 <span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a><span class="in">a </span>: U</span>
@@ -489,7 +467,6 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>To get Lean to use this proof strategy, we use the tactic <code>apply h3 _</code>. The underscore here represents a blank to be filled in by Lean. You might think of this tactic as asking Lean the question: If we want <code>h3 _</code> to be a proof of the goal <code>a ∈ C</code>, what do we have to put in the blank? Lean is able to figure out that the answer is: a proof of <code>a ∈ B</code>. So it sets the goal to be <code>a ∈ B</code>, since a proof of that goal, when inserted into the blank in <code>h3 _</code>, would prove the original goal <code>a ∈ C</code>:</p>
 <div class="inout">
 <div class="inpt">
-<p><u>Lean File</u></p>
 <div class="sourceCode" id="cb23"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Like_Example_3_2_5</span>
 <span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>(U : Type) (A B C : Set U) (a : U)</span>
 <span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>(h1 : a ∈ A) (h2 : a ∉ A \ B)</span>
@@ -497,7 +474,6 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a>  <span class="kw">apply</span> h3 _</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="outpt">
-<p><u>Tactic State in Infoview</u></p>
 <div class="sourceCode" id="cb24"><pre class="sourceCode state code-with-copy"><code class="sourceCode state"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="in">U </span>: Type</span>
 <span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a><span class="in">A B C</span>: Set U</span>
 <span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a><span class="in">a </span>: U</span>
@@ -510,7 +486,6 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>It may not be clear what to do next, but the given <code>h2</code> is a negative statement, so perhaps reexpressing it will help. Writing out the definition of set difference, <code>h2</code> means <code>¬(a ∈ A ∧ a ∉ B)</code>, and then one of De Morgan’s laws and a conditional law allow us to rewrite it first as <code>(a ∉ A ∨ a ∈ B)</code> and then as <code>(a ∈ A → a ∈ B)</code>. Of course, we have tactics to accomplish all of these reexpressions:</p>
 <div class="inout">
 <div class="inpt">
-<p><u>Lean File</u></p>
 <div class="sourceCode" id="cb25"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Like_Example_3_2_5</span>
 <span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>(U : Type) (A B C : Set U) (a : U)</span>
 <span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>(h1 : a ∈ A) (h2 : a ∉ A \ B)</span>
@@ -520,7 +495,6 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb25-7"><a href="#cb25-7" aria-hidden="true" tabindex="-1"></a>  <span class="kw">demorgan</span> <span class="kw">at</span> h2; <span class="kw">conditional</span> <span class="kw">at</span> h2</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="outpt">
-<p><u>Tactic State in Infoview</u></p>
 <div class="sourceCode" id="cb26"><pre class="sourceCode state code-with-copy"><code class="sourceCode state"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="in">U </span>: Type</span>
 <span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a><span class="in">A B C </span>: Set U</span>
 <span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a><span class="in">a </span>: U</span>
@@ -533,7 +507,6 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>And now it is easy to complete the proof by applying modus ponens, using <code>h2</code> and <code>h1</code>:</p>
 <div class="inout">
 <div class="inpt">
-<p><u>Lean File</u></p>
 <div class="sourceCode" id="cb27"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Like_Example_3_2_5</span>
 <span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>(U : Type) (A B C : Set U) (a : U)</span>
 <span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a>(h1 : a ∈ A) (h2 : a ∉ A \ B)</span>
@@ -544,7 +517,6 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb27-8"><a href="#cb27-8" aria-hidden="true" tabindex="-1"></a>  <span class="kw">show</span> a ∈ B <span class="kw">from</span> h2 h1</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="outpt">
-<p><u>Tactic State in Infoview</u></p>
 <div class="sourceCode" id="cb28"><pre class="sourceCode state code-with-copy"><code class="sourceCode state"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="sc">!!</span>Goals accomplished 🎉</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </div>

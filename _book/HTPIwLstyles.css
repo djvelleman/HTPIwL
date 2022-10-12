@@ -53,11 +53,31 @@ code span.in {       /* identifiers in Infoview */
   row-gap: 0
 }
 
+.inpt::before {
+  content: "Lean File";
+  text-decoration-line: underline
+}
+
+.outpt::before {
+  content: "Tactic State in Infoview";
+  text-decoration-line: underline
+}
+
 .lftrt {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 10px;
   row-gap: 0
+}
+
+.bef::before {
+  content: "Tactic State Before Using Strategy";
+  text-decoration-line: underline
+}
+
+.aft::before {
+  content: "Tactic State After Using Strategy";
+  text-decoration-line: underline
 }
 
 .quote {
@@ -73,7 +93,7 @@ code span.in {       /* identifiers in Infoview */
   font-style: normal;
   font-weight: bold;
   padding-right: 0.4em;
-  float: left;
+  float: left
 }
 
 .nthm {

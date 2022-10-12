@@ -91,8 +91,6 @@ One of the advantages of tactic mode is that Lean displays, in the Lean Infoview
 
 ::: {.inout}
 ::: {.inpt}
-[Lean File]{.ul}
-
 ```lean
 theorem two_imp (P Q R : Prop)
 (h1 : P → Q) (h2 : Q → ¬R) : R → ¬P := by
@@ -102,8 +100,6 @@ theorem two_imp (P Q R : Prop)
 :::
 
 ::: {.outpt}
-[Tactic State in Infoview]{.ul}
-
 ```state
 P Q R : Prop
 h1 : P → Q
@@ -119,8 +115,6 @@ From the hypotheses `h1` and `h2` it shouldn't be hard to prove `P → ¬R`, but
 
 ::: {.inout}
 ::: {.inpt}
-[Lean File]{.ul}
-
 ```lean
 theorem two_imp (P Q R : Prop)
 (h1 : P → Q) (h2 : Q → ¬R) : R → ¬P := by
@@ -130,8 +124,6 @@ theorem two_imp (P Q R : Prop)
 :::
 
 ::: {.outpt}
-[Tactic State in Infoview]{.ul}
-
 ```state
 P Q R : Prop
 h1 : P → Q
@@ -145,8 +137,6 @@ If you want to make your proof a little more readable, you could add a comment s
 
 ::: {.inout}
 ::: {.inpt}
-[Lean File]{.ul}
-
 ```lean
 theorem two_imp (P Q R : Prop)
 (h1 : P → Q) (h2 : Q → ¬R) : R → ¬P := by
@@ -157,8 +147,6 @@ theorem two_imp (P Q R : Prop)
 :::
 
 ::: {.outpt}
-[Tactic State in Infoview]{.ul}
-
 ```state
 P Q R : Prop
 h1 : P → Q
@@ -173,8 +161,6 @@ We can now use modus ponens to infer `Q` from `h1 : P → Q` and `h3 : P`.  As w
 
 ::: {.inout}
 ::: {.inpt}
-[Lean File]{.ul}
-
 ```lean
 theorem two_imp (P Q R : Prop)
 (h1 : P → Q) (h2 : Q → ¬R) : R → ¬P := by
@@ -186,8 +172,6 @@ theorem two_imp (P Q R : Prop)
 :::
 
 ::: {.outpt}
-[Tactic State in Infoview]{.ul}
-
 ```state
 P Q R : Prop
 h1 : P → Q
@@ -203,8 +187,6 @@ Finally, to complete the proof, we can infer the goal `¬R` from `h2 : Q → ¬R
 
 ::: {.inout}
 ::: {.inpt}
-[Lean File]{.ul}
-
 ```lean
 theorem two_imp (P Q R : Prop)
 (h1 : P → Q) (h2 : Q → ¬R) : R → ¬P := by
@@ -217,8 +199,6 @@ theorem two_imp (P Q R : Prop)
 :::
 
 ::: {.outpt}
-[Tactic State in Infoview]{.ul}
-
 ```state
 !!Goals accomplished 🎉
 ```
@@ -270,8 +250,6 @@ What about sets?  If you want to prove a theorem about a set `A`, can you say th
 
 ::: {.inout}
 ::: {.inpt}
-[Lean File]{.ul}
-
 ```lean
 theorem Example_3_2_5_simple
 (A B : Set Nat) (a : Nat)
@@ -282,8 +260,6 @@ theorem Example_3_2_5_simple
 :::
 
 ::: {.outpt}
-[Tactic State in Infoview]{.ul}
-
 ```state
 A B : Set ℕ
 a : ℕ
@@ -300,8 +276,6 @@ To figure out this proof, we'll imitate the reasoning in Example 3.2.5 in *HTPI*
 
 ::: {.inout}
 ::: {.inpt}
-[Lean File]{.ul}
-
 ```lean
 theorem Example_3_2_5_simple
 (A B : Set Nat) (a : Nat)
@@ -312,8 +286,6 @@ theorem Example_3_2_5_simple
 :::
 
 ::: {.outpt}
-[Tactic State in Infoview]{.ul}
-
 ```state
 A B : Set ℕ
 a : ℕ
@@ -328,8 +300,6 @@ We see that Lean has written out the meaning of set difference in `h2`.  And now
 
 ::: {.inout}
 ::: {.inpt}
-[Lean File]{.ul}
-
 ```lean
 theorem Example_3_2_5_simple
 (A B : Set Nat) (a : Nat)
@@ -342,8 +312,6 @@ theorem Example_3_2_5_simple
 :::
 
 ::: {.outpt}
-[Tactic State in Infoview]{.ul}
-
 ```state
 A B : Set ℕ
 a : ℕ
@@ -358,8 +326,6 @@ Occasionally, you may feel that the application of two tactics one after the oth
 
 ::: {.inout}
 ::: {.inpt}
-[Lean File]{.ul}
-
 ```lean
 theorem Example_3_2_5_simple
 (A B : Set Nat) (a : Nat)
@@ -373,8 +339,6 @@ theorem Example_3_2_5_simple
 :::
 
 ::: {.outpt}
-[Tactic State in Infoview]{.ul}
-
 ```state
 !!Goals accomplished 🎉
 ```

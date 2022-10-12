@@ -270,14 +270,12 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>One of the advantages of tactic mode is that Lean displays, in the Lean Infoview pane, information about the status of the proof as your write it. As soon as you position your cursor on the blank line, Lean displays what it calls the “tactic state” in the Infoview pane. Your screen should look like this:</p>
 <div class="inout">
 <div class="inpt">
-<p><u>Lean File</u></p>
 <div class="sourceCode" id="cb7"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> two_imp (P Q R : <span class="kw">Prop</span>)</span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>(h1 : P → Q) (h2 : Q → ¬R) : R → ¬P := <span class="kw">by</span></span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>  <span class="sc">!!</span><span class="wa">done</span><span class="sc">!!</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="outpt">
-<p><u>Tactic State in Infoview</u></p>
 <div class="sourceCode" id="cb8"><pre class="sourceCode state code-with-copy"><code class="sourceCode state"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="in">P Q R </span>: Prop</span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="in">h1 </span>: P → Q</span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="in">h2 </span>: Q → ¬R</span>
@@ -288,14 +286,12 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>From the hypotheses <code>h1</code> and <code>h2</code> it shouldn’t be hard to prove <code>P → ¬R</code>, but the goal is <code>R → ¬P</code>. This suggests that we should prove the contrapositive of the goal. Type tab to indent two spaces and then <code>contrapos</code> to tell Lean that you want to replace the goal with its contrapositive. (You won’t have to type tab to indent later lines; VS Code maintains the same indenting until you delete the tab at the beginning of a line to return to unindented text.) As soon as you type <code>contrapos</code>, Lean will update the tactic state to reflect the change in the goal. You should now see this:</p>
 <div class="inout">
 <div class="inpt">
-<p><u>Lean File</u></p>
 <div class="sourceCode" id="cb9"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> two_imp (P Q R : <span class="kw">Prop</span>)</span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>(h1 : P → Q) (h2 : Q → ¬R) : R → ¬P := <span class="kw">by</span></span>
 <span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>  <span class="kw">contrapos</span></span>
 <span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>  <span class="sc">!!</span><span class="wa">done</span><span class="sc">!!</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="outpt">
-<p><u>Tactic State in Infoview</u></p>
 <div class="sourceCode" id="cb10"><pre class="sourceCode state code-with-copy"><code class="sourceCode state"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="in">P Q R </span>: Prop</span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="in">h1 </span>: P → Q</span>
 <span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="in">h2 </span>: Q → ¬R</span>
@@ -305,7 +301,6 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>If you want to make your proof a little more readable, you could add a comment saying that the goal has been changed to <code>P → ¬R</code>. To prove the new goal, we will assume <code>P</code> and prove <code>¬R</code>. So type <code>assume h3 : P</code> on a new line (after <code>contrapos</code>, but before <code>done</code>). Once again, the tactic state is immediately updated. Lean adds the new given <code>h3 : P</code>, and it knows, without having to be told, that the goal should now be <code>¬R</code>:</p>
 <div class="inout">
 <div class="inpt">
-<p><u>Lean File</u></p>
 <div class="sourceCode" id="cb11"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> two_imp (P Q R : <span class="kw">Prop</span>)</span>
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>(h1 : P → Q) (h2 : Q → ¬R) : R → ¬P := <span class="kw">by</span></span>
 <span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>  <span class="kw">contrapos</span>           <span class="co">--Goal is now P → ¬R</span></span>
@@ -313,7 +308,6 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>  <span class="sc">!!</span><span class="wa">done</span><span class="sc">!!</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="outpt">
-<p><u>Tactic State in Infoview</u></p>
 <div class="sourceCode" id="cb12"><pre class="sourceCode state code-with-copy"><code class="sourceCode state"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="in">P Q R </span>: Prop</span>
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="in">h1 </span>: P → Q</span>
 <span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="in">h2 </span>: Q → ¬R</span>
@@ -324,7 +318,6 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>We can now use modus ponens to infer <code>Q</code> from <code>h1 : P → Q</code> and <code>h3 : P</code>. As we saw earlier, this means that <code>h1 h3</code> is a term-mode proof of <code>Q</code>. So on the next line, type <code>have h4 : Q := h1 h3</code>. To make an inference, you need to provide a justification, so <code>:=</code> here is followed by the term-mode proof of <code>Q</code>. Usually we will use <code>have</code> to make easy inferences for which we can give simple term-mode proofs. (We’ll see later that it is also possible to use <code>have</code> to make an inference justified by a tactic-mode proof.) Of course, Lean updates the tactic state by adding the new given <code>h4 : Q</code>:</p>
 <div class="inout">
 <div class="inpt">
-<p><u>Lean File</u></p>
 <div class="sourceCode" id="cb13"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> two_imp (P Q R : <span class="kw">Prop</span>)</span>
 <span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>(h1 : P → Q) (h2 : Q → ¬R) : R → ¬P := <span class="kw">by</span></span>
 <span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>  <span class="kw">contrapos</span>           <span class="co">--Goal is now P → ¬R</span></span>
@@ -333,7 +326,6 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>  <span class="sc">!!</span><span class="wa">done</span><span class="sc">!!</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="outpt">
-<p><u>Tactic State in Infoview</u></p>
 <div class="sourceCode" id="cb14"><pre class="sourceCode state code-with-copy"><code class="sourceCode state"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="in">P Q R </span>: Prop</span>
 <span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="in">h1 </span>: P → Q</span>
 <span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="in">h2 </span>: Q → ¬R</span>
@@ -345,7 +337,6 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>Finally, to complete the proof, we can infer the goal <code>¬R</code> from <code>h2 : Q → ¬R</code> and <code>h4 : Q</code>, using the term-mode proof <code>h2 h4</code>. Type <code>show ¬R from h2 h4</code> to complete the proof. You’ll notice two changes in the display: the red squiggle will disappear from the word <code>done</code>, and the tactic state will say “Goals accomplished”:</p>
 <div class="inout">
 <div class="inpt">
-<p><u>Lean File</u></p>
 <div class="sourceCode" id="cb15"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> two_imp (P Q R : <span class="kw">Prop</span>)</span>
 <span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>(h1 : P → Q) (h2 : Q → ¬R) : R → ¬P := <span class="kw">by</span></span>
 <span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>  <span class="kw">contrapos</span>           <span class="co">--Goal is now P → ¬R</span></span>
@@ -355,7 +346,6 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a>  <span class="kw">done</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="outpt">
-<p><u>Tactic State in Infoview</u></p>
 <div class="sourceCode" id="cb16"><pre class="sourceCode state code-with-copy"><code class="sourceCode state"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="sc">!!</span>Goals accomplished 🎉</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </div>
@@ -501,7 +491,6 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>What about sets? If you want to prove a theorem about a set <code>A</code>, can you say that <code>A</code> has type <code>Set</code>? No, Lean is fussier than that. Lean wants to know, not only that <code>A</code> is a set, but also what the type of the elements of <code>A</code> is. So you can say that <code>A</code> has type <code>Set Nat</code> if <code>A</code> is a set whose elements are natural numbers, or <code>Set Real</code> if it is a set of real numbers, or even <code>Set (Set Nat)</code> if it is a set whose elements are sets of natural numbers. Here is an example of a simple theorem about sets; it is a simplified version of Example 3.2.5 in <em>HTPI</em>. To type the symbols <code>∈</code>, <code>∉</code>, and <code>\</code> in this theorem, type <code>\in</code>, <code>\notin</code>, and <code>\\</code>, respectively.</p>
 <div class="inout">
 <div class="inpt">
-<p><u>Lean File</u></p>
 <div class="sourceCode" id="cb17"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Example_3_2_5_simple</span>
 <span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>(A B : Set Nat) (a : Nat)</span>
 <span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>(h1 : a ∈ A) (h2 : a ∉ A \ B) : a ∈ B := <span class="kw">by</span></span>
@@ -509,7 +498,6 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>  <span class="sc">!!</span><span class="wa">done</span><span class="sc">!!</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="outpt">
-<p><u>Tactic State in Infoview</u></p>
 <div class="sourceCode" id="cb18"><pre class="sourceCode state code-with-copy"><code class="sourceCode state"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="in">A B </span>: Set ℕ</span>
 <span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="in">a </span>: ℕ</span>
 <span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a><span class="in">h1 </span>: a ∈ A</span>
@@ -521,7 +509,6 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>To figure out this proof, we’ll imitate the reasoning in Example 3.2.5 in <em>HTPI</em>. We begin by writing out the meaning of the given <code>h2</code>. Fortunately, we have a tactic for that. The tactic <code>define</code> writes out the definition of the goal, and as usual we can add <code>at</code> to apply the tactic to a given rather than the goal. Here’s the situation after using the tactic <code>define at h2</code>:</p>
 <div class="inout">
 <div class="inpt">
-<p><u>Lean File</u></p>
 <div class="sourceCode" id="cb19"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Example_3_2_5_simple</span>
 <span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>(A B : Set Nat) (a : Nat)</span>
 <span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>(h1 : a ∈ A) (h2 : a ∉ A \ B) : a ∈ B := <span class="kw">by</span></span>
@@ -529,7 +516,6 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a>  <span class="sc">!!</span><span class="wa">done</span><span class="sc">!!</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="outpt">
-<p><u>Tactic State in Infoview</u></p>
 <div class="sourceCode" id="cb20"><pre class="sourceCode state code-with-copy"><code class="sourceCode state"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="in">A B </span>: Set ℕ</span>
 <span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a><span class="in">a </span>: ℕ</span>
 <span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a><span class="in">h1 </span>: a ∈ A</span>
@@ -540,7 +526,6 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>We see that Lean has written out the meaning of set difference in <code>h2</code>. And now we can see that, as in Example 3.2.5 in <em>HTPI</em>, we can put <code>h2</code> into a more useful form by applying first one of De Morgan’s laws to rewrite it as <code>¬a ∈ A ∨ a ∈ B</code> and then a conditional law to change it to <code>a ∈ A → a ∈ B</code>:</p>
 <div class="inout">
 <div class="inpt">
-<p><u>Lean File</u></p>
 <div class="sourceCode" id="cb21"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Example_3_2_5_simple</span>
 <span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>(A B : Set Nat) (a : Nat)</span>
 <span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>(h1 : a ∈ A) (h2 : a ∉ A \ B) : a ∈ B := <span class="kw">by</span></span>
@@ -550,7 +535,6 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a>  <span class="sc">!!</span><span class="wa">done</span><span class="sc">!!</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="outpt">
-<p><u>Tactic State in Infoview</u></p>
 <div class="sourceCode" id="cb22"><pre class="sourceCode state code-with-copy"><code class="sourceCode state"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="in">A B </span>: Set ℕ</span>
 <span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a><span class="in">a </span>: ℕ</span>
 <span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a><span class="in">h1 </span>: a ∈ A</span>
@@ -561,7 +545,6 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>Occasionally, you may feel that the application of two tactics one after the other should be thought of as a single step. To allow for this, Lean lets you put two tactics on the same line, separated by a semicolon. For example, in this proof you could write the use of De Morgan’s law and the conditional law as a single step by writing <code>demorgan at h2; conditional at h2</code>. Now the rest is easy: we can apply modus ponens to reach the goal:</p>
 <div class="inout">
 <div class="inpt">
-<p><u>Lean File</u></p>
 <div class="sourceCode" id="cb23"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Example_3_2_5_simple</span>
 <span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>(A B : Set Nat) (a : Nat)</span>
 <span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>(h1 : a ∈ A) (h2 : a ∉ A \ B) : a ∈ B := <span class="kw">by</span></span>
@@ -572,7 +555,6 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb23-8"><a href="#cb23-8" aria-hidden="true" tabindex="-1"></a>  <span class="kw">done</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="outpt">
-<p><u>Tactic State in Infoview</u></p>
 <div class="sourceCode" id="cb24"><pre class="sourceCode state code-with-copy"><code class="sourceCode state"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="sc">!!</span>Goals accomplished 🎉</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </div>
