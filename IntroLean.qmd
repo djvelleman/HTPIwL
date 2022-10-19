@@ -252,8 +252,8 @@ What about sets?  If you want to prove a theorem about a set `A`, can you say th
 ::: {.inpt}
 ```lean
 theorem Example_3_2_5_simple
-(A B : Set Nat) (a : Nat)
-(h1 : a ∈ A) (h2 : a ∉ A \ B) : a ∈ B := by
+(B C : Set Nat) (a : Nat)
+(h1 : a ∈ B) (h2 : a ∉ B \ C) : a ∈ C := by
 
   !!done!!
 ```
@@ -261,16 +261,16 @@ theorem Example_3_2_5_simple
 
 ::: {.outpt}
 ```state
-A B : Set ℕ
+B C : Set ℕ
 a : ℕ
-h1 : a ∈ A
-h2 : ¬a ∈ A \ B
-⊢ a ∈ B
+h1 : a ∈ B
+h2 : ¬a ∈ B \ C
+⊢ a ∈ C
 ```
 :::
 :::
 
-The second line of this theorem statement declares that the variables `A` and `B` stand for sets of natural numbers, and `a` stands for a natural number.  The third line states the two hypotheses of the theorem, `a ∈ A` and `a ∉ A \ B`, and the conclusion, `a ∈ B`.
+The second line of this theorem statement declares that the variables `B` and `C` stand for sets of natural numbers, and `a` stands for a natural number.  The third line states the two hypotheses of the theorem, `a ∈ B` and `a ∉ B \ C`, and the conclusion, `a ∈ C`.
 
 To figure out this proof, we'll imitate the reasoning in Example 3.2.5 in *HTPI*.  We begin by writing out the meaning of the given `h2`.  Fortunately, we have a tactic for that.  The tactic `define` writes out the definition of the goal, and as usual we can add `at` to apply the tactic to a given rather than the goal.  Here's the situation after using the tactic `define at h2`:
 
@@ -278,46 +278,46 @@ To figure out this proof, we'll imitate the reasoning in Example 3.2.5 in *HTPI*
 ::: {.inpt}
 ```lean
 theorem Example_3_2_5_simple
-(A B : Set Nat) (a : Nat)
-(h1 : a ∈ A) (h2 : a ∉ A \ B) : a ∈ B := by
-  define at h2       --Now h2 : ¬(a ∈ A ∧ ¬a ∈ B)
+(B C : Set Nat) (a : Nat)
+(h1 : a ∈ B) (h2 : a ∉ B \ C) : a ∈ C := by
+  define at h2       --Now h2 : ¬(a ∈ B ∧ ¬a ∈ C)
   !!done!!
 ```
 :::
 
 ::: {.outpt}
 ```state
-A B : Set ℕ
+B C : Set ℕ
 a : ℕ
-h1 : a ∈ A
-h2 : ¬(a ∈ A ∧ ¬a ∈ B)
-⊢ a ∈ B
+h1 : a ∈ B
+h2 : ¬(a ∈ B ∧ ¬a ∈ C)
+⊢ a ∈ C
 ```
 :::
 :::
 
-We see that Lean has written out the meaning of set difference in `h2`.  And now we can see that, as in Example 3.2.5 in *HTPI*, we can put `h2` into a more useful form by applying first one of De Morgan's laws to rewrite it as `¬a ∈ A ∨ a ∈ B` and then a conditional law to change it to `a ∈ A → a ∈ B`:
+We see that Lean has written out the meaning of set difference in `h2`.  And now we can see that, as in Example 3.2.5 in *HTPI*, we can put `h2` into a more useful form by applying first one of De Morgan's laws to rewrite it as `¬a ∈ B ∨ a ∈ C` and then a conditional law to change it to `a ∈ B → a ∈ C`:
 
 ::: {.inout}
 ::: {.inpt}
 ```lean
 theorem Example_3_2_5_simple
-(A B : Set Nat) (a : Nat)
-(h1 : a ∈ A) (h2 : a ∉ A \ B) : a ∈ B := by
-  define at h2       --Now h2 : ¬(a ∈ A ∧ ¬a ∈ B)
-  demorgan at h2     --Now h2 : ¬a ∈ A ∨ a ∈ B
-  conditional at h2  --Now h2 : a ∈ A → a ∈ B
+(B C : Set Nat) (a : Nat)
+(h1 : a ∈ B) (h2 : a ∉ B \ C) : a ∈ C := by
+  define at h2       --Now h2 : ¬(a ∈ B ∧ ¬a ∈ C)
+  demorgan at h2     --Now h2 : ¬a ∈ B ∨ a ∈ C
+  conditional at h2  --Now h2 : a ∈ B → a ∈ C
   !!done!!
 ```
 :::
 
 ::: {.outpt}
 ```state
-A B : Set ℕ
+B C : Set ℕ
 a : ℕ
-h1 : a ∈ A
-h2 : a ∈ A → a ∈ B
-⊢ a ∈ B
+h1 : a ∈ B
+h2 : a ∈ B → a ∈ C
+⊢ a ∈ C
 ```
 :::
 :::
@@ -328,12 +328,12 @@ Occasionally, you may feel that the application of two tactics one after the oth
 ::: {.inpt}
 ```lean
 theorem Example_3_2_5_simple
-(A B : Set Nat) (a : Nat)
-(h1 : a ∈ A) (h2 : a ∉ A \ B) : a ∈ B := by
-  define at h2       --Now h2 : ¬(a ∈ A ∧ ¬a ∈ B)
+(B C : Set Nat) (a : Nat)
+(h1 : a ∈ B) (h2 : a ∉ B \ C) : a ∈ C := by
+  define at h2       --Now h2 : ¬(a ∈ B ∧ ¬a ∈ C)
   demorgan at h2; conditional at h2
-                     --Now h2 : a ∈ A → a ∈ B
-  show a ∈ B from h2 h1
+                     --Now h2 : a ∈ B → a ∈ C
+  show a ∈ C from h2 h1
   done
 ```
 :::
@@ -349,8 +349,8 @@ There is one unfortunate feature of this theorem:  We have stated it as a theore
 
 ```lean
 theorem Example_3_2_5_simple_general
-(U : Type) (A B : Set U) (a : U)
-(h1 : a ∈ A) (h2 : a ∉ A \ B) : a ∈ B := by
+(U : Type) (B C : Set U) (a : U)
+(h1 : a ∈ B) (h2 : a ∉ B \ C) : a ∈ C := by
 ```
 
-In this version of the theorem, we have introduced a new variable `U`, whose type is ... `Type`!  So `U` can stand for any type.  You can think of the variable `U` as playing the role of the universe of discourse, an idea that was introduced in Section 1.3 of *HTPI*.  The sets `A` and `B` contain elements from that universe of discourse, and `a` belongs to the universe.  You can prove the new version of the theorem by using exactly the same sequence of tactics as before.
+In this version of the theorem, we have introduced a new variable `U`, whose type is ... `Type`!  So `U` can stand for any type.  You can think of the variable `U` as playing the role of the universe of discourse, an idea that was introduced in Section 1.3 of *HTPI*.  The sets `B` and `C` contain elements from that universe of discourse, and `a` belongs to the universe.  You can prove the new version of the theorem by using exactly the same sequence of tactics as before.

@@ -16,6 +16,10 @@
 \renewcommand{\CommentTok}[1]{\textcolor[HTML]{008000}{#1}}
 \renewcommand{\InformationTok}[1]{\textcolor[HTML]{D2691E}{\textbf{#1}}}
 
+\newenvironment{ind}
+	{\begin{list}{}{\setlength{\leftmargin}{1em}}\item\relax}
+	{\end{list}}
+
 %redefines Shaded so it can't break
 \newcommand{\nobreakShaded}{\renewenvironment{Shaded}
 	{\begin{tcolorbox}[frame hidden, enhanced, interior hidden, boxrule=0pt,

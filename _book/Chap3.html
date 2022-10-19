@@ -123,6 +123,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   }
 }</script>
 
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
 
 <link rel="stylesheet" href="HTPIwLstyles.css">
 </head>
@@ -191,6 +192,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
    
   <ul class="collapse">
   <li><a href="#proofs-involving-negations-and-conditionals" id="toc-proofs-involving-negations-and-conditionals" class="nav-link active" data-scroll-target="#proofs-involving-negations-and-conditionals">3.1 &amp; 3.2. Proofs Involving Negations and Conditionals</a></li>
+  <li><a href="#proofs-involving-quantifiers" id="toc-proofs-involving-quantifiers" class="nav-link" data-scroll-target="#proofs-involving-quantifiers">3.3. Proofs Involving Quantifiers</a></li>
   </ul>
 </nav>
     </div>
@@ -217,8 +219,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <h2 class="anchored" data-anchor-id="proofs-involving-negations-and-conditionals">3.1 &amp; 3.2. Proofs Involving Negations and Conditionals</h2>
 <p>Sections 3.1 and 3.2 of <em>How To Prove It</em> present strategies for dealing with givens and goals involving negations and conditionals. We restate those strategies here, and explain how to use them with Lean.</p>
 <p>Section 3.1 gives two strategies for proving a goal of the form <code>P → Q</code>:</p>
-<section id="to-prove-a-goal-of-the-form-p-q" class="level3">
-<h3 class="anchored" data-anchor-id="to-prove-a-goal-of-the-form-p-q">To prove a goal of the form <code>P → Q</code>:</h3>
+<section id="to-prove-a-goal-of-the-form-p-q" class="level4">
+<h4 class="anchored" data-anchor-id="to-prove-a-goal-of-the-form-p-q">To prove a goal of the form <code>P → Q</code>:</h4>
 <ol type="1">
 <li>Assume <code>P</code> is true and prove <code>Q</code>.</li>
 <li>Assume <code>Q</code> is false and prove that <code>P</code> is false.</li>
@@ -249,8 +251,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </div>
 <p>Section 3.2 gives two strategies for using givens of the form <code>P → Q</code>, with the second once again being a variation on the first based on the contrapositive law:</p>
 </section>
-<section id="to-use-a-given-of-the-form-p-q" class="level3">
-<h3 class="anchored" data-anchor-id="to-use-a-given-of-the-form-p-q">To use a given of the form <code>P → Q</code>:</h3>
+<section id="to-use-a-given-of-the-form-p-q" class="level4">
+<h4 class="anchored" data-anchor-id="to-use-a-given-of-the-form-p-q">To use a given of the form <code>P → Q</code>:</h4>
 <ol type="1">
 <li>If you are also given <code>P</code>, or you can prove that <code>P</code> is true, then you can use this given to conclude that <code>Q</code> is true.</li>
 <li>If you are also given <code>¬Q</code>, or you can prove that <code>Q</code> is false, then you can use this given to conclude that <code>P</code> is false.</li>
@@ -259,8 +261,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>All of the strategies listed above for working with conditional statements as givens or goals were illustrated in examples in the last chapter.</p>
 <p>Section 3.2 of <em>HTPI</em> offers two strategies for proving negative goals:</p>
 </section>
-<section id="to-prove-a-goal-of-the-form-p" class="level3">
-<h3 class="anchored" data-anchor-id="to-prove-a-goal-of-the-form-p">To prove a goal of the form <code>¬P</code>:</h3>
+<section id="to-prove-a-goal-of-the-form-p" class="level4">
+<h4 class="anchored" data-anchor-id="to-prove-a-goal-of-the-form-p">To prove a goal of the form <code>¬P</code>:</h4>
 <ol type="1">
 <li>Reexpress the goal in some other form.</li>
 <li>Use proof by contradiction: assume <code>P</code> is true and try to deduce a contradiction.</li>
@@ -385,8 +387,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </div>
 <p>Finally, we have two strategies for using a given that is a negative statement:</p>
 </section>
-<section id="to-use-a-given-of-the-form-p" class="level3">
-<h3 class="anchored" data-anchor-id="to-use-a-given-of-the-form-p">To use a given of the form <code>¬P</code>:</h3>
+<section id="to-use-a-given-of-the-form-p" class="level4">
+<h4 class="anchored" data-anchor-id="to-use-a-given-of-the-form-p">To use a given of the form <code>¬P</code>:</h4>
 <ol type="1">
 <li>Reexpress the given in some other form.</li>
 <li>If you are doing a proof by contradiction, you can achieve a contradiction by proving <code>P</code>, since that would contradict the given <code>¬P</code>.</li>
@@ -449,7 +451,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div class="inout">
 <div class="inpt">
 <div class="sourceCode" id="cb21"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Like_Example_3_2_5</span>
-<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>(U : Type) (A B C : Set U) (a : U)</span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>(U : <span class="kw">Type</span>) (A B C : Set U) (a : U)</span>
 <span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>(h1 : a ∈ A) (h2 : a ∉ A \ B)</span>
 <span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>(h3 : a ∈ B → a ∈ C) : a ∈ C := <span class="kw">by</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
@@ -468,7 +470,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div class="inout">
 <div class="inpt">
 <div class="sourceCode" id="cb23"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Like_Example_3_2_5</span>
-<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>(U : Type) (A B C : Set U) (a : U)</span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>(U : <span class="kw">Type</span>) (A B C : Set U) (a : U)</span>
 <span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>(h1 : a ∈ A) (h2 : a ∉ A \ B)</span>
 <span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a>(h3 : a ∈ B → a ∈ C) : a ∈ C := <span class="kw">by</span></span>
 <span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a>  <span class="kw">apply</span> h3 _</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -487,7 +489,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div class="inout">
 <div class="inpt">
 <div class="sourceCode" id="cb25"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Like_Example_3_2_5</span>
-<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>(U : Type) (A B C : Set U) (a : U)</span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>(U : <span class="kw">Type</span>) (A B C : Set U) (a : U)</span>
 <span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>(h1 : a ∈ A) (h2 : a ∉ A \ B)</span>
 <span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a>(h3 : a ∈ B → a ∈ C) : a ∈ C := <span class="kw">by</span></span>
 <span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a>  <span class="kw">apply</span> h3 _</span>
@@ -508,7 +510,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div class="inout">
 <div class="inpt">
 <div class="sourceCode" id="cb27"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Like_Example_3_2_5</span>
-<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>(U : Type) (A B C : Set U) (a : U)</span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>(U : <span class="kw">Type</span>) (A B C : Set U) (a : U)</span>
 <span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a>(h1 : a ∈ A) (h2 : a ∉ A \ B)</span>
 <span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a>(h3 : a ∈ B → a ∈ C) : a ∈ C := <span class="kw">by</span></span>
 <span id="cb27-5"><a href="#cb27-5" aria-hidden="true" tabindex="-1"></a>  <span class="kw">apply</span> h3 _</span>
@@ -522,6 +524,134 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </div>
 <p>We will see many more uses of the <code>apply</code> tactic later in this book.</p>
 <p>Sections 3.1 and 3.2 of <em>HTPI</em> contain several proofs that involve algebraic reasoning. Although one can do such proofs in Lean, it requires ideas that we are not ready to introduce yet. So for the moment we will stick to proofs involving only logic and set theory.</p>
+</section>
+</section>
+<section id="proofs-involving-quantifiers" class="level2">
+<h2 class="anchored" data-anchor-id="proofs-involving-quantifiers">3.3. Proofs Involving Quantifiers</h2>
+<p>In the notation used in <em>HTPI</em>, if <span class="math inline">\(P(x)\)</span> is a statement about <span class="math inline">\(x\)</span>, then <span class="math inline">\(\forall x\, P(x)\)</span> means “for all <span class="math inline">\(x\)</span>, <span class="math inline">\(P(x)\)</span>” and <span class="math inline">\(\exists x\, P(x)\)</span> means “there exists at least one <span class="math inline">\(x\)</span> such that <span class="math inline">\(P(x)\)</span>.” The letter <span class="math inline">\(P\)</span> here is not a proposition; it is only when it is applied to some object <span class="math inline">\(x\)</span> that we get a proposition. We will say that <span class="math inline">\(P\)</span> is a <em>predicate</em>, and when we apply <span class="math inline">\(P\)</span> to an object <span class="math inline">\(x\)</span> we get a proposition <span class="math inline">\(P(x)\)</span>. You might want to think of the predicate <span class="math inline">\(P\)</span> as representing some property that an object might have, and the proposition <span class="math inline">\(P(x)\)</span> asserts that <span class="math inline">\(x\)</span> has that property.</p>
+<p>To use a predicate in Lean, you must tell Lean the type of objects to which it applies. If <code>U</code> is a type, then <code>Pred U</code> is the type of predicates that apply to objects of type <code>U</code>. If <code>P</code> has type <code>Pred U</code> (that is, <code>P</code> is a predicate applying to objects of type <code>U</code>) and <code>x</code> has type <code>U</code>, then to apply <code>P</code> to <code>x</code> we just write <code>P x</code> (with a space but no parentheses). Thus, if we have <code>P : Pred U</code> and <code>x : U</code>, then <code>P x</code> is an expression of type <code>Prop</code>. That is, <code>P x</code> is a proposition, and its meaning is that <code>x</code> has the property represented by the predicate <code>P</code>.</p>
+<p>There are a few differences between the way quantified statements are written in <em>HTPI</em> and the way they are written in Lean. First of all, when we apply a quantifier to a variable in Lean we will specify the type of the variable explicitly. Also, Lean requires that after specifying the variable and its type, you must put a comma before the proposition to which the quantifier is applied. Thus, if <code>P</code> has type <code>Pred U</code>, then to say that <code>P</code> holds for all objects of type <code>U</code> we would write <code>∀ (x : U), P x</code>. Similarly, <code>∃ (x : U), P x</code> is the proposition asserting that there exists at least one <code>x</code> of type <code>U</code> such that <code>P x</code>.</p>
+<p>And there is one more important difference between the way quantified statements are written in <em>HTPI</em> and Lean. In <em>HTPI</em>, a quantifier is interpreted as applying to as little as possible. Thus, <span class="math inline">\(\forall x\, P(x) \wedge Q(x)\)</span> is interpreted as <span class="math inline">\((\forall x\, P(x)) \wedge Q(x)\)</span>; if you want the quantifier <span class="math inline">\(\forall x\)</span> to apply to the entire statement <span class="math inline">\(P(x) \wedge Q(x)\)</span> you must use parentheses and write <span class="math inline">\(\forall x(P(x) \wedge Q(x))\)</span>. The convention in Lean is exactly the opposite: a quantifier applies to as much as possible. Thus, Lean will interpret <code>∀ (x : U), P x ∧ Q x</code> as meaning <code>∀ (x : U), (P x ∧ Q x)</code>. If you want the quantifier to apply to only <code>P x</code>, then you must use parentheses and write <code>(∀ (x : U), P x) ∧ Q x</code>.</p>
+<p>With this preparation, we are ready to consider how to write proofs involving quantifiers in Lean. The most common way to prove a goal of the form <code>∀ (x : U), P x</code> is to use the following strategy:</p>
+<section id="to-prove-a-goal-of-the-form-x-u-p-x" class="level4">
+<h4 class="anchored" data-anchor-id="to-prove-a-goal-of-the-form-x-u-p-x">To prove a goal of the form <code>∀ (x : U), P x</code>:</h4>
+<div class="ind">
+<p>Let <code>x</code> stand for an arbitrary object of type <code>U</code> and prove <code>P x</code>. If the letter <code>x</code> is already being used in the proof to stand for something, then you must choose an unused variable, say <code>y</code>, to stand for the arbitrary object, and prove <code>P y</code>.</p>
+</div>
+<p>To do this in Lean, you should use the tactic <code>fix x : U</code>, which tells Lean to treat <code>x</code> as standing for some fixed but arbitrary object of type <code>U</code>. This has the following effect on the tactic state:</p>
+<div class="lftrt">
+<div class="bef">
+<div class="sourceCode" id="cb29"><pre class="sourceCode state code-with-copy"><code class="sourceCode state"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="sc">!!</span> ⋮</span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>⊢ ∀ (x : U), P x</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="aft">
+<div class="sourceCode" id="cb30"><pre class="sourceCode state code-with-copy"><code class="sourceCode state"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="sc">!!</span> ⋮</span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a><span class="in">x </span>: U</span>
+<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a>⊢ P x</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+<p>To use a given of the form <code>∀ (x : U), P x</code>, we usually apply a rule of inference called <em>universal instantiation</em>, which is described by the following proof strategy:</p>
+</section>
+<section id="to-use-a-given-of-the-form-x-u-p-x" class="level4">
+<h4 class="anchored" data-anchor-id="to-use-a-given-of-the-form-x-u-p-x">To use a given of the form <code>∀ (x : U), P x</code>:</h4>
+<div class="ind">
+<p>You may plug in any value of type <code>U</code>, say <code>a</code>, for <code>x</code> and use this given to conclude that <code>P a</code> is true.</p>
+</div>
+<p>This strategy says that if you have <code>h : ∀ (x : U), P x</code> and <code>a : U</code>, then you can infer <code>P a</code>. Indeed, in this situation Lean will recognize <code>h a</code> as a proof of <code>P a</code>. For example, you can write <code>have h' : P a := h a</code> in a Lean tactic-mode proof, and Lean will add <code>h' : P a</code> to the tactic state.</p>
+<p>Let’s try these strategies out in a Lean proof. Consider the following theorem:</p>
+<div class="inout">
+<div class="inpt">
+<div class="sourceCode" id="cb31"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> two_pred (U : <span class="kw">Type</span>) (P Q : Pred U)</span>
+<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a>(h1 : ∀ (x : U), P x → ¬Q x)</span>
+<span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a>(h2 : ∀ (x : U), Q x) :</span>
+<span id="cb31-4"><a href="#cb31-4" aria-hidden="true" tabindex="-1"></a>¬∃ (x : U), P x := <span class="kw">by</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="outpt">
+<div class="sourceCode" id="cb32"><pre class="sourceCode state code-with-copy"><code class="sourceCode state"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="in">U </span>: Type</span>
+<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a><span class="in">P Q </span>: Pred U</span>
+<span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a><span class="in">h1 </span>: ∀ (x : U), P x → ¬Q x</span>
+<span id="cb32-4"><a href="#cb32-4" aria-hidden="true" tabindex="-1"></a><span class="in">h2 </span>: ∀ (x : U), Q x</span>
+<span id="cb32-5"><a href="#cb32-5" aria-hidden="true" tabindex="-1"></a>⊢ ¬∃ (x : U), P x</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+<p>To use the givens <code>h1</code> and <code>h2</code>, we will probably want to use universal instantiation. But to do that we would need an object of type <code>U</code> to plug in for <code>x</code> in <code>h1</code> and <code>h2</code>, and there is no object of type <code>U</code> in the tactic state. So at this point, we can’t apply universal instantiation to <code>h1</code> and <code>h2</code>. We should watch for an object of type <code>U</code> to come up in the course of the proof, and consider applying universal instantiation if one does. Until then, we turn our attention to the goal.</p>
+<p>The goal is a negative statement, so we begin by reexpressing it as an equivalent positive statement, using a quantifier negation law. The tactic <code>quant_neg</code> applies a quantifier negation law to rewrite the goal in the equivalent form <code>∀ (x : U), ¬P x</code>. As with the other tactics for applying logical equivalences, you can write <code>quant_neg at h</code> if you want to apply a quantifier negation law to a given <code>h</code>.</p>
+<div class="inout">
+<div class="inpt">
+<div class="sourceCode" id="cb33"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> two_pred (U : <span class="kw">Type</span>) (P Q : Pred U)</span>
+<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a>(h1 : ∀ (x : U), P x → ¬Q x)</span>
+<span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a>(h2 : ∀ (x : U), Q x) :</span>
+<span id="cb33-4"><a href="#cb33-4" aria-hidden="true" tabindex="-1"></a>¬∃ (x : U), P x := <span class="kw">by</span></span>
+<span id="cb33-5"><a href="#cb33-5" aria-hidden="true" tabindex="-1"></a>  <span class="kw">quant_neg</span>     <span class="co">--Goal is now ∀ (x : U), ¬P x</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="outpt">
+<div class="sourceCode" id="cb34"><pre class="sourceCode state code-with-copy"><code class="sourceCode state"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="in">U </span>: Type</span>
+<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a><span class="in">P Q </span>: Pred U</span>
+<span id="cb34-3"><a href="#cb34-3" aria-hidden="true" tabindex="-1"></a><span class="in">h1 </span>: ∀ (x : U), P x → ¬Q x</span>
+<span id="cb34-4"><a href="#cb34-4" aria-hidden="true" tabindex="-1"></a><span class="in">h2 </span>: ∀ (x : U), Q x</span>
+<span id="cb34-5"><a href="#cb34-5" aria-hidden="true" tabindex="-1"></a>⊢ ∀ (x : U), ¬P x</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+<p>Now the goal starts with <code>∀</code>, so we use the strategy above and introduce an arbitrary object of type <code>U</code>. Since the variable <code>x</code> occurs as a bound variable in several statements in this theorem, it might be best to use a different letter for the arbitrary object; this isn’t absolutely necessary, but it may help to avoid confusion. So our next tactic is <code>fix y : U</code>, and it has the following effect.</p>
+<div class="inout">
+<div class="inpt">
+<div class="sourceCode" id="cb35"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> two_pred (U : <span class="kw">Type</span>) (P Q : Pred U)</span>
+<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a>(h1 : ∀ (x : U), P x → ¬Q x)</span>
+<span id="cb35-3"><a href="#cb35-3" aria-hidden="true" tabindex="-1"></a>(h2 : ∀ (x : U), Q x) :</span>
+<span id="cb35-4"><a href="#cb35-4" aria-hidden="true" tabindex="-1"></a>¬∃ (x : U), P x := <span class="kw">by</span></span>
+<span id="cb35-5"><a href="#cb35-5" aria-hidden="true" tabindex="-1"></a>  <span class="kw">quant_neg</span>     <span class="co">--Goal is now ∀ (x : U), ¬P x</span></span>
+<span id="cb35-6"><a href="#cb35-6" aria-hidden="true" tabindex="-1"></a>  <span class="kw">fix</span> y : U</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="outpt">
+<div class="sourceCode" id="cb36"><pre class="sourceCode state code-with-copy"><code class="sourceCode state"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="in">U </span>: Type</span>
+<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a><span class="in">P Q </span>: Pred U</span>
+<span id="cb36-3"><a href="#cb36-3" aria-hidden="true" tabindex="-1"></a><span class="in">h1 </span>: ∀ (x : U), P x → ¬Q x</span>
+<span id="cb36-4"><a href="#cb36-4" aria-hidden="true" tabindex="-1"></a><span class="in">h2 </span>: ∀ (x : U), Q x</span>
+<span id="cb36-5"><a href="#cb36-5" aria-hidden="true" tabindex="-1"></a><span class="in">y </span>: U</span>
+<span id="cb36-6"><a href="#cb36-6" aria-hidden="true" tabindex="-1"></a>⊢ ¬P y</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+<p>Now we have an object of type <code>U</code> in the tactic state, namely, <code>y</code>. So let’s try applying universal instantiation to <code>h1</code> and <code>h2</code> and see if it helps.</p>
+<div class="inout">
+<div class="inpt">
+<div class="sourceCode" id="cb37"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> two_pred (U : <span class="kw">Type</span>) (P Q : Pred U)</span>
+<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a>(h1 : ∀ (x : U), P x → ¬Q x)</span>
+<span id="cb37-3"><a href="#cb37-3" aria-hidden="true" tabindex="-1"></a>(h2 : ∀ (x : U), Q x) :</span>
+<span id="cb37-4"><a href="#cb37-4" aria-hidden="true" tabindex="-1"></a>¬∃ (x : U), P x := <span class="kw">by</span></span>
+<span id="cb37-5"><a href="#cb37-5" aria-hidden="true" tabindex="-1"></a>  <span class="kw">quant_neg</span>     <span class="co">--Goal is now ∀ (x : U), ¬P x</span></span>
+<span id="cb37-6"><a href="#cb37-6" aria-hidden="true" tabindex="-1"></a>  <span class="kw">fix</span> y : U</span>
+<span id="cb37-7"><a href="#cb37-7" aria-hidden="true" tabindex="-1"></a>  <span class="kw">have</span> h3 : P y → ¬Q y := h1 y</span>
+<span id="cb37-8"><a href="#cb37-8" aria-hidden="true" tabindex="-1"></a>  <span class="kw">have</span> h4 : Q y := h2 y</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="outpt">
+<div class="sourceCode" id="cb38"><pre class="sourceCode state code-with-copy"><code class="sourceCode state"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="in">U </span>: Type</span>
+<span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a><span class="in">P Q </span>: Pred U</span>
+<span id="cb38-3"><a href="#cb38-3" aria-hidden="true" tabindex="-1"></a><span class="in">h1 </span>: ∀ (x : U), P x → ¬Q x</span>
+<span id="cb38-4"><a href="#cb38-4" aria-hidden="true" tabindex="-1"></a><span class="in">h2 </span>: ∀ (x : U), Q x</span>
+<span id="cb38-5"><a href="#cb38-5" aria-hidden="true" tabindex="-1"></a><span class="in">y </span>: U</span>
+<span id="cb38-6"><a href="#cb38-6" aria-hidden="true" tabindex="-1"></a><span class="in">h3 </span>: P y → ¬Q y</span>
+<span id="cb38-7"><a href="#cb38-7" aria-hidden="true" tabindex="-1"></a><span class="in">h4 </span>: Q y</span>
+<span id="cb38-8"><a href="#cb38-8" aria-hidden="true" tabindex="-1"></a>⊢ ¬P y</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+<p>We’re almost done, because the goal now follows easily from <code>h3</code> and <code>h4</code>. If we use the contrapositive law to rewrite <code>h3</code> as <code>Q y → ¬P y</code>, then we can apply modus ponens to the rewritten <code>h3</code> and <code>h4</code> to reach the goal:</p>
+<div class="inout">
+<div class="inpt">
+<div class="sourceCode" id="cb39"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> two_pred (U : <span class="kw">Type</span>) (P Q : Pred U)</span>
+<span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a>(h1 : ∀ (x : U), P x → ¬Q x)</span>
+<span id="cb39-3"><a href="#cb39-3" aria-hidden="true" tabindex="-1"></a>(h2 : ∀ (x : U), Q x) :</span>
+<span id="cb39-4"><a href="#cb39-4" aria-hidden="true" tabindex="-1"></a>¬∃ (x : U), P x := <span class="kw">by</span></span>
+<span id="cb39-5"><a href="#cb39-5" aria-hidden="true" tabindex="-1"></a>  <span class="kw">quant_neg</span>     <span class="co">--Goal is now ∀ (x : U), ¬P x</span></span>
+<span id="cb39-6"><a href="#cb39-6" aria-hidden="true" tabindex="-1"></a>  <span class="kw">fix</span> y : U</span>
+<span id="cb39-7"><a href="#cb39-7" aria-hidden="true" tabindex="-1"></a>  <span class="kw">have</span> h3 : P y → ¬Q y := h1 y</span>
+<span id="cb39-8"><a href="#cb39-8" aria-hidden="true" tabindex="-1"></a>  <span class="kw">have</span> h4 : Q y := h2 y</span>
+<span id="cb39-9"><a href="#cb39-9" aria-hidden="true" tabindex="-1"></a>  <span class="kw">contrapos</span> <span class="kw">at</span> h3  <span class="co">--Now h3 : Q y → ¬P y</span></span>
+<span id="cb39-10"><a href="#cb39-10" aria-hidden="true" tabindex="-1"></a>  <span class="kw">show</span> ¬P y <span class="kw">from</span> h3 h4</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="outpt">
+<div class="sourceCode" id="cb40"><pre class="sourceCode state code-with-copy"><code class="sourceCode state"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a><span class="sc">!!</span>Goals accomplished 🎉</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
 
 
 </section>

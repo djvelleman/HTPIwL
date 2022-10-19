@@ -6,7 +6,7 @@ Sections 3.1 and 3.2 of *How To Prove It* present strategies for dealing with gi
 
 Section 3.1 gives two strategies for proving a goal of the form `P → Q`:
 
-### To prove a goal of the form `P → Q`:
+#### To prove a goal of the form `P → Q`:
 
 1.  Assume `P` is true and prove `Q`.
 2.  Assume `Q` is false and prove that `P` is false.
@@ -51,7 +51,7 @@ h : ¬Q
 
 Section 3.2 gives two strategies for using givens of the form `P → Q`, with the second once again being a variation on the first based on the contrapositive law:
 
-### To use a given of the form `P → Q`:
+#### To use a given of the form `P → Q`:
 
 1.  If you are also given `P`, or you can prove that `P` is true, then you can use this given to conclude that `Q` is true.
 2.  If you are also given `¬Q`, or you can prove that `Q` is false, then you can use this given to conclude that `P` is false.
@@ -62,7 +62,7 @@ All of the strategies listed above for working with conditional statements as gi
 
 Section 3.2 of *HTPI* offers two strategies for proving negative goals:
 
-### To prove a goal of the form `¬P`:
+#### To prove a goal of the form `¬P`:
 
 1.  Reexpress the goal in some other form.
 2.  Use proof by contradiction: assume `P` is true and try to deduce a contradiction.
@@ -205,7 +205,7 @@ theorem Example_3_2_4_v2 (P Q R : Prop)
 
 Finally, we have two strategies for using a given that is a negative statement:
 
-### To use a given of the form `¬P`:
+#### To use a given of the form `¬P`:
 
 1.  Reexpress the given in some other form.
 2.  If you are doing a proof by contradiction, you can achieve a contradiction by proving `P`, since that would contradict the given `¬P`.
@@ -394,3 +394,180 @@ theorem Like_Example_3_2_5
 We will see many more uses of the `apply` tactic later in this book.
 
 Sections 3.1 and 3.2 of *HTPI* contain several proofs that involve algebraic reasoning.  Although one can do such proofs in Lean, it requires ideas that we are not ready to introduce yet.  So for the moment we will stick to proofs involving only logic and set theory.
+
+## 3.3. Proofs Involving Quantifiers
+
+In the notation used in *HTPI*, if $P(x)$ is a statement about $x$, then $\forall x\, P(x)$ means "for all $x$, $P(x)$" and $\exists x\, P(x)$ means "there exists at least one $x$ such that $P(x)$."  The letter $P$ here is not a proposition; it is only when it is applied to some object $x$ that we get a proposition.  We will say that $P$ is a *predicate*, and when we apply $P$ to an object $x$ we get a proposition $P(x)$.  You might want to think of the predicate $P$ as representing some property that an object might have, and the proposition $P(x)$ asserts that $x$ has that property.
+
+To use a predicate in Lean, you must tell Lean the type of objects to which it applies.  If `U` is a type, then `Pred U` is the type of predicates that apply to objects of type `U`.  If `P` has type `Pred U` (that is, `P` is a predicate applying to objects of type `U`) and `x` has type `U`, then to apply `P` to `x` we just write `P x` (with a space but no parentheses).  Thus, if we have `P : Pred U` and `x : U`, then `P x` is an expression of type `Prop`.  That is, `P x` is a proposition, and its meaning is that `x` has the property represented by the predicate `P`.
+
+There are a few differences between the way quantified statements are written in *HTPI* and the way they are written in Lean.  First of all, when we apply a quantifier to a variable in Lean we will specify the type of the variable explicitly.  Also, Lean requires that after specifying the variable and its type, you must put a comma before the proposition to which the quantifier is applied.  Thus, if `P` has type `Pred U`, then to say that `P` holds for all objects of type `U` we would write `∀ (x : U), P x`.  Similarly, `∃ (x : U), P x` is the proposition asserting that there exists at least one `x` of type `U` such that `P x`.
+
+And there is one more important difference between the way quantified statements are written in *HTPI* and Lean.  In *HTPI*, a quantifier is interpreted as applying to as little as possible.  Thus, $\forall x\, P(x) \wedge Q(x)$ is interpreted as $(\forall x\, P(x)) \wedge Q(x)$; if you want the quantifier $\forall x$ to apply to the entire statement $P(x) \wedge Q(x)$ you must use parentheses and write $\forall x(P(x) \wedge Q(x))$.  The convention in Lean is exactly the opposite:  a quantifier applies to as much as possible.  Thus, Lean will interpret `∀ (x : U), P x ∧ Q x` as meaning `∀ (x : U), (P x ∧ Q x)`.  If you want the quantifier to apply to only `P x`, then you must use parentheses and write `(∀ (x : U), P x) ∧ Q x`.
+
+With this preparation, we are ready to consider how to write proofs involving quantifiers in Lean.  The most common way to prove a goal of the form `∀ (x : U), P x` is to use the following strategy:
+
+#### To prove a goal of the form `∀ (x : U), P x`:
+
+::: {.ind}
+Let `x` stand for an arbitrary object of type `U` and prove `P x`.  If the letter `x` is already being used in the proof to stand for something, then you must choose an unused variable, say `y`, to stand for the arbitrary object, and prove `P y`.
+:::
+
+To do this in Lean, you should use the tactic `fix x : U`, which tells Lean to treat `x` as standing for some fixed but arbitrary object of type `U`.  This has the following effect on the tactic state:
+
+::: {.lftrt}
+::: {.bef}
+```state
+!! ⋮
+⊢ ∀ (x : U), P x
+```
+:::
+
+::: {.aft}
+```state
+!! ⋮
+x : U
+⊢ P x
+```
+:::
+:::
+
+To use a given of the form `∀ (x : U), P x`, we usually apply a rule of inference called *universal instantiation*, which is described by the following proof strategy:
+
+#### To use a given of the form `∀ (x : U), P x`:
+
+::: {.ind}
+You may plug in any value of type `U`, say `a`, for `x` and use this given to conclude that `P a` is true.
+:::
+
+This strategy says that if you have `h : ∀ (x : U), P x` and `a : U`, then you can infer `P a`.  Indeed, in this situation Lean will recognize `h a` as a proof of `P a`.  For example, you can write `have h' : P a := h a` in a Lean tactic-mode proof, and Lean will add `h' : P a` to the tactic state.
+
+Let's try these strategies out in a Lean proof.  Consider the following theorem:
+
+::: {.inout}
+::: {.inpt}
+```lean
+theorem two_pred (U : Type) (P Q : Pred U)
+(h1 : ∀ (x : U), P x → ¬Q x)
+(h2 : ∀ (x : U), Q x) :
+¬∃ (x : U), P x := by
+```
+:::
+
+::: {.outpt}
+```state
+U : Type
+P Q : Pred U
+h1 : ∀ (x : U), P x → ¬Q x
+h2 : ∀ (x : U), Q x
+⊢ ¬∃ (x : U), P x
+```
+:::
+:::
+
+To use the givens `h1` and `h2`, we will probably want to use universal instantiation.  But to do that we would need an object of type `U` to plug in for `x` in `h1` and `h2`, and there is no object of type `U` in the tactic state.  So at this point, we can't apply universal instantiation to `h1` and `h2`.  We should watch for an object of type `U` to come up in the course of the proof, and consider applying universal instantiation if one does.  Until then, we turn our attention to the goal.
+
+The goal is a negative statement, so we begin by reexpressing it as an equivalent positive statement, using a quantifier negation law.  The tactic `quant_neg` applies a quantifier negation law to rewrite the goal in the equivalent form `∀ (x : U), ¬P x`.  As with the other tactics for applying logical equivalences, you can write `quant_neg at h` if you want to apply a quantifier negation law to a given `h`.
+
+::: {.inout}
+::: {.inpt}
+```lean
+theorem two_pred (U : Type) (P Q : Pred U)
+(h1 : ∀ (x : U), P x → ¬Q x)
+(h2 : ∀ (x : U), Q x) :
+¬∃ (x : U), P x := by
+  quant_neg     --Goal is now ∀ (x : U), ¬P x
+```
+:::
+
+::: {.outpt}
+```state
+U : Type
+P Q : Pred U
+h1 : ∀ (x : U), P x → ¬Q x
+h2 : ∀ (x : U), Q x
+⊢ ∀ (x : U), ¬P x
+```
+:::
+:::
+
+Now the goal starts with `∀`, so we use the strategy above and introduce an arbitrary object of type `U`.  Since the variable `x` occurs as a bound variable in several statements in this theorem, it might be best to use a different letter for the arbitrary object; this isn't absolutely necessary, but it may help to avoid confusion.  So our next tactic is `fix y : U`, and it has the following effect.
+
+::: {.inout}
+::: {.inpt}
+```lean
+theorem two_pred (U : Type) (P Q : Pred U)
+(h1 : ∀ (x : U), P x → ¬Q x)
+(h2 : ∀ (x : U), Q x) :
+¬∃ (x : U), P x := by
+  quant_neg     --Goal is now ∀ (x : U), ¬P x
+  fix y : U
+```
+:::
+
+::: {.outpt}
+```state
+U : Type
+P Q : Pred U
+h1 : ∀ (x : U), P x → ¬Q x
+h2 : ∀ (x : U), Q x
+y : U
+⊢ ¬P y
+```
+:::
+:::
+
+Now we have an object of type `U` in the tactic state, namely, `y`.  So let's try applying universal instantiation to `h1` and `h2` and see if it helps.
+
+::: {.inout}
+::: {.inpt}
+```lean
+theorem two_pred (U : Type) (P Q : Pred U)
+(h1 : ∀ (x : U), P x → ¬Q x)
+(h2 : ∀ (x : U), Q x) :
+¬∃ (x : U), P x := by
+  quant_neg     --Goal is now ∀ (x : U), ¬P x
+  fix y : U
+  have h3 : P y → ¬Q y := h1 y
+  have h4 : Q y := h2 y
+```
+:::
+
+::: {.outpt}
+```state
+U : Type
+P Q : Pred U
+h1 : ∀ (x : U), P x → ¬Q x
+h2 : ∀ (x : U), Q x
+y : U
+h3 : P y → ¬Q y
+h4 : Q y
+⊢ ¬P y
+```
+:::
+:::
+
+We're almost done, because the goal now follows easily from `h3` and `h4`.  If we use the contrapositive law to rewrite `h3` as `Q y → ¬P y`, then we can apply modus ponens to the rewritten `h3` and `h4` to reach the goal:
+
+::: {.inout}
+::: {.inpt}
+```lean
+theorem two_pred (U : Type) (P Q : Pred U)
+(h1 : ∀ (x : U), P x → ¬Q x)
+(h2 : ∀ (x : U), Q x) :
+¬∃ (x : U), P x := by
+  quant_neg     --Goal is now ∀ (x : U), ¬P x
+  fix y : U
+  have h3 : P y → ¬Q y := h1 y
+  have h4 : Q y := h2 y
+  contrapos at h3  --Now h3 : Q y → ¬P y
+  show ¬P y from h3 h4
+```
+:::
+
+::: {.outpt}
+```state
+!!Goals accomplished 🎉
+```
+:::
+:::
