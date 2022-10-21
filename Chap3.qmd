@@ -397,7 +397,7 @@ Sections 3.1 and 3.2 of *HTPI* contain several proofs that involve algebraic rea
 
 ## 3.3. Proofs Involving Quantifiers
 
-In the notation used in *HTPI*, if $P(x)$ is a statement about $x$, then $\forall x\, P(x)$ means "for all $x$, $P(x)$" and $\exists x\, P(x)$ means "there exists at least one $x$ such that $P(x)$."  The letter $P$ here is not a proposition; it is only when it is applied to some object $x$ that we get a proposition.  We will say that $P$ is a *predicate*, and when we apply $P$ to an object $x$ we get a proposition $P(x)$.  You might want to think of the predicate $P$ as representing some property that an object might have, and the proposition $P(x)$ asserts that $x$ has that property.
+In the notation used in *HTPI*, if $P(x)$ is a statement about $x$, then $\forall x\, P(x)$ means "for all $x$, $P(x)$," and $\exists x\, P(x)$ means "there exists at least one $x$ such that $P(x)$."  The letter $P$ here does not stand for a proposition; it is only when it is applied to some object $x$ that we get a proposition.  We will say that $P$ is a *predicate*, and when we apply $P$ to an object $x$ we get a proposition $P(x)$.  You might want to think of the predicate $P$ as representing some property that an object might have, and the proposition $P(x)$ asserts that $x$ has that property.
 
 To use a predicate in Lean, you must tell Lean the type of objects to which it applies.  If `U` is a type, then `Pred U` is the type of predicates that apply to objects of type `U`.  If `P` has type `Pred U` (that is, `P` is a predicate applying to objects of type `U`) and `x` has type `U`, then to apply `P` to `x` we just write `P x` (with a space but no parentheses).  Thus, if we have `P : Pred U` and `x : U`, then `P x` is an expression of type `Prop`.  That is, `P x` is a proposition, and its meaning is that `x` has the property represented by the predicate `P`.
 
@@ -442,12 +442,12 @@ You may plug in any value of type `U`, say `a`, for `x` and use this given to co
 
 This strategy says that if you have `h : ∀ (x : U), P x` and `a : U`, then you can infer `P a`.  Indeed, in this situation Lean will recognize `h a` as a proof of `P a`.  For example, you can write `have h' : P a := h a` in a Lean tactic-mode proof, and Lean will add `h' : P a` to the tactic state.
 
-Let's try these strategies out in a Lean proof.  Consider the following theorem:
+Let's try these strategies out in a Lean proof.  In Lean, if you don't want to give a theorem a name, you can simply call it an `example` rather than a `theorem`, and then there is no need to give it a name.  In the following theorem, you can enter the symbol `∀` by typing `\forall` or `\all`, and you can enter `∃` by typing `\exists` or `\ex`.
 
 ::: {.inout}
 ::: {.inpt}
 ```lean
-theorem two_pred (U : Type) (P Q : Pred U)
+example (U : Type) (P Q : Pred U)
 (h1 : ∀ (x : U), P x → ¬Q x)
 (h2 : ∀ (x : U), Q x) :
 ¬∃ (x : U), P x := by
@@ -467,12 +467,23 @@ h2 : ∀ (x : U), Q x
 
 To use the givens `h1` and `h2`, we will probably want to use universal instantiation.  But to do that we would need an object of type `U` to plug in for `x` in `h1` and `h2`, and there is no object of type `U` in the tactic state.  So at this point, we can't apply universal instantiation to `h1` and `h2`.  We should watch for an object of type `U` to come up in the course of the proof, and consider applying universal instantiation if one does.  Until then, we turn our attention to the goal.
 
-The goal is a negative statement, so we begin by reexpressing it as an equivalent positive statement, using a quantifier negation law.  The tactic `quant_neg` applies a quantifier negation law to rewrite the goal in the equivalent form `∀ (x : U), ¬P x`.  As with the other tactics for applying logical equivalences, you can write `quant_neg at h` if you want to apply a quantifier negation law to a given `h`.
+The goal is a negative statement, so we begin by reexpressing it as an equivalent positive statement, using a quantifier negation law.  The tactic `quant_neg` applies a quantifier negation law to rewrite the goal.  As with the other tactics for applying logical equivalences, you can write `quant_neg at h` if you want to apply a quantifier negation law to a given `h`.  The effect of the tactic can be summarized as follows:
+
+::: {style="margin: 0% 10%"}
+| | `quant_neg` Tactic | |
+|:--:|:--:|:--:|
+| `¬∀ (x : U), P x` | is changed to | `∃ (x : U), ¬P x` |
+| `¬∃ (x : U), P x` | is changed to | `∀ (x : U), ¬P x` |
+| `∀ (x : U), P x` | is changed to | `¬∃ (x : U), ¬P x` |
+| `∃ (x : U), P x` | is changed to | `¬∀ (x : U), ¬P x` |
+:::
+
+Using the `quant_neg` tactic leads to the following result.
 
 ::: {.inout}
 ::: {.inpt}
 ```lean
-theorem two_pred (U : Type) (P Q : Pred U)
+example (U : Type) (P Q : Pred U)
 (h1 : ∀ (x : U), P x → ¬Q x)
 (h2 : ∀ (x : U), Q x) :
 ¬∃ (x : U), P x := by
@@ -491,12 +502,12 @@ h2 : ∀ (x : U), Q x
 :::
 :::
 
-Now the goal starts with `∀`, so we use the strategy above and introduce an arbitrary object of type `U`.  Since the variable `x` occurs as a bound variable in several statements in this theorem, it might be best to use a different letter for the arbitrary object; this isn't absolutely necessary, but it may help to avoid confusion.  So our next tactic is `fix y : U`, and it has the following effect.
+Now the goal starts with `∀`, so we use the strategy above and introduce an arbitrary object of type `U`.  Since the variable `x` occurs as a bound variable in several statements in this theorem, it might be best to use a different letter for the arbitrary object; this isn't absolutely necessary, but it may help to avoid confusion.  So our next tactic is `fix y : U`.
 
 ::: {.inout}
 ::: {.inpt}
 ```lean
-theorem two_pred (U : Type) (P Q : Pred U)
+example (U : Type) (P Q : Pred U)
 (h1 : ∀ (x : U), P x → ¬Q x)
 (h2 : ∀ (x : U), Q x) :
 ¬∃ (x : U), P x := by
@@ -522,7 +533,7 @@ Now we have an object of type `U` in the tactic state, namely, `y`.  So let's tr
 ::: {.inout}
 ::: {.inpt}
 ```lean
-theorem two_pred (U : Type) (P Q : Pred U)
+example (U : Type) (P Q : Pred U)
 (h1 : ∀ (x : U), P x → ¬Q x)
 (h2 : ∀ (x : U), Q x) :
 ¬∃ (x : U), P x := by
@@ -552,7 +563,7 @@ We're almost done, because the goal now follows easily from `h3` and `h4`.  If w
 ::: {.inout}
 ::: {.inpt}
 ```lean
-theorem two_pred (U : Type) (P Q : Pred U)
+example (U : Type) (P Q : Pred U)
 (h1 : ∀ (x : U), P x → ¬Q x)
 (h2 : ∀ (x : U), Q x) :
 ¬∃ (x : U), P x := by
@@ -570,4 +581,828 @@ theorem two_pred (U : Type) (P Q : Pred U)
 !!Goals accomplished 🎉
 ```
 :::
+:::
+
+Our next example is a theorem of set theory.  You already know how to type a few set theory symbols in Lean, but you'll need a few more for our next example.  Here's a summary of the most important set theory symbols and how to type them in Lean.
+
+::: {style="margin: 0% 10%"}
+| Symbol | How To Type It |
+|:----:|:-------:|
+| `∈` | `\in` |
+| `∉` | `\notin` or `\inn` |
+| `⊆` | `\sub` |
+| `⊈` | `\subn` |
+| `∪` | `\union` or `\cup` |
+| `∩` | `\inter` or `\cap` |
+| `\` | `\\` |
+| `△` | `\bigtriangleup` |
+| `𝒫` | `\powerset` |
+:::
+
+With this preparation, we can turn to our next example.
+
+::: {.inout}
+::: {.inpt}
+```lean
+example (U : Type) (A B C : Set U) (h1 : A ⊆ B ∪ C)
+(h2 : ∀ x : U, x ∈ A → x ∉ B) : A ⊆ C := by
+```
+:::
+
+::: {.outpt}
+```state
+U : Type
+A B C : Set U
+h1 : A ⊆ B ∪ C
+h2 : ∀ (x : U),
+!!  x ∈ A → ¬x ∈ B
+⊢ A ⊆ C
+```
+:::
+:::
+
+We begin by using the `define` tactic to write out the definition of the goal.
+
+::: {.inout}
+::: {.inpt}
+```lean
+example (U : Type) (A B C : Set U) (h1 : A ⊆ B ∪ C)
+(h2 : ∀ x : U, x ∈ A → x ∉ B) : A ⊆ C := by
+  define  --Goal: ∀ {a : U}, a ∈ A → a ∈ C
+```
+:::
+
+::: {.outpt}
+```state
+U : Type
+A B C: Set U
+h1 : A ⊆ B ∪ C
+h2 : ∀ (x : U),
+!!  x ∈ A → ¬x ∈ B
+⊢ ∀ {a : U},
+!!  a ∈ A → a ∈ C
+```
+:::
+:::
+
+Notice that Lean's definition of the goal starts with `∀ {a : U}`, not `∀ (a : U)`.  Why did Lean use curly braces rather than parentheses?  We'll return to that question shortly.  The difference doesn't affect our next steps, which are to introduce an arbitrary object `y` of type `U` and assume `y ∈ A`.
+
+::: {.inout}
+::: {.inpt}
+```lean
+example (U : Type) (A B C : Set U) (h1 : A ⊆ B ∪ C)
+(h2 : ∀ x : U, x ∈ A → x ∉ B) : A ⊆ C := by
+  define  --Goal: ∀ {a : U}, a ∈ A → a ∈ C
+  fix y : U
+  assume h3 : y ∈ A
+```
+:::
+
+::: {.outpt}
+```state
+U : Type
+A B C : Set U
+h1 : A ⊆ B ∪ C
+h2 : ∀ (x : U),
+!!  x ∈ A → ¬x ∈ B
+y : U
+h3 : y ∈ A
+⊢ y ∈ C
+```
+:::
+:::
+
+Now we can combine `h2` and `h3` to conclude that `¬y ∈ B`.  Since we have `y : U`, by universal instantiation, `h2 y` is a proof of `y ∈ A → ¬y ∈ B`, and therefore by modus ponens, `h2 y h3` is a proof of `¬y ∈ B`.
+
+::: {.inout}
+::: {.inpt}
+```lean
+example (U : Type) (A B C : Set U) (h1 : A ⊆ B ∪ C)
+(h2 : ∀ x : U, x ∈ A → x ∉ B) : A ⊆ C := by
+  define  --Goal: ∀ {a : U}, a ∈ A → a ∈ C
+  fix y : U
+  assume h3 : y ∈ A
+  have h4 : y ∉ B := h2 y h3
+```
+:::
+
+::: {.outpt}
+```state
+U : Type
+A B C : Set U
+h1 : A ⊆ B ∪ C
+h2 : ∀ (x : U),
+!!  x ∈ A → ¬x ∈ B
+y : U
+h3 : y ∈ A
+h4 : ¬y ∈ B
+⊢ y ∈ C
+```
+:::
+:::
+
+We should be able to use similar reasoning to combine `h1` and `h3`, if we first write out the definition of `h1`.
+
+::: {.inout}
+::: {.inpt}
+```lean
+example (U : Type) (A B C : Set U) (h1 : A ⊆ B ∪ C)
+(h2 : ∀ x : U, x ∈ A → x ∉ B) : A ⊆ C := by
+  define  --Goal: ∀ {a : U}, a ∈ A → a ∈ C
+  fix y : U
+  assume h3 : y ∈ A
+  have h4 : y ∉ B := h2 y h3
+  define at h1  --h1 : ∀ {a : U}, a ∈ U → a ∈ B ∪ C
+```
+:::
+
+::: {.outpt}
+```state
+U : Type
+A B C : Set U
+h1 : ∀ {a : U},
+!!  a ∈ A → a ∈ B ∪ C
+h2 : ∀ (x : U),
+!!  x ∈ A → ¬x ∈ B
+y : U
+h3 : y ∈ A
+h4 : ¬y ∈ B
+⊢ y ∈ C
+```
+:::
+:::
+
+Once again, Lean has used curly braces to define `h1`, and now we are ready to explain what they mean.  If the definition had been `h1 : ∀ (a : U), a ∈ A → a ∈ B ∪ C`, then exactly as in the previous step, `h1 y h3` would be a proof of `y ∈ B ∪ C`.  The use of curly braces in the definition `h1 : ∀ {a : U}, a ∈ A → a ∈ B ∪ C` means that you don't need to tell Lean that `y` is being plugged in for `a` in the universal instantiation step; Lean will figure that out on its own.  Thus, you can just write `h1 h3` as a proof of `y ∈ B ∪ C`.  Indeed, if you write `h1 y h3` then you will get an error message, because Lean expects *not* to be told what to plug in for `a`.  You might think of the definition of `h1` as meaning `h1 : _ ∈ A → _ ∈ B ∪ C`, where the blank can be filled in with anything of type `U`.  When you ask Lean to apply modus ponens by combining this statement with `h3 : y ∈ A`, Lean figures out that in order for modus ponens to apply, the blank must be filled in with `y`.
+
+::: {.inout}
+::: {.inpt}
+```lean
+example (U : Type) (A B C : Set U) (h1 : A ⊆ B ∪ C)
+(h2 : ∀ x : U, x ∈ A → x ∉ B) : A ⊆ C := by
+  define  --Goal: ∀ {a : U}, a ∈ A → a ∈ C
+  fix y : U
+  assume h3 : y ∈ A
+  have h4 : y ∉ B := h2 y h3
+  define at h1  --h1 : ∀ {a : U}, a ∈ U → a ∈ B ∪ C
+  have h5 : y ∈ B ∪ C := h1 h3
+```
+:::
+
+::: {.outpt}
+```state
+U : Type
+A B C : Set U
+h1 : ∀ {a : U},
+!!  a ∈ A → a ∈ B ∪ C
+h2 : ∀ (x : U),
+!!  x ∈ A → ¬x ∈ B
+y : U
+h3 : y ∈ A
+h4 : ¬y ∈ B
+h5 : y ∈ B ∪ C
+⊢ y ∈ C
+```
+:::
+:::
+
+Now we're almost done, because we can combine `h4` and `h5` to reach our goal.  To see how, we first write out the definition of `h5`.
+
+::: {.inout}
+::: {.inpt}
+```lean
+example (U : Type) (A B C : Set U) (h1 : A ⊆ B ∪ C)
+(h2 : ∀ x : U, x ∈ A → x ∉ B) : A ⊆ C := by
+  define  --Goal: ∀ {a : U}, a ∈ A → a ∈ C
+  fix y : U
+  assume h3 : y ∈ A
+  have h4 : y ∉ B := h2 y h3
+  define at h1  --h1 : ∀ {a : U}, a ∈ U → a ∈ B ∪ C
+  have h5 : y ∈ B ∪ C := h1 h3
+  define at h5  --h5 : y ∈ B ∨ y ∈ C
+```
+:::
+
+::: {.outpt}
+```state
+U : Type
+A B C : Set U
+h1 : ∀ {a : U},
+!!  a ∈ A → a ∈ B ∪ C
+h2 : ∀ (x : U),
+!!  x ∈ A → ¬x ∈ B
+y : U
+h3 : y ∈ A
+h4 : ¬y ∈ B
+h5 : y ∈ B ∨ y ∈ C
+⊢ y ∈ C
+```
+:::
+:::
+
+A conditional law will convert `h5` to `¬y ∈ B → y ∈ C`, and then modus ponens with `h4` will complete the proof.
+
+::: {.inout}
+::: {.inpt}
+```lean
+example (U : Type) (A B C : Set U) (h1 : A ⊆ B ∪ C)
+(h2 : ∀ x : U, x ∈ A → x ∉ B) : A ⊆ C := by
+  define  --Goal: ∀ {a : U}, a ∈ A → a ∈ C
+  fix y : U
+  assume h3 : y ∈ A
+  have h4 : y ∉ B := h2 y h3
+  define at h1  --h1 : ∀ {a : U}, a ∈ U → a ∈ B ∪ C
+  have h5 : y ∈ B ∪ C := h1 h3
+  define at h5  --h5 : y ∈ B ∨ y ∈ C
+  conditional at h5  --h5 : ¬y ∈ B → y ∈ C
+  show y ∈ C from h5 h4
+```
+:::
+
+::: {.outpt}
+```state
+!!Goals accomplished 🎉
+```
+:::
+:::
+
+Next we turn to strategies for working with existential quantifiers.
+
+#### To prove a goal of the form `∃ (x : U), P x`:
+
+::: {.ind}
+Find a value of `x`, say `a`, for which you think `P a` is true, and prove `P a`.
+:::
+
+This strategy is based on the fact that if you have `a : U` and `h : P a`, then you can infer `∃ (x : U), P x`.  Indeed, in this situation the expression `Exists.intro a h` is a Lean term-mode proof of `∃ (x : U), P x`.  The name `Exists.intro` indicates that this is a rule for introducing an existential quantifier.  As suggested by the strategy above, we will often want to use this rule in situations in which our goal is `∃ (x : U), P x` and we have an object `a` of type `U` that we think makes `P a` true, but we don't yet have a proof of `P a`.  In that situation we can use the tactic `apply Exists.intro a _`.  Recall that the `apply` tactic asks Lean to figure out what to put in the blank to turn `Exists.intro a _` into a proof of the goal.  Lean will figure out that what needs to go in the blank is a proof of `P a`, so it sets `P a` to be the goal.  In other words, the tactic `apply Exists.intro a _` has the following effect on the tactic state:
+
+::: {.lftrt}
+::: {.bef}
+```state
+!! ⋮
+a : U
+⊢ ∃ (x : U), P x
+```
+:::
+
+::: {.aft}
+```state
+!! ⋮
+a : U
+⊢ P a
+```
+:::
+:::
+
+Our strategy for using an existential given is a rule that is called *existential instantiation* in *HTPI*:
+
+#### To use a given of the form `∃ (x : U), P x`:
+
+::: {.ind}
+Introduce a new variable, say `a`, into the proof to stand for an object of type `U` for which `P a` is true.
+:::
+
+Suppose that, in a Lean proof, you have `h : ∃ (x : U), P x`.  To apply the existential instantiation rule, you would use the tactic `obtain (a : U) (h' : P a) from h`.  This tactic introduces into the tactic state both a new variable `a` of type `U` and also the identifier `h'` for the new given `P a`.
+
+Often, if your goal is an existential statement `∃ (x : U), P x`, you won't be able to use the strategy above for existential goals right away, because you won't know what object `a` to use in the tactic `apply Exists.intro a _`.  You may have to wait until a likely candidate for `a` pops up in the course of the proof.  On the other hand, it is usually best to use the `obtain` tactic right away if you have an existential given.  This is illustrated in our next example.
+
+::: {.inout}
+::: {.inpt}
+```lean
+example (U : Type) (P Q : Pred U)
+(h1 : ∀ (x : U), ∃ (y : U), P x → ¬ Q y)
+(h2 : ∃ (x : U), ∀ (y : U), P x → Q y) :
+∃ (x : U), ¬P x := by
+```
+:::
+
+::: {.outpt}
+```state
+U : Type
+P Q : Pred U
+h1 : ∀ (x : U), ∃ (y : U),
+!!  P x → ¬Q y
+h2 : ∃ (x : U), ∀ (y : U),
+!!  P x → Q y
+⊢ ∃ (x : U), ¬P x
+```
+:::
+:::
+
+The goal is the existential statement `∃ (x : U), ¬P x`, and our strategy for existential goals says that we should try to find an object `a` of type `U` that we think would make the statement `¬P a` true.  But we don't have any objects of type `U` in the proof, so it looks like we can't use that strategy yet.  Similarly, we can't use the given `h1` yet, since we have nothing to plug in for `x` in `h1`.  However, `h2` is an existential given, and we can use it right away.
+
+::: {.inout}
+::: {.inpt}
+```lean
+example (U : Type) (P Q : Pred U)
+(h1 : ∀ (x : U), ∃ (y : U), P x → ¬ Q y)
+(h2 : ∃ (x : U), ∀ (y : U), P x → Q y) :
+∃ (x : U), ¬P x := by
+  obtain (a : U)
+    (h3 : ∀ (y : U), P a → Q y) from h2
+```
+:::
+
+::: {.outpt}
+```state
+U : Type
+P Q : Pred U
+h1 : ∀ (x : U), ∃ (y : U),
+!!  P x → ¬Q y
+h2 : ∃ (x : U), ∀ (y : U),
+!!  P x → Q y
+a : U
+h3 : ∀ (y : U), P a → Q y
+⊢ ∃ (x : U), ¬P x
+```
+:::
+:::
+
+Now that we have `a : U`, we can apply universal instantiation to `h1`, plugging in `a` for `x`.
+
+::: {.inout}
+::: {.inpt}
+```lean
+example (U : Type) (P Q : Pred U)
+(h1 : ∀ (x : U), ∃ (y : U), P x → ¬ Q y)
+(h2 : ∃ (x : U), ∀ (y : U), P x → Q y) :
+∃ (x : U), ¬P x := by
+  obtain (a : U)
+    (h3 : ∀ (y : U), P a → Q y) from h2
+  have h4 : ∃ (y : U), P a → ¬ Q y := h1 a
+```
+:::
+
+::: {.outpt}
+```state
+U : Type
+P Q : Pred U
+h1 : ∀ (x : U), ∃ (y : U),
+!!  P x → ¬Q y
+h2 : ∃ (x : U), ∀ (y : U),
+!!  P x → Q y
+a : U
+h3 : ∀ (y : U), P a → Q y
+h4 : ∃ (y : U), P a → ¬Q y
+⊢ ∃ (x : U), ¬P x
+```
+:::
+:::
+
+Our new given `h4` is another existential statement, so again we use it right away to introduce another object of type `U`.  Since this object might not be the same as `a`, we must give it a different name.  (Indeed, if you try to use the name `a` again, Lean will give you an error message.)
+
+::: {.inout}
+::: {.inpt}
+```lean
+example (U : Type) (P Q : Pred U)
+(h1 : ∀ (x : U), ∃ (y : U), P x → ¬ Q y)
+(h2 : ∃ (x : U), ∀ (y : U), P x → Q y) :
+∃ (x : U), ¬P x := by
+  obtain (a : U)
+    (h3 : ∀ (y : U), P a → Q y) from h2
+  have h4 : ∃ (y : U), P a → ¬ Q y := h1 a
+  obtain (b : U) (h5 : P a → ¬ Q b) from h4
+```
+:::
+
+::: {.outpt}
+```state
+U : Type
+P Q : Pred U
+h1 : ∀ (x : U), ∃ (y : U),
+!!  P x → ¬Q y
+h2 : ∃ (x : U), ∀ (y : U),
+!!  P x → Q y
+a : U
+h3 : ∀ (y : U), P a → Q y
+h4 : ∃ (y : U), P a → ¬Q y
+b : U
+h5 : P a → ¬Q b
+⊢ ∃ (x : U), ¬P x
+```
+:::
+:::
+
+We have not yet used `h3`.  We could plug in either `a` or `b` for `y` in `h3`, but a little thought should show you that plugging in `b` is more useful.
+
+::: {.inout}
+::: {.inpt}
+```lean
+example (U : Type) (P Q : Pred U)
+(h1 : ∀ (x : U), ∃ (y : U), P x → ¬ Q y)
+(h2 : ∃ (x : U), ∀ (y : U), P x → Q y) :
+∃ (x : U), ¬P x := by
+  obtain (a : U)
+    (h3 : ∀ (y : U), P a → Q y) from h2
+  have h4 : ∃ (y : U), P a → ¬ Q y := h1 a
+  obtain (b : U) (h5 : P a → ¬ Q b) from h4
+  have h6 : P a → Q b := h3 b
+```
+:::
+
+::: {.outpt}
+```state
+U : Type
+P Q : Pred U
+h1 : ∀ (x : U), ∃ (y : U),
+!!  P x → ¬Q y
+h2 : ∃ (x : U), ∀ (y : U),
+!!  P x → Q y
+a : U
+h3 : ∀ (y : U), P a → Q y
+h4 : ∃ (y : U), P a → ¬Q y
+b : U
+h5 : P a → ¬Q b
+h6 : P a → Q b
+⊢ ∃ (x : U), ¬P x
+```
+:::
+:::
+
+Now look at `h5` and `h6`.  They show that `P a` leads to contradictory conclusions, `¬Q b` and `Q b`.  This means that `P a` must be false.  We finally know what value of `x` to use to prove the goal.
+
+::: {.inout}
+::: {.inpt}
+```lean
+example (U : Type) (P Q : Pred U)
+(h1 : ∀ (x : U), ∃ (y : U), P x → ¬ Q y)
+(h2 : ∃ (x : U), ∀ (y : U), P x → Q y) :
+∃ (x : U), ¬P x := by
+  obtain (a : U)
+    (h3 : ∀ (y : U), P a → Q y) from h2
+  have h4 : ∃ (y : U), P a → ¬ Q y := h1 a
+  obtain (b : U) (h5 : P a → ¬ Q b) from h4
+  have h6 : P a → Q b := h3 b
+  apply Exists.intro a _
+```
+:::
+
+::: {.outpt}
+```state
+U : Type
+P Q : Pred U
+h1 : ∀ (x : U), ∃ (y : U),
+!!  P x → ¬Q y
+h2 : ∃ (x : U), ∀ (y : U),
+!!  P x → Q y
+a : U
+h3 : ∀ (y : U), P a → Q y
+h4 : ∃ (y : U), P a → ¬Q y
+b : U
+h5 : P a → ¬Q b
+h6 : P a → Q b
+⊢ ¬P a
+```
+:::
+:::
+
+Since the goal is now a negative statement that cannot be reexpressed as a positive statement, we use proof by contradiction.
+
+::: {.inout}
+::: {.inpt}
+```lean
+example (U : Type) (P Q : Pred U)
+(h1 : ∀ (x : U), ∃ (y : U), P x → ¬ Q y)
+(h2 : ∃ (x : U), ∀ (y : U), P x → Q y) :
+∃ (x : U), ¬P x := by
+  obtain (a : U)
+    (h3 : ∀ (y : U), P a → Q y) from h2
+  have h4 : ∃ (y : U), P a → ¬ Q y := h1 a
+  obtain (b : U) (h5 : P a → ¬ Q b) from h4
+  have h6 : P a → Q b := h3 b
+  apply Exists.intro a _
+  by_contra h7
+```
+:::
+
+::: {.outpt}
+```state
+U : Type
+P Q : Pred U
+h1 : ∀ (x : U), ∃ (y : U),
+!!  P x → ¬Q y
+h2 : ∃ (x : U), ∀ (y : U),
+!!  P x → Q y
+a : U
+h3 : ∀ (y : U), P a → Q y
+h4 : ∃ (y : U), P a → ¬Q y
+b : U
+h5 : P a → ¬Q b
+h6 : P a → Q b
+h7 : P a
+⊢ False
+```
+:::
+:::
+
+Now `h5 h7` is a proof of `¬Q b` and `h6 h7` is a proof of `Q b`, so `(h5 h7) (h6 h7)` is a proof of `False`.
+
+::: {.inout}
+::: {.inpt}
+```lean
+example (U : Type) (P Q : Pred U)
+(h1 : ∀ (x : U), ∃ (y : U), P x → ¬ Q y)
+(h2 : ∃ (x : U), ∀ (y : U), P x → Q y) :
+∃ (x : U), ¬P x := by
+  obtain (a : U)
+    (h3 : ∀ (y : U), P a → Q y) from h2
+  have h4 : ∃ (y : U), P a → ¬ Q y := h1 a
+  obtain (b : U) (h5 : P a → ¬ Q b) from h4
+  have h6 : P a → Q b := h3 b
+  apply Exists.intro a _
+  by_contra h7
+  show False from (h5 h7) (h6 h7)
+```
+:::
+
+::: {.outpt}
+```state
+!!Goals accomplished 🎉
+```
+:::
+:::
+
+We conclude this section with the theorem from Example 3.3.5 in *HTPI*.  That theorem concerns a union of a family of sets.  In *HTPI*, such a union is written using a large union symbol, $\bigcup$.  Lean uses the symbol `∪₀`, which is entered by typing `\U0` (that is, backslash-capital U-zero).  For an intersection of a family of sets, Lean uses `∩₀`, typed as `\I0`.
+
+::: {.inout}
+::: {.inpt}
+```lean
+theorem Example_3_3_5 (U : Type) (B : Set U)
+(F : Set (Set U)) : ⋃₀F ⊆ B → F ⊆ 𝒫 B := by
+```
+:::
+
+::: {.outpt}
+```state
+U : Type
+B : Set U
+F : Set (Set U)
+⊢ ⋃₀F ⊆ B → F ⊆ 𝒫 B
+```
+:::
+:::
+
+Note that `F` has type `Set (Set U)`, which means that it is a set whose elements are sets of objects of type `U`.  Since the goal is a conditional statement, we assume the antecedent and set the consequent as our goal.  We'll also write out the definition of the new goal.
+
+::: {.inout}
+::: {.inpt}
+```lean
+theorem Example_3_3_5 (U : Type) (B : Set U)
+(F : Set (Set U)) : ⋃₀F ⊆ B → F ⊆ 𝒫 B := by
+  assume h1 : ∪₀F ⊆ B
+  define
+```
+:::
+
+::: {.outpt}
+```state
+U : Type
+B : Set U
+F : Set (Set U)
+h1 : ⋃₀F ⊆ B
+⊢ ∀ {a : Set U},
+!!  a ∈ F → a ∈ 𝒫 B
+```
+:::
+:::
+
+Based on the form of the goal, we introduce an arbitrary object `x` of type `Set U` and assume `x ∈ F`.  The new goal will be `x ∈ 𝒫 B`.  The `define` tactic works out that this means `x ⊆ B`, which can be further expanded to `∀ {a : U}, a ∈ x → a ∈ B`.
+
+::: {.inout}
+::: {.inpt}
+```lean
+theorem Example_3_3_5 (U : Type) (B : Set U)
+(F : Set (Set U)) : ⋃₀F ⊆ B → F ⊆ 𝒫 B := by
+  assume h1 : ∪₀F ⊆ B
+  define
+  fix x : Set U
+  assume h2 : x ∈ F
+  define
+```
+:::
+
+::: {.outpt}
+```state
+U : Type
+B : Set U
+F : Set (Set U)
+h1 : ⋃₀F ⊆ B
+x : Set U
+h2 : x ∈ F
+⊢ ∀ {a : U},
+!!  a ∈ x → a ∈ B
+```
+:::
+:::
+
+Once again the form of the goal dictates our next steps: introduce an arbitrary `y` of type `U` and assume `y ∈ x`.
+
+::: {.inout}
+::: {.inpt}
+```lean
+theorem Example_3_3_5 (U : Type) (B : Set U)
+(F : Set (Set U)) : ⋃₀F ⊆ B → F ⊆ 𝒫 B := by
+  assume h1 : ∪₀F ⊆ B
+  define
+  fix x : Set U
+  assume h2 : x ∈ F
+  define
+  fix y : U
+  assume h3 : y ∈ x
+```
+:::
+
+::: {.outpt}
+```state
+U : Type
+B : Set U
+F : Set (Set U)
+h1 : ⋃₀F ⊆ B
+x : Set U
+h2 : x ∈ F
+y : U
+h3 : y ∈ x
+⊢ y ∈ B
+```
+:::
+:::
+
+The goal can be analyzed no further, so we turn to the givens.  We haven't used `h1` yet.  To see how to use it, we write out its definition.
+
+::: {.inout}
+::: {.inpt}
+```lean
+theorem Example_3_3_5 (U : Type) (B : Set U)
+(F : Set (Set U)) : ⋃₀F ⊆ B → F ⊆ 𝒫 B := by
+  assume h1 : ∪₀F ⊆ B
+  define
+  fix x : Set U
+  assume h2 : x ∈ F
+  define
+  fix y : U
+  assume h3 : y ∈ x
+  define at h1
+```
+:::
+
+::: {.outpt}
+```state
+U : Type
+B : Set U
+F : Set (Set U)
+h1 : ∀ {a : U},
+!!  a ∈ ⋃₀F → a ∈ B
+x : Set U
+h2 : x ∈ F
+y : U
+h3 : y ∈ x
+⊢ y ∈ B
+```
+:::
+:::
+
+Now we see that we can try to use `h1` to reach our goal.  Indeed, `h1 _` would be a proof of the goal if we could fill in the blank with a proof of `y ∈ ∪₀F`.  So we use the `apply h1 _` tactic.
+
+::: {.inout}
+::: {.inpt}
+```lean
+theorem Example_3_3_5 (U : Type) (B : Set U)
+(F : Set (Set U)) : ⋃₀F ⊆ B → F ⊆ 𝒫 B := by
+  assume h1 : ∪₀F ⊆ B
+  define
+  fix x : Set U
+  assume h2 : x ∈ F
+  define
+  fix y : U
+  assume h3 : y ∈ x
+  define at h1
+  apply h1 _
+```
+:::
+
+::: {.outpt}
+```state
+U : Type
+B : Set U
+F : Set (Set U)
+h1 : ∀ {a : U},
+!!  a ∈ ⋃₀F → a ∈ B
+x : Set U
+h2 : x ∈ F
+y : U
+h3 : y ∈ x
+⊢ y ∈ ⋃₀F
+```
+:::
+:::
+
+Once again we have a goal that can be analyzed by using the `define` tactic.
+
+::: {.inout}
+::: {.inpt}
+```lean
+theorem Example_3_3_5 (U : Type) (B : Set U)
+(F : Set (Set U)) : ⋃₀F ⊆ B → F ⊆ 𝒫 B := by
+  assume h1 : ∪₀F ⊆ B
+  define
+  fix x : Set U
+  assume h2 : x ∈ F
+  define
+  fix y : U
+  assume h3 : y ∈ x
+  define at h1
+  apply h1 _
+  define
+```
+:::
+
+::: {.outpt}
+```state
+U : Type
+B : Set U
+F : Set (Set U)
+h1 : ∀ {a : U},
+!!  a ∈ ⋃₀F → a ∈ B
+x : Set U
+h2 : x ∈ F
+y : U
+h3 : y ∈ x
+⊢ ∃ (a : Set U),
+!!  a ∈ F ∧ y ∈ a
+```
+:::
+:::
+
+Our goal is now an existential statement, so we look for a value of `a` that will make the statement `a ∈ F ∧ y ∈ a` true.  The givens `h2` and `h3` tell us that `x` is such a value, so as described earlier our next tactic should be `apply Exists.intro x _`.
+
+::: {.inout}
+::: {.inpt}
+```lean
+theorem Example_3_3_5 (U : Type) (B : Set U)
+(F : Set (Set U)) : ⋃₀F ⊆ B → F ⊆ 𝒫 B := by
+  assume h1 : ∪₀F ⊆ B
+  define
+  fix x : Set U
+  assume h2 : x ∈ F
+  define
+  fix y : U
+  assume h3 : y ∈ x
+  define at h1
+  apply h1 _
+  define
+  apply Exists.intro x _
+```
+:::
+
+::: {.outpt}
+```state
+U : Type
+B : Set U
+F : Set (Set U)
+h1 : ∀ {a : U},
+!!  a ∈ ⋃₀F → a ∈ B
+x : Set U
+h2 : x ∈ F
+y : U
+h3 : y ∈ x
+⊢ x ∈ F ∧ y ∈ x
+```
+:::
+:::
+
+Clearly the goal now follows from `h2` and `h3`, but how do we write the proof in Lean?  Since we need to introduce the "and" symbol `∧`, you shouldn't be surprised to learn that the rule we need is called `And.intro`.  Proof strategies for statements involving "and" will be the subject of the next section.
+
+::: {.inout}
+::: {.inpt}
+```lean
+theorem Example_3_3_5 (U : Type) (B : Set U)
+(F : Set (Set U)) : ⋃₀F ⊆ B → F ⊆ 𝒫 B := by
+  assume h1 : ∪₀F ⊆ B
+  define
+  fix x : Set U
+  assume h2 : x ∈ F
+  define
+  fix y : U
+  assume h3 : y ∈ x
+  define at h1
+  apply h1 _
+  define
+  apply Exists.intro x _
+  show x ∈ F ∧ y ∈ x from And.intro h2 h3
+```
+:::
+
+::: {.outpt}
+```state
+!!Goals accomplished 🎉
+```
+:::
+:::
+
+You might want to compare the Lean proof above to the way the proof was written in *HTPI*.  Here are the theorem and proof from *HTPI*:
+
+::: {.thm}
+Suppose $B$ is a set and $\mathcal{F}$ is a family of sets.  If $\bigcup\mathcal{F} \subseteq B$ then $\mathcal{F} \subseteq \mathscr{P}(B)$.
+:::
+::: {.proof}
+Suppose $\bigcup \mathcal{F} \subseteq B$.  Let $x$ be an arbitrary element of $\mathcal{F}$.  Let $y$ be an arbitrary element of $x$.  Since $y \in x$ and $x \in \mathcal{F}$, by the definition of $\bigcup \mathcal{F}$, $y \in \bigcup \mathcal{F}$.  But then since $\bigcup \mathcal{F} \subseteq B$, $y \in B$.  Since $y$ was an arbitrary element of $x$, we can conclude that $x \subseteq B$, so $x \in \mathscr{P}(B)$.  But $x$ was an arbitrary element of $\mathcal{F}$, so this shows that $\mathcal{F} \subseteq \mathscr{P}(B)$, as required.\qedhere
 :::
