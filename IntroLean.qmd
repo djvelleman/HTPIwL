@@ -109,7 +109,7 @@ h2 : Q → ¬R
 :::
 :::
 
-The red squiggle under `done` indicates that Lean knows that the proof isn't done.  The tactic state in the Infoview pane is very similar to the lists of givens and goals that are used in *HTPI*.  The tactic state above says that `P`, `Q`, and `R` stand for propositions, and we have two givens, `h1 : P → Q` and `h2 : Q → ¬R`.  The symbol `⊢` in the last line labels the goal, `R → ¬P`.
+The red squiggle under `done` indicates that Lean knows that the proof isn't done.  The tactic state in the Infoview pane is very similar to the lists of givens and goals that are used in *HTPI*.  The tactic state above says that `P`, `Q`, and `R` stand for propositions, and we have two givens, `h1 : P → Q` and `h2 : Q → ¬R`.  The symbol `⊢` in the last line labels the goal, `R → ¬P`.  The tactic state is a valuable tool for guiding you as you are figuring out a proof.
 
 From the hypotheses `h1` and `h2` it shouldn't be hard to prove `P → ¬R`, but the goal is `R → ¬P`.  This suggests that we should prove the contrapositive of the goal.  Type tab to indent two spaces and then `contrapos` to tell Lean that you want to replace the goal with its contrapositive.  (You won't have to type tab to indent later lines; VS Code maintains the same indenting until you delete the tab at the beginning of a line to return to unindented text.)  As soon as you type `contrapos`, Lean will update the tactic state to reflect the change in the goal.  You should now see this:
 
@@ -221,7 +221,7 @@ Before continuing, it might be useful to summarize how you type statements into 
 | `↔` | `\iff` or `\lr` | [`<->`]{.excl}\texttt{<-\null>} |
 :::
 
-Lean has conventions that it follows to interpret a logical statement when there are not enough parentheses to indicate how terms are grouped in the statement.  For our purposes, the most important of these conventions is that `P → Q → R` is interpreted as `P → (Q → R)`, not `(P → Q) → R`.  The reason for this is simply that statements of the form `P → (Q → R)` come up much more often in proofs than statements of the form `(P → Q) → R`.  Of course, when in doubt about how to type a statement, you can always put in extra parentheses to avoid confusion.
+Lean has conventions that it follows to interpret a logical statement when there are not enough parentheses to indicate how terms are grouped in the statement.  For our purposes, the most important of these conventions is that `P → Q → R` is interpreted as `P → (Q → R)`, not `(P → Q) → R`.  The reason for this is simply that statements of the form `P → (Q → R)` come up much more often in proofs than statements of the form `(P → Q) → R`.  (Lean also follows this "grouping-to-the-right" convention for `∧` and `∨`, although this makes less of a difference, since these connectives are associative.)  Of course, when in doubt about how to type a statement, you can always put in extra parentheses to avoid confusion.
 
 We will be using tactics to apply several logical equivalences.  Here are tactics corresponding to all of the [logical laws](Chap1.html#prop-laws) listed in Chapter 1:
 
@@ -296,7 +296,7 @@ h2 : ¬(a ∈ B ∧ ¬a ∈ C)
 :::
 :::
 
-We see that Lean has written out the meaning of set difference in `h2`.  And now we can see that, as in Example 3.2.5 in *HTPI*, we can put `h2` into a more useful form by applying first one of De Morgan's laws to rewrite it as `¬a ∈ B ∨ a ∈ C` and then a conditional law to change it to `a ∈ B → a ∈ C`:
+Looking at the tactic state, we see that Lean has written out the meaning of set difference in `h2`.  And now we can see that, as in Example 3.2.5 in *HTPI*, we can put `h2` into a more useful form by applying first one of De Morgan's laws to rewrite it as `¬a ∈ B ∨ a ∈ C` and then a conditional law to change it to `a ∈ B → a ∈ C`:
 
 ::: {.inout}
 ::: {.inpt}
