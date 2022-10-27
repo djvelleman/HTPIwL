@@ -746,7 +746,7 @@ $$
 <div class="inout">
 <div class="inpt">
 <div class="sourceCode" id="cb41"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a><span class="kw">example</span> (U : <span class="kw">Type</span>) (A B C : Set U) (h1 : A ⊆ B ∪ C)</span>
-<span id="cb41-2"><a href="#cb41-2" aria-hidden="true" tabindex="-1"></a>(h2 : ∀ x : U, x ∈ A → x ∉ B) : A ⊆ C := <span class="kw">by</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb41-2"><a href="#cb41-2" aria-hidden="true" tabindex="-1"></a>(h2 : ∀ (x : U), x ∈ A → x ∉ B) : A ⊆ C := <span class="kw">by</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="outpt">
 <div class="sourceCode" id="cb42"><pre class="sourceCode state code-with-copy"><code class="sourceCode state"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a><span class="in">U </span>: Type</span>
@@ -761,7 +761,7 @@ $$
 <div class="inout">
 <div class="inpt">
 <div class="sourceCode" id="cb43"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a><span class="kw">example</span> (U : <span class="kw">Type</span>) (A B C : Set U) (h1 : A ⊆ B ∪ C)</span>
-<span id="cb43-2"><a href="#cb43-2" aria-hidden="true" tabindex="-1"></a>(h2 : ∀ x : U, x ∈ A → x ∉ B) : A ⊆ C := <span class="kw">by</span></span>
+<span id="cb43-2"><a href="#cb43-2" aria-hidden="true" tabindex="-1"></a>(h2 : ∀ (x : U), x ∈ A → x ∉ B) : A ⊆ C := <span class="kw">by</span></span>
 <span id="cb43-3"><a href="#cb43-3" aria-hidden="true" tabindex="-1"></a>  <span class="kw">define</span>  <span class="co">--Goal: ∀ {a : U}, a ∈ A → a ∈ C</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="outpt">
@@ -778,7 +778,7 @@ $$
 <div class="inout">
 <div class="inpt">
 <div class="sourceCode" id="cb45"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a><span class="kw">example</span> (U : <span class="kw">Type</span>) (A B C : Set U) (h1 : A ⊆ B ∪ C)</span>
-<span id="cb45-2"><a href="#cb45-2" aria-hidden="true" tabindex="-1"></a>(h2 : ∀ x : U, x ∈ A → x ∉ B) : A ⊆ C := <span class="kw">by</span></span>
+<span id="cb45-2"><a href="#cb45-2" aria-hidden="true" tabindex="-1"></a>(h2 : ∀ (x : U), x ∈ A → x ∉ B) : A ⊆ C := <span class="kw">by</span></span>
 <span id="cb45-3"><a href="#cb45-3" aria-hidden="true" tabindex="-1"></a>  <span class="kw">define</span>  <span class="co">--Goal: ∀ {a : U}, a ∈ A → a ∈ C</span></span>
 <span id="cb45-4"><a href="#cb45-4" aria-hidden="true" tabindex="-1"></a>  <span class="kw">fix</span> y : U</span>
 <span id="cb45-5"><a href="#cb45-5" aria-hidden="true" tabindex="-1"></a>  <span class="kw">assume</span> h3 : y ∈ A</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -798,7 +798,7 @@ $$
 <div class="inout">
 <div class="inpt">
 <div class="sourceCode" id="cb47"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a><span class="kw">example</span> (U : <span class="kw">Type</span>) (A B C : Set U) (h1 : A ⊆ B ∪ C)</span>
-<span id="cb47-2"><a href="#cb47-2" aria-hidden="true" tabindex="-1"></a>(h2 : ∀ x : U, x ∈ A → x ∉ B) : A ⊆ C := <span class="kw">by</span></span>
+<span id="cb47-2"><a href="#cb47-2" aria-hidden="true" tabindex="-1"></a>(h2 : ∀ (x : U), x ∈ A → x ∉ B) : A ⊆ C := <span class="kw">by</span></span>
 <span id="cb47-3"><a href="#cb47-3" aria-hidden="true" tabindex="-1"></a>  <span class="kw">define</span>  <span class="co">--Goal: ∀ {a : U}, a ∈ A → a ∈ C</span></span>
 <span id="cb47-4"><a href="#cb47-4" aria-hidden="true" tabindex="-1"></a>  <span class="kw">fix</span> y : U</span>
 <span id="cb47-5"><a href="#cb47-5" aria-hidden="true" tabindex="-1"></a>  <span class="kw">assume</span> h3 : y ∈ A</span>
@@ -820,7 +820,7 @@ $$
 <div class="inout">
 <div class="inpt">
 <div class="sourceCode" id="cb49"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb49-1"><a href="#cb49-1" aria-hidden="true" tabindex="-1"></a><span class="kw">example</span> (U : <span class="kw">Type</span>) (A B C : Set U) (h1 : A ⊆ B ∪ C)</span>
-<span id="cb49-2"><a href="#cb49-2" aria-hidden="true" tabindex="-1"></a>(h2 : ∀ x : U, x ∈ A → x ∉ B) : A ⊆ C := <span class="kw">by</span></span>
+<span id="cb49-2"><a href="#cb49-2" aria-hidden="true" tabindex="-1"></a>(h2 : ∀ (x : U), x ∈ A → x ∉ B) : A ⊆ C := <span class="kw">by</span></span>
 <span id="cb49-3"><a href="#cb49-3" aria-hidden="true" tabindex="-1"></a>  <span class="kw">define</span>  <span class="co">--Goal: ∀ {a : U}, a ∈ A → a ∈ C</span></span>
 <span id="cb49-4"><a href="#cb49-4" aria-hidden="true" tabindex="-1"></a>  <span class="kw">fix</span> y : U</span>
 <span id="cb49-5"><a href="#cb49-5" aria-hidden="true" tabindex="-1"></a>  <span class="kw">assume</span> h3 : y ∈ A</span>
@@ -845,7 +845,7 @@ $$
 <div class="inout">
 <div class="inpt">
 <div class="sourceCode" id="cb51"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb51-1"><a href="#cb51-1" aria-hidden="true" tabindex="-1"></a><span class="kw">example</span> (U : <span class="kw">Type</span>) (A B C : Set U) (h1 : A ⊆ B ∪ C)</span>
-<span id="cb51-2"><a href="#cb51-2" aria-hidden="true" tabindex="-1"></a>(h2 : ∀ x : U, x ∈ A → x ∉ B) : A ⊆ C := <span class="kw">by</span></span>
+<span id="cb51-2"><a href="#cb51-2" aria-hidden="true" tabindex="-1"></a>(h2 : ∀ (x : U), x ∈ A → x ∉ B) : A ⊆ C := <span class="kw">by</span></span>
 <span id="cb51-3"><a href="#cb51-3" aria-hidden="true" tabindex="-1"></a>  <span class="kw">define</span>  <span class="co">--Goal: ∀ {a : U}, a ∈ A → a ∈ C</span></span>
 <span id="cb51-4"><a href="#cb51-4" aria-hidden="true" tabindex="-1"></a>  <span class="kw">fix</span> y : U</span>
 <span id="cb51-5"><a href="#cb51-5" aria-hidden="true" tabindex="-1"></a>  <span class="kw">assume</span> h3 : y ∈ A</span>
@@ -867,11 +867,13 @@ $$
 <span id="cb52-11"><a href="#cb52-11" aria-hidden="true" tabindex="-1"></a>⊢ y ∈ C</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </div>
-<p>Now we’re almost done, because we can combine <code>h4</code> and <code>h5</code> to reach our goal. To see how, we first write out the definition of <code>h5</code>.</p>
+<p>If Lean was able to figure out that <code>y</code> should be plugged in for <code>a</code> in <code>h1</code> in this step, couldn’t it have figured out that <code>y</code> should be plugged in for <code>x</code> in <code>h2</code> in the previous <code>have</code> step? The answer is yes. Of course, in <code>h2</code>, <code>x</code> was not an implicit argument, so Lean wouldn’t <em>automatically</em> figure out what to plug in for <code>x</code>. But we could have asked it to figure it out by writing the proof in the previous step as <code>h2 _ h3</code> rather than <code>h2 y h3</code>. In a term-mode proof, an underscore represents a blank to be filled in by Lean. Try changing the earlier step of the proof to <code>have h4 : y ∉ B := h2 _ h3</code> and you will see that Lean will accept it. Of course, in this case this doesn’t save us any typing, but in some situations it is useful to let Lean figure out some part of a proof.</p>
+<p>Lean’s ability to fill in blanks in term-mode proofs is limited. For example, if you try changing the previous step to <code>have h4 : y ∉ B := h2 y _</code>, you’ll get a red squiggle under the blank, and the error message in the Infoview pane will say <code>don't know how to synthesize placeholder</code>. In other words, Lean was unable to figure out how to fill in the blank in this case. In future proofs you might try replacing some expressions with blanks to get a feel for what Lean can and cannot figure out for itself.</p>
+<p>Continuing with the proof, we see that we’re almost done, because we can combine <code>h4</code> and <code>h5</code> to reach our goal. To see how, we first write out the definition of <code>h5</code>.</p>
 <div class="inout">
 <div class="inpt">
 <div class="sourceCode" id="cb53"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb53-1"><a href="#cb53-1" aria-hidden="true" tabindex="-1"></a><span class="kw">example</span> (U : <span class="kw">Type</span>) (A B C : Set U) (h1 : A ⊆ B ∪ C)</span>
-<span id="cb53-2"><a href="#cb53-2" aria-hidden="true" tabindex="-1"></a>(h2 : ∀ x : U, x ∈ A → x ∉ B) : A ⊆ C := <span class="kw">by</span></span>
+<span id="cb53-2"><a href="#cb53-2" aria-hidden="true" tabindex="-1"></a>(h2 : ∀ (x : U), x ∈ A → x ∉ B) : A ⊆ C := <span class="kw">by</span></span>
 <span id="cb53-3"><a href="#cb53-3" aria-hidden="true" tabindex="-1"></a>  <span class="kw">define</span>  <span class="co">--Goal: ∀ {a : U}, a ∈ A → a ∈ C</span></span>
 <span id="cb53-4"><a href="#cb53-4" aria-hidden="true" tabindex="-1"></a>  <span class="kw">fix</span> y : U</span>
 <span id="cb53-5"><a href="#cb53-5" aria-hidden="true" tabindex="-1"></a>  <span class="kw">assume</span> h3 : y ∈ A</span>
@@ -898,7 +900,7 @@ $$
 <div class="inout">
 <div class="inpt">
 <div class="sourceCode" id="cb55"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb55-1"><a href="#cb55-1" aria-hidden="true" tabindex="-1"></a><span class="kw">example</span> (U : <span class="kw">Type</span>) (A B C : Set U) (h1 : A ⊆ B ∪ C)</span>
-<span id="cb55-2"><a href="#cb55-2" aria-hidden="true" tabindex="-1"></a>(h2 : ∀ x : U, x ∈ A → x ∉ B) : A ⊆ C := <span class="kw">by</span></span>
+<span id="cb55-2"><a href="#cb55-2" aria-hidden="true" tabindex="-1"></a>(h2 : ∀ (x : U), x ∈ A → x ∉ B) : A ⊆ C := <span class="kw">by</span></span>
 <span id="cb55-3"><a href="#cb55-3" aria-hidden="true" tabindex="-1"></a>  <span class="kw">define</span>  <span class="co">--Goal: ∀ {a : U}, a ∈ A → a ∈ C</span></span>
 <span id="cb55-4"><a href="#cb55-4" aria-hidden="true" tabindex="-1"></a>  <span class="kw">fix</span> y : U</span>
 <span id="cb55-5"><a href="#cb55-5" aria-hidden="true" tabindex="-1"></a>  <span class="kw">assume</span> h3 : y ∈ A</span>
@@ -1006,6 +1008,7 @@ $$
 <span id="cb64-10"><a href="#cb64-10" aria-hidden="true" tabindex="-1"></a>⊢ ∃ x, ¬P x</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </div>
+<p>By the way, this is another case in which Lean could have figured out a part of the proof on its own. Try changing <code>h1 a</code> in the last step to <code>h1 _</code>, and you’ll see that Lean will be able to figure out how to fill in the blank.</p>
 <p>Our new given <code>h4</code> is another existential statement, so again we use it right away to introduce another object of type <code>U</code>. Since this object might not be the same as <code>a</code>, we must give it a different name. (Indeed, if you try to use the name <code>a</code> again, Lean will give you an error message.)</p>
 <div class="inout">
 <div class="inpt">
@@ -1794,7 +1797,7 @@ x \in A \cap (B \setmin C) &amp;\text{ iff } x \in A \wedge x \in B \setmin C\\
 \end{align*}\]</span> Thus, <span class="math inline">\(\forall x(x \in A \cap (B \setmin C) \leftrightarrow x \in (A \cap B) \setmin C)\)</span>, so <span class="math inline">\(A \cap (B \setmin C) = (A \cap B) \setmin C\)</span>.</p>
 </div>
 <p>This proof is based on a fundamental principle of set theory that says that if two sets have exactly the same elements, then they are equal. This principle is called the <em>axiom of extensionality</em>, and it is what justifies the inference, in the last sentence, from <span class="math inline">\(\forall x(x \in A \cap (B \setmin C) \leftrightarrow x \in (A \cap B) \setmin C)\)</span> to <span class="math inline">\(A \cap (B \setmin C) = (A \cap B) \setmin C\)</span>.</p>
-<p>The heart of the proof is a string of equivalences that establish the biconditional statement <span class="math inline">\(x \in A \cap (B \setmin C) \leftrightarrow x \in (A \cap B) \setmin C\)</span>. That style of proving a biconditional can also be done in Lean. This time we’ll simply present the complete proof first, and then explain it afterwards.</p>
+<p>The heart of the proof is a string of equivalences that, taken together, establish the biconditional statement <span class="math inline">\(x \in A \cap (B \setmin C) \leftrightarrow x \in (A \cap B) \setmin C\)</span>. One can also use this technique to prove a biconditional statement in Lean. This time we’ll simply present the complete proof first, and then explain it afterwards.</p>
 <div class="sourceCode" id="cb126"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb126-1"><a href="#cb126-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Example_3_4_5 (U : <span class="kw">Type</span>)</span>
 <span id="cb126-2"><a href="#cb126-2" aria-hidden="true" tabindex="-1"></a>(A B C : Set U) : A ∩ (B \ C) = (A ∩ B) \ C := <span class="kw">by</span></span>
 <span id="cb126-3"><a href="#cb126-3" aria-hidden="true" tabindex="-1"></a>  <span class="kw">apply</span> Set.ext</span>
@@ -1805,8 +1808,34 @@ x \in A \cap (B \setmin C) &amp;\text{ iff } x \in A \wedge x \in B \setmin C\\
 <span id="cb126-8"><a href="#cb126-8" aria-hidden="true" tabindex="-1"></a>                    _ ↔ (x ∈ A ∧ x ∈ B) ∧ x ∉ C := And.assoc.symm</span>
 <span id="cb126-9"><a href="#cb126-9" aria-hidden="true" tabindex="-1"></a>                    _ ↔ x ∈ (A ∩ B) \ C := Iff.refl _</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>The name of the axiom of extensionality in Lean is <code>Set.ext</code>, and it is applied in the first step of the Lean proof. As usual, the <code>apply</code> tactic works backwards from the goal. In other words, after the first line of the proof, the goal is <code>∀ (x : U), x ∈ A ∩ (B \ C) ↔︎ x ∈ (A ∩ B) \ C</code>, because by <code>Set.ext</code>, the conclusion of the theorem would follow from this statement. The rest of the proof then proves this goal by introducing an arbitrary <code>x</code> of type <code>U</code> and then proving the biconditional by stringing together several equivalences, exactly as in the <em>HTPI</em> proof.</p>
-<p>The proof of the biconditional is called a <em>calculational proof</em>, and it is introduced by the keyword <code>calc</code>. The calculational proof consists of a list of biconditional statements, each of which is provided with a proof. You can think of the underscore on the left-hand side of each biconditional after the first as standing for the right-hand side of the previous biconditional.</p>
-<p>The proofs of the individual equivalences in the calculational proof require some explanation.</p>
+<p>The proof of the biconditional is called a <em>calculational proof</em>, and it is introduced by the keyword <code>calc</code>. The calculational proof consists of a string of biconditional statements, each of which is provided with a proof. You can think of the underscore on the left-hand side of each biconditional after the first as standing for the right-hand side of the previous biconditional.</p>
+<p>The proofs of the individual biconditionals in the calculational proof require some explanation. Lean has a large library of theorems that it knows, and you can use those theorems in your proofs. In particular, <code>Iff.refl</code> and <code>And.assoc</code> are names of theorems in Lean’s library. You can find out what any theorem says by using the Lean command <code>#check</code>. (Commands that ask Lean for a response generally start with the character <code>#</code>.) If you type <code>#check Iff.refl</code> in a Lean file, you will see Lean’s response in the Infoview pane: <code>Iff.refl : ∀ (a : Prop), a ↔︎ a</code>. So <code>Iff.refl</code> is the name of the theorem <code>∀ (a : Prop), a ↔︎ a</code>. (This theorem says that the biconditional has a property called <em>reflexivity</em>; we’ll discuss reflexivity in Chapter 4.) Thus, by universal instantiation, for any proposition <code>a</code>, <code>Iff.refl a</code> is a proof of <code>a ↔︎ a</code>. This is used to justify the first biconditional in the calculational proof.</p>
+<p>But wait! The first biconditional in the calculational proof is <code>x ∈ A ∩ (B \ C) ↔︎ x ∈ A ∧ (x ∈ B ∧ x ∉ C)</code>, which does not have the form <code>a ↔︎ a</code>. How can it be justified by the theorem <code>Iff.refl</code>? Recall that Lean doesn’t need to be told to write out definitions of mathematical notation; it does that automatically. When the definitions of the set theory notation are written out, the first line of the calculational proof becomes <code>x ∈ A ∧ (x ∈ B ∧ x ∉ C) ↔︎ x ∈ A ∧ (x ∈ B ∧ x ∉ C)</code>, which <em>does</em> have the form <code>a ↔︎ a</code>, so it can be proven with the term-mode proof <code>Iff.refl _</code>. Note that we are using an underscore here to ask Lean to figure out what to plug in for <code>a</code>. This saves us the trouble of writing out the full term-mode proof, which would be <code>Iff.refl (x ∈ A ∧ (x ∈ B ∧ x ∉ C))</code>. The lesson of this example is that the theorem <code>Iff.refl</code> is more powerful than it looks. Not only can we use <code>Iff.refl _</code> to prove statements of the form <code>a ↔︎ a</code>, we can also use it to prove statements of the form <code>a ↔︎ a'</code>, if <code>a</code> and <code>a'</code> reduce to the same thing when definitions are filled in. We say in this case that <code>a</code> and <code>a'</code> are <em>definitionally equal</em>. This explains the third line of the calculational proof, which is also justified by the proof <code>Iff.refl _</code>.</p>
+<p>The second line uses the theorem <code>And.assoc</code>. If you type <code>#check And.assoc</code>, Lean’s response is somewhat cryptic:</p>
+<div class="ind">
+<pre><code>And.assoc : (?m.4075 ∧ ?m.4076) ∧ ?m.4077 ↔ ?m.4075 ∧ ?m.4076 ∧ ?m.4077</code></pre>
+</div>
+<p>The explanation for this cryptic response is that <code>And.assoc</code> has implicit arguments, and they are not displayed by default. To see the implicit arguments, you must type <code>#check @And.assoc</code>. Lean’s response is:</p>
+<div class="ind">
+<pre><code>@And.assoc : ∀ {a b c : Prop}, (a ∧ b) ∧ c ↔ a ∧ b ∧ c</code></pre>
+</div>
+<p>which is shorthand for</p>
+<div class="ind">
+<pre><code>@And.assoc : ∀ {a : Prop}, ∀ {b : Prop}, ∀ {c : Prop},
+              (a ∧ b) ∧ c ↔ a ∧ (b ∧ c)</code></pre>
+</div>
+<p>This is the associative law for conjunction (see Section 1.2 of <em>HTPI</em>). Since <code>a</code>, <code>b</code>, and <code>c</code> are implicit, Lean will recognize <code>And.assoc</code> as a proof of any statement of the form <code>(a ∧ b) ∧ c ↔︎ a ∧ (b ∧ c)</code>, where <code>a</code>, <code>b</code>, and <code>c</code> can be replaced with any propositions. Lean doesn’t need to be told what propositions are being used as <code>a</code>, <code>b</code>, and <code>c</code>; it will figure that out for itself. Unfortunately, the second biconditional in the calculational proof is <code>x ∈ A ∧ (x ∈ B ∧ x ∉ C) ↔︎ (x ∈ A ∧ x ∈ B) ∧ x ∉ C</code>, which has the form <code>a ∧ (b ∧ c) ↔︎ (a ∧ b) ∧ c</code>, not <code>(a ∧ b) ∧ c ↔︎ a ∧ (b ∧ c)</code>. To account for this discrepancy, we use the fact that if <code>h</code> is a proof of any biconditional <code>P ↔︎ Q</code>, then <code>h.symm</code> is a proof of <code>Q ↔︎ P</code>. Thus <code>And.assoc.symm</code> proves the second biconditional in the calculational proof. (By the way, the <em>HTPI</em> proof avoids any mention of the associativity of “and” by simply leaving out parentheses in the conjunction <span class="math inline">\(x \in A \wedge x \in B \wedge x \notin C\)</span>. As explained in Section 1.2 of <em>HTPI</em>, this represents an implicit use of the associativity of “and.”)</p>
+<p>You can get a better understanding of the first step of our last proof by typing <code>#check @Set.ext</code>. The result is</p>
+<div class="ind">
+<pre><code>@Set.ext : ∀ {α : Type u_1} {a b : Set α},
+            (∀ (x : α), x ∈ a ↔ x ∈ b) → a = b</code></pre>
+</div>
+<p>which is shorthand for</p>
+<div class="ind">
+<pre><code>@Set.ext : ∀ {α : Type u_1}, ∀ {a : Set α}, ∀ {b : Set α},
+            (∀ (x : α), x ∈ a ↔ x ∈ b) → a = b</code></pre>
+</div>
+<p>Ignoring the <code>u_1</code>, whose significance won’t be important to us, this means that <code>Set.ext</code> can be used to prove any statement of the form <code>(∀ (x : α), x ∈ a ↔︎ x ∈ b) → a = b</code>, where <code>α</code> can be replaced by any type and <code>a</code> and <code>b</code> can be replaced by any sets of objects of type <code>α</code>. Make sure you understand how this explains the effect of the tactic <code>apply Set.ext</code> in the first step of our last proof. Almost all of our proofs that two sets are equal will start with <code>apply Set.ext</code>.</p>
 
 
 </section>

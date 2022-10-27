@@ -607,7 +607,7 @@ With this preparation, we can turn to our next example.
 ::: {.inpt}
 ```lean
 example (U : Type) (A B C : Set U) (h1 : A ⊆ B ∪ C)
-(h2 : ∀ x : U, x ∈ A → x ∉ B) : A ⊆ C := by
+(h2 : ∀ (x : U), x ∈ A → x ∉ B) : A ⊆ C := by
 ```
 :::
 
@@ -629,7 +629,7 @@ We begin by using the `define` tactic to write out the definition of the goal.
 ::: {.inpt}
 ```lean
 example (U : Type) (A B C : Set U) (h1 : A ⊆ B ∪ C)
-(h2 : ∀ x : U, x ∈ A → x ∉ B) : A ⊆ C := by
+(h2 : ∀ (x : U), x ∈ A → x ∉ B) : A ⊆ C := by
   define  --Goal: ∀ {a : U}, a ∈ A → a ∈ C
 ```
 :::
@@ -653,7 +653,7 @@ Notice that Lean's definition of the goal starts with `∀ {a : U}`, not `∀ (a
 ::: {.inpt}
 ```lean
 example (U : Type) (A B C : Set U) (h1 : A ⊆ B ∪ C)
-(h2 : ∀ x : U, x ∈ A → x ∉ B) : A ⊆ C := by
+(h2 : ∀ (x : U), x ∈ A → x ∉ B) : A ⊆ C := by
   define  --Goal: ∀ {a : U}, a ∈ A → a ∈ C
   fix y : U
   assume h3 : y ∈ A
@@ -680,7 +680,7 @@ Now we can combine `h2` and `h3` to conclude that `¬y ∈ B`.  Since we have `y
 ::: {.inpt}
 ```lean
 example (U : Type) (A B C : Set U) (h1 : A ⊆ B ∪ C)
-(h2 : ∀ x : U, x ∈ A → x ∉ B) : A ⊆ C := by
+(h2 : ∀ (x : U), x ∈ A → x ∉ B) : A ⊆ C := by
   define  --Goal: ∀ {a : U}, a ∈ A → a ∈ C
   fix y : U
   assume h3 : y ∈ A
@@ -709,7 +709,7 @@ We should be able to use similar reasoning to combine `h1` and `h3`, if we first
 ::: {.inpt}
 ```lean
 example (U : Type) (A B C : Set U) (h1 : A ⊆ B ∪ C)
-(h2 : ∀ x : U, x ∈ A → x ∉ B) : A ⊆ C := by
+(h2 : ∀ (x : U), x ∈ A → x ∉ B) : A ⊆ C := by
   define  --Goal: ∀ {a : U}, a ∈ A → a ∈ C
   fix y : U
   assume h3 : y ∈ A
@@ -742,7 +742,7 @@ In this situation, the `a` in `h1` is called an *implicit argument*.  What this 
 ::: {.inpt}
 ```lean
 example (U : Type) (A B C : Set U) (h1 : A ⊆ B ∪ C)
-(h2 : ∀ x : U, x ∈ A → x ∉ B) : A ⊆ C := by
+(h2 : ∀ (x : U), x ∈ A → x ∉ B) : A ⊆ C := by
   define  --Goal: ∀ {a : U}, a ∈ A → a ∈ C
   fix y : U
   assume h3 : y ∈ A
@@ -769,13 +769,18 @@ h5 : y ∈ B ∪ C
 :::
 :::
 
-Now we're almost done, because we can combine `h4` and `h5` to reach our goal.  To see how, we first write out the definition of `h5`.
+
+If Lean was able to figure out that `y` should be plugged in for `a` in `h1` in this step, couldn't it have figured out that `y` should be plugged in for `x` in `h2` in the previous `have` step?  The answer is yes.  Of course, in `h2`, `x` was not an implicit argument, so Lean wouldn't *automatically* figure out what to plug in for `x`.  But we could have asked it to figure it out by writing the proof in the previous step as `h2 _ h3` rather than `h2 y h3`.  In a term-mode proof, an underscore represents a blank to be filled in by Lean.  Try changing the earlier step of the proof to `have h4 : y ∉ B := h2 _ h3` and you will see that Lean will accept it.  Of course, in this case this doesn't save us any typing, but in some situations it is useful to let Lean figure out some part of a proof.
+
+Lean's ability to fill in blanks in term-mode proofs is limited.  For example, if you try changing the previous step to `have h4 : y ∉ B := h2 y _`, you'll get a red squiggle under the blank, and the error message in the Infoview pane will say `don't know how to synthesize placeholder`.  In other words, Lean was unable to figure out how to fill in the blank in this case.  In future proofs you might try replacing some expressions with blanks to get a feel for what Lean can and cannot figure out for itself.
+
+Continuing with the proof, we see that we're almost done, because we can combine `h4` and `h5` to reach our goal.  To see how, we first write out the definition of `h5`.
 
 ::: {.inout}
 ::: {.inpt}
 ```lean
 example (U : Type) (A B C : Set U) (h1 : A ⊆ B ∪ C)
-(h2 : ∀ x : U, x ∈ A → x ∉ B) : A ⊆ C := by
+(h2 : ∀ (x : U), x ∈ A → x ∉ B) : A ⊆ C := by
   define  --Goal: ∀ {a : U}, a ∈ A → a ∈ C
   fix y : U
   assume h3 : y ∈ A
@@ -809,7 +814,7 @@ A conditional law will convert `h5` to `¬y ∈ B → y ∈ C`, and then modus p
 ::: {.inpt}
 ```lean
 example (U : Type) (A B C : Set U) (h1 : A ⊆ B ∪ C)
-(h2 : ∀ x : U, x ∈ A → x ∉ B) : A ⊆ C := by
+(h2 : ∀ (x : U), x ∈ A → x ∉ B) : A ⊆ C := by
   define  --Goal: ∀ {a : U}, a ∈ A → a ∈ C
   fix y : U
   assume h3 : y ∈ A
@@ -953,6 +958,8 @@ h4 : ∃ y, P a → ¬Q y
 ```
 :::
 :::
+
+By the way, this is another case in which Lean could have figured out a part of the proof on its own.  Try changing `h1 a` in the last step to `h1 _`, and you'll see that Lean will be able to figure out how to fill in the blank.
 
 Our new given `h4` is another existential statement, so again we use it right away to introduce another object of type `U`.  Since this object might not be the same as `a`, we must give it a different name.  (Indeed, if you try to use the name `a` again, Lean will give you an error message.)
 
@@ -1971,7 +1978,7 @@ Thus, $\forall x(x \in A \cap (B \setmin C) \leftrightarrow x \in (A \cap B) \se
 
 This proof is based on a fundamental principle of set theory that says that if two sets have exactly the same elements, then they are equal.  This principle is called the *axiom of extensionality*, and it is what justifies the inference, in the last sentence, from $\forall x(x \in A \cap (B \setmin C) \leftrightarrow x \in (A \cap B) \setmin C)$ to $A \cap (B \setmin C) = (A \cap B) \setmin C$.
 
-The heart of the proof is a string of equivalences that establish the biconditional statement $x \in A \cap (B \setmin C) \leftrightarrow x \in (A \cap B) \setmin C$.  That style of proving a biconditional can also be done in Lean.  This time we'll simply present the complete proof first, and then explain it afterwards.
+The heart of the proof is a string of equivalences that, taken together, establish the biconditional statement $x \in A \cap (B \setmin C) \leftrightarrow x \in (A \cap B) \setmin C$.  One can also use this technique to prove a biconditional statement in Lean.  This time we'll simply present the complete proof first, and then explain it afterwards.
 
 ```lean
 theorem Example_3_4_5 (U : Type)
@@ -1987,6 +1994,55 @@ theorem Example_3_4_5 (U : Type)
 
 The name of the axiom of extensionality in Lean is `Set.ext`, and it is applied in the first step of the Lean proof.  As usual, the `apply` tactic works backwards from the goal.  In other words, after the first line of the proof, the goal is `∀ (x : U), x ∈ A ∩ (B \ C) ↔ x ∈ (A ∩ B) \ C`, because by `Set.ext`, the conclusion of the theorem would follow from this statement.  The rest of the proof then proves this goal by introducing an arbitrary `x` of type `U` and then proving the biconditional by stringing together several equivalences, exactly as in the *HTPI* proof.
 
-The proof of the biconditional is called a *calculational proof*, and it is introduced by the keyword `calc`.  The calculational proof consists of a list of biconditional statements, each of which is provided with a proof.  You can think of the underscore on the left-hand side of each biconditional after the first as standing for the right-hand side of the previous biconditional.
+The proof of the biconditional is called a *calculational proof*, and it is introduced by the keyword `calc`.  The calculational proof consists of a string of biconditional statements, each of which is provided with a proof.  You can think of the underscore on the left-hand side of each biconditional after the first as standing for the right-hand side of the previous biconditional.
 
-The proofs of the individual equivalences in the calculational proof require some explanation.
+The proofs of the individual biconditionals in the calculational proof require some explanation.  Lean has a large library of theorems that it knows, and you can use those theorems in your proofs.  In particular, `Iff.refl` and `And.assoc` are names of theorems in Lean's library.  You can find out what any theorem says by using the Lean command `#check`.  (Commands that ask Lean for a response generally start with the character `#`.)  If you type `#check Iff.refl` in a Lean file, you will see Lean's response in the Infoview pane:  `Iff.refl : ∀ (a : Prop), a ↔ a`.  So `Iff.refl` is the name of the theorem `∀ (a : Prop), a ↔ a`.  (This theorem says that the biconditional has a property called *reflexivity*; we'll discuss reflexivity in Chapter 4.)  Thus, by universal instantiation, for any proposition `a`, `Iff.refl a` is a proof of `a ↔ a`.  This is used to justify the first biconditional in the calculational proof.
+
+But wait!  The first biconditional in the calculational proof is `x ∈ A ∩ (B \ C) ↔ x ∈ A ∧ (x ∈ B ∧ x ∉ C)`, which does not have the form `a ↔ a`.  How can it be justified by the theorem `Iff.refl`?  Recall that Lean doesn't need to be told to write out definitions of mathematical notation; it does that automatically.  When the definitions of the set theory notation are written out, the first line of the calculational proof becomes `x ∈ A ∧ (x ∈ B ∧ x ∉ C) ↔ x ∈ A ∧ (x ∈ B ∧ x ∉ C)`, which *does* have the form `a ↔ a`, so it can be proven with the term-mode proof `Iff.refl _`.  Note that we are using an underscore here to ask Lean to figure out what to plug in for `a`.  This saves us the trouble of writing out the full term-mode proof, which would be `Iff.refl (x ∈ A ∧ (x ∈ B ∧ x ∉ C))`.  The lesson of this example is that the theorem `Iff.refl` is more powerful than it looks.  Not only can we use `Iff.refl _` to prove statements of the form `a ↔ a`, we can also use it to prove statements of the form `a ↔ a'`, if `a` and `a'` reduce to the same thing when definitions are filled in.  We say in this case that `a` and `a'` are *definitionally equal*.  This explains the third line of the calculational proof, which is also justified by the proof `Iff.refl _`.
+
+The second line uses the theorem `And.assoc`.  If you type `#check And.assoc`, Lean's response is somewhat cryptic:
+
+::: {.ind}
+```
+And.assoc : (?m.4075 ∧ ?m.4076) ∧ ?m.4077 ↔ ?m.4075 ∧ ?m.4076 ∧ ?m.4077
+```
+:::
+
+The explanation for this cryptic response is that `And.assoc` has implicit arguments, and they are not displayed by default.  To see the implicit arguments, you must type `#check @And.assoc`.  Lean's response is:
+
+::: {.ind}
+```
+@And.assoc : ∀ {a b c : Prop}, (a ∧ b) ∧ c ↔ a ∧ b ∧ c
+```
+:::
+
+which is shorthand for
+
+::: {.ind}
+```
+@And.assoc : ∀ {a : Prop}, ∀ {b : Prop}, ∀ {c : Prop},
+              (a ∧ b) ∧ c ↔ a ∧ (b ∧ c)
+```
+:::
+
+This is the associative law for conjunction (see Section 1.2 of *HTPI*).  Since `a`, `b`, and `c` are implicit, Lean will recognize `And.assoc` as a proof of any statement of the form `(a ∧ b) ∧ c ↔ a ∧ (b ∧ c)`, where `a`, `b`, and `c` can be replaced with any propositions.  Lean doesn't need to be told what propositions are being used as `a`, `b`, and `c`; it will figure that out for itself.  Unfortunately, the second biconditional in the calculational proof is `x ∈ A ∧ (x ∈ B ∧ x ∉ C) ↔ (x ∈ A ∧ x ∈ B) ∧ x ∉ C`, which has the form `a ∧ (b ∧ c) ↔ (a ∧ b) ∧ c`, not `(a ∧ b) ∧ c ↔ a ∧ (b ∧ c)`.  To account for this discrepancy, we use the fact that if `h` is a proof of any biconditional `P ↔ Q`, then `h.symm` is a proof of `Q ↔ P`.  Thus `And.assoc.symm` proves the second biconditional in the calculational proof.  (By the way, the *HTPI* proof avoids any mention of the associativity of "and" by simply leaving out parentheses in the conjunction $x \in A \wedge x \in B \wedge x \notin C$.  As explained in Section 1.2 of *HTPI*, this represents an implicit use of the associativity of "and.")
+
+You can get a better understanding of the first step of our last proof by typing `#check @Set.ext`.  The result is
+
+::: {.ind}
+```
+@Set.ext : ∀ {α : Type u_1} {a b : Set α},
+            (∀ (x : α), x ∈ a ↔ x ∈ b) → a = b
+```
+:::
+
+which is shorthand for
+
+::: {.ind}
+```
+@Set.ext : ∀ {α : Type u_1}, ∀ {a : Set α}, ∀ {b : Set α},
+            (∀ (x : α), x ∈ a ↔ x ∈ b) → a = b
+```
+:::
+
+Ignoring the `u_1`, whose significance won't be important to us, this means that `Set.ext` can be used to prove any statement of the form `(∀ (x : α), x ∈ a ↔ x ∈ b) → a = b`, where `α` can be replaced by any type and `a` and `b` can be replaced by any sets of objects of type `α`.  Make sure you understand how this explains the effect of the tactic `apply Set.ext` in the first step of our last proof.  Almost all of our proofs that two sets are equal will start with `apply Set.ext`.
