@@ -9,7 +9,7 @@ Chapter 1 of *How To Prove It* introduces the following symbols of logic:
 | $\wedge$ | and |
 | $\vee$ | or |
 | $\to$ | if ... then |
-| $\leftrightarrow$ | if and only if |
+| $\leftrightarrow$ | iff (that is, if and only if) |
 :::
 
 As we will see, Lean uses the same symbols, with the same meanings.  This chapter also establishes a number of logical equivalences that will be useful to us later:
@@ -34,5 +34,5 @@ $A \cup B = \{x \mid x \in A \vee x \in B\} = {}$ the *union* of $A$ and $B$,
 
 $A \setmin B = \{x \mid x \in A \wedge x \notin B\} = {}$ the *difference* of $A$ and $B$,
 
-$A \bigtriangleup B = (A \setmin B) \cup (B \setmin A) = {}$ the *symmetric difference* of $A$ and $B$.
+$A \symmdiff B = (A \setmin B) \cup (B \setmin A) = {}$ the *symmetric difference* of $A$ and $B$.
 :::

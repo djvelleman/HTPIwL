@@ -340,7 +340,7 @@ h3 : a ∈ B → a ∈ C
 :::
 :::
 
-It may not be clear what to do next, but the given `h2` is a negative statement, so perhaps reexpressing it will help.  Writing out the definition of set difference, `h2` means `¬(a ∈ A ∧ a ∉ B)`, and then one of De Morgan's laws and a conditional law allow us to rewrite it first as `(a ∉ A ∨ a ∈ B)` and then as `(a ∈ A → a ∈ B)`.  Of course, we have tactics to accomplish all of these reexpressions:
+It may not be clear what to do next, but the given `h2` is a negative statement, so perhaps reexpressing it will help.  Writing out the definition of set difference, `h2` means `¬(a ∈ A ∧ a ∉ B)`, and then one of De Morgan's laws and a conditional law allow us to rewrite it first as `a ∉ A ∨ a ∈ B` and then as `a ∈ A → a ∈ B`.  Of course, we have tactics to accomplish all of these reexpressions:
 
 ::: {.inout}
 ::: {.inpt}
@@ -1134,7 +1134,7 @@ example (U : Type) (P Q : Pred U)
 :::
 :::
 
-We conclude this section with the theorem from Example 3.3.5 in *HTPI*.  That theorem concerns a union of a family of sets.  In *HTPI*, such a union is written using a large union symbol, $\bigcup$.  Lean uses the symbol `∪₀`, which is entered by typing `\U0` (that is, backslash-capital U-zero).  For an intersection of a family of sets, Lean uses `∩₀`, typed as `\I0`.
+We conclude this section with the theorem from Example 3.3.5 in *HTPI*.  That theorem concerns a union of a family of sets.  In *HTPI*, such a union is written using a large union symbol, $\bigcup$.  Lean uses the symbol `∪₀`, which is entered by typing `\U0` (that is, backslash--capital U--zero).  For an intersection of a family of sets, Lean uses `∩₀`, typed as `\I0`.
 
 ::: {.inout}
 ::: {.inpt}
@@ -1962,7 +1962,7 @@ To understand the last step, start with the fact that `h1 u` is a proof of `P u 
 
 There is one more style of reasoning that is sometimes used in proofs of biconditional statements.  It is illustrated in Example 3.4.5 of *HTPI*.  Here is that theorem, as it is presented in *HTPI*.
 
-::: {.nthm arguments="Theorem (Example 3.4.5)"}
+::: {.thm}
 Suppose $A$, $B$, and $C$ are sets.  Then $A \cap (B \setmin C) = (A \cap B) \setmin C$.
 :::
 ::: {.proof}
@@ -1988,7 +1988,7 @@ theorem Example_3_4_5 (U : Type)
   show x ∈ A ∩ (B \ C) ↔ x ∈ (A ∩ B) \ C from
     calc
       x ∈ A ∩ (B \ C) ↔ x ∈ A ∧ (x ∈ B ∧ x ∉ C) := Iff.refl _
-                    _ ↔ (x ∈ A ∧ x ∈ B) ∧ x ∉ C := And.assoc.symm
+                    _ ↔ (x ∈ A ∧ x ∈ B) ∧ x ∉ C := and_assoc.symm
                     _ ↔ x ∈ (A ∩ B) \ C := Iff.refl _
 ```
 
@@ -1996,23 +1996,23 @@ The name of the axiom of extensionality in Lean is `Set.ext`, and it is applied 
 
 The proof of the biconditional is called a *calculational proof*, and it is introduced by the keyword `calc`.  The calculational proof consists of a string of biconditional statements, each of which is provided with a proof.  You can think of the underscore on the left-hand side of each biconditional after the first as standing for the right-hand side of the previous biconditional.
 
-The proofs of the individual biconditionals in the calculational proof require some explanation.  Lean has a large library of theorems that it knows, and you can use those theorems in your proofs.  In particular, `Iff.refl` and `And.assoc` are names of theorems in Lean's library.  You can find out what any theorem says by using the Lean command `#check`.  (Commands that ask Lean for a response generally start with the character `#`.)  If you type `#check Iff.refl` in a Lean file, you will see Lean's response in the Infoview pane:  `Iff.refl : ∀ (a : Prop), a ↔ a`.  So `Iff.refl` is the name of the theorem `∀ (a : Prop), a ↔ a`.  (This theorem says that the biconditional has a property called *reflexivity*; we'll discuss reflexivity in Chapter 4.)  Thus, by universal instantiation, for any proposition `a`, `Iff.refl a` is a proof of `a ↔ a`.  This is used to justify the first biconditional in the calculational proof.
+The proofs of the individual biconditionals in the calculational proof require some explanation.  Lean has a large library of theorems that it knows, and you can use those theorems in your proofs.  In particular, `Iff.refl` and `and_assoc` are names of theorems in Lean's library.  You can find out what any theorem says by using the Lean command `#check`.  (Commands that ask Lean for a response generally start with the character `#`.)  If you type `#check Iff.refl` in a Lean file, you will see Lean's response in the Infoview pane:  `Iff.refl : ∀ (a : Prop), a ↔ a`.  So `Iff.refl` is the name of the theorem `∀ (a : Prop), a ↔ a`.  (This theorem says that "iff" has a property called *reflexivity*; we'll discuss reflexivity in Chapter 4.)  Thus, by universal instantiation, for any proposition `a`, `Iff.refl a` is a proof of `a ↔ a`.  This is used to justify the first biconditional in the calculational proof.
 
 But wait!  The first biconditional in the calculational proof is `x ∈ A ∩ (B \ C) ↔ x ∈ A ∧ (x ∈ B ∧ x ∉ C)`, which does not have the form `a ↔ a`.  How can it be justified by the theorem `Iff.refl`?  Recall that Lean doesn't need to be told to write out definitions of mathematical notation; it does that automatically.  When the definitions of the set theory notation are written out, the first line of the calculational proof becomes `x ∈ A ∧ (x ∈ B ∧ x ∉ C) ↔ x ∈ A ∧ (x ∈ B ∧ x ∉ C)`, which *does* have the form `a ↔ a`, so it can be proven with the term-mode proof `Iff.refl _`.  Note that we are using an underscore here to ask Lean to figure out what to plug in for `a`.  This saves us the trouble of writing out the full term-mode proof, which would be `Iff.refl (x ∈ A ∧ (x ∈ B ∧ x ∉ C))`.  The lesson of this example is that the theorem `Iff.refl` is more powerful than it looks.  Not only can we use `Iff.refl _` to prove statements of the form `a ↔ a`, we can also use it to prove statements of the form `a ↔ a'`, if `a` and `a'` reduce to the same thing when definitions are filled in.  We say in this case that `a` and `a'` are *definitionally equal*.  This explains the third line of the calculational proof, which is also justified by the proof `Iff.refl _`.
 
-The second line uses the theorem `And.assoc`.  If you type `#check And.assoc`, Lean's response is somewhat cryptic:
+The second line uses the theorem `and_assoc`.  If you type `#check and_assoc`, Lean's response is somewhat cryptic:
 
 ::: {.ind}
 ```
-And.assoc : (?m.4075 ∧ ?m.4076) ∧ ?m.4077 ↔ ?m.4075 ∧ ?m.4076 ∧ ?m.4077
+and_assoc : (?m.4075 ∧ ?m.4076) ∧ ?m.4077 ↔ ?m.4075 ∧ ?m.4076 ∧ ?m.4077
 ```
 :::
 
-The explanation for this cryptic response is that `And.assoc` has implicit arguments, and they are not displayed by default.  To see the implicit arguments, you must type `#check @And.assoc`.  Lean's response is:
+The explanation for this cryptic response is that `and_assoc` has implicit arguments, and they are not displayed by default.  To see the implicit arguments, you must type `#check @and_assoc`.  Lean's response is:
 
 ::: {.ind}
 ```
-@And.assoc : ∀ {a b c : Prop}, (a ∧ b) ∧ c ↔ a ∧ b ∧ c
+@and_assoc : ∀ {a b c : Prop}, (a ∧ b) ∧ c ↔ a ∧ b ∧ c
 ```
 :::
 
@@ -2020,12 +2020,12 @@ which is shorthand for
 
 ::: {.ind}
 ```
-@And.assoc : ∀ {a : Prop}, ∀ {b : Prop}, ∀ {c : Prop},
+@and_assoc : ∀ {a : Prop}, ∀ {b : Prop}, ∀ {c : Prop},
               (a ∧ b) ∧ c ↔ a ∧ (b ∧ c)
 ```
 :::
 
-This is the associative law for conjunction (see Section 1.2 of *HTPI*).  Since `a`, `b`, and `c` are implicit, Lean will recognize `And.assoc` as a proof of any statement of the form `(a ∧ b) ∧ c ↔ a ∧ (b ∧ c)`, where `a`, `b`, and `c` can be replaced with any propositions.  Lean doesn't need to be told what propositions are being used as `a`, `b`, and `c`; it will figure that out for itself.  Unfortunately, the second biconditional in the calculational proof is `x ∈ A ∧ (x ∈ B ∧ x ∉ C) ↔ (x ∈ A ∧ x ∈ B) ∧ x ∉ C`, which has the form `a ∧ (b ∧ c) ↔ (a ∧ b) ∧ c`, not `(a ∧ b) ∧ c ↔ a ∧ (b ∧ c)`.  To account for this discrepancy, we use the fact that if `h` is a proof of any biconditional `P ↔ Q`, then `h.symm` is a proof of `Q ↔ P`.  Thus `And.assoc.symm` proves the second biconditional in the calculational proof.  (By the way, the *HTPI* proof avoids any mention of the associativity of "and" by simply leaving out parentheses in the conjunction $x \in A \wedge x \in B \wedge x \notin C$.  As explained in Section 1.2 of *HTPI*, this represents an implicit use of the associativity of "and.")
+(Recall that Lean groups the logical connectives to the right, which means that it interprets `a ∧ b ∧ c` as `a ∧ (b ∧ c)`.)  This is the associative law for "and" (see Section 1.2 of *HTPI*).  Since `a`, `b`, and `c` are implicit, Lean will recognize `and_assoc` as a proof of any statement of the form `(a ∧ b) ∧ c ↔ a ∧ (b ∧ c)`, where `a`, `b`, and `c` can be replaced with any propositions.  Lean doesn't need to be told what propositions are being used as `a`, `b`, and `c`; it will figure that out for itself.  Unfortunately, the second biconditional in the calculational proof is `x ∈ A ∧ (x ∈ B ∧ x ∉ C) ↔ (x ∈ A ∧ x ∈ B) ∧ x ∉ C`, which has the form `a ∧ (b ∧ c) ↔ (a ∧ b) ∧ c`, not `(a ∧ b) ∧ c ↔ a ∧ (b ∧ c)`.  To account for this discrepancy, we use the fact that if `h` is a proof of any biconditional `P ↔ Q`, then `h.symm` is a proof of `Q ↔ P`.  Thus `and_assoc.symm` proves the second biconditional in the calculational proof.  (By the way, the *HTPI* proof avoids any mention of the associativity of "and" by simply leaving out parentheses in the conjunction $x \in A \wedge x \in B \wedge x \notin C$.  As explained in Section 1.2 of *HTPI*, this represents an implicit use of the associativity of "and.")
 
 You can get a better understanding of the first step of our last proof by typing `#check @Set.ext`.  The result is
 
