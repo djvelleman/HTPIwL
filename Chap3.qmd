@@ -210,7 +210,9 @@ Finally, we have two strategies for using a given that is a negative statement:
 1.  Reexpress the given in some other form.
 2.  If you are doing a proof by contradiction, you can achieve a contradiction by proving `P`, since that would contradict the given `¬P`.
 
-Of course, strategy 1 suggests the use of the `demorgan`, `conditional`, and `double_neg` tactics, if they apply.  For strategy 2, if you are doing a proof by contradiction and you have a given `h : ¬P`, then the tactic `contradict h` will set the goal to be `P`, which will complete the proof by contradicting `h`.  In fact, this tactic can be used with any given; if you have a given `h : P`, where `P` is not a negative statement, then `contradict h` will set the goal to be `¬P`.  If you're not doing a proof by contradiction, then the tactic `contradict h with h'` will first initiate a proof by contradiction by assuming the negation of the goal, giving that assumption the identifier `h'`, and then it will set the goal to be the negation of `h`.  In other words, `contradict h with h'` is shorthand for `by_contra h'; contradict h`.
+Of course, strategy 1 suggests the use of the `demorgan`, `conditional`, and `double_neg` tactics, if they apply.  For strategy 2, if you are doing a proof by contradiction and you have a given `h : ¬P`, then the tactic `contradict h` will set the goal to be `P`, which will complete the proof by contradicting `h`.  In fact, this tactic can be used with any given; if you have a given `h : P`, where `P` is not a negative statement, then `contradict h` will set the goal to be `¬P`.  You can also follow the word `contradict` with a proof that is more complicated than a single identifier.  For example, if you have givens `h1 : P → ¬Q` and `h2 : P`, then `h1 h2` is a proof of `¬Q`, so the tactic `contradict (h1 h2)` will set the goal to be `Q`.
+
+If you're not doing a proof by contradiction, then the tactic `contradict h with h'` will first initiate a proof by contradiction by assuming the negation of the goal, giving that assumption the identifier `h'`, and then it will set the goal to be the negation of the statement proven by `h`.  In other words, `contradict h with h'` is shorthand for `by_contra h'; contradict h`.
 
 We can illustrate this with yet another way to write the proof from Example 3.2.4.  Our first three steps will be the same as last time:
 
@@ -1107,7 +1109,7 @@ h7 : P a
 :::
 :::
 
-Now `h5 h7` is a proof of `¬Q b` and `h6 h7` is a proof of `Q b`, so `(h5 h7) (h6 h7)` is a proof of `False`.
+Now `h5 h7` is a proof of `¬Q b` and `h6 h7` is a proof of `Q b`, so `h5 h7 (h6 h7)` is a proof of `False`.
 
 ::: {.inout}
 ::: {.inpt}
@@ -1123,7 +1125,7 @@ example (U : Type) (P Q : Pred U)
   have h6 : P a → Q b := h3 b
   apply Exists.intro a _
   by_contra h7
-  show False from (h5 h7) (h6 h7)
+  show False from h5 h7 (h6 h7)
 ```
 :::
 
@@ -1558,7 +1560,7 @@ h3 : x ∈ A ∧ x ∈ C
 :::
 :::
 
-Look carefully at the tactic state.  Lean has listed *two* goals, one after the other, and it has helpfully labeled them "case left" and "case right," indicating that the first goal is proving the left side of the conjunction and the second is proving the right.  The given information in both cases is the same, but in the first case the goal is `x ∈ B`, and in the second it is `¬x ∈ D`.  As we continue with the proof, Lean will interpret our tactics as applying to the first goal, until we achieve that goal.  Once we achieve it, Lean will move on to the second goal.  To make the proof more readable, we will add comments indicating which steps give the proof of the first goal and which prove the second.
+Look carefully at the tactic state.  Lean has listed *two* goals, one after the other, and it has helpfully labeled them "case left" and "case right," indicating that the first goal is proving the left side of the conjunction and the second is proving the right.  The given information in both cases is the same, but in the first case the goal is `x ∈ B`, and in the second it is `¬x ∈ D`.  As we continue with the proof, Lean will interpret our tactics as applying to the first goal, until we achieve that goal.  Once we achieve it, Lean will move on to the second goal.  To make the proof more readable, we will add comments indicating which steps give the proof of the first goal and which prove the second.  (If, for some reason, you prefer to prove the second goal first, the tactic `swap` will switch the order of the two goals.)
 
 The first goal is easy:  We have `h1 : A ⊆ B` and, as explained above, `h3.left : x ∈ A`.  As we have seen in several previous examples, the tactic `define at h1` will rewrite `h1` as `∀ {a : U}, a ∈ A → a ∈ B`, and then `h1 h3.left` will be a proof of `x ∈ B`.  And now we'll let you in on a little secret: the `define` tactic isn't really necessary.  *You* may find the `define` tactic to be useful in many situations, because it helps you see what a statement means.  But *Lean* doesn't need to be told to work out what the statement means; it will do that automatically.  So we can skip the define tactic and just give `h1 h3.left` as a proof of `x ∈ B`.  In general, if you have `h1 : A ⊆ B` and `h2 : x ∈ A`, then Lean will recognize `h1 h2` as a proof of `x ∈ B`.
 
@@ -2046,3 +2048,278 @@ which is shorthand for
 :::
 
 Ignoring the `u_1`, whose significance won't be important to us, this means that `Set.ext` can be used to prove any statement of the form `(∀ (x : α), x ∈ a ↔ x ∈ b) → a = b`, where `α` can be replaced by any type and `a` and `b` can be replaced by any sets of objects of type `α`.  Make sure you understand how this explains the effect of the tactic `apply Set.ext` in the first step of our last proof.  Almost all of our proofs that two sets are equal will start with `apply Set.ext`.
+
+## 3.5.  Proofs Involving Disjunctions
+
+A common proof method for dealing with givens or goals that are disjunctions is *proof by cases*.  Here's how it works.
+
+#### To use a given of the form `P ∨ Q`:
+
+::: {.ind}
+Break your proof into cases.  For case 1, assume that `P` is true and use this assumption to prove the goal.  For case 2, assume that `Q` is true and prove the goal.
+:::
+
+In Lean, you can break a proof into cases by using the `by_cases` tactic.  If you have a given `h : P ∨ Q`, then the tactic `by_cases on h` will break your proof into two cases.  For the first case, the given `h` will be changed to `h : P`, and for the second, it will be changed to `h : Q`; the goal for both cases will be the same as the original goal.  Thus, the effect of the `by_cases on h` tactic is as follows:
+
+::: {.lftrt}
+::: {.bef}
+```state
+!! ⋮
+h : P ∨ Q
+⊢ goal
+```
+:::
+
+::: {.aft}
+```state
+case Case_1
+!! ⋮
+h : P
+⊢ goal
+case Case_2
+!! ⋮
+h : Q
+⊢ goal
+```
+:::
+:::
+
+Notice that the original given `h : P ∨ Q` gets *replaced* by `h : P` in case 1 and `h : Q` in case 2.  This is usually what is most convenient, but if you write `by_cases on h with h1`, then the original given `h` will be preserved, and new givens `h1 : P` and `h1 : Q` will be added to cases 1 and 2, respectively.  If you want different names for the new givens in the two cases, then use `by_cases on h with h1 h2` to add the new given `h1 : P` in case 1 and `h2 : Q` in case 2.
+
+You can also follow `by_cases on` with a proof of a disjunction that is more complicated than a single identifier.  In that cases you will want to add `with` to specify the identifiers to be used for the new assumptions in the two cases.  Another variant is that you can use the tactic `by_cases h : P` to break your proof into two cases, with the new assumptions being `h : P` in case 1 and `h : ¬P` in case 2.  In other words, the effect of `by_cases h : P` is the same as adding the new given `h : P ∨ ¬P` (which, of course, is a tautology) and then using the tactic `by_cases on h`.
+
+There are two introduction rules that you can use in Lean to prove a goal of the form `P ∨ Q`.  If you have `h : P`, then Lean will accept `Or.intro_left h` as a proof of `P ∨ Q`, and if you have `h : Q`, then `Or.intro_right h` is a proof of `P ∨ Q`.  There are shortened forms `Or.inl` and `Or.inr` for `Or.intro_left` and `Or.intro_right`, respectively.
+
+But often, when your goal has the form `P ∨ Q`, you will be unable to prove `P`, and also unable to prove `Q`.  Proof by cases can help in that situation as well.
+
+#### To prove a goal of the form `P ∨ Q`:
+
+::: {.ind}
+Break your proof into cases.  In each case, either prove `P` or prove `Q`.
+:::
+
+Example 3.5.2 from *HTPI* illustrates these strategies:
+
+::: {.inout}
+::: {.inpt}
+```lean
+theorem Example_3_5_2
+(U : Type) (A B C : Set U) :
+A \ (B \ C) ⊆ (A \ B) ∪ C := by
+```
+:::
+
+::: {.outpt}
+```state
+U : Type
+A B C : Set U
+⊢ A \ (B \ C) ⊆ A \ B ∪ C
+```
+:::
+:::
+
+The `define` tactic would rewrite the goal as `∀ {a : U}, a ∈ A \ (B \ C) → a ∈ A \ B ∪ C`, which suggests that our next two tactics should be `fix x : U` and `assume h1 : x ∈ A \ (B \ C)`.  But as we have seen before, if you know what the result of the `define` tactic is going to be, then there is no need to use it.  After introducing `x` as an arbitrary element of `A \ (B \ C)`, we write out the definitions of our new given and goal to help guide our next strategy choice:
+
+::: {.inout}
+::: {.inpt}
+```lean
+theorem Example_3_5_2
+(U : Type) (A B C : Set U) :
+A \ (B \ C) ⊆ (A \ B) ∪ C := by
+  fix x : U
+  assume h1 : x ∈ A \ (B \ C)
+  define
+  define at h1
+```
+:::
+
+::: {.outpt}
+```state
+U : Type
+A B C : Set U
+x : U
+h1 : x ∈ A ∧ ¬x ∈ B \ C
+⊢ x ∈ A \ B ∨ x ∈ C
+```
+:::
+:::
+
+The goal is now a disjunction, which suggests that proof by cases might be helpful.  But what cases should we use?  The key is to look at the meaning of the right half of the given `h1`.  The meaning of `¬x ∈ B \ C` is `¬(x ∈ B ∧ x ∉ C)`, which, by one of the De Morgan laws, is equivalent to `x ∉ B ∨ x ∈ C`.
+
+::: {.inout}
+::: {.inpt}
+```lean
+theorem Example_3_5_2
+(U : Type) (A B C : Set U) :
+A \ (B \ C) ⊆ (A \ B) ∪ C := by
+  fix x : U
+  assume h1 : x ∈ A \ (B \ C)
+  define
+  define at h1
+  have h2 : ¬x ∈ B \ C := h1.right
+  define at h2
+  demorgan at h2
+```
+:::
+
+::: {.outpt}
+```state
+U : Type
+A B C : Set U
+x : U
+h1 : x ∈ A ∧ ¬x ∈ B \ C
+h2 : ¬x ∈ B ∨ x ∈ C
+⊢ x ∈ A \ B ∨ x ∈ C
+```
+:::
+:::
+
+Aha!  The new given `h2` is a disjunction, which suggests what cases we should use:
+
+::: {.inout}
+::: {.inpt}
+```lean
+theorem Example_3_5_2
+(U : Type) (A B C : Set U) :
+A \ (B \ C) ⊆ (A \ B) ∪ C := by
+  fix x : U
+  assume h1 : x ∈ A \ (B \ C)
+  define
+  define at h1
+  have h2 : ¬x ∈ B \ C := h1.right
+  define at h2
+  demorgan at h2
+  by_cases on h2
+```
+:::
+
+::: {.outpt}
+```state
+case Case_1
+U : Type
+A B C : Set U
+x : U
+h1 : x ∈ A ∧ ¬x ∈ B \ C
+h2 : ¬x ∈ B
+⊢ x ∈ A \ B ∨ x ∈ C
+case Case_2
+U : Type
+A B C : Set U
+x : U
+h1 : x ∈ A ∧ ¬x ∈ B \ C
+h2 : x ∈ C
+⊢ x ∈ A \ B ∨ x ∈ C
+```
+:::
+:::
+
+Looking at the givens `h1` and `h2` in both cases, it is not hard to see that we should be able to prove `x ∈ A \ B` in case 1 and `x ∈ C` in case 2.  Thus, we will apply `Or.inl` in case 1 and `Or.inr` in case 2.  Focusing first on case 1, we get:
+
+::: {.inout}
+::: {.inpt}
+```lean
+theorem Example_3_5_2
+(U : Type) (A B C : Set U) :
+A \ (B \ C) ⊆ (A \ B) ∪ C := by
+  fix x : U
+  assume h1 : x ∈ A \ (B \ C)
+  define
+  define at h1
+  have h2 : ¬x ∈ B \ C := h1.right
+  define at h2
+  demorgan at h2
+  by_cases on h2
+  -- Case 1
+  apply Or.inl
+```
+:::
+
+::: {.outpt}
+```state
+case Case_1.h
+U : Type
+A B C : Set U
+x : U
+h1 : x ∈ A ∧ ¬x ∈ B \ C
+h2 : ¬x ∈ B
+⊢ x ∈ A \ B
+```
+:::
+:::
+
+The tactic `apply Or.inl` changed the goal for case 1 to the left half of the original goal, `x ∈ A \ B`.  Since this means `x ∈ A ∧ x ∉ B`, we can complete case 1 by combining `h1.left` with `h2`.
+
+::: {.inout}
+::: {.inpt}
+```lean
+theorem Example_3_5_2
+(U : Type) (A B C : Set U) :
+A \ (B \ C) ⊆ (A \ B) ∪ C := by
+  fix x : U
+  assume h1 : x ∈ A \ (B \ C)
+  define
+  define at h1
+  have h2 : ¬x ∈ B \ C := h1.right
+  define at h2
+  demorgan at h2
+  by_cases on h2
+  -- Case 1
+  apply Or.inl
+  show x ∈ A \ B from And.intro h1.left h2
+```
+:::
+
+::: {.outpt}
+```state
+case Case_2
+U : Type
+A B C : Set U
+x : U
+h1 : x ∈ A ∧ ¬x ∈ B \ C
+h2 : x ∈ C
+⊢ x ∈ A \ B ∨ x ∈ C
+```
+:::
+:::
+
+Case 2 is similar, using `Or.inr` and `h2`
+
+::: {.inout}
+::: {.inpt}
+```lean
+theorem Example_3_5_2
+(U : Type) (A B C : Set U) :
+A \ (B \ C) ⊆ (A \ B) ∪ C := by
+  fix x : U
+  assume h1 : x ∈ A \ (B \ C)
+  define
+  define at h1
+  have h2 : ¬x ∈ B \ C := h1.right
+  define at h2
+  demorgan at h2
+  by_cases on h2
+  -- Case 1
+  apply Or.inl
+  show x ∈ A \ B from And.intro h1.left h2
+  -- Case 2
+  apply Or.inr
+  show x ∈ C from h2
+```
+:::
+
+::: {.outpt}
+```state
+!!Goals accomplished 🎉
+```
+:::
+:::
+
+
+
+*HTPI* gives two strategies for using a given of the form `P ∨ Q`:
+
+#### To use a given of the form `P ∨ Q`:
+
+1.  Break your proof into cases.  For case 1, assume that `P` is true and use this assumption to prove the goal.  For case 2, assume that `Q` is true and prove the goal.
+2.  If you are also given `¬P`, or you can prove that `P` is false, then you can use this given to conclude that `Q` is true.  Similarly, if you are given `¬Q` or can prove that `Q` is false, then you can conclude that `P` is true.
+
