@@ -40,17 +40,26 @@
 <item>calc</item>
 <item>swap</item>
 </list>
+<list name="sorry">
+<item>sorry</item>
+</list>
 <contexts>
 <context attribute="Normal Text" lineEndContext="#pop" name="Normal Text" >
 <keyword attribute="Keyword" context="#stay" String="keywords" />
+<keyword attribute="Sorry" context="#stay" String="sorry" />
 <DetectChar attribute="String" context="string" char="&quot;" />
 <Detect2Chars attribute="Comment" context="comment" char="-" char1="-" />
 <Detect2Chars attribute="Comment" context="multicomment" char="/" char1="-" />
 <Detect2Chars attribute="Error Delim" context="normerr" char="!" char1="!" />
+<Detect2Chars attribute="Error Delim" context="normalert" char="?" char1="?" />
 </context>
 <context attribute="Normal Error" lineEndContext="#stay" name="normerr" >
 <keyword attribute="Keyword Error" context="#stay" String="keywords" />
 <Detect2Chars attribute="Error Delim" context="#pop" char="!" char1="!" />
+</context>
+<context attribute="Normal Alert" lineEndContext="#stay" name="normalert" >
+<keyword attribute="Keyword Alert" context="#stay" String="keywords" />
+<Detect2Chars attribute="Error Delim" context="#pop" char="?" char1="?" />
 </context>
 <context attribute="String" lineEndContext="#stay" name="string" >
 <DetectChar attribute="String" context="#pop" char="&quot;" />
@@ -68,7 +77,10 @@
 <itemData name="Keyword" defStyleNum="dsKeyword" />
 <itemData name="Keyword Error" defStyleNum="dsWarning" />
 <itemData name="String" defStyleNum="dsString" />
-<itemData name="Comment" defStyleNum="dsComment"/>
+<itemData name="Comment" defStyleNum="dsComment" />
+<itemData name="Sorry" defStyleNum="dsConstant" />
+<itemData name="Normal Alert" defStyleNum="dsAnnotation" />
+<itemData name="Keyword Alert" defStyleNum="dsAlert" />
 </itemDatas>
 </highlighting>
 <general>

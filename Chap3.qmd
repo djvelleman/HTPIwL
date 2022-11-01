@@ -2086,7 +2086,7 @@ h : Q
 
 Notice that the original given `h : P ∨ Q` gets *replaced* by `h : P` in case 1 and `h : Q` in case 2.  This is usually what is most convenient, but if you write `by_cases on h with h1`, then the original given `h` will be preserved, and new givens `h1 : P` and `h1 : Q` will be added to cases 1 and 2, respectively.  If you want different names for the new givens in the two cases, then use `by_cases on h with h1 h2` to add the new given `h1 : P` in case 1 and `h2 : Q` in case 2.
 
-You can also follow `by_cases on` with a proof of a disjunction that is more complicated than a single identifier.  In that cases you will want to add `with` to specify the identifiers to be used for the new assumptions in the two cases.  Another variant is that you can use the tactic `by_cases h : P` to break your proof into two cases, with the new assumptions being `h : P` in case 1 and `h : ¬P` in case 2.  In other words, the effect of `by_cases h : P` is the same as adding the new given `h : P ∨ ¬P` (which, of course, is a tautology) and then using the tactic `by_cases on h`.
+You can also follow `by_cases on` with a proof of a disjunction, even if that proof is not just a single identifier.  In that cases you will want to add `with` to specify the identifiers to be used for the new assumptions in the two cases.  Another variant is that you can use the tactic `by_cases h : P` to break your proof into two cases, with the new assumptions being `h : P` in case 1 and `h : ¬P` in case 2.  In other words, the effect of `by_cases h : P` is the same as adding the new given `h : P ∨ ¬P` (which, of course, is a tautology) and then using the tactic `by_cases on h`.
 
 There are two introduction rules that you can use in Lean to prove a goal of the form `P ∨ Q`.  If you have `h : P`, then Lean will accept `Or.intro_left h` as a proof of `P ∨ Q`, and if you have `h : Q`, then `Or.intro_right h` is a proof of `P ∨ Q`.  There are shortened forms `Or.inl` and `Or.inr` for `Or.intro_left` and `Or.intro_right`, respectively.
 
@@ -2314,12 +2314,440 @@ A \ (B \ C) ⊆ (A \ B) ∪ C := by
 :::
 :::
 
+There is a second strategy that is often useful to prove a goal of the form `P ∨ Q`.  It is motivated by the fact that `P ∨ Q` is equivalent to both `¬P → Q` and `¬Q → P`.
+
+#### To prove a goal of the form `P ∨ Q`:
+
+::: {.ind}
+Assume that `P` is false and prove `Q`, or assume that `Q` is false and prove `P`.
+:::
+
+If your goal is `P ∨ Q`, then the Lean tactic `or_left with h` will add the new given `h : ¬Q` to the tactic state and set the goal to be `P`, and `or_right with h` will add `h : ¬P` to the tactic state and set the goal to be `Q`.  For example, here is the effect of the tactic `or_left with h`:
+
+::: {.lftrt}
+::: {.bef}
+```state
+!! ⋮
+⊢ P ∨ Q
+```
+:::
+
+::: {.aft}
+```state
+!! ⋮
+h : ¬Q
+⊢ P
+```
+:::
+:::
 
 
-*HTPI* gives two strategies for using a given of the form `P ∨ Q`:
+Notice that `or_left` and `or_right` have the same effect as `apply Or.inl` and `apply Or.inr`, except that each adds a new given to the tactic state.  Sometimes you can tell in advance that you won't need the extra given, and in that case the tactics `apply Or.inl` and `apply Or.inr` can be useful.  For example, that was the case in the example above.  But if you think the extra given might be useful, you are better off using `or_left` or `or_right`.  Here's an example illustrating this.
+
+::: {.inout}
+::: {.inpt}
+```lean
+example (U : Type) (A B C : Set U)
+(h1 : A \ B ⊆ C) : A ⊆ B ∪ C := by
+```
+:::
+
+::: {.outpt}
+```state
+U : Type
+A B C : Set U
+h1 : A \ B ⊆ C
+⊢ A ⊆ B ∪ C
+```
+:::
+:::
+
+Of course, we begin by letting `x` be an arbitrary element of `A`.  Writing out the meaning of the new goal shows that it is a disjunction.
+
+::: {.inout}
+::: {.inpt}
+```lean
+example (U : Type) (A B C : Set U)
+(h1 : A \ B ⊆ C) : A ⊆ B ∪ C := by
+  fix x : U
+  assume h2 : x ∈ A
+  define
+```
+:::
+
+::: {.outpt}
+```state
+U : Type
+A B C : Set U
+h1 : A \ B ⊆ C
+x : U
+h2 : x ∈ A
+⊢ x ∈ B ∨ x ∈ C
+```
+:::
+:::
+
+Looking at the givens `h1` and `h2`, we see that if we assume `x ∉ B`, then we should be able to prove `x ∈ C`.  This suggests that we should use the `or_right` tactic.
+
+::: {.inout}
+::: {.inpt}
+```lean
+example (U : Type) (A B C : Set U)
+(h1 : A \ B ⊆ C) : A ⊆ B ∪ C := by
+  fix x : U
+  assume h2 : x ∈ A
+  define
+  or_right with h3
+```
+:::
+
+::: {.outpt}
+```state
+U : Type
+A B C : Set U
+h1 : A \ B ⊆ C
+x : U
+h2 : x ∈ A
+h3 : ¬x ∈ B
+⊢ x ∈ C
+```
+:::
+:::
+
+We can now complete the proof.  `h1 _` will be a proof of the goal `x ∈ C`, if we can fill in the blank with a proof of `x ∈ A \ B`.  Since `x ∈ A \ B` means `x ∈ A ∧ ¬x ∈ B`, we can prove it with the expression `And.intro h2 h3`.
+
+::: {.inout}
+::: {.inpt}
+```lean
+example (U : Type) (A B C : Set U)
+(h1 : A \ B ⊆ C) : A ⊆ B ∪ C := by
+  fix x : U
+  assume h2 : x ∈ A
+  define
+  or_right with h3
+  show x ∈ C from h1 (And.intro h2 h3)
+```
+:::
+
+::: {.outpt}
+```state
+!!Goals accomplished 🎉
+```
+:::
+:::
+
+The fact that `P ∨ Q` is equivalent to both `¬P → Q` and `¬Q → P` also suggests another strategy for using a given that is a disjunction.
 
 #### To use a given of the form `P ∨ Q`:
 
-1.  Break your proof into cases.  For case 1, assume that `P` is true and use this assumption to prove the goal.  For case 2, assume that `Q` is true and prove the goal.
-2.  If you are also given `¬P`, or you can prove that `P` is false, then you can use this given to conclude that `Q` is true.  Similarly, if you are given `¬Q` or can prove that `Q` is false, then you can conclude that `P` is true.
+::: {.ind}
+If you are also given `¬P`, or you can prove that `P` is false, then you can use this given to conclude that `Q` is true.  Similarly, if you are given `¬Q` or can prove that `Q` is false, then you can conclude that `P` is true.
+:::
 
+This strategy is a rule of inference called *disjunctive syllogism*, and the tactic for using this strategy in Lean is called `disj_syll`.  If you have `h1 : P ∨ Q` and `h2 : ¬P`, then the tactic `disj_syll h1, h2` will change `h1` to `h1 : Q`; if instead you have `h2 : ¬Q`, then `disj_syll h1, h2` will change `h1` to `h1 : P`.  Notice that, as with the `by_cases` tactic, the given `h1` gets *replaced* with the conclusion of the rule.  The tactic `disj_syll h1, h2 with h3` will preserve the original `h1` and introduce the conclusion as a new given with the identifier `h3`.  Also, as with the `by_cases` tactic, `h1` and `h2` can be complex proofs; they need not simply be identifiers.  The only requirement is that `h1` must be a proof of a disjunction, and `h2` must be a proof of the negation of one side of the disjunction.  If `h1` is not simply an identifier, then you will want to use `with` to specify the identifier to be used for the conclusion of the rule.
+
+Here's an example illustrating the use of the disjunctive syllogism rule.
+
+::: {.inout}
+::: {.inpt}
+```lean
+example
+(U : Type) (A B C : Set U) (h1 : A ⊆ B ∪ C)
+(h2 : ¬∃ (x : U), x ∈ A ∩ B) : A ⊆ C := by
+```
+:::
+
+::: {.outpt}
+```state
+U : Type
+A B C : Set U
+h1 : A ⊆ B ∪ C
+h2 : ¬∃ x, x ∈ A ∩ B
+⊢ A ⊆ C
+```
+:::
+:::
+
+Of course, we begin by introducing an arbitrary element of `A`.  We also rewrite `h2` as an equivalent positive statement.
+
+::: {.inout}
+::: {.inpt}
+```lean
+example
+(U : Type) (A B C : Set U) (h1 : A ⊆ B ∪ C)
+(h2 : ¬∃ (x : U), x ∈ A ∩ B) : A ⊆ C := by
+  fix a : U
+  assume h3 : a ∈ A
+  quant_neg at h2
+```
+:::
+
+::: {.outpt}
+```state
+U : Type
+A B C : Set U
+h1 : A ⊆ B ∪ C
+h2 : ∀ (x : U),
+!!  ¬x ∈ A ∩ B
+a : U
+h3 : a ∈ A
+⊢ a ∈ C
+```
+:::
+:::
+
+We can now make inferences from `h1` and `h2`.  To see how to use the inferred statements, we write out their definitions, and since one of them is a negative statement, we reexpress it as an equivalent positive statement.
+
+::: {.inout}
+::: {.inpt}
+```lean
+example
+(U : Type) (A B C : Set U) (h1 : A ⊆ B ∪ C)
+(h2 : ¬∃ (x : U), x ∈ A ∩ B) : A ⊆ C := by
+  fix a : U
+  assume h3 : a ∈ A
+  quant_neg at h2
+  have h4 : a ∈ B ∪ C := h1 h3
+  have h5 : a ∉ A ∩ B := h2 a
+  define at h4
+  define at h5; demorgan at h5
+```
+:::
+
+::: {.outpt}
+```state
+U : Type
+A B C : Set U
+h1 : A ⊆ B ∪ C
+h2 : ∀ (x : U),
+!!  ¬x ∈ A ∩ B
+a : U
+h3 : a ∈ A
+h4 : a ∈ B ∨ a ∈ C
+h5 : ¬a ∈ A ∨ ¬a ∈ B
+⊢ a ∈ C
+```
+:::
+:::
+
+Both `h4` and `h5` are disjunctions, and looking at `h3` we see that the disjunctive syllogism rule can be applied.  From `h3` and `h5` we can draw the conclusion `¬a ∈ B`, and then combining that conclusion with `h4` we can infer `a ∈ C`.  Since that is the goal, we are done.
+
+::: {.inout}
+::: {.inpt}
+```lean
+example
+(U : Type) (A B C : Set U) (h1 : A ⊆ B ∪ C)
+(h2 : ¬∃ (x : U), x ∈ A ∩ B) : A ⊆ C := by
+  fix a : U
+  assume h3 : a ∈ A
+  quant_neg at h2
+  have h4 : a ∈ B ∪ C := h1 h3
+  have h5 : a ∉ A ∩ B := h2 a
+  define at h4
+  define at h5; demorgan at h5
+  disj_syll h5, h3  --Now h5 : ¬a ∈ B
+  disj_syll h4, h5  --Now h4 : a ∈ C
+  show a ∈ C from h4
+```
+:::
+
+::: {.outpt}
+```state
+!!Goals accomplished 🎉
+```
+:::
+:::
+
+We're going to redo the last example, to illustrate another useful technique in Lean.  We start with some of the same steps as before.
+
+::: {.inout}
+::: {.inpt}
+```lean
+example
+(U : Type) (A B C : Set U) (h1 : A ⊆ B ∪ C)
+(h2 : ¬∃ (x : U), x ∈ A ∩ B) : A ⊆ C := by
+  fix a : U
+  assume h3 : a ∈ A
+  have h4 : a ∈ B ∪ C := h1 h3
+  define at h4
+```
+:::
+
+::: {.outpt}
+```state
+U : Type
+A B C : Set U
+h1 : A ⊆ B ∪ C
+h2 : ¬∃ x, x ∈ A ∩ B
+a : U
+h3 : a ∈ A
+h4 : a ∈ B ∨ a ∈ C
+⊢ a ∈ C
+```
+:::
+:::
+
+At this point, you might see a possible route to the goal:  from `h2` and `h3` we should be able to prove that `a ∉ B`, and then combining that with `h4` by the disjunctive syllogism rule we should be able to deduce the goal `a ∈ C`.  Let's try writing the proof that way.
+
+::: {.inout}
+::: {.inpt}
+```lean
+??example??
+(U : Type) (A B C : Set U) (h1 : A ⊆ B ∪ C)
+(h2 : ¬∃ (x : U), x ∈ A ∩ B) : A ⊆ C := by
+  fix a : U
+  assume h3 : a ∈ A
+  have h4 : a ∈ B ∪ C := h1 h3
+  define at h4
+  have h5 : a ∉ B := sorry
+  disj_syll h4, h5  --Now h4 : a ∈ C
+  show a ∈ C from h4
+```
+:::
+
+::: {.outpt}
+```state
+!!Goals accomplished 🎉
+```
+:::
+:::
+
+We have introduced a new idea in this proof.  The justification we have given for introducing `h5 : a ∉ B` is `sorry`.  You might think of this as meaning "Sorry, I'm not going to give a justification for this statement, but please accept it anyway."  Of course, this is cheating; in a complete proof, every step must be justified.  Lean accepts `sorry` as a proof of any statement, but it displays it in red to warn you that you're cheating.  It also puts a brown squiggle under the keyword `example` and it puts the message `declaration uses 'sorry'` in the Infoview, to warn you that, although the proof has reached the goal, it is not fully justified.
+
+Although writing the proof this way is cheating, it is a convenient way to see that our plan of attack for this proof is reasonable.  Lean has accepted the proof, except for the warning that we have used `sorry`.  So now we know that if we go back and replace `sorry` with a proof of `a ∉ B`, then we will have a complete proof.
+
+The proof of `a ∉ B` is hard enough that it is easier to do it in tactic mode rather than term mode.  So we will begin the proof as we always do for tactic-mode proofs: we replace `sorry` with `by`, leave a blank line, and then put `done`, indented further than the surrounding text.  When we put the cursor on the blank line before `done`, we see the tactic state for our "proof within a proof."
+
+::: {.inout}
+::: {.inpt}
+```lean
+example
+(U : Type) (A B C : Set U) (h1 : A ⊆ B ∪ C)
+(h2 : ¬∃ (x : U), x ∈ A ∩ B) : A ⊆ C := by
+  fix a : U
+  assume h3 : a ∈ A
+  have h4 : a ∈ B ∪ C := h1 h3
+  define at h4
+  have h5 : a ∉ B := by
+
+    !!done!!
+  disj_syll h4, h5  --Now h4 : a ∈ C
+  show a ∈ C from h4
+```
+:::
+
+::: {.outpt}
+```state
+U : Type
+A B C : Set U
+h1 : A ⊆ B ∪ C
+h2 : ¬∃ x, x ∈ A ∩ B
+a : U
+h3 : a ∈ A
+h4 : a ∈ B ∨ a ∈ C
+⊢ ¬a ∈ B
+```
+:::
+:::
+
+Note that `h5 : a ∉ B` is not part of the tactic state, because we have not yet justified this statement.  The goal for this proof is a negative statement, and `h2` is also negative.  This suggests that we could try using proof by contradiction, achieving the contradiction by contradicting `h2`.  So we use the tactic `contradict h2 with h6`.
+
+::: {.inout}
+::: {.inpt}
+```lean
+example
+(U : Type) (A B C : Set U) (h1 : A ⊆ B ∪ C)
+(h2 : ¬∃ (x : U), x ∈ A ∩ B) : A ⊆ C := by
+  fix a : U
+  assume h3 : a ∈ A
+  have h4 : a ∈ B ∪ C := h1 h3
+  define at h4
+  have h5 : a ∉ B := by
+    contradict h2 with h6
+    !!done!!
+  disj_syll h4, h5  --Now h4 : a ∈ C
+  show a ∈ C from h4
+```
+:::
+
+::: {.outpt}
+```state
+U : Type
+A B C : Set U
+h1 : A ⊆ B ∪ C
+h2 : ¬∃ x, x ∈ A ∩ B
+a : U
+h3 : a ∈ A
+h4 : a ∈ B ∨ a ∈ C
+h6 : a ∈ B
+⊢ ∃ x, x ∈ A ∩ B
+```
+:::
+:::
+
+Looking at `h3` and `h6`, we see that the right value to plug in for `x` in the goal is `a`, so our next tactic is `apply Exists.intro a`.
+
+::: {.inout}
+::: {.inpt}
+```lean
+example
+(U : Type) (A B C : Set U) (h1 : A ⊆ B ∪ C)
+(h2 : ¬∃ (x : U), x ∈ A ∩ B) : A ⊆ C := by
+  fix a : U
+  assume h3 : a ∈ A
+  have h4 : a ∈ B ∪ C := h1 h3
+  define at h4
+  have h5 : a ∉ B := by
+    contradict h2 with h6
+    apply Exists.intro a
+    !!done!!
+  disj_syll h4, h5  --Now h4 : a ∈ C
+  show a ∈ C from h4
+```
+:::
+
+::: {.outpt}
+```state
+U : Type
+A B C : Set U
+h1 : A ⊆ B ∪ C
+h2 : ¬∃ x, x ∈ A ∩ B
+a : U
+h3 : a ∈ A
+h4 : a ∈ B ∨ a ∈ C
+h6 : a ∈ B
+⊢ a ∈ A ∩ B
+```
+:::
+:::
+
+Finally, we can complete the proof by combining `h3` and `h6`.
+
+::: {.inout}
+::: {.inpt}
+```lean
+example
+(U : Type) (A B C : Set U) (h1 : A ⊆ B ∪ C)
+(h2 : ¬∃ (x : U), x ∈ A ∩ B) : A ⊆ C := by
+  fix a : U
+  assume h3 : a ∈ A
+  have h4 : a ∈ B ∪ C := h1 h3
+  define at h4
+  have h5 : a ∉ B := by
+    contradict h2 with h6
+    apply Exists.intro a
+    show a ∈ A ∩ B from And.intro h3 h6
+    done
+  disj_syll h4, h5  --Now h4 : a ∈ C
+  show a ∈ C from h4
+```
+:::
+
+::: {.outpt}
+```state
+!!Goals accomplished 🎉
+```
+:::
+:::
+
+The red squiggle has disappeared from the word `done`, indicating that the proof is complete.

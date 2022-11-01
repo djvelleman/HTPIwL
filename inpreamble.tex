@@ -4,18 +4,23 @@
 \usepackage[normalem]{ulem}
 
 \makeatletter
-\def\squiggly{\bgroup \markoverwith{\textcolor{red}{\lower3.5\p@\hbox{\sixly \char58}}}\ULon}
+\def\redsquiggly{\bgroup \markoverwith{\textcolor{red}{\lower3.5\p@\hbox{\sixly \char58}}}\ULon}
+\def\brownsquiggly{\bgroup \markoverwith{\textcolor[HTML]{B8860B}{\lower3.5\p@\hbox{\sixly \char58}}}\ULon}
 \makeatother
 
 \renewcommand{\NormalTok}[1]{\textcolor[HTML]{000000}{#1}}
 \renewcommand{\KeywordTok}[1]{\textcolor[HTML]{0000FF}{#1}}
 \renewcommand{\SpecialCharTok}[1]{}
-\renewcommand{\ErrorTok}[1]{\squiggly{#1}}
-\renewcommand{\WarningTok}[1]{\squiggly{\textcolor[HTML]{0000FF}{#1}}}
+\renewcommand{\ErrorTok}[1]{\redsquiggly{#1}}
+\renewcommand{\WarningTok}[1]{\redsquiggly{\textcolor[HTML]{0000FF}{#1}}}
 \renewcommand{\StringTok}[1]{\textcolor[HTML]{A52A2A}{#1}}
 \renewcommand{\CommentTok}[1]{\textcolor[HTML]{008000}{#1}}
 \renewcommand{\InformationTok}[1]{\textcolor[HTML]{D2691E}{\textbf{#1}}}
 \renewcommand{\RegionMarkerTok}[1]{\textcolor[HTML]{008000}{\textbf{#1}}}
+\renewcommand{\ConstantTok}[1]{\textcolor[HTML]{DC143C}{#1}}
+\renewcommand{\AnnotationTok}[1]{\brownsquiggly{#1}}
+\renewcommand{\AlertTok}[1]{\brownsquiggly{\textcolor[HTML]{0000FF}{#1}}}
+
 
 \newenvironment{ind}
 	{\begin{list}{}{\setlength{\leftmargin}{1em}}\item\relax}
