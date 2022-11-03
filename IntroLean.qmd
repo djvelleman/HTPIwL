@@ -223,10 +223,10 @@ Before continuing, it might be useful to summarize how you type statements into 
 
 Lean has conventions that it follows to interpret a logical statement when there are not enough parentheses to indicate how terms are grouped in the statement.  For our purposes, the most important of these conventions is that `P → Q → R` is interpreted as `P → (Q → R)`, not `(P → Q) → R`.  The reason for this is simply that statements of the form `P → (Q → R)` come up much more often in proofs than statements of the form `(P → Q) → R`.  (Lean also follows this "grouping-to-the-right" convention for `∧` and `∨`, although this makes less of a difference, since these connectives are associative.)  Of course, when in doubt about how to type a statement, you can always put in extra parentheses to avoid confusion.
 
-We will be using tactics to apply several logical equivalences.  Here are tactics corresponding to all of the [logical laws](Chap1.html#prop-laws) listed in Chapter 1:
+We will be using tactics to apply several logical equivalences.  Here are tactics corresponding to all of the [logical laws](Chap1.html#prop-laws) listed in Chapter 1, as well as one additional law:
 
 | Logical Law | Tactic | | Transformation | |
-|:-------|:---|:---:|:---:|:---:|
+|:--------|:--|:--:|:--:|:--:|
 | Contrapositive Law | `contrapos` | `P → Q` | is changed to | `¬Q → ¬P`|
 | De Morgan's Laws | `demorgan` | `¬(P ∧ Q)` | is changed to | `¬P ∨ ¬Q`|
 | | | `¬(P ∨ Q)` | is changed to | `¬P ∧ ¬Q`|
@@ -237,6 +237,8 @@ We will be using tactics to apply several logical equivalences.  Here are tactic
 | | | `P ∨ Q` | is changed to | `¬P → Q` |
 | | | `P ∧ Q` | is changed to | `¬(P → ¬Q)` |
 | Double Negation Law | `double_neg` | `¬¬P` | is changed to | `P` |
+| Biconditional Negation Law | `bicond_neg` | `¬(P ↔ Q)` | is changed to | `¬P ↔ Q` |
+| | | `P ↔ Q` | is changed to | `¬(¬P ↔ Q)` |
 
 All of these tactics work the same way as the `contrapos` tactic: by default, the transformation is applied to the goal; to apply it to a given `h`, add `at h` after the tactic name.
 
