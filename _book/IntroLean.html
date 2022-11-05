@@ -183,6 +183,11 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   <a href="./Chap3.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Proofs</span></a>
   </div>
 </li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Chap4.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Chapter 4 test file</span></a>
+  </div>
+</li>
     </ul>
     </div>
 </nav>
@@ -256,7 +261,7 @@ $$
 <p>Of course, the proof of the theorem is extremely easy: to prove <code>P</code>, we just have to point out that it is given as the hypothesis <code>h</code>. And so the proof in Lean consists of just one letter: <code>h</code>.</p>
 <p>Even though this example is a triviality, there are some things to be learned from it. First of all, although we have been describing the letter <code>h</code> as an <em>identifier</em> for the hypothesis <code>P</code>, this example illustrates that Lean also considers <code>h</code> to be a <em>proof</em> of <code>P</code>. In general, when we see <code>h : P</code> in a Lean proof, where <code>P</code> is a proposition, we can think of it as meaning, not just that <code>h</code> is an identifier for the statement <code>P</code>, but also that <code>h</code> is a proof of <code>P</code>.</p>
 <p>We can learn something else from this example by changing it slightly. If you change the final <code>h</code> to a different letter—say, <code>f</code>—you will see that Lean puts a red squiggly line under the <code>f</code>, like this:</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> extremely_easy (P : <span class="kw">Prop</span>) (h : P) : P := <span class="sc">!!</span><span class="er">f</span><span class="sc">!!</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> extremely_easy (P : <span class="kw">Prop</span>) (h : P) : P := <span class="sc">**</span><span class="er">f</span><span class="sc">::</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>This indicates that Lean has detected an error in the proof. Lean always indicates errors by putting a red squiggle under the offending text. Lean also puts a message in the Lean Infoview pane explaining what the error is. (If you don’t see the Infoview pane, choose “Command Palette …” in the “View” menu, and then type “Lean” in the text box that appears. You will see a list of commands that start with “Lean”. Click on “Lean 4: Infoview: Toggle” to make the Infoview pane appear.) In this case, the message is <code>unknown identifier 'f'</code>. The message is introduced by a heading, in red, that identifies the file, the line number, and the character position on that line where the error appears. If you change <code>f</code> back to <code>h</code>, the red squiggle and error message go away.</p>
 <p>Let’s try a slightly less trivial example. To type the <code>→</code> symbol in the next example, type <code>\to</code> and then hit either the space bar or the tab key; when you type either space or tab, the <code>\to</code> will change to <code>→</code>. Alternatively, you can type <code>\r</code> (short for “right arrow”) or <code>\imp</code> (short for “implies”), again followed by either space or tab. Or, you can type <span class="excl"><code>-&gt;</code></span>, and Lean will interpret it as <code>→</code>.</p>
 <div class="sourceCode" id="cb4"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> very_easy</span>
@@ -279,7 +284,7 @@ $$
 <div class="sourceCode" id="cb7"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> two_imp (P Q R : <span class="kw">Prop</span>)</span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>(h1 : P → Q) (h2 : Q → ¬R) : R → ¬P := <span class="kw">by</span></span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>  <span class="sc">!!</span><span class="wa">done</span><span class="sc">!!</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>  <span class="sc">**</span><span class="wa">done</span><span class="sc">::</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="outpt">
 <div class="sourceCode" id="cb8"><pre class="sourceCode state code-with-copy"><code class="sourceCode state"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="in">P Q R </span>: Prop</span>
@@ -288,14 +293,14 @@ $$
 <span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>⊢ R → ¬P</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </div>
-<p>The red squiggle under <code>done</code> indicates that Lean knows that the proof isn’t done. The tactic state in the Infoview pane is very similar to the lists of givens and goals that are used in <em>HTPI</em>. The tactic state above says that <code>P</code>, <code>Q</code>, and <code>R</code> stand for propositions, and we have two givens, <code>h1 : P → Q</code> and <code>h2 : Q → ¬R</code>. The symbol <code>⊢</code> in the last line labels the goal, <code>R → ¬P</code>. The tactic state is a valuable tool for guiding you as you are figuring out a proof.</p>
+<p>The red squiggle under <code>done</code> indicates that Lean knows that the proof isn’t done. The tactic state in the Infoview pane is very similar to the lists of givens and goals that are used in <em>HTPI</em>. The tactic state above says that <code>P</code>, <code>Q</code>, and <code>R</code> stand for propositions, and we have two givens, <code>h1 : P → Q</code> and <code>h2 : Q → ¬R</code>. The symbol <code>⊢</code> in the last line labels the goal, <code>R → ¬P</code>. The tactic state is a valuable tool for guiding you as you are figuring out a proof; whenever you are trying to decide on the next step of a proof, you should look at the tactic state to see what givens you have to work with and what goal you need to prove.</p>
 <p>From the hypotheses <code>h1</code> and <code>h2</code> it shouldn’t be hard to prove <code>P → ¬R</code>, but the goal is <code>R → ¬P</code>. This suggests that we should prove the contrapositive of the goal. Type tab to indent two spaces and then <code>contrapos</code> to tell Lean that you want to replace the goal with its contrapositive. (You won’t have to type tab to indent later lines; VS Code maintains the same indenting until you delete the tab at the beginning of a line to return to unindented text.) As soon as you type <code>contrapos</code>, Lean will update the tactic state to reflect the change in the goal. You should now see this:</p>
 <div class="inout">
 <div class="inpt">
 <div class="sourceCode" id="cb9"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> two_imp (P Q R : <span class="kw">Prop</span>)</span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>(h1 : P → Q) (h2 : Q → ¬R) : R → ¬P := <span class="kw">by</span></span>
 <span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>  <span class="kw">contrapos</span></span>
-<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>  <span class="sc">!!</span><span class="wa">done</span><span class="sc">!!</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>  <span class="sc">**</span><span class="wa">done</span><span class="sc">::</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="outpt">
 <div class="sourceCode" id="cb10"><pre class="sourceCode state code-with-copy"><code class="sourceCode state"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="in">P Q R </span>: Prop</span>
@@ -311,7 +316,7 @@ $$
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>(h1 : P → Q) (h2 : Q → ¬R) : R → ¬P := <span class="kw">by</span></span>
 <span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>  <span class="kw">contrapos</span>           <span class="co">--Goal is now P → ¬R</span></span>
 <span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>  <span class="kw">assume</span> h3 : P</span>
-<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>  <span class="sc">!!</span><span class="wa">done</span><span class="sc">!!</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>  <span class="sc">**</span><span class="wa">done</span><span class="sc">::</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="outpt">
 <div class="sourceCode" id="cb12"><pre class="sourceCode state code-with-copy"><code class="sourceCode state"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="in">P Q R </span>: Prop</span>
@@ -329,7 +334,7 @@ $$
 <span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>  <span class="kw">contrapos</span>           <span class="co">--Goal is now P → ¬R</span></span>
 <span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>  <span class="kw">assume</span> h3 : P</span>
 <span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>  <span class="kw">have</span> h4 : Q := h1 h3</span>
-<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>  <span class="sc">!!</span><span class="wa">done</span><span class="sc">!!</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>  <span class="sc">**</span><span class="wa">done</span><span class="sc">::</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="outpt">
 <div class="sourceCode" id="cb14"><pre class="sourceCode state code-with-copy"><code class="sourceCode state"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="in">P Q R </span>: Prop</span>
@@ -352,7 +357,7 @@ $$
 <span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a>  <span class="kw">done</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="outpt">
-<div class="sourceCode" id="cb16"><pre class="sourceCode state code-with-copy"><code class="sourceCode state"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="sc">!!</span>Goals accomplished 🎉</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb16"><pre class="sourceCode state code-with-copy"><code class="sourceCode state"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;&gt;</span>Goals accomplished 🎉</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </div>
 <p>Congratulations! You’ve written your first proof in tactic mode. If you move your cursor around in the proof, you will see that Lean always displays in the Infoview the tactic state at the point in the proof where the cursor is located. Try clicking on different lines of the proof to see how the tactic state changes over the course of the proof. If you want to try another example, you could try typing in the first example in this chapter.</p>
@@ -398,6 +403,7 @@ $$
 </div>
 <p>Lean has conventions that it follows to interpret a logical statement when there are not enough parentheses to indicate how terms are grouped in the statement. For our purposes, the most important of these conventions is that <code>P → Q → R</code> is interpreted as <code>P → (Q → R)</code>, not <code>(P → Q) → R</code>. The reason for this is simply that statements of the form <code>P → (Q → R)</code> come up much more often in proofs than statements of the form <code>(P → Q) → R</code>. (Lean also follows this “grouping-to-the-right” convention for <code>∧</code> and <code>∨</code>, although this makes less of a difference, since these connectives are associative.) Of course, when in doubt about how to type a statement, you can always put in extra parentheses to avoid confusion.</p>
 <p>We will be using tactics to apply several logical equivalences. Here are tactics corresponding to all of the <a href="Chap1.html#prop-laws">logical laws</a> listed in Chapter 1, as well as one additional law:</p>
+<div class="absnobreak">
 <table class="table">
 <colgroup>
 <col style="width: 37%">
@@ -502,6 +508,7 @@ $$
 </tr>
 </tbody>
 </table>
+</div>
 <p>All of these tactics work the same way as the <code>contrapos</code> tactic: by default, the transformation is applied to the goal; to apply it to a given <code>h</code>, add <code>at h</code> after the tactic name.</p>
 </section>
 <section id="types" class="level2">
@@ -515,7 +522,7 @@ $$
 <span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>(B C : Set Nat) (a : Nat)</span>
 <span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>(h1 : a ∈ B) (h2 : a ∉ B \ C) : a ∈ C := <span class="kw">by</span></span>
 <span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>  <span class="sc">!!</span><span class="wa">done</span><span class="sc">!!</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>  <span class="sc">**</span><span class="wa">done</span><span class="sc">::</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="outpt">
 <div class="sourceCode" id="cb18"><pre class="sourceCode state code-with-copy"><code class="sourceCode state"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="in">B C </span>: Set ℕ</span>
@@ -533,7 +540,7 @@ $$
 <span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>(B C : Set Nat) (a : Nat)</span>
 <span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>(h1 : a ∈ B) (h2 : a ∉ B \ C) : a ∈ C := <span class="kw">by</span></span>
 <span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>  <span class="kw">define</span> <span class="kw">at</span> h2       <span class="co">--Now h2 : ¬(a ∈ B ∧ ¬a ∈ C)</span></span>
-<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a>  <span class="sc">!!</span><span class="wa">done</span><span class="sc">!!</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a>  <span class="sc">**</span><span class="wa">done</span><span class="sc">::</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="outpt">
 <div class="sourceCode" id="cb20"><pre class="sourceCode state code-with-copy"><code class="sourceCode state"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="in">B C </span>: Set ℕ</span>
@@ -552,7 +559,7 @@ $$
 <span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>  <span class="kw">define</span> <span class="kw">at</span> h2       <span class="co">--Now h2 : ¬(a ∈ B ∧ ¬a ∈ C)</span></span>
 <span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a>  <span class="kw">demorgan</span> <span class="kw">at</span> h2     <span class="co">--Now h2 : ¬a ∈ B ∨ a ∈ C</span></span>
 <span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a>  <span class="kw">conditional</span> <span class="kw">at</span> h2  <span class="co">--Now h2 : a ∈ B → a ∈ C</span></span>
-<span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a>  <span class="sc">!!</span><span class="wa">done</span><span class="sc">!!</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a>  <span class="sc">**</span><span class="wa">done</span><span class="sc">::</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="outpt">
 <div class="sourceCode" id="cb22"><pre class="sourceCode state code-with-copy"><code class="sourceCode state"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="in">B C </span>: Set ℕ</span>
@@ -575,7 +582,7 @@ $$
 <span id="cb23-8"><a href="#cb23-8" aria-hidden="true" tabindex="-1"></a>  <span class="kw">done</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="outpt">
-<div class="sourceCode" id="cb24"><pre class="sourceCode state code-with-copy"><code class="sourceCode state"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="sc">!!</span>Goals accomplished 🎉</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb24"><pre class="sourceCode state code-with-copy"><code class="sourceCode state"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;&gt;</span>Goals accomplished 🎉</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </div>
 <p>There is one unfortunate feature of this theorem: We have stated it as a theorem about sets of natural numbers, but the proof has nothing to do with natural numbers. Exactly the same reasoning would prove a similar theorem about sets of real numbers, or sets of objects of any other type. Do we need to write a different theorem for each of these cases? No, fortunately there is a way to write one theorem that covers all the cases:</p>

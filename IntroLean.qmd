@@ -53,7 +53,7 @@ Even though this example is a triviality, there are some things to be learned fr
 We can learn something else from this example by changing it slightly.  If you change the final `h` to a different letter---say, `f`---you will see that Lean puts a red squiggly line under the `f`, like this:
 
 ```lean
-theorem extremely_easy (P : Prop) (h : P) : P := !!f!!
+theorem extremely_easy (P : Prop) (h : P) : P := **f::
 ```
 
 This indicates that Lean has detected an error in the proof.  Lean always indicates errors by putting a red squiggle under the offending text.  Lean also puts a message in the Lean Infoview pane explaining what the error is.  (If you don't see the Infoview pane, choose "Command Palette ..." in the "View" menu, and then type "Lean" in the text box that appears.  You will see a list of commands that start with "Lean".  Click on "Lean 4: Infoview: Toggle" to make the Infoview pane appear.)  In this case, the message is `unknown identifier 'f'`.  The message is introduced by a heading, in red, that identifies the file, the line number, and the character position on that line where the error appears.  If you change `f` back to `h`, the red squiggle and error message go away.
@@ -95,7 +95,7 @@ One of the advantages of tactic mode is that Lean displays, in the Lean Infoview
 theorem two_imp (P Q R : Prop)
 (h1 : P → Q) (h2 : Q → ¬R) : R → ¬P := by
 
-  !!done!!
+  **done::
 ```
 :::
 
@@ -109,7 +109,7 @@ h2 : Q → ¬R
 :::
 :::
 
-The red squiggle under `done` indicates that Lean knows that the proof isn't done.  The tactic state in the Infoview pane is very similar to the lists of givens and goals that are used in *HTPI*.  The tactic state above says that `P`, `Q`, and `R` stand for propositions, and we have two givens, `h1 : P → Q` and `h2 : Q → ¬R`.  The symbol `⊢` in the last line labels the goal, `R → ¬P`.  The tactic state is a valuable tool for guiding you as you are figuring out a proof.
+The red squiggle under `done` indicates that Lean knows that the proof isn't done.  The tactic state in the Infoview pane is very similar to the lists of givens and goals that are used in *HTPI*.  The tactic state above says that `P`, `Q`, and `R` stand for propositions, and we have two givens, `h1 : P → Q` and `h2 : Q → ¬R`.  The symbol `⊢` in the last line labels the goal, `R → ¬P`.  The tactic state is a valuable tool for guiding you as you are figuring out a proof; whenever you are trying to decide on the next step of a proof, you should look at the tactic state to see what givens you have to work with and what goal you need to prove.
 
 From the hypotheses `h1` and `h2` it shouldn't be hard to prove `P → ¬R`, but the goal is `R → ¬P`.  This suggests that we should prove the contrapositive of the goal.  Type tab to indent two spaces and then `contrapos` to tell Lean that you want to replace the goal with its contrapositive.  (You won't have to type tab to indent later lines; VS Code maintains the same indenting until you delete the tab at the beginning of a line to return to unindented text.)  As soon as you type `contrapos`, Lean will update the tactic state to reflect the change in the goal.  You should now see this:
 
@@ -119,7 +119,7 @@ From the hypotheses `h1` and `h2` it shouldn't be hard to prove `P → ¬R`, but
 theorem two_imp (P Q R : Prop)
 (h1 : P → Q) (h2 : Q → ¬R) : R → ¬P := by
   contrapos
-  !!done!!
+  **done::
 ```
 :::
 
@@ -142,7 +142,7 @@ theorem two_imp (P Q R : Prop)
 (h1 : P → Q) (h2 : Q → ¬R) : R → ¬P := by
   contrapos           --Goal is now P → ¬R
   assume h3 : P
-  !!done!!
+  **done::
 ```
 :::
 
@@ -167,7 +167,7 @@ theorem two_imp (P Q R : Prop)
   contrapos           --Goal is now P → ¬R
   assume h3 : P
   have h4 : Q := h1 h3
-  !!done!!
+  **done::
 ```
 :::
 
@@ -200,7 +200,7 @@ theorem two_imp (P Q R : Prop)
 
 ::: {.outpt}
 ```state
-!!Goals accomplished 🎉
+>>Goals accomplished 🎉
 ```
 :::
 :::
@@ -225,6 +225,7 @@ Lean has conventions that it follows to interpret a logical statement when there
 
 We will be using tactics to apply several logical equivalences.  Here are tactics corresponding to all of the [logical laws](Chap1.html#prop-laws) listed in Chapter 1, as well as one additional law:
 
+::: {.absnobreak}
 | Logical Law | Tactic | | Transformation | |
 |:--------|:--|:--:|:--:|:--:|
 | Contrapositive Law | `contrapos` | `P → Q` | is changed to | `¬Q → ¬P`|
@@ -239,6 +240,7 @@ We will be using tactics to apply several logical equivalences.  Here are tactic
 | Double Negation Law | `double_neg` | `¬¬P` | is changed to | `P` |
 | Biconditional Negation Law | `bicond_neg` | `¬(P ↔ Q)` | is changed to | `¬P ↔ Q` |
 | | | `P ↔ Q` | is changed to | `¬(¬P ↔ Q)` |
+:::
 
 All of these tactics work the same way as the `contrapos` tactic: by default, the transformation is applied to the goal; to apply it to a given `h`, add `at h` after the tactic name.
 
@@ -257,7 +259,7 @@ theorem Example_3_2_5_simple
 (B C : Set Nat) (a : Nat)
 (h1 : a ∈ B) (h2 : a ∉ B \ C) : a ∈ C := by
 
-  !!done!!
+  **done::
 ```
 :::
 
@@ -283,7 +285,7 @@ theorem Example_3_2_5_simple
 (B C : Set Nat) (a : Nat)
 (h1 : a ∈ B) (h2 : a ∉ B \ C) : a ∈ C := by
   define at h2       --Now h2 : ¬(a ∈ B ∧ ¬a ∈ C)
-  !!done!!
+  **done::
 ```
 :::
 
@@ -309,7 +311,7 @@ theorem Example_3_2_5_simple
   define at h2       --Now h2 : ¬(a ∈ B ∧ ¬a ∈ C)
   demorgan at h2     --Now h2 : ¬a ∈ B ∨ a ∈ C
   conditional at h2  --Now h2 : a ∈ B → a ∈ C
-  !!done!!
+  **done::
 ```
 :::
 
@@ -342,7 +344,7 @@ theorem Example_3_2_5_simple
 
 ::: {.outpt}
 ```state
-!!Goals accomplished 🎉
+>>Goals accomplished 🎉
 ```
 :::
 :::

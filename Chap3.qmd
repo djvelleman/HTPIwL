@@ -16,14 +16,14 @@ We've already seen how to carry out both of these strategies in Lean.  For the f
 ::: {.lftrt}
 ::: {.bef}
 ```state
-!! ⋮
+>> ⋮
 ⊢ P → Q
 ```
 :::
 
 ::: {.aft}
 ```state
-!! ⋮
+>> ⋮
 h : P
 ⊢ Q
 ```
@@ -35,14 +35,14 @@ The second strategy is justified by the contrapositive law.  In Lean, you can us
 ::: {.lftrt}
 ::: {.bef}
 ```state
-!! ⋮
+>> ⋮
 ⊢ P → Q
 ```
 :::
 
 ::: {.aft}
 ```state
-!! ⋮
+>> ⋮
 h : ¬Q
 ⊢ ¬P
 ```
@@ -72,14 +72,14 @@ For the first strategy, the tactics `demorgan`, `conditional`, `double_neg`, and
 ::: {.lftrt}
 ::: {.bef}
 ```state
-!! ⋮
+>> ⋮
 ⊢ ¬P
 ```
 :::
 
 ::: {.aft}
 ```state
-!! ⋮
+>> ⋮
 h : P
 ⊢ False
 ```
@@ -198,7 +198,7 @@ theorem Example_3_2_4_v2 (P Q R : Prop)
 
 ::: {.outpt}
 ```state
-!!Goals accomplished 🎉
+>>Goals accomplished 🎉
 ```
 :::
 :::
@@ -282,7 +282,7 @@ theorem Example_3_2_4_v3 (P Q R : Prop)
 
 ::: {.outpt}
 ```state
-!!Goals accomplished 🎉
+>>Goals accomplished 🎉
 ```
 :::
 :::
@@ -388,7 +388,7 @@ theorem Like_Example_3_2_5
 
 ::: {.outpt}
 ```state
-!!Goals accomplished 🎉
+>>Goals accomplished 🎉
 ```
 :::
 :::
@@ -420,14 +420,14 @@ To do this in Lean, you should use the tactic `fix x : U`, which tells Lean to t
 ::: {.lftrt}
 ::: {.bef}
 ```state
-!! ⋮
+>> ⋮
 ⊢ ∀ (x : U), P x
 ```
 :::
 
 ::: {.aft}
 ```state
-!! ⋮
+>> ⋮
 x : U
 ⊢ P x
 ```
@@ -582,7 +582,7 @@ example (U : Type) (P Q : Pred U)
 
 ::: {.outpt}
 ```state
-!!Goals accomplished 🎉
+>>Goals accomplished 🎉
 ```
 :::
 :::
@@ -619,7 +619,7 @@ U : Type
 A B C : Set U
 h1 : A ⊆ B ∪ C
 h2 : ∀ (x : U),
-!!  x ∈ A → ¬x ∈ B
+>>  x ∈ A → ¬x ∈ B
 ⊢ A ⊆ C
 ```
 :::
@@ -642,9 +642,9 @@ U : Type
 A B C: Set U
 h1 : A ⊆ B ∪ C
 h2 : ∀ (x : U),
-!!  x ∈ A → ¬x ∈ B
+>>  x ∈ A → ¬x ∈ B
 ⊢ ∀ {a : U},
-!!  a ∈ A → a ∈ C
+>>  a ∈ A → a ∈ C
 ```
 :::
 :::
@@ -668,7 +668,7 @@ U : Type
 A B C : Set U
 h1 : A ⊆ B ∪ C
 h2 : ∀ (x : U),
-!!  x ∈ A → ¬x ∈ B
+>>  x ∈ A → ¬x ∈ B
 y : U
 h3 : y ∈ A
 ⊢ y ∈ C
@@ -696,7 +696,7 @@ U : Type
 A B C : Set U
 h1 : A ⊆ B ∪ C
 h2 : ∀ (x : U),
-!!  x ∈ A → ¬x ∈ B
+>>  x ∈ A → ¬x ∈ B
 y : U
 h3 : y ∈ A
 h4 : ¬y ∈ B
@@ -725,9 +725,9 @@ example (U : Type) (A B C : Set U) (h1 : A ⊆ B ∪ C)
 U : Type
 A B C : Set U
 h1 : ∀ {a : U},
-!!  a ∈ A → a ∈ B ∪ C
+>>  a ∈ A → a ∈ B ∪ C
 h2 : ∀ (x : U),
-!!  x ∈ A → ¬x ∈ B
+>>  x ∈ A → ¬x ∈ B
 y : U
 h3 : y ∈ A
 h4 : ¬y ∈ B
@@ -759,9 +759,9 @@ example (U : Type) (A B C : Set U) (h1 : A ⊆ B ∪ C)
 U : Type
 A B C : Set U
 h1 : ∀ {a : U},
-!!  a ∈ A → a ∈ B ∪ C
+>>  a ∈ A → a ∈ B ∪ C
 h2 : ∀ (x : U),
-!!  x ∈ A → ¬x ∈ B
+>>  x ∈ A → ¬x ∈ B
 y : U
 h3 : y ∈ A
 h4 : ¬y ∈ B
@@ -798,9 +798,9 @@ example (U : Type) (A B C : Set U) (h1 : A ⊆ B ∪ C)
 U : Type
 A B C : Set U
 h1 : ∀ {a : U},
-!!  a ∈ A → a ∈ B ∪ C
+>>  a ∈ A → a ∈ B ∪ C
 h2 : ∀ (x : U),
-!!  x ∈ A → ¬x ∈ B
+>>  x ∈ A → ¬x ∈ B
 y : U
 h3 : y ∈ A
 h4 : ¬y ∈ B
@@ -831,7 +831,7 @@ example (U : Type) (A B C : Set U) (h1 : A ⊆ B ∪ C)
 
 ::: {.outpt}
 ```state
-!!Goals accomplished 🎉
+>>Goals accomplished 🎉
 ```
 :::
 :::
@@ -851,7 +851,7 @@ As suggested by the strategy above, we will often want to use this rule in situa
 ::: {.lftrt}
 ::: {.bef}
 ```state
-!! ⋮
+>> ⋮
 a : U
 ⊢ ∃ (x : U), P x
 ```
@@ -859,7 +859,7 @@ a : U
 
 ::: {.aft}
 ```state
-!! ⋮
+>> ⋮
 a : U
 ⊢ P a
 ```
@@ -874,7 +874,7 @@ Our strategy for using an existential given is a rule that is called *existentia
 Introduce a new variable, say `a`, into the proof to stand for an object of type `U` for which `P a` is true.
 :::
 
-Suppose that, in a Lean proof, you have `h : ∃ (x : U), P x`.  To apply the existential instantiation rule, you would use the tactic `obtain (a : U) (h' : P a) from h`.  This tactic introduces into the tactic state both a new variable `a` of type `U` and also the identifier `h'` for the new given `P a`.
+Suppose that, in a Lean proof, you have `h : ∃ (x : U), P x`.  To apply the existential instantiation rule, you would use the tactic `obtain (a : U) (h' : P a) from h`.  This tactic introduces into the tactic state both a new variable `a` of type `U` and also the identifier `h'` for the new given `P a`.  Note that `h` can be any proof of a statement of the form `∃ (x : U), P x`; it need not be just a single identifier.
 
 Often, if your goal is an existential statement `∃ (x : U), P x`, you won't be able to use the strategy above for existential goals right away, because you won't know what object `a` to use in the tactic `apply Exists.intro a _`.  You may have to wait until a likely candidate for `a` pops up in the course of the proof.  On the other hand, it is usually best to use the `obtain` tactic right away if you have an existential given.  This is illustrated in our next example.
 
@@ -893,9 +893,9 @@ example (U : Type) (P Q : Pred U)
 U : Type
 P Q : Pred U
 h1 : ∀ (x : U), ∃ y,
-!!  P x → ¬Q y
+>>  P x → ¬Q y
 h2 : ∃ x, ∀ (y : U),
-!!  P x → Q y
+>>  P x → Q y
 ⊢ ∃ x, ¬P x
 ```
 :::
@@ -920,9 +920,9 @@ example (U : Type) (P Q : Pred U)
 U : Type
 P Q : Pred U
 h1 : ∀ (x : U), ∃ y,
-!!  P x → ¬Q y
+>>  P x → ¬Q y
 h2 : ∃ x, ∀ (y : U),
-!!  P x → Q y
+>>  P x → Q y
 a : U
 h3 : ∀ (y : U), P a → Q y
 ⊢ ∃ x, ¬P x
@@ -950,9 +950,9 @@ example (U : Type) (P Q : Pred U)
 U : Type
 P Q : Pred U
 h1 : ∀ (x : U), ∃ y,
-!!  P x → ¬Q y
+>>  P x → ¬Q y
 h2 : ∃ x, ∀ (y : U),
-!!  P x → Q y
+>>  P x → Q y
 a : U
 h3 : ∀ (y : U), P a → Q y
 h4 : ∃ y, P a → ¬Q y
@@ -984,9 +984,9 @@ example (U : Type) (P Q : Pred U)
 U : Type
 P Q : Pred U
 h1 : ∀ (x : U), ∃ y,
-!!  P x → ¬Q y
+>>  P x → ¬Q y
 h2 : ∃ x, ∀ (y : U),
-!!  P x → Q y
+>>  P x → Q y
 a : U
 h3 : ∀ (y : U), P a → Q y
 h4 : ∃ y, P a → ¬Q y
@@ -1019,9 +1019,9 @@ example (U : Type) (P Q : Pred U)
 U : Type
 P Q : Pred U
 h1 : ∀ (x : U), ∃ y,
-!!  P x → ¬Q y
+>>  P x → ¬Q y
 h2 : ∃ x, ∀ (y : U),
-!!  P x → Q y
+>>  P x → Q y
 a : U
 h3 : ∀ (y : U), P a → Q y
 h4 : ∃ y, P a → ¬Q y
@@ -1056,9 +1056,9 @@ example (U : Type) (P Q : Pred U)
 U : Type
 P Q : Pred U
 h1 : ∀ (x : U), ∃ y,
-!!  P x → ¬Q y
+>>  P x → ¬Q y
 h2 : ∃ x, ∀ (y : U),
-!!  P x → Q y
+>>  P x → Q y
 a : U
 h3 : ∀ (y : U), P a → Q y
 h4 : ∃ y, P a → ¬Q y
@@ -1094,9 +1094,9 @@ example (U : Type) (P Q : Pred U)
 U : Type
 P Q : Pred U
 h1 : ∀ (x : U), ∃ y,
-!!  P x → ¬Q y
+>>  P x → ¬Q y
 h2 : ∃ x, ∀ (y : U),
-!!  P x → Q y
+>>  P x → Q y
 a : U
 h3 : ∀ (y : U), P a → Q y
 h4 : ∃ y, P a → ¬Q y
@@ -1131,7 +1131,7 @@ example (U : Type) (P Q : Pred U)
 
 ::: {.outpt}
 ```state
-!!Goals accomplished 🎉
+>>Goals accomplished 🎉
 ```
 :::
 :::
@@ -1175,7 +1175,7 @@ B : Set U
 F : Set (Set U)
 h1 : ⋃₀F ⊆ B
 ⊢ ∀ {a : Set U},
-!!  a ∈ F → a ∈ 𝒫 B
+>>  a ∈ F → a ∈ 𝒫 B
 ```
 :::
 :::
@@ -1204,7 +1204,7 @@ h1 : ⋃₀F ⊆ B
 x : Set U
 h2 : x ∈ F
 ⊢ ∀ {a : U},
-!!  a ∈ x → a ∈ B
+>>  a ∈ x → a ∈ B
 ```
 :::
 :::
@@ -1265,7 +1265,7 @@ U : Type
 B : Set U
 F : Set (Set U)
 h1 : ∀ {a : U},
-!!  a ∈ ⋃₀F → a ∈ B
+>>  a ∈ ⋃₀F → a ∈ B
 x : Set U
 h2 : x ∈ F
 y : U
@@ -1300,7 +1300,7 @@ U : Type
 B : Set U
 F : Set (Set U)
 h1 : ∀ {a : U},
-!!  a ∈ ⋃₀F → a ∈ B
+>>  a ∈ ⋃₀F → a ∈ B
 x : Set U
 h2 : x ∈ F
 y : U
@@ -1336,7 +1336,7 @@ U : Type
 B : Set U
 F : Set (Set U)
 h1 : ∀ {a : U},
-!!  a ∈ ⋃₀F → a ∈ B
+>>  a ∈ ⋃₀F → a ∈ B
 x : Set U
 h2 : x ∈ F
 y : U
@@ -1373,7 +1373,7 @@ U : Type
 B : Set U
 F : Set (Set U)
 h1 : ∀ {a : U},
-!!  a ∈ ⋃₀F → a ∈ B
+>>  a ∈ ⋃₀F → a ∈ B
 x : Set U
 h2 : x ∈ F
 y : U
@@ -1407,7 +1407,7 @@ theorem Example_3_3_5 (U : Type) (B : Set U)
 
 ::: {.outpt}
 ```state
-!!Goals accomplished 🎉
+>>Goals accomplished 🎉
 ```
 :::
 :::
@@ -1609,7 +1609,7 @@ theorem Like_Example_3_4_1 (U : Type)
   apply And.intro
   -- Proof that x ∈ B:
   show x ∈ B from h1 h3.left
-  -- Proof that ¬x ∈ C:
+  -- Proof that ¬x ∈ D:
   contradict h2 with h4
 ```
 :::
@@ -1644,7 +1644,7 @@ theorem Like_Example_3_4_1 (U : Type)
   apply And.intro
   -- Proof that x ∈ B:
   show x ∈ B from h1 h3.left
-  -- Proof that ¬x ∈ C:
+  -- Proof that ¬x ∈ D:
   contradict h2 with h4
   apply Exists.intro x
 ```
@@ -1680,7 +1680,7 @@ theorem Like_Example_3_4_1 (U : Type)
   apply And.intro
   -- Proof that x ∈ B:
   show x ∈ B from h1 h3.left
-  -- Proof that ¬x ∈ C:
+  -- Proof that ¬x ∈ D:
   contradict h2 with h4
   apply Exists.intro x
   show x ∈ C ∩ D from And.intro h3.right h4
@@ -1689,7 +1689,7 @@ theorem Like_Example_3_4_1 (U : Type)
 
 ::: {.outpt}
 ```state
-!!Goals accomplished 🎉
+>>Goals accomplished 🎉
 ```
 :::
 :::
@@ -2027,7 +2027,7 @@ which is shorthand for
 ```
 :::
 
-(Recall that Lean groups the logical connectives to the right, which means that it interprets `a ∧ b ∧ c` as `a ∧ (b ∧ c)`.)  This is the associative law for "and" (see Section 1.2 of *HTPI*).  Since `a`, `b`, and `c` are implicit, Lean will recognize `and_assoc` as a proof of any statement of the form `(a ∧ b) ∧ c ↔ a ∧ (b ∧ c)`, where `a`, `b`, and `c` can be replaced with any propositions.  Lean doesn't need to be told what propositions are being used as `a`, `b`, and `c`; it will figure that out for itself.  Unfortunately, the second biconditional in the calculational proof is `x ∈ A ∧ (x ∈ B ∧ x ∉ C) ↔ (x ∈ A ∧ x ∈ B) ∧ x ∉ C`, which has the form `a ∧ (b ∧ c) ↔ (a ∧ b) ∧ c`, not `(a ∧ b) ∧ c ↔ a ∧ (b ∧ c)`.  To account for this discrepancy, we use the fact that if `h` is a proof of any biconditional `P ↔ Q`, then `h.symm` is a proof of `Q ↔ P`.  Thus `and_assoc.symm` proves the second biconditional in the calculational proof.  (By the way, the *HTPI* proof avoids any mention of the associativity of "and" by simply leaving out parentheses in the conjunction $x \in A \wedge x \in B \wedge x \notin C$.  As explained in Section 1.2 of *HTPI*, this represents an implicit use of the associativity of "and.")
+(Recall that Lean groups the logical connectives to the right, which means that it interprets `a ∧ b ∧ c` as `a ∧ (b ∧ c)`.)  This is the associative law for "and" (see Section 1.2 of *HTPI*).  Since `a`, `b`, and `c` are implicit, Lean will recognize `and_assoc` as a proof of any statement of the form `(a ∧ b) ∧ c ↔ a ∧ (b ∧ c)`, where `a`, `b`, and `c` can be replaced with any propositions.  Lean doesn't need to be told what propositions are being used as `a`, `b`, and `c`; it will figure that out for itself.  Unfortunately, the second biconditional in the calculational proof is `x ∈ A ∧ (x ∈ B ∧ x ∉ C) ↔ (x ∈ A ∧ x ∈ B) ∧ x ∉ C`, which has the form `a ∧ (b ∧ c) ↔ (a ∧ b) ∧ c`, not `(a ∧ b) ∧ c ↔ a ∧ (b ∧ c)`.  (Notice that the first biconditional is the same as the second except that the left and right sides have been swapped.)  To account for this discrepancy, we use the fact that if `h` is a proof of any biconditional `P ↔ Q`, then `h.symm` is a proof of `Q ↔ P`.  Thus `and_assoc.symm` proves the second biconditional in the calculational proof.  (By the way, the *HTPI* proof avoids any mention of the associativity of "and" by simply leaving out parentheses in the conjunction $x \in A \wedge x \in B \wedge x \notin C$.  As explained in Section 1.2 of *HTPI*, this represents an implicit use of the associativity of "and.")
 
 You can get a better understanding of the first step of our last proof by typing `#check @Set.ext`.  The result is
 
@@ -2066,7 +2066,7 @@ In Lean, you can break a proof into cases by using the `by_cases` tactic.  If yo
 ::: {.lftrt}
 ::: {.bef}
 ```state
-!! ⋮
+>> ⋮
 h : P ∨ Q
 ⊢ goal
 ```
@@ -2075,11 +2075,11 @@ h : P ∨ Q
 ::: {.aft}
 ```state
 case Case_1
-!! ⋮
+>> ⋮
 h : P
 ⊢ goal
 case Case_2
-!! ⋮
+>> ⋮
 h : Q
 ⊢ goal
 ```
@@ -2088,7 +2088,7 @@ h : Q
 
 Notice that the original given `h : P ∨ Q` gets *replaced* by `h : P` in case 1 and `h : Q` in case 2.  This is usually what is most convenient, but if you write `by_cases on h with h1`, then the original given `h` will be preserved, and new givens `h1 : P` and `h1 : Q` will be added to cases 1 and 2, respectively.  If you want different names for the new givens in the two cases, then use `by_cases on h with h1 h2` to add the new given `h1 : P` in case 1 and `h2 : Q` in case 2.
 
-You can also follow `by_cases on` with a proof of a disjunction, even if that proof is not just a single identifier.  In that cases you will want to add `with` to specify the identifier or identifiers to be used for the new assumptions in the two cases.  Another variant is that you can use the tactic `by_cases h : P` to break your proof into two cases, with the new assumptions being `h : P` in case 1 and `h : ¬P` in case 2.  In other words, the effect of `by_cases h : P` is the same as adding the new given `h : P ∨ ¬P` (which, of course, is a tautology) and then using the tactic `by_cases on h`.
+You can follow `by_cases on` with any proof of a disjunction, even if that proof is not just a single identifier.  In that cases you will want to add `with` to specify the identifier or identifiers to be used for the new assumptions in the two cases.  Another variant is that you can use the tactic `by_cases h : P` to break your proof into two cases, with the new assumptions being `h : P` in case 1 and `h : ¬P` in case 2.  In other words, the effect of `by_cases h : P` is the same as adding the new given `h : P ∨ ¬P` (which, of course, is a tautology) and then using the tactic `by_cases on h`.
 
 There are two introduction rules that you can use in Lean to prove a goal of the form `P ∨ Q`.  If you have `h : P`, then Lean will accept `Or.intro_left h` as a proof of `P ∨ Q`, and if you have `h : Q`, then `Or.intro_right h` is a proof of `P ∨ Q`.  There are shortened forms `Or.inl` and `Or.inr` for `Or.intro_left` and `Or.intro_right`, respectively.
 
@@ -2159,8 +2159,7 @@ A \ (B \ C) ⊆ (A \ B) ∪ C := by
   define
   define at h1
   have h2 : ¬x ∈ B \ C := h1.right
-  define at h2
-  demorgan at h2
+  define at h2; demorgan at h2
 ```
 :::
 
@@ -2189,8 +2188,7 @@ A \ (B \ C) ⊆ (A \ B) ∪ C := by
   define
   define at h1
   have h2 : ¬x ∈ B \ C := h1.right
-  define at h2
-  demorgan at h2
+  define at h2; demorgan at h2
   by_cases on h2
 ```
 :::
@@ -2228,8 +2226,7 @@ A \ (B \ C) ⊆ (A \ B) ∪ C := by
   define
   define at h1
   have h2 : ¬x ∈ B \ C := h1.right
-  define at h2
-  demorgan at h2
+  define at h2; demorgan at h2
   by_cases on h2
   -- Case 1
   apply Or.inl
@@ -2262,8 +2259,7 @@ A \ (B \ C) ⊆ (A \ B) ∪ C := by
   define
   define at h1
   have h2 : ¬x ∈ B \ C := h1.right
-  define at h2
-  demorgan at h2
+  define at h2; demorgan at h2
   by_cases on h2
   -- Case 1
   apply Or.inl
@@ -2297,8 +2293,7 @@ A \ (B \ C) ⊆ (A \ B) ∪ C := by
   define
   define at h1
   have h2 : ¬x ∈ B \ C := h1.right
-  define at h2
-  demorgan at h2
+  define at h2; demorgan at h2
   by_cases on h2
   -- Case 1
   apply Or.inl
@@ -2311,7 +2306,7 @@ A \ (B \ C) ⊆ (A \ B) ∪ C := by
 
 ::: {.outpt}
 ```state
-!!Goals accomplished 🎉
+>>Goals accomplished 🎉
 ```
 :::
 :::
@@ -2329,14 +2324,14 @@ If your goal is `P ∨ Q`, then the Lean tactic `or_left with h` will add the ne
 ::: {.lftrt}
 ::: {.bef}
 ```state
-!! ⋮
+>> ⋮
 ⊢ P ∨ Q
 ```
 :::
 
 ::: {.aft}
 ```state
-!! ⋮
+>> ⋮
 h : ¬Q
 ⊢ P
 ```
@@ -2433,7 +2428,7 @@ example (U : Type) (A B C : Set U)
 
 ::: {.outpt}
 ```state
-!!Goals accomplished 🎉
+>>Goals accomplished 🎉
 ```
 :::
 :::
@@ -2490,7 +2485,7 @@ U : Type
 A B C : Set U
 h1 : A ⊆ B ∪ C
 h2 : ∀ (x : U),
-!!  ¬x ∈ A ∩ B
+>>  ¬x ∈ A ∩ B
 a : U
 h3 : a ∈ A
 ⊢ a ∈ C
@@ -2498,7 +2493,7 @@ h3 : a ∈ A
 :::
 :::
 
-We can now make inferences from `h1` and `h2`.  To see how to use the inferred statements, we write out their definitions, and since one of them is a negative statement, we reexpress it as an equivalent positive statement.
+We can now make two inferences by combining `h1` with `h3` and by applying `h2` to `a`.  To see how to use the inferred statements, we write out their definitions, and since one of them is a negative statement, we reexpress it as an equivalent positive statement.
 
 ::: {.inout}
 ::: {.inpt}
@@ -2522,7 +2517,7 @@ U : Type
 A B C : Set U
 h1 : A ⊆ B ∪ C
 h2 : ∀ (x : U),
-!!  ¬x ∈ A ∩ B
+>>  ¬x ∈ A ∩ B
 a : U
 h3 : a ∈ A
 h4 : a ∈ B ∨ a ∈ C
@@ -2555,7 +2550,7 @@ example
 
 ::: {.outpt}
 ```state
-!!Goals accomplished 🎉
+>>Goals accomplished 🎉
 ```
 :::
 :::
@@ -2594,7 +2589,7 @@ At this point, you might see a possible route to the goal:  from `h2` and `h3` w
 ::: {.inout}
 ::: {.inpt}
 ```lean
-??example??
+??example::
 (U : Type) (A B C : Set U) (h1 : A ⊆ B ∪ C)
 (h2 : ¬∃ (x : U), x ∈ A ∩ B) : A ⊆ C := by
   fix a : U
@@ -2609,7 +2604,7 @@ At this point, you might see a possible route to the goal:  from `h2` and `h3` w
 
 ::: {.outpt}
 ```state
-!!Goals accomplished 🎉
+>>Goals accomplished 🎉
 ```
 :::
 :::
@@ -2632,7 +2627,7 @@ example
   define at h4
   have h5 : a ∉ B := by
 
-    !!done!!
+    **done::
   disj_syll h4, h5  --Now h4 : a ∈ C
   show a ∈ C from h4
 ```
@@ -2652,7 +2647,7 @@ h4 : a ∈ B ∨ a ∈ C
 :::
 :::
 
-Note that `h5 : a ∉ B` is not part of the tactic state, because we have not yet justified it.  The goal for this proof is a negative statement, and `h2` is also negative.  This suggests that we could try using proof by contradiction, achieving the contradiction by contradicting `h2`.  So we use the tactic `contradict h2 with h6`.
+Note that `h5 : a ∉ B` is not a given in the tactic state, because we have not yet justified it; in fact, `¬a ∈ B` is the goal.  This goal is a negative statement, and `h2` is also negative.  This suggests that we could try using proof by contradiction, achieving the contradiction by contradicting `h2`.  So we use the tactic `contradict h2 with h6`.
 
 ::: {.inout}
 ::: {.inpt}
@@ -2666,7 +2661,7 @@ example
   define at h4
   have h5 : a ∉ B := by
     contradict h2 with h6
-    !!done!!
+    **done::
   disj_syll h4, h5  --Now h4 : a ∈ C
   show a ∈ C from h4
 ```
@@ -2711,25 +2706,27 @@ example
 
 ::: {.outpt}
 ```state
-!!Goals accomplished 🎉
+>>Goals accomplished 🎉
 ```
 :::
 :::
 
 The red squiggle has disappeared from the word `done`, indicating that the proof is complete.
 
-Note that it was not really necessary for us to use `sorry` when writing this proof.  We could have simply written the steps in order,  exactly as they appear above.  Any time you use the `have` tactic with a conclusion that is difficult to justify, you have a choice.  You can establish the `have` with `sorry`, complete the proof, and then return and fill in a justification for the `have`, as we did in the example above.  Or, you can justify the `have` right away by typing `by` after `:=` and then plunging into the "proof within in a proof."  Once you complete the inner proof, you can continue with the original proof.
+It was not really necessary for us to use `sorry` when writing this proof.  We could have simply written the steps in order,  exactly as they appear above.  Any time you use the `have` tactic with a conclusion that is difficult to justify, you have a choice.  You can establish the `have` with `sorry`, complete the proof, and then return and fill in a justification for the `have`, as we did in the example above.  Or, you can justify the `have` right away by typing `by` after `:=` and then plunging into the "proof within in a proof."  Once you complete the inner proof, you can continue with the original proof.
 
 And in case you were wondering: yes, if the inner proof uses the `have` tactic with a statement that is hard to justify, then you can write a "proof within a proof within a proof"!
 
 ## 3.6.  Existence and Uniqueness Proofs
 
-Recall that `∃! (x : U), P x` means that there is exactly one `x` of type `U` such that `P x` is true.  Usually a goal of this form is proven by using the following strategy.  This is a slight rephrasing of the strategy presented in *HTPI*.
+Recall that `∃! (x : U), P x` means that there is exactly one `x` of type `U` such that `P x` is true.  One way to deal with a given or goal of this form is to use the `define` tactic to rewrite it as the equivalent statement `∃ (x : U), P x ∧ ∀ (x_1 : U), P x_1 → x_1 = x`.  You can then apply techniques discussed previously in this chapter.  However, there are also proof techniques, and corresponding Lean tactics, for working directly with givens and goals of this form.
+
+Often a goal of the form `∃! (x : U), P x` is proven by using the following strategy.  This is a slight rephrasing of the strategy presented in *HTPI*.
 
 #### To prove a goal of the form `∃! (x : U), P x`:
 
 ::: {.ind}
-Prove `∃ (x : U), P x` and `∀ (x1 x2 : U), P x1 → P x2 → x1 = x2`.  The first of these goals shows that there exists an `x` such that `P x` is true, and the second shows that it is unique.  The two parts of the proof are therefore sometimes labeled *existence* and *uniqueness*.
+Prove `∃ (x : U), P x` and `∀ (x1 x2 : U), P x1 → P x2 → x1 = x2`.  The first of these goals says that there exists an `x` such that `P x` is true, and the second says that it is unique.  The two parts of the proof are therefore sometimes labeled *existence* and *uniqueness*.
 :::
 
 To apply this strategy in a Lean proof, we use the tactic `exists_unique`.  We'll illustrate this with the theorem from Example 3.6.2 in *HTPI*.  Here's how that theorem and its proof are presented in *HTPI*:
@@ -2764,7 +2761,7 @@ case h
 U : Type
 B : Set U
 ⊢ ∀ (x : U),
-!!  x ∈ ∅ ∪ B ↔ x ∈ B
+>>  x ∈ ∅ ∪ B ↔ x ∈ B
 ```
 :::
 :::
@@ -2779,7 +2776,6 @@ theorem empty_union {U : Type} (B : Set U) :
   apply Set.ext
   fix x : U
   apply Iff.intro
-  -- (→)
 ```
 :::
 
@@ -2837,7 +2833,7 @@ theorem empty_union {U : Type} (B : Set U) :
   define at h1
   have h2 : x ∉ (∅ : Set U) := by
 
-    !!done!!
+    **done::
 ```
 :::
 
@@ -2867,7 +2863,7 @@ theorem empty_union {U : Type} (B : Set U) :
   define at h1
   have h2 : x ∉ (∅ : Set U) := by
     by_contra h3
-    !!done!!
+    **done::
 ```
 :::
 
@@ -2973,14 +2969,14 @@ theorem empty_union {U : Type} (B : Set U) :
   disj_syll h1, h2  --Now h1 : x ∈ B
   show x ∈ B from h1
   -- (←)
-  assume h1
+  assume h1 : x ∈ B
   show x ∈ (∅ : Set U) ∪ B from Or.inr h1
 ```
 :::
 
 ::: {.outpt}
 ```state
-!!Goals accomplished 🎉
+>>Goals accomplished 🎉
 ```
 :::
 :::
@@ -3044,7 +3040,7 @@ X ∪ Y = Y ∪ X := by
 
 ::: {.outpt}
 ```state
-!!Goals accomplished 🎉
+>>Goals accomplished 🎉
 ```
 :::
 :::
@@ -3072,7 +3068,7 @@ theorem Example_3_6_2 (U : Type) :
 ```state
 U : Type
 ⊢ ∃! A, ∀ (B : Set U),
-!!  A ∪ B = B
+>>  A ∪ B = B
 ```
 :::
 :::
@@ -3093,20 +3089,20 @@ theorem Example_3_6_2 (U : Type) :
 case Existence
 U : Type
 ⊢ ∃ A, ∀ (B : Set U),
-!!  A ∪ B = B
+>>  A ∪ B = B
 case Uniqueness
 U : Type
 ⊢ ∀ (A_1 A_2 : Set U),
-!!  (∀ (B : Set U),
-!!      A_1 ∪ B = B) →
-!!  (∀ (B : Set U),
-!!      A_2 ∪ B = B) →
-!!  A_1 = A_2
+>>  (∀ (B : Set U),
+>>      A_1 ∪ B = B) →
+>>  (∀ (B : Set U),
+>>      A_2 ∪ B = B) →
+>>  A_1 = A_2
 ```
 :::
 :::
 
-We have two goals, labeled `Existence` and `Uniqueness`.  Imitating the proof from *HTPI*, we prove existence by using the value `∅` for `A`.
+We have two goals, labeled `Existence` and `Uniqueness`.  Imitating the proof from *HTPI*, we prove existence by using the value `∅` for `A`.  It turns out that in this context, Lean is able to figure out which empty set we mean by `∅`, so we don't need to specify the type.
 
 ::: {.inout}
 ::: {.inpt}
@@ -3124,7 +3120,7 @@ theorem Example_3_6_2 (U : Type) :
 case Existence
 U : Type
 ⊢ ∀ (B : Set U),
-!!  ∅ ∪ B = B
+>>  ∅ ∪ B = B
 ```
 :::
 :::
@@ -3149,11 +3145,11 @@ theorem Example_3_6_2 (U : Type) :
 case Uniqueness
 U : Type
 ⊢ ∀ (A_1 A_2 : Set U),
-!!  (∀ (B : Set U),
-!!      A_1 ∪ B = B) →
-!!  (∀ (B : Set U),
-!!      A_2 ∪ B = B) →
-!!  A_1 = A_2
+>>  (∀ (B : Set U),
+>>      A_1 ∪ B = B) →
+>>  (∀ (B : Set U),
+>>      A_2 ∪ B = B) →
+>>  A_1 = A_2
 ```
 :::
 :::
@@ -3183,15 +3179,15 @@ case Uniqueness
 U : Type
 C D : Set U
 h1 : ∀ (B : Set U),
-!!  C ∪ B = B
+>>  C ∪ B = B
 h2 : ∀ (B : Set U),
-!!  D ∪ B = B
+>>  D ∪ B = B
 ⊢ C = D
 ```
 :::
 :::
 
-The next step in *HTPI* was apply `h1` to `D`, and `h2` to `C`.  We do the same thing in Lean.
+The next step in *HTPI* was to apply `h1` to `D`, and `h2` to `C`.  We do the same thing in Lean.
 
 ::: {.inout}
 ::: {.inpt}
@@ -3218,9 +3214,9 @@ case Uniqueness
 U : Type
 C D : Set U
 h1 : ∀ (B : Set U),
-!!  C ∪ B = B
+>>  C ∪ B = B
 h2 : ∀ (B : Set U),
-!!  D ∪ B = B
+>>  D ∪ B = B
 h3 : C ∪ D = D
 h4 : D ∪ C = C
 ⊢ C = D
@@ -3250,3 +3246,304 @@ theorem Example_3_6_2 (U : Type) :
       _ = C ∪ D := union_comm D C
       _ = D     := h3
 ```
+
+Thinking of the statement `∃! (x : U), P x` as asserting both existence and uniqueness of an object satisfying the predicate `P` leads to the following strategy for using a given of this form:
+
+#### To use a given of the form `∃! (x : U), P x`:
+
+::: {.ind}
+Introduce a new variable, say `a`, into the proof to stand for an object of type `U` for which `P a` is true.  You may also assert that `∀ (x_1 x_2 : U), P x_1 → P x_2 → x_1 = x2`.
+:::
+
+If you have a given `h : ∃! (x : U), P x`, then the tactic `obtain (a : U) (h1 : P a)` <br>`(h2 : ∀ (x_1 x_2 : U), P x_1 → P x_2 → x_1 = x_2) from h` will introduce into the tactic state a new variable `a` of type `U` and new givens `(h1 : P a)` and `(h2 : ∀ (x_1 x_2 : U), P x_1 → P x_2 → x_1 = x_2)`.  To illustrate the use of this tactic, let's prove the theorem in Example 3.6.4 of *HTPI*.
+
+::: {.inout}
+::: {.inpt}
+```lean
+theorem Example_3_6_4 (U : Type) (A B C : Set U)
+(h1 : ∃ (x : U), x ∈ A ∩ B)
+(h2 : ∃ (x : U), x ∈ A ∩ C)
+(h3 : ∃! (x : U), x ∈ A) :
+∃ (x : U), x ∈ B ∩ C := by
+```
+:::
+
+::: {.outpt}
+```state
+U : Type
+A B C : Set U
+h1 : ∃ x, x ∈ A ∩ B
+h2 : ∃ x, x ∈ A ∩ C
+h3 : ∃! x, x ∈ A
+⊢ ∃ x, x ∈ B ∩ C
+```
+:::
+:::
+
+We begin by applying the `obtain` tactic to `h1`, `h2`, and `h3`.  In the case of `h3`, we get an extra given asserting the uniqueness of the element of `A`.  We also write out the definitions of two of the new givens we obtain.
+
+::: {.inout}
+::: {.inpt}
+```lean
+theorem Example_3_6_4 (U : Type) (A B C : Set U)
+(h1 : ∃ (x : U), x ∈ A ∩ B)
+(h2 : ∃ (x : U), x ∈ A ∩ C)
+(h3 : ∃! (x : U), x ∈ A) :
+∃ (x : U), x ∈ B ∩ C := by
+  obtain (b : U) (h4 : b ∈ A ∩ B) from h1
+  obtain (c : U) (h5 : c ∈ A ∩ C) from h2
+  obtain (a : U) (h6 : a ∈ A) (h7 : ∀ (y z : U),
+    y ∈ A → z ∈ A → y = z)  from h3
+  define at h4; define at h5
+```
+:::
+
+::: {.outpt}
+```state
+U : Type
+A B C : Set U
+h1 : ∃ x, x ∈ A ∩ B
+h2 : ∃ x, x ∈ A ∩ C
+h3 : ∃! x, x ∈ A
+b : U
+h4 : b ∈ A ∧ b ∈ B
+c : U
+h5 : c ∈ A ∧ c ∈ C
+a : U
+h6 : a ∈ A
+h7 : ∀ (y z : U),
+>>  y ∈ A → z ∈ A → y = z
+⊢ ∃ x, x ∈ B ∩ C
+```
+:::
+:::
+
+The key to the rest of the proof is the observation that, by the uniqueness of the element of `A`, `b` must be equal to `c`.  To justify this conclusion, note that by two applications of universal instantiation, `h7 b c` is a proof of `b ∈ A → c ∈ A → b = c`, and therefore by two applications of modus ponens, `h7 b c h4.left h5.left` is a proof of `b = c`.
+
+::: {.inout}
+::: {.inpt}
+```lean
+theorem Example_3_6_4 (U : Type) (A B C : Set U)
+(h1 : ∃ (x : U), x ∈ A ∩ B)
+(h2 : ∃ (x : U), x ∈ A ∩ C)
+(h3 : ∃! (x : U), x ∈ A) :
+∃ (x : U), x ∈ B ∩ C := by
+  obtain (b : U) (h4 : b ∈ A ∩ B) from h1
+  obtain (c : U) (h5 : c ∈ A ∩ C) from h2
+  obtain (a : U) (h6 : a ∈ A) (h7 : ∀ (y z : U),
+    y ∈ A → z ∈ A → y = z)  from h3
+  define at h4; define at h5
+  have h8 : b = c := h7 b c h4.left h5.left
+```
+:::
+
+::: {.outpt}
+```state
+U : Type
+A B C : Set U
+h1 : ∃ x, x ∈ A ∩ B
+h2 : ∃ x, x ∈ A ∩ C
+h3 : ∃! x, x ∈ A
+b : U
+h4 : b ∈ A ∧ b ∈ B
+c : U
+h5 : c ∈ A ∧ c ∈ C
+a : U
+h6 : a ∈ A
+h7 : ∀ (y z : U),
+>>  y ∈ A → z ∈ A → y = z
+h8 : b = c
+⊢ ∃ x, x ∈ B ∩ C
+```
+:::
+:::
+
+For our next step, we will need a new tactic.  Since we have `h8 : b = c`, we should be able to replace `b` with `c` anywhere it appears.  The tactic that allows us to do this called `rewrite`.  If `h` is a proof of any equation `s = t`, then `rewrite [h]` will replace all occurrences of `s` in the goal with `t`.  Notice that it is the left-hand side of the equation that is replaced with the right-hand side; if you want the replacement to go in the other direction, so that `t` is replaced with `s`, you can use `rewrite [← h]`.  As with many other tactics, you can add `at h'` to specify that the replacement should be done in the given `h'` rather than the goal.  In our case, `rewrite [h8] at h4` will change both occurrences of `b` in `h4` to `c`.
+
+::: {.inout}
+::: {.inpt}
+```lean
+theorem Example_3_6_4 (U : Type) (A B C : Set U)
+(h1 : ∃ (x : U), x ∈ A ∩ B)
+(h2 : ∃ (x : U), x ∈ A ∩ C)
+(h3 : ∃! (x : U), x ∈ A) :
+∃ (x : U), x ∈ B ∩ C := by
+  obtain (b : U) (h4 : b ∈ A ∩ B) from h1
+  obtain (c : U) (h5 : c ∈ A ∩ C) from h2
+  obtain (a : U) (h6 : a ∈ A) (h7 : ∀ (y z : U),
+    y ∈ A → z ∈ A → y = z)  from h3
+  define at h4; define at h5
+  have h8 : b = c := h7 b c h4.left h5.left
+  rewrite [h8] at h4
+```
+:::
+
+::: {.outpt}
+```state
+U : Type
+A B C : Set U
+h1 : ∃ x, x ∈ A ∩ B
+h2 : ∃ x, x ∈ A ∩ C
+h3 : ∃! x, x ∈ A
+b c : U
+h4 : c ∈ A ∧ c ∈ B
+h5 : c ∈ A ∧ c ∈ C
+a : U
+h6 : a ∈ A
+h7 : ∀ (y z : U),
+>>  y ∈ A → z ∈ A → y = z
+h8 : b = c
+⊢ ∃ x, x ∈ B ∩ C
+```
+:::
+:::
+
+Now the right-hand sides of `h4` and `h5` tell us that we can prove the goal by plugging in `c` for `x`.
+
+::: {.inout}
+::: {.inpt}
+```lean
+theorem Example_3_6_4 (U : Type) (A B C : Set U)
+(h1 : ∃ (x : U), x ∈ A ∩ B)
+(h2 : ∃ (x : U), x ∈ A ∩ C)
+(h3 : ∃! (x : U), x ∈ A) :
+∃ (x : U), x ∈ B ∩ C := by
+  obtain (b : U) (h4 : b ∈ A ∩ B) from h1
+  obtain (c : U) (h5 : c ∈ A ∩ C) from h2
+  obtain (a : U) (h6 : a ∈ A) (h7 : ∀ (y z : U),
+    y ∈ A → z ∈ A → y = z)  from h3
+  define at h4; define at h5
+  have h8 : b = c := h7 b c h4.left h5.left
+  rewrite [h8] at h4
+  show ∃ (x : U), x ∈ B ∩ C from
+    Exists.intro c (And.intro h4.right h5.right)
+```
+:::
+
+::: {.outpt}
+```state
+>>Goals accomplished 🎉
+```
+:::
+:::
+
+You might want to compare the Lean proof above to the proof of this theorem as it appears in *HTPI*.
+
+::: {.thm}
+Suppose $A$, $B$, and $C$ are sets, $A$ and $B$ are not disjoint, $A$ and $C$ are not disjoint, and $A$ has exactly one element.  Then $B$ and $C$ are not disjoint
+:::
+::: {.proof}
+Since $A$ and $B$ are not disjoint, we can let $b$ be something such that $b \in A$ and $b \in B$.  Similarly, since $A$ and $C$ are not disjoint, there is some object $c$ such that $c \in A$ and $c \in C$.  Since $A$ has only one element, we must have $b = c$.  Thus $b = c \in B \cap C$ and therefore $B$ and $C$ are not disjoint. \qedhere
+:::
+
+Before ending this section, we return to the question of how you can tell if a theorem you want to use is in Lean's library.  In an earlier example, we guessed that the commutative law for "or" might be in Lean's library, and we were then able to use the `#check` command to confirm it.  But there is another technique that we could have used: the tactic `library_search`.  Let's return to our proof of the theorem `union_comm`, which started like this:
+
+::: {.inout}
+::: {.inpt}
+```lean
+theorem union_comm {U : Type} (X Y : Set U) :
+X ∪ Y = Y ∪ X := by
+  apply Set.ext
+  fix x : U
+```
+:::
+
+::: {.outpt}
+```state
+case h
+U : Type
+X Y : Set U
+x : U
+⊢ x ∈ X ∪ Y ↔ x ∈ Y ∪ X
+```
+:::
+:::
+
+To make the goal easier for the `library_search` tactic to recognize, we'll write out the definitions of the two sides of the biconditional.  The tactic `definition` can be used to write out the definition of any expression:
+
+::: {.inout}
+::: {.inpt}
+```lean
+theorem union_comm {U : Type} (X Y : Set U) :
+X ∪ Y = Y ∪ X := by
+  apply Set.ext
+  fix x : U
+  definition : x ∈ X ∪ Y with h1
+  definition : x ∈ Y ∪ X with h2
+```
+:::
+
+::: {.outpt}
+```state
+case h
+U : Type
+X Y : Set U
+x : U
+h1 : x ∈ X ∪ Y ↔
+>>  x ∈ X ∨ x ∈ Y
+h2 : x ∈ Y ∪ X ↔
+>>  x ∈ Y ∨ x ∈ X
+⊢ x ∈ X ∪ Y ↔ x ∈ Y ∪ X
+```
+:::
+:::
+
+The new givens `h1` and `h2` state the relevant definitions.  We saw in our last example that the `rewrite` tactic can be applied to an equation to replace the left-hand side of the equation with the right-hand side.  You can also apply the `rewrite` tactic to biconditional statements.  If you have `h : P ↔ Q`, then `rewrite [h]` will cause all occurrences of `P` in the goal to be replaced with `Q` (and `rewrite [← h]` will replace `Q` with `P`).  In fact, you can put a list of proofs of equations or biconditionals inside the brackets, and the `rewrite` tactic will perform all of the replacements, one after another.  In our case, the tactic `rewrite [h1, h2]` will first replace `x ∈ X ∪ Y` in the goal with `x ∈ X ∨ x ∈ Y`, and then it will replace `x ∈ Y ∪ X` with `x ∈ Y ∨ x ∈ X`.
+
+::: {.inout}
+::: {.inpt}
+```lean
+theorem union_comm {U : Type} (X Y : Set U) :
+X ∪ Y = Y ∪ X := by
+  apply Set.ext
+  fix x : U
+  definition : x ∈ X ∪ Y with h1
+  definition : x ∈ Y ∪ X with h2
+  rewrite [h1, h2]
+```
+:::
+
+::: {.outpt}
+```state
+case h
+U : Type
+X Y : Set U
+x : U
+h1 : x ∈ X ∪ Y ↔
+>>  x ∈ X ∨ x ∈ Y
+h2 : x ∈ Y ∪ X ↔
+>>  x ∈ Y ∨ x ∈ X
+⊢ x ∈ X ∨ x ∈ Y ↔
+>>  x ∈ Y ∨ x ∈ X
+```
+:::
+:::
+
+We have done these steps to give the `library_search` tactic the best chance of recognizing the goal as the commutative law for "or".  Let's give it a try.
+
+```lean
+theorem union_comm {U : Type} (X Y : Set U) :
+X ∪ Y = Y ∪ X := by
+  apply Set.ext
+  fix x : U
+  definition : x ∈ X ∪ Y with h1
+  definition : x ∈ Y ∪ X with h2
+  rewrite [h1, h2]
+  ##library_search::
+```
+
+The blue squiggle indicates that the `library_search` tactic has produced an answer, which you will find in the Infoview pane:  `exact or_comm' (x ∈ X) (x ∈ Y)`.  The word `exact` is the name of a tactic that we have not discussed; you can think of `library_search`'s answer as a shortened form of the tactic
+
+::: {.quote}
+`show x ∈ X ∨ x ∈ Y ↔ x ∈ Y ∨ x ∈ X from or_comm' (x ∈ X) (x ∈ Y)`,
+:::
+
+and if you replace the `library_search` line in the proof with this tactic, it will complete the proof.  But what is `or_comm'`?  The command `#check @or_comm'` gives the result
+
+::: {.quote}
+`or_comm' : ∀ (a b : Prop), a ∨ b ↔ b ∨ a`.
+:::
+
+So `or_comm'` is the same as `or_comm`, except that the arguments `a` and `b` are not implicit; that's why `library_search` had to specify values for those arguments in its answer.  The `#check` command also produces a suggestion that we should use `or_comm` instead.
+
+The `library_search` tactic is somewhat unpredictable; sometimes it is able to find the right theorem in the library, and sometimes it isn't.  But it is always worth a try.  Other tactics that may be helpful are `suggest` and `hint`.

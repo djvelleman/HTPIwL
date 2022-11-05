@@ -120,6 +120,11 @@ ul.task-list li input[type="checkbox"] {
   <a href="./Chap3.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Proofs</span></a>
   </div>
 </li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Chap4.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Chapter 4 test file</span></a>
+  </div>
+</li>
     </ul>
     </div>
 </nav>
@@ -162,36 +167,29 @@ $$
 </div>
 <p>Lean also uses these symbols, although we will see that quantified statements are written slightly differently in Lean from the way they are written in <em>HTPI</em>. In the statement <span class="math inline">\(P(x)\)</span>, the variable <span class="math inline">\(x\)</span> is called a <em>free variable</em>. But in <span class="math inline">\(\forall x\,P(x)\)</span> or <span class="math inline">\(\exists x\,P(x)\)</span>, it is a <em>bound variable</em>; we say that the quantifiers <span class="math inline">\(\forall\)</span> and <span class="math inline">\(\exists\)</span> <em>bind</em> the variable.</p>
 <p>Once again, there are logical equivalences involving these symbols that will be useful to us later:</p>
+<div style="margin: 0% 10%">
 <table class="table">
-<colgroup>
-<col style="width: 32%">
-<col style="width: 22%">
-<col style="width: 22%">
-<col style="width: 22%">
-</colgroup>
 <thead>
 <tr class="header">
-<th style="text-align: left;">Name</th>
 <th style="text-align: center;"></th>
-<th style="text-align: center;">Equivalence</th>
+<th style="text-align: center;">Quantifier Negation Laws</th>
 <th style="text-align: center;"></th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td style="text-align: left;">Quantifier Negation Laws</td>
 <td style="text-align: center;"><span class="math inline">\(\neg \exists x\,P(x)\)</span></td>
 <td style="text-align: center;">is equivalent to</td>
 <td style="text-align: center;"><span class="math inline">\(\forall x\,\neg P(x)\)</span></td>
 </tr>
 <tr class="even">
-<td style="text-align: left;"></td>
 <td style="text-align: center;"><span class="math inline">\(\neg \forall x\,P(x)\)</span></td>
 <td style="text-align: center;">is equivalent to</td>
 <td style="text-align: center;"><span class="math inline">\(\exists x\,\neg P(x)\)</span></td>
 </tr>
 </tbody>
 </table>
+</div>
 <p>Chapter 2 of <em>HTPI</em> also introduces some more advanced set theory operations. For any set <span class="math inline">\(A\)</span>,</p>
 <div class="quote">
 <p><span class="math inline">\(\mathscr{P}(A) = \{X \mid X \subseteq A\} = {}\)</span> the <em>power set</em> of <span class="math inline">\(A\)</span>.</p>

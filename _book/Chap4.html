@@ -6,9 +6,8 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="author" content="Daniel J. Velleman">
 
-<title>How To Prove It With Lean</title>
+<title>How To Prove It With Lean - 4&nbsp; Chapter 4 test file</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -21,6 +20,69 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1.6em;
   vertical-align: middle;
 }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
 </style>
 
 
@@ -31,7 +93,7 @@ ul.task-list li input[type="checkbox"] {
 <script src="site_libs/quarto-search/fuse.min.js"></script>
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
-<link href="./Chap1.html" rel="next">
+<link href="./Chap3.html" rel="prev">
 <script src="site_libs/quarto-html/quarto.js"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
@@ -71,7 +133,7 @@ ul.task-list li input[type="checkbox"] {
   <header id="quarto-header" class="headroom fixed-top">
   <nav class="quarto-secondary-nav" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
     <div class="container-fluid d-flex justify-content-between">
-      <h1 class="quarto-secondary-nav-title">How To Prove It With Lean</h1>
+      <h1 class="quarto-secondary-nav-title"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Chapter 4 test file</span></h1>
       <button type="button" class="quarto-btn-toggle btn" aria-label="Show secondary navigation">
         <i class="bi bi-chevron-right"></i>
       </button>
@@ -96,7 +158,7 @@ ul.task-list li input[type="checkbox"] {
     <ul class="list-unstyled mt-1">
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./index.html" class="sidebar-item-text sidebar-link active">Preface</a>
+  <a href="./index.html" class="sidebar-item-text sidebar-link">Preface</a>
   </div>
 </li>
         <li class="sidebar-item">
@@ -121,7 +183,7 @@ ul.task-list li input[type="checkbox"] {
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./Chap4.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Chapter 4 test file</span></a>
+  <a href="./Chap4.html" class="sidebar-item-text sidebar-link active"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Chapter 4 test file</span></a>
   </div>
 </li>
     </ul>
@@ -129,18 +191,7 @@ ul.task-list li input[type="checkbox"] {
 </nav>
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        <nav id="TOC" role="doc-toc" class="toc-active">
-    <h2 id="toc-title">Table of contents</h2>
-   
-  <ul class="collapse">
-  <li><a href="#preface" id="toc-preface" class="nav-link active" data-scroll-target="#preface">Preface</a>
-  <ul class="collapse">
-  <li><a href="#about-this-book" id="toc-about-this-book" class="nav-link" data-scroll-target="#about-this-book">About This Book</a></li>
-  <li><a href="#about-lean" id="toc-about-lean" class="nav-link" data-scroll-target="#about-lean">About Lean</a></li>
-  <li><a href="#installing-lean" id="toc-installing-lean" class="nav-link" data-scroll-target="#installing-lean">Installing Lean</a></li>
-  </ul></li>
-  </ul>
-</nav>
+        
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
@@ -153,19 +204,13 @@ $$
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title d-none d-lg-block">How To Prove It With Lean</h1>
+<h1 class="title d-none d-lg-block"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Chapter 4 test file</span></h1>
 </div>
 
 
 
 <div class="quarto-title-meta">
 
-    <div>
-    <div class="quarto-title-meta-heading">Author</div>
-    <div class="quarto-title-meta-contents">
-             <p>Daniel J. Velleman </p>
-          </div>
-  </div>
     
     
   </div>
@@ -173,47 +218,14 @@ $$
 
 </header>
 
-<section id="preface" class="level1 unnumbered">
-<h1 class="unnumbered">Preface</h1>
-<section id="about-this-book" class="level2">
-<h2 class="anchored" data-anchor-id="about-this-book">About This Book</h2>
-<p>This book is intended to accompany my book <a href="https://www.cambridge.org/highereducation/books/how-to-prove-it/6D2965D625C6836CD4A785A2C843B3DA#overview"><em>How To Prove It</em></a> (henceforth called <em>HTPI</em>), which is published by Cambridge University Press. Although this book is self-contained, we will sometimes have occasion to refer to passages in <em>HTPI</em>, so this book will be easiest to understand if you have a copy of <em>HTPI</em> available to you.</p>
-<p><em>HTPI</em> explains a systematic approach to constructing mathematical proofs. The purpose of this book is to show you how to use a computer software package called <em>Lean</em> to help you master the techniques presented in <em>HTPI</em>. Lean is free software that is available for Windows, MacOS, and Unix computers. To get the most out of this book, you will need to download and install Lean on your computer. We will explain how to do that below.</p>
-<p>The chapters and sections of this book are numbered to match the sections of <em>HTPI</em> to which they correspond. The first two chapters of <em>HTPI</em> cover preliminary topics in elementary logic and set theory that are needed to understand the proof techniques presented in later chapters. We assume that you are already familiar with that material (if not, go read those chapters in <em>HTPI</em>!), so Chapters 1 and 2 of this book will just briefly summarize the most important points. Those chapters are followed by an introduction to Lean that explains the basics of using Lean to write proofs. The presentation of proof techniques in <em>HTPI</em> begins in earnest in Chapter 3, so that is where we will begin to discuss how Lean can be used to master those techniques.</p>
-<p>If you are reading this book online, then you will find a search box in the left margin. You can use that box to search for any word or phrase anywhere in the book. Below the search box is a list of the chapters of the book. Click on any chapter to go to that chapter. Within each chapter, a table of contents in the right margin lists the sections in that chapter. Again, you can go to any section by clicking on it. At the end of each chapter there are links to take you to the next or previous chapter.</p>
-</section>
-<section id="about-lean" class="level2">
-<h2 class="anchored" data-anchor-id="about-lean">About Lean</h2>
-<p>Lean is a kind of software package called a <em>proof assistant</em>. What that means is that Lean can help you to write proofs. As we will see over the course of this book, there are several ways in which Lean can be helpful. First of all, if you type a proof into Lean, then Lean can check the correctness of the proof and point out errors. As you are typing a proof into Lean, it will keep track of what has been accomplished so far in the proof and what remains to be done to finish the proof, and it will display that information for you. That can keep you moving in the right direction as you are figuring out a proof. And sometimes Lean can fill in small details of the proof for you.</p>
-<p>Of course, to make this possible you must type your proof in a format that Lean understands. Much of this book will be taken up with explaining how to write a proof so that Lean will understand it.</p>
-</section>
-<section id="installing-lean" class="level2">
-<h2 class="anchored" data-anchor-id="installing-lean">Installing Lean</h2>
-<p>We will be using Visual Studio Code to run Lean, so you will need to install VS Code first. VS Code is free and can be downloaded <a href="https://code.visualstudio.com">here</a>.</p>
-<p>You will also need the Lean package that accompanies this book, which can be downloaded from <a href="https://github.com/djvelleman/HTPILeanPackage">https://github.com/djvelleman/HTPILeanPackage</a>. After following the link, click on the green “Code” button and, in the pop-up menu, select “Download ZIP”. Open the downloaded zip file to create a folder containing the HTPI Lean package. You can put this folder wherever you want on your computer.</p>
-<p>Now open VS Code. You should see a window that looks something like this:</p>
-<p><img src="Images/VSCodeStart.png" class="img-fluid"></p>
-<p>Click on the <em>Extensions</em> icon on the left side of the window, which is circled in red in the image above. That will bring up a list of available extensions:</p>
-<p><img src="Images/FindExtension.png" class="img-fluid"></p>
-<p>In the <em>Search Extensions in Marketplace</em> field, type “lean4”. VS Code should find the Lean 4 extension and display it:</p>
-<p><img src="Images/InstallExtension.png" class="img-fluid"></p>
-<p>Click on “Install” to install the Lean 4 extension.</p>
-<p>Next, in VS Code, select “Open Folder …” from the File menu and open the folder containing the HTPI Lean package that you downloaded earlier. Under the heading “Explorer” on the left side of the window, you should see a list of the files in the package. (If you don’t see the list, try clicking on the <em>Explorer</em> icon, circled in red below.)</p>
-<p><img src="Images/OpenPackage.png" class="img-fluid"></p>
-<p>Click on the file “Blank.lean” in the file list. You should see a warning that VS Code failed to start the ‘lean’ language server:</p>
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="Images/Install-elan.png" class="img-fluid figure-img"></p>
-</figure>
-</div>
-<p>Click on the “Install Lean using Elan” button, and the Lean server should be installed. This may take a while, and there may be messages asking you to do things. If anything goes wrong, try quiting VS Code and restarting. Eventually your window should look like this:</p>
-<p><img src="Images/Ready.png" class="img-fluid"></p>
-<p>If you don’t see the Infoview pane on the right side of the window, click on the icon circled in red in the image above, and the Infoview pane should appear.</p>
-<p>Your installation is now complete.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="sc">**</span><span class="wa">library_search</span><span class="sc">::</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="sc">**</span><span class="er">garbage</span><span class="sc">::</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="sc">##</span><span class="do">quant_neg</span><span class="sc">::</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="sc">##</span><span class="ot">garbage</span><span class="sc">::</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="sc">??</span><span class="al">library_search</span><span class="sc">::</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="sc">??</span><span class="an">garbage</span><span class="sc">::</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 
 
-</section>
-</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
@@ -316,11 +328,11 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
+      <a href="./Chap3.html" class="pagination-link">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Proofs</span></span>
+      </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="./Chap1.html" class="pagination-link">
-        <span class="nav-page-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Sentential Logic</span></span> <i class="bi bi-arrow-right-short"></i>
-      </a>
   </div>
 </nav>
 </div> <!-- /content -->

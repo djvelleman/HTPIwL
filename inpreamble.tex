@@ -6,6 +6,7 @@
 \makeatletter
 \def\redsquiggly{\bgroup \markoverwith{\textcolor{red}{\lower3.5\p@\hbox{\sixly \char58}}}\ULon}
 \def\brownsquiggly{\bgroup \markoverwith{\textcolor[HTML]{B8860B}{\lower3.5\p@\hbox{\sixly \char58}}}\ULon}
+\def\bluesquiggly{\bgroup \markoverwith{\textcolor[HTML]{1E90FF}{\lower3.5\p@\hbox{\sixly \char58}}}\ULon}
 \makeatother
 
 \renewcommand{\NormalTok}[1]{\textcolor[HTML]{000000}{#1}}
@@ -20,7 +21,8 @@
 \renewcommand{\ConstantTok}[1]{\textcolor[HTML]{DC143C}{#1}}
 \renewcommand{\AnnotationTok}[1]{\brownsquiggly{#1}}
 \renewcommand{\AlertTok}[1]{\brownsquiggly{\textcolor[HTML]{0000FF}{#1}}}
-
+\renewcommand{\OtherTok}[1]{\bluesquiggly{#1}}
+\renewcommand{\DocumentationTok}[1]{\bluesquiggly{\textcolor[HTML]{0000FF}{#1}}}
 
 \newenvironment{ind}
 	{\begin{list}{}{\setlength{\leftmargin}{1em}}\item\relax}
@@ -63,6 +65,12 @@
 	{\nobreakShaded\begin{minipage}[t]{0.475\textwidth}
 		\uline{Tactic State After Using Strategy}}
 	{\end{minipage}}
+
+\newenvironment{absnobreak}
+  {\par\nobreak\vfil\penalty0\vfilneg
+   \vtop\bgroup}
+  {\par\xdef\tpd{\the\prevdepth}\egroup
+   \prevdepth=\tpd}
 
 \newcommand{\excl}[1]{}
 \newcommand{\incl}[1]{#1}
