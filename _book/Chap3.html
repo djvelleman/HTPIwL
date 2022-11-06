@@ -408,7 +408,7 @@ $$
 <li>Reexpress the given in some other form.</li>
 <li>If you are doing a proof by contradiction, you can achieve a contradiction by proving <code>P</code>, since that would contradict the given <code>¬P</code>.</li>
 </ol>
-<p>Of course, strategy 1 suggests the use of the <code>demorgan</code>, <code>conditional</code>, <code>double_neg</code>, and <code>bicond_neg</code> tactics, if they apply. For strategy 2, if you are doing a proof by contradiction and you have a given <code>h : ¬P</code>, then the tactic <code>contradict h</code> will set the goal to be <code>P</code>, which will complete the proof by contradicting <code>h</code>. In fact, this tactic can be used with any given; if you have a given <code>h : P</code>, where <code>P</code> is not a negative statement, then <code>contradict h</code> will set the goal to be <code>¬P</code>. You can also follow the word <code>contradict</code> with a proof that is more complicated than a single identifier. For example, if you have givens <code>h1 : P → ¬Q</code> and <code>h2 : P</code>, then <code>h1 h2</code> is a proof of <code>¬Q</code>, so the tactic <code>contradict (h1 h2)</code> will set the goal to be <code>Q</code>.</p>
+<p>Of course, strategy 1 suggests the use of the <code>demorgan</code>, <code>conditional</code>, <code>double_neg</code>, and <code>bicond_neg</code> tactics, if they apply. For strategy 2, if you are doing a proof by contradiction and you have a given <code>h : ¬P</code>, then the tactic <code>contradict h</code> will set the goal to be <code>P</code>, which will complete the proof by contradicting <code>h</code>. In fact, this tactic can be used with any given; if you have a given <code>h : P</code>, where <code>P</code> is not a negative statement, then <code>contradict h</code> will set the goal to be <code>¬P</code>. You can also follow the word <code>contradict</code> with a proof that is more complicated than a single identifier. For example, if you have givens <code>h1 : P → ¬Q</code> and <code>h2 : P</code>, then <code>h1 h2</code> is a proof of <code>¬Q</code>, so the tactic <code>contradict h1 h2</code> will set the goal to be <code>Q</code>.</p>
 <p>If you’re not doing a proof by contradiction, then the tactic <code>contradict h with h'</code> will first initiate a proof by contradiction by assuming the negation of the goal, giving that assumption the identifier <code>h'</code>, and then it will set the goal to be the negation of the statement proven by <code>h</code>. In other words, <code>contradict h with h'</code> is shorthand for <code>by_contra h'; contradict h</code>.</p>
 <p>We can illustrate this with yet another way to write the proof from Example 3.2.4. Our first three steps will be the same as last time:</p>
 <div class="inout">
@@ -2139,7 +2139,7 @@ x \in A \cap (B \setmin C) &amp;\text{ iff } x \in A \wedge x \in B \setmin C\\
 <div class="ind">
 <p>If you are also given <code>¬P</code>, or you can prove that <code>P</code> is false, then you can use this given to conclude that <code>Q</code> is true. Similarly, if you are given <code>¬Q</code> or can prove that <code>Q</code> is false, then you can conclude that <code>P</code> is true.</p>
 </div>
-<p>This strategy is a rule of inference called <em>disjunctive syllogism</em>, and the tactic for using this strategy in Lean is called <code>disj_syll</code>. If you have <code>h1 : P ∨ Q</code> and <code>h2 : ¬P</code>, then the tactic <code>disj_syll h1, h2</code> will change <code>h1</code> to <code>h1 : Q</code>; if instead you have <code>h2 : ¬Q</code>, then <code>disj_syll h1, h2</code> will change <code>h1</code> to <code>h1 : P</code>. Notice that, as with the <code>by_cases</code> tactic, the given <code>h1</code> gets <em>replaced</em> with the conclusion of the rule. The tactic <code>disj_syll h1, h2 with h3</code> will preserve the original <code>h1</code> and introduce the conclusion as a new given with the identifier <code>h3</code>. Also, as with the <code>by_cases</code> tactic, <code>h1</code> and <code>h2</code> can be complex proofs; they need not simply be identifiers. The only requirement is that <code>h1</code> must be a proof of a disjunction, and <code>h2</code> must be a proof of the negation of one side of the disjunction. If <code>h1</code> is not simply an identifier, then you will want to use <code>with</code> to specify the identifier to be used for the conclusion of the rule.</p>
+<p>This strategy is a rule of inference called <em>disjunctive syllogism</em>, and the tactic for using this strategy in Lean is called <code>disj_syll</code>. If you have <code>h1 : P ∨ Q</code> and <code>h2 : ¬P</code>, then the tactic <code>disj_syll h1 h2</code> will change <code>h1</code> to <code>h1 : Q</code>; if instead you have <code>h2 : ¬Q</code>, then <code>disj_syll h1 h2</code> will change <code>h1</code> to <code>h1 : P</code>. Notice that, as with the <code>by_cases</code> tactic, the given <code>h1</code> gets <em>replaced</em> with the conclusion of the rule. The tactic <code>disj_syll h1 h2 with h3</code> will preserve the original <code>h1</code> and introduce the conclusion as a new given with the identifier <code>h3</code>. Also, as with the <code>by_cases</code> tactic, either <code>h1</code> or <code>h2</code> can be a complex proof rather than simply an identifier (although in that case it must be enclosed in parentheses, so that Lean can tell where <code>h1</code> ends and <code>h2</code> begins). The only requirement is that <code>h1</code> must be a proof of a disjunction, and <code>h2</code> must be a proof of the negation of one side of the disjunction. If <code>h1</code> is not simply an identifier, then you will want to use <code>with</code> to specify the identifier to be used for the conclusion of the rule.</p>
 <p>Here’s an example illustrating the use of the disjunctive syllogism rule.</p>
 <div class="inout">
 <div class="inpt">
@@ -2216,8 +2216,8 @@ x \in A \cap (B \setmin C) &amp;\text{ iff } x \in A \wedge x \in B \setmin C\\
 <span id="cb164-8"><a href="#cb164-8" aria-hidden="true" tabindex="-1"></a>  <span class="kw">have</span> h5 : a ∉ A ∩ B := h2 a</span>
 <span id="cb164-9"><a href="#cb164-9" aria-hidden="true" tabindex="-1"></a>  <span class="kw">define</span> <span class="kw">at</span> h4</span>
 <span id="cb164-10"><a href="#cb164-10" aria-hidden="true" tabindex="-1"></a>  <span class="kw">define</span> <span class="kw">at</span> h5; <span class="kw">demorgan</span> <span class="kw">at</span> h5</span>
-<span id="cb164-11"><a href="#cb164-11" aria-hidden="true" tabindex="-1"></a>  <span class="kw">disj_syll</span> h5, h3  <span class="co">--Now h5 : ¬a ∈ B</span></span>
-<span id="cb164-12"><a href="#cb164-12" aria-hidden="true" tabindex="-1"></a>  <span class="kw">disj_syll</span> h4, h5  <span class="co">--Now h4 : a ∈ C</span></span>
+<span id="cb164-11"><a href="#cb164-11" aria-hidden="true" tabindex="-1"></a>  <span class="kw">disj_syll</span> h5 h3  <span class="co">--Now h5 : ¬a ∈ B</span></span>
+<span id="cb164-12"><a href="#cb164-12" aria-hidden="true" tabindex="-1"></a>  <span class="kw">disj_syll</span> h4 h5  <span class="co">--Now h4 : a ∈ C</span></span>
 <span id="cb164-13"><a href="#cb164-13" aria-hidden="true" tabindex="-1"></a>  <span class="kw">show</span> a ∈ C <span class="kw">from</span> h4</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="outpt">
@@ -2257,7 +2257,7 @@ x \in A \cap (B \setmin C) &amp;\text{ iff } x \in A \wedge x \in B \setmin C\\
 <span id="cb168-6"><a href="#cb168-6" aria-hidden="true" tabindex="-1"></a>  <span class="kw">have</span> h4 : a ∈ B ∪ C := h1 h3</span>
 <span id="cb168-7"><a href="#cb168-7" aria-hidden="true" tabindex="-1"></a>  <span class="kw">define</span> <span class="kw">at</span> h4</span>
 <span id="cb168-8"><a href="#cb168-8" aria-hidden="true" tabindex="-1"></a>  <span class="kw">have</span> h5 : a ∉ B := <span class="cn">sorry</span></span>
-<span id="cb168-9"><a href="#cb168-9" aria-hidden="true" tabindex="-1"></a>  <span class="kw">disj_syll</span> h4, h5  <span class="co">--Now h4 : a ∈ C</span></span>
+<span id="cb168-9"><a href="#cb168-9" aria-hidden="true" tabindex="-1"></a>  <span class="kw">disj_syll</span> h4 h5  <span class="co">--Now h4 : a ∈ C</span></span>
 <span id="cb168-10"><a href="#cb168-10" aria-hidden="true" tabindex="-1"></a>  <span class="kw">show</span> a ∈ C <span class="kw">from</span> h4</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="outpt">
@@ -2279,7 +2279,7 @@ x \in A \cap (B \setmin C) &amp;\text{ iff } x \in A \wedge x \in B \setmin C\\
 <span id="cb170-8"><a href="#cb170-8" aria-hidden="true" tabindex="-1"></a>  <span class="kw">have</span> h5 : a ∉ B := <span class="kw">by</span></span>
 <span id="cb170-9"><a href="#cb170-9" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb170-10"><a href="#cb170-10" aria-hidden="true" tabindex="-1"></a>    <span class="sc">**</span><span class="wa">done</span><span class="sc">::</span></span>
-<span id="cb170-11"><a href="#cb170-11" aria-hidden="true" tabindex="-1"></a>  <span class="kw">disj_syll</span> h4, h5  <span class="co">--Now h4 : a ∈ C</span></span>
+<span id="cb170-11"><a href="#cb170-11" aria-hidden="true" tabindex="-1"></a>  <span class="kw">disj_syll</span> h4 h5  <span class="co">--Now h4 : a ∈ C</span></span>
 <span id="cb170-12"><a href="#cb170-12" aria-hidden="true" tabindex="-1"></a>  <span class="kw">show</span> a ∈ C <span class="kw">from</span> h4</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="outpt">
@@ -2306,7 +2306,7 @@ x \in A \cap (B \setmin C) &amp;\text{ iff } x \in A \wedge x \in B \setmin C\\
 <span id="cb172-8"><a href="#cb172-8" aria-hidden="true" tabindex="-1"></a>  <span class="kw">have</span> h5 : a ∉ B := <span class="kw">by</span></span>
 <span id="cb172-9"><a href="#cb172-9" aria-hidden="true" tabindex="-1"></a>    <span class="kw">contradict</span> h2 <span class="kw">with</span> h6</span>
 <span id="cb172-10"><a href="#cb172-10" aria-hidden="true" tabindex="-1"></a>    <span class="sc">**</span><span class="wa">done</span><span class="sc">::</span></span>
-<span id="cb172-11"><a href="#cb172-11" aria-hidden="true" tabindex="-1"></a>  <span class="kw">disj_syll</span> h4, h5  <span class="co">--Now h4 : a ∈ C</span></span>
+<span id="cb172-11"><a href="#cb172-11" aria-hidden="true" tabindex="-1"></a>  <span class="kw">disj_syll</span> h4 h5  <span class="co">--Now h4 : a ∈ C</span></span>
 <span id="cb172-12"><a href="#cb172-12" aria-hidden="true" tabindex="-1"></a>  <span class="kw">show</span> a ∈ C <span class="kw">from</span> h4</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="outpt">
@@ -2336,7 +2336,7 @@ x \in A \cap (B \setmin C) &amp;\text{ iff } x \in A \wedge x \in B \setmin C\\
 <span id="cb174-10"><a href="#cb174-10" aria-hidden="true" tabindex="-1"></a>    <span class="kw">show</span> ∃ (x : U), x ∈ A ∩ B <span class="kw">from</span></span>
 <span id="cb174-11"><a href="#cb174-11" aria-hidden="true" tabindex="-1"></a>      Exists.intro a (And.intro h3 h6)</span>
 <span id="cb174-12"><a href="#cb174-12" aria-hidden="true" tabindex="-1"></a>    <span class="kw">done</span></span>
-<span id="cb174-13"><a href="#cb174-13" aria-hidden="true" tabindex="-1"></a>  <span class="kw">disj_syll</span> h4, h5  <span class="co">--Now h4 : a ∈ C</span></span>
+<span id="cb174-13"><a href="#cb174-13" aria-hidden="true" tabindex="-1"></a>  <span class="kw">disj_syll</span> h4 h5  <span class="co">--Now h4 : a ∈ C</span></span>
 <span id="cb174-14"><a href="#cb174-14" aria-hidden="true" tabindex="-1"></a>  <span class="kw">show</span> a ∈ C <span class="kw">from</span> h4</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="outpt">
@@ -2443,7 +2443,7 @@ x \in A \cap (B \setmin C) &amp;\text{ iff } x \in A \wedge x \in B \setmin C\\
 <span id="cb183-5"><a href="#cb183-5" aria-hidden="true" tabindex="-1"></a>⊢ ¬x ∈ ∅</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </div>
-<p>The goal for our proof-within-a-proof is a negative statement, so proof by contradiction seems like a good start.</p>
+<p>The goal for our “proof within a proof” is a negative statement, so proof by contradiction seems like a good start.</p>
 <div class="inout">
 <div class="inpt">
 <div class="sourceCode" id="cb184"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb184-1"><a href="#cb184-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> empty_union {U : <span class="kw">Type</span>} (B : Set U) :</span>
@@ -2467,7 +2467,7 @@ x \in A \cap (B \setmin C) &amp;\text{ iff } x \in A \wedge x \in B \setmin C\\
 <span id="cb185-6"><a href="#cb185-6" aria-hidden="true" tabindex="-1"></a>⊢ False</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </div>
-<p>To see how to use the new assumption <code>h3</code>, we use the tactic <code>define at h3</code>. The definition Lean gives for the statement <code>x ∈ ∅</code> is <code>False</code>. In other words, Lean knows that, by the definition of <code>∅</code>, the statement <code>x ∈ ∅</code> is false. Since <code>False</code> is our goal, this completes the proof of the proof-within-a-proof, and we can return to the main proof.</p>
+<p>To see how to use the new assumption <code>h3</code>, we use the tactic <code>define at h3</code>. The definition Lean gives for the statement <code>x ∈ ∅</code> is <code>False</code>. In other words, Lean knows that, by the definition of <code>∅</code>, the statement <code>x ∈ ∅</code> is false. Since <code>False</code> is our goal, this completes the inner proof, and we can return to the main proof.</p>
 <div class="inout">
 <div class="inpt">
 <div class="sourceCode" id="cb186"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb186-1"><a href="#cb186-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> empty_union {U : <span class="kw">Type</span>} (B : Set U) :</span>
@@ -2510,7 +2510,7 @@ x \in A \cap (B \setmin C) &amp;\text{ iff } x \in A \wedge x \in B \setmin C\\
 <span id="cb188-11"><a href="#cb188-11" aria-hidden="true" tabindex="-1"></a>    <span class="kw">define</span> <span class="kw">at</span> h3  <span class="co">--Now h3 : False</span></span>
 <span id="cb188-12"><a href="#cb188-12" aria-hidden="true" tabindex="-1"></a>    <span class="kw">show</span> False <span class="kw">from</span> h3</span>
 <span id="cb188-13"><a href="#cb188-13" aria-hidden="true" tabindex="-1"></a>    <span class="kw">done</span></span>
-<span id="cb188-14"><a href="#cb188-14" aria-hidden="true" tabindex="-1"></a>  <span class="kw">disj_syll</span> h1, h2  <span class="co">--Now h1 : x ∈ B</span></span>
+<span id="cb188-14"><a href="#cb188-14" aria-hidden="true" tabindex="-1"></a>  <span class="kw">disj_syll</span> h1 h2  <span class="co">--Now h1 : x ∈ B</span></span>
 <span id="cb188-15"><a href="#cb188-15" aria-hidden="true" tabindex="-1"></a>  <span class="kw">show</span> x ∈ B <span class="kw">from</span> h1</span>
 <span id="cb188-16"><a href="#cb188-16" aria-hidden="true" tabindex="-1"></a>  <span class="co">-- (←)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
@@ -2538,7 +2538,7 @@ x \in A \cap (B \setmin C) &amp;\text{ iff } x \in A \wedge x \in B \setmin C\\
 <span id="cb190-11"><a href="#cb190-11" aria-hidden="true" tabindex="-1"></a>    <span class="kw">define</span> <span class="kw">at</span> h3  <span class="co">--Now h3 : False</span></span>
 <span id="cb190-12"><a href="#cb190-12" aria-hidden="true" tabindex="-1"></a>    <span class="kw">show</span> False <span class="kw">from</span> h3</span>
 <span id="cb190-13"><a href="#cb190-13" aria-hidden="true" tabindex="-1"></a>    <span class="kw">done</span></span>
-<span id="cb190-14"><a href="#cb190-14" aria-hidden="true" tabindex="-1"></a>  <span class="kw">disj_syll</span> h1, h2  <span class="co">--Now h1 : x ∈ B</span></span>
+<span id="cb190-14"><a href="#cb190-14" aria-hidden="true" tabindex="-1"></a>  <span class="kw">disj_syll</span> h1 h2  <span class="co">--Now h1 : x ∈ B</span></span>
 <span id="cb190-15"><a href="#cb190-15" aria-hidden="true" tabindex="-1"></a>  <span class="kw">show</span> x ∈ B <span class="kw">from</span> h1</span>
 <span id="cb190-16"><a href="#cb190-16" aria-hidden="true" tabindex="-1"></a>  <span class="co">-- (←)</span></span>
 <span id="cb190-17"><a href="#cb190-17" aria-hidden="true" tabindex="-1"></a>  <span class="kw">assume</span> h1 : x ∈ B</span>
@@ -2742,7 +2742,7 @@ x \in A \cap (B \setmin C) &amp;\text{ iff } x \in A \wedge x \in B \setmin C\\
 <span id="cb210-16"><a href="#cb210-16" aria-hidden="true" tabindex="-1"></a>      C = D ∪ C := h4.symm</span>
 <span id="cb210-17"><a href="#cb210-17" aria-hidden="true" tabindex="-1"></a>      _ = C ∪ D := union_comm D C</span>
 <span id="cb210-18"><a href="#cb210-18" aria-hidden="true" tabindex="-1"></a>      _ = D     := h3</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>Thinking of the statement <code>∃! (x : U), P x</code> as asserting both existence and uniqueness of an object satisfying the predicate <code>P</code> leads to the following strategy for using a given of this form:</p>
+<p>Since the statement <code>∃! (x : U), P x</code> asserts both the existence and the uniqueness of an object satisfying the predicate <code>P</code>, we have the following strategy for using a given of this form:</p>
 </section>
 <section id="to-use-a-given-of-the-form-x-u-p-x-2" class="level4">
 <h4 class="anchored" data-anchor-id="to-use-a-given-of-the-form-x-u-p-x-2">To use a given of the form <code>∃! (x : U), P x</code>:</h4>

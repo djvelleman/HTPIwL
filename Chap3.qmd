@@ -210,7 +210,7 @@ Finally, we have two strategies for using a given that is a negative statement:
 1.  Reexpress the given in some other form.
 2.  If you are doing a proof by contradiction, you can achieve a contradiction by proving `P`, since that would contradict the given `¬P`.
 
-Of course, strategy 1 suggests the use of the `demorgan`, `conditional`, `double_neg`, and `bicond_neg` tactics, if they apply.  For strategy 2, if you are doing a proof by contradiction and you have a given `h : ¬P`, then the tactic `contradict h` will set the goal to be `P`, which will complete the proof by contradicting `h`.  In fact, this tactic can be used with any given; if you have a given `h : P`, where `P` is not a negative statement, then `contradict h` will set the goal to be `¬P`.  You can also follow the word `contradict` with a proof that is more complicated than a single identifier.  For example, if you have givens `h1 : P → ¬Q` and `h2 : P`, then `h1 h2` is a proof of `¬Q`, so the tactic `contradict (h1 h2)` will set the goal to be `Q`.
+Of course, strategy 1 suggests the use of the `demorgan`, `conditional`, `double_neg`, and `bicond_neg` tactics, if they apply.  For strategy 2, if you are doing a proof by contradiction and you have a given `h : ¬P`, then the tactic `contradict h` will set the goal to be `P`, which will complete the proof by contradicting `h`.  In fact, this tactic can be used with any given; if you have a given `h : P`, where `P` is not a negative statement, then `contradict h` will set the goal to be `¬P`.  You can also follow the word `contradict` with a proof that is more complicated than a single identifier.  For example, if you have givens `h1 : P → ¬Q` and `h2 : P`, then `h1 h2` is a proof of `¬Q`, so the tactic `contradict h1 h2` will set the goal to be `Q`.
 
 If you're not doing a proof by contradiction, then the tactic `contradict h with h'` will first initiate a proof by contradiction by assuming the negation of the goal, giving that assumption the identifier `h'`, and then it will set the goal to be the negation of the statement proven by `h`.  In other words, `contradict h with h'` is shorthand for `by_contra h'; contradict h`.
 
@@ -2441,7 +2441,7 @@ The fact that `P ∨ Q` is equivalent to both `¬P → Q` and `¬Q → P` also s
 If you are also given `¬P`, or you can prove that `P` is false, then you can use this given to conclude that `Q` is true.  Similarly, if you are given `¬Q` or can prove that `Q` is false, then you can conclude that `P` is true.
 :::
 
-This strategy is a rule of inference called *disjunctive syllogism*, and the tactic for using this strategy in Lean is called `disj_syll`.  If you have `h1 : P ∨ Q` and `h2 : ¬P`, then the tactic `disj_syll h1, h2` will change `h1` to `h1 : Q`; if instead you have `h2 : ¬Q`, then `disj_syll h1, h2` will change `h1` to `h1 : P`.  Notice that, as with the `by_cases` tactic, the given `h1` gets *replaced* with the conclusion of the rule.  The tactic `disj_syll h1, h2 with h3` will preserve the original `h1` and introduce the conclusion as a new given with the identifier `h3`.  Also, as with the `by_cases` tactic, `h1` and `h2` can be complex proofs; they need not simply be identifiers.  The only requirement is that `h1` must be a proof of a disjunction, and `h2` must be a proof of the negation of one side of the disjunction.  If `h1` is not simply an identifier, then you will want to use `with` to specify the identifier to be used for the conclusion of the rule.
+This strategy is a rule of inference called *disjunctive syllogism*, and the tactic for using this strategy in Lean is called `disj_syll`.  If you have `h1 : P ∨ Q` and `h2 : ¬P`, then the tactic `disj_syll h1 h2` will change `h1` to `h1 : Q`; if instead you have `h2 : ¬Q`, then `disj_syll h1 h2` will change `h1` to `h1 : P`.  Notice that, as with the `by_cases` tactic, the given `h1` gets *replaced* with the conclusion of the rule.  The tactic `disj_syll h1 h2 with h3` will preserve the original `h1` and introduce the conclusion as a new given with the identifier `h3`.  Also, as with the `by_cases` tactic, either `h1` or `h2` can be a complex proof rather than simply an identifier (although in that case it must be enclosed in parentheses, so that Lean can tell where `h1` ends and `h2` begins).  The only requirement is that `h1` must be a proof of a disjunction, and `h2` must be a proof of the negation of one side of the disjunction.  If `h1` is not simply an identifier, then you will want to use `with` to specify the identifier to be used for the conclusion of the rule.
 
 Here's an example illustrating the use of the disjunctive syllogism rule.
 
@@ -2542,8 +2542,8 @@ example
   have h5 : a ∉ A ∩ B := h2 a
   define at h4
   define at h5; demorgan at h5
-  disj_syll h5, h3  --Now h5 : ¬a ∈ B
-  disj_syll h4, h5  --Now h4 : a ∈ C
+  disj_syll h5 h3  --Now h5 : ¬a ∈ B
+  disj_syll h4 h5  --Now h4 : a ∈ C
   show a ∈ C from h4
 ```
 :::
@@ -2597,7 +2597,7 @@ At this point, you might see a possible route to the goal:  from `h2` and `h3` w
   have h4 : a ∈ B ∪ C := h1 h3
   define at h4
   have h5 : a ∉ B := sorry
-  disj_syll h4, h5  --Now h4 : a ∈ C
+  disj_syll h4 h5  --Now h4 : a ∈ C
   show a ∈ C from h4
 ```
 :::
@@ -2628,7 +2628,7 @@ example
   have h5 : a ∉ B := by
 
     **done::
-  disj_syll h4, h5  --Now h4 : a ∈ C
+  disj_syll h4 h5  --Now h4 : a ∈ C
   show a ∈ C from h4
 ```
 :::
@@ -2662,7 +2662,7 @@ example
   have h5 : a ∉ B := by
     contradict h2 with h6
     **done::
-  disj_syll h4, h5  --Now h4 : a ∈ C
+  disj_syll h4 h5  --Now h4 : a ∈ C
   show a ∈ C from h4
 ```
 :::
@@ -2699,7 +2699,7 @@ example
     show ∃ (x : U), x ∈ A ∩ B from
       Exists.intro a (And.intro h3 h6)
     done
-  disj_syll h4, h5  --Now h4 : a ∈ C
+  disj_syll h4 h5  --Now h4 : a ∈ C
   show a ∈ C from h4
 ```
 :::
@@ -2848,7 +2848,7 @@ h1 : x ∈ ∅ ∨ x ∈ B
 :::
 :::
 
-The goal for our proof-within-a-proof is a negative statement, so proof by contradiction seems like a good start.
+The goal for our "proof within a proof" is a negative statement, so proof by contradiction seems like a good start.
 
 ::: {.inout}
 ::: {.inpt}
@@ -2879,7 +2879,7 @@ h3 : x ∈ ∅
 :::
 :::
 
-To see how to use the new assumption `h3`, we use the tactic `define at h3`.  The definition Lean gives for the statement `x ∈ ∅` is `False`.  In other words, Lean knows that, by the definition of `∅`, the statement `x ∈ ∅` is false.  Since `False` is our goal, this completes the proof of the proof-within-a-proof, and we can return to the main proof.
+To see how to use the new assumption `h3`, we use the tactic `define at h3`.  The definition Lean gives for the statement `x ∈ ∅` is `False`.  In other words, Lean knows that, by the definition of `∅`, the statement `x ∈ ∅` is false.  Since `False` is our goal, this completes the inner proof, and we can return to the main proof.
 
 ::: {.inout}
 ::: {.inpt}
@@ -2931,7 +2931,7 @@ theorem empty_union {U : Type} (B : Set U) :
     define at h3  --Now h3 : False
     show False from h3
     done
-  disj_syll h1, h2  --Now h1 : x ∈ B
+  disj_syll h1 h2  --Now h1 : x ∈ B
   show x ∈ B from h1
   -- (←)
 ```
@@ -2966,7 +2966,7 @@ theorem empty_union {U : Type} (B : Set U) :
     define at h3  --Now h3 : False
     show False from h3
     done
-  disj_syll h1, h2  --Now h1 : x ∈ B
+  disj_syll h1 h2  --Now h1 : x ∈ B
   show x ∈ B from h1
   -- (←)
   assume h1 : x ∈ B
@@ -3247,7 +3247,7 @@ theorem Example_3_6_2 (U : Type) :
       _ = D     := h3
 ```
 
-Thinking of the statement `∃! (x : U), P x` as asserting both existence and uniqueness of an object satisfying the predicate `P` leads to the following strategy for using a given of this form:
+Since the statement `∃! (x : U), P x` asserts both the existence and the uniqueness of an object satisfying the predicate `P`, we have the following strategy for using a given of this form:
 
 #### To use a given of the form `∃! (x : U), P x`:
 
@@ -3427,7 +3427,7 @@ theorem Example_3_6_4 (U : Type) (A B C : Set U)
 :::
 :::
 
-You might want to compare the Lean proof above to the proof of this theorem as it appears in *HTPI*.
+You might want to compare the Lean proof above to the proof of this theorem as it appears in *HTPI*:
 
 ::: {.thm}
 Suppose $A$, $B$, and $C$ are sets, $A$ and $B$ are not disjoint, $A$ and $C$ are not disjoint, and $A$ has exactly one element.  Then $B$ and $C$ are not disjoint
