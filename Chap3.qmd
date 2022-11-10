@@ -600,6 +600,7 @@ Our next example is a theorem of set theory.  You already know how to type a few
 | `∩` | `\inter` or `\cap` |
 | `\` | `\\` |
 | `△` | `\bigtriangleup` |
+| `∅` | `\emptyset` |
 | `𝒫` | `\powerset` |
 :::
 
@@ -3349,7 +3350,9 @@ h8 : b = c
 :::
 :::
 
-For our next step, we will need a new tactic.  Since we have `h8 : b = c`, we should be able to replace `b` with `c` anywhere it appears.  The tactic that allows us to do this called `rewrite`.  If `h` is a proof of any equation `s = t`, then `rewrite [h]` will replace all occurrences of `s` in the goal with `t`.  Notice that it is the left-hand side of the equation that is replaced with the right-hand side; if you want the replacement to go in the other direction, so that `t` is replaced with `s`, you can use `rewrite [←h]`.  (Alternatively, since `h.symm` is a proof of `t = s`, you can use `rewrite [h.symm]`.)  As with many other tactics, you can add `at h'` to specify that the replacement should be done in the given `h'` rather than the goal.  In our case, `rewrite [h8] at h4` will change both occurrences of `b` in `h4` to `c`.
+For our next step, we will need a new tactic.  Since we have `h8 : b = c`, we should be able to replace `b` with `c` anywhere it appears.  The tactic that allows us to do this called `rewrite`.  If `h` is a proof of any equation `s = t`, then `rewrite [h]` will replace all occurrences of `s` in the goal with `t`.  Notice that it is the left-hand side of the equation that is replaced with the right-hand side; if you want the replacement to go in the other direction, so that `t` is replaced with `s`, you can use `rewrite [←h]`.  (Alternatively, since `h.symm` is a proof of `t = s`, you can use `rewrite [h.symm]`.)  You can also apply the `rewrite` tactic to biconditional statements.  If you have `h : P ↔ Q`, then `rewrite [h]` will cause all occurrences of `P` in the goal to be replaced with `Q` (and `rewrite [←h]` will replace `Q` with `P`).
+
+As with many other tactics, you can add `at h'` to specify that the replacement should be done in the given `h'` rather than the goal.  In our case, `rewrite [h8] at h4` will change both occurrences of `b` in `h4` to `c`.
 
 ::: {.inout}
 ::: {.inpt}
@@ -3450,7 +3453,7 @@ x : U
 :::
 :::
 
-To make the goal easier for the `library_search` tactic to recognize, we'll write out the definitions of the two sides of the biconditional.  The tactic `definition` can be used to write out the definition of any expression:
+To make the goal easier for the `library_search` tactic to recognize, we'll write out the definitions of the two sides of the biconditional.  We use a variant of the `define` tactic that allows us to write out the definition of just a part of a given or the goal.  The tactic `define : x ∈ X ∪ Y` will replace `x ∈ X ∪ Y` with its definition wherever it appears in the goal, and then `define x ∈ Y ∪ X` will replace `x ∈ Y ∪ X` with its definition.  (As usual, you can add `at` to do the replacements in a given rather than the goal.)
 
 ::: {.inout}
 ::: {.inpt}
@@ -3459,8 +3462,8 @@ theorem union_comm {U : Type} (X Y : Set U) :
 X ∪ Y = Y ∪ X := by
   apply Set.ext
   fix x : U
-  definition : x ∈ X ∪ Y with h1
-  definition : x ∈ Y ∪ X with h2
+  define : x ∈ X ∪ Y
+  define : x ∈ Y ∪ X
 ```
 :::
 
@@ -3470,40 +3473,6 @@ case h
 U : Type
 X Y : Set U
 x : U
-h1 : x ∈ X ∪ Y ↔
->>  x ∈ X ∨ x ∈ Y
-h2 : x ∈ Y ∪ X ↔
->>  x ∈ Y ∨ x ∈ X
-⊢ x ∈ X ∪ Y ↔ x ∈ Y ∪ X
-```
-:::
-:::
-
-The new givens `h1` and `h2` state the relevant definitions.  We saw in our last example that the `rewrite` tactic can be applied to an equation to replace the left-hand side of the equation with the right-hand side.  You can also apply the `rewrite` tactic to biconditional statements.  If you have `h : P ↔ Q`, then `rewrite [h]` will cause all occurrences of `P` in the goal to be replaced with `Q` (and `rewrite [←h]` will replace `Q` with `P`).  In fact, you can put a list of proofs of equations or biconditionals inside the brackets, and the `rewrite` tactic will perform all of the replacements, one after another.  In our case, the tactic `rewrite [h1, h2]` will first replace `x ∈ X ∪ Y` in the goal with `x ∈ X ∨ x ∈ Y`, and then it will replace `x ∈ Y ∪ X` with `x ∈ Y ∨ x ∈ X`.
-
-::: {.inout}
-::: {.inpt}
-```lean
-theorem union_comm {U : Type} (X Y : Set U) :
-X ∪ Y = Y ∪ X := by
-  apply Set.ext
-  fix x : U
-  definition : x ∈ X ∪ Y with h1
-  definition : x ∈ Y ∪ X with h2
-  rewrite [h1, h2]
-```
-:::
-
-::: {.outpt}
-```state
-case h
-U : Type
-X Y : Set U
-x : U
-h1 : x ∈ X ∪ Y ↔
->>  x ∈ X ∨ x ∈ Y
-h2 : x ∈ Y ∪ X ↔
->>  x ∈ Y ∨ x ∈ X
 ⊢ x ∈ X ∨ x ∈ Y ↔
 >>  x ∈ Y ∨ x ∈ X
 ```
@@ -3517,9 +3486,8 @@ theorem union_comm {U : Type} (X Y : Set U) :
 X ∪ Y = Y ∪ X := by
   apply Set.ext
   fix x : U
-  definition : x ∈ X ∪ Y with h1
-  definition : x ∈ Y ∪ X with h2
-  rewrite [h1, h2]
+  define : x ∈ X ∪ Y
+  define : x ∈ Y ∪ X
   ##library_search::
 ```
 
@@ -3572,7 +3540,7 @@ Of course, we begin the proof by introducing arbitrary integers `a`, `b`, and `c
 ```lean
 theorem Theorem_3_3_7 :
 ∀ (a b c : Int), a ∣ b → b ∣ c → a ∣ c := by
-  fix a : Int; fix b : Int; fix c : Int;
+  fix a : Int; fix b : Int; fix c : Int
   assume h1 : a ∣ b; assume h2 : b ∣ c
   define at h1; define at h2; define
 ```
@@ -3595,7 +3563,7 @@ We always use existential givens right away, so we use `h1` and `h2` to introduc
 ```lean
 theorem Theorem_3_3_7 :
 ∀ (a b c : Int), a ∣ b → b ∣ c → a ∣ c := by
-  fix a : Int; fix b : Int; fix c : Int;
+  fix a : Int; fix b : Int; fix c : Int
   assume h1 : a ∣ b; assume h2 : b ∣ c
   define at h1; define at h2; define
   obtain (m : Int) (h3 : b = a * m) from h1
@@ -3624,7 +3592,7 @@ If we substitute the value for `b` given in `h3` into `h4`, we will see how to r
 ```lean
 theorem Theorem_3_3_7 :
 ∀ (a b c : Int), a ∣ b → b ∣ c → a ∣ c := by
-  fix a : Int; fix b : Int; fix c : Int;
+  fix a : Int; fix b : Int; fix c : Int
   assume h1 : a ∣ b; assume h2 : b ∣ c
   define at h1; define at h2; define
   obtain (m : Int) (h3 : b = a * m) from h1
@@ -3654,7 +3622,7 @@ Looking at `h4`, we see that the value we should use for `c_1` in the goal is `m
 ```lean
 theorem Theorem_3_3_7 :
 ∀ (a b c : Int), a ∣ b → b ∣ c → a ∣ c := by
-  fix a : Int; fix b : Int; fix c : Int;
+  fix a : Int; fix b : Int; fix c : Int
   assume h1 : a ∣ b; assume h2 : b ∣ c
   define at h1; define at h2; define
   obtain (m : Int) (h3 : b = a * m) from h1
@@ -3686,7 +3654,7 @@ We have already seen that `and_assoc` is Lean's name for the associative law for
 `mul_assoc : ∀ (a b c : ?m.36649), a * b * c = a * (b * c)`.
 :::
 
-The appearance of `?m...` here indicates that `mul_assoc` has implicit arguments.  The implicit arguments in this case are a little complicated---of course, you can see them by typing `#check @mul_assoc`---but what they mean is that `mul_assoc` can be used to prove any statement of the form `∀ (a b c : U), a * b * c = a * (b * c)`, as long as `U` is a type that has an associative multiplication operation.  In particular, `mul_assoc` can be used as a proof of `∀ (a b c : Int), a * b * c = a * (b * c)`.  (There are also versions of this theorem for particular number types.  You can use the `#check` command to verify the theorems `Nat.mul_assoc : ∀ (a b c : Nat), a * b * c = a * (b * c)`, `Int.mul_assoc : ∀ (a b c : Int), a * b * c = a * (b * c)`, and so on.)
+The appearance of `?m...` here indicates that `mul_assoc` has implicit arguments.  The implicit arguments in this case are a little complicated---of course, you can see them by typing `#check @mul_assoc`---but what they mean is that `mul_assoc` can be used to prove any statement of the form `∀ (a b c : U), a * b * c = a * (b * c)`, as long as `U` is a type that has an associative multiplication operation.  In particular, `mul_assoc` can be used as a proof of `∀ (a b c : Int), a * b * c = a * (b * c)`.  (There are also versions of this theorem for particular number types.  You can use the `#check` command to verify the theorems `Nat.mul_assoc : ∀ (a b c : ℕ), a * b * c = a * (b * c)`, `Int.mul_assoc : ∀ (a b c : ℤ), a * b * c = a * (b * c)`, and so on.)
 
 Returning to our proof of Theorem 3.3.7, by three applications of universal instantiation, `mul_assoc a m n` is a proof of `a * m * n = a * (m * n)`, and that is exactly what we need to finish the proof.  The tactic `rewrite [mul_assoc a m n] at h4` will replace `a * m * n` in `h4` with `a * (m * n)`.
 
@@ -3695,7 +3663,7 @@ Returning to our proof of Theorem 3.3.7, by three applications of universal inst
 ```lean
 theorem Theorem_3_3_7 :
 ∀ (a b c : Int), a ∣ b → b ∣ c → a ∣ c := by
-  fix a : Int; fix b : Int; fix c : Int;
+  fix a : Int; fix b : Int; fix c : Int
   assume h1 : a ∣ b; assume h2 : b ∣ c
   define at h1; define at h2; define
   obtain (m : Int) (h3 : b = a * m) from h1
@@ -3720,7 +3688,7 @@ h4 : c = a * (m * n)
 :::
 :::
 
-By the way, this is a case in which Lean could have figured out some details on its own.  If we had used `rewrite [mul_assoc _ _ _] at h4`, then Lean would have figured out that the blanks had to be filled in with `a`, `m`, and `n`.  And as with the `apply` tactic, blanks at the end can be left out, so even `rewrite [mul_assoc] at h4` would have worked.
+By the way, this is a case in which Lean could have figured out some details on its own.  If we had used `rewrite [mul_assoc _ _ _] at h4`, then Lean would have figured out that the blanks had to be filled in with `a`, `m`, and `n`.  And as with the `apply` tactic, blanks at the end of `rewrite` rules can be left out, so even `rewrite [mul_assoc] at h4` would have worked.
 
 Of course, now `h4` really does match the goal exactly, so we can use it to complete the proof.
 
@@ -3729,7 +3697,7 @@ Of course, now `h4` really does match the goal exactly, so we can use it to comp
 ```lean
 theorem Theorem_3_3_7 :
 ∀ (a b c : Int), a ∣ b → b ∣ c → a ∣ c := by
-  fix a : Int; fix b : Int; fix c : Int;
+  fix a : Int; fix b : Int; fix c : Int
   assume h1 : a ∣ b; assume h2 : b ∣ c
   define at h1; define at h2; define
   obtain (m : Int) (h3 : b = a * m) from h1
@@ -3936,7 +3904,7 @@ h2 : n = 6 * k
 :::
 :::
 
-The proof of the next goal, `3 ∣ n`, is similar, and it completes the left-to-right direction of the iff.
+The proof of the next goal, `3 ∣ n`, is similar, and it completes the left-to-right direction of the biconditional.
 
 ::: {.inout}
 ::: {.inpt}
@@ -4011,7 +3979,7 @@ The next step in the *HTPI* proof is a string of equations that proves $6(j - k)
 ::: {.inout}
 ::: {.inpt}
 ```lean
-theorem Theorem_3_4_7 :
+theorem ??Theorem_3_4_7:: :
 ∀ (n : Int), 6 ∣ n ↔ 2 ∣ n ∧ 3 ∣ n := by
   fix n : Int
   apply Iff.intro
@@ -4130,8 +4098,8 @@ have h6 : 6 * (j - k) = n :=
   calc
     6 * (j - k) = 6 * j - 6 * k := mul_sub 6 j k
     _ = 3 * (2 * j) - 2 * (3 * k) := by
-          rewrite [←mul_assoc 3 2 j,
-                    ←mul_assoc 2 3 k]
+          rewrite [←mul_assoc 3 2 j]
+          rewrite [←mul_assoc 2 3 k]
           rfl
           done
     _ = 3 * n - 2 * n := by
@@ -4158,7 +4126,7 @@ h5 : n = 3 * k
 :::
 :::
 
-To justify the third equation we have to substitute `n` for both `2 * j` and `3 * k`.  We can use `h4` and `h5` in the rewrite tactic to do this.
+To justify the third equation we have to substitute `n` for both `2 * j` and `3 * k`.  We can use `h4` and `h5` in the rewrite tactic to do this.  In fact, we can do it in one step: you can put a list of proofs of equations or biconditionals inside the brackets, and the `rewrite` tactic will perform all of the replacements, one after another.  In our case, the tactic `rewrite [h4, h5]` will first replace `2 * j` in the goal with `n`, and then it will replace `3 * k` with `n`.
 
 ::: {.inout}
 ::: {.inpt}
@@ -4199,19 +4167,19 @@ Of course, the `rfl` tactic will now finish off the justification of the third e
 
 The fourth equation is `3 * n - 2 * n = (3 - 2) * n`.  It looks like the algebraic law we need to justify this is a lot like the one that was used in the first equation, but with the subtraction to the left of the multiplication rather than to the right.  It shouldn't be surprising, therefore, that the name of the theorem we need is `sub_mul`.  The command `#check sub_mul` gives the response
 
-::: {,quote}
+::: {.quote}
 `sub_mul : ∀ (a b c : ?m.73144), (a - b) * c = a * c - b * c`,
 :::
 
 so `sub_mul 3 2 n` is a proof of `(3 - 2) * n = 3 * n - 2 * n`.  But the fourth equation has the sides of this equation reversed, so to justify it we need `(sub_mul 3 2 n).symm`.
 
-Finally, the fifth equation is `(3 - 2) * n = n`.  Why is this true?  Because it is definitionally equal to `1 * n = n`.  Is there a theorem to justify this?  One way to find the answer is to type in this example:
+Finally, the fifth equation is `(3 - 2) * n = n`.  Why is this true?  Because it is definitionally equal to `1 * n = n`.  Is there a theorem to justify this last equation?  One way to find the answer is to type in this example:
 
-::: {.quote}
-`example (n : Int) : 1 * n = n := by library_search`
-:::
+```lean
+example (n : Int) : 1 * n = n := by ##library_search::
+```
 
-Lean responds with `exact one_mul n`, and `#check one_mul` yields `one_mul : ∀ (a : ?m.73050), 1 * a = a`.  So `one_mul n` should justify the last equation.  Here's the complete calculational proof:
+Lean responds with `exact one_mul n`, and `#check one_mul` yields `one_mul : ∀ (a : ?m.73050), 1 * a = a`.  So `one_mul n` should justify the last equation.  Here's the complete calculational proof, where we have shortened the second step a bit by doing both `rewrite`s in one step:
 
 ```lean
   have h6 : 6 * (j - k) = n :=
@@ -4224,7 +4192,7 @@ Lean responds with `exact one_mul n`, and `#check one_mul` yields `one_mul : ∀
       _ = n := one_mul n
 ```
 
-Whew!  This example illustrates why algebraic reasoning in Lean can be difficult.  But one reason why this proof was challenging is that we justified all of our steps from basic algebraic principles.  Fortunately, there are more powerful tactics that can automate some algebraic reasoning.  For example, the tactic `ring` can combine algebraic laws involving addition, subtraction, and multiplication to prove many equations in one step.  Also, the tactic `rw` is a variant of `rewrite` that automatically applies `rfl` after the rewriting if it can be used to finish the proof.  Here's a shortened version of our calculational proof that uses these tactics.
+Whew!  This example illustrates why algebraic reasoning in Lean can be difficult.  But one reason why this proof was challenging is that we justified all of our steps from basic algebraic principles.  Fortunately, there are more powerful tactics that can automate some algebraic reasoning.  For example, the tactic `ring` can combine algebraic laws involving addition, subtraction, multiplication, and exponentiation with natural number exponents to prove many equations in one step.  Also, the tactic `rw` is a variant of `rewrite` that automatically applies `rfl` after the rewriting if it can be used to finish the proof.  Here's a shortened version of our calculational proof that uses these tactics.
 
 ```lean
   have h6 : 6 * (j - k) = n :=
