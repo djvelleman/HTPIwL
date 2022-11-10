@@ -399,7 +399,7 @@ Sections 3.1 and 3.2 of *HTPI* contain several proofs that involve algebraic rea
 
 ## 3.3. Proofs Involving Quantifiers
 
-In the notation used in *HTPI*, if $P(x)$ is a statement about $x$, then $\forall x\, P(x)$ means "for all $x$, $P(x)$," and $\exists x\, P(x)$ means "there exists at least one $x$ such that $P(x)$."  The letter $P$ here does not stand for a proposition; it is only when it is applied to some object $x$ that we get a proposition.  We will say that $P$ is a *predicate*, and when we apply $P$ to an object $x$ we get a proposition $P(x)$.  You might want to think of the predicate $P$ as representing some property that an object might have, and the proposition $P(x)$ asserts that $x$ has that property.
+In the notation used in *HTPI*, if $P(x)$ is a statement about $x$, then $\forall x\, P(x)$ means "for all $x$, $P(x)$," and $\exists x\, P(x)$ means "there exists at least one $x$ such that $P(x)$."  The letter $P$ here does not stand for a proposition; it is only when it is applied to some object $x$ that we get a proposition.  We will say that $P$ is a *predicate*, and when we apply $P$ to an object $x$ we get the proposition $P(x)$.  You might want to think of the predicate $P$ as representing some property that an object might have, and the proposition $P(x)$ asserts that $x$ has that property.
 
 To use a predicate in Lean, you must tell Lean the type of objects to which it applies.  If `U` is a type, then `Pred U` is the type of predicates that apply to objects of type `U`.  If `P` has type `Pred U` (that is, `P` is a predicate applying to objects of type `U`) and `x` has type `U`, then to apply `P` to `x` we just write `P x` (with a space but no parentheses).  Thus, if we have `P : Pred U` and `x : U`, then `P x` is an expression of type `Prop`.  That is, `P x` is a proposition, and its meaning is that `x` has the property represented by the predicate `P`.
 
@@ -1419,7 +1419,7 @@ You might want to compare the Lean proof above to the way the proof was written 
 Suppose $B$ is a set and $\mathcal{F}$ is a family of sets.  If $\bigcup\mathcal{F} \subseteq B$ then $\mathcal{F} \subseteq \mathscr{P}(B)$.
 :::
 ::: {.proof}
-Suppose $\bigcup \mathcal{F} \subseteq B$.  Let $x$ be an arbitrary element of $\mathcal{F}$.  Let $y$ be an arbitrary element of $x$.  Since $y \in x$ and $x \in \mathcal{F}$, by the definition of $\bigcup \mathcal{F}$, $y \in \bigcup \mathcal{F}$.  But then since $\bigcup \mathcal{F} \subseteq B$, $y \in B$.  Since $y$ was an arbitrary element of $x$, we can conclude that $x \subseteq B$, so $x \in \mathscr{P}(B)$.  But $x$ was an arbitrary element of $\mathcal{F}$, so this shows that $\mathcal{F} \subseteq \mathscr{P}(B)$, as required.\qedhere
+Suppose $\bigcup \mathcal{F} \subseteq B$.  Let $x$ be an arbitrary element of $\mathcal{F}$.  Let $y$ be an arbitrary element of $x$.  Since $y \in x$ and $x \in \mathcal{F}$, by the definition of $\bigcup \mathcal{F}$, $y \in \bigcup \mathcal{F}$.  But then since $\bigcup \mathcal{F} \subseteq B$, $y \in B$.  Since $y$ was an arbitrary element of $x$, we can conclude that $x \subseteq B$, so $x \in \mathscr{P}(B)$.  But $x$ was an arbitrary element of $\mathcal{F}$, so this shows that $\mathcal{F} \subseteq \mathscr{P}(B)$, as required. [&nbsp;□]{.excl}\qedhere
 :::
 
 ## 3.4. Proofs Involving Conjunctions and Biconditionals
@@ -1976,7 +1976,7 @@ x \in A \cap (B \setmin C) &\text{ iff } x \in A \wedge x \in B \setmin C\\
 &\text{ iff } x \in (A \cap B) \wedge x \notin C\\
 &\text{ iff } x \in (A \cap B) \setmin C.
 \end{align*}
-Thus, $\forall x(x \in A \cap (B \setmin C) \leftrightarrow x \in (A \cap B) \setmin C)$, so $A \cap (B \setmin C) = (A \cap B) \setmin C$.\qedhere
+Thus, $\forall x(x \in A \cap (B \setmin C) \leftrightarrow x \in (A \cap B) \setmin C)$, so $A \cap (B \setmin C) = (A \cap B) \setmin C$. [&nbsp;□]{.excl}\qedhere
 :::
 
 This proof is based on a fundamental principle of set theory that says that if two sets have exactly the same elements, then they are equal.  This principle is called the *axiom of extensionality*, and it is what justifies the inference, in the last sentence, from $\forall x(x \in A \cap (B \setmin C) \leftrightarrow x \in (A \cap B) \setmin C)$ to $A \cap (B \setmin C) = (A \cap B) \setmin C$.
@@ -2732,7 +2732,7 @@ There is a unique set $A$ such that for every set $B$, $A \cup B = B$.
 ::: {.proof}
 Existence:  Clearly $\forall B(\varnothing \cup B = B)$, so $\varnothing$ has the required property.
 
-Uniqueness:  Suppose $\forall B(C \cup B = B)$ and $\forall B(D \cup B = B)$.  Applying the first of these assumptions to $D$ we see that $C \cup D = D$, and applying the second to $C$ we get $D \cup C = C$.  But clearly $C \cup D = D \cup C$, so $C = D$. \qedhere
+Uniqueness:  Suppose $\forall B(C \cup B = B)$ and $\forall B(D \cup B = B)$.  Applying the first of these assumptions to $D$ we see that $C \cup D = D$, and applying the second to $C$ we get $D \cup C = C$.  But clearly $C \cup D = D \cup C$, so $C = D$. [&nbsp;□]{.excl}\qedhere
 :::
 
 You will notice that there are two statements in this proof that are described as "clearly" true.  This brings up one of the difficulties with proving theorems in Lean: things that are clear to *us* are not necessarily clear to *Lean*!  There are two ways to deal with such "clear" statements.  The first is to see if the statement is in the library of theorems that Lean knows.  The second is to prove the statement as a preliminary theorem that can then be used in the proof of our main theorem.  We'll take the second approach here, since proving these "clear" facts will give us more practice with Lean proofs, but later we'll have more to say about searching for statements in Lean's theorem library.
@@ -3427,7 +3427,7 @@ You might want to compare the Lean proof above to the proof of this theorem as i
 Suppose $A$, $B$, and $C$ are sets, $A$ and $B$ are not disjoint, $A$ and $C$ are not disjoint, and $A$ has exactly one element.  Then $B$ and $C$ are not disjoint
 :::
 ::: {.proof}
-Since $A$ and $B$ are not disjoint, we can let $b$ be something such that $b \in A$ and $b \in B$.  Similarly, since $A$ and $C$ are not disjoint, there is some object $c$ such that $c \in A$ and $c \in C$.  Since $A$ has only one element, we must have $b = c$.  Thus $b = c \in B \cap C$ and therefore $B$ and $C$ are not disjoint. \qedhere
+Since $A$ and $B$ are not disjoint, we can let $b$ be something such that $b \in A$ and $b \in B$.  Similarly, since $A$ and $C$ are not disjoint, there is some object $c$ such that $c \in A$ and $c \in C$.  Since $A$ has only one element, we must have $b = c$.  Thus $b = c \in B \cap C$ and therefore $B$ and $C$ are not disjoint. [&nbsp;□]{.excl}\qedhere
 :::
 
 Before ending this section, we return to the question of how you can tell if a theorem you want to use is in Lean's library.  In an earlier example, we guessed that the commutative law for "or" might be in Lean's library, and we were then able to use the `#check` command to confirm it.  But there is another technique that we could have used: the tactic `library_search`.  Let's return to our proof of the theorem `union_comm`, which started like this:
@@ -3453,7 +3453,7 @@ x : U
 :::
 :::
 
-To make the goal easier for the `library_search` tactic to recognize, we'll write out the definitions of the two sides of the biconditional.  We use a variant of the `define` tactic that allows us to write out the definition of just a part of a given or the goal.  The tactic `define : x ∈ X ∪ Y` will replace `x ∈ X ∪ Y` with its definition wherever it appears in the goal, and then `define x ∈ Y ∪ X` will replace `x ∈ Y ∪ X` with its definition.  (As usual, you can add `at` to do the replacements in a given rather than the goal.)
+To make the goal easier for the `library_search` tactic to recognize, we'll write out the definitions of the two sides of the biconditional.  We use a variant of the `define` tactic that allows us to write out the definition of just a part of a given or the goal.  The tactic `define : x ∈ X ∪ Y` will replace `x ∈ X ∪ Y` with its definition wherever it appears in the goal, and then `define : x ∈ Y ∪ X` will replace `x ∈ Y ∪ X` with its definition.  (As usual, you can add `at` to do the replacements in a given rather than the goal.)
 
 ::: {.inout}
 ::: {.inpt}
@@ -3501,7 +3501,7 @@ Usually your proof will be more readable if you use the `show` tactic to state e
 
 The `library_search` tactic has not only come up with a suggested tactic, it has applied that tactic, and the proof is now complete.  You can confirm that the tactic completes the proof by replacing the line `library_search` in the proof with either `library_search`'s suggested `exact` tactic or the `show` tactic displayed above.
 
-But what is `or_comm'`?  The command `#check @or_comm'` gives the result
+But what is `or_comm'`?  The command `#check or_comm'` gives the result
 
 ::: {.quote}
 `or_comm' : ∀ (a b : Prop), a ∨ b ↔ b ∨ a`.
@@ -3728,7 +3728,7 @@ Let $n$ be an arbitrary integer.
 
 ($\to$) Suppose $6 \mid n$.  Then we can choose an integer $k$ such that $6k=n$.  Therefore $n = 6k = 2(3k)$, so $2 \mid n$, and similarly $n = 6k = 3(2k)$, so $3 \mid n$.
 
-($\leftarrow$) Suppose $2 \mid n$ and $3 \mid n$.  Then we can choose integers $j$ and $k$ such that $n = 2j$ and $n = 3k$.  Therefore $6(j-k) = 6j - 6k = 3(2j) - 2(3k) = 3n - 2n = n$, so $6 \mid n$. \qedhere
+($\leftarrow$) Suppose $2 \mid n$ and $3 \mid n$.  Then we can choose integers $j$ and $k$ such that $n = 2j$ and $n = 3k$.  Therefore $6(j-k) = 6j - 6k = 3(2j) - 2(3k) = 3n - 2n = n$, so $6 \mid n$. [&nbsp;□]{.excl}\qedhere
 :::
 
 Let's try writing the proof in Lean.  We use exactly the same strategy as in the *HTPI* proof: we begin by fixing an arbitrary integer `n`, and then we prove the two directions of the biconditional separately.

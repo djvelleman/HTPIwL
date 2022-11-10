@@ -185,7 +185,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./Chap4.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Chapter 4 test file</span></a>
+  <a href="./Chap4.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Relations</span></a>
   </div>
 </li>
     </ul>
@@ -237,7 +237,7 @@ $$
 <p>Suppose <span class="math inline">\(P \to (Q \to R)\)</span>. Then <span class="math inline">\(\neg R \to (P \to \neg Q)\)</span>.</p>
 </div>
 <div class="proof">
-<p><span class="proof-title"><em>Proof</em>. </span>Suppose <span class="math inline">\(\neg R\)</span>. Suppose <span class="math inline">\(P\)</span>. Since <span class="math inline">\(P\)</span> and <span class="math inline">\(P \to (Q \to R)\)</span>, it follows that <span class="math inline">\(Q \to R\)</span>. But then, since <span class="math inline">\(\neg R\)</span>, we can conclude <span class="math inline">\(\neg Q\)</span>. Thus, <span class="math inline">\(P \to \neg Q\)</span>. Therefore <span class="math inline">\(\neg R \to (P \to \neg Q)\)</span>.</p>
+<p><span class="proof-title"><em>Proof</em>. </span>Suppose <span class="math inline">\(\neg R\)</span>. Suppose <span class="math inline">\(P\)</span>. Since <span class="math inline">\(P\)</span> and <span class="math inline">\(P \to (Q \to R)\)</span>, it follows that <span class="math inline">\(Q \to R\)</span>. But then, since <span class="math inline">\(\neg R\)</span>, we can conclude <span class="math inline">\(\neg Q\)</span>. Thus, <span class="math inline">\(P \to \neg Q\)</span>. Therefore <span class="math inline">\(\neg R \to (P \to \neg Q)\)</span>. <span class="excl">&nbsp;□</span></p>
 </div>
 <p>And here is how we would write the proof in Lean:</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Example_3_2_4</span>
