@@ -151,3 +151,25 @@ code span.re {      /* "case" label in Infoview */
   padding-right: 0.4em;
   float: left
 }
+
+.dfn {
+  font-style: normal
+}
+
+.dfn::before {
+  content: "Definition.";
+  font-weight: bold;
+  padding-right: 0.4em;
+  float: left
+}
+
+.ndfn {
+  font-style: normal
+}
+
+.ndfn::before {
+  content: attr(data-arguments)".";
+  font-weight: bold;
+  padding-right: 0.4em;
+  float: left
+}

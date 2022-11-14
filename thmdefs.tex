@@ -3,10 +3,18 @@
 \newtheorem*{thm}{Theorem}
 \newcommand{\thmnm}{Theorem}
 \newtheorem*{namedthm}{\thmnm}
+\theoremstyle{definition}
+\newtheorem*{dfn}{Definition}
+\newcommand{\defnm}{Definition}
+\newtheorem*{nameddfn}{\defnm}
 
 \newenvironment{nthm}[1]
   {\renewcommand{\thmnm}{#1}\begin{namedthm}}
   {\end{namedthm}}
+
+\newenvironment{ndfn}[1]
+  {\renewcommand{\defnm}{#1}\begin{nameddfn}}
+  {\end{nameddfn}}
 
 % Usage:
 % ::: {.thm} will create an unnumbered thm environment with title Theorem.

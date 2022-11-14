@@ -20,6 +20,69 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1.6em;
   vertical-align: middle;
 }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
 </style>
 
 
@@ -60,6 +123,7 @@ ul.task-list li input[type="checkbox"] {
   }
 }</script>
 
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
 
 <link rel="stylesheet" href="HTPIwLstyles.css">
 </head>
@@ -133,6 +197,7 @@ ul.task-list li input[type="checkbox"] {
    
   <ul class="collapse">
   <li><a href="#ordered-pairs-and-cartesian-products" id="toc-ordered-pairs-and-cartesian-products" class="nav-link active" data-scroll-target="#ordered-pairs-and-cartesian-products">4.1. Ordered Pairs and Cartesian Products</a></li>
+  <li><a href="#relations" id="toc-relations" class="nav-link" data-scroll-target="#relations">4.2. Relations</a></li>
   </ul>
 </nav>
     </div>
@@ -163,6 +228,48 @@ $$
 
 <section id="ordered-pairs-and-cartesian-products" class="level2">
 <h2 class="anchored" data-anchor-id="ordered-pairs-and-cartesian-products">4.1. Ordered Pairs and Cartesian Products</h2>
+<p>Section 4.1 of <em>How To Prove It</em> defines the <em>Cartesian product</em> <span class="math inline">\(A \times B\)</span> of two sets <span class="math inline">\(A\)</span> and <span class="math inline">\(B\)</span> to be the set of all ordered pairs <span class="math inline">\((a, b)\)</span>, where <span class="math inline">\(a \in A\)</span> and <span class="math inline">\(b \in B\)</span>. However, in Lean, Cartesian product is an operation on types, not sets. If <code>A</code> and <code>B</code> are types, then <code>A × B</code> is the type of ordered pairs <code>(a, b)</code>, where <code>a</code> has type <code>A</code> and <code>b</code> has type <code>B</code>. In other words, if you have <code>a : A</code> and <code>b : B</code>, then <code>(a, b)</code> has type <code>A × B</code>. There is also notation for the first and second coordinates of an ordered pair. If <code>p</code> has type <code>A × B</code>, then <code>p.1</code> is the first coordinate of <code>p</code>, and <code>p.2</code> is the second coordinate. In other words, <code>p = (p.1, p.2)</code>. Alternative notation is <code>p.fst</code> for the first coordinate of <code>p</code>, and <code>p.snd</code> for the second coordinate.</p>
+</section>
+<section id="relations" class="level2">
+<h2 class="anchored" data-anchor-id="relations">4.2. Relations</h2>
+<p>Section 4.2 of <em>HTPI</em> defines a <em>relation from <span class="math inline">\(A\)</span> to <span class="math inline">\(B\)</span></em> to be a subset of <span class="math inline">\(A \times B\)</span>. In other words, if <span class="math inline">\(R\)</span> is a relation from <span class="math inline">\(A\)</span> to <span class="math inline">\(B\)</span>, then <span class="math inline">\(R\)</span> is a set whose element are ordered pairs <span class="math inline">\((a, b)\)</span>, where <span class="math inline">\(a \in A\)</span> and <span class="math inline">\(b \in B\)</span>. We will see in the next section that in Lean, it is convenient to use a somewhat different definition of relations. Nevertheless, we will take some time in this section to study sets of ordered pairs. If <code>A</code> and <code>B</code> are types, and <code>R</code> is a set whose elements are ordered pairs <code>(a, b)</code>, where <code>a</code> has type <code>A</code> and <code>b</code> has type <code>B</code>, then <code>R</code> has type <code>Set (A × B)</code>.</p>
+<p>Section 4.2 of <em>HTPI</em> discusses several concepts concerning relations. Here is how these concepts are defined in <em>HTPI</em>:</p>
+<div class="ndfn" data-arguments="Definition 4.2.3">
+<p>Suppose <span class="math inline">\(R\)</span> is a relation from <span class="math inline">\(A\)</span> to <span class="math inline">\(B\)</span>. Then the <em>domain</em> of <span class="math inline">\(R\)</span> is the set</p>
+<div class="quote">
+<p><span class="math inline">\(\text{Dom}(R) = \{a \in A \mid \exists b \in B((a, b) \in R)\}\)</span>.</p>
+</div>
+<p>The <em>range</em> of <span class="math inline">\(R\)</span> is the set</p>
+<div class="quote">
+<p><span class="math inline">\(\text{Ran}(R) = \{b \in B \mid \exists a \in A((a, b) \in R)\}\)</span>.</p>
+</div>
+<p>The <em>inverse</em> of <span class="math inline">\(R\)</span> is the relation <span class="math inline">\(R^{-1}\)</span> from <span class="math inline">\(B\)</span> to <span class="math inline">\(A\)</span> define as follows:</p>
+<div class="quote">
+<p><span class="math inline">\(R^{-1} = \{(b, a) \in B \times A \mid (a, b) \in R\}\)</span>.</p>
+</div>
+<p>Finally, suppose <span class="math inline">\(R\)</span> is a relation from <span class="math inline">\(A\)</span> to <span class="math inline">\(B\)</span> and <span class="math inline">\(S\)</span> is a relation from <span class="math inline">\(B\)</span> to <span class="math inline">\(C\)</span>. Then the <em>composition</em> of <span class="math inline">\(S\)</span> and <span class="math inline">\(R\)</span> is the relation <span class="math inline">\(S \circ R\)</span> from <span class="math inline">\(A\)</span> to <span class="math inline">\(C\)</span> defined as follows:</p>
+<div class="quote">
+<p><span class="math inline">\(S \circ R = \{(a, c) \in A \times C \mid \exists b \in B((a, b) \in R \text{ and } (b, c) \in S)\}\)</span>.</p>
+</div>
+</div>
+<p>We can write corresponding definitions in Lean as follows:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> Dom {A B : <span class="kw">Type</span>} (R : Set (A × B)) : Set A :=</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>  {a : A | ∃ (b : B), (a, b) ∈ R}</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> Ran {A B : <span class="kw">Type</span>} (R : Set (A × B)) : Set B :=</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>  {b : B | ∃ (a : A), (a, b) ∈ R}</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> inv {A B : <span class="kw">Type</span>} (R : Set (A × B)) : Set (B × A) :=</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>  {p : B × A | (p.2, p.1) ∈ R}</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> comp {A B C : <span class="kw">Type</span>} (S : Set (B × C)) (R : Set (A × B)) :</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>  Set (A × C) := {p : A × C | ∃ (b : B), (p.1, b) ∈ R ∧ (b, p.2) ∈ S}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Definitions in Lean are introduced with the keyword <code>def</code>. In the definition of <code>Dom</code>, we have declared <code>A</code> and <code>B</code> to be implicit parameters. That means that if we have <code>R : Set (A × B)</code>, then we can just write <code>Dom R</code> for the domain of <code>R</code>, and Lean will figure out for itself what <code>A</code> and <code>B</code> are. The definition declares that <code>Dom R</code> has type <code>Set A</code>, and then it defines it to be the set of all <code>a</code> of type <code>A</code> such that there is some <code>b</code> of type <code>B</code> with <code>(a, b) ∈ R</code>. This is a direct translation, into Lean’s type-theory language, of the first part of Definition 4.2.3. The other three definitions are similar; they define <code>Ran R</code> to be the range of <code>R</code>, <code>inv R</code> to be the inverse of <code>R</code>, and <code>comp S R</code> to be the composition of <code>S</code> and <code>R</code>.</p>
+<p>Here is the main theorem about these concepts, as stated in <em>HTPI</em>:</p>
+<div class="nthm" data-arguments="Theorem 4.2.5">
+<p>Suppose <span class="math inline">\(R\)</span> is a relation from <span class="math inline">\(A\)</span> to <span class="math inline">\(B\)</span>, <span class="math inline">\(S\)</span> is a relation from <span class="math inline">\(B\)</span> to <span class="math inline">\(C\)</span>, and <span class="math inline">\(T\)</span> is a relation from <span class="math inline">\(C\)</span> to <span class="math inline">\(D\)</span>. Then:</p>
+<ol type="1">
+<li><span class="math inline">\((R^{-1})^{-1} = R\)</span>.</li>
+<li><span class="math inline">\(\mathrm{Dom}(R^{-1}) = \mathrm{Ran}(R)\)</span>.</li>
+</ol>
+</div>
 
 
 </section>
