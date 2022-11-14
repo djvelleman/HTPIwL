@@ -58,7 +58,7 @@ theorem extremely_easy (P : Prop) (h : P) : P := **f::
 
 This indicates that Lean has detected an error in the proof.  Lean always indicates errors by putting a red squiggle under the offending text.  Lean also puts a message in the Lean Infoview pane explaining what the error is.  (If you don't see the Infoview pane, choose "Command Palette ..." in the "View" menu, and then type "Lean" in the text box that appears.  You will see a list of commands that start with "Lean".  Click on "Lean 4: Infoview: Toggle" to make the Infoview pane appear.)  In this case, the message is `unknown identifier 'f'`.  The message is introduced by a heading, in red, that identifies the file, the line number, and the character position on that line where the error appears.  If you change `f` back to `h`, the red squiggle and error message go away.
 
-Let's try a slightly less trivial example.  To type the `→` symbol in the next example, type `\to` and then hit either the space bar or the tab key; when you type either space or tab, the `\to` will change to `→`.  Alternatively, you can type `\r` (short for "right arrow") or `\imp` (short for "implies"), again followed by either space or tab.  Or, you can type [`->`]{.excl}\texttt{-\null>}, and Lean will interpret it as `→`.
+Let's try a slightly less trivial example.  You can type the next theorem below the previous one, leaving a blank line between them to keep them visually separate.  To type the `→` symbol in the next example, type `\to` and then hit either the space bar or the tab key; when you type either space or tab, the `\to` will change to `→`.  Alternatively, you can type `\r` (short for "right arrow") or `\imp` (short for "implies"), again followed by either space or tab.  Or, you can type [`->`]{.excl}\texttt{-\null>}, and Lean will interpret it as `→`.
 
 ```lean
 theorem very_easy
@@ -109,9 +109,9 @@ h2 : Q → ¬R
 :::
 :::
 
-The red squiggle under `done` indicates that Lean knows that the proof isn't done.  The tactic state in the Infoview pane is very similar to the lists of givens and goals that are used in *HTPI*.  The tactic state above says that `P`, `Q`, and `R` stand for propositions, and we have two givens, `h1 : P → Q` and `h2 : Q → ¬R`.  The symbol `⊢` in the last line labels the goal, `R → ¬P`.  The tactic state is a valuable tool for guiding you as you are figuring out a proof; whenever you are trying to decide on the next step of a proof, you should look at the tactic state to see what givens you have to work with and what goal you need to prove.
+The red squiggle under `done` indicates that Lean knows that the proof isn't done.  The tactic state in the Infoview pane is very similar to the lists of givens and goals that are used in *HTPI*.  The hypotheses `h1 : P → Q` and `h2 : Q → ¬R` are examples of what are called *givens* in *HTPI*.  The tactic state above says that `P`, `Q`, and `R` stand for propositions, and then it lists the two givens `h1` and `h2`.  The symbol `⊢` in the last line labels the *goal*, `R → ¬P`.  The tactic state is a valuable tool for guiding you as you are figuring out a proof; whenever you are trying to decide on the next step of a proof, you should look at the tactic state to see what givens you have to work with and what goal you need to prove.
 
-From the hypotheses `h1` and `h2` it shouldn't be hard to prove `P → ¬R`, but the goal is `R → ¬P`.  This suggests that we should prove the contrapositive of the goal.  Type tab to indent two spaces and then `contrapos` to tell Lean that you want to replace the goal with its contrapositive.  (You won't have to type tab to indent later lines; VS Code maintains the same indenting until you delete the tab at the beginning of a line to return to unindented text.)  As soon as you type `contrapos`, Lean will update the tactic state to reflect the change in the goal.  You should now see this:
+From the givens `h1` and `h2` it shouldn't be hard to prove `P → ¬R`, but the goal is `R → ¬P`.  This suggests that we should prove the contrapositive of the goal.  Type tab to indent two spaces and then `contrapos` to tell Lean that you want to replace the goal with its contrapositive.  (You won't have to type tab to indent later lines; VS Code maintains the same indenting until you delete the tab at the beginning of a line to return to unindented text.)  As soon as you type `contrapos`, Lean will update the tactic state to reflect the change in the goal.  You should now see this:
 
 ::: {.inout}
 ::: {.inpt}
@@ -133,7 +133,7 @@ h2 : Q → ¬R
 :::
 :::
 
-If you want to make your proof a little more readable, you could add a comment saying that the goal has been changed to `P → ¬R`.  To prove the new goal, we will assume `P` and prove `¬R`.  So type `assume h3 : P` on a new line (after `contrapos`, but before `done`).  Once again, the tactic state is immediately updated.  Lean adds the new given `h3 : P`, and it knows, without having to be told, that the goal should now be `¬R`:
+If you want to make your proof a little more readable, you could add a comment saying that the goal has been changed to `P → ¬R`.  To prove the new goal, we will assume `P` and prove `¬R`.  So type `assume h3 : P` on a new line (after `contrapos`, but before `done`).  Once again, the tactic state is immediately updated.  Lean adds `h3 : P` as a new given, and it knows, without having to be told, that the goal should now be `¬R`:
 
 ::: {.inout}
 ::: {.inpt}
@@ -205,7 +205,7 @@ theorem two_imp (P Q R : Prop)
 :::
 :::
 
-Congratulations!  You've written your first proof in tactic mode.  If you move your cursor around in the proof, you will see that Lean always displays in the Infoview the tactic state at the point in the proof where the cursor is located.  Try clicking on different lines of the proof to see how the tactic state changes over the course of the proof.  If you want to try another example, you could try typing in the first example in this chapter.
+Congratulations!  You've written your first proof in tactic mode.  If you move your cursor around in the proof, you will see that Lean always displays in the Infoview the tactic state at the point in the proof where the cursor is located.  Try clicking on different lines of the proof to see how the tactic state changes over the course of the proof.  If you want to try another example, you could try typing in the first example in this chapter.  You will learn the most from this book if you continue to type the examples into Lean and see for yourself how the tactic state gets updated as the proof is written.
 
 We have now seen four tactics: `contrapos`, `assume`, `have`, and `show`.  If the goal is a conditional statement, the `contrapos` tactic replaces it with its contrapositive.  If `h` is a given that is a conditional statement, then `contrapos at h` will replace `h` with its contrapositive.  If the goal is a conditional statement `P → Q`, you can use the `assume` tactic to assume the antecedent `P`, and Lean will set the goal to be the consequent `Q`.  You can use the `have` tactic to make an inference from your givens, as long as you can justify the inference with a proof.  The `show` tactic is similar, but it is used to infer the goal, thus completing the proof.  And we have learned how to use one rule of inference in term mode: modus ponens.  In the rest of this book we will learn about other tactics and other term-mode rules.
 

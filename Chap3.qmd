@@ -2159,6 +2159,7 @@ A \ (B \ C) ⊆ (A \ B) ∪ C := by
   define; define at h1
   have h2 : ¬x ∈ B \ C := h1.right
   define at h2; demorgan at h2
+            --Now h2 : ¬x ∈ B ∨ x ∈ C
 ```
 :::
 
@@ -2187,6 +2188,7 @@ A \ (B \ C) ⊆ (A \ B) ∪ C := by
   define; define at h1
   have h2 : ¬x ∈ B \ C := h1.right
   define at h2; demorgan at h2
+            --Now h2 : ¬x ∈ B ∨ x ∈ C
   by_cases on h2
 ```
 :::
@@ -2224,6 +2226,7 @@ A \ (B \ C) ⊆ (A \ B) ∪ C := by
   define; define at h1
   have h2 : ¬x ∈ B \ C := h1.right
   define at h2; demorgan at h2
+            --Now h2 : ¬x ∈ B ∨ x ∈ C
   by_cases on h2
   -- Case 1
   apply Or.inl
@@ -2256,6 +2259,7 @@ A \ (B \ C) ⊆ (A \ B) ∪ C := by
   define; define at h1
   have h2 : ¬x ∈ B \ C := h1.right
   define at h2; demorgan at h2
+            --Now h2 : ¬x ∈ B ∨ x ∈ C
   by_cases on h2
   -- Case 1
   apply Or.inl
@@ -2289,6 +2293,7 @@ A \ (B \ C) ⊆ (A \ B) ∪ C := by
   define; define at h1
   have h2 : ¬x ∈ B \ C := h1.right
   define at h2; demorgan at h2
+            --Now h2 : ¬x ∈ B ∨ x ∈ C
   by_cases on h2
   -- Case 1
   apply Or.inl
@@ -3047,7 +3052,7 @@ We have now proven the two statements that were said to be "clearly" true in the
 `@union_comm : ∀ {U : Type} (X Y : Set U), X ∪ Y = Y ∪ X`
 :::
 
-Notice that Lean has applied a universal quantifier to the variables that were declared at the beginnings of the two theorems.  Also, we used curly braces when we introduced the type `U`, so it is an implicit argument in both theorems and will not need to be specified when we apply the theorems.
+Notice that Lean has applied a universal quantifier to the variables that were declared at the beginnings of the two theorems.  When you declare variables in the statement of a theorem, it is understood that they can stand for anything of the appropriate type, so Lean treats them as implicitly universally quantified (see Section 3.1 of *HTPI*).  Also, we used curly braces when we introduced the type `U`, so it is an implicit argument in both theorems and will not need to be specified when we apply the theorems.
 
 We are finally ready to prove the theorem from Example 3.6.2.  Here is the theorem:
 
@@ -3392,10 +3397,8 @@ h8 : b = c
 :::
 :::
 
-Now the right-hand sides of `h4` and `h5` tell us that we can prove the goal by plugging in `c` for `x`.
+Now the right-hand sides of `h4` and `h5` tell us that we can prove the goal by plugging in `c` for `x`.  Here is the complete proof:
 
-::: {.inout}
-::: {.inpt}
 ```lean
 theorem Example_3_6_4 (U : Type) (A B C : Set U)
 (h1 : ∃ (x : U), x ∈ A ∩ B)
@@ -3412,14 +3415,6 @@ theorem Example_3_6_4 (U : Type) (A B C : Set U)
   show ∃ (x : U), x ∈ B ∩ C from
     Exists.intro c (And.intro h4.right h5.right)
 ```
-:::
-
-::: {.outpt}
-```state
->>Goals accomplished 🎉
-```
-:::
-:::
 
 You might want to compare the Lean proof above to the proof of this theorem as it appears in *HTPI*:
 
@@ -3597,7 +3592,7 @@ theorem Theorem_3_3_7 :
   define at h1; define at h2; define
   obtain (m : Int) (h3 : b = a * m) from h1
   obtain (n : Int) (h4 : c = b * n) from h2
-  rewrite [h3] at h4
+  rewrite [h3] at h4   --h4: c = a * m * n
 ```
 :::
 
@@ -3627,7 +3622,7 @@ theorem Theorem_3_3_7 :
   define at h1; define at h2; define
   obtain (m : Int) (h3 : b = a * m) from h1
   obtain (n : Int) (h4 : c = b * n) from h2
-  rewrite [h3] at h4
+  rewrite [h3] at h4   --h4: c = a * m * n
   apply Exists.intro (m * n)
 ```
 :::
@@ -3668,7 +3663,7 @@ theorem Theorem_3_3_7 :
   define at h1; define at h2; define
   obtain (m : Int) (h3 : b = a * m) from h1
   obtain (n : Int) (h4 : c = b * n) from h2
-  rewrite [h3] at h4
+  rewrite [h3] at h4   --h4: c = a * m * n
   apply Exists.intro (m * n)
   rewrite [mul_assoc a m n] at h4
 ```
@@ -3692,8 +3687,6 @@ By the way, this is a case in which Lean could have figured out some details on 
 
 Of course, now `h4` really does match the goal exactly, so we can use it to complete the proof.
 
-::: {.inout}
-::: {.inpt}
 ```lean
 theorem Theorem_3_3_7 :
 ∀ (a b c : Int), a ∣ b → b ∣ c → a ∣ c := by
@@ -3702,19 +3695,11 @@ theorem Theorem_3_3_7 :
   define at h1; define at h2; define
   obtain (m : Int) (h3 : b = a * m) from h1
   obtain (n : Int) (h4 : c = b * n) from h2
-  rewrite [h3] at h4
+  rewrite [h3] at h4   --h4: c = a * m * n
   apply Exists.intro (m * n)
   rewrite [mul_assoc a m n] at h4
   show c = a * (m * n) from h4
 ```
-:::
-
-::: {.outpt}
-```state
->>Goals accomplished 🎉
-```
-:::
-:::
 
 As usual, you might find it instructive to compare the Lean proof above to the proof of this theorem in *HTPI*.
 
