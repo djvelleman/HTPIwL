@@ -2,7 +2,7 @@
 
 ## 4.1. Ordered Pairs and Cartesian Products
 
-Section 4.1 of *How To Prove It* defines the *Cartesian product* $A \times B$ of two sets $A$ and $B$ to be the set of all ordered pairs $(a, b)$, where $a \in A$ and $b \in B$.  However, in Lean, Cartesian product is an operation on types, not sets.  If `A` and `B` are types, then `A × B` is the type of ordered pairs `(a, b)`, where `a` has type `A` and `b` has type `B`.  In other words, if you have `a : A` and `b : B`, then `(a, b)` has type `A × B`.  There is also notation for the first and second coordinates of an ordered pair.  If `p` has type `A × B`, then `p.1` is the first coordinate of `p`, and `p.2` is the second coordinate.  In other words, `p = (p.1, p.2)`.  Alternative notation is `p.fst` for the first coordinate of `p`, and `p.snd` for the second coordinate.
+Section 4.1 of *How To Prove It* defines the *Cartesian product* $A \times B$ of two sets $A$ and $B$ to be the set of all ordered pairs $(a, b)$, where $a \in A$ and $b \in B$.  However, in Lean, Cartesian product is an operation on *types*, not sets.  If `A` and `B` are types, then `A × B` is the type of ordered pairs `(a, b)`, where `a` has type `A` and `b` has type `B`.  In other words, if you have `a : A` and `b : B`, then `(a, b)` is an object of type `A × B`.  There is also notation for the first and second coordinates of an ordered pair.  If `p` has type `A × B`, then `p.1` is the first coordinate of `p`, and `p.2` is the second coordinate.  In other words, `p = (p.1, p.2)`.  Alternative notation is `p.fst` for the first coordinate of `p`, and `p.snd` for the second coordinate.
 
 ## 4.2.  Relations
 
@@ -58,4 +58,7 @@ Suppose $R$ is a relation from $A$ to $B$, $S$ is a relation from $B$ to $C$, an
 
 1.  $(R^{-1})^{-1} = R$.
 2.  $\mathrm{Dom}(R^{-1}) = \mathrm{Ran}(R)$.
+3.  $\mathrm{Ran}(R^{-1}) = \mathrm{Dom}(R)$.
+4.  $T \circ (S \circ R) = (T \circ S) \circ R$.
+5.  $(S \circ R)^{-1} = R^{-1} \circ S^{-1}$.
 :::
