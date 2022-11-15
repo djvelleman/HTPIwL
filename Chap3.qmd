@@ -3998,13 +3998,13 @@ theorem ??Theorem_3_4_7:: :
 
 Sometimes the easiest way to write a calculational proof is to justify each line with `sorry` and then go back and fill in real justifications.  Lean has accepted the proof above, so we know that we'll have a complete proof if we can replace each `sorry` with a justification.
 
-To justify the first line of the calculational proof, try replacing `sorry` with `by library_search`.  Lean comes up with a justification:  `exact Int.mul_sub 6 j k`.  The theorem `Int.mul_sub` is the integer version of the general theorem `mul_sub`, which says
+To justify the first line of the calculational proof, try replacing `sorry` with `by library_search`.  Lean comes up with a justification:  `exact Int.mul_sub 6 j k`, and `#check Int.mul_sub` produces the result
 
 ::: {.quote}
-`mul_sub : ∀ (a b c : ?m.106124), a * (b - c) = a * b - a * c`.
+`Int.mul_sub : ∀ (a b c : ℤ), a * (b - c) = a * b - a * c`.
 :::
 
-Thus we can fill in `mul_sub 6 j k` as a proof of the first equation.
+Thus we can fill in `Int.mul_sub 6 j k` as a proof of the first equation.
 
 It looks like we'll have to use the associativity of multiplication again to prove the second equation, but it will take more than one step.  Let's try writing a tactic-mode proof.  In the display below, we'll just focus on the calculational proof.
 
@@ -4013,7 +4013,7 @@ It looks like we'll have to use the associativity of multiplication again to pro
 ```lean
 have h6 : 6 * (j - k) = n :=
   calc
-    6 * (j - k) = 6 * j - 6 * k := mul_sub 6 j k
+    6 * (j - k) = 6 * j - 6 * k := Int.mul_sub 6 j k
     _ = 3 * (2 * j) - 2 * (3 * k) := by
 
           **done::
@@ -4047,7 +4047,7 @@ To justify the second equation, we'll have to use associativity to rewrite both 
 ```lean
 have h6 : 6 * (j - k) = n :=
   calc
-    6 * (j - k) = 6 * j - 6 * k := mul_sub 6 j k
+    6 * (j - k) = 6 * j - 6 * k := Int.mul_sub 6 j k
     _ = 3 * (2 * j) - 2 * (3 * k) := by
           rewrite [←mul_assoc 3 2 j]
           rewrite [←mul_assoc 2 3 k]
@@ -4069,7 +4069,8 @@ h4 : n = 2 * j
 k : ℤ
 h5 : n = 3 * k
 ⊢ 6 * j - 6 * k =
->>  3 * 2 * j - 2 * 3 * k
+>>  3 * 2 * j - 
+>>    2 * 3 * k
 ```
 :::
 :::
@@ -4081,7 +4082,7 @@ To finish off the justification of the second equation, we'll use the theorem `E
 ```lean
 have h6 : 6 * (j - k) = n :=
   calc
-    6 * (j - k) = 6 * j - 6 * k := mul_sub 6 j k
+    6 * (j - k) = 6 * j - 6 * k := Int.mul_sub 6 j k
     _ = 3 * (2 * j) - 2 * (3 * k) := by
           rewrite [←mul_assoc 3 2 j]
           rewrite [←mul_assoc 2 3 k]
@@ -4118,7 +4119,7 @@ To justify the third equation we have to substitute `n` for both `2 * j` and `3 
 ```lean
 have h6 : 6 * (j - k) = n :=
   calc
-    6 * (j - k) = 6 * j - 6 * k := mul_sub 6 j k
+    6 * (j - k) = 6 * j - 6 * k := Int.mul_sub 6 j k
     _ = 3 * (2 * j) - 2 * (3 * k) := by
           rewrite [←mul_assoc 3 2 j]
           rewrite [←mul_assoc 2 3 k]
@@ -4150,13 +4151,13 @@ h5 : n = 3 * k
 
 Of course, the `rfl` tactic will now finish off the justification of the third equation.
 
-The fourth equation is `3 * n - 2 * n = (3 - 2) * n`.  It looks like the algebraic law we need to justify this is a lot like the one that was used in the first equation, but with the subtraction to the left of the multiplication rather than to the right.  It shouldn't be surprising, therefore, that the name of the theorem we need is `sub_mul`.  The command `#check sub_mul` gives the response
+The fourth equation is `3 * n - 2 * n = (3 - 2) * n`.  It looks like the algebraic law we need to justify this is a lot like the one that was used in the first equation, but with the subtraction to the left of the multiplication rather than to the right.  It shouldn't be surprising, therefore, that the name of the theorem we need is `Int.sub_mul`.  The command `#check Int.sub_mul` gives the response
 
 ::: {.quote}
-`sub_mul : ∀ (a b c : ?m.73144), (a - b) * c = a * c - b * c`,
+`Int.sub_mul : ∀ (a b c : ℤ), (a - b) * c = a * c - b * c`,
 :::
 
-so `sub_mul 3 2 n` is a proof of `(3 - 2) * n = 3 * n - 2 * n`.  But the fourth equation has the sides of this equation reversed, so to justify it we need `(sub_mul 3 2 n).symm`.
+so `Int.sub_mul 3 2 n` is a proof of `(3 - 2) * n = 3 * n - 2 * n`.  But the fourth equation has the sides of this equation reversed, so to justify it we need `(Int.sub_mul 3 2 n).symm`.
 
 Finally, the fifth equation is `(3 - 2) * n = n`.  Why is this true?  Because it is definitionally equal to `1 * n = n`.  Is there a theorem to justify this last equation?  One way to find the answer is to type in this example:
 
@@ -4169,11 +4170,11 @@ Lean responds with `exact one_mul n`, and `#check one_mul` yields `one_mul : ∀
 ```lean
   have h6 : 6 * (j - k) = n :=
     calc
-      6 * (j - k) = 6 * j - 6 * k := mul_sub 6 j k
+      6 * (j - k) = 6 * j - 6 * k := Int.mul_sub 6 j k
       _ = 3 * (2 * j) - 2 * (3 * k) := by
             rewrite [←mul_assoc 3 2 j, ←mul_assoc 2 3 k]; rfl
       _ = 3 * n - 2 * n := by rewrite [←h4, ←h5]; rfl
-      _ = (3 - 2) * n := (sub_mul 3 2 n).symm
+      _ = (3 - 2) * n := (Int.sub_mul 3 2 n).symm
       _ = n := one_mul n
 ```
 

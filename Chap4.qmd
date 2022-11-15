@@ -2,7 +2,7 @@
 
 ## 4.1. Ordered Pairs and Cartesian Products
 
-Section 4.1 of *How To Prove It* defines the *Cartesian product* $A \times B$ of two sets $A$ and $B$ to be the set of all ordered pairs $(a, b)$, where $a \in A$ and $b \in B$.  However, in Lean, Cartesian product is an operation on *types*, not sets.  If `A` and `B` are types, then `A × B` is the type of ordered pairs `(a, b)`, where `a` has type `A` and `b` has type `B`.  In other words, if you have `a : A` and `b : B`, then `(a, b)` is an object of type `A × B`.  There is also notation for the first and second coordinates of an ordered pair.  If `p` has type `A × B`, then `p.1` is the first coordinate of `p`, and `p.2` is the second coordinate.  In other words, `p = (p.1, p.2)`.  Alternative notation is `p.fst` for the first coordinate of `p`, and `p.snd` for the second coordinate.
+Section 4.1 of *How To Prove It* defines the *Cartesian product* $A \times B$ of two sets $A$ and $B$ to be the set of all ordered pairs $(a, b)$, where $a \in A$ and $b \in B$.  However, in Lean, Cartesian product is an operation on *types*, not sets.  If `A` and `B` are types, then `A × B` is the type of ordered pairs `(a, b)`, where `a` has type `A` and `b` has type `B`.  In other words, if you have `a : A` and `b : B`, then `(a, b)` is an object of type `A × B`.  There is also notation for the first and second coordinates of an ordered pair.  If `p` has type `A × B`, then `p.1` is the first coordinate of `p`, and `p.2` is the second coordinate.  In other words, `p = (p.1, p.2)`.  You can also use the notation `p.fst` for the first coordinate of `p` and `p.snd` for the second coordinate.
 
 ## 4.2.  Relations
 
@@ -49,7 +49,7 @@ def comp {A B C : Type} (S : Set (B × C)) (R : Set (A × B)) :
   Set (A × C) := {p : A × C | ∃ (b : B), (p.1, b) ∈ R ∧ (b, p.2) ∈ S}
 ```
 
-Definitions in Lean are introduced with the keyword `def`.  In the definition of `Dom`, we have declared `A` and `B` to be implicit parameters.  That means that if we have `R : Set (A × B)`, then we can just write `Dom R` for the domain of `R`, and Lean will figure out for itself what `A` and `B` are.  The definition declares that `Dom R` has type `Set A`, and then it defines it to be the set of all `a` of type `A` such that there is some `b` of type `B` with `(a, b) ∈ R`.  This is a direct translation, into Lean's type-theory language, of the first part of Definition 4.2.3.  The other three definitions are similar; they define `Ran R` to be the range of `R`, `inv R` to be the inverse of `R`, and `comp S R` to be the composition of `S` and `R`.
+Definitions in Lean are introduced with the keyword `def`.  In the definition of `Dom`, we have declared `A` and `B` to be implicit parameters.  That means that if we have `R : Set (A × B)`, then we can just write `Dom R` for the domain of `R`, and Lean will figure out for itself what `A` and `B` are.  The definition declares that `Dom R` has type `Set A`, and then it defines it to be the set of all objects `a` of type `A` such that there is some `b` of type `B` with `(a, b) ∈ R`.  This is a direct translation, into Lean's type-theory language, of the first part of Definition 4.2.3.  The other three definitions are similar; they define `Ran R` to be the range of `R`, `inv R` to be the inverse of `R`, and `comp S R` to be the composition of `S` and `R`.
 
 Here is the main theorem about these concepts, as stated in *HTPI*:
 
@@ -62,3 +62,16 @@ Suppose $R$ is a relation from $A$ to $B$, $S$ is a relation from $B$ to $C$, an
 4.  $T \circ (S \circ R) = (T \circ S) \circ R$.
 5.  $(S \circ R)^{-1} = R^{-1} \circ S^{-1}$.
 :::
+
+All five parts of this theorem follow directly from the definitions of the relevant concepts.  In fact, in the first three parts, Lean recognizes the two sides of the equation as being definitionally equal, and therefore the tactic `rfl` proves those parts:
+
+```lean
+theorem Theorem_4_2_5_1 {A B : Type}
+(R : Set (A × B)) : inv (inv R) = R := by rfl
+
+theorem Theorem_4_2_5_2 {A B : Type}
+(R : Set (A × B)) : Dom (inv R) = Ran R := by rfl
+
+theorem Theorem_4_2_5_3 {A B : Type}
+(R : Set (A × B)) : Ran (inv R) = Dom R := by rfl
+```
