@@ -109,7 +109,7 @@ To illustrate proof by contradiction in Lean, let's redo our first example from 
 ::: {.inpt}
 ```lean
 theorem Example_3_2_4_v2 (P Q R : Prop)
-(h : P → (Q → R)) : ¬R → (P → ¬Q) := by
+    (h : P → (Q → R)) : ¬R → (P → ¬Q) := by
   assume h2 : ¬R
   assume h3 : P
 ```
@@ -132,7 +132,7 @@ Now the goal is a negative statement, so we use the tactic `by_contra h4` to int
 ::: {.inpt}
 ```lean
 theorem Example_3_2_4_v2 (P Q R : Prop)
-(h : P → (Q → R)) : ¬R → (P → ¬Q) := by
+    (h : P → (Q → R)) : ¬R → (P → ¬Q) := by
   assume h2 : ¬R
   assume h3 : P
   by_contra h4
@@ -157,7 +157,7 @@ Using the givens `h`, `h3`, and `h4` we can deduce first `Q → R` and then `R` 
 ::: {.inpt}
 ```lean
 theorem Example_3_2_4_v2 (P Q R : Prop)
-(h : P → (Q → R)) : ¬R → (P → ¬Q) := by
+    (h : P → (Q → R)) : ¬R → (P → ¬Q) := by
   assume h2 : ¬R
   assume h3 : P
   by_contra h4
@@ -186,7 +186,7 @@ Now we have a contradiction: `h2 : ¬R` and `h6 : R`.  To complete the proof, we
 ::: {.inpt}
 ```lean
 theorem Example_3_2_4_v2 (P Q R : Prop)
-(h : P → (Q → R)) : ¬R → (P → ¬Q) := by
+    (h : P → (Q → R)) : ¬R → (P → ¬Q) := by
   assume h2 : ¬R
   assume h3 : P
   by_contra h4
@@ -220,7 +220,7 @@ We can illustrate this with yet another way to write the proof from Example 3.2.
 ::: {.inpt}
 ```lean
 theorem Example_3_2_4_v3 (P Q R : Prop)
-(h : P → (Q → R)) : ¬R → (P → ¬Q) := by
+    (h : P → (Q → R)) : ¬R → (P → ¬Q) := by
   assume h2 : ¬R
   assume h3 : P
   by_contra h4
@@ -245,7 +245,7 @@ Since we are now doing a proof by contradiction and the given `h2 : ¬R` is a ne
 ::: {.inpt}
 ```lean
 theorem Example_3_2_4_v3 (P Q R : Prop)
-(h : P → (Q → R)) : ¬R → (P → ¬Q) := by
+    (h : P → (Q → R)) : ¬R → (P → ¬Q) := by
   assume h2 : ¬R
   assume h3 : P
   by_contra h4
@@ -271,7 +271,7 @@ As before, we can now prove `R` by combining `h`, `h3`, and `h4`.  In fact, we c
 ::: {.inpt}
 ```lean
 theorem Example_3_2_4_v3 (P Q R : Prop)
-(h : P → (Q → R)) : ¬R → (P → ¬Q) := by
+    (h : P → (Q → R)) : ¬R → (P → ¬Q) := by
   assume h2 : ¬R
   assume h3 : P
   by_contra h4
@@ -295,9 +295,9 @@ There is one more idea that is introduced in Section 3.2 of *HTPI*.  The last ex
 ::: {.inpt}
 ```lean
 theorem Like_Example_3_2_5
-(U : Type) (A B C : Set U) (a : U)
-(h1 : a ∈ A) (h2 : a ∉ A \ B)
-(h3 : a ∈ B → a ∈ C) : a ∈ C := by
+    (U : Type) (A B C : Set U) (a : U)
+    (h1 : a ∈ A) (h2 : a ∉ A \ B)
+    (h3 : a ∈ B → a ∈ C) : a ∈ C := by
 ```
 :::
 
@@ -322,9 +322,9 @@ To get Lean to use this proof strategy, we use the tactic `apply h3 _`.  The und
 ::: {.inpt}
 ```lean
 theorem Like_Example_3_2_5
-(U : Type) (A B C : Set U) (a : U)
-(h1 : a ∈ A) (h2 : a ∉ A \ B)
-(h3 : a ∈ B → a ∈ C) : a ∈ C := by
+    (U : Type) (A B C : Set U) (a : U)
+    (h1 : a ∈ A) (h2 : a ∉ A \ B)
+    (h3 : a ∈ B → a ∈ C) : a ∈ C := by
   apply h3 _
 ```
 :::
@@ -348,9 +348,9 @@ It may not be clear what to do next, but the given `h2` is a negative statement,
 ::: {.inpt}
 ```lean
 theorem Like_Example_3_2_5
-(U : Type) (A B C : Set U) (a : U)
-(h1 : a ∈ A) (h2 : a ∉ A \ B)
-(h3 : a ∈ B → a ∈ C) : a ∈ C := by
+    (U : Type) (A B C : Set U) (a : U)
+    (h1 : a ∈ A) (h2 : a ∉ A \ B)
+    (h3 : a ∈ B → a ∈ C) : a ∈ C := by
   apply h3 _
   define at h2
   demorgan at h2; conditional at h2
@@ -376,9 +376,9 @@ And now it is easy to complete the proof by applying modus ponens, using `h2` an
 ::: {.inpt}
 ```lean
 theorem Like_Example_3_2_5
-(U : Type) (A B C : Set U) (a : U)
-(h1 : a ∈ A) (h2 : a ∉ A \ B)
-(h3 : a ∈ B → a ∈ C) : a ∈ C := by
+    (U : Type) (A B C : Set U) (a : U)
+    (h1 : a ∈ A) (h2 : a ∉ A \ B)
+    (h3 : a ∈ B → a ∈ C) : a ∈ C := by
   apply h3 _
   define at h2
   demorgan at h2; conditional at h2
@@ -450,9 +450,9 @@ Let's try these strategies out in a Lean proof.  In Lean, if you don't want to g
 ::: {.inpt}
 ```lean
 example (U : Type) (P Q : Pred U)
-(h1 : ∀ (x : U), P x → ¬Q x)
-(h2 : ∀ (x : U), Q x) :
-¬∃ (x : U), P x := by
+    (h1 : ∀ (x : U), P x → ¬Q x)
+    (h2 : ∀ (x : U), Q x) :
+    ¬∃ (x : U), P x := by
 ```
 :::
 
@@ -488,9 +488,9 @@ Using the `quant_neg` tactic leads to the following result.
 ::: {.inpt}
 ```lean
 example (U : Type) (P Q : Pred U)
-(h1 : ∀ (x : U), P x → ¬Q x)
-(h2 : ∀ (x : U), Q x) :
-¬∃ (x : U), P x := by
+    (h1 : ∀ (x : U), P x → ¬Q x)
+    (h2 : ∀ (x : U), Q x) :
+    ¬∃ (x : U), P x := by
   quant_neg     --Goal is now ∀ (x : U), ¬P x
 ```
 :::
@@ -512,9 +512,9 @@ Now the goal starts with `∀`, so we use the strategy above and introduce an ar
 ::: {.inpt}
 ```lean
 example (U : Type) (P Q : Pred U)
-(h1 : ∀ (x : U), P x → ¬Q x)
-(h2 : ∀ (x : U), Q x) :
-¬∃ (x : U), P x := by
+    (h1 : ∀ (x : U), P x → ¬Q x)
+    (h2 : ∀ (x : U), Q x) :
+    ¬∃ (x : U), P x := by
   quant_neg     --Goal is now ∀ (x : U), ¬P x
   fix y : U
 ```
@@ -538,9 +538,9 @@ Now we have an object of type `U` in the tactic state, namely, `y`.  So let's tr
 ::: {.inpt}
 ```lean
 example (U : Type) (P Q : Pred U)
-(h1 : ∀ (x : U), P x → ¬Q x)
-(h2 : ∀ (x : U), Q x) :
-¬∃ (x : U), P x := by
+    (h1 : ∀ (x : U), P x → ¬Q x)
+    (h2 : ∀ (x : U), Q x) :
+    ¬∃ (x : U), P x := by
   quant_neg     --Goal is now ∀ (x : U), ¬P x
   fix y : U
   have h3 : P y → ¬Q y := h1 y
@@ -568,9 +568,9 @@ We're almost done, because the goal now follows easily from `h3` and `h4`.  If w
 ::: {.inpt}
 ```lean
 example (U : Type) (P Q : Pred U)
-(h1 : ∀ (x : U), P x → ¬Q x)
-(h2 : ∀ (x : U), Q x) :
-¬∃ (x : U), P x := by
+    (h1 : ∀ (x : U), P x → ¬Q x)
+    (h2 : ∀ (x : U), Q x) :
+    ¬∃ (x : U), P x := by
   quant_neg     --Goal is now ∀ (x : U), ¬P x
   fix y : U
   have h3 : P y → ¬Q y := h1 y
@@ -610,7 +610,7 @@ With this preparation, we can turn to our next example.
 ::: {.inpt}
 ```lean
 example (U : Type) (A B C : Set U) (h1 : A ⊆ B ∪ C)
-(h2 : ∀ (x : U), x ∈ A → x ∉ B) : A ⊆ C := by
+    (h2 : ∀ (x : U), x ∈ A → x ∉ B) : A ⊆ C := by
 ```
 :::
 
@@ -632,7 +632,7 @@ We begin by using the `define` tactic to write out the definition of the goal.
 ::: {.inpt}
 ```lean
 example (U : Type) (A B C : Set U) (h1 : A ⊆ B ∪ C)
-(h2 : ∀ (x : U), x ∈ A → x ∉ B) : A ⊆ C := by
+    (h2 : ∀ (x : U), x ∈ A → x ∉ B) : A ⊆ C := by
   define  --Goal: ∀ {a : U}, a ∈ A → a ∈ C
 ```
 :::
@@ -656,7 +656,7 @@ Notice that Lean's definition of the goal starts with `∀ {a : U}`, not `∀ (a
 ::: {.inpt}
 ```lean
 example (U : Type) (A B C : Set U) (h1 : A ⊆ B ∪ C)
-(h2 : ∀ (x : U), x ∈ A → x ∉ B) : A ⊆ C := by
+    (h2 : ∀ (x : U), x ∈ A → x ∉ B) : A ⊆ C := by
   define  --Goal: ∀ {a : U}, a ∈ A → a ∈ C
   fix y : U
   assume h3 : y ∈ A
@@ -683,7 +683,7 @@ Now we can combine `h2` and `h3` to conclude that `¬y ∈ B`.  Since we have `y
 ::: {.inpt}
 ```lean
 example (U : Type) (A B C : Set U) (h1 : A ⊆ B ∪ C)
-(h2 : ∀ (x : U), x ∈ A → x ∉ B) : A ⊆ C := by
+    (h2 : ∀ (x : U), x ∈ A → x ∉ B) : A ⊆ C := by
   define  --Goal: ∀ {a : U}, a ∈ A → a ∈ C
   fix y : U
   assume h3 : y ∈ A
@@ -712,7 +712,7 @@ We should be able to use similar reasoning to combine `h1` and `h3`, if we first
 ::: {.inpt}
 ```lean
 example (U : Type) (A B C : Set U) (h1 : A ⊆ B ∪ C)
-(h2 : ∀ (x : U), x ∈ A → x ∉ B) : A ⊆ C := by
+    (h2 : ∀ (x : U), x ∈ A → x ∉ B) : A ⊆ C := by
   define  --Goal: ∀ {a : U}, a ∈ A → a ∈ C
   fix y : U
   assume h3 : y ∈ A
@@ -745,7 +745,7 @@ In this situation, the `a` in `h1` is called an *implicit argument*.  What this 
 ::: {.inpt}
 ```lean
 example (U : Type) (A B C : Set U) (h1 : A ⊆ B ∪ C)
-(h2 : ∀ (x : U), x ∈ A → x ∉ B) : A ⊆ C := by
+    (h2 : ∀ (x : U), x ∈ A → x ∉ B) : A ⊆ C := by
   define  --Goal: ∀ {a : U}, a ∈ A → a ∈ C
   fix y : U
   assume h3 : y ∈ A
@@ -783,7 +783,7 @@ Continuing with the proof, we see that we're almost done, because we can combine
 ::: {.inpt}
 ```lean
 example (U : Type) (A B C : Set U) (h1 : A ⊆ B ∪ C)
-(h2 : ∀ (x : U), x ∈ A → x ∉ B) : A ⊆ C := by
+    (h2 : ∀ (x : U), x ∈ A → x ∉ B) : A ⊆ C := by
   define  --Goal: ∀ {a : U}, a ∈ A → a ∈ C
   fix y : U
   assume h3 : y ∈ A
@@ -817,7 +817,7 @@ A conditional law will convert `h5` to `¬y ∈ B → y ∈ C`, and then modus p
 ::: {.inpt}
 ```lean
 example (U : Type) (A B C : Set U) (h1 : A ⊆ B ∪ C)
-(h2 : ∀ (x : U), x ∈ A → x ∉ B) : A ⊆ C := by
+    (h2 : ∀ (x : U), x ∈ A → x ∉ B) : A ⊆ C := by
   define  --Goal: ∀ {a : U}, a ∈ A → a ∈ C
   fix y : U
   assume h3 : y ∈ A
@@ -883,9 +883,9 @@ Often, if your goal is an existential statement `∃ (x : U), P x`, you won't be
 ::: {.inpt}
 ```lean
 example (U : Type) (P Q : Pred U)
-(h1 : ∀ (x : U), ∃ (y : U), P x → ¬ Q y)
-(h2 : ∃ (x : U), ∀ (y : U), P x → Q y) :
-∃ (x : U), ¬P x := by
+    (h1 : ∀ (x : U), ∃ (y : U), P x → ¬ Q y)
+    (h2 : ∃ (x : U), ∀ (y : U), P x → Q y) :
+    ∃ (x : U), ¬P x := by
 ```
 :::
 
@@ -908,9 +908,9 @@ The goal is the existential statement `∃ (x : U), ¬P x`, and our strategy for
 ::: {.inpt}
 ```lean
 example (U : Type) (P Q : Pred U)
-(h1 : ∀ (x : U), ∃ (y : U), P x → ¬ Q y)
-(h2 : ∃ (x : U), ∀ (y : U), P x → Q y) :
-∃ (x : U), ¬P x := by
+    (h1 : ∀ (x : U), ∃ (y : U), P x → ¬ Q y)
+    (h2 : ∃ (x : U), ∀ (y : U), P x → Q y) :
+    ∃ (x : U), ¬P x := by
   obtain (a : U)
     (h3 : ∀ (y : U), P a → Q y) from h2
 ```
@@ -937,9 +937,9 @@ Now that we have `a : U`, we can apply universal instantiation to `h1`, plugging
 ::: {.inpt}
 ```lean
 example (U : Type) (P Q : Pred U)
-(h1 : ∀ (x : U), ∃ (y : U), P x → ¬ Q y)
-(h2 : ∃ (x : U), ∀ (y : U), P x → Q y) :
-∃ (x : U), ¬P x := by
+    (h1 : ∀ (x : U), ∃ (y : U), P x → ¬ Q y)
+    (h2 : ∃ (x : U), ∀ (y : U), P x → Q y) :
+    ∃ (x : U), ¬P x := by
   obtain (a : U)
     (h3 : ∀ (y : U), P a → Q y) from h2
   have h4 : ∃ (y : U), P a → ¬ Q y := h1 a
@@ -970,9 +970,9 @@ Our new given `h4` is another existential statement, so again we use it right aw
 ::: {.inpt}
 ```lean
 example (U : Type) (P Q : Pred U)
-(h1 : ∀ (x : U), ∃ (y : U), P x → ¬ Q y)
-(h2 : ∃ (x : U), ∀ (y : U), P x → Q y) :
-∃ (x : U), ¬P x := by
+    (h1 : ∀ (x : U), ∃ (y : U), P x → ¬ Q y)
+    (h2 : ∃ (x : U), ∀ (y : U), P x → Q y) :
+    ∃ (x : U), ¬P x := by
   obtain (a : U)
     (h3 : ∀ (y : U), P a → Q y) from h2
   have h4 : ∃ (y : U), P a → ¬ Q y := h1 a
@@ -1004,9 +1004,9 @@ We have not yet used `h3`.  We could plug in either `a` or `b` for `y` in `h3`, 
 ::: {.inpt}
 ```lean
 example (U : Type) (P Q : Pred U)
-(h1 : ∀ (x : U), ∃ (y : U), P x → ¬ Q y)
-(h2 : ∃ (x : U), ∀ (y : U), P x → Q y) :
-∃ (x : U), ¬P x := by
+    (h1 : ∀ (x : U), ∃ (y : U), P x → ¬ Q y)
+    (h2 : ∃ (x : U), ∀ (y : U), P x → Q y) :
+    ∃ (x : U), ¬P x := by
   obtain (a : U)
     (h3 : ∀ (y : U), P a → Q y) from h2
   have h4 : ∃ (y : U), P a → ¬ Q y := h1 a
@@ -1040,9 +1040,9 @@ Now look at `h5` and `h6`.  They show that `P a` leads to contradictory conclusi
 ::: {.inpt}
 ```lean
 example (U : Type) (P Q : Pred U)
-(h1 : ∀ (x : U), ∃ (y : U), P x → ¬ Q y)
-(h2 : ∃ (x : U), ∀ (y : U), P x → Q y) :
-∃ (x : U), ¬P x := by
+    (h1 : ∀ (x : U), ∃ (y : U), P x → ¬ Q y)
+    (h2 : ∃ (x : U), ∀ (y : U), P x → Q y) :
+    ∃ (x : U), ¬P x := by
   obtain (a : U)
     (h3 : ∀ (y : U), P a → Q y) from h2
   have h4 : ∃ (y : U), P a → ¬ Q y := h1 a
@@ -1077,9 +1077,9 @@ Since the goal is now a negative statement that cannot be reexpressed as a posit
 ::: {.inpt}
 ```lean
 example (U : Type) (P Q : Pred U)
-(h1 : ∀ (x : U), ∃ (y : U), P x → ¬ Q y)
-(h2 : ∃ (x : U), ∀ (y : U), P x → Q y) :
-∃ (x : U), ¬P x := by
+    (h1 : ∀ (x : U), ∃ (y : U), P x → ¬ Q y)
+    (h2 : ∃ (x : U), ∀ (y : U), P x → Q y) :
+    ∃ (x : U), ¬P x := by
   obtain (a : U)
     (h3 : ∀ (y : U), P a → Q y) from h2
   have h4 : ∃ (y : U), P a → ¬ Q y := h1 a
@@ -1116,9 +1116,9 @@ Now `h5 h7` is a proof of `¬Q b` and `h6 h7` is a proof of `Q b`, so `h5 h7 (h6
 ::: {.inpt}
 ```lean
 example (U : Type) (P Q : Pred U)
-(h1 : ∀ (x : U), ∃ (y : U), P x → ¬ Q y)
-(h2 : ∃ (x : U), ∀ (y : U), P x → Q y) :
-∃ (x : U), ¬P x := by
+    (h1 : ∀ (x : U), ∃ (y : U), P x → ¬ Q y)
+    (h2 : ∃ (x : U), ∀ (y : U), P x → Q y) :
+    ∃ (x : U), ¬P x := by
   obtain (a : U)
     (h3 : ∀ (y : U), P a → Q y) from h2
   have h4 : ∃ (y : U), P a → ¬ Q y := h1 a
@@ -1143,7 +1143,7 @@ We conclude this section with the theorem from Example 3.3.5 in *HTPI*.  That th
 ::: {.inpt}
 ```lean
 theorem Example_3_3_5 (U : Type) (B : Set U)
-(F : Set (Set U)) : ⋃₀F ⊆ B → F ⊆ 𝒫 B := by
+    (F : Set (Set U)) : ⋃₀F ⊆ B → F ⊆ 𝒫 B := by
 ```
 :::
 
@@ -1163,7 +1163,7 @@ Note that `F` has type `Set (Set U)`, which means that it is a set whose element
 ::: {.inpt}
 ```lean
 theorem Example_3_3_5 (U : Type) (B : Set U)
-(F : Set (Set U)) : ⋃₀F ⊆ B → F ⊆ 𝒫 B := by
+    (F : Set (Set U)) : ⋃₀F ⊆ B → F ⊆ 𝒫 B := by
   assume h1 : ∪₀F ⊆ B
   define
 ```
@@ -1187,7 +1187,7 @@ Based on the form of the goal, we introduce an arbitrary object `x` of type `Set
 ::: {.inpt}
 ```lean
 theorem Example_3_3_5 (U : Type) (B : Set U)
-(F : Set (Set U)) : ⋃₀F ⊆ B → F ⊆ 𝒫 B := by
+    (F : Set (Set U)) : ⋃₀F ⊆ B → F ⊆ 𝒫 B := by
   assume h1 : ∪₀F ⊆ B
   define
   fix x : Set U
@@ -1216,7 +1216,7 @@ Once again the form of the goal dictates our next steps: introduce an arbitrary 
 ::: {.inpt}
 ```lean
 theorem Example_3_3_5 (U : Type) (B : Set U)
-(F : Set (Set U)) : ⋃₀F ⊆ B → F ⊆ 𝒫 B := by
+    (F : Set (Set U)) : ⋃₀F ⊆ B → F ⊆ 𝒫 B := by
   assume h1 : ∪₀F ⊆ B
   define
   fix x : Set U
@@ -1248,7 +1248,7 @@ The goal can be analyzed no further, so we turn to the givens.  We haven't used 
 ::: {.inpt}
 ```lean
 theorem Example_3_3_5 (U : Type) (B : Set U)
-(F : Set (Set U)) : ⋃₀F ⊆ B → F ⊆ 𝒫 B := by
+    (F : Set (Set U)) : ⋃₀F ⊆ B → F ⊆ 𝒫 B := by
   assume h1 : ∪₀F ⊆ B
   define
   fix x : Set U
@@ -1282,7 +1282,7 @@ Now we see that we can try to use `h1` to reach our goal.  Indeed, `h1 _` would 
 ::: {.inpt}
 ```lean
 theorem Example_3_3_5 (U : Type) (B : Set U)
-(F : Set (Set U)) : ⋃₀F ⊆ B → F ⊆ 𝒫 B := by
+    (F : Set (Set U)) : ⋃₀F ⊆ B → F ⊆ 𝒫 B := by
   assume h1 : ∪₀F ⊆ B
   define
   fix x : Set U
@@ -1317,7 +1317,7 @@ Once again we have a goal that can be analyzed by using the `define` tactic.
 ::: {.inpt}
 ```lean
 theorem Example_3_3_5 (U : Type) (B : Set U)
-(F : Set (Set U)) : ⋃₀F ⊆ B → F ⊆ 𝒫 B := by
+    (F : Set (Set U)) : ⋃₀F ⊆ B → F ⊆ 𝒫 B := by
   assume h1 : ∪₀F ⊆ B
   define
   fix x : Set U
@@ -1353,7 +1353,7 @@ Our goal is now an existential statement, so we look for a value of `a` that wil
 ::: {.inpt}
 ```lean
 theorem Example_3_3_5 (U : Type) (B : Set U)
-(F : Set (Set U)) : ⋃₀F ⊆ B → F ⊆ 𝒫 B := by
+    (F : Set (Set U)) : ⋃₀F ⊆ B → F ⊆ 𝒫 B := by
   assume h1 : ∪₀F ⊆ B
   define
   fix x : Set U
@@ -1390,7 +1390,7 @@ Clearly the goal now follows from `h2` and `h3`, but how do we write the proof i
 ::: {.inpt}
 ```lean
 theorem Example_3_3_5 (U : Type) (B : Set U)
-(F : Set (Set U)) : ⋃₀F ⊆ B → F ⊆ 𝒫 B := by
+    (F : Set (Set U)) : ⋃₀F ⊆ B → F ⊆ 𝒫 B := by
   assume h1 : ∪₀F ⊆ B
   define
   fix x : Set U
@@ -1452,8 +1452,9 @@ Here's an example that illustrates these strategies.  It is similar to Example 3
 ::: {.inpt}
 ```lean
 theorem Like_Example_3_4_1 (U : Type)
-(A B C D : Set U) (h1 : A ⊆ B)
-(h2 : ¬∃ (c : U), c ∈ C ∩ D) : A ∩ C ⊆ B \ D := by
+    (A B C D : Set U) (h1 : A ⊆ B)
+    (h2 : ¬∃ (c : U), c ∈ C ∩ D) :
+    A ∩ C ⊆ B \ D := by
 ```
 :::
 
@@ -1474,8 +1475,9 @@ The `define` tactic will rewrite the goal as `∀ {a : U}, a ∈ A ∩ C → a �
 ::: {.inpt}
 ```lean
 theorem Like_Example_3_4_1 (U : Type)
-(A B C D : Set U) (h1 : A ⊆ B)
-(h2 : ¬∃ (c : U), c ∈ C ∩ D) : A ∩ C ⊆ B \ D := by
+    (A B C D : Set U) (h1 : A ⊆ B)
+    (h2 : ¬∃ (c : U), c ∈ C ∩ D) :
+    A ∩ C ⊆ B \ D := by
   define
   fix x : U
   assume h3 : x ∈ A ∩ C
@@ -1501,8 +1503,9 @@ Now let's take a look at the definitions of `h3` and the goal:
 ::: {.inpt}
 ```lean
 theorem Like_Example_3_4_1 (U : Type)
-(A B C D : Set U) (h1 : A ⊆ B)
-(h2 : ¬∃ (c : U), c ∈ C ∩ D) : A ∩ C ⊆ B \ D := by
+    (A B C D : Set U) (h1 : A ⊆ B)
+    (h2 : ¬∃ (c : U), c ∈ C ∩ D) :
+    A ∩ C ⊆ B \ D := by
   define
   fix x : U
   assume h3 : x ∈ A ∩ C
@@ -1529,8 +1532,9 @@ Since the goal is now a conjuction, we use the strategy above by using the tacti
 ::: {.inpt}
 ```lean
 theorem Like_Example_3_4_1 (U : Type)
-(A B C D : Set U) (h1 : A ⊆ B)
-(h2 : ¬∃ (c : U), c ∈ C ∩ D) : A ∩ C ⊆ B \ D := by
+    (A B C D : Set U) (h1 : A ⊆ B)
+    (h2 : ¬∃ (c : U), c ∈ C ∩ D) :
+    A ∩ C ⊆ B \ D := by
   define
   fix x : U
   assume h3 : x ∈ A ∩ C
@@ -1569,8 +1573,9 @@ The first goal is easy:  We have `h1 : A ⊆ B` and, as explained above, `h3.lef
 ::: {.inpt}
 ```lean
 theorem Like_Example_3_4_1 (U : Type)
-(A B C D : Set U) (h1 : A ⊆ B)
-(h2 : ¬∃ (c : U), c ∈ C ∩ D) : A ∩ C ⊆ B \ D := by
+    (A B C D : Set U) (h1 : A ⊆ B)
+    (h2 : ¬∃ (c : U), c ∈ C ∩ D) :
+    A ∩ C ⊆ B \ D := by
   define
   fix x : U
   assume h3 : x ∈ A ∩ C
@@ -1601,8 +1606,9 @@ Note that Lean has recognized that the first goal has been achieved, so it has m
 ::: {.inpt}
 ```lean
 theorem Like_Example_3_4_1 (U : Type)
-(A B C D : Set U) (h1 : A ⊆ B)
-(h2 : ¬∃ (c : U), c ∈ C ∩ D) : A ∩ C ⊆ B \ D := by
+    (A B C D : Set U) (h1 : A ⊆ B)
+    (h2 : ¬∃ (c : U), c ∈ C ∩ D) :
+    A ∩ C ⊆ B \ D := by
   define
   fix x : U
   assume h3 : x ∈ A ∩ C
@@ -1636,8 +1642,9 @@ The goal is now an existential statement, and looking at `h3` and `h4` it is cle
 ::: {.inpt}
 ```lean
 theorem Like_Example_3_4_1 (U : Type)
-(A B C D : Set U) (h1 : A ⊆ B)
-(h2 : ¬∃ (c : U), c ∈ C ∩ D) : A ∩ C ⊆ B \ D := by
+    (A B C D : Set U) (h1 : A ⊆ B)
+    (h2 : ¬∃ (c : U), c ∈ C ∩ D) :
+    A ∩ C ⊆ B \ D := by
   define
   fix x : U
   assume h3 : x ∈ A ∩ C
@@ -1672,8 +1679,9 @@ The `define` tactic would now rewrite the goal as `x ∈ C ∧ x ∈ D`, and we 
 ::: {.inpt}
 ```lean
 theorem Like_Example_3_4_1 (U : Type)
-(A B C D : Set U) (h1 : A ⊆ B)
-(h2 : ¬∃ (c : U), c ∈ C ∩ D) : A ∩ C ⊆ B \ D := by
+    (A B C D : Set U) (h1 : A ⊆ B)
+    (h2 : ¬∃ (c : U), c ∈ C ∩ D) :
+    A ∩ C ⊆ B \ D := by
   define
   fix x : U
   assume h3 : x ∈ A ∩ C
@@ -1717,8 +1725,8 @@ Let's try these strategies out in an example.
 ::: {.inpt}
 ```lean
 example (U : Type) (P Q : Pred U)
-(h1 : ∀ (x : U), P x ↔ Q x) :
-(∃ (x : U), P x) ↔ ∃ (x : U), Q x := by
+    (h1 : ∀ (x : U), P x ↔ Q x) :
+    (∃ (x : U), P x) ↔ ∃ (x : U), Q x := by
 ```
 :::
 
@@ -1738,8 +1746,8 @@ The goal is a biconditional statement, so we begin with the tactic `apply Iff.in
 ::: {.inpt}
 ```lean
 example (U : Type) (P Q : Pred U)
-(h1 : ∀ (x : U), P x ↔ Q x) :
-(∃ (x : U), P x) ↔ ∃ (x : U), Q x := by
+    (h1 : ∀ (x : U), P x ↔ Q x) :
+    (∃ (x : U), P x) ↔ ∃ (x : U), Q x := by
   apply Iff.intro
 ```
 :::
@@ -1766,8 +1774,8 @@ Once again, we have two goals.  (The case labels this time aren't very intuitive
 ::: {.inpt}
 ```lean
 example (U : Type) (P Q : Pred U)
-(h1 : ∀ (x : U), P x ↔ Q x) :
-(∃ (x : U), P x) ↔ ∃ (x : U), Q x := by
+    (h1 : ∀ (x : U), P x ↔ Q x) :
+    (∃ (x : U), P x) ↔ ∃ (x : U), Q x := by
   apply Iff.intro
   -- (→)
   assume h2 : ∃ (x : U), P x
@@ -1792,8 +1800,8 @@ As usual, when we have an existential given, we use it right away.
 ::: {.inpt}
 ```lean
 example (U : Type) (P Q : Pred U)
-(h1 : ∀ (x : U), P x ↔ Q x) :
-(∃ (x : U), P x) ↔ ∃ (x : U), Q x := by
+    (h1 : ∀ (x : U), P x ↔ Q x) :
+    (∃ (x : U), P x) ↔ ∃ (x : U), Q x := by
   apply Iff.intro
   -- (→)
   assume h2 : ∃ (x : U), P x
@@ -1821,8 +1829,8 @@ Now that we have an object of type `U` in the tactic state, we can use `h1` by a
 ::: {.inpt}
 ```lean
 example (U : Type) (P Q : Pred U)
-(h1 : ∀ (x : U), P x ↔ Q x) :
-(∃ (x : U), P x) ↔ ∃ (x : U), Q x := by
+    (h1 : ∀ (x : U), P x ↔ Q x) :
+    (∃ (x : U), P x) ↔ ∃ (x : U), Q x := by
   apply Iff.intro
   -- (→)
   assume h2 : ∃ (x : U), P x
@@ -1852,8 +1860,8 @@ Looking at `h3` and `h4`, we can now see that we will be able to complete the pr
 ::: {.inpt}
 ```lean
 example (U : Type) (P Q : Pred U)
-(h1 : ∀ (x : U), P x ↔ Q x) :
-(∃ (x : U), P x) ↔ ∃ (x : U), Q x := by
+    (h1 : ∀ (x : U), P x ↔ Q x) :
+    (∃ (x : U), P x) ↔ ∃ (x : U), Q x := by
   apply Iff.intro
   -- (→)
   assume h2 : ∃ (x : U), P x
@@ -1884,8 +1892,8 @@ To complete the proof, we use the left-to-right direction of `h4`.  We have `h4.
 ::: {.inpt}
 ```lean
 example (U : Type) (P Q : Pred U)
-(h1 : ∀ (x : U), P x ↔ Q x) :
-(∃ (x : U), P x) ↔ ∃ (x : U), Q x := by
+    (h1 : ∀ (x : U), P x ↔ Q x) :
+    (∃ (x : U), P x) ↔ ∃ (x : U), Q x := by
   apply Iff.intro
   -- (→)
   assume h2 : ∃ (x : U), P x
@@ -1913,8 +1921,8 @@ This completes the `(→)` half of the proof; the tactic state now lists only th
 ::: {.inpt}
 ```lean
 example (U : Type) (P Q : Pred U)
-(h1 : ∀ (x : U), P x ↔ Q x) :
-(∃ (x : U), P x) ↔ ∃ (x : U), Q x := by
+    (h1 : ∀ (x : U), P x ↔ Q x) :
+    (∃ (x : U), P x) ↔ ∃ (x : U), Q x := by
   apply Iff.intro
   -- (→)
   assume h2 : ∃ (x : U), P x
@@ -1946,8 +1954,8 @@ We can actually shorten the proof by packing a lot into a single step.  See if y
 
 ```lean
 example (U : Type) (P Q : Pred U)
-(h1 : ∀ (x : U), P x ↔ Q x) :
-(∃ (x : U), P x) ↔ ∃ (x : U), Q x := by
+    (h1 : ∀ (x : U), P x ↔ Q x) :
+    (∃ (x : U), P x) ↔ ∃ (x : U), Q x := by
   apply Iff.intro
   -- (→)
   assume h2 : ∃ (x : U), P x
@@ -1985,7 +1993,7 @@ The heart of the proof is a string of equivalences that, taken together, establi
 
 ```lean
 theorem Example_3_4_5 (U : Type)
-(A B C : Set U) : A ∩ (B \ C) = (A ∩ B) \ C := by
+    (A B C : Set U) : A ∩ (B \ C) = (A ∩ B) \ C := by
   apply Set.ext
   fix x : U
   show x ∈ A ∩ (B \ C) ↔ x ∈ (A ∩ B) \ C from
@@ -2107,8 +2115,8 @@ Example 3.5.2 from *HTPI* illustrates these strategies:
 ::: {.inpt}
 ```lean
 theorem Example_3_5_2
-(U : Type) (A B C : Set U) :
-A \ (B \ C) ⊆ (A \ B) ∪ C := by
+    (U : Type) (A B C : Set U) :
+    A \ (B \ C) ⊆ (A \ B) ∪ C := by
 ```
 :::
 
@@ -2127,8 +2135,8 @@ The `define` tactic would rewrite the goal as `∀ {a : U}, a ∈ A \ (B \ C) �
 ::: {.inpt}
 ```lean
 theorem Example_3_5_2
-(U : Type) (A B C : Set U) :
-A \ (B \ C) ⊆ (A \ B) ∪ C := by
+    (U : Type) (A B C : Set U) :
+    A \ (B \ C) ⊆ (A \ B) ∪ C := by
   fix x : U
   assume h1 : x ∈ A \ (B \ C)
   define; define at h1
@@ -2152,8 +2160,8 @@ The goal is now a disjunction, which suggests that proof by cases might be helpf
 ::: {.inpt}
 ```lean
 theorem Example_3_5_2
-(U : Type) (A B C : Set U) :
-A \ (B \ C) ⊆ (A \ B) ∪ C := by
+    (U : Type) (A B C : Set U) :
+    A \ (B \ C) ⊆ (A \ B) ∪ C := by
   fix x : U
   assume h1 : x ∈ A \ (B \ C)
   define; define at h1
@@ -2181,8 +2189,8 @@ The new given `h2` is now a disjunction, which suggests what cases we should use
 ::: {.inpt}
 ```lean
 theorem Example_3_5_2
-(U : Type) (A B C : Set U) :
-A \ (B \ C) ⊆ (A \ B) ∪ C := by
+    (U : Type) (A B C : Set U) :
+    A \ (B \ C) ⊆ (A \ B) ∪ C := by
   fix x : U
   assume h1 : x ∈ A \ (B \ C)
   define; define at h1
@@ -2219,8 +2227,8 @@ Looking at the givens `h1` and `h2` in both cases, it is not hard to see that we
 ::: {.inpt}
 ```lean
 theorem Example_3_5_2
-(U : Type) (A B C : Set U) :
-A \ (B \ C) ⊆ (A \ B) ∪ C := by
+    (U : Type) (A B C : Set U) :
+    A \ (B \ C) ⊆ (A \ B) ∪ C := by
   fix x : U
   assume h1 : x ∈ A \ (B \ C)
   define; define at h1
@@ -2252,8 +2260,8 @@ Notice that the tactic `apply Or.inl` has changed the goal for case 1 to the lef
 ::: {.inpt}
 ```lean
 theorem Example_3_5_2
-(U : Type) (A B C : Set U) :
-A \ (B \ C) ⊆ (A \ B) ∪ C := by
+    (U : Type) (A B C : Set U) :
+    A \ (B \ C) ⊆ (A \ B) ∪ C := by
   fix x : U
   assume h1 : x ∈ A \ (B \ C)
   define; define at h1
@@ -2286,8 +2294,8 @@ Case 2 is similar, using `Or.inr` and `h2`
 ::: {.inpt}
 ```lean
 theorem Example_3_5_2
-(U : Type) (A B C : Set U) :
-A \ (B \ C) ⊆ (A \ B) ∪ C := by
+    (U : Type) (A B C : Set U) :
+    A \ (B \ C) ⊆ (A \ B) ∪ C := by
   fix x : U
   assume h1 : x ∈ A \ (B \ C)
   define; define at h1
@@ -2345,7 +2353,7 @@ Notice that `or_left` and `or_right` have the same effect as `apply Or.inl` and 
 ::: {.inpt}
 ```lean
 example (U : Type) (A B C : Set U)
-(h1 : A \ B ⊆ C) : A ⊆ B ∪ C := by
+    (h1 : A \ B ⊆ C) : A ⊆ B ∪ C := by
 ```
 :::
 
@@ -2365,7 +2373,7 @@ Of course, we begin by letting `x` be an arbitrary element of `A`.  Writing out 
 ::: {.inpt}
 ```lean
 example (U : Type) (A B C : Set U)
-(h1 : A \ B ⊆ C) : A ⊆ B ∪ C := by
+    (h1 : A \ B ⊆ C) : A ⊆ B ∪ C := by
   fix x : U
   assume h2 : x ∈ A
   define
@@ -2390,7 +2398,7 @@ Looking at the givens `h1` and `h2`, we see that if we assume `x ∉ B`, then we
 ::: {.inpt}
 ```lean
 example (U : Type) (A B C : Set U)
-(h1 : A \ B ⊆ C) : A ⊆ B ∪ C := by
+    (h1 : A \ B ⊆ C) : A ⊆ B ∪ C := by
   fix x : U
   assume h2 : x ∈ A
   define
@@ -2417,7 +2425,7 @@ We can now complete the proof.  `h1 _` will be a proof of the goal `x ∈ C`, if
 ::: {.inpt}
 ```lean
 example (U : Type) (A B C : Set U)
-(h1 : A \ B ⊆ C) : A ⊆ B ∪ C := by
+    (h1 : A \ B ⊆ C) : A ⊆ B ∪ C := by
   fix x : U
   assume h2 : x ∈ A
   define
@@ -2449,8 +2457,8 @@ Here's an example illustrating the use of the disjunctive syllogism rule.
 ::: {.inpt}
 ```lean
 example
-(U : Type) (A B C : Set U) (h1 : A ⊆ B ∪ C)
-(h2 : ¬∃ (x : U), x ∈ A ∩ B) : A ⊆ C := by
+    (U : Type) (A B C : Set U) (h1 : A ⊆ B ∪ C)
+    (h2 : ¬∃ (x : U), x ∈ A ∩ B) : A ⊆ C := by
 ```
 :::
 
@@ -2471,8 +2479,8 @@ Of course, we begin by introducing an arbitrary element of `A`.  We also rewrite
 ::: {.inpt}
 ```lean
 example
-(U : Type) (A B C : Set U) (h1 : A ⊆ B ∪ C)
-(h2 : ¬∃ (x : U), x ∈ A ∩ B) : A ⊆ C := by
+    (U : Type) (A B C : Set U) (h1 : A ⊆ B ∪ C)
+    (h2 : ¬∃ (x : U), x ∈ A ∩ B) : A ⊆ C := by
   fix a : U
   assume h3 : a ∈ A
   quant_neg at h2
@@ -2499,8 +2507,8 @@ We can now make two inferences by combining `h1` with `h3` and by applying `h2` 
 ::: {.inpt}
 ```lean
 example
-(U : Type) (A B C : Set U) (h1 : A ⊆ B ∪ C)
-(h2 : ¬∃ (x : U), x ∈ A ∩ B) : A ⊆ C := by
+    (U : Type) (A B C : Set U) (h1 : A ⊆ B ∪ C)
+    (h2 : ¬∃ (x : U), x ∈ A ∩ B) : A ⊆ C := by
   fix a : U
   assume h3 : a ∈ A
   quant_neg at h2
@@ -2533,8 +2541,8 @@ Both `h4` and `h5` are disjunctions, and looking at `h3` we see that the disjunc
 ::: {.inpt}
 ```lean
 example
-(U : Type) (A B C : Set U) (h1 : A ⊆ B ∪ C)
-(h2 : ¬∃ (x : U), x ∈ A ∩ B) : A ⊆ C := by
+    (U : Type) (A B C : Set U) (h1 : A ⊆ B ∪ C)
+    (h2 : ¬∃ (x : U), x ∈ A ∩ B) : A ⊆ C := by
   fix a : U
   assume h3 : a ∈ A
   quant_neg at h2
@@ -2561,8 +2569,8 @@ We're going to redo the last example, to illustrate another useful technique in 
 ::: {.inpt}
 ```lean
 example
-(U : Type) (A B C : Set U) (h1 : A ⊆ B ∪ C)
-(h2 : ¬∃ (x : U), x ∈ A ∩ B) : A ⊆ C := by
+    (U : Type) (A B C : Set U) (h1 : A ⊆ B ∪ C)
+    (h2 : ¬∃ (x : U), x ∈ A ∩ B) : A ⊆ C := by
   fix a : U
   assume h3 : a ∈ A
   have h4 : a ∈ B ∪ C := h1 h3
@@ -2590,8 +2598,8 @@ At this point, you might see a possible route to the goal:  from `h2` and `h3` w
 ::: {.inpt}
 ```lean
 ??example::
-(U : Type) (A B C : Set U) (h1 : A ⊆ B ∪ C)
-(h2 : ¬∃ (x : U), x ∈ A ∩ B) : A ⊆ C := by
+    (U : Type) (A B C : Set U) (h1 : A ⊆ B ∪ C)
+    (h2 : ¬∃ (x : U), x ∈ A ∩ B) : A ⊆ C := by
   fix a : U
   assume h3 : a ∈ A
   have h4 : a ∈ B ∪ C := h1 h3
@@ -2619,8 +2627,8 @@ The proof of `a ∉ B` is hard enough that it is easier to do it in tactic mode 
 ::: {.inpt}
 ```lean
 example
-(U : Type) (A B C : Set U) (h1 : A ⊆ B ∪ C)
-(h2 : ¬∃ (x : U), x ∈ A ∩ B) : A ⊆ C := by
+    (U : Type) (A B C : Set U) (h1 : A ⊆ B ∪ C)
+    (h2 : ¬∃ (x : U), x ∈ A ∩ B) : A ⊆ C := by
   fix a : U
   assume h3 : a ∈ A
   have h4 : a ∈ B ∪ C := h1 h3
@@ -2653,8 +2661,8 @@ Note that `h5 : a ∉ B` is not a given in the tactic state, because we have not
 ::: {.inpt}
 ```lean
 example
-(U : Type) (A B C : Set U) (h1 : A ⊆ B ∪ C)
-(h2 : ¬∃ (x : U), x ∈ A ∩ B) : A ⊆ C := by
+    (U : Type) (A B C : Set U) (h1 : A ⊆ B ∪ C)
+    (h2 : ¬∃ (x : U), x ∈ A ∩ B) : A ⊆ C := by
   fix a : U
   assume h3 : a ∈ A
   have h4 : a ∈ B ∪ C := h1 h3
@@ -2688,8 +2696,8 @@ Looking at `h3` and `h6`, we see that the right value to plug in for `x` in the 
 ::: {.inpt}
 ```lean
 example
-(U : Type) (A B C : Set U) (h1 : A ⊆ B ∪ C)
-(h2 : ¬∃ (x : U), x ∈ A ∩ B) : A ⊆ C := by
+    (U : Type) (A B C : Set U) (h1 : A ⊆ B ∪ C)
+    (h2 : ¬∃ (x : U), x ∈ A ∩ B) : A ⊆ C := by
   fix a : U
   assume h3 : a ∈ A
   have h4 : a ∈ B ∪ C := h1 h3
@@ -2750,7 +2758,7 @@ With that preparation, we are ready to prove our first preliminary theorem.  To 
 ::: {.inpt}
 ```lean
 theorem empty_union {U : Type} (B : Set U) :
-(∅ : Set U) ∪ B = B := by
+    (∅ : Set U) ∪ B = B := by
   apply Set.ext
 ```
 :::
@@ -2772,7 +2780,7 @@ Based on the form of the goal, our next two tactics should be `fix x : U` and `a
 ::: {.inpt}
 ```lean
 theorem empty_union {U : Type} (B : Set U) :
-(∅ : Set U) ∪ B = B := by
+    (∅ : Set U) ∪ B = B := by
   apply Set.ext
   fix x : U
   apply Iff.intro
@@ -2796,7 +2804,7 @@ Of course, our next step is to assume `x ∈ (∅ : Set U) ∪ B`.  To help us s
 ::: {.inpt}
 ```lean
 theorem empty_union {U : Type} (B : Set U) :
-(∅ : Set U) ∪ B = B := by
+    (∅ : Set U) ∪ B = B := by
   apply Set.ext
   fix x : U
   apply Iff.intro
@@ -2824,7 +2832,7 @@ Now you should see a way to complete the proof: the statement `x ∈ ∅` is fal
 ::: {.inpt}
 ```lean
 theorem empty_union {U : Type} (B : Set U) :
-(∅ : Set U) ∪ B = B := by
+    (∅ : Set U) ∪ B = B := by
   apply Set.ext
   fix x : U
   apply Iff.intro
@@ -2854,7 +2862,7 @@ The goal for our "proof within a proof" is a negative statement, so proof by con
 ::: {.inpt}
 ```lean
 theorem empty_union {U : Type} (B : Set U) :
-(∅ : Set U) ∪ B = B := by
+    (∅ : Set U) ∪ B = B := by
   apply Set.ext
   fix x : U
   apply Iff.intro
@@ -2885,7 +2893,7 @@ To see how to use the new assumption `h3`, we use the tactic `define at h3`.  Th
 ::: {.inpt}
 ```lean
 theorem empty_union {U : Type} (B : Set U) :
-(∅ : Set U) ∪ B = B := by
+    (∅ : Set U) ∪ B = B := by
   apply Set.ext
   fix x : U
   apply Iff.intro
@@ -2919,7 +2927,7 @@ Now that we have established the claim `h2 : ¬x ∈ ∅`, we can apply the disj
 ::: {.inpt}
 ```lean
 theorem empty_union {U : Type} (B : Set U) :
-(∅ : Set U) ∪ B = B := by
+    (∅ : Set U) ∪ B = B := by
   apply Set.ext
   fix x : U
   apply Iff.intro
@@ -2954,7 +2962,7 @@ This direction of the biconditional proof is easier: once we introduce the assum
 ::: {.inpt}
 ```lean
 theorem empty_union {U : Type} (B : Set U) :
-(∅ : Set U) ∪ B = B := by
+    (∅ : Set U) ∪ B = B := by
   apply Set.ext
   fix x : U
   apply Iff.intro
@@ -2987,7 +2995,7 @@ The second fact that was called "clear" in the proof from Example 3.6.2 was the 
 ::: {.inpt}
 ```lean
 theorem union_comm {U : Type} (X Y : Set U) :
-X ∪ Y = Y ∪ X := by
+    X ∪ Y = Y ∪ X := by
 ```
 :::
 
@@ -3006,7 +3014,7 @@ Once again, we begin with `apply Set.ext`, which converts the goal to `∀ (x : 
 ::: {.inpt}
 ```lean
 theorem union_comm {U : Type} (X Y : Set U) :
-X ∪ Y = Y ∪ X := by
+    X ∪ Y = Y ∪ X := by
   apply Set.ext
   fix x : U
 ```
@@ -3031,7 +3039,7 @@ Try typing `#check @or_` in VS Code.  As soon as you type this, a pop-up window 
 ::: {.inpt}
 ```lean
 theorem union_comm {U : Type} (X Y : Set U) :
-X ∪ Y = Y ∪ X := by
+    X ∪ Y = Y ∪ X := by
   apply Set.ext
   fix x : U
   show x ∈ X ∪ Y ↔ x ∈ Y ∪ X from or_comm
@@ -3060,7 +3068,8 @@ We are finally ready to prove the theorem from Example 3.6.2.  Here is the theor
 ::: {.inpt}
 ```lean
 theorem Example_3_6_2 (U : Type) :
-∃! (A : Set U), ∀ (B : Set U), A ∪ B = B := by
+    ∃! (A : Set U), ∀ (B : Set U),
+    A ∪ B = B := by
 ```
 :::
 
@@ -3079,7 +3088,8 @@ The goal starts with `∃!`, so we use our new tactic, `exists_unique`.
 ::: {.inpt}
 ```lean
 theorem Example_3_6_2 (U : Type) :
-∃! (A : Set U), ∀ (B : Set U), A ∪ B = B := by
+    ∃! (A : Set U), ∀ (B : Set U),
+    A ∪ B = B := by
   exists_unique
 ```
 :::
@@ -3108,7 +3118,8 @@ We have two goals, labeled `Existence` and `Uniqueness`.  Imitating the proof fr
 ::: {.inpt}
 ```lean
 theorem Example_3_6_2 (U : Type) :
-∃! (A : Set U), ∀ (B : Set U), A ∪ B = B := by
+    ∃! (A : Set U), ∀ (B : Set U),
+    A ∪ B = B := by
   exists_unique
   -- Existence
   apply Exists.intro ∅
@@ -3131,7 +3142,8 @@ The goal is now precisely the statement of the theorem `empty_union`, so we can 
 ::: {.inpt}
 ```lean
 theorem Example_3_6_2 (U : Type) :
-∃! (A : Set U), ∀ (B : Set U), A ∪ B = B := by
+    ∃! (A : Set U), ∀ (B : Set U),
+    A ∪ B = B := by
   exists_unique
   -- Existence
   apply Exists.intro ∅
@@ -3160,7 +3172,8 @@ For the uniqueness proof, we begin by introducing arbitrary sets `C` and `D` and
 ::: {.inpt}
 ```lean
 theorem Example_3_6_2 (U : Type) :
-∃! (A : Set U), ∀ (B : Set U), A ∪ B = B := by
+    ∃! (A : Set U), ∀ (B : Set U),
+    A ∪ B = B := by
   exists_unique
   -- Existence
   apply Exists.intro ∅
@@ -3192,7 +3205,8 @@ The next step in *HTPI* was to apply `h1` to `D`, and `h2` to `C`.  We do the sa
 ::: {.inpt}
 ```lean
 theorem Example_3_6_2 (U : Type) :
-∃! (A : Set U), ∀ (B : Set U), A ∪ B = B := by
+    ∃! (A : Set U), ∀ (B : Set U),
+    A ∪ B = B := by
   exists_unique
   -- Existence
   apply Exists.intro ∅
@@ -3226,7 +3240,8 @@ The goal can now be achieved by stringing together a sequence of equations:  `C 
 
 ```lean
 theorem Example_3_6_2 (U : Type) :
-∃! (A : Set U), ∀ (B : Set U), A ∪ B = B := by
+    ∃! (A : Set U), ∀ (B : Set U),
+    A ∪ B = B := by
   exists_unique
   -- Existence
   apply Exists.intro ∅
@@ -3258,10 +3273,10 @@ If you have a given `h : ∃! (x : U), P x`, then the tactic `obtain (a : U) (h1
 ::: {.inpt}
 ```lean
 theorem Example_3_6_4 (U : Type) (A B C : Set U)
-(h1 : ∃ (x : U), x ∈ A ∩ B)
-(h2 : ∃ (x : U), x ∈ A ∩ C)
-(h3 : ∃! (x : U), x ∈ A) :
-∃ (x : U), x ∈ B ∩ C := by
+    (h1 : ∃ (x : U), x ∈ A ∩ B)
+    (h2 : ∃ (x : U), x ∈ A ∩ C)
+    (h3 : ∃! (x : U), x ∈ A) :
+    ∃ (x : U), x ∈ B ∩ C := by
 ```
 :::
 
@@ -3283,10 +3298,10 @@ We begin by applying the `obtain` tactic to `h1`, `h2`, and `h3`.  In the case o
 ::: {.inpt}
 ```lean
 theorem Example_3_6_4 (U : Type) (A B C : Set U)
-(h1 : ∃ (x : U), x ∈ A ∩ B)
-(h2 : ∃ (x : U), x ∈ A ∩ C)
-(h3 : ∃! (x : U), x ∈ A) :
-∃ (x : U), x ∈ B ∩ C := by
+    (h1 : ∃ (x : U), x ∈ A ∩ B)
+    (h2 : ∃ (x : U), x ∈ A ∩ C)
+    (h3 : ∃! (x : U), x ∈ A) :
+    ∃ (x : U), x ∈ B ∩ C := by
   obtain (b : U) (h4 : b ∈ A ∩ B) from h1
   obtain (c : U) (h5 : c ∈ A ∩ C) from h2
   obtain (a : U) (h6 : a ∈ A) (h7 : ∀ (y z : U),
@@ -3321,10 +3336,10 @@ The key to the rest of the proof is the observation that, by the uniqueness of t
 ::: {.inpt}
 ```lean
 theorem Example_3_6_4 (U : Type) (A B C : Set U)
-(h1 : ∃ (x : U), x ∈ A ∩ B)
-(h2 : ∃ (x : U), x ∈ A ∩ C)
-(h3 : ∃! (x : U), x ∈ A) :
-∃ (x : U), x ∈ B ∩ C := by
+    (h1 : ∃ (x : U), x ∈ A ∩ B)
+    (h2 : ∃ (x : U), x ∈ A ∩ C)
+    (h3 : ∃! (x : U), x ∈ A) :
+    ∃ (x : U), x ∈ B ∩ C := by
   obtain (b : U) (h4 : b ∈ A ∩ B) from h1
   obtain (c : U) (h5 : c ∈ A ∩ C) from h2
   obtain (a : U) (h6 : a ∈ A) (h7 : ∀ (y z : U),
@@ -3363,10 +3378,10 @@ As with many other tactics, you can add `at h'` to specify that the replacement 
 ::: {.inpt}
 ```lean
 theorem Example_3_6_4 (U : Type) (A B C : Set U)
-(h1 : ∃ (x : U), x ∈ A ∩ B)
-(h2 : ∃ (x : U), x ∈ A ∩ C)
-(h3 : ∃! (x : U), x ∈ A) :
-∃ (x : U), x ∈ B ∩ C := by
+    (h1 : ∃ (x : U), x ∈ A ∩ B)
+    (h2 : ∃ (x : U), x ∈ A ∩ C)
+    (h3 : ∃! (x : U), x ∈ A) :
+    ∃ (x : U), x ∈ B ∩ C := by
   obtain (b : U) (h4 : b ∈ A ∩ B) from h1
   obtain (c : U) (h5 : c ∈ A ∩ C) from h2
   obtain (a : U) (h6 : a ∈ A) (h7 : ∀ (y z : U),
@@ -3401,10 +3416,10 @@ Now the right-hand sides of `h4` and `h5` tell us that we can prove the goal by 
 
 ```lean
 theorem Example_3_6_4 (U : Type) (A B C : Set U)
-(h1 : ∃ (x : U), x ∈ A ∩ B)
-(h2 : ∃ (x : U), x ∈ A ∩ C)
-(h3 : ∃! (x : U), x ∈ A) :
-∃ (x : U), x ∈ B ∩ C := by
+    (h1 : ∃ (x : U), x ∈ A ∩ B)
+    (h2 : ∃ (x : U), x ∈ A ∩ C)
+    (h3 : ∃! (x : U), x ∈ A) :
+    ∃ (x : U), x ∈ B ∩ C := by
   obtain (b : U) (h4 : b ∈ A ∩ B) from h1
   obtain (c : U) (h5 : c ∈ A ∩ C) from h2
   obtain (a : U) (h6 : a ∈ A) (h7 : ∀ (y z : U),
@@ -3431,7 +3446,7 @@ Before ending this section, we return to the question of how you can tell if a t
 ::: {.inpt}
 ```lean
 theorem union_comm {U : Type} (X Y : Set U) :
-X ∪ Y = Y ∪ X := by
+    X ∪ Y = Y ∪ X := by
   apply Set.ext
   fix x : U
 ```
@@ -3454,7 +3469,7 @@ To make the goal easier for the `library_search` tactic to recognize, we'll writ
 ::: {.inpt}
 ```lean
 theorem union_comm {U : Type} (X Y : Set U) :
-X ∪ Y = Y ∪ X := by
+    X ∪ Y = Y ∪ X := by
   apply Set.ext
   fix x : U
   define : x ∈ X ∪ Y
@@ -3478,7 +3493,7 @@ We have done these steps to give the `library_search` tactic the best chance of 
 
 ```lean
 theorem union_comm {U : Type} (X Y : Set U) :
-X ∪ Y = Y ∪ X := by
+    X ∪ Y = Y ∪ X := by
   apply Set.ext
   fix x : U
   define : x ∈ X ∪ Y
@@ -3516,7 +3531,7 @@ We begin with Theorem 3.3.7, which concerns divisibility of integers.  As in *HT
 ::: {.inpt}
 ```lean
 theorem Theorem_3_3_7 :
-∀ (a b c : Int), a ∣ b → b ∣ c → a ∣ c := by
+    ∀ (a b c : Int), a ∣ b → b ∣ c → a ∣ c := by
 ```
 :::
 
@@ -3534,7 +3549,7 @@ Of course, we begin the proof by introducing arbitrary integers `a`, `b`, and `c
 ::: {.inpt}
 ```lean
 theorem Theorem_3_3_7 :
-∀ (a b c : Int), a ∣ b → b ∣ c → a ∣ c := by
+    ∀ (a b c : Int), a ∣ b → b ∣ c → a ∣ c := by
   fix a : Int; fix b : Int; fix c : Int
   assume h1 : a ∣ b; assume h2 : b ∣ c
   define at h1; define at h2; define
@@ -3557,7 +3572,7 @@ We always use existential givens right away, so we use `h1` and `h2` to introduc
 ::: {.inpt}
 ```lean
 theorem Theorem_3_3_7 :
-∀ (a b c : Int), a ∣ b → b ∣ c → a ∣ c := by
+    ∀ (a b c : Int), a ∣ b → b ∣ c → a ∣ c := by
   fix a : Int; fix b : Int; fix c : Int
   assume h1 : a ∣ b; assume h2 : b ∣ c
   define at h1; define at h2; define
@@ -3586,7 +3601,7 @@ If we substitute the value for `b` given in `h3` into `h4`, we will see how to r
 ::: {.inpt}
 ```lean
 theorem Theorem_3_3_7 :
-∀ (a b c : Int), a ∣ b → b ∣ c → a ∣ c := by
+    ∀ (a b c : Int), a ∣ b → b ∣ c → a ∣ c := by
   fix a : Int; fix b : Int; fix c : Int
   assume h1 : a ∣ b; assume h2 : b ∣ c
   define at h1; define at h2; define
@@ -3616,7 +3631,7 @@ Looking at `h4`, we see that the value we should use for `c_1` in the goal is `m
 ::: {.inpt}
 ```lean
 theorem Theorem_3_3_7 :
-∀ (a b c : Int), a ∣ b → b ∣ c → a ∣ c := by
+    ∀ (a b c : Int), a ∣ b → b ∣ c → a ∣ c := by
   fix a : Int; fix b : Int; fix c : Int
   assume h1 : a ∣ b; assume h2 : b ∣ c
   define at h1; define at h2; define
@@ -3657,7 +3672,7 @@ Returning to our proof of Theorem 3.3.7, by three applications of universal inst
 ::: {.inpt}
 ```lean
 theorem Theorem_3_3_7 :
-∀ (a b c : Int), a ∣ b → b ∣ c → a ∣ c := by
+    ∀ (a b c : Int), a ∣ b → b ∣ c → a ∣ c := by
   fix a : Int; fix b : Int; fix c : Int
   assume h1 : a ∣ b; assume h2 : b ∣ c
   define at h1; define at h2; define
@@ -3689,7 +3704,7 @@ Of course, now `h4` really does match the goal exactly, so we can use it to comp
 
 ```lean
 theorem Theorem_3_3_7 :
-∀ (a b c : Int), a ∣ b → b ∣ c → a ∣ c := by
+    ∀ (a b c : Int), a ∣ b → b ∣ c → a ∣ c := by
   fix a : Int; fix b : Int; fix c : Int
   assume h1 : a ∣ b; assume h2 : b ∣ c
   define at h1; define at h2; define
@@ -3722,7 +3737,7 @@ Let's try writing the proof in Lean.  We use exactly the same strategy as in the
 ::: {.inpt}
 ```lean
 theorem Theorem_3_4_7 :
-∀ (n : Int), 6 ∣ n ↔ 2 ∣ n ∧ 3 ∣ n := by
+    ∀ (n : Int), 6 ∣ n ↔ 2 ∣ n ∧ 3 ∣ n := by
   fix n : Int
   apply Iff.intro
 ```
@@ -3746,7 +3761,7 @@ For the left-to-right direction, we assume `6 ∣ n`, and since the definition o
 ::: {.inpt}
 ```lean
 theorem Theorem_3_4_7 :
-∀ (n : Int), 6 ∣ n ↔ 2 ∣ n ∧ 3 ∣ n := by
+    ∀ (n : Int), 6 ∣ n ↔ 2 ∣ n ∧ 3 ∣ n := by
   fix n : Int
   apply Iff.intro
   -- (→)
@@ -3773,7 +3788,7 @@ Our goal is now a conjunction, so we prove the two conjuncts separately.  Focusi
 ::: {.inpt}
 ```lean
 theorem Theorem_3_4_7 :
-∀ (n : Int), 6 ∣ n ↔ 2 ∣ n ∧ 3 ∣ n := by
+    ∀ (n : Int), 6 ∣ n ↔ 2 ∣ n ∧ 3 ∣ n := by
   fix n : Int
   apply Iff.intro
   -- (→)
@@ -3802,7 +3817,7 @@ Since we have `n = 6 * k = 2 * 3 * k`, it looks like `3 * k` is the value we sho
 ::: {.inpt}
 ```lean
 theorem Theorem_3_4_7 :
-∀ (n : Int), 6 ∣ n ↔ 2 ∣ n ∧ 3 ∣ n := by
+    ∀ (n : Int), 6 ∣ n ↔ 2 ∣ n ∧ 3 ∣ n := by
   fix n : Int
   apply Iff.intro
   -- (→)
@@ -3832,7 +3847,7 @@ Once again, if you think carefully about it, you will see that in order to deduc
 ::: {.inpt}
 ```lean
 theorem Theorem_3_4_7 :
-∀ (n : Int), 6 ∣ n ↔ 2 ∣ n ∧ 3 ∣ n := by
+    ∀ (n : Int), 6 ∣ n ↔ 2 ∣ n ∧ 3 ∣ n := by
   fix n : Int
   apply Iff.intro
   -- (→)
@@ -3863,7 +3878,7 @@ Do we have to convince Lean that `2 * 3 = 6`?  No, remember that Lean works out 
 ::: {.inpt}
 ```lean
 theorem Theorem_3_4_7 :
-∀ (n : Int), 6 ∣ n ↔ 2 ∣ n ∧ 3 ∣ n := by
+    ∀ (n : Int), 6 ∣ n ↔ 2 ∣ n ∧ 3 ∣ n := by
   fix n : Int
   apply Iff.intro
   -- (→)
@@ -3895,7 +3910,7 @@ The proof of the next goal, `3 ∣ n`, is similar, and it completes the left-to-
 ::: {.inpt}
 ```lean
 theorem Theorem_3_4_7 :
-∀ (n : Int), 6 ∣ n ↔ 2 ∣ n ∧ 3 ∣ n := by
+    ∀ (n : Int), 6 ∣ n ↔ 2 ∣ n ∧ 3 ∣ n := by
   fix n : Int
   apply Iff.intro
   -- (→)
@@ -3928,7 +3943,7 @@ For the right-to-left direction, we begin by assuming `2 ∣ n ∧ 3 ∣ n`.  We
 ::: {.inpt}
 ```lean
 theorem Theorem_3_4_7 :
-∀ (n : Int), 6 ∣ n ↔ 2 ∣ n ∧ 3 ∣ n := by
+    ∀ (n : Int), 6 ∣ n ↔ 2 ∣ n ∧ 3 ∣ n := by
   fix n : Int
   apply Iff.intro
   -- (→)
@@ -3965,7 +3980,7 @@ The next step in the *HTPI* proof is a string of equations that proves $6(j - k)
 ::: {.inpt}
 ```lean
 theorem ??Theorem_3_4_7:: :
-∀ (n : Int), 6 ∣ n ↔ 2 ∣ n ∧ 3 ∣ n := by
+    ∀ (n : Int), 6 ∣ n ↔ 2 ∣ n ∧ 3 ∣ n := by
   fix n : Int
   apply Iff.intro
   -- (→)

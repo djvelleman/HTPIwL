@@ -40,13 +40,13 @@ We can write corresponding definitions in Lean as follows:
 
 ```lean
 def Dom {A B : Type} (R : Set (A × B)) : Set A :=
-  {a : A | ∃ (b : B), (a, b) ∈ R}
+    {a : A | ∃ (b : B), (a, b) ∈ R}
 def Ran {A B : Type} (R : Set (A × B)) : Set B :=
-  {b : B | ∃ (a : A), (a, b) ∈ R}
+    {b : B | ∃ (a : A), (a, b) ∈ R}
 def inv {A B : Type} (R : Set (A × B)) : Set (B × A) :=
-  {p : B × A | (p.2, p.1) ∈ R}
+    {p : B × A | (p.2, p.1) ∈ R}
 def comp {A B C : Type} (S : Set (B × C)) (R : Set (A × B)) :
-  Set (A × C) := {p : A × C | ∃ (b : B), (p.1, b) ∈ R ∧ (b, p.2) ∈ S}
+    Set (A × C) := {p : A × C | ∃ (b : B), (p.1, b) ∈ R ∧ (b, p.2) ∈ S}
 ```
 
 Definitions in Lean are introduced with the keyword `def`.  In the definition of `Dom`, we have declared `A` and `B` to be implicit parameters.  That means that if we have `R : Set (A × B)`, then we can just write `Dom R` for the domain of `R`, and Lean will figure out for itself what `A` and `B` are.  The definition declares that `Dom R` has type `Set A`, and then it defines it to be the set of all objects `a` of type `A` such that there is some `b` of type `B` with `(a, b) ∈ R`.  This is a direct translation, into Lean's type-theory language, of the first part of Definition 4.2.3.  The other three definitions are similar; they define `Ran R` to be the range of `R`, `inv R` to be the inverse of `R`, and `comp S R` to be the composition of `S` and `R`.
@@ -67,21 +67,21 @@ All five parts of this theorem follow directly from the definitions of the relev
 
 ```lean
 theorem Theorem_4_2_5_1 {A B : Type}
-(R : Set (A × B)) : inv (inv R) = R := by rfl
+    (R : Set (A × B)) : inv (inv R) = R := by rfl
 
 theorem Theorem_4_2_5_2 {A B : Type}
-(R : Set (A × B)) : Dom (inv R) = Ran R := by rfl
+    (R : Set (A × B)) : Dom (inv R) = Ran R := by rfl
 
 theorem Theorem_4_2_5_3 {A B : Type}
-(R : Set (A × B)) : Ran (inv R) = Dom R := by rfl
+    (R : Set (A × B)) : Ran (inv R) = Dom R := by rfl
 ```
 
 The fourth part will take a little more work to prove.  Here is a natural way to start the proof:
 
 ```lean
 theorem Theorem_4_2_5_4 {A B C : Type}
-(R : Set (A × B)) (S : Set (B × C)) (T : Set (C × D)) :
-comp T (comp S R) = comp (comp T S) R := by
+    (R : Set (A × B)) (S : Set (B × C)) (T : Set (C × D)) :
+    comp T (comp S R) = comp (comp T S) R := by
   apply Set.ext
   fix (a, d) : A × D
   apply Iff.intro
@@ -116,8 +116,8 @@ A better idea is to teach Lean to do a better job of using the definition of com
 
 ```lean
 theorem simp_comp
-{A B C : Type} (S : Set (B × C)) (R : Set (A × B)) (a : A) (c : C) :
-(a, c) ∈ comp S R ↔ ∃ (x : B), (a, x) ∈ R ∧ (x, c) ∈ S := by rfl
+    {A B C : Type} (S : Set (B × C)) (R : Set (A × B)) (a : A) (c : C) :
+    (a, c) ∈ comp S R ↔ ∃ (x : B), (a, x) ∈ R ∧ (x, c) ∈ S := by rfl
 ```
 
 Now, any time we have relations `R : Set (A × B)` and `S : (B × C)`, and objects `a : A` and `c : C`, the expression `simp_comp S R a c` will be a proof of the statement `(a, c) ∈ comp S R ↔ ∃ (x : B), (a, x) ∈ R ∧ (x, c) ∈ S`.  And that means that the tactic `rewrite [simp_comp S R a c]` will change `(a, c) ∈ comp S R` to `∃ (x : B), (a, x) ∈ R ∧ (x, c) ∈ S`, exactly as we wanted.  In fact, as we've seen before, you can just write `rewrite [simp_comp]`, and Lean will figure out how to apply the theorem `simp_comp` to rewrite some part of the goal.
@@ -126,8 +126,8 @@ Actually, it's more convenient to do the rewriting before the step `apply Iff.in
 
 ```lean
 theorem Theorem_4_2_5_4 {A B C : Type}
-(R : Set (A × B)) (S : Set (B × C)) (T : Set (C × D)) :
-comp T (comp S R) = comp (comp T S) R := by
+    (R : Set (A × B)) (S : Set (B × C)) (T : Set (C × D)) :
+    comp T (comp S R) = comp (comp T S) R := by
   apply Set.ext
   fix (a, d) : A × D
   rewrite [simp_comp, simp_comp]
@@ -151,8 +151,8 @@ Here is the complete proof.
 
 ```lean
 theorem Theorem_4_2_5_4 {A B C : Type}
-(R : Set (A × B)) (S : Set (B × C)) (T : Set (C × D)) :
-comp T (comp S R) = comp (comp T S) R := by
+    (R : Set (A × B)) (S : Set (B × C)) (T : Set (C × D)) :
+    comp T (comp S R) = comp (comp T S) R := by
   apply Set.ext
   fix (a, d) : A × D
   rewrite [simp_comp, simp_comp]
