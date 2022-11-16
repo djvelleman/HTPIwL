@@ -49,7 +49,7 @@ def comp {A B C : Type} (S : Set (B × C)) (R : Set (A × B)) :
     Set (A × C) := {p : A × C | ∃ (b : B), (p.1, b) ∈ R ∧ (b, p.2) ∈ S}
 ```
 
-Definitions in Lean are introduced with the keyword `def`.  In the definition of `Dom`, we have declared `A` and `B` to be implicit parameters.  That means that if we have `R : Set (A × B)`, then we can just write `Dom R` for the domain of `R`, and Lean will figure out for itself what `A` and `B` are.  The definition declares that `Dom R` has type `Set A`, and then it defines it to be the set of all objects `a` of type `A` such that there is some `b` of type `B` with `(a, b) ∈ R`.  This is a direct translation, into Lean's type-theory language, of the first part of Definition 4.2.3.  The other three definitions are similar; they define `Ran R` to be the range of `R`, `inv R` to be the inverse of `R`, and `comp S R` to be the composition of `S` and `R`.
+Definitions in Lean are introduced with the keyword `def`.  In the definition of `Dom`, we have declared `A` and `B` to be implicit arguments.  That means that if we have `R : Set (A × B)`, then we can just write `Dom R` for the domain of `R`, and Lean will figure out for itself what `A` and `B` are.  The definition declares that `Dom R` has type `Set A`, and then it defines it to be the set of all objects `a` of type `A` such that there is some `b` of type `B` with `(a, b) ∈ R`.  This is a direct translation, into Lean's type-theory language, of the first part of Definition 4.2.3.  The other three definitions are similar; they define `Ran R` to be the range of `R`, `inv R` to be the inverse of `R`, and `comp S R` to be the composition of `S` and `R`.
 
 Here is the main theorem about these concepts, as stated in *HTPI*:
 
