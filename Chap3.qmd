@@ -2005,7 +2005,7 @@ theorem Example_3_4_5 (U : Type)
 
 The name of the axiom of extensionality in Lean is `Set.ext`, and it is applied in the first step of the Lean proof.  As usual, the `apply` tactic works backwards from the goal.  In other words, after the first line of the proof, the goal is `∀ (x : U), x ∈ A ∩ (B \ C) ↔ x ∈ (A ∩ B) \ C`, because by `Set.ext`, the conclusion of the theorem would follow from this statement.  The rest of the proof then proves this goal by introducing an arbitrary `x` of type `U` and then proving the biconditional by stringing together several equivalences, exactly as in the *HTPI* proof.
 
-The proof of the biconditional is called a *calculational proof*, and it is introduced by the keyword `calc`.  The calculational proof consists of a string of biconditional statements, each of which is provided with a proof.  You can think of the underscore on the left-hand side of each biconditional after the first as standing for the right-hand side of the previous biconditional.
+The proof of the biconditional is called a *calculational proof*, and it is introduced by the keyword `calc`.  The calculational proof consists of a string of biconditional statements, each of which is provided with a proof.  You can think of the underscore on the left side of each biconditional after the first as standing for the right side of the previous biconditional.
 
 The proofs of the individual biconditionals in the calculational proof require some explanation.  Lean has a large library of theorems that it knows, and you can use those theorems in your proofs.  In particular, `Iff.refl` and `and_assoc` are names of theorems in Lean's library.  You can find out what any theorem says by using the Lean command `#check`.  (Commands that ask Lean for a response generally start with the character `#`.)  If you type `#check Iff.refl` in a Lean file, you will see Lean's response in the Infoview pane:  `Iff.refl : ∀ (a : Prop), a ↔ a`.  So `Iff.refl` is the name of the theorem `∀ (a : Prop), a ↔ a`.  (This theorem says that "iff" has a property called *reflexivity*; we'll discuss reflexivity in Chapter 4.)  Thus, by universal instantiation, for any proposition `a`, `Iff.refl a` is a proof of `a ↔ a`.  This is used to justify the first biconditional in the calculational proof.
 
@@ -3370,7 +3370,7 @@ h8 : b = c
 :::
 :::
 
-For our next step, we will need a new tactic.  Since we have `h8 : b = c`, we should be able to replace `b` with `c` anywhere it appears.  The tactic that allows us to do this called `rewrite`.  If `h` is a proof of any equation `s = t`, then `rewrite [h]` will replace all occurrences of `s` in the goal with `t`.  Notice that it is the left-hand side of the equation that is replaced with the right-hand side; if you want the replacement to go in the other direction, so that `t` is replaced with `s`, you can use `rewrite [←h]`.  (Alternatively, since `h.symm` is a proof of `t = s`, you can use `rewrite [h.symm]`.)  You can also apply the `rewrite` tactic to biconditional statements.  If you have `h : P ↔ Q`, then `rewrite [h]` will cause all occurrences of `P` in the goal to be replaced with `Q` (and `rewrite [←h]` will replace `Q` with `P`).
+For our next step, we will need a new tactic.  Since we have `h8 : b = c`, we should be able to replace `b` with `c` anywhere it appears.  The tactic that allows us to do this called `rewrite`.  If `h` is a proof of any equation `s = t`, then `rewrite [h]` will replace all occurrences of `s` in the goal with `t`.  Notice that it is the left side of the equation that is replaced with the right side; if you want the replacement to go in the other direction, so that `t` is replaced with `s`, you can use `rewrite [←h]`.  (Alternatively, since `h.symm` is a proof of `t = s`, you can use `rewrite [h.symm]`.)  You can also apply the `rewrite` tactic to biconditional statements.  If you have `h : P ↔ Q`, then `rewrite [h]` will cause all occurrences of `P` in the goal to be replaced with `Q` (and `rewrite [←h]` will replace `Q` with `P`).
 
 As with many other tactics, you can add `at h'` to specify that the replacement should be done in the given `h'` rather than the goal.  In our case, `rewrite [h8] at h4` will change both occurrences of `b` in `h4` to `c`.
 
@@ -3412,7 +3412,7 @@ h8 : b = c
 :::
 :::
 
-Now the right-hand sides of `h4` and `h5` tell us that we can prove the goal by plugging in `c` for `x`.  Here is the complete proof:
+Now the right sides of `h4` and `h5` tell us that we can prove the goal by plugging in `c` for `x`.  Here is the complete proof:
 
 ```lean
 theorem Example_3_6_4 (U : Type) (A B C : Set U)

@@ -4,7 +4,7 @@
 
 Section 4.1 of *How To Prove It* defines the *Cartesian product* $A \times B$ of two sets $A$ and $B$ to be the set of all ordered pairs $(a, b)$, where $a \in A$ and $b \in B$.  However, in Lean, Cartesian product is an operation on *types*, not sets.  If `A` and `B` are types, then `A × B` is the type of ordered pairs `(a, b)`, where `a` has type `A` and `b` has type `B`.  In other words, if you have `a : A` and `b : B`, then `(a, b)` is an object of type `A × B`.  There is also notation for the first and second coordinates of an ordered pair.  If `p` has type `A × B`, then `p.1` is the first coordinate of `p`, and `p.2` is the second coordinate.  In other words, `p = (p.1, p.2)`.  You can also use the notation `p.fst` for the first coordinate of `p` and `p.snd` for the second coordinate.
 
-## 4.2.  Relations
+## 4.2. Relations
 
 Section 4.2 of *HTPI* defines a *relation from $A$ to $B$* to be a subset of $A \times B$.  In other words, if $R$ is a relation from $A$ to $B$, then $R$ is a set whose element are ordered pairs $(a, b)$, where $a \in A$ and $b \in B$.  We will see in the next section that in Lean, it is convenient to use a somewhat different definition of relations.  Nevertheless, we will take some time in this section to study sets of ordered pairs.  If `A` and `B` are types, and `R` is a set whose elements are ordered pairs `(a, b)`, where `a` has type `A` and `b` has type `B`, then `R` has type `Set (A × B)`.
 
@@ -35,6 +35,8 @@ Finally, suppose $R$ is a relation from $A$ to $B$ and $S$ is a relation from $B
 $S \circ R = \{(a, c) \in A \times C \mid \exists b \in B((a, b) \in R \text{ and } (b, c) \in S)\}$.
 :::
 :::
+
+There are several examples in *HTPI* that illustrate these definitions.  We will focus here on seeing how to work with these concepts in Lean.
 
 We can write corresponding definitions in Lean as follows:
 
@@ -112,7 +114,7 @@ Usually, the `define` tactic does a good job of writing out definitions, but in 
 
 That solves the problem---this time.  But we're going to have to write out the definition of composition of relations several more times in this proof; will we have to fix Lean's awkward definition every time?
 
-A better idea is to teach Lean to do a better job of using the definition of composition.  We can do that by proving a preliminary theorem before proving part 4 of Theorem 4.2.5:
+Of course, one possibility is to simply skip the `define` step in the proof---as we've seen before, Lean doesn't need to be told to write out definitions.  But if you want write out definitions in this proof, we can teach Lean to do a better job of using the definition of composition by proving a preliminary theorem before proving part 4 of Theorem 4.2.5:
 
 ```lean
 theorem simp_comp
@@ -145,7 +147,7 @@ When we ask Lean to use the theorem `simp_comp`, it figures out that `simp_comp 
 `(a, d) ∈ comp T (comp S R) ↔ ∃ (x : C), (a, x) ∈ comp S R ∧ (x, d) ∈ T`,
 :::
 
-which can be used to rewrite the left-hand side of the goal.  To rewrite the right-hand side, we need a different application of the `simp_comp` theorem, `simp_comp (comp T S) R a d`.  So we have to ask Lean to apply the theorem a second time.
+which can be used to rewrite the left side of the goal.  To rewrite the right side, we need a different application of the `simp_comp` theorem, `simp_comp (comp T S) R a d`.  So we have to ask Lean to apply the theorem a second time.
 
 Here is the complete proof.
 
@@ -183,3 +185,83 @@ theorem Theorem_4_2_5_4 {A B C : Type}
 ```
 
 Of course, if you have trouble reading this proof, you can type it into Lean and see how the tactic state changes over the course of the proof.
+
+The proof of part 5 of the theorem is similar.  We start with a preliminary theorem to teach Lean to simplify statements about inverses:
+
+```lean
+theorem simp_inv {A B : Type} (R : Set (A × B)) (a : A) (b : B) :
+  (b, a) ∈ inv R ↔ (a, b) ∈ R := by rfl
+```
+
+We'll leave it as an exercise for you to apply this theorem to prove part 5 of Theorem 4.2.5.
+
+## 4.3. More About Relations
+
+Section 4.3 of *HTPI* introduces new notation for working with relations.  If $R \subseteq A \times B$, $a \in A$, and $b \in B$, then *HTPI* introduces the notation $aRb$ as an alternative way of saying $(a, b) \in R$.
+
+The notation we will use in Lean is slightly different.  Corresponding to the notation $aRb$ in *HTPI*, in Lean we will use the notation `R a b`.  And we cannot use this notation when `R` has type `Set (A × B)`.  Rather, we will need to introduce a new type for the variable `R` in the notation `R a b`.  The name we will use for this new type is `Rel A B`.  Thus, if `R` has type `Rel A B`, `a` has type `A`, and `b` has type `B`, then `R a b` is a proposition.  This should remind you of the way predicates work in Lean.  If we have `P : Pred A`, then we think of `P` as representing a property that an object of type `A` might have, and if we also have `a : A`, then `P a` is the proposition asserting that `a` has the property represented by `P`.  Similarly, if we have `R : Rel A B`, then we can think of `R` as representing a relationship that might hold between an object of type `A` and an object of type `B`, and if we also have `a : A` and `b : B`, then `R a b` is the proposition asserting that the relationship represented by `R` holds between `a` and `b`.
+
+Notice that in *HTPI*, the same variable $R$ is used in both the notation $aRb$ and $(a, b) \in R$.  But in Lean, the notation `R a b` is used when `R` has type `Rel A B`, and the notation `(a, b) ∈ R` is used when `R` has type `Set (A × B)`.  The types `Rel A B` and `Set (A × B)` are different, so we cannot use the same variable `R` in the two notations.  However, there is a correspondence between the two types.  Suppose `R` has type `Rel A B`.  If we let `R'` denote the set of all ordered pairs `(a, b) : A × B` such that the proposition `R a b` is true, then `R'` has type `Set (A × B)`.  And there is then a simple relationship between `R` and `R'`: for any objects `a : A` and `b : B`, the propositions `R a b` and `(a, b) ∈ R'` are equivalent.  For our work in Lean, we will say that `R` is a *relation* from `A` to `B`, and `R'` is the *extension* of `R`.
+
+We can define the extension of a relation in Lean as follows:
+
+```lean
+def extension {A B : Type} (R : Rel A B) : Set (A × B) :=
+    {p : A × B | R p.1 p.2}
+```
+
+And the relationship between `R` and its extension can be expressed by the following theorem:
+
+```lean
+theorem simp_ext {A B : Type} (R : Rel A B) (a : A) (b : B) :
+    (a, b) ∈ extension R ↔ R a b := by rfl
+```
+
+The rest of Chapter 4 of *HTPI* focuses on relations from a set to itself; in Lean, the corresponding idea is a relation from a type to itself.  If `A` is any type and `R` has type `Rel A A`, then we will say that `R` is a *binary relation on `A`*.  We define `BinRel A` to be the type of binary relations on `A`.  In other words, `BinRel A` is just an abbreviation for `Rel A A`.  If `R` is a binary relation on `A`, then we say that `R` is *reflexive* if for every `a` of type `A`, `R a a` holds.  It is *symmetric* if for all `a` and `b` of type `A`, if `R a b` then `R b a`.  And it is *transitive* if for all `a`, `b`, and `c` of type `A`, if `R a b` and `R b c` then `R a c`.  Of course, we can tell Lean about these definitions:
+
+```lean
+def reflexive {A : Type} (R : BinRel A) : Prop :=
+    ∀ (a : A), R a a
+def symmetric {A : Type} (R : BinRel A) : Prop :=
+    ∀ (a b : A), R a b → R b a
+def transitive {A : Type} (R : BinRel A) : Prop :=
+    ∀ (a b c : A), R a b → R b c → R a c
+```
+
+Once again, we refer you to *HTPI* to see examples of these concepts, and we focus here on proving theorems about these concepts in Lean.  The main theorem about these concepts in Section 4.3 of *HTPI* is Theorem 4.3.4.  Here is what it says:
+
+::: {.nthm arguments="Theorem 4.3.4"}
+Suppose $R$ is a relation on a set $A$.
+
+1.  $R$ is reflexive iff $\{(x, y) \in A \times A \mid x = y\} \subseteq R$.
+2.  $R$ is symmetric iff $R = R^{-1}$.
+3.  $R$ is transitive iff $R \circ R \subseteq R$.
+:::
+
+We can prove corresponding statements in Lean, but we'll have to be careful to distinguish between the types `BinRel A` and `Set (A × A)`.  In *HTPI*, each statement uses the same letter $R$ on both sides of the "iff", but we can't write the statements that way in Lean.  In each statement, the part before "iff" uses a concept that was defined for objects of type `BinRel A`, whereas the part after "iff" uses concepts that only make sense for objects of type `Set (A × A)`.  So we'll have to rephrase the statements by using the correspondence between a relation `R` of type `BinRel A` and its extension, which has type `Set (A × A)`.  Here's the Lean theorem corresponding to statement 2 of Theorem 4.3.4:
+
+```lean
+theorem Theorem_4_3_4_2 {A : Type} (R : BinRel A) :
+    symmetric R ↔ extension R = inv (extension R) := by
+  apply Iff.intro
+  -- (→)
+  assume h1 : symmetric R
+  apply Set.ext
+  fix (a, b) : A × A
+      --Goal:  (a, b) ∈ extension R ↔ (a, b) ∈ inv (extension R)
+  rewrite [simp_inv, simp_ext, simp_ext]  --Goal:  R a b ↔ R b a
+  define at h1  --h1: ∀ (a b : A), R a b → R b a
+  show R a b ↔ R b a from Iff.intro (h1 a b) (h1 b a)
+  -- (←)
+  assume h1 : extension R = inv (extension R)
+  define  --Goal:  ∀ (a b : A), R a b → R b a
+  fix a : A; fix b : A
+  assume h2 : R a b  --Goal:  R b a
+  have h3 : (a, b) ∈ extension R := (simp_ext R a b).rtl h2
+  rewrite [h1, simp_inv, simp_ext] at h3  --h3 : R b a
+  show R b a from h3
+```
+
+We'll leave the proofs of the other two statements as exercises for you.
+
+## 4.4. Ordering Relations
