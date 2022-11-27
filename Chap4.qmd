@@ -2,7 +2,7 @@
 
 ## 4.1. Ordered Pairs and Cartesian Products
 
-Section 4.1 of *How To Prove It* defines the *Cartesian product* $A \times B$ of two sets $A$ and $B$ to be the set of all ordered pairs $(a, b)$, where $a \in A$ and $b \in B$.  However, in Lean, Cartesian product is an operation on *types*, not sets.  If `A` and `B` are types, then `A × B` is the type of ordered pairs `(a, b)`, where `a` has type `A` and `b` has type `B`.  In other words, if you have `a : A` and `b : B`, then `(a, b)` is an object of type `A × B`.  There is also notation for the first and second coordinates of an ordered pair.  If `p` has type `A × B`, then `p.1` is the first coordinate of `p`, and `p.2` is the second coordinate.  In other words, `p = (p.1, p.2)`.  You can also use the notation `p.fst` for the first coordinate of `p` and `p.snd` for the second coordinate.
+Section 4.1 of *How To Prove It* defines the *Cartesian product* $A \times B$ of two sets $A$ and $B$ to be the set of all ordered pairs $(a, b)$, where $a \in A$ and $b \in B$.  However, in Lean, Cartesian product is an operation on *types*, not sets.  If `A` and `B` are types, then `A × B` is the type of ordered pairs `(a, b)`, where `a` has type `A` and `b` has type `B`.  In other words, if you have `a : A` and `b : B`, then `(a, b)` is an object of type `A × B`.  There is also notation for the first and second coordinates of an ordered pair.  If `p` has type `A × B`, then `p.1` is the first coordinate of `p`, and `p.2` is the second coordinate.  This means that `p = (p.1, p.2)`.  You can also use the notation `p.fst` for the first coordinate of `p` and `p.snd` for the second coordinate.
 
 ## 4.2. Relations
 
@@ -46,9 +46,9 @@ def Dom {A B : Type} (R : Set (A × B)) : Set A :=
 def Ran {A B : Type} (R : Set (A × B)) : Set B :=
     {b : B | ∃ (a : A), (a, b) ∈ R}
 def inv {A B : Type} (R : Set (A × B)) : Set (B × A) :=
-    {p : B × A | (p.2, p.1) ∈ R}
+    {(b, a) : B × A | (a, b) ∈ R}
 def comp {A B C : Type} (S : Set (B × C)) (R : Set (A × B)) :
-    Set (A × C) := {p : A × C | ∃ (b : B), (p.1, b) ∈ R ∧ (b, p.2) ∈ S}
+    Set (A × C) := {(a, c) : A × C | ∃ (x : B), (a, x) ∈ R ∧ (x, c) ∈ S}
 ```
 
 Definitions in Lean are introduced with the keyword `def`.  In the definition of `Dom`, we have declared that `A` and `B` are implicit arguments and `R` is an explicit argument.  That means that if we have `R : Set (A × B)`, then we can just write `Dom R` for the domain of `R`, and Lean will figure out for itself what `A` and `B` are.  After the list of arguments there is a colon and then the type of `Dom R`, which is `Set A`.  This is followed by `:=` and then the definition of `Dom R`.  The definition says that `Dom R` is the set of all objects `a` of type `A` such that there is some `b` of type `B` with `(a, b) ∈ R`.  This is a direct translation, into Lean's type-theory language, of the first part of Definition 4.2.3.  The other three definitions are similar; they define `Ran R` to be the range of `R`, `inv R` to be the inverse of `R`, and `comp S R` to be the composition of `S` and `R`.
@@ -78,7 +78,7 @@ theorem Theorem_4_2_5_3 {A B : Type}
     (R : Set (A × B)) : Ran (inv R) = Dom R := by rfl
 ```
 
-The fourth part will take a little more work to prove.  Here is a natural way to start the proof:
+The fourth part will take a little more work to prove.  We start the proof like this:
 
 ```lean
 theorem Theorem_4_2_5_4 {A B C D : Type}
@@ -86,10 +86,6 @@ theorem Theorem_4_2_5_4 {A B C D : Type}
     comp T (comp S R) = comp (comp T S) R := by
   apply Set.ext
   fix (a, d) : A × D
-  apply Iff.intro
-  -- (→)
-  assume h1 : (a, d) ∈ comp T (comp S R)
-  define
 ```
 
 After the `apply Set.ext` tactic, the goal is
@@ -98,91 +94,9 @@ After the `apply Set.ext` tactic, the goal is
 `∀ (x : A × D), x ∈ comp T (comp S R) ↔ x ∈ comp (comp T S) R`
 :::
 
-The next step should be to introduce an arbitrary object of type `A × D`.  We could just call this object `x`, but Lean let's us use a shortcut here.  An object of type `A × D` must have the form of an ordered pair, where the first coordinate has type `A` and the second has type `D`.  So Lean let's us write it as an ordered pair right away.  That's what we've done in the second step, `fix (a, d) : A × D`.  This tactic introduces two new variables into the proof, `a : A` and `d : D`.  (The proof in *HTPI* uses a similar shortcut.)
-
-After introducing the arbitrary ordered pair `(a, d)`, we must prove a biconditional statement, so we try to prove the two directions separately.  For the left-to-right direction, we assume `h1 : (a, d) ∈ comp T (comp S R)`, and we must prove `(a, d) ∈ comp (comp T S) R`.  When we ask Lean to write out the definition of the goal, the result is:
-
-::: {.quote}
-`∃ b, ((a, d).fst, b) ∈ R ∧ (b, (a, d).snd) ∈ comp T S`
-:::
-
-Usually, the `define` tactic does a good job of writing out definitions, but in this case it has let us down a bit.  The definition isn't wrong, but it's not written in the most convenient form.  We can improve on the result by using the tactics `define : (a, d).fst` and `define : (a, d).snd`, which put the goal into this form:
-
-::: {.quote}
-`∃ b, (a, b) ∈ R ∧ (b, d) ∈ comp T S`
-:::
-
-That solves the problem---this time.  But we're going to have to write out the definition of composition of relations several more times in this proof; will we have to fix Lean's awkward definition every time?
-
-Of course, one possibility is to simply skip the `define` step in the proof---as we've seen before, Lean doesn't need to be told to write out definitions.  But if you want write out definitions in this proof, we can teach Lean to do a better job of using the definition of composition by proving a preliminary theorem before proving part 4 of Theorem 4.2.5:
-
-```lean
-theorem simp_comp
-    {A B C : Type} (S : Set (B × C)) (R : Set (A × B)) (a : A) (c : C) :
-    (a, c) ∈ comp S R ↔ ∃ (x : B), (a, x) ∈ R ∧ (x, c) ∈ S := by rfl
-```
-
-Now, any time we have relations `R : Set (A × B)` and `S : (B × C)`, and objects `a : A` and `c : C`, the expression `simp_comp S R a c` will be a proof of the statement `(a, c) ∈ comp S R ↔ ∃ (x : B), (a, x) ∈ R ∧ (x, c) ∈ S`.  And that means that the tactic `rewrite [simp_comp S R a c]` will change `(a, c) ∈ comp S R` to `∃ (x : B), (a, x) ∈ R ∧ (x, c) ∈ S`, exactly as we wanted.  In fact, as we've seen before, you can just write `rewrite [simp_comp]`, and Lean will figure out how to apply the theorem `simp_comp` to rewrite some part of the goal.
-
-Actually, it's more convenient to do the rewriting before the step `apply Iff.intro`---otherwise we'd have to do it twice, once for each direction of the biconditional proof.  So now we start the proof like this:
-
-```lean
-theorem Theorem_4_2_5_4 {A B C D : Type}
-    (R : Set (A × B)) (S : Set (B × C)) (T : Set (C × D)) :
-    comp T (comp S R) = comp (comp T S) R := by
-  apply Set.ext
-  fix (a, d) : A × D
-  rewrite [simp_comp, simp_comp]
-```
-
-Why did we list `simp_comp` twice in the `rewrite` tactic?  After the step `fix (a, d) : A × D`, the goal is
-
-::: {.quote}
-`(a, d) ∈ comp T (comp S R) ↔ (a, d) ∈ comp (comp T S) R`
-:::
-
-When we ask Lean to use the theorem `simp_comp`, it figures out that `simp_comp T (comp S R) a d` is a proof of the statement
-
-::: {.ind}
-`(a, d) ∈ comp T (comp S R) ↔ ∃ (x : C), (a, x) ∈ comp S R ∧ (x, d) ∈ T`,
-:::
-
-which can be used to rewrite the left side of the goal.  To rewrite the right side, we need a different application of the `simp_comp` theorem, `simp_comp (comp T S) R a d`.  So we have to ask Lean to apply the theorem a second time.
+The next step should be to introduce an arbitrary object of type `A × D`.  We could just call this object `x`, but Lean let's us use a shortcut here.  An object of type `A × D` must have the form of an ordered pair, where the first coordinate has type `A` and the second has type `D`.  So Lean let's us write it as an ordered pair right away.  That's what we've done in the second step, `fix (a, d) : A × D`.  This tactic introduces two new variables into the proof, `a : A` and `d : D`.  (The proof in *HTPI* uses a similar shortcut.  And we used a similar shortcut in the definitions of `inv R` and `comp R`, where the elements of these sets were written as ordered pairs.)
 
 Here is the complete proof.
-
-```lean
-theorem Theorem_4_2_5_4 {A B C D : Type}
-    (R : Set (A × B)) (S : Set (B × C)) (T : Set (C × D)) :
-    comp T (comp S R) = comp (comp T S) R := by
-  apply Set.ext
-  fix (a, d) : A × D
-  rewrite [simp_comp, simp_comp]
-    --Goal:  (∃ (x : C), (a, x) ∈ comp S R ∧ (x, d) ∈ T) ↔
-    --           ∃ (x : B), (a, x) ∈ R ∧ (x, d) ∈ comp T S
-  apply Iff.intro
-  -- (→)
-  assume h1 : ∃ (x : C), (a, x) ∈ comp S R ∧ (x, d) ∈ T
-  obtain (c : C) (h2 : (a, c) ∈ comp S R ∧ (c, d) ∈ T) from h1
-  rewrite [simp_comp] at h2
-    --h2: (∃ (x : B), (a, x) ∈ R ∧ (x, c) ∈ S) ∧ (c, d) ∈ T
-  obtain (b : B) (h3 : (a, b) ∈ R ∧ (b, c) ∈ S) from h2.left
-  apply Exists.intro b --Goal:  (a, b) ∈ R ∧ (b, d) ∈ comp T S
-  apply And.intro h3.left
-  rewrite [simp_comp]  --Goal:  ∃ (x : C), (b, x) ∈ S ∧ (x, d) ∈ T
-  show ∃ (x : C), (b, x) ∈ S ∧ (x, d) ∈ T from
-    Exists.intro c (And.intro h3.right h2.right)
-  -- (←)
-  assume h1 : ∃ (x : B), (a, x) ∈ R ∧ (x, d) ∈ comp T S
-  obtain (b : B) (h2 : (a, b) ∈ R ∧ (b, d) ∈ comp T S) from h1
-  rewrite [simp_comp] at h2
-  obtain (c : C) (h3 : (b, c) ∈ S ∧ (c, d) ∈ T) from h2.right
-  apply Exists.intro c
-  apply And.intro _ h3.right
-  rewrite [simp_comp]
-  show ∃ (x : B), (a, x) ∈ R ∧ (x, c) ∈ S from
-    Exists.intro b (And.intro h2.left h3.left)
-```
 
 ```lean
 theorem Theorem_4_2_5_4 {A B C D : Type}
@@ -221,14 +135,7 @@ theorem Theorem_4_2_5_4 {A B C D : Type}
 
 Of course, if you have trouble reading this proof, you can type it into Lean and see how the tactic state changes over the course of the proof.
 
-The proof of part 5 of the theorem is similar.  We start with a preliminary theorem to teach Lean to simplify statements about inverses:
-
-```lean
-theorem simp_inv {A B : Type} (R : Set (A × B)) (a : A) (b : B) :
-  (b, a) ∈ inv R ↔ (a, b) ∈ R := by rfl
-```
-
-We'll leave it as an exercise for you to apply this theorem to prove part 5 of Theorem 4.2.5.
+The proof of part 5 of the theorem is similar.  We'll leave it as an exercise for you.
 
 ## 4.3. More About Relations
 
@@ -242,14 +149,7 @@ We can define the extension of a relation in Lean as follows:
 
 ```lean
 def extension {A B : Type} (R : Rel A B) : Set (A × B) :=
-    {p : A × B | R p.1 p.2}
-```
-
-And the relationship between `R` and its extension can be expressed by the following theorem:
-
-```lean
-theorem simp_ext {A B : Type} (R : Rel A B) (a : A) (b : B) :
-    (a, b) ∈ extension R ↔ R a b := by rfl
+    {(a, b) : A × B | R a b}
 ```
 
 The rest of Chapter 4 of *HTPI* focuses on relations from a set to itself; in Lean, the corresponding idea is a relation from a type to itself.  If `A` is any type and `R` has type `Rel A A`, then we will say that `R` is a *binary relation on `A`*.  We define `BinRel A` to be the type of binary relations on `A`.  In other words, `BinRel A` is just an abbreviation for `Rel A A`.  If `R` is a binary relation on `A`, then we say that `R` is *reflexive* if for every `a` of type `A`, `R a a` holds.  It is *symmetric* if for all `a` and `b` of type `A`, if `R a b` then `R b a`.  And it is *transitive* if for all `a`, `b`, and `c` of type `A`, if `R a b` and `R b c` then `R a c`.  Of course, we can tell Lean about these definitions:
@@ -283,8 +183,10 @@ theorem Theorem_4_3_4_2 {A : Type} (R : BinRel A) :
   assume h1 : symmetric R
   apply Set.ext
   fix (a, b) : A × A
-      --Goal:  (a, b) ∈ extension R ↔ (a, b) ∈ inv (extension R)
-  rewrite [simp_inv, simp_ext, simp_ext]  --Goal:  R a b ↔ R b a
+  --Goal:  (a, b) ∈ extension R ↔ (a, b) ∈ inv (extension R)
+  --Next we fill in the definitions of both sides of the goal
+  define : (a, b) ∈ extension R
+  define : (a, b) ∈ inv (extension R)  --Goal:  R a b ↔ R b a
   define at h1  --h1: ∀ (a b : A), R a b → R b a
   show R a b ↔ R b a from Iff.intro (h1 a b) (h1 b a)
   -- (←)
@@ -292,8 +194,9 @@ theorem Theorem_4_3_4_2 {A : Type} (R : BinRel A) :
   define  --Goal:  ∀ (a b : A), R a b → R b a
   fix a : A; fix b : A
   assume h2 : R a b  --Goal:  R b a
-  have h3 : (a, b) ∈ extension R := (simp_ext R a b).rtl h2
-  rewrite [h1, simp_inv, simp_ext] at h3  --h3 : R b a
+  have h3 : (a, b) ∈ extension R := h2  --h3, h2 are definitionally equal
+  rewrite [h1] at h3
+  define at h3
   show R b a from h3
 ```
 

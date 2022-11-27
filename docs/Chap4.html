@@ -230,7 +230,7 @@ $$
 
 <section id="ordered-pairs-and-cartesian-products" class="level2">
 <h2 class="anchored" data-anchor-id="ordered-pairs-and-cartesian-products">4.1. Ordered Pairs and Cartesian Products</h2>
-<p>Section 4.1 of <em>How To Prove It</em> defines the <em>Cartesian product</em> <span class="math inline">\(A \times B\)</span> of two sets <span class="math inline">\(A\)</span> and <span class="math inline">\(B\)</span> to be the set of all ordered pairs <span class="math inline">\((a, b)\)</span>, where <span class="math inline">\(a \in A\)</span> and <span class="math inline">\(b \in B\)</span>. However, in Lean, Cartesian product is an operation on <em>types</em>, not sets. If <code>A</code> and <code>B</code> are types, then <code>A × B</code> is the type of ordered pairs <code>(a, b)</code>, where <code>a</code> has type <code>A</code> and <code>b</code> has type <code>B</code>. In other words, if you have <code>a : A</code> and <code>b : B</code>, then <code>(a, b)</code> is an object of type <code>A × B</code>. There is also notation for the first and second coordinates of an ordered pair. If <code>p</code> has type <code>A × B</code>, then <code>p.1</code> is the first coordinate of <code>p</code>, and <code>p.2</code> is the second coordinate. In other words, <code>p = (p.1, p.2)</code>. You can also use the notation <code>p.fst</code> for the first coordinate of <code>p</code> and <code>p.snd</code> for the second coordinate.</p>
+<p>Section 4.1 of <em>How To Prove It</em> defines the <em>Cartesian product</em> <span class="math inline">\(A \times B\)</span> of two sets <span class="math inline">\(A\)</span> and <span class="math inline">\(B\)</span> to be the set of all ordered pairs <span class="math inline">\((a, b)\)</span>, where <span class="math inline">\(a \in A\)</span> and <span class="math inline">\(b \in B\)</span>. However, in Lean, Cartesian product is an operation on <em>types</em>, not sets. If <code>A</code> and <code>B</code> are types, then <code>A × B</code> is the type of ordered pairs <code>(a, b)</code>, where <code>a</code> has type <code>A</code> and <code>b</code> has type <code>B</code>. In other words, if you have <code>a : A</code> and <code>b : B</code>, then <code>(a, b)</code> is an object of type <code>A × B</code>. There is also notation for the first and second coordinates of an ordered pair. If <code>p</code> has type <code>A × B</code>, then <code>p.1</code> is the first coordinate of <code>p</code>, and <code>p.2</code> is the second coordinate. This means that <code>p = (p.1, p.2)</code>. You can also use the notation <code>p.fst</code> for the first coordinate of <code>p</code> and <code>p.snd</code> for the second coordinate.</p>
 </section>
 <section id="relations" class="level2">
 <h2 class="anchored" data-anchor-id="relations">4.2. Relations</h2>
@@ -261,9 +261,9 @@ $$
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> Ran {A B : <span class="kw">Type</span>} (R : Set (A × B)) : Set B :=</span>
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>    {b : B | ∃ (a : A), (a, b) ∈ R}</span>
 <span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> inv {A B : <span class="kw">Type</span>} (R : Set (A × B)) : Set (B × A) :=</span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>    {p : B × A | (p.2, p.1) ∈ R}</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>    {(b, a) : B × A | (a, b) ∈ R}</span>
 <span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> comp {A B C : <span class="kw">Type</span>} (S : Set (B × C)) (R : Set (A × B)) :</span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>    Set (A × C) := {p : A × C | ∃ (b : B), (p.1, b) ∈ R ∧ (b, p.2) ∈ S}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>    Set (A × C) := {(a, c) : A × C | ∃ (x : B), (a, x) ∈ R ∧ (x, c) ∈ S}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>Definitions in Lean are introduced with the keyword <code>def</code>. In the definition of <code>Dom</code>, we have declared that <code>A</code> and <code>B</code> are implicit arguments and <code>R</code> is an explicit argument. That means that if we have <code>R : Set (A × B)</code>, then we can just write <code>Dom R</code> for the domain of <code>R</code>, and Lean will figure out for itself what <code>A</code> and <code>B</code> are. After the list of arguments there is a colon and then the type of <code>Dom R</code>, which is <code>Set A</code>. This is followed by <code>:=</code> and then the definition of <code>Dom R</code>. The definition says that <code>Dom R</code> is the set of all objects <code>a</code> of type <code>A</code> such that there is some <code>b</code> of type <code>B</code> with <code>(a, b) ∈ R</code>. This is a direct translation, into Lean’s type-theory language, of the first part of Definition 4.2.3. The other three definitions are similar; they define <code>Ran R</code> to be the range of <code>R</code>, <code>inv R</code> to be the inverse of <code>R</code>, and <code>comp S R</code> to be the composition of <code>S</code> and <code>R</code>.</p>
 <p>Here is the main theorem about these concepts, as stated in <em>HTPI</em>:</p>
 <div class="nthm" data-arguments="Theorem 4.2.5">
@@ -285,119 +285,52 @@ $$
 <span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Theorem_4_2_5_3 {A B : <span class="kw">Type</span>}</span>
 <span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>    (R : Set (A × B)) : Ran (inv R) = Dom R := <span class="kw">by</span> <span class="kw">rfl</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>The fourth part will take a little more work to prove. Here is a natural way to start the proof:</p>
+<p>The fourth part will take a little more work to prove. We start the proof like this:</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Theorem_4_2_5_4 {A B C D : <span class="kw">Type</span>}</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>    (R : Set (A × B)) (S : Set (B × C)) (T : Set (C × D)) :</span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>    comp T (comp S R) = comp (comp T S) R := <span class="kw">by</span></span>
 <span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>  <span class="kw">apply</span> Set.ext</span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>  <span class="kw">fix</span> (a, d) : A × D</span>
-<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>  <span class="kw">apply</span> Iff.intro</span>
-<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>  <span class="co">-- (→)</span></span>
-<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>  <span class="kw">assume</span> h1 : (a, d) ∈ comp T (comp S R)</span>
-<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>  <span class="kw">define</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>  <span class="kw">fix</span> (a, d) : A × D</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>After the <code>apply Set.ext</code> tactic, the goal is</p>
 <div class="quote">
 <p><code>∀ (x : A × D), x ∈ comp T (comp S R) ↔︎ x ∈ comp (comp T S) R</code></p>
 </div>
-<p>The next step should be to introduce an arbitrary object of type <code>A × D</code>. We could just call this object <code>x</code>, but Lean let’s us use a shortcut here. An object of type <code>A × D</code> must have the form of an ordered pair, where the first coordinate has type <code>A</code> and the second has type <code>D</code>. So Lean let’s us write it as an ordered pair right away. That’s what we’ve done in the second step, <code>fix (a, d) : A × D</code>. This tactic introduces two new variables into the proof, <code>a : A</code> and <code>d : D</code>. (The proof in <em>HTPI</em> uses a similar shortcut.)</p>
-<p>After introducing the arbitrary ordered pair <code>(a, d)</code>, we must prove a biconditional statement, so we try to prove the two directions separately. For the left-to-right direction, we assume <code>h1 : (a, d) ∈ comp T (comp S R)</code>, and we must prove <code>(a, d) ∈ comp (comp T S) R</code>. When we ask Lean to write out the definition of the goal, the result is:</p>
-<div class="quote">
-<p><code>∃ b, ((a, d).fst, b) ∈ R ∧ (b, (a, d).snd) ∈ comp T S</code></p>
-</div>
-<p>Usually, the <code>define</code> tactic does a good job of writing out definitions, but in this case it has let us down a bit. The definition isn’t wrong, but it’s not written in the most convenient form. We can improve on the result by using the tactics <code>define : (a, d).fst</code> and <code>define : (a, d).snd</code>, which put the goal into this form:</p>
-<div class="quote">
-<p><code>∃ b, (a, b) ∈ R ∧ (b, d) ∈ comp T S</code></p>
-</div>
-<p>That solves the problem—this time. But we’re going to have to write out the definition of composition of relations several more times in this proof; will we have to fix Lean’s awkward definition every time?</p>
-<p>Of course, one possibility is to simply skip the <code>define</code> step in the proof—as we’ve seen before, Lean doesn’t need to be told to write out definitions. But if you want write out definitions in this proof, we can teach Lean to do a better job of using the definition of composition by proving a preliminary theorem before proving part 4 of Theorem 4.2.5:</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> simp_comp</span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>    {A B C : <span class="kw">Type</span>} (S : Set (B × C)) (R : Set (A × B)) (a : A) (c : C) :</span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>    (a, c) ∈ comp S R ↔ ∃ (x : B), (a, x) ∈ R ∧ (x, c) ∈ S := <span class="kw">by</span> <span class="kw">rfl</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>Now, any time we have relations <code>R : Set (A × B)</code> and <code>S : (B × C)</code>, and objects <code>a : A</code> and <code>c : C</code>, the expression <code>simp_comp S R a c</code> will be a proof of the statement <code>(a, c) ∈ comp S R ↔︎ ∃ (x : B), (a, x) ∈ R ∧ (x, c) ∈ S</code>. And that means that the tactic <code>rewrite [simp_comp S R a c]</code> will change <code>(a, c) ∈ comp S R</code> to <code>∃ (x : B), (a, x) ∈ R ∧ (x, c) ∈ S</code>, exactly as we wanted. In fact, as we’ve seen before, you can just write <code>rewrite [simp_comp]</code>, and Lean will figure out how to apply the theorem <code>simp_comp</code> to rewrite some part of the goal.</p>
-<p>Actually, it’s more convenient to do the rewriting before the step <code>apply Iff.intro</code>—otherwise we’d have to do it twice, once for each direction of the biconditional proof. So now we start the proof like this:</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Theorem_4_2_5_4 {A B C D : <span class="kw">Type</span>}</span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>    (R : Set (A × B)) (S : Set (B × C)) (T : Set (C × D)) :</span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>    comp T (comp S R) = comp (comp T S) R := <span class="kw">by</span></span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>  <span class="kw">apply</span> Set.ext</span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>  <span class="kw">fix</span> (a, d) : A × D</span>
-<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>  <span class="kw">rewrite</span> [simp_comp, simp_comp]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>Why did we list <code>simp_comp</code> twice in the <code>rewrite</code> tactic? After the step <code>fix (a, d) : A × D</code>, the goal is</p>
-<div class="quote">
-<p><code>(a, d) ∈ comp T (comp S R) ↔︎ (a, d) ∈ comp (comp T S) R</code></p>
-</div>
-<p>When we ask Lean to use the theorem <code>simp_comp</code>, it figures out that <code>simp_comp T (comp S R) a d</code> is a proof of the statement</p>
-<div class="ind">
-<p><code>(a, d) ∈ comp T (comp S R) ↔︎ ∃ (x : C), (a, x) ∈ comp S R ∧ (x, d) ∈ T</code>,</p>
-</div>
-<p>which can be used to rewrite the left side of the goal. To rewrite the right side, we need a different application of the <code>simp_comp</code> theorem, <code>simp_comp (comp T S) R a d</code>. So we have to ask Lean to apply the theorem a second time.</p>
+<p>The next step should be to introduce an arbitrary object of type <code>A × D</code>. We could just call this object <code>x</code>, but Lean let’s us use a shortcut here. An object of type <code>A × D</code> must have the form of an ordered pair, where the first coordinate has type <code>A</code> and the second has type <code>D</code>. So Lean let’s us write it as an ordered pair right away. That’s what we’ve done in the second step, <code>fix (a, d) : A × D</code>. This tactic introduces two new variables into the proof, <code>a : A</code> and <code>d : D</code>. (The proof in <em>HTPI</em> uses a similar shortcut. And we used a similar shortcut in the definitions of <code>inv R</code> and <code>comp R</code>, where the elements of these sets were written as ordered pairs.)</p>
 <p>Here is the complete proof.</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Theorem_4_2_5_4 {A B C D : <span class="kw">Type</span>}</span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>    (R : Set (A × B)) (S : Set (B × C)) (T : Set (C × D)) :</span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>    comp T (comp S R) = comp (comp T S) R := <span class="kw">by</span></span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>  <span class="kw">apply</span> Set.ext</span>
-<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>  <span class="kw">fix</span> (a, d) : A × D</span>
-<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>  <span class="kw">rewrite</span> [simp_comp, simp_comp]</span>
-<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>    <span class="co">--Goal:  (∃ (x : C), (a, x) ∈ comp S R ∧ (x, d) ∈ T) ↔</span></span>
-<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>    <span class="co">--           ∃ (x : B), (a, x) ∈ R ∧ (x, d) ∈ comp T S</span></span>
-<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>  <span class="kw">apply</span> Iff.intro</span>
-<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>  <span class="co">-- (→)</span></span>
-<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>  <span class="kw">assume</span> h1 : ∃ (x : C), (a, x) ∈ comp S R ∧ (x, d) ∈ T</span>
-<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>  <span class="kw">obtain</span> (c : C) (h2 : (a, c) ∈ comp S R ∧ (c, d) ∈ T) <span class="kw">from</span> h1</span>
-<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>  <span class="kw">rewrite</span> [simp_comp] <span class="kw">at</span> h2</span>
-<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a>    <span class="co">--h2: (∃ (x : B), (a, x) ∈ R ∧ (x, c) ∈ S) ∧ (c, d) ∈ T</span></span>
-<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a>  <span class="kw">obtain</span> (b : B) (h3 : (a, b) ∈ R ∧ (b, c) ∈ S) <span class="kw">from</span> h2.left</span>
-<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a>  <span class="kw">apply</span> Exists.intro b <span class="co">--Goal:  (a, b) ∈ R ∧ (b, d) ∈ comp T S</span></span>
-<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a>  <span class="kw">apply</span> And.intro h3.left</span>
-<span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a>  <span class="kw">rewrite</span> [simp_comp]  <span class="co">--Goal:  ∃ (x : C), (b, x) ∈ S ∧ (x, d) ∈ T</span></span>
-<span id="cb6-19"><a href="#cb6-19" aria-hidden="true" tabindex="-1"></a>  <span class="kw">show</span> ∃ (x : C), (b, x) ∈ S ∧ (x, d) ∈ T <span class="kw">from</span></span>
-<span id="cb6-20"><a href="#cb6-20" aria-hidden="true" tabindex="-1"></a>    Exists.intro c (And.intro h3.right h2.right)</span>
-<span id="cb6-21"><a href="#cb6-21" aria-hidden="true" tabindex="-1"></a>  <span class="co">-- (←)</span></span>
-<span id="cb6-22"><a href="#cb6-22" aria-hidden="true" tabindex="-1"></a>  <span class="kw">assume</span> h1 : ∃ (x : B), (a, x) ∈ R ∧ (x, d) ∈ comp T S</span>
-<span id="cb6-23"><a href="#cb6-23" aria-hidden="true" tabindex="-1"></a>  <span class="kw">obtain</span> (b : B) (h2 : (a, b) ∈ R ∧ (b, d) ∈ comp T S) <span class="kw">from</span> h1</span>
-<span id="cb6-24"><a href="#cb6-24" aria-hidden="true" tabindex="-1"></a>  <span class="kw">rewrite</span> [simp_comp] <span class="kw">at</span> h2</span>
-<span id="cb6-25"><a href="#cb6-25" aria-hidden="true" tabindex="-1"></a>  <span class="kw">obtain</span> (c : C) (h3 : (b, c) ∈ S ∧ (c, d) ∈ T) <span class="kw">from</span> h2.right</span>
-<span id="cb6-26"><a href="#cb6-26" aria-hidden="true" tabindex="-1"></a>  <span class="kw">apply</span> Exists.intro c</span>
-<span id="cb6-27"><a href="#cb6-27" aria-hidden="true" tabindex="-1"></a>  <span class="kw">apply</span> And.intro _ h3.right</span>
-<span id="cb6-28"><a href="#cb6-28" aria-hidden="true" tabindex="-1"></a>  <span class="kw">rewrite</span> [simp_comp]</span>
-<span id="cb6-29"><a href="#cb6-29" aria-hidden="true" tabindex="-1"></a>  <span class="kw">show</span> ∃ (x : B), (a, x) ∈ R ∧ (x, c) ∈ S <span class="kw">from</span></span>
-<span id="cb6-30"><a href="#cb6-30" aria-hidden="true" tabindex="-1"></a>    Exists.intro b (And.intro h2.left h3.left)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="sourceCode" id="cb7"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Theorem_4_2_5_4 {A B C D : <span class="kw">Type</span>}</span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>    (R : Set (A × B)) (S : Set (B × C)) (T : Set (C × D)) :</span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>    comp T (comp S R) = comp (comp T S) R := <span class="kw">by</span></span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>  <span class="kw">apply</span> Set.ext</span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>  <span class="kw">fix</span> (a, d) : A × D</span>
-<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>  <span class="kw">apply</span> Iff.intro</span>
-<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>  <span class="co">-- (→)</span></span>
-<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>  <span class="kw">assume</span> h1 : (a, d) ∈ comp T (comp S R)</span>
-<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>                     <span class="co">--Goal:  (a, d) ∈ comp (comp T S) R</span></span>
-<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>  <span class="kw">define</span>             <span class="co">--Goal: ∃ (x : B), (a, x) ∈ R ∧ (x, d) ∈ comp T S</span></span>
-<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>  <span class="kw">define</span> <span class="kw">at</span> h1       <span class="co">--h1: ∃ (x : C), (a, x) ∈ comp S R ∧ (x, d) ∈ T</span></span>
-<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>  <span class="kw">obtain</span> (c : C) (h2 : (a, c) ∈ comp S R ∧ (c, d) ∈ T) <span class="kw">from</span> h1</span>
-<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>  <span class="kw">have</span> h3 : (a, c) ∈ comp S R := h2.left</span>
-<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>  <span class="kw">define</span> <span class="kw">at</span> h3       <span class="co">--h3: ∃ (x : B), (a, x) ∈ R ∧ (x, c) ∈ S</span></span>
-<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a>  <span class="kw">obtain</span> (b : B) (h4 : (a, b) ∈ R ∧ (b, c) ∈ S) <span class="kw">from</span> h3</span>
-<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a>  <span class="kw">apply</span> Exists.intro b    <span class="co">--Goal:  (a, b) ∈ R ∧ (b, d) ∈ comp T S</span></span>
-<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a>  <span class="kw">apply</span> And.intro h4.left <span class="co">--Goal:  (b, d) ∈ comp T S</span></span>
-<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a>  <span class="kw">define</span>                  <span class="co">--Goal:  ∃ (x : C), (b, x) ∈ S ∧ (x, d) ∈ T</span></span>
-<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a>  <span class="kw">show</span> ∃ (x : C), (b, x) ∈ S ∧ (x, d) ∈ T <span class="kw">from</span></span>
-<span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a>    Exists.intro c (And.intro h4.right h2.right)</span>
-<span id="cb7-21"><a href="#cb7-21" aria-hidden="true" tabindex="-1"></a>  <span class="co">-- (←)</span></span>
-<span id="cb7-22"><a href="#cb7-22" aria-hidden="true" tabindex="-1"></a>  <span class="kw">assume</span> h1 : (a, d) ∈ comp (comp T S) R</span>
-<span id="cb7-23"><a href="#cb7-23" aria-hidden="true" tabindex="-1"></a>  <span class="kw">define</span>; <span class="kw">define</span> <span class="kw">at</span> h1</span>
-<span id="cb7-24"><a href="#cb7-24" aria-hidden="true" tabindex="-1"></a>  <span class="kw">obtain</span> (b : B) (h2 : (a, b) ∈ R ∧ (b, d) ∈ comp T S) <span class="kw">from</span> h1</span>
-<span id="cb7-25"><a href="#cb7-25" aria-hidden="true" tabindex="-1"></a>  <span class="kw">have</span> h3 : (b, d) ∈ comp T S := h2.right</span>
-<span id="cb7-26"><a href="#cb7-26" aria-hidden="true" tabindex="-1"></a>  <span class="kw">define</span> <span class="kw">at</span> h3</span>
-<span id="cb7-27"><a href="#cb7-27" aria-hidden="true" tabindex="-1"></a>  <span class="kw">obtain</span> (c : C) (h4 : (b, c) ∈ S ∧ (c, d) ∈ T) <span class="kw">from</span> h3</span>
-<span id="cb7-28"><a href="#cb7-28" aria-hidden="true" tabindex="-1"></a>  <span class="kw">apply</span> Exists.intro c</span>
-<span id="cb7-29"><a href="#cb7-29" aria-hidden="true" tabindex="-1"></a>  <span class="kw">apply</span> And.intro _ h4.right</span>
-<span id="cb7-30"><a href="#cb7-30" aria-hidden="true" tabindex="-1"></a>  <span class="kw">define</span></span>
-<span id="cb7-31"><a href="#cb7-31" aria-hidden="true" tabindex="-1"></a>  <span class="kw">show</span> ∃ (x : B), (a, x) ∈ R ∧ (x, c) ∈ S <span class="kw">from</span></span>
-<span id="cb7-32"><a href="#cb7-32" aria-hidden="true" tabindex="-1"></a>    Exists.intro b (And.intro h2.left h4.left)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Theorem_4_2_5_4 {A B C D : <span class="kw">Type</span>}</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>    (R : Set (A × B)) (S : Set (B × C)) (T : Set (C × D)) :</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>    comp T (comp S R) = comp (comp T S) R := <span class="kw">by</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>  <span class="kw">apply</span> Set.ext</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>  <span class="kw">fix</span> (a, d) : A × D</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>  <span class="kw">apply</span> Iff.intro</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>  <span class="co">-- (→)</span></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>  <span class="kw">assume</span> h1 : (a, d) ∈ comp T (comp S R)</span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>                     <span class="co">--Goal:  (a, d) ∈ comp (comp T S) R</span></span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>  <span class="kw">define</span>             <span class="co">--Goal: ∃ (x : B), (a, x) ∈ R ∧ (x, d) ∈ comp T S</span></span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>  <span class="kw">define</span> <span class="kw">at</span> h1       <span class="co">--h1: ∃ (x : C), (a, x) ∈ comp S R ∧ (x, d) ∈ T</span></span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>  <span class="kw">obtain</span> (c : C) (h2 : (a, c) ∈ comp S R ∧ (c, d) ∈ T) <span class="kw">from</span> h1</span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>  <span class="kw">have</span> h3 : (a, c) ∈ comp S R := h2.left</span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>  <span class="kw">define</span> <span class="kw">at</span> h3       <span class="co">--h3: ∃ (x : B), (a, x) ∈ R ∧ (x, c) ∈ S</span></span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>  <span class="kw">obtain</span> (b : B) (h4 : (a, b) ∈ R ∧ (b, c) ∈ S) <span class="kw">from</span> h3</span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>  <span class="kw">apply</span> Exists.intro b    <span class="co">--Goal:  (a, b) ∈ R ∧ (b, d) ∈ comp T S</span></span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>  <span class="kw">apply</span> And.intro h4.left <span class="co">--Goal:  (b, d) ∈ comp T S</span></span>
+<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a>  <span class="kw">define</span>                  <span class="co">--Goal:  ∃ (x : C), (b, x) ∈ S ∧ (x, d) ∈ T</span></span>
+<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a>  <span class="kw">show</span> ∃ (x : C), (b, x) ∈ S ∧ (x, d) ∈ T <span class="kw">from</span></span>
+<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a>    Exists.intro c (And.intro h4.right h2.right)</span>
+<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a>  <span class="co">-- (←)</span></span>
+<span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a>  <span class="kw">assume</span> h1 : (a, d) ∈ comp (comp T S) R</span>
+<span id="cb4-23"><a href="#cb4-23" aria-hidden="true" tabindex="-1"></a>  <span class="kw">define</span>; <span class="kw">define</span> <span class="kw">at</span> h1</span>
+<span id="cb4-24"><a href="#cb4-24" aria-hidden="true" tabindex="-1"></a>  <span class="kw">obtain</span> (b : B) (h2 : (a, b) ∈ R ∧ (b, d) ∈ comp T S) <span class="kw">from</span> h1</span>
+<span id="cb4-25"><a href="#cb4-25" aria-hidden="true" tabindex="-1"></a>  <span class="kw">have</span> h3 : (b, d) ∈ comp T S := h2.right</span>
+<span id="cb4-26"><a href="#cb4-26" aria-hidden="true" tabindex="-1"></a>  <span class="kw">define</span> <span class="kw">at</span> h3</span>
+<span id="cb4-27"><a href="#cb4-27" aria-hidden="true" tabindex="-1"></a>  <span class="kw">obtain</span> (c : C) (h4 : (b, c) ∈ S ∧ (c, d) ∈ T) <span class="kw">from</span> h3</span>
+<span id="cb4-28"><a href="#cb4-28" aria-hidden="true" tabindex="-1"></a>  <span class="kw">apply</span> Exists.intro c</span>
+<span id="cb4-29"><a href="#cb4-29" aria-hidden="true" tabindex="-1"></a>  <span class="kw">apply</span> And.intro _ h4.right</span>
+<span id="cb4-30"><a href="#cb4-30" aria-hidden="true" tabindex="-1"></a>  <span class="kw">define</span></span>
+<span id="cb4-31"><a href="#cb4-31" aria-hidden="true" tabindex="-1"></a>  <span class="kw">show</span> ∃ (x : B), (a, x) ∈ R ∧ (x, c) ∈ S <span class="kw">from</span></span>
+<span id="cb4-32"><a href="#cb4-32" aria-hidden="true" tabindex="-1"></a>    Exists.intro b (And.intro h2.left h4.left)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>Of course, if you have trouble reading this proof, you can type it into Lean and see how the tactic state changes over the course of the proof.</p>
-<p>The proof of part 5 of the theorem is similar. We start with a preliminary theorem to teach Lean to simplify statements about inverses:</p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> simp_inv {A B : <span class="kw">Type</span>} (R : Set (A × B)) (a : A) (b : B) :</span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>  (b, a) ∈ inv R ↔ (a, b) ∈ R := <span class="kw">by</span> <span class="kw">rfl</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>We’ll leave it as an exercise for you to apply this theorem to prove part 5 of Theorem 4.2.5.</p>
+<p>The proof of part 5 of the theorem is similar. We’ll leave it as an exercise for you.</p>
 </section>
 <section id="more-about-relations" class="level2">
 <h2 class="anchored" data-anchor-id="more-about-relations">4.3. More About Relations</h2>
@@ -405,18 +338,15 @@ $$
 <p>The notation we will use in Lean is slightly different. Corresponding to the notation <span class="math inline">\(aRb\)</span> in <em>HTPI</em>, in Lean we will use the notation <code>R a b</code>. And we cannot use this notation when <code>R</code> has type <code>Set (A × B)</code>. Rather, we will need to introduce a new type for the variable <code>R</code> in the notation <code>R a b</code>. The name we will use for this new type is <code>Rel A B</code>. Thus, if <code>R</code> has type <code>Rel A B</code>, <code>a</code> has type <code>A</code>, and <code>b</code> has type <code>B</code>, then <code>R a b</code> is a proposition. This should remind you of the way predicates work in Lean. If we have <code>P : Pred A</code>, then we think of <code>P</code> as representing a property that an object of type <code>A</code> might have, and if we also have <code>a : A</code>, then <code>P a</code> is the proposition asserting that <code>a</code> has the property represented by <code>P</code>. Similarly, if we have <code>R : Rel A B</code>, then we can think of <code>R</code> as representing a relationship that might hold between an object of type <code>A</code> and an object of type <code>B</code>, and if we also have <code>a : A</code> and <code>b : B</code>, then <code>R a b</code> is the proposition asserting that the relationship represented by <code>R</code> holds between <code>a</code> and <code>b</code>.</p>
 <p>Notice that in <em>HTPI</em>, the same variable <span class="math inline">\(R\)</span> is used in both the notation <span class="math inline">\(aRb\)</span> and <span class="math inline">\((a, b) \in R\)</span>. But in Lean, the notation <code>R a b</code> is used when <code>R</code> has type <code>Rel A B</code>, and the notation <code>(a, b) ∈ R</code> is used when <code>R</code> has type <code>Set (A × B)</code>. The types <code>Rel A B</code> and <code>Set (A × B)</code> are different, so we cannot use the same variable <code>R</code> in the two notations. However, there is a correspondence between the two types. Suppose <code>R</code> has type <code>Rel A B</code>. If we let <code>R'</code> denote the set of all ordered pairs <code>(a, b) : A × B</code> such that the proposition <code>R a b</code> is true, then <code>R'</code> has type <code>Set (A × B)</code>. And there is then a simple relationship between <code>R</code> and <code>R'</code>: for any objects <code>a : A</code> and <code>b : B</code>, the propositions <code>R a b</code> and <code>(a, b) ∈ R'</code> are equivalent. For our work in Lean, we will say that <code>R</code> is a <em>relation</em> from <code>A</code> to <code>B</code>, and <code>R'</code> is the <em>extension</em> of <code>R</code>.</p>
 <p>We can define the extension of a relation in Lean as follows:</p>
-<div class="sourceCode" id="cb9"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> extension {A B : <span class="kw">Type</span>} (R : Rel A B) : Set (A × B) :=</span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>    {p : A × B | R p.1 p.2}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>And the relationship between <code>R</code> and its extension can be expressed by the following theorem:</p>
-<div class="sourceCode" id="cb10"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> simp_ext {A B : <span class="kw">Type</span>} (R : Rel A B) (a : A) (b : B) :</span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>    (a, b) ∈ extension R ↔ R a b := <span class="kw">by</span> <span class="kw">rfl</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> extension {A B : <span class="kw">Type</span>} (R : Rel A B) : Set (A × B) :=</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>    {(a, b) : A × B | R a b}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>The rest of Chapter 4 of <em>HTPI</em> focuses on relations from a set to itself; in Lean, the corresponding idea is a relation from a type to itself. If <code>A</code> is any type and <code>R</code> has type <code>Rel A A</code>, then we will say that <code>R</code> is a <em>binary relation on <code>A</code></em>. We define <code>BinRel A</code> to be the type of binary relations on <code>A</code>. In other words, <code>BinRel A</code> is just an abbreviation for <code>Rel A A</code>. If <code>R</code> is a binary relation on <code>A</code>, then we say that <code>R</code> is <em>reflexive</em> if for every <code>a</code> of type <code>A</code>, <code>R a a</code> holds. It is <em>symmetric</em> if for all <code>a</code> and <code>b</code> of type <code>A</code>, if <code>R a b</code> then <code>R b a</code>. And it is <em>transitive</em> if for all <code>a</code>, <code>b</code>, and <code>c</code> of type <code>A</code>, if <code>R a b</code> and <code>R b c</code> then <code>R a c</code>. Of course, we can tell Lean about these definitions:</p>
-<div class="sourceCode" id="cb11"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> reflexive {A : <span class="kw">Type</span>} (R : BinRel A) : <span class="kw">Prop</span> :=</span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>    ∀ (a : A), R a a</span>
-<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> symmetric {A : <span class="kw">Type</span>} (R : BinRel A) : <span class="kw">Prop</span> :=</span>
-<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>    ∀ (a b : A), R a b → R b a</span>
-<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> transitive {A : <span class="kw">Type</span>} (R : BinRel A) : <span class="kw">Prop</span> :=</span>
-<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>    ∀ (a b c : A), R a b → R b c → R a c</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> reflexive {A : <span class="kw">Type</span>} (R : BinRel A) : <span class="kw">Prop</span> :=</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>    ∀ (a : A), R a a</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> symmetric {A : <span class="kw">Type</span>} (R : BinRel A) : <span class="kw">Prop</span> :=</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>    ∀ (a b : A), R a b → R b a</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> transitive {A : <span class="kw">Type</span>} (R : BinRel A) : <span class="kw">Prop</span> :=</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>    ∀ (a b c : A), R a b → R b c → R a c</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>Once again, we refer you to <em>HTPI</em> to see examples of these concepts, and we focus here on proving theorems about these concepts in Lean. The main theorem about these concepts in Section 4.3 of <em>HTPI</em> is Theorem 4.3.4. Here is what it says:</p>
 <div class="nthm" data-arguments="Theorem 4.3.4">
 <p>Suppose <span class="math inline">\(R\)</span> is a relation on a set <span class="math inline">\(A\)</span>.</p>
@@ -427,25 +357,28 @@ $$
 </ol>
 </div>
 <p>We can prove corresponding statements in Lean, but we’ll have to be careful to distinguish between the types <code>BinRel A</code> and <code>Set (A × A)</code>. In <em>HTPI</em>, each of the three statements in the theorem uses the same letter <span class="math inline">\(R\)</span> on both sides of the “iff”, but we can’t write the statements that way in Lean. In each statement, the part before “iff” uses a concept that was defined for objects of type <code>BinRel A</code>, whereas the part after “iff” uses concepts that only make sense for objects of type <code>Set (A × A)</code>. So we’ll have to rephrase the statements by using the correspondence between a relation <code>R</code> of type <code>BinRel A</code> and its extension, which has type <code>Set (A × A)</code>. Here’s the Lean theorem corresponding to statement 2 of Theorem 4.3.4:</p>
-<div class="sourceCode" id="cb12"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Theorem_4_3_4_2 {A : <span class="kw">Type</span>} (R : BinRel A) :</span>
-<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>    symmetric R ↔ extension R = inv (extension R) := <span class="kw">by</span></span>
-<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>  <span class="kw">apply</span> Iff.intro</span>
-<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>  <span class="co">-- (→)</span></span>
-<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>  <span class="kw">assume</span> h1 : symmetric R</span>
-<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>  <span class="kw">apply</span> Set.ext</span>
-<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>  <span class="kw">fix</span> (a, b) : A × A</span>
-<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>      <span class="co">--Goal:  (a, b) ∈ extension R ↔ (a, b) ∈ inv (extension R)</span></span>
-<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>  <span class="kw">rewrite</span> [simp_inv, simp_ext, simp_ext]  <span class="co">--Goal:  R a b ↔ R b a</span></span>
-<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a>  <span class="kw">define</span> <span class="kw">at</span> h1  <span class="co">--h1: ∀ (a b : A), R a b → R b a</span></span>
-<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a>  <span class="kw">show</span> R a b ↔ R b a <span class="kw">from</span> Iff.intro (h1 a b) (h1 b a)</span>
-<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a>  <span class="co">-- (←)</span></span>
-<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a>  <span class="kw">assume</span> h1 : extension R = inv (extension R)</span>
-<span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a>  <span class="kw">define</span>  <span class="co">--Goal:  ∀ (a b : A), R a b → R b a</span></span>
-<span id="cb12-15"><a href="#cb12-15" aria-hidden="true" tabindex="-1"></a>  <span class="kw">fix</span> a : A; <span class="kw">fix</span> b : A</span>
-<span id="cb12-16"><a href="#cb12-16" aria-hidden="true" tabindex="-1"></a>  <span class="kw">assume</span> h2 : R a b  <span class="co">--Goal:  R b a</span></span>
-<span id="cb12-17"><a href="#cb12-17" aria-hidden="true" tabindex="-1"></a>  <span class="kw">have</span> h3 : (a, b) ∈ extension R := (simp_ext R a b).rtl h2</span>
-<span id="cb12-18"><a href="#cb12-18" aria-hidden="true" tabindex="-1"></a>  <span class="kw">rewrite</span> [h1, simp_inv, simp_ext] <span class="kw">at</span> h3  <span class="co">--h3 : R b a</span></span>
-<span id="cb12-19"><a href="#cb12-19" aria-hidden="true" tabindex="-1"></a>  <span class="kw">show</span> R b a <span class="kw">from</span> h3</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Theorem_4_3_4_2 {A : <span class="kw">Type</span>} (R : BinRel A) :</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>    symmetric R ↔ extension R = inv (extension R) := <span class="kw">by</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>  <span class="kw">apply</span> Iff.intro</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>  <span class="co">-- (→)</span></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>  <span class="kw">assume</span> h1 : symmetric R</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>  <span class="kw">apply</span> Set.ext</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>  <span class="kw">fix</span> (a, b) : A × A</span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>  <span class="co">--Goal:  (a, b) ∈ extension R ↔ (a, b) ∈ inv (extension R)</span></span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>  <span class="co">--Next we fill in the definitions of both sides of the goal</span></span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>  <span class="kw">define</span> : (a, b) ∈ extension R</span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>  <span class="kw">define</span> : (a, b) ∈ inv (extension R)  <span class="co">--Goal:  R a b ↔ R b a</span></span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>  <span class="kw">define</span> <span class="kw">at</span> h1  <span class="co">--h1: ∀ (a b : A), R a b → R b a</span></span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>  <span class="kw">show</span> R a b ↔ R b a <span class="kw">from</span> Iff.intro (h1 a b) (h1 b a)</span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>  <span class="co">-- (←)</span></span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a>  <span class="kw">assume</span> h1 : extension R = inv (extension R)</span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a>  <span class="kw">define</span>  <span class="co">--Goal:  ∀ (a b : A), R a b → R b a</span></span>
+<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a>  <span class="kw">fix</span> a : A; <span class="kw">fix</span> b : A</span>
+<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a>  <span class="kw">assume</span> h2 : R a b  <span class="co">--Goal:  R b a</span></span>
+<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a>  <span class="kw">have</span> h3 : (a, b) ∈ extension R := h2  <span class="co">--h3, h2 are definitionally equal</span></span>
+<span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a>  <span class="kw">rewrite</span> [h1] <span class="kw">at</span> h3</span>
+<span id="cb7-21"><a href="#cb7-21" aria-hidden="true" tabindex="-1"></a>  <span class="kw">define</span> <span class="kw">at</span> h3</span>
+<span id="cb7-22"><a href="#cb7-22" aria-hidden="true" tabindex="-1"></a>  <span class="kw">show</span> R b a <span class="kw">from</span> h3</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>We’ll leave the proofs of the other two statements as exercises for you.</p>
 </section>
 <section id="ordering-relations" class="level2">
