@@ -375,7 +375,7 @@ $$
 <span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a>  <span class="kw">define</span>  <span class="co">--Goal:  ∀ (a b : A), R a b → R b a</span></span>
 <span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a>  <span class="kw">fix</span> a : A; <span class="kw">fix</span> b : A</span>
 <span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a>  <span class="kw">assume</span> h2 : R a b  <span class="co">--Goal:  R b a</span></span>
-<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a>  <span class="kw">have</span> h3 : (a, b) ∈ extension R := h2  <span class="co">--h3, h2 are definitionally equal</span></span>
+<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a>  <span class="kw">have</span> h3 : (a, b) ∈ extension R := h2  <span class="co">--h2, h3 are definitionally equal</span></span>
 <span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a>  <span class="kw">rewrite</span> [h1] <span class="kw">at</span> h3</span>
 <span id="cb7-21"><a href="#cb7-21" aria-hidden="true" tabindex="-1"></a>  <span class="kw">define</span> <span class="kw">at</span> h3</span>
 <span id="cb7-22"><a href="#cb7-22" aria-hidden="true" tabindex="-1"></a>  <span class="kw">show</span> R b a <span class="kw">from</span> h3</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>

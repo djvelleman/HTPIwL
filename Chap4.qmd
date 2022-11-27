@@ -194,7 +194,7 @@ theorem Theorem_4_3_4_2 {A : Type} (R : BinRel A) :
   define  --Goal:  ∀ (a b : A), R a b → R b a
   fix a : A; fix b : A
   assume h2 : R a b  --Goal:  R b a
-  have h3 : (a, b) ∈ extension R := h2  --h3, h2 are definitionally equal
+  have h3 : (a, b) ∈ extension R := h2  --h2, h3 are definitionally equal
   rewrite [h1] at h3
   define at h3
   show R b a from h3
