@@ -239,7 +239,7 @@ $$
 <div class="proof">
 <p><span class="proof-title"><em>Proof</em>. </span>Suppose <span class="math inline">\(\neg R\)</span>. Suppose <span class="math inline">\(P\)</span>. Since <span class="math inline">\(P\)</span> and <span class="math inline">\(P \to (Q \to R)\)</span>, it follows that <span class="math inline">\(Q \to R\)</span>. But then, since <span class="math inline">\(\neg R\)</span>, we can conclude <span class="math inline">\(\neg Q\)</span>. Thus, <span class="math inline">\(P \to \neg Q\)</span>. Therefore <span class="math inline">\(\neg R \to (P \to \neg Q)\)</span>. <span class="excl">&nbsp;□</span></p>
 </div>
-<p>And here is how we would write the proof in Lean:</p>
+<p>And here is how we would write the proof in Lean. (If you are reading this book online, then Lean examples like the one below will appear in gray boxes. You can copy the example to your clipboard by clicking in the upper-right corner of the box, and then you can paste it into a file in VS Code to try it out.)</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Example_3_2_4</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>    (P Q R : <span class="kw">Prop</span>) (h : P → (Q → R)) : ¬R → (P → ¬Q) := <span class="kw">by</span></span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>  <span class="kw">assume</span> h2 : ¬R</span>

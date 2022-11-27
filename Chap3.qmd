@@ -397,6 +397,33 @@ We will see many more uses of the `apply` tactic later in this book.
 
 Sections 3.1 and 3.2 of *HTPI* contain several proofs that involve algebraic reasoning.  Although one can do such proofs in Lean, it requires ideas that we are not ready to introduce yet.  So for the moment we will stick to proofs involving only logic and set theory.
 
+### Exercises
+
+Fill in proofs of the following theorems.  All exercises are taken from *HTPI*.
+
+```lean
+theorem Exercise_3_2_1a (P Q R : Prop)
+    (h1 : P → Q) (h2 : Q → R) : P → R := by
+  
+  **done::
+
+theorem Exercise_3_2_1b (P Q R : Prop)
+    (h1 : ¬R → (P → ¬Q)) : P → (Q → R) := by
+  
+  **done::
+
+theorem Exercise_3_2_2a (P Q R : Prop)
+    (h1 : P → Q) (h2 : R → ¬Q) : P → ¬R := by
+  
+  **done::
+
+theorem Exercise_3_2_2b (P Q : Prop)
+    (h1 : P) : Q → ¬(Q → ¬P) := by
+  
+  **done::
+
+```
+
 ## 3.3. Proofs Involving Quantifiers
 
 In the notation used in *HTPI*, if $P(x)$ is a statement about $x$, then $\forall x\, P(x)$ means "for all $x$, $P(x)$," and $\exists x\, P(x)$ means "there exists at least one $x$ such that $P(x)$."  The letter $P$ here does not stand for a proposition; it is only when it is applied to some object $x$ that we get a proposition.  We will say that $P$ is a *predicate*, and when we apply $P$ to an object $x$ we get the proposition $P(x)$.  You might want to think of the predicate $P$ as representing some property that an object might have, and the proposition $P(x)$ asserts that $x$ has that property.
@@ -1422,6 +1449,36 @@ Suppose $B$ is a set and $\mathcal{F}$ is a family of sets.  If $\bigcup\mathcal
 Suppose $\bigcup \mathcal{F} \subseteq B$.  Let $x$ be an arbitrary element of $\mathcal{F}$.  Let $y$ be an arbitrary element of $x$.  Since $y \in x$ and $x \in \mathcal{F}$, by the definition of $\bigcup \mathcal{F}$, $y \in \bigcup \mathcal{F}$.  But then since $\bigcup \mathcal{F} \subseteq B$, $y \in B$.  Since $y$ was an arbitrary element of $x$, we can conclude that $x \subseteq B$, so $x \in \mathscr{P}(B)$.  But $x$ was an arbitrary element of $\mathcal{F}$, so this shows that $\mathcal{F} \subseteq \mathscr{P}(B)$, as required. [&nbsp;□]{.excl}\qedhere
 :::
 
+### Exercises
+
+```lean
+theorem Exercise_3_3_1
+    (U : Type) (P Q : Pred U) (h1 : ∃ (x : U), P x → Q x) :
+    (∀ (x : U), P x) → ∃ (x : U), Q x := by
+  
+  **done::
+
+theorem Exercise_3_3_8 (U : Type) (F : Set (Set U)) (A : Set U)
+    (h1 : A ∈ F) : A ⊆ ⋃₀F := by
+  
+  **done::
+
+theorem Exercise_3_3_9 (U : Type) (F : Set (Set U)) (A : Set U)
+    (h1 : A ∈ F) : ⋂₀F ⊆ A := by
+  
+  **done::
+
+theorem Exercise_3_3_10 (U : Type) (B : Set U) (F : Set (Set U))
+    (h1 : ∀ (A : Set U), A ∈ F → B ⊆ A) : B ⊆ ⋂₀F := by
+  
+  **done::
+
+theorem Exercise_3_3_13 (U : Type)
+    (F G : Set (Set U)) : F ⊆ G → ⋂₀G ⊆ ⋂₀F := by
+  
+  **done::
+```
+
 ## 3.4. Proofs Involving Conjunctions and Biconditionals
 
 The strategies in *HTPI* for working with conjunctions are very simple.
@@ -2060,6 +2117,51 @@ Ignoring the `u_1`, whose significance won't be important to us, this means that
 
 Notice that in Lean's responses to both `#check @and_assoc` and `#check @Set.ext`, multiple universal quantifiers in a row were grouped together and written as a single universal quantifier followed by a list of variables (with types).  Lean allows this notational shorthand for any sequence of consecutive quantifiers, as long as they are all of the same kind (all existential or all universal), and we will use this notation from now on.
 
+### Exercises
+
+```lean
+theorem Exercise_3_4_2 (U : Type) (A B C : Set U)
+    (h1 : A ⊆ B) (h2 : A ⊆ C) : A ⊆ B ∩ C := by
+  
+  **done::
+
+theorem Exercise_3_4_4 (U : Type) (A B C : Set U)
+    (h1 : A ⊆ B) (h2 : A ⊈ C) : B ⊈ C := by
+  
+  **done::
+
+theorem Exercise_3_3_16 (U : Type) (B : Set U)
+    (F : Set (Set U)) : F ⊆ 𝒫 B → ⋃₀F ⊆ B := by
+  
+  **done::
+
+theorem Exercise_3_3_17 (U : Type) (F G : Set (Set U))
+    (h1 : ∀ (A : Set U), A ∈ F → ∀ (B : Set U), B ∈ G → A ⊆ B) :
+    ⋃₀F ⊆ ⋂₀G := by
+  
+  **done::
+
+theorem Exercise_3_4_7 (U : Type) (A B : Set U) :
+    𝒫 (A ∩ B) = 𝒫 A ∩ 𝒫 B := by
+
+  **done::
+
+theorem Exercise_3_4_17 (U : Type) (A : Set U) : A = ⋃₀(𝒫 A) := by
+
+  **done::
+
+theorem Exercise_3_4_18a (U : Type) (F G : Set (Set U)) :
+    ⋃₀(F ∩ G) ⊆ (⋃₀F) ∩ (⋃₀G) := by
+  
+  **done::
+
+theorem Exercise_3_4_19 (U : Type) (F G : Set (Set U)) :
+    (⋃₀F) ∩ (⋃₀G) ⊆ ⋃₀(F ∩ G) ↔
+      ∀ (A B : Set U), A ∈ F → B ∈ G → A ∩ B ⊆ ⋃₀(F ∩ G) := by
+  
+  **done::
+```
+
 ## 3.5.  Proofs Involving Disjunctions
 
 A common proof method for dealing with givens or goals that are disjunctions is *proof by cases*.  Here's how it works.
@@ -2095,7 +2197,7 @@ h : Q
 :::
 :::
 
-Notice that the original given `h : P ∨ Q` gets *replaced* by `h : P` in case 1 and `h : Q` in case 2.  This is usually what is most convenient, but if you write `by_cases on h with h1`, then the original given `h` will be preserved, and new givens `h1 : P` and `h1 : Q` will be added to cases 1 and 2, respectively.  If you want different names for the new givens in the two cases, then use `by_cases on h with h1 h2` to add the new given `h1 : P` in case 1 and `h2 : Q` in case 2.
+Notice that the original given `h : P ∨ Q` gets *replaced* by `h : P` in case 1 and `h : Q` in case 2.  This is usually what is most convenient, but if you write `by_cases on h with h1`, then the original given `h` will be preserved, and new givens `h1 : P` and `h1 : Q` will be added to cases 1 and 2, respectively.  If you want different names for the new givens in the two cases, then use `by_cases on h with h1, h2` to add the new given `h1 : P` in case 1 and `h2 : Q` in case 2.
 
 You can follow `by_cases on` with any proof of a disjunction, even if that proof is not just a single identifier.  In that cases you will want to add `with` to specify the identifier or identifiers to be used for the new assumptions in the two cases.  Another variant is that you can use the tactic `by_cases h : P` to break your proof into two cases, with the new assumptions being `h : P` in case 1 and `h : ¬P` in case 2.  In other words, the effect of `by_cases h : P` is the same as adding the new given `h : P ∨ ¬P` (which, of course, is a tautology) and then using the tactic `by_cases on h`.
 
@@ -2724,6 +2826,32 @@ The red squiggle has disappeared from the word `done`, indicating that the proof
 It was not really necessary for us to use `sorry` when writing this proof.  We could have simply written the steps in order,  exactly as they appear above.  Any time you use the `have` tactic with a conclusion that is difficult to justify, you have a choice.  You can establish the `have` with `sorry`, complete the proof, and then return and fill in a justification for the `have`, as we did in the example above.  Or, you can justify the `have` right away by typing `by` after `:=` and then plunging into the "proof within in a proof."  Once you complete the inner proof, you can continue with the original proof.
 
 And in case you were wondering: yes, if the inner proof uses the `have` tactic with a statement that is hard to justify, then you can write a "proof within a proof within a proof"!
+
+### Exercises
+
+In each case, replace `sorry` with a proof.
+
+```lean
+theorem Exercise_3_5_2 (U : Type) (A B C : Set U) :
+    (A ∪ B) \ C ⊆ A ∪ (B \ C) := sorry
+
+theorem Exercise_3_5_5 (U : Type) (A B C : Set U)
+    (h1 : A ∩ C ⊆ B ∩ C) (h2 : A ∪ C ⊆ B ∪ C) : A ⊆ B := sorry
+
+theorem Exercise_3_5_7 (U : Type) (A B C : Set U) :
+    A ∪ C ⊆ B ∪ C ↔ A \ C ⊆ B \ C := sorry
+
+theorem Exercise_3_5_8 (U : Type) (A B : Set U) :
+    𝒫 A ∪ 𝒫 B ⊆ 𝒫 (A ∪ B) := sorry
+
+theorem Exercise_3_5_18 (U : Type) (F G H : Set (Set U))
+    (h1 : ∀ (A : Set U), A ∈ F → ∀ (B : Set U), B ∈ G → A ∪ B ∈ H) :
+    ⋂₀H ⊆ (⋂₀F) ∪ (⋂₀G) := sorry
+
+theorem Exercise_3_5_24a (U : Type) (A B C : Set U) :
+    (A ∪ B) △ C ⊆ (A △ C) ∪ (B △ C) := sorry
+
+```
 
 ## 3.6.  Existence and Uniqueness Proofs
 
@@ -3463,7 +3591,7 @@ x : U
 :::
 :::
 
-To make the goal easier for the `library_search` tactic to recognize, we'll write out the definitions of the two sides of the biconditional.  We use a variant of the `define` tactic that allows us to write out the definition of just a part of a given or the goal.  The tactic `define : x ∈ X ∪ Y` will replace `x ∈ X ∪ Y` with its definition wherever it appears in the goal, and then `define : x ∈ Y ∪ X` will replace `x ∈ Y ∪ X` with its definition.  (As usual, you can add `at` to do the replacements in a given rather than the goal.)
+To make the goal easier for the `library_search` tactic to recognize, we'll write out the definitions of the two sides of the biconditional.  We use an extension of the `define` tactic that allows us to write out the definition of just a part of a given or the goal.  The tactic `define : x ∈ X ∪ Y` will replace `x ∈ X ∪ Y` with its definition wherever it appears in the goal, and then `define : x ∈ Y ∪ X` will replace `x ∈ Y ∪ X` with its definition.  (As usual, you can add `at` to do the replacements in a given rather than the goal.)
 
 ::: {.inout}
 ::: {.inpt}
@@ -3489,7 +3617,9 @@ x : U
 :::
 :::
 
-We have done these steps to give the `library_search` tactic the best chance of recognizing the goal as the commutative law for "or".  Let's give it a try.
+By the way, there are similar extensions of all of the tactics `contrapos`, `demorgan`, `conditional`, `double_neg`, `bicond_neg`, and `quant_neg` that allow you to use a logical equivalence to rewrite just a part of a formula.  For example, if your goal is `P ∧ (¬Q → R)`, then the tactic `contrapos : ¬Q → R` will change the goal to `P ∧ (¬R → Q)`.  If you have a given `h : P → ¬∀ (x : U), Q x`, then the tactic `quant_neg : ¬∀ (x : U), Q x at h` will change `h` to `h : P → ∃ (x : U), ¬Q x`.
+
+Returning to our proof of `union_comm`:  We have used the `define` tactic in order to give the `library_search` tactic the best chance of recognizing the goal as the commutative law for "or".  Let's give it a try.
 
 ```lean
 theorem union_comm {U : Type} (X Y : Set U) :
@@ -3520,6 +3650,37 @@ But what is `or_comm'`?  The command `#check or_comm'` gives the result
 So `or_comm'` is the same as `or_comm`, except that the arguments `a` and `b` are not implicit; that's why `library_search` had to specify values for those arguments in its answer.  The `#check` command also produces a suggestion that we should use `or_comm` instead.
 
 The `library_search` tactic is somewhat unpredictable; sometimes it is able to find the right theorem in the library, and sometimes it isn't.  But it is always worth a try.  Other tactics that may be helpful are `suggest` and `hint`.
+
+### Exercises
+
+```lean
+theorem Exercise_3_4_15 (U : Type) (B : Set U) (F : Set (Set U)) :
+    ⋃₀{X : Set U | ∃ (A : Set U), A ∈ F ∧ X = A \ B}
+      ⊆ ⋃₀(F \ 𝒫 B) := sorry
+
+theorem Exercise_3_5_9 (U : Type) (A B : Set U)
+    (h1 : 𝒫 (A ∪ B) = 𝒫 A ∪ 𝒫 B) : A ⊆ B ∨ B ⊆ A := by
+  --Hint:  Start like this:
+  have h2 : A ∪ B ∈ 𝒫 (A ∪ B) := sorry
+  sorry
+
+theorem Exercise_3_6_6b (U : Type) :
+    ∃! (A : Set U), ∀ (B : Set U), A ∪ B = A := sorry
+
+theorem Exercise_3_6_7b (U : Type) :
+    ∃! (A : Set U), ∀ (B : Set U), A ∩ B = A := sorry
+
+theorem Exercise_3_6_8a (U : Type) :
+    ∀ (A : Set U), ∃! (B : Set U), ∀ (C : Set U), C \ A = C ∩ B := by
+
+theorem Exercise_3_6_10 (U : Type) (A : Set U)
+    (h1 : ∀ (F : Set (Set U)), ⋃₀F = A → A ∈ F) : ∃! (x : U), x ∈ A := by
+  --Hint:  Start like this:
+  let F0 := {X : Set U | X ⊆ A ∧ ∃! (x : U), x ∈ X}
+  --Now F0 is in tactic state, with definition above
+  have h2 : ⋃₀F0 = A := sorry
+  sorry
+```
 
 ## 3.7. More Examples of Proofs
 

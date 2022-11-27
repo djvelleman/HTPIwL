@@ -51,7 +51,7 @@ def comp {A B C : Type} (S : Set (B × C)) (R : Set (A × B)) :
     Set (A × C) := {p : A × C | ∃ (b : B), (p.1, b) ∈ R ∧ (b, p.2) ∈ S}
 ```
 
-Definitions in Lean are introduced with the keyword `def`.  In the definition of `Dom`, we have declared `A` and `B` to be implicit arguments.  That means that if we have `R : Set (A × B)`, then we can just write `Dom R` for the domain of `R`, and Lean will figure out for itself what `A` and `B` are.  The definition declares that `Dom R` has type `Set A`, and then it defines it to be the set of all objects `a` of type `A` such that there is some `b` of type `B` with `(a, b) ∈ R`.  This is a direct translation, into Lean's type-theory language, of the first part of Definition 4.2.3.  The other three definitions are similar; they define `Ran R` to be the range of `R`, `inv R` to be the inverse of `R`, and `comp S R` to be the composition of `S` and `R`.
+Definitions in Lean are introduced with the keyword `def`.  In the definition of `Dom`, we have declared that `A` and `B` are implicit arguments and `R` is an explicit argument.  That means that if we have `R : Set (A × B)`, then we can just write `Dom R` for the domain of `R`, and Lean will figure out for itself what `A` and `B` are.  After the list of arguments there is a colon and then the type of `Dom R`, which is `Set A`.  This is followed by `:=` and then the definition of `Dom R`.  The definition says that `Dom R` is the set of all objects `a` of type `A` such that there is some `b` of type `B` with `(a, b) ∈ R`.  This is a direct translation, into Lean's type-theory language, of the first part of Definition 4.2.3.  The other three definitions are similar; they define `Ran R` to be the range of `R`, `inv R` to be the inverse of `R`, and `comp S R` to be the composition of `S` and `R`.
 
 Here is the main theorem about these concepts, as stated in *HTPI*:
 
@@ -81,7 +81,7 @@ theorem Theorem_4_2_5_3 {A B : Type}
 The fourth part will take a little more work to prove.  Here is a natural way to start the proof:
 
 ```lean
-theorem Theorem_4_2_5_4 {A B C : Type}
+theorem Theorem_4_2_5_4 {A B C D : Type}
     (R : Set (A × B)) (S : Set (B × C)) (T : Set (C × D)) :
     comp T (comp S R) = comp (comp T S) R := by
   apply Set.ext
@@ -127,7 +127,7 @@ Now, any time we have relations `R : Set (A × B)` and `S : (B × C)`, and objec
 Actually, it's more convenient to do the rewriting before the step `apply Iff.intro`---otherwise we'd have to do it twice, once for each direction of the biconditional proof.  So now we start the proof like this:
 
 ```lean
-theorem Theorem_4_2_5_4 {A B C : Type}
+theorem Theorem_4_2_5_4 {A B C D : Type}
     (R : Set (A × B)) (S : Set (B × C)) (T : Set (C × D)) :
     comp T (comp S R) = comp (comp T S) R := by
   apply Set.ext
@@ -152,7 +152,7 @@ which can be used to rewrite the left side of the goal.  To rewrite the right si
 Here is the complete proof.
 
 ```lean
-theorem Theorem_4_2_5_4 {A B C : Type}
+theorem Theorem_4_2_5_4 {A B C D : Type}
     (R : Set (A × B)) (S : Set (B × C)) (T : Set (C × D)) :
     comp T (comp S R) = comp (comp T S) R := by
   apply Set.ext
@@ -182,6 +182,41 @@ theorem Theorem_4_2_5_4 {A B C : Type}
   rewrite [simp_comp]
   show ∃ (x : B), (a, x) ∈ R ∧ (x, c) ∈ S from
     Exists.intro b (And.intro h2.left h3.left)
+```
+
+```lean
+theorem Theorem_4_2_5_4 {A B C D : Type}
+    (R : Set (A × B)) (S : Set (B × C)) (T : Set (C × D)) :
+    comp T (comp S R) = comp (comp T S) R := by
+  apply Set.ext
+  fix (a, d) : A × D
+  apply Iff.intro
+  -- (→)
+  assume h1 : (a, d) ∈ comp T (comp S R)
+                     --Goal:  (a, d) ∈ comp (comp T S) R
+  define             --Goal: ∃ (x : B), (a, x) ∈ R ∧ (x, d) ∈ comp T S
+  define at h1       --h1: ∃ (x : C), (a, x) ∈ comp S R ∧ (x, d) ∈ T
+  obtain (c : C) (h2 : (a, c) ∈ comp S R ∧ (c, d) ∈ T) from h1
+  have h3 : (a, c) ∈ comp S R := h2.left
+  define at h3       --h3: ∃ (x : B), (a, x) ∈ R ∧ (x, c) ∈ S
+  obtain (b : B) (h4 : (a, b) ∈ R ∧ (b, c) ∈ S) from h3
+  apply Exists.intro b    --Goal:  (a, b) ∈ R ∧ (b, d) ∈ comp T S
+  apply And.intro h4.left --Goal:  (b, d) ∈ comp T S
+  define                  --Goal:  ∃ (x : C), (b, x) ∈ S ∧ (x, d) ∈ T
+  show ∃ (x : C), (b, x) ∈ S ∧ (x, d) ∈ T from
+    Exists.intro c (And.intro h4.right h2.right)
+  -- (←)
+  assume h1 : (a, d) ∈ comp (comp T S) R
+  define; define at h1
+  obtain (b : B) (h2 : (a, b) ∈ R ∧ (b, d) ∈ comp T S) from h1
+  have h3 : (b, d) ∈ comp T S := h2.right
+  define at h3
+  obtain (c : C) (h4 : (b, c) ∈ S ∧ (c, d) ∈ T) from h3
+  apply Exists.intro c
+  apply And.intro _ h4.right
+  define
+  show ∃ (x : B), (a, x) ∈ R ∧ (x, c) ∈ S from
+    Exists.intro b (And.intro h2.left h4.left)
 ```
 
 Of course, if you have trouble reading this proof, you can type it into Lean and see how the tactic state changes over the course of the proof.
@@ -238,7 +273,7 @@ Suppose $R$ is a relation on a set $A$.
 3.  $R$ is transitive iff $R \circ R \subseteq R$.
 :::
 
-We can prove corresponding statements in Lean, but we'll have to be careful to distinguish between the types `BinRel A` and `Set (A × A)`.  In *HTPI*, each statement uses the same letter $R$ on both sides of the "iff", but we can't write the statements that way in Lean.  In each statement, the part before "iff" uses a concept that was defined for objects of type `BinRel A`, whereas the part after "iff" uses concepts that only make sense for objects of type `Set (A × A)`.  So we'll have to rephrase the statements by using the correspondence between a relation `R` of type `BinRel A` and its extension, which has type `Set (A × A)`.  Here's the Lean theorem corresponding to statement 2 of Theorem 4.3.4:
+We can prove corresponding statements in Lean, but we'll have to be careful to distinguish between the types `BinRel A` and `Set (A × A)`.  In *HTPI*, each of the three statements in the theorem uses the same letter $R$ on both sides of the "iff", but we can't write the statements that way in Lean.  In each statement, the part before "iff" uses a concept that was defined for objects of type `BinRel A`, whereas the part after "iff" uses concepts that only make sense for objects of type `Set (A × A)`.  So we'll have to rephrase the statements by using the correspondence between a relation `R` of type `BinRel A` and its extension, which has type `Set (A × A)`.  Here's the Lean theorem corresponding to statement 2 of Theorem 4.3.4:
 
 ```lean
 theorem Theorem_4_3_4_2 {A : Type} (R : BinRel A) :

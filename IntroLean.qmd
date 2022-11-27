@@ -14,7 +14,7 @@ Suppose $P \to (Q \to R)$.  Then $\neg R \to (P \to \neg Q)$.
 Suppose $\neg R$.  Suppose $P$.  Since $P$ and $P \to (Q \to R)$, it follows that $Q \to R$.  But then, since $\neg R$, we can conclude $\neg Q$.  Thus, $P \to \neg Q$.  Therefore $\neg R \to (P \to \neg Q)$. [&nbsp;□]{.excl}\qedhere
 :::
 
-And here is how we would write the proof in Lean:
+And here is how we would write the proof in Lean.  (If you are reading this book online, then Lean examples like the one below will appear in gray boxes.  You can copy the example to your clipboard by clicking in the upper-right corner of the box, and then you can paste it into a file in VS Code to try it out.)
 
 ```lean
 theorem Example_3_2_4
