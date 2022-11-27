@@ -3621,8 +3621,33 @@ x \in A \cap (B \setmin C) &amp;\text{ iff } x \in A \wedge x \in B \setmin C\\
 <span id="cb271-3"><a href="#cb271-3" aria-hidden="true" tabindex="-1"></a>      6 * (j - k) = 3 * (2 * j) - 2 * (3 * k) := <span class="kw">by</span> <span class="kw">ring</span></span>
 <span id="cb271-4"><a href="#cb271-4" aria-hidden="true" tabindex="-1"></a>      _ = 3 * n - 2 * n := <span class="kw">by</span> <span class="kw">rw</span> [←h4, ←h5]</span>
 <span id="cb271-5"><a href="#cb271-5" aria-hidden="true" tabindex="-1"></a>      _ = n := <span class="kw">by</span> <span class="kw">ring</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<section id="exercises-5" class="level3">
+<h3 class="anchored" data-anchor-id="exercises-5">Exercises</h3>
+<div class="sourceCode" id="cb272"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb272-1"><a href="#cb272-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Exercise_3_3_18a (a b c : Int)</span>
+<span id="cb272-2"><a href="#cb272-2" aria-hidden="true" tabindex="-1"></a>    (h1 : a ∣ b) (h2 : a ∣ c) : a ∣ (b + c) := <span class="cn">sorry</span></span>
+<span id="cb272-3"><a href="#cb272-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb272-4"><a href="#cb272-4" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Exercise_3_4_6 (U : <span class="kw">Type</span>) (A B C : Set U) :</span>
+<span id="cb272-5"><a href="#cb272-5" aria-hidden="true" tabindex="-1"></a>    A \ (B ∩ C) = (A \ B) ∪ (A \ C) := <span class="kw">by</span></span>
+<span id="cb272-6"><a href="#cb272-6" aria-hidden="true" tabindex="-1"></a>  <span class="kw">apply</span> Set.ext</span>
+<span id="cb272-7"><a href="#cb272-7" aria-hidden="true" tabindex="-1"></a>  <span class="kw">fix</span> x : U</span>
+<span id="cb272-8"><a href="#cb272-8" aria-hidden="true" tabindex="-1"></a>  <span class="kw">show</span> x ∈ A \ (B ∩ C) ↔ x ∈ A \ B ∪ A \ C <span class="kw">from</span></span>
+<span id="cb272-9"><a href="#cb272-9" aria-hidden="true" tabindex="-1"></a>    <span class="kw">calc</span> x ∈ A \ (B ∩ C)</span>
+<span id="cb272-10"><a href="#cb272-10" aria-hidden="true" tabindex="-1"></a>        ↔ x ∈ A ∧ ¬(x ∈ B ∧ x ∈ C) := <span class="cn">sorry</span></span>
+<span id="cb272-11"><a href="#cb272-11" aria-hidden="true" tabindex="-1"></a>      _ ↔ x ∈ A ∧ (¬x ∈ B ∨ ¬x ∈ C) := <span class="cn">sorry</span>  </span>
+<span id="cb272-12"><a href="#cb272-12" aria-hidden="true" tabindex="-1"></a>      _ ↔ (x ∈ A ∧ ¬x ∈ B) ∨ (x ∈ A ∧ ¬x ∈ C) := <span class="cn">sorry</span></span>
+<span id="cb272-13"><a href="#cb272-13" aria-hidden="true" tabindex="-1"></a>      _ ↔ x ∈ (A \ B) ∪ (A \ C) := <span class="cn">sorry</span></span>
+<span id="cb272-14"><a href="#cb272-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb272-15"><a href="#cb272-15" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> even (n : Int) : <span class="kw">Prop</span> := ∃ (k : Int), n = 2 * k</span>
+<span id="cb272-16"><a href="#cb272-16" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> odd (n : Int) : <span class="kw">Prop</span> := ∃ (k : Int), n = 2 * k + 1</span>
+<span id="cb272-17"><a href="#cb272-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb272-18"><a href="#cb272-18" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Exercise_3_4_10 (x y : Int)</span>
+<span id="cb272-19"><a href="#cb272-19" aria-hidden="true" tabindex="-1"></a>    (h1 : odd x) (h2 : odd y) : even (x - y) := <span class="cn">sorry</span></span>
+<span id="cb272-20"><a href="#cb272-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb272-21"><a href="#cb272-21" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Exercise_3_4_27a :</span>
+<span id="cb272-22"><a href="#cb272-22" aria-hidden="true" tabindex="-1"></a>    ∀ (n : Int), 15 ∣ n ↔ 3 ∣ n ∧ 5 ∣ n := <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 
 
+</section>
 </section>
 
 </main> <!-- /main -->

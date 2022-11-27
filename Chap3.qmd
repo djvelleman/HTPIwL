@@ -4363,3 +4363,30 @@ Whew!  This example illustrates why algebraic reasoning in Lean can be difficult
       _ = 3 * n - 2 * n := by rw [←h4, ←h5]
       _ = n := by ring
 ```
+
+### Exercises
+
+```lean
+theorem Exercise_3_3_18a (a b c : Int)
+    (h1 : a ∣ b) (h2 : a ∣ c) : a ∣ (b + c) := sorry
+
+theorem Exercise_3_4_6 (U : Type) (A B C : Set U) :
+    A \ (B ∩ C) = (A \ B) ∪ (A \ C) := by
+  apply Set.ext
+  fix x : U
+  show x ∈ A \ (B ∩ C) ↔ x ∈ A \ B ∪ A \ C from
+    calc x ∈ A \ (B ∩ C)
+        ↔ x ∈ A ∧ ¬(x ∈ B ∧ x ∈ C) := sorry
+      _ ↔ x ∈ A ∧ (¬x ∈ B ∨ ¬x ∈ C) := sorry  
+      _ ↔ (x ∈ A ∧ ¬x ∈ B) ∨ (x ∈ A ∧ ¬x ∈ C) := sorry
+      _ ↔ x ∈ (A \ B) ∪ (A \ C) := sorry
+
+def even (n : Int) : Prop := ∃ (k : Int), n = 2 * k
+def odd (n : Int) : Prop := ∃ (k : Int), n = 2 * k + 1
+
+theorem Exercise_3_4_10 (x y : Int)
+    (h1 : odd x) (h2 : odd y) : even (x - y) := sorry
+
+theorem Exercise_3_4_27a :
+    ∀ (n : Int), 15 ∣ n ↔ 3 ∣ n ∧ 5 ∣ n := sorry
+```
