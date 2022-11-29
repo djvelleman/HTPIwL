@@ -3477,17 +3477,17 @@ x \in A \cap (B \setmin C) &amp;\text{ iff } x \in A \wedge x \in B \setmin C\\
 </div>
 </div>
 <p>Sometimes the easiest way to write a calculational proof is to justify each line with <code>sorry</code> and then go back and fill in real justifications. Lean has accepted the proof above, so we know that we’ll have a complete proof if we can replace each <code>sorry</code> with a justification.</p>
-<p>To justify the first line of the calculational proof, try replacing <code>sorry</code> with <code>by library_search</code>. Lean comes up with a justification: <code>exact Int.mul_sub 6 j k</code>, and <code>#check Int.mul_sub</code> produces the result</p>
+<p>To justify the first line of the calculational proof, try replacing <code>sorry</code> with <code>by library_search</code>. Lean comes up with a justification: <code>exact Int.mul_sub 6 j k</code>. The theorem <code>Int.mul_sub</code> is the integer version of the general theorem <code>mul_sub</code>, which says</p>
 <div class="quote">
-<p><code>Int.mul_sub : ∀ (a b c : ℤ), a * (b - c) = a * b - a * c</code>.</p>
+<p><code>mul_sub : ∀ (a b c : ?m.106124), a * (b - c) = a * b - a * c</code>.</p>
 </div>
-<p>Thus we can fill in <code>Int.mul_sub 6 j k</code> as a proof of the first equation.</p>
+<p>Thus we can fill in <code>mul_sub 6 j k</code> as a proof of the first equation.</p>
 <p>It looks like we’ll have to use the associativity of multiplication again to prove the second equation, but it will take more than one step. Let’s try writing a tactic-mode proof. In the display below, we’ll just focus on the calculational proof.</p>
 <div class="inout">
 <div class="inpt">
 <div class="sourceCode" id="cb261"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb261-1"><a href="#cb261-1" aria-hidden="true" tabindex="-1"></a><span class="kw">have</span> h6 : 6 * (j - k) = n :=</span>
 <span id="cb261-2"><a href="#cb261-2" aria-hidden="true" tabindex="-1"></a>  <span class="kw">calc</span></span>
-<span id="cb261-3"><a href="#cb261-3" aria-hidden="true" tabindex="-1"></a>    6 * (j - k) = 6 * j - 6 * k := Int.mul_sub 6 j k</span>
+<span id="cb261-3"><a href="#cb261-3" aria-hidden="true" tabindex="-1"></a>    6 * (j - k) = 6 * j - 6 * k := mul_sub 6 j k</span>
 <span id="cb261-4"><a href="#cb261-4" aria-hidden="true" tabindex="-1"></a>    _ = 3 * (2 * j) - 2 * (3 * k) := <span class="kw">by</span></span>
 <span id="cb261-5"><a href="#cb261-5" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb261-6"><a href="#cb261-6" aria-hidden="true" tabindex="-1"></a>          <span class="sc">**</span><span class="wa">done</span><span class="sc">::</span></span>
@@ -3514,7 +3514,7 @@ x \in A \cap (B \setmin C) &amp;\text{ iff } x \in A \wedge x \in B \setmin C\\
 <div class="inpt">
 <div class="sourceCode" id="cb263"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb263-1"><a href="#cb263-1" aria-hidden="true" tabindex="-1"></a><span class="kw">have</span> h6 : 6 * (j - k) = n :=</span>
 <span id="cb263-2"><a href="#cb263-2" aria-hidden="true" tabindex="-1"></a>  <span class="kw">calc</span></span>
-<span id="cb263-3"><a href="#cb263-3" aria-hidden="true" tabindex="-1"></a>    6 * (j - k) = 6 * j - 6 * k := Int.mul_sub 6 j k</span>
+<span id="cb263-3"><a href="#cb263-3" aria-hidden="true" tabindex="-1"></a>    6 * (j - k) = 6 * j - 6 * k := mul_sub 6 j k</span>
 <span id="cb263-4"><a href="#cb263-4" aria-hidden="true" tabindex="-1"></a>    _ = 3 * (2 * j) - 2 * (3 * k) := <span class="kw">by</span></span>
 <span id="cb263-5"><a href="#cb263-5" aria-hidden="true" tabindex="-1"></a>          <span class="kw">rewrite</span> [←mul_assoc 3 2 j]</span>
 <span id="cb263-6"><a href="#cb263-6" aria-hidden="true" tabindex="-1"></a>          <span class="kw">rewrite</span> [←mul_assoc 2 3 k]</span>
@@ -3542,7 +3542,7 @@ x \in A \cap (B \setmin C) &amp;\text{ iff } x \in A \wedge x \in B \setmin C\\
 <div class="inpt">
 <div class="sourceCode" id="cb265"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb265-1"><a href="#cb265-1" aria-hidden="true" tabindex="-1"></a><span class="kw">have</span> h6 : 6 * (j - k) = n :=</span>
 <span id="cb265-2"><a href="#cb265-2" aria-hidden="true" tabindex="-1"></a>  <span class="kw">calc</span></span>
-<span id="cb265-3"><a href="#cb265-3" aria-hidden="true" tabindex="-1"></a>    6 * (j - k) = 6 * j - 6 * k := Int.mul_sub 6 j k</span>
+<span id="cb265-3"><a href="#cb265-3" aria-hidden="true" tabindex="-1"></a>    6 * (j - k) = 6 * j - 6 * k := mul_sub 6 j k</span>
 <span id="cb265-4"><a href="#cb265-4" aria-hidden="true" tabindex="-1"></a>    _ = 3 * (2 * j) - 2 * (3 * k) := <span class="kw">by</span></span>
 <span id="cb265-5"><a href="#cb265-5" aria-hidden="true" tabindex="-1"></a>          <span class="kw">rewrite</span> [←mul_assoc 3 2 j]</span>
 <span id="cb265-6"><a href="#cb265-6" aria-hidden="true" tabindex="-1"></a>          <span class="kw">rewrite</span> [←mul_assoc 2 3 k]</span>
@@ -3573,7 +3573,7 @@ x \in A \cap (B \setmin C) &amp;\text{ iff } x \in A \wedge x \in B \setmin C\\
 <div class="inpt">
 <div class="sourceCode" id="cb267"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb267-1"><a href="#cb267-1" aria-hidden="true" tabindex="-1"></a><span class="kw">have</span> h6 : 6 * (j - k) = n :=</span>
 <span id="cb267-2"><a href="#cb267-2" aria-hidden="true" tabindex="-1"></a>  <span class="kw">calc</span></span>
-<span id="cb267-3"><a href="#cb267-3" aria-hidden="true" tabindex="-1"></a>    6 * (j - k) = 6 * j - 6 * k := Int.mul_sub 6 j k</span>
+<span id="cb267-3"><a href="#cb267-3" aria-hidden="true" tabindex="-1"></a>    6 * (j - k) = 6 * j - 6 * k := mul_sub 6 j k</span>
 <span id="cb267-4"><a href="#cb267-4" aria-hidden="true" tabindex="-1"></a>    _ = 3 * (2 * j) - 2 * (3 * k) := <span class="kw">by</span></span>
 <span id="cb267-5"><a href="#cb267-5" aria-hidden="true" tabindex="-1"></a>          <span class="kw">rewrite</span> [←mul_assoc 3 2 j]</span>
 <span id="cb267-6"><a href="#cb267-6" aria-hidden="true" tabindex="-1"></a>          <span class="kw">rewrite</span> [←mul_assoc 2 3 k]</span>
@@ -3599,21 +3599,21 @@ x \in A \cap (B \setmin C) &amp;\text{ iff } x \in A \wedge x \in B \setmin C\\
 </div>
 </div>
 <p>Of course, the <code>rfl</code> tactic will now finish off the justification of the third equation.</p>
-<p>The fourth equation is <code>3 * n - 2 * n = (3 - 2) * n</code>. It looks like the algebraic law we need to justify this is a lot like the one that was used in the first equation, but with the subtraction to the left of the multiplication rather than to the right. It shouldn’t be surprising, therefore, that the name of the theorem we need is <code>Int.sub_mul</code>. The command <code>#check Int.sub_mul</code> gives the response</p>
+<p>The fourth equation is <code>3 * n - 2 * n = (3 - 2) * n</code>. It looks like the algebraic law we need to justify this is a lot like the one that was used in the first equation, but with the subtraction to the left of the multiplication rather than to the right. It shouldn’t be surprising, therefore, that the name of the theorem we need is <code>sub_mul</code>. The command <code>#check sub_mul</code> gives the response</p>
 <div class="quote">
-<p><code>Int.sub_mul : ∀ (a b c : ℤ), (a - b) * c = a * c - b * c</code>,</p>
+<p><code>sub_mul : ∀ (a b c : ?m.73144), (a - b) * c = a * c - b * c</code>,</p>
 </div>
-<p>so <code>Int.sub_mul 3 2 n</code> is a proof of <code>(3 - 2) * n = 3 * n - 2 * n</code>. But the fourth equation has the sides of this equation reversed, so to justify it we need <code>(Int.sub_mul 3 2 n).symm</code>.</p>
+<p>so <code>sub_mul 3 2 n</code> is a proof of <code>(3 - 2) * n = 3 * n - 2 * n</code>. But the fourth equation has the sides of this equation reversed, so to justify it we need <code>(sub_mul 3 2 n).symm</code>.</p>
 <p>Finally, the fifth equation is <code>(3 - 2) * n = n</code>. Why is this true? Because it is definitionally equal to <code>1 * n = n</code>. Is there a theorem to justify this last equation? One way to find the answer is to type in this example:</p>
 <div class="sourceCode" id="cb269"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb269-1"><a href="#cb269-1" aria-hidden="true" tabindex="-1"></a><span class="kw">example</span> (n : Int) : 1 * n = n := <span class="kw">by</span> <span class="sc">##</span><span class="do">library_search</span><span class="sc">::</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>Lean responds with <code>exact one_mul n</code>, and <code>#check one_mul</code> yields <code>one_mul : ∀ (a : ?m.73050), 1 * a = a</code>. So <code>one_mul n</code> should justify the last equation. Here’s the complete calculational proof, where we have shortened the second step a bit by doing both <code>rewrite</code>s in one step:</p>
 <div class="sourceCode" id="cb270"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb270-1"><a href="#cb270-1" aria-hidden="true" tabindex="-1"></a>  <span class="kw">have</span> h6 : 6 * (j - k) = n :=</span>
 <span id="cb270-2"><a href="#cb270-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">calc</span></span>
-<span id="cb270-3"><a href="#cb270-3" aria-hidden="true" tabindex="-1"></a>      6 * (j - k) = 6 * j - 6 * k := Int.mul_sub 6 j k</span>
+<span id="cb270-3"><a href="#cb270-3" aria-hidden="true" tabindex="-1"></a>      6 * (j - k) = 6 * j - 6 * k := mul_sub 6 j k</span>
 <span id="cb270-4"><a href="#cb270-4" aria-hidden="true" tabindex="-1"></a>      _ = 3 * (2 * j) - 2 * (3 * k) := <span class="kw">by</span></span>
 <span id="cb270-5"><a href="#cb270-5" aria-hidden="true" tabindex="-1"></a>            <span class="kw">rewrite</span> [←mul_assoc 3 2 j, ←mul_assoc 2 3 k]; <span class="kw">rfl</span></span>
 <span id="cb270-6"><a href="#cb270-6" aria-hidden="true" tabindex="-1"></a>      _ = 3 * n - 2 * n := <span class="kw">by</span> <span class="kw">rewrite</span> [←h4, ←h5]; <span class="kw">rfl</span></span>
-<span id="cb270-7"><a href="#cb270-7" aria-hidden="true" tabindex="-1"></a>      _ = (3 - 2) * n := (Int.sub_mul 3 2 n).symm</span>
+<span id="cb270-7"><a href="#cb270-7" aria-hidden="true" tabindex="-1"></a>      _ = (3 - 2) * n := (sub_mul 3 2 n).symm</span>
 <span id="cb270-8"><a href="#cb270-8" aria-hidden="true" tabindex="-1"></a>      _ = n := one_mul n</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>Whew! This example illustrates why algebraic reasoning in Lean can be difficult. But one reason why this proof was challenging is that we justified all of our steps from basic algebraic principles. Fortunately, there are more powerful tactics that can automate some algebraic reasoning. For example, the tactic <code>ring</code> can combine algebraic laws involving addition, subtraction, multiplication, and exponentiation with natural number exponents to prove many equations in one step. Also, the tactic <code>rw</code> is a variant of <code>rewrite</code> that automatically applies <code>rfl</code> after the rewriting if it can be used to finish the proof. Here’s a shortened version of our calculational proof that uses these tactics.</p>
 <div class="sourceCode" id="cb271"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb271-1"><a href="#cb271-1" aria-hidden="true" tabindex="-1"></a>  <span class="kw">have</span> h6 : 6 * (j - k) = n :=</span>
