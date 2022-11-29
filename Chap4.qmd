@@ -42,13 +42,13 @@ We can write corresponding definitions in Lean as follows:
 
 ```lean
 def Dom {A B : Type} (R : Set (A × B)) : Set A :=
-    {a : A | ∃ (b : B), (a, b) ∈ R}
+    { a : A | ∃ (b : B), (a, b) ∈ R }
 def Ran {A B : Type} (R : Set (A × B)) : Set B :=
-    {b : B | ∃ (a : A), (a, b) ∈ R}
+    { b : B | ∃ (a : A), (a, b) ∈ R }
 def inv {A B : Type} (R : Set (A × B)) : Set (B × A) :=
-    {(b, a) : B × A | (a, b) ∈ R}
+    { (b, a) : B × A | (a, b) ∈ R }
 def comp {A B C : Type} (S : Set (B × C)) (R : Set (A × B)) :
-    Set (A × C) := {(a, c) : A × C | ∃ (x : B), (a, x) ∈ R ∧ (x, c) ∈ S}
+    Set (A × C) := { (a, c) : A × C | ∃ (x : B), (a, x) ∈ R ∧ (x, c) ∈ S }
 ```
 
 Definitions in Lean are introduced with the keyword `def`.  In the definition of `Dom`, we have declared that `A` and `B` are implicit arguments and `R` is an explicit argument.  That means that if we have `R : Set (A × B)`, then we can just write `Dom R` for the domain of `R`, and Lean will figure out for itself what `A` and `B` are.  After the list of arguments there is a colon and then the type of `Dom R`, which is `Set A`.  This is followed by `:=` and then the definition of `Dom R`.  The definition says that `Dom R` is the set of all objects `a` of type `A` such that there is some `b` of type `B` with `(a, b) ∈ R`.  This is a direct translation, into Lean's type-theory language, of the first part of Definition 4.2.3.  The other three definitions are similar; they define `Ran R` to be the range of `R`, `inv R` to be the inverse of `R`, and `comp S R` to be the composition of `S` and `R`.
