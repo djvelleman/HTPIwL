@@ -107,16 +107,16 @@ theorem Theorem_4_2_5_4 {A B C D : Type}
   apply Iff.intro
   -- (→)
   assume h1 : (a, d) ∈ comp T (comp S R)
-                     --Goal:  (a, d) ∈ comp (comp T S) R
+                     --Goal: (a, d) ∈ comp (comp T S) R
   define             --Goal: ∃ (x : B), (a, x) ∈ R ∧ (x, d) ∈ comp T S
   define at h1       --h1: ∃ (x : C), (a, x) ∈ comp S R ∧ (x, d) ∈ T
   obtain (c : C) (h2 : (a, c) ∈ comp S R ∧ (c, d) ∈ T) from h1
   have h3 : (a, c) ∈ comp S R := h2.left
   define at h3       --h3: ∃ (x : B), (a, x) ∈ R ∧ (x, c) ∈ S
   obtain (b : B) (h4 : (a, b) ∈ R ∧ (b, c) ∈ S) from h3
-  apply Exists.intro b    --Goal:  (a, b) ∈ R ∧ (b, d) ∈ comp T S
-  apply And.intro h4.left --Goal:  (b, d) ∈ comp T S
-  define                  --Goal:  ∃ (x : C), (b, x) ∈ S ∧ (x, d) ∈ T
+  apply Exists.intro b    --Goal: (a, b) ∈ R ∧ (b, d) ∈ comp T S
+  apply And.intro h4.left --Goal: (b, d) ∈ comp T S
+  define                  --Goal: ∃ (x : C), (b, x) ∈ S ∧ (x, d) ∈ T
   show ∃ (x : C), (b, x) ∈ S ∧ (x, d) ∈ T from
     Exists.intro c (And.intro h4.right h2.right)
   -- (←)
@@ -135,7 +135,64 @@ theorem Theorem_4_2_5_4 {A B C D : Type}
 
 Of course, if you have trouble reading this proof, you can type it into Lean and see how the tactic state changes over the course of the proof.
 
-The proof of part 5 of the theorem is similar.  We'll leave it as an exercise for you.
+Here is a natural way to start the proof of part 5:
+
+```lean
+theorem Theorem_4_2_5_5 {A B C : Type}
+    (R : Set (A × B)) (S : Set (B × C)) :
+    inv (comp S R) = comp (inv R) (inv S) := by
+  apply Set.ext
+  fix (c, a) : C × A
+  apply Iff.intro
+  -- (→)
+  assume h1 : (c, a) ∈ inv (comp S R) --Goal: (c, a) ∈ comp (inv R) (inv S)
+  define at h1              --h1: ∃ x, (a, x) ∈ R ∧ (x, c) ∈ S
+  define                    --Goal: ∃ x, (c, x) ∈ inv S ∧ (x, a) ∈ inv R
+  obtain (b : B) (h2 : (a, b) ∈ R ∧ (b, c) ∈ S) from h1
+  apply Exists.intro b      --Goal: (c, b) ∈ inv S ∧ (b, a) ∈ inv R
+  define : (b, a) ∈ inv R
+```
+
+After the tactics `apply Set.ext` and `fix (c, a) : C × A`, the goal is `(c, a) ∈ inv (comp S R) ↔ (c, a) ∈ comp (inv R) (inv S)`.  For the proof of the left-to-right direction, we assume `h1 : (c, a) ∈ inv (comp S R)`, and we must prove `(c, a) ∈ comp (inv R) (inv S)`.  The definition of `h1` is an existential statement, so we apply existential instantiation to obtain `b : B` and `h2 : (a, b) ∈ R ∧ (b, c) ∈ S`.  The definition of the goal is also an existential statement, and after the tactic `apply And.intro b`, the goal is `(c, b) ∈ inv S ∧ (b, a) ∈ inv R`.  It looks like this goal will follow easily from `h2` if we just write out the definitions of the inverses of `S` and `R`.
+
+The tactic `define : (b, a) ∈ inv R` should rewrite the second half of the goal, using the definition of `inv R`.  You might expect the definition to be `(a, b) ∈ R`, but what the tactic produces is `R (a, b)`.  Usually, the `define` tactic does a good job of writing out definitions, but in this case it has let us down a bit.  The definition isn't wrong (explaining why would take us too far afield), but it isn't what we wanted.  We can teach Lean to do a better job of using the definition of inverses by proving a preliminary theorem before proving part 5 of Theorem 4.2.5:
+
+```lean
+theorem simp_inv
+    {A B : Type} (R : Set (A × B)) (a : A) (b : B) :
+    (b, a) ∈ inv R ↔ (a, b) ∈ R := by rfl
+```
+
+Now, any time we have a relation `R : Set (A × B)` and objects `a : A` and `b : B`, the expression `simp_inv R a b` will be a proof of the statement `(b, a) ∈ inv R ↔ (a, b) ∈ R`.  And that means that the tactic `rewrite [simp_inv R a b]` will change `(b, a) ∈ inv R` to `(a, b) ∈ R`, exactly as we wanted.  In fact, as we've seen before, you can just write `rewrite [simp_inv]`, and Lean will figure out how to apply the theorem `simp_inv` to rewrite some part of the goal.
+
+Returning to our proof of part 5 of Theorem 4.2.5, recall that after the step `apply Exists.intro b`, the goal is `(c, b) ∈ inv S ∧ (b, a) ∈ inv R`.  Rather than using the `define` tactic to write out the definitions of the inverses, we use the tactic `rewrite [simp_inv, simp_inv]`.  Why do we list `simp_inv` twice in the `rewrite` tactic?  When we ask Lean to use the theorem `simp_inv`, it figures out that `simp_inv S b c` is a proof of the statement `(c, b) ∈ inv S ↔ (b, c) ∈ S`, which can be used to rewrite the left half of the goal.  To rewrite the right half, we need a different application of the `simp_inv` theorem, `simp_inv R a b`.  So we have to ask Lean to apply the theorem a second time.  After the `rewrite` tactic, the goal is `(b, c) ∈ S ∧ (a, b) ∈ R`, which will follow easily from `h2`.
+
+The rest of the proof of straightforward.  Here is the complete proof.
+
+```lean
+theorem Theorem_4_2_5_5 {A B C : Type}
+    (R : Set (A × B)) (S : Set (B × C)) :
+    inv (comp S R) = comp (inv R) (inv S) := by
+  apply Set.ext
+  fix (c, a) : C × A
+  apply Iff.intro
+  -- (→)
+  assume h1 : (c, a) ∈ inv (comp S R) --Goal: (c, a) ∈ comp (inv R) (inv S)
+  define at h1                 --h1: ∃ x, (a, x) ∈ R ∧ (x, c) ∈ S
+  define                       --Goal: ∃ x, (c, x) ∈ inv S ∧ (x, a) ∈ inv R
+  obtain (b : B) (h2 : (a, b) ∈ R ∧ (b, c) ∈ S) from h1
+  apply Exists.intro b         --Goal: (c, b) ∈ inv S ∧ (b, a) ∈ inv R
+  rewrite [simp_inv, simp_inv] --Goal: (b, c) ∈ S ∧ (a, b) ∈ R
+  show (b, c) ∈ S ∧ (a, b) ∈ R from And.intro h2.right h2.left
+  -- (←)
+  assume h1 : (c, a) ∈ comp (inv R) (inv S)
+  define at h1
+  define
+  obtain (b : B) (h2 : (c, b) ∈ inv S ∧ (b, a) ∈ inv R) from h1
+  apply Exists.intro b
+  rewrite [simp_inv, simp_inv] at h2
+  show (a, b) ∈ R ∧ (b, c) ∈ S from And.intro h2.right h2.left
+```
 
 ## 4.3. More About Relations
 
