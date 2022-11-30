@@ -2,7 +2,7 @@
 
 ## 4.1. Ordered Pairs and Cartesian Products
 
-Section 4.1 of *How To Prove It* defines the *Cartesian product* $A \times B$ of two sets $A$ and $B$ to be the set of all ordered pairs $(a, b)$, where $a \in A$ and $b \in B$.  However, in Lean, Cartesian product is an operation on *types*, not sets.  If `A` and `B` are types, then `A × B` is the type of ordered pairs `(a, b)`, where `a` has type `A` and `b` has type `B`.  In other words, if you have `a : A` and `b : B`, then `(a, b)` is an object of type `A × B`.  There is also notation for the first and second coordinates of an ordered pair.  If `p` has type `A × B`, then `p.1` is the first coordinate of `p`, and `p.2` is the second coordinate.  This means that `p = (p.1, p.2)`.  You can also use the notation `p.fst` for the first coordinate of `p` and `p.snd` for the second coordinate.
+Section 4.1 of *How To Prove It* defines the *Cartesian product* $A \times B$ of two sets $A$ and $B$ to be the set of all ordered pairs $(a, b)$, where $a \in A$ and $b \in B$.  However, in Lean, Cartesian product is an operation on *types*, not sets.  If `A` and `B` are types, then `A × B` is the type of ordered pairs `(a, b)`, where `a` has type `A` and `b` has type `B`.  In other words, if you have `a : A` and `b : B`, then `(a, b)` is an object of type `A × B`.  There is also notation for the first and second coordinates of an ordered pair.  If `p` has type `A × B`, then `p.1` is the first coordinate of `p`, and `p.2` is the second coordinate.  You can also use the notation `p.fst` for the first coordinate of `p` and `p.snd` for the second coordinate.  This means that `p = (p.1, p.2) = (p.fst, p.snd)`.
 
 ## 4.2. Relations
 
@@ -153,9 +153,11 @@ theorem Theorem_4_2_5_5 {A B C : Type}
   define : (b, a) ∈ inv R
 ```
 
-After the tactics `apply Set.ext` and `fix (c, a) : C × A`, the goal is `(c, a) ∈ inv (comp S R) ↔ (c, a) ∈ comp (inv R) (inv S)`.  For the proof of the left-to-right direction, we assume `h1 : (c, a) ∈ inv (comp S R)`, and we must prove `(c, a) ∈ comp (inv R) (inv S)`.  The definition of `h1` is an existential statement, so we apply existential instantiation to obtain `b : B` and `h2 : (a, b) ∈ R ∧ (b, c) ∈ S`.  The definition of the goal is also an existential statement, and after the tactic `apply And.intro b`, the goal is `(c, b) ∈ inv S ∧ (b, a) ∈ inv R`.  It looks like this goal will follow easily from `h2` if we just write out the definitions of the inverses of `S` and `R`.
+After the tactics `apply Set.ext` and `fix (c, a) : C × A`, the goal is `(c, a) ∈ inv (comp S R) ↔ (c, a) ∈ comp (inv R) (inv S)`.  For the proof of the left-to-right direction, we assume `h1 : (c, a) ∈ inv (comp S R)`, and we must prove `(c, a) ∈ comp (inv R) (inv S)`.  The definition of `h1` is an existential statement, so we apply existential instantiation to obtain `b : B` and `h2 : (a, b) ∈ R ∧ (b, c) ∈ S`.  The definition of the goal is also an existential statement, and after the tactic `apply And.intro b`, the goal is `(c, b) ∈ inv S ∧ (b, a) ∈ inv R`.  It looks like this goal will follow easily from `h2`, using the definitions of the inverses of `S` and `R`.
 
-The tactic `define : (b, a) ∈ inv R` should rewrite the second half of the goal, using the definition of `inv R`.  You might expect the definition to be `(a, b) ∈ R`, but what the tactic produces is `R (a, b)`.  Usually, the `define` tactic does a good job of writing out definitions, but in this case it has let us down a bit.  The definition isn't wrong (explaining why would take us too far afield), but it isn't what we wanted.  We can teach Lean to do a better job of using the definition of inverses by proving a preliminary theorem before proving part 5 of Theorem 4.2.5:
+The tactic `define : (b, a) ∈ inv R` should rewrite the second half of the goal, using the definition of `inv R`.  You might expect the definition to be `(a, b) ∈ R`, but what the tactic produces is `R (a, b)`.  Usually, the `define` tactic does a good job of writing out definitions, but in this case it has let us down a bit.  The definition isn't wrong (explaining why would take us too far afield), but it isn't what we wanted.
+
+Of course, we don't really need to use the `define` tactic---Lean will recognize that `(b, a) ∈ inv R` and `(a, b) ∈ R` are definitionally equally on its own.  But it would be nice if we could teach Lean to do a better job of writing out the definitions of inverses.  We can do that by proving a preliminary theorem before proving part 5 of Theorem 4.2.5:
 
 ```lean
 theorem simp_inv
@@ -165,7 +167,7 @@ theorem simp_inv
 
 Now, any time we have a relation `R : Set (A × B)` and objects `a : A` and `b : B`, the expression `simp_inv R a b` will be a proof of the statement `(b, a) ∈ inv R ↔ (a, b) ∈ R`.  And that means that the tactic `rewrite [simp_inv R a b]` will change `(b, a) ∈ inv R` to `(a, b) ∈ R`, exactly as we wanted.  In fact, as we've seen before, you can just write `rewrite [simp_inv]`, and Lean will figure out how to apply the theorem `simp_inv` to rewrite some part of the goal.
 
-Returning to our proof of part 5 of Theorem 4.2.5, recall that after the step `apply Exists.intro b`, the goal is `(c, b) ∈ inv S ∧ (b, a) ∈ inv R`.  Rather than using the `define` tactic to write out the definitions of the inverses, we use the tactic `rewrite [simp_inv, simp_inv]`.  Why do we list `simp_inv` twice in the `rewrite` tactic?  When we ask Lean to use the theorem `simp_inv`, it figures out that `simp_inv S b c` is a proof of the statement `(c, b) ∈ inv S ↔ (b, c) ∈ S`, which can be used to rewrite the left half of the goal.  To rewrite the right half, we need a different application of the `simp_inv` theorem, `simp_inv R a b`.  So we have to ask Lean to apply the theorem a second time.  After the `rewrite` tactic, the goal is `(b, c) ∈ S ∧ (a, b) ∈ R`, which will follow easily from `h2`.
+Returning to our proof of part 5 of Theorem 4.2.5, recall that after the step `apply Exists.intro b`, the goal is `(c, b) ∈ inv S ∧ (b, a) ∈ inv R`.  Rather than using the `define` tactic to write out the definitions of the inverses, we'll use the tactic `rewrite [simp_inv, simp_inv]`.  Why do we list `simp_inv` twice in the `rewrite` tactic?  When we ask Lean to use the theorem `simp_inv` as a rewriting rule, it figures out that `simp_inv S b c` is a proof of the statement `(c, b) ∈ inv S ↔ (b, c) ∈ S`, which can be used to rewrite the left half of the goal.  To rewrite the right half, we need a different application of the `simp_inv` theorem, `simp_inv R a b`.  So we have to ask Lean to apply the theorem a second time.  After the `rewrite` tactic, the goal is `(b, c) ∈ S ∧ (a, b) ∈ R`, which will follow easily from `h2`.
 
 The rest of the proof of straightforward.  Here is the complete proof.
 
@@ -194,6 +196,8 @@ theorem Theorem_4_2_5_5 {A B C : Type}
   show (a, b) ∈ R ∧ (b, c) ∈ S from And.intro h2.right h2.left
 ```
 
+By the way, an alternative way to complete both directions of this proof would have been to apply the commutativity of "and".  See if you can guess the name of that theorem (you can use `#check` to confirm your guess) and apply it as a third rewriting rule in the `rewrite` steps.
+
 ## 4.3. More About Relations
 
 Section 4.3 of *HTPI* introduces new notation for working with relations.  If $R \subseteq A \times B$, $a \in A$, and $b \in B$, then *HTPI* introduces the notation $aRb$ as an alternative way of saying $(a, b) \in R$.
@@ -202,11 +206,14 @@ The notation we will use in Lean is slightly different.  Corresponding to the no
 
 Notice that in *HTPI*, the same variable $R$ is used in both the notation $aRb$ and $(a, b) \in R$.  But in Lean, the notation `R a b` is used when `R` has type `Rel A B`, and the notation `(a, b) ∈ R` is used when `R` has type `Set (A × B)`.  The types `Rel A B` and `Set (A × B)` are different, so we cannot use the same variable `R` in the two notations.  However, there is a correspondence between the two types.  Suppose `R` has type `Rel A B`.  If we let `R'` denote the set of all ordered pairs `(a, b) : A × B` such that the proposition `R a b` is true, then `R'` has type `Set (A × B)`.  And there is then a simple relationship between `R` and `R'`: for any objects `a : A` and `b : B`, the propositions `R a b` and `(a, b) ∈ R'` are equivalent.  For our work in Lean, we will say that `R` is a *relation* from `A` to `B`, and `R'` is the *extension* of `R`.
 
-We can define the extension of a relation in Lean as follows:
+We can define the extension of a relation, and state the correspondence between a relation and its extension, in Lean as follows:
 
 ```lean
 def extension {A B : Type} (R : Rel A B) : Set (A × B) :=
     {(a, b) : A × B | R a b}
+
+theorem simp_ext {A B : Type} (R : Rel A B) (a : A) (b : B) :
+    (a, b) ∈ extension R ↔ R a b := by rfl
 ```
 
 The rest of Chapter 4 of *HTPI* focuses on relations from a set to itself; in Lean, the corresponding idea is a relation from a type to itself.  If `A` is any type and `R` has type `Rel A A`, then we will say that `R` is a *binary relation on `A`*.  We define `BinRel A` to be the type of binary relations on `A`.  In other words, `BinRel A` is just an abbreviation for `Rel A A`.  If `R` is a binary relation on `A`, then we say that `R` is *reflexive* if for every `a` of type `A`, `R a a` holds.  It is *symmetric* if for all `a` and `b` of type `A`, if `R a b` then `R b a`.  And it is *transitive* if for all `a`, `b`, and `c` of type `A`, if `R a b` and `R b c` then `R a c`.  Of course, we can tell Lean about these definitions:
@@ -238,24 +245,24 @@ theorem Theorem_4_3_4_2 {A : Type} (R : BinRel A) :
   apply Iff.intro
   -- (→)
   assume h1 : symmetric R
+  define at h1             --h1: ∀ (a b : A), R a b → R b a
   apply Set.ext
   fix (a, b) : A × A
-  --Goal:  (a, b) ∈ extension R ↔ (a, b) ∈ inv (extension R)
-  --Next we fill in the definitions of both sides of the goal
-  define : (a, b) ∈ extension R
-  define : (a, b) ∈ inv (extension R)  --Goal:  R a b ↔ R b a
-  define at h1  --h1: ∀ (a b : A), R a b → R b a
-  show R a b ↔ R b a from Iff.intro (h1 a b) (h1 b a)
+  show (a, b) ∈ extension R ↔ (a, b) ∈ inv (extension R) from
+    calc
+      (a, b) ∈ extension R ↔ R a b   := by rfl
+      _ ↔ R b a                      := Iff.intro (h1 a b) (h1 b a)
+      _ ↔ (a, b) ∈ inv (extension R) := by rfl
   -- (←)
   assume h1 : extension R = inv (extension R)
-  define  --Goal:  ∀ (a b : A), R a b → R b a
+  define                   --Goal:  ∀ (a b : A), R a b → R b a
   fix a : A; fix b : A
-  assume h2 : R a b  --Goal:  R b a
-  have h3 : (a, b) ∈ extension R := h2  --h2, h3 are definitionally equal
-  rewrite [h1] at h3
-  define at h3
-  show R b a from h3
+  assume h2 : R a b        --Goal:  R b a
+  rewrite [←simp_ext R, h1, simp_inv, simp_ext] at h2
+  show R b a from h2
 ```
+
+Note that at the end of the proof, we assume `h2 : R a b`, and our goal is `R b a`.  We convert `R a b` to `R b a` by a sequence of rewrites.  Applying the right-to-left direction of the theorem `simp_ext R a b` converts `R a b` to `(a, b) ∈ extension R`.  Then rewriting with `h1` converts this to `(a, b) ∈ inv (extension R)`, using `simp_inv (extension R) b a` converts this to `(b, a) ∈ extension R`, and finally `simp_ext R b a` produces `R b a`.  Usually we can leave out the arguments when we use a theorem as a rewriting rule, and Lean will figure them out for itself.  But in this case, if you try using `←simp_ext` as the first rewriting rule, you will see that Lean is unable to figure out that it should use the right-to-left direction of `simp_ext R a b`.  Supplying the first argument turns out to be enough of a hint for Lean to figure out the rest.  That's why our first rewriting rule is `←simp_ext R`.
 
 We'll leave the proofs of the other two statements as exercises for you.
 
