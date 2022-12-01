@@ -2844,13 +2844,16 @@ theorem Exercise_3_5_7 (U : Type) (A B C : Set U) :
 theorem Exercise_3_5_8 (U : Type) (A B : Set U) :
     𝒫 A ∪ 𝒫 B ⊆ 𝒫 (A ∪ B) := sorry
 
+theorem Exercise_3_5_17b (U : Type) (F : Set (Set U)) (B : Set U) :
+    B ∪ (⋂₀ F) =
+      ⋂₀ { X : Set U | ∃ (A : Set U), A ∈ F ∧ X = B ∪ A} := sorry
+
 theorem Exercise_3_5_18 (U : Type) (F G H : Set (Set U))
     (h1 : ∀ (A : Set U), A ∈ F → ∀ (B : Set U), B ∈ G → A ∪ B ∈ H) :
     ⋂₀H ⊆ (⋂₀F) ∪ (⋂₀G) := sorry
 
 theorem Exercise_3_5_24a (U : Type) (A B C : Set U) :
     (A ∪ B) △ C ⊆ (A △ C) ∪ (B △ C) := sorry
-
 ```
 
 ## 3.6.  Existence and Uniqueness Proofs
@@ -3671,7 +3674,7 @@ theorem Exercise_3_6_7b (U : Type) :
     ∃! (A : Set U), ∀ (B : Set U), A ∩ B = A := sorry
 
 theorem Exercise_3_6_8a (U : Type) :
-    ∀ (A : Set U), ∃! (B : Set U), ∀ (C : Set U), C \ A = C ∩ B := by
+    ∀ (A : Set U), ∃! (B : Set U), ∀ (C : Set U), C \ A = C ∩ B := sorry
 
 theorem Exercise_3_6_10 (U : Type) (A : Set U)
     (h1 : ∀ (F : Set (Set U)), ⋃₀F = A → A ∈ F) : ∃! (x : U), x ∈ A := by

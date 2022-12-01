@@ -2468,12 +2468,16 @@ x \in A \cap (B \setmin C) &amp;\text{ iff } x \in A \wedge x \in B \setmin C\\
 <span id="cb179-10"><a href="#cb179-10" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Exercise_3_5_8 (U : <span class="kw">Type</span>) (A B : Set U) :</span>
 <span id="cb179-11"><a href="#cb179-11" aria-hidden="true" tabindex="-1"></a>    𝒫 A ∪ 𝒫 B ⊆ 𝒫 (A ∪ B) := <span class="cn">sorry</span></span>
 <span id="cb179-12"><a href="#cb179-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb179-13"><a href="#cb179-13" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Exercise_3_5_18 (U : <span class="kw">Type</span>) (F G H : Set (Set U))</span>
-<span id="cb179-14"><a href="#cb179-14" aria-hidden="true" tabindex="-1"></a>    (h1 : ∀ (A : Set U), A ∈ F → ∀ (B : Set U), B ∈ G → A ∪ B ∈ H) :</span>
-<span id="cb179-15"><a href="#cb179-15" aria-hidden="true" tabindex="-1"></a>    ⋂₀H ⊆ (⋂₀F) ∪ (⋂₀G) := <span class="cn">sorry</span></span>
+<span id="cb179-13"><a href="#cb179-13" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Exercise_3_5_17b (U : <span class="kw">Type</span>) (F : Set (Set U)) (B : Set U) :</span>
+<span id="cb179-14"><a href="#cb179-14" aria-hidden="true" tabindex="-1"></a>    B ∪ (⋂₀ F) =</span>
+<span id="cb179-15"><a href="#cb179-15" aria-hidden="true" tabindex="-1"></a>      ⋂₀ { X : Set U | ∃ (A : Set U), A ∈ F ∧ X = B ∪ A} := <span class="cn">sorry</span></span>
 <span id="cb179-16"><a href="#cb179-16" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb179-17"><a href="#cb179-17" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Exercise_3_5_24a (U : <span class="kw">Type</span>) (A B C : Set U) :</span>
-<span id="cb179-18"><a href="#cb179-18" aria-hidden="true" tabindex="-1"></a>    (A ∪ B) △ C ⊆ (A △ C) ∪ (B △ C) := <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb179-17"><a href="#cb179-17" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Exercise_3_5_18 (U : <span class="kw">Type</span>) (F G H : Set (Set U))</span>
+<span id="cb179-18"><a href="#cb179-18" aria-hidden="true" tabindex="-1"></a>    (h1 : ∀ (A : Set U), A ∈ F → ∀ (B : Set U), B ∈ G → A ∪ B ∈ H) :</span>
+<span id="cb179-19"><a href="#cb179-19" aria-hidden="true" tabindex="-1"></a>    ⋂₀H ⊆ (⋂₀F) ∪ (⋂₀G) := <span class="cn">sorry</span></span>
+<span id="cb179-20"><a href="#cb179-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb179-21"><a href="#cb179-21" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Exercise_3_5_24a (U : <span class="kw">Type</span>) (A B C : Set U) :</span>
+<span id="cb179-22"><a href="#cb179-22" aria-hidden="true" tabindex="-1"></a>    (A ∪ B) △ C ⊆ (A △ C) ∪ (B △ C) := <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
 </section>
 <section id="existence-and-uniqueness-proofs" class="level2">
@@ -3095,7 +3099,7 @@ x \in A \cap (B \setmin C) &amp;\text{ iff } x \in A \wedge x \in B \setmin C\\
 <span id="cb229-15"><a href="#cb229-15" aria-hidden="true" tabindex="-1"></a>    ∃! (A : Set U), ∀ (B : Set U), A ∩ B = A := <span class="cn">sorry</span></span>
 <span id="cb229-16"><a href="#cb229-16" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb229-17"><a href="#cb229-17" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Exercise_3_6_8a (U : <span class="kw">Type</span>) :</span>
-<span id="cb229-18"><a href="#cb229-18" aria-hidden="true" tabindex="-1"></a>    ∀ (A : Set U), ∃! (B : Set U), ∀ (C : Set U), C \ A = C ∩ B := <span class="kw">by</span></span>
+<span id="cb229-18"><a href="#cb229-18" aria-hidden="true" tabindex="-1"></a>    ∀ (A : Set U), ∃! (B : Set U), ∀ (C : Set U), C \ A = C ∩ B := <span class="cn">sorry</span></span>
 <span id="cb229-19"><a href="#cb229-19" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb229-20"><a href="#cb229-20" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Exercise_3_6_10 (U : <span class="kw">Type</span>) (A : Set U)</span>
 <span id="cb229-21"><a href="#cb229-21" aria-hidden="true" tabindex="-1"></a>    (h1 : ∀ (F : Set (Set U)), ⋃₀F = A → A ∈ F) : ∃! (x : U), x ∈ A := <span class="kw">by</span></span>

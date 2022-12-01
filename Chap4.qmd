@@ -165,7 +165,7 @@ theorem simp_inv
     (b, a) ∈ inv R ↔ (a, b) ∈ R := by rfl
 ```
 
-Now, any time we have a relation `R : Set (A × B)` and objects `a : A` and `b : B`, the expression `simp_inv R a b` will be a proof of the statement `(b, a) ∈ inv R ↔ (a, b) ∈ R`.  And that means that the tactic `rewrite [simp_inv R a b]` will change `(b, a) ∈ inv R` to `(a, b) ∈ R`, exactly as we wanted.  In fact, as we've seen before, you can just write `rewrite [simp_inv]`, and Lean will figure out how to apply the theorem `simp_inv` to rewrite some part of the goal.
+Now, any time we have a relation `R : Set (A × B)` and objects `a : A` and `b : B`, the expression `simp_inv R a b` will be a proof of the statement `(b, a) ∈ inv R ↔ (a, b) ∈ R`.  (Note that `A` and `B` are implicit arguments and don't need to be specified.)  And that means that the tactic `rewrite [simp_inv R a b]` will change `(b, a) ∈ inv R` to `(a, b) ∈ R`, exactly as we wanted.  In fact, as we've seen before, you can just write `rewrite [simp_inv]`, and Lean will figure out how to apply the theorem `simp_inv` to rewrite some part of the goal.
 
 Returning to our proof of part 5 of Theorem 4.2.5, recall that after the step `apply Exists.intro b`, the goal is `(c, b) ∈ inv S ∧ (b, a) ∈ inv R`.  Rather than using the `define` tactic to write out the definitions of the inverses, we'll use the tactic `rewrite [simp_inv, simp_inv]`.  Why do we list `simp_inv` twice in the `rewrite` tactic?  When we ask Lean to use the theorem `simp_inv` as a rewriting rule, it figures out that `simp_inv S b c` is a proof of the statement `(c, b) ∈ inv S ↔ (b, c) ∈ S`, which can be used to rewrite the left half of the goal.  To rewrite the right half, we need a different application of the `simp_inv` theorem, `simp_inv R a b`.  So we have to ask Lean to apply the theorem a second time.  After the `rewrite` tactic, the goal is `(b, c) ∈ S ∧ (a, b) ∈ R`, which will follow easily from `h2`.
 
@@ -197,6 +197,49 @@ theorem Theorem_4_2_5_5 {A B C : Type}
 ```
 
 By the way, an alternative way to complete both directions of this proof would have been to apply the commutativity of "and".  See if you can guess the name of that theorem (you can use `#check` to confirm your guess) and apply it as a third rewriting rule in the `rewrite` steps.
+
+### Exercises
+```lean
+theorem Exercise_4_2_9a {A B C : Type} (R : Set (A × B))
+    (S : Set (B × C)) : Dom (comp S R) ⊆ Dom R := sorry
+
+theorem Exercise_4_2_9b {A B C : Type} (R : Set (A × B))
+    (S : Set (B × C)) : Ran R ⊆ Dom S → Dom (comp S R) = Dom R := sorry
+
+--Fill in the blank to get a correct theorem and then prove the theorem
+theorem Exercise_4_2_9c {A B C : Type} (R : Set (A × B))
+    (S : Set (B × C)) : ___ → Ran (comp S R) = Ran S := sorry
+
+theorem Exercise_4_2_12a {A B C : Type} (R : Set (A × B))
+    (S T : Set (B × C)) : (comp S R) \ (comp T R) ⊆ comp (S \ T) R := sorry
+```
+
+Here is an incorrect theorem with an incorrect proof.
+
+::: {.nthm arguments="Incorrect Theorem"}
+Suppose $R$ is a relation from $A$ to $B$ and $S$ and $T$ are relations from $B$ to $C$.  Then $(S \setmin T) \circ R \subseteq (S \circ R) \setmin (T \circ R)$.
+:::
+
+::: {.incproof}
+Suppose $(a, c) \in (S \setmin T) \circ R$. Then we can choose some $b \in B$ such that $(a, b) \in R$ and $(b, c) \in S \setmin T$, so $(b, c) \in S$ and $(b, c) \notin T$.  Since $(a, b) \in R$ and $(b, c) \in S$, $(a, c) \in S \circ R$.  Similarly, since $(a, b) \in R$ and $(b, c) \notin T$, $(a, c) \notin T \circ R$.  Therefore $(a, c) \in (S \circ R) \setmin (T \circ R)$.  Since $(a, c)$ was arbitrary, this shows that $(S \setmin T) \circ R \subseteq (S \circ R) \setmin (T \circ R)$.  \qedhere
+:::
+
+Find the mistake in the proof by attempting to write the proof in Lean:
+
+```lean
+--You won't be able to complete this proof
+theorem Exercise_4_2_12b {A B C : Type} (R : Set (A × B))
+    (S T : Set (B × C)) : comp (S \ T) R ⊆ (comp S R) \ (comp T R) := sorry
+```
+
+Is the following theorem correct?  Try to prove it in Lean.  If you can't prove it, see if you can find a counterexample.
+
+```lean
+--You might not be able to complete this proof
+theorem Exercise_4_2_14c {A B C : Type} (R : Set (A × B))
+    (S T : Set (B × C)) : comp (S ∩ T) R = (comp S R) ∩ (comp T R) := sorry
+
+```
 
 ## 4.3. More About Relations
 
@@ -265,5 +308,58 @@ theorem Theorem_4_3_4_2 {A : Type} (R : BinRel A) :
 Note that at the end of the proof, we assume `h2 : R a b`, and our goal is `R b a`.  We convert `R a b` to `R b a` by a sequence of rewrites.  Applying the right-to-left direction of the theorem `simp_ext R a b` converts `R a b` to `(a, b) ∈ extension R`.  Then rewriting with `h1` converts this to `(a, b) ∈ inv (extension R)`, using `simp_inv (extension R) b a` converts this to `(b, a) ∈ extension R`, and finally `simp_ext R b a` produces `R b a`.  Usually we can leave out the arguments when we use a theorem as a rewriting rule, and Lean will figure them out for itself.  But in this case, if you try using `←simp_ext` as the first rewriting rule, you will see that Lean is unable to figure out that it should use the right-to-left direction of `simp_ext R a b`.  Supplying the first argument turns out to be enough of a hint for Lean to figure out the rest.  That's why our first rewriting rule is `←simp_ext R`.
 
 We'll leave the proofs of the other two statements as exercises for you.
+
+### Exercises
+
+```lean
+theorem Theorem_4_3_4_1 {A : Type} (R : BinRel A) :
+    reflexive R ↔ {(x, y) : A × A | x = y} ⊆ extension R := sorry
+
+theorem Theorem_4_3_4_3 {A : Type} (R : BinRel A) :
+    transitive R ↔ comp (extension R) (extension R) ⊆ extension R := sorry
+```
+
+To state our remaining exercises, we'll need a definition.  If `R` has type `Set (A × B)`, then we define `relFromExt R` to be the relation whose extension is `R`.  A few simple theorems, which follow directly from the definition, clarify the meaning of `relFromExt R`.
+
+```lean
+def relFromExt {A B : Type}
+    (R : Set (A × B)) (a : A) (b : B) : Prop := (a, b) ∈ R
+
+theorem simp_relFromExt {A B : Type}
+    (R : Set (A × B)) (a : A) (b : B) :
+    relFromExt R a b ↔ (a, b) ∈ R := by rfl
+
+example {A B : Type} (R : Rel A B) :
+    relFromExt (extension R) = R := by rfl
+
+example {A B : Type} (R : Set (A × B)) :
+    extension (relFromExt R) = R := by rfl
+
+theorem Exercise_4_3_12a {A : Type} (R : BinRel A) (h1 : reflexive R) :
+    reflexive (relFromExt (inv (extension R))) := sorry
+
+theorem Exercise_4_3_12c {A : Type} (R : BinRel A) (h1 : transitive R) :
+    transitive (relFromExt (inv (extension R))) := sorry
+
+theorem Exercise_4_3_18 {A : Type}
+    (R S : BinRel A) (h1 : transitive R) (h2 : transitive S)
+    (h3 : comp (extension S) (extension R) ⊆
+        comp (extension R) (extension S)) :
+    transitive (relFromExt (comp (extension R) (extension S))) := sorry
+```
+
+Are the following theorems correct?
+
+```lean
+--You might not be able to complete this proof
+theorem Exercise_4_3_13b {A : Type}
+    (R1 R2 : BinRel A) (h1 : symmetric R1) (h2 : symmetric R2) :
+    symmetric (relFromExt ((extension R1) ∪ (extension R2))) := sorry
+
+--You might not be able to complete this proof
+theorem Exercise_4_3_13c {A : Type}
+    (R1 R2 : BinRel A) (h1 : transitive R1) (h2 : transitive R2) :
+    transitive (relFromExt ((extension R1) ∪ (extension R2))) := sorry
+```
 
 ## 4.4. Ordering Relations
