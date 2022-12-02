@@ -623,6 +623,8 @@ Our next example is a theorem of set theory.  You already know how to type a few
 | `∉` | `\notin` or `\inn` |
 | `⊆` | `\sub` |
 | `⊈` | `\subn` |
+| `=` | `=` |
+| `≠` | `\ne` |
 | `∪` | `\union` or `\cup` |
 | `∩` | `\inter` or `\cap` |
 | `\` | `\\` |
@@ -3184,7 +3186,7 @@ theorem union_comm {U : Type} (X Y : Set U) :
 :::
 :::
 
-We have now proven the two statements that were said to be "clearly" true in the proof in Example 3.6.2 of *HTPI*, and we have given them names.  As with any theorem in Lean's library, you can use the `#check` command to confirm what these theorems say.  If you type `#check @empty_union` and `#check @union_comm`, you will get these results:
+We have now proven the two statements that were said to be "clearly" true in the proof in Example 3.6.2 of *HTPI*, and we have given them names.  We can now use these theorems, in the file containing these proofs, to prove other theorems.  As with any theorem in Lean's library, you can use the `#check` command to confirm what these theorems say.  If you type `#check @empty_union` and `#check @union_comm`, you will get these results:
 
 ::: {.quote}
 `@empty_union : ∀ {U : Type} (B : Set U), ∅ ∪ B = B`<br>\newline
@@ -4372,7 +4374,11 @@ Whew!  This example illustrates why algebraic reasoning in Lean can be difficult
 ```lean
 theorem Exercise_3_3_18a (a b c : Int)
     (h1 : a ∣ b) (h2 : a ∣ c) : a ∣ (b + c) := sorry
+```
 
+Complete the next proof by justifying the steps in the calculational proof.  Remember that you can use the tactic `demorgan : ...` to apply one of De Morgan's laws to just a part of the goal.  You may also find the theorem `and_or_left` useful.  (Use `#check` to see what the theorem says.)
+
+```lean
 theorem Exercise_3_4_6 (U : Type) (A B C : Set U) :
     A \ (B ∩ C) = (A \ B) ∪ (A \ C) := by
   apply Set.ext
