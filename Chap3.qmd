@@ -3164,7 +3164,35 @@ x : U
 :::
 :::
 
-By the definition of union, our current goal means `x ∈ X ∨ x ∈ Y ↔ x ∈ Y ∨ x ∈ X`.  You could prove this by a somewhat tedious application of the rules for biconditionals and disjunctions that were discussed in the last two sections, and we invite you to try it.  But there is another possibility.  The goal now has the form `P ∨ Q ↔ Q ∨ P`, which is the commutative law for "or" (see Section 1.2 of *HTPI*).  We saw in a previous example that Lean has, in its library, the associative law for "and"; it is called `and_assoc`.  Does Lean also know the commutative law for "or"?
+To understand the goal better, we'll write out the definitions of the two sides of the biconditional.  We use an extension of the `define` tactic that allows us to write out the definition of just a part of a given or the goal.  The tactic `define : x ∈ X ∪ Y` will replace `x ∈ X ∪ Y` with its definition wherever it appears in the goal, and then `define : x ∈ Y ∪ X` will replace `x ∈ Y ∪ X` with its definition.  (As usual, you can add `at` to do the replacements in a given rather than the goal.)
+
+::: {.inout}
+::: {.inpt}
+```lean
+theorem union_comm {U : Type} (X Y : Set U) :
+    X ∪ Y = Y ∪ X := by
+  apply Set.ext
+  fix x : U
+  define : x ∈ X ∪ Y
+  define : x ∈ Y ∪ X
+```
+:::
+
+::: {.outpt}
+```state
+case h
+U : Type
+X Y : Set U
+x : U
+⊢ x ∈ X ∨ x ∈ Y ↔
+>>  x ∈ Y ∨ x ∈ X
+```
+:::
+:::
+
+By the way, there are similar extensions of all of the tactics `contrapos`, `demorgan`, `conditional`, `double_neg`, `bicond_neg`, and `quant_neg` that allow you to use a logical equivalence to rewrite just a part of a formula.  For example, if your goal is `P ∧ (¬Q → R)`, then the tactic `contrapos : ¬Q → R` will change the goal to `P ∧ (¬R → Q)`.  If you have a given `h : P → ¬∀ (x : U), Q x`, then the tactic `quant_neg : ¬∀ (x : U), Q x at h` will change `h` to `h : P → ∃ (x : U), ¬Q x`.
+
+Returning to our proof of `union_comm`: the goal is now `x ∈ X ∨ x ∈ Y ↔ x ∈ Y ∨ x ∈ X`.  You could prove this by a somewhat tedious application of the rules for biconditionals and disjunctions that were discussed in the last two sections, and we invite you to try it.  But there is another possibility.  The goal now has the form `P ∨ Q ↔ Q ∨ P`, which is the commutative law for "or" (see Section 1.2 of *HTPI*).  We saw in a previous example that Lean has, in its library, the associative law for "and"; it is called `and_assoc`.  Does Lean also know the commutative law for "or"?
 
 Try typing `#check @or_` in VS Code.  As soon as you type this, a pop-up window appears with possible completions of this command.  You will see `or_assoc` on the list, as well as `or_comm`.  Select `or_comm`, and you'll get this response:  `@or_comm : ∀ {a b : Prop}, a ∨ b ↔ b ∨ a`.  Since `a` and `b` are implicit arguments in this theorem, you can use `or_comm` to prove any statement of the form `a ∨ b ↔ b ∨ a`, where Lean will figure out for itself what `a` and `b` stand for.  In particular, `or_comm` will prove our current goal.
 
@@ -3175,7 +3203,9 @@ theorem union_comm {U : Type} (X Y : Set U) :
     X ∪ Y = Y ∪ X := by
   apply Set.ext
   fix x : U
-  show x ∈ X ∪ Y ↔ x ∈ Y ∪ X from or_comm
+  define : x ∈ X ∪ Y
+  define : x ∈ Y ∪ X
+  show x ∈ X ∨ x ∈ Y ↔ x ∈ Y ∨ x ∈ X from or_comm
 ```
 :::
 
@@ -3582,29 +3612,6 @@ theorem union_comm {U : Type} (X Y : Set U) :
     X ∪ Y = Y ∪ X := by
   apply Set.ext
   fix x : U
-```
-:::
-
-::: {.outpt}
-```state
-case h
-U : Type
-X Y : Set U
-x : U
-⊢ x ∈ X ∪ Y ↔ x ∈ Y ∪ X
-```
-:::
-:::
-
-To make the goal easier for the `library_search` tactic to recognize, we'll write out the definitions of the two sides of the biconditional.  We use an extension of the `define` tactic that allows us to write out the definition of just a part of a given or the goal.  The tactic `define : x ∈ X ∪ Y` will replace `x ∈ X ∪ Y` with its definition wherever it appears in the goal, and then `define : x ∈ Y ∪ X` will replace `x ∈ Y ∪ X` with its definition.  (As usual, you can add `at` to do the replacements in a given rather than the goal.)
-
-::: {.inout}
-::: {.inpt}
-```lean
-theorem union_comm {U : Type} (X Y : Set U) :
-    X ∪ Y = Y ∪ X := by
-  apply Set.ext
-  fix x : U
   define : x ∈ X ∪ Y
   define : x ∈ Y ∪ X
 ```
@@ -3622,9 +3629,7 @@ x : U
 :::
 :::
 
-By the way, there are similar extensions of all of the tactics `contrapos`, `demorgan`, `conditional`, `double_neg`, `bicond_neg`, and `quant_neg` that allow you to use a logical equivalence to rewrite just a part of a formula.  For example, if your goal is `P ∧ (¬Q → R)`, then the tactic `contrapos : ¬Q → R` will change the goal to `P ∧ (¬R → Q)`.  If you have a given `h : P → ¬∀ (x : U), Q x`, then the tactic `quant_neg : ¬∀ (x : U), Q x at h` will change `h` to `h : P → ∃ (x : U), ¬Q x`.
-
-Returning to our proof of `union_comm`:  We have used the `define` tactic in order to give the `library_search` tactic the best chance of recognizing the goal as the commutative law for "or".  Let's give it a try.
+Now let's give the `library_search` tactic a try.
 
 ```lean
 theorem union_comm {U : Type} (X Y : Set U) :
@@ -3682,7 +3687,7 @@ theorem Exercise_3_6_10 (U : Type) (A : Set U)
     (h1 : ∀ (F : Set (Set U)), ⋃₀F = A → A ∈ F) : ∃! (x : U), x ∈ A := by
   --Hint:  Start like this:
   let F0 := {X : Set U | X ⊆ A ∧ ∃! (x : U), x ∈ X}
-  --Now F0 is in tactic state, with definition above
+  --Now F0 is in the tactic state, with the definition above
   have h2 : ⋃₀F0 = A := sorry
   sorry
 ```
@@ -3961,6 +3966,7 @@ theorem Theorem_3_4_7 :
   assume h1 : 6 ∣ n; define at h1
   obtain (k : Int) (h2 : n = 6 * k) from h1
   apply And.intro
+  -- Proof that 2 ∣ n
   define
 ```
 :::
@@ -3990,6 +3996,7 @@ theorem Theorem_3_4_7 :
   assume h1 : 6 ∣ n; define at h1
   obtain (k : Int) (h2 : n = 6 * k) from h1
   apply And.intro
+  -- Proof that 2 ∣ n
   define
   apply Exists.intro (3 * k)
 ```
@@ -4020,6 +4027,7 @@ theorem Theorem_3_4_7 :
   assume h1 : 6 ∣ n; define at h1
   obtain (k : Int) (h2 : n = 6 * k) from h1
   apply And.intro
+  -- Proof that 2 ∣ n
   define
   apply Exists.intro (3 * k)
   rewrite [←mul_assoc 2 3 k]
@@ -4051,6 +4059,7 @@ theorem Theorem_3_4_7 :
   assume h1 : 6 ∣ n; define at h1
   obtain (k : Int) (h2 : n = 6 * k) from h1
   apply And.intro
+  -- Proof that 2 ∣ n
   define
   apply Exists.intro (3 * k)
   rewrite [←mul_assoc 2 3 k]
@@ -4083,10 +4092,12 @@ theorem Theorem_3_4_7 :
   assume h1 : 6 ∣ n; define at h1
   obtain (k : Int) (h2 : n = 6 * k) from h1
   apply And.intro
+  -- Proof that 2 ∣ n
   define
   apply Exists.intro (3 * k)
   rewrite [←mul_assoc 2 3 k]
   show n = 2 * 3 * k from h2
+  -- Proof that 3 ∣ n
   define
   apply Exists.intro (2 * k)
   rewrite [←mul_assoc 3 2 k]

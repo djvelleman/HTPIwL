@@ -259,7 +259,7 @@ theorem simp_ext {A B : Type} (R : Rel A B) (a : A) (b : B) :
     (a, b) ∈ extension R ↔ R a b := by rfl
 ```
 
-The rest of Chapter 4 of *HTPI* focuses on relations from a set to itself; in Lean, the corresponding idea is a relation from a type to itself.  If `A` is any type and `R` has type `Rel A A`, then we will say that `R` is a *binary relation on `A`*.  We define `BinRel A` to be the type of binary relations on `A`.  In other words, `BinRel A` is just an abbreviation for `Rel A A`.  If `R` is a binary relation on `A`, then we say that `R` is *reflexive* if for every `x` of type `A`, `R x x` holds.  It is *symmetric* if for all `x` and `y` of type `A`, if `R x y` then `R y x`.  And it is *transitive* if for all `x`, `y`, and `z` of type `A`, if `R x y` and `R y z` then `R x z`.  Of course, we can tell Lean about these definitions:
+The rest of Chapter 4 of *HTPI* focuses on relations from a set to itself; in Lean, the corresponding idea is a relation from a type to itself.  If `A` is any type and `R` has type `Rel A A`, then we will say that `R` is a *binary relation on `A`*.  The notation `BinRel A` denotes the type of binary relations on `A`.  In other words, `BinRel A` is just an abbreviation for `Rel A A`.  If `R` is a binary relation on `A`, then we say that `R` is *reflexive* if for every `x` of type `A`, `R x x` holds.  It is *symmetric* if for all `x` and `y` of type `A`, if `R x y` then `R y x`.  And it is *transitive* if for all `x`, `y`, and `z` of type `A`, if `R x y` and `R y z` then `R x z`.  Of course, we can tell Lean about these definitions, which correspond to Definition 4.3.2 in *HTPI*:
 
 ```lean
 def reflexive {A : Type} (R : BinRel A) : Prop :=
@@ -307,7 +307,7 @@ theorem Theorem_4_3_4_2 {A : Type} (R : BinRel A) :
 
 Note that at the end of the proof, we assume `h2 : R a b`, and our goal is `R b a`.  We convert `R a b` to `R b a` by a sequence of rewrites.  Applying the right-to-left direction of the theorem `simp_ext R a b` converts `R a b` to `(a, b) ∈ extension R`.  Then rewriting with `h1` converts this to `(a, b) ∈ inv (extension R)`, using `simp_inv (extension R) b a` converts this to `(b, a) ∈ extension R`, and finally `simp_ext R b a` produces `R b a`.  Usually we can leave out the arguments when we use a theorem as a rewriting rule, and Lean will figure them out for itself.  But in this case, if you try using `←simp_ext` as the first rewriting rule, you will see that Lean is unable to figure out that it should use the right-to-left direction of `simp_ext R a b`.  Supplying the first argument turns out to be enough of a hint for Lean to figure out the rest.  That's why our first rewriting rule is `←simp_ext R`.
 
-We'll leave the proofs of the other two statements as exercises for you.
+We'll leave the proofs of the other two statements in Theorem 4.3.4 as exercises for you.
 
 For any types `A` and `B`, if we want to define a particular relation `R` from `A` to `B`, we can do it by specifying, for any `a : A` and `b : B`, what proposition is represented by `R a b`.  For example, for any type `A`, we can define a relation `elementhood A` from `A` to `Set A` as follows:
 
@@ -329,33 +329,33 @@ theorem Theorem_4_3_4_3 {A : Type} (R : BinRel A) :
     transitive R ↔ comp (extension R) (extension R) ⊆ extension R := sorry
 ```
 
-To state our remaining exercises, we'll need a definition.  If `R` has type `Set (A × B)`, then we define `relFromExt R` to be the relation whose extension is `R`.  A few simple theorems, which follow directly from the definition, clarify the meaning of `relFromExt R`.
+To state our remaining exercises, we'll need a definition.  If `R` has type `Set (A × B)`, then we define `RelFromExt R` to be the relation whose extension is `R`.  A few simple theorems, which follow directly from the definition, clarify the meaning of `RelFromExt R`.
 
 ```lean
-def relFromExt {A B : Type}
+def RelFromExt {A B : Type}
     (R : Set (A × B)) (a : A) (b : B) : Prop := (a, b) ∈ R
 
-theorem simp_relFromExt {A B : Type}
+theorem simp_RelFromExt {A B : Type}
     (R : Set (A × B)) (a : A) (b : B) :
-    relFromExt R a b ↔ (a, b) ∈ R := by rfl
+    RelFromExt R a b ↔ (a, b) ∈ R := by rfl
 
 example {A B : Type} (R : Rel A B) :
-    relFromExt (extension R) = R := by rfl
+    RelFromExt (extension R) = R := by rfl
 
 example {A B : Type} (R : Set (A × B)) :
-    extension (relFromExt R) = R := by rfl
+    extension (RelFromExt R) = R := by rfl
 
 theorem Exercise_4_3_12a {A : Type} (R : BinRel A) (h1 : reflexive R) :
-    reflexive (relFromExt (inv (extension R))) := sorry
+    reflexive (RelFromExt (inv (extension R))) := sorry
 
 theorem Exercise_4_3_12c {A : Type} (R : BinRel A) (h1 : transitive R) :
-    transitive (relFromExt (inv (extension R))) := sorry
+    transitive (RelFromExt (inv (extension R))) := sorry
 
 theorem Exercise_4_3_18 {A : Type}
     (R S : BinRel A) (h1 : transitive R) (h2 : transitive S)
     (h3 : comp (extension S) (extension R) ⊆
         comp (extension R) (extension S)) :
-    transitive (relFromExt (comp (extension R) (extension S))) := sorry
+    transitive (RelFromExt (comp (extension R) (extension S))) := sorry
 ```
 
 Are the following theorems correct?
@@ -364,12 +364,12 @@ Are the following theorems correct?
 --You might not be able to complete this proof
 theorem Exercise_4_3_13b {A : Type}
     (R1 R2 : BinRel A) (h1 : symmetric R1) (h2 : symmetric R2) :
-    symmetric (relFromExt ((extension R1) ∪ (extension R2))) := sorry
+    symmetric (RelFromExt ((extension R1) ∪ (extension R2))) := sorry
 
 --You might not be able to complete this proof
 theorem Exercise_4_3_13c {A : Type}
     (R1 R2 : BinRel A) (h1 : transitive R1) (h2 : transitive R2) :
-    transitive (relFromExt ((extension R1) ∪ (extension R2))) := sorry
+    transitive (RelFromExt ((extension R1) ∪ (extension R2))) := sorry
 ```
 
 ## 4.4. Ordering Relations
@@ -395,9 +395,115 @@ def sub (A : Type) (X Y : Set A) : Prop := X ⊆ Y
 
 According to this definition, `sub A` is a binary relation on `Set A`, and for any two sets `X` and `Y` of type `Set A`, `sub A X Y` is the proposition `X ⊆ Y`.  We will leave it as an exercise for you to prove that `sub A` is a partial order on the type `Set A`.
 
-Notice that `X ⊆ Y` could be thought of as expressing a sense in which `Y` is "at least as large as" than `X`.  Often, if `R` is a partial order on `A` and `a` and `b` have type `A`, then `R a b` can be thought of as meaning that `b` is in some sense "at least as large as" `a`.  Many of the concepts we study for partial and total orders are motivated by this intuition.
+Notice that `X ⊆ Y` could be thought of as expressing a sense in which `Y` is "at least as large as" `X`.  Often, if `R` is a partial order on `A` and `a` and `b` have type `A`, then `R a b` can be thought of as meaning that `b` is in some sense "at least as large as" `a`.  Many of the concepts we study for partial and total orders are motivated by this interpretation of `R`.
 
+For example, if `R` is a partial order on `A`, `B` has type `Set A`, and `b` has type `A`, then we say that `b` is an `R`-smallest element of `B` if it is an element of `B`, and every element of `B` is at least as large as `b`, according to this interpretation of the ordering `R`.  We say that `b` is an `R`-minimal element of `B` if it is an element of `B` and there is no other element of `B` that is smaller than `b`, according to the ordering `R`.  We can state these precisely as definitions in Lean:
 
+```lean
+def smallestElt {A : Type} (R : BinRel A) (b : A) (B : Set A) : Prop :=
+    b ∈ B ∧ ∀ x ∈ B, R b x
+
+def minimalElt {A : Type} (R : BinRel A) (b : A) (B : Set A) : Prop :=
+    b ∈ B ∧ ¬∃ x ∈ B, R x b ∧ x ≠ b
+```
+
+Notice that, as in *HTPI*, in Lean we can write `∀ x ∈ B, P x` as an abbreviation for `∀ (x : A), x ∈ B → P x`, and `∃ x ∈ B, P x` as an abbreviation for `∃ (x : A), x ∈ B ∧ P x`.  According to these definitions, `smallestElt R b B` is the proposition that `b` is an `R`-smallest element of `B`, and `minimalElt R b B` means that `b` is an `R`-minimal element of `B`.
+
+Theorem 4.4.6 in *HTPI* asserts three statements about these concepts.  We'll prove the second and third, and leave the first as an exercise for you.  The first statement in Theorem 4.4.6 says that if `B` has an `R`-smallest element, then that `R`-smallest element is unique.  Thus, we can talk about *the* `R`-smallest element of `B` rather than *an* `R`-smallest element.  The second says that if `b` is the `R`-smallest element of `B`, then it is also an `R`-minimal element, and it is the only `R`-minimal element.  Here is how you might start the proof:
+
+```lean
+theorem Theorem_4_4_6_2 {A : Type} (R : BinRel A) (B : Set A) (b : A)
+    (h1 : partial_order R) (h2 : smallestElt R b B) :
+    minimalElt R b B ∧ ∀ (c : A), minimalElt R c B → b = c := by
+  define at h1  --h1: reflexive R ∧ transitive R ∧ antisymmetric R
+  define at h2  --h2: b ∈ B ∧ ∀ (x : A), x ∈ B → R b x
+  apply And.intro
+  -- Proof that b is minimal
+  define        --Goal: b ∈ B ∧ ¬∃ (x : A), x ∈ B ∧ R x b ∧ x ≠ b
+  apply And.intro h2.left
+  quant_neg     --Goal: ∀ (x : A), ¬(x ∈ B ∧ R x b ∧ x ≠ b)
+  **demorgan : ¬(x ∈ B ∧ R x b ∧ x ≠ b)::
+```
+
+When the goal is `∀ (x : A), ¬(x ∈ B ∧ R x b ∧ x ≠ b)`, it is tempting to apply the `demorgan` tactic to `¬(x ∈ B ∧ R x b ∧ x ≠ b)`, but unfortunately this generates an error in Lean:  `unknown identifier 'x'`.  The problem is that `x` is not defined in the tactic state, so without the quantifier `∀ (x : A)` in front of it, `¬(x ∈ B ∧ R x b ∧ x ≠ b)` doesn't mean anything to Lean.  The solution to the problem is to deal with the universal quantifier first by introducing an arbitrary `x` of type `A`.  Once `x` has been introduced, we can apply the `demorgan` tactic.
+
+```lean
+theorem Theorem_4_4_6_2 {A : Type} (R : BinRel A) (B : Set A) (b : A)
+    (h1 : partial_order R) (h2 : smallestElt R b B) :
+    minimalElt R b B ∧ ∀ (c : A), minimalElt R c B → b = c := by
+  define at h1     --h1: reflexive R ∧ transitive R ∧ antisymmetric R
+  define at h2     --h2: b ∈ B ∧ ∀ (x : A), x ∈ B → R b x
+  apply And.intro
+  -- Proof that b is minimal
+  define           --Goal: b ∈ B ∧ ¬∃ (x : A), x ∈ B ∧ R x b ∧ x ≠ b
+  apply And.intro h2.left
+  quant_neg        --Goal: ∀ (x : A), ¬(x ∈ B ∧ R x b ∧ x ≠ b)
+  fix x : A
+  demorgan         --Goal: ¬x ∈ B ∨ ¬(R x b ∧ x ≠ b)
+  or_right with h3 --h3: x ∈ B; Goal: ¬(R x b ∧ x ≠ b)
+  demorgan         --Goal: ¬R x b ∨ x = b
+  or_right with h4 --h4: R x b; Goal: x = b
+  have h5 : R b x := h2.right x h3
+  have h6 : antisymmetric R := h1.right.right
+  define at h6     --h6: ∀ (x y : A), R x y → R y x → x = y
+  show x = b from h6 x b h4 h5
+  -- Proof that b is the only minimal element
+  fix c : A
+  assume h3 : minimalElt R c B
+  define at h3
+  have h4 : ¬∃ (x : A), x ∈ B ∧ R x c ∧ x ≠ c := h3.right
+  quant_neg at h4
+  have h5 : ¬(b ∈ B ∧ R b c ∧ b ≠ c) := h4 b
+  demorgan at h5
+  disj_syll h5 h2.left  --h5 : ¬(R b c ∧ b ≠ c)
+  demorgan at h5
+  have h6 : R b c := h2.right c h3.left
+  disj_syll h5 h6       --h5 : b = c
+  show b = c from h5 
+```
+
+Finally, the third statement in Theorem 4.4.6 says that if `R` is a total order, then an `R`-minimal element of a set `B` must be the `R`-smallest element of `B`.  The beginning of the proof is straightforward:
+
+```lean
+theorem Theorem_4_4_6_3 {A : Type} (R : BinRel A) (B : Set A) (b : A)
+    (h1 : total_order R) (h2 : minimalElt R b B) : smallestElt R b B := by
+  define at h1         --h1: partial_order R ∧ ∀ (x y : A), R x y ∨ R y x
+  define at h2         --h2: b ∈ B ∧ ¬∃ x, x ∈ B ∧ R x b ∧ x ≠ b
+  define               --Goal: b ∈ B ∧ ∀ (x : A), x ∈ B → R b x
+  apply And.intro h2.left  --Goal: ∀ (x : A), x ∈ B → R b x
+  fix x : A
+  assume h3 : x ∈ B        --Goal: R b x
+```
+
+Surprisingly, at this point it is difficult to find a way to reach the goal `R b x`.  See *HTPI* for an explanation of why it turns out to be helpful to split the proof into two cases, depending on whether or not `x = b`.  Of course, we use the `by_cases` tactic for this.
+
+```lean
+theorem Theorem_4_4_6_3 {A : Type} (R : BinRel A) (B : Set A) (b : A)
+    (h1 : total_order R) (h2 : minimalElt R b B) : smallestElt R b B := by
+  define at h1         --h1: partial_order R ∧ ∀ (x y : A), R x y ∨ R y x
+  define at h2         --h2: b ∈ B ∧ ¬∃ x, x ∈ B ∧ R x b ∧ x ≠ b
+  define               --Goal: b ∈ B ∧ ∀ (x : A), x ∈ B → R b x
+  apply And.intro h2.left  --Goal: ∀ (x : A), x ∈ B → R b x
+  fix x : A
+  assume h3 : x ∈ B        --Goal: R b x
+  by_cases h4 : x = b
+  -- Case 1 : x = b
+  rewrite [h4]             --Goal: R b b
+  have h5 : partial_order R := h1.left
+  define at h5
+  have h6 : reflexive R := h5.left
+  define at h6
+  show R b b from h6 b
+  -- Case 2 : x ≠ b
+  have h5 : ∀ (x y : A), R x y ∨ R y x := h1.right
+  have h6 : R x b ∨ R b x := h5 x b
+  have h7 : ¬R x b := by
+    contradict h2.right with h8
+    show ∃ (x : A), x ∈ B ∧ R x b ∧ x ≠ b from
+      Exists.intro x (And.intro h3 (And.intro h8 h4))
+  disj_syll h6 h7
+  show R b x from h6
+```
 
 ### Exercises
 

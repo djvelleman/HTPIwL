@@ -2716,18 +2716,40 @@ x \in A \cap (B \setmin C) &amp;\text{ iff } x \in A \wedge x \in B \setmin C\\
 <span id="cb199-5"><a href="#cb199-5" aria-hidden="true" tabindex="-1"></a>⊢ x ∈ X ∪ Y ↔ x ∈ Y ∪ X</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </div>
-<p>By the definition of union, our current goal means <code>x ∈ X ∨ x ∈ Y ↔︎ x ∈ Y ∨ x ∈ X</code>. You could prove this by a somewhat tedious application of the rules for biconditionals and disjunctions that were discussed in the last two sections, and we invite you to try it. But there is another possibility. The goal now has the form <code>P ∨ Q ↔︎ Q ∨ P</code>, which is the commutative law for “or” (see Section 1.2 of <em>HTPI</em>). We saw in a previous example that Lean has, in its library, the associative law for “and”; it is called <code>and_assoc</code>. Does Lean also know the commutative law for “or”?</p>
-<p>Try typing <code>#check @or_</code> in VS Code. As soon as you type this, a pop-up window appears with possible completions of this command. You will see <code>or_assoc</code> on the list, as well as <code>or_comm</code>. Select <code>or_comm</code>, and you’ll get this response: <code>@or_comm : ∀ {a b : Prop}, a ∨ b ↔︎ b ∨ a</code>. Since <code>a</code> and <code>b</code> are implicit arguments in this theorem, you can use <code>or_comm</code> to prove any statement of the form <code>a ∨ b ↔︎ b ∨ a</code>, where Lean will figure out for itself what <code>a</code> and <code>b</code> stand for. In particular, <code>or_comm</code> will prove our current goal.</p>
+<p>To understand the goal better, we’ll write out the definitions of the two sides of the biconditional. We use an extension of the <code>define</code> tactic that allows us to write out the definition of just a part of a given or the goal. The tactic <code>define : x ∈ X ∪ Y</code> will replace <code>x ∈ X ∪ Y</code> with its definition wherever it appears in the goal, and then <code>define : x ∈ Y ∪ X</code> will replace <code>x ∈ Y ∪ X</code> with its definition. (As usual, you can add <code>at</code> to do the replacements in a given rather than the goal.)</p>
 <div class="inout">
 <div class="inpt">
 <div class="sourceCode" id="cb200"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb200-1"><a href="#cb200-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> union_comm {U : <span class="kw">Type</span>} (X Y : Set U) :</span>
 <span id="cb200-2"><a href="#cb200-2" aria-hidden="true" tabindex="-1"></a>    X ∪ Y = Y ∪ X := <span class="kw">by</span></span>
 <span id="cb200-3"><a href="#cb200-3" aria-hidden="true" tabindex="-1"></a>  <span class="kw">apply</span> Set.ext</span>
 <span id="cb200-4"><a href="#cb200-4" aria-hidden="true" tabindex="-1"></a>  <span class="kw">fix</span> x : U</span>
-<span id="cb200-5"><a href="#cb200-5" aria-hidden="true" tabindex="-1"></a>  <span class="kw">show</span> x ∈ X ∪ Y ↔ x ∈ Y ∪ X <span class="kw">from</span> or_comm</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb200-5"><a href="#cb200-5" aria-hidden="true" tabindex="-1"></a>  <span class="kw">define</span> : x ∈ X ∪ Y</span>
+<span id="cb200-6"><a href="#cb200-6" aria-hidden="true" tabindex="-1"></a>  <span class="kw">define</span> : x ∈ Y ∪ X</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="outpt">
-<div class="sourceCode" id="cb201"><pre class="sourceCode state code-with-copy"><code class="sourceCode state"><span id="cb201-1"><a href="#cb201-1" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;&gt;</span>Goals accomplished 🎉</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb201"><pre class="sourceCode state code-with-copy"><code class="sourceCode state"><span id="cb201-1"><a href="#cb201-1" aria-hidden="true" tabindex="-1"></a><span class="re">case</span> h</span>
+<span id="cb201-2"><a href="#cb201-2" aria-hidden="true" tabindex="-1"></a><span class="in">U </span>: Type</span>
+<span id="cb201-3"><a href="#cb201-3" aria-hidden="true" tabindex="-1"></a><span class="in">X Y </span>: Set U</span>
+<span id="cb201-4"><a href="#cb201-4" aria-hidden="true" tabindex="-1"></a><span class="in">x </span>: U</span>
+<span id="cb201-5"><a href="#cb201-5" aria-hidden="true" tabindex="-1"></a>⊢ x ∈ X ∨ x ∈ Y ↔</span>
+<span id="cb201-6"><a href="#cb201-6" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;&gt;</span>  x ∈ Y ∨ x ∈ X</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+<p>By the way, there are similar extensions of all of the tactics <code>contrapos</code>, <code>demorgan</code>, <code>conditional</code>, <code>double_neg</code>, <code>bicond_neg</code>, and <code>quant_neg</code> that allow you to use a logical equivalence to rewrite just a part of a formula. For example, if your goal is <code>P ∧ (¬Q → R)</code>, then the tactic <code>contrapos : ¬Q → R</code> will change the goal to <code>P ∧ (¬R → Q)</code>. If you have a given <code>h : P → ¬∀ (x : U), Q x</code>, then the tactic <code>quant_neg : ¬∀ (x : U), Q x at h</code> will change <code>h</code> to <code>h : P → ∃ (x : U), ¬Q x</code>.</p>
+<p>Returning to our proof of <code>union_comm</code>: the goal is now <code>x ∈ X ∨ x ∈ Y ↔︎ x ∈ Y ∨ x ∈ X</code>. You could prove this by a somewhat tedious application of the rules for biconditionals and disjunctions that were discussed in the last two sections, and we invite you to try it. But there is another possibility. The goal now has the form <code>P ∨ Q ↔︎ Q ∨ P</code>, which is the commutative law for “or” (see Section 1.2 of <em>HTPI</em>). We saw in a previous example that Lean has, in its library, the associative law for “and”; it is called <code>and_assoc</code>. Does Lean also know the commutative law for “or”?</p>
+<p>Try typing <code>#check @or_</code> in VS Code. As soon as you type this, a pop-up window appears with possible completions of this command. You will see <code>or_assoc</code> on the list, as well as <code>or_comm</code>. Select <code>or_comm</code>, and you’ll get this response: <code>@or_comm : ∀ {a b : Prop}, a ∨ b ↔︎ b ∨ a</code>. Since <code>a</code> and <code>b</code> are implicit arguments in this theorem, you can use <code>or_comm</code> to prove any statement of the form <code>a ∨ b ↔︎ b ∨ a</code>, where Lean will figure out for itself what <code>a</code> and <code>b</code> stand for. In particular, <code>or_comm</code> will prove our current goal.</p>
+<div class="inout">
+<div class="inpt">
+<div class="sourceCode" id="cb202"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb202-1"><a href="#cb202-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> union_comm {U : <span class="kw">Type</span>} (X Y : Set U) :</span>
+<span id="cb202-2"><a href="#cb202-2" aria-hidden="true" tabindex="-1"></a>    X ∪ Y = Y ∪ X := <span class="kw">by</span></span>
+<span id="cb202-3"><a href="#cb202-3" aria-hidden="true" tabindex="-1"></a>  <span class="kw">apply</span> Set.ext</span>
+<span id="cb202-4"><a href="#cb202-4" aria-hidden="true" tabindex="-1"></a>  <span class="kw">fix</span> x : U</span>
+<span id="cb202-5"><a href="#cb202-5" aria-hidden="true" tabindex="-1"></a>  <span class="kw">define</span> : x ∈ X ∪ Y</span>
+<span id="cb202-6"><a href="#cb202-6" aria-hidden="true" tabindex="-1"></a>  <span class="kw">define</span> : x ∈ Y ∪ X</span>
+<span id="cb202-7"><a href="#cb202-7" aria-hidden="true" tabindex="-1"></a>  <span class="kw">show</span> x ∈ X ∨ x ∈ Y ↔ x ∈ Y ∨ x ∈ X <span class="kw">from</span> or_comm</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="outpt">
+<div class="sourceCode" id="cb203"><pre class="sourceCode state code-with-copy"><code class="sourceCode state"><span id="cb203-1"><a href="#cb203-1" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;&gt;</span>Goals accomplished 🎉</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </div>
 <p>We have now proven the two statements that were said to be “clearly” true in the proof in Example 3.6.2 of <em>HTPI</em>, and we have given them names. We can now use these theorems, in the file containing these proofs, to prove other theorems. As with any theorem in Lean’s library, you can use the <code>#check</code> command to confirm what these theorems say. If you type <code>#check @empty_union</code> and <code>#check @union_comm</code>, you will get these results:</p>
@@ -2738,57 +2760,40 @@ x \in A \cap (B \setmin C) &amp;\text{ iff } x \in A \wedge x \in B \setmin C\\
 <p>We are finally ready to prove the theorem from Example 3.6.2. Here is the theorem:</p>
 <div class="inout">
 <div class="inpt">
-<div class="sourceCode" id="cb202"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb202-1"><a href="#cb202-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Example_3_6_2 (U : <span class="kw">Type</span>) :</span>
-<span id="cb202-2"><a href="#cb202-2" aria-hidden="true" tabindex="-1"></a>    ∃! (A : Set U), ∀ (B : Set U),</span>
-<span id="cb202-3"><a href="#cb202-3" aria-hidden="true" tabindex="-1"></a>    A ∪ B = B := <span class="kw">by</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb204"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb204-1"><a href="#cb204-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Example_3_6_2 (U : <span class="kw">Type</span>) :</span>
+<span id="cb204-2"><a href="#cb204-2" aria-hidden="true" tabindex="-1"></a>    ∃! (A : Set U), ∀ (B : Set U),</span>
+<span id="cb204-3"><a href="#cb204-3" aria-hidden="true" tabindex="-1"></a>    A ∪ B = B := <span class="kw">by</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="outpt">
-<div class="sourceCode" id="cb203"><pre class="sourceCode state code-with-copy"><code class="sourceCode state"><span id="cb203-1"><a href="#cb203-1" aria-hidden="true" tabindex="-1"></a><span class="in">U </span>: Type</span>
-<span id="cb203-2"><a href="#cb203-2" aria-hidden="true" tabindex="-1"></a>⊢ ∃! A, ∀ (B : Set U),</span>
-<span id="cb203-3"><a href="#cb203-3" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;&gt;</span>  A ∪ B = B</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb205"><pre class="sourceCode state code-with-copy"><code class="sourceCode state"><span id="cb205-1"><a href="#cb205-1" aria-hidden="true" tabindex="-1"></a><span class="in">U </span>: Type</span>
+<span id="cb205-2"><a href="#cb205-2" aria-hidden="true" tabindex="-1"></a>⊢ ∃! A, ∀ (B : Set U),</span>
+<span id="cb205-3"><a href="#cb205-3" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;&gt;</span>  A ∪ B = B</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </div>
 <p>The goal starts with <code>∃!</code>, so we use our new tactic, <code>exists_unique</code>.</p>
 <div class="inout">
 <div class="inpt">
-<div class="sourceCode" id="cb204"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb204-1"><a href="#cb204-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Example_3_6_2 (U : <span class="kw">Type</span>) :</span>
-<span id="cb204-2"><a href="#cb204-2" aria-hidden="true" tabindex="-1"></a>    ∃! (A : Set U), ∀ (B : Set U),</span>
-<span id="cb204-3"><a href="#cb204-3" aria-hidden="true" tabindex="-1"></a>    A ∪ B = B := <span class="kw">by</span></span>
-<span id="cb204-4"><a href="#cb204-4" aria-hidden="true" tabindex="-1"></a>  <span class="kw">exists_unique</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<div class="outpt">
-<div class="sourceCode" id="cb205"><pre class="sourceCode state code-with-copy"><code class="sourceCode state"><span id="cb205-1"><a href="#cb205-1" aria-hidden="true" tabindex="-1"></a><span class="re">case</span> Existence</span>
-<span id="cb205-2"><a href="#cb205-2" aria-hidden="true" tabindex="-1"></a><span class="in">U </span>: Type</span>
-<span id="cb205-3"><a href="#cb205-3" aria-hidden="true" tabindex="-1"></a>⊢ ∃ A, ∀ (B : Set U),</span>
-<span id="cb205-4"><a href="#cb205-4" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;&gt;</span>  A ∪ B = B</span>
-<span id="cb205-5"><a href="#cb205-5" aria-hidden="true" tabindex="-1"></a><span class="re">case</span> Uniqueness</span>
-<span id="cb205-6"><a href="#cb205-6" aria-hidden="true" tabindex="-1"></a><span class="in">U </span>: Type</span>
-<span id="cb205-7"><a href="#cb205-7" aria-hidden="true" tabindex="-1"></a>⊢ ∀ (A_1 A_2 : Set U),</span>
-<span id="cb205-8"><a href="#cb205-8" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;&gt;</span>  (∀ (B : Set U),</span>
-<span id="cb205-9"><a href="#cb205-9" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;&gt;</span>      A_1 ∪ B = B) →</span>
-<span id="cb205-10"><a href="#cb205-10" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;&gt;</span>  (∀ (B : Set U),</span>
-<span id="cb205-11"><a href="#cb205-11" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;&gt;</span>      A_2 ∪ B = B) →</span>
-<span id="cb205-12"><a href="#cb205-12" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;&gt;</span>  A_1 = A_2</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-</div>
-<p>We have two goals, labeled <code>Existence</code> and <code>Uniqueness</code>. Imitating the proof from <em>HTPI</em>, we prove existence by using the value <code>∅</code> for <code>A</code>. It turns out that in this context, Lean is able to figure out which empty set we mean by <code>∅</code>, so we don’t need to specify the type.</p>
-<div class="inout">
-<div class="inpt">
 <div class="sourceCode" id="cb206"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb206-1"><a href="#cb206-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Example_3_6_2 (U : <span class="kw">Type</span>) :</span>
 <span id="cb206-2"><a href="#cb206-2" aria-hidden="true" tabindex="-1"></a>    ∃! (A : Set U), ∀ (B : Set U),</span>
 <span id="cb206-3"><a href="#cb206-3" aria-hidden="true" tabindex="-1"></a>    A ∪ B = B := <span class="kw">by</span></span>
-<span id="cb206-4"><a href="#cb206-4" aria-hidden="true" tabindex="-1"></a>  <span class="kw">exists_unique</span></span>
-<span id="cb206-5"><a href="#cb206-5" aria-hidden="true" tabindex="-1"></a>  <span class="co">-- Existence</span></span>
-<span id="cb206-6"><a href="#cb206-6" aria-hidden="true" tabindex="-1"></a>  <span class="kw">apply</span> Exists.intro ∅</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb206-4"><a href="#cb206-4" aria-hidden="true" tabindex="-1"></a>  <span class="kw">exists_unique</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="outpt">
 <div class="sourceCode" id="cb207"><pre class="sourceCode state code-with-copy"><code class="sourceCode state"><span id="cb207-1"><a href="#cb207-1" aria-hidden="true" tabindex="-1"></a><span class="re">case</span> Existence</span>
 <span id="cb207-2"><a href="#cb207-2" aria-hidden="true" tabindex="-1"></a><span class="in">U </span>: Type</span>
-<span id="cb207-3"><a href="#cb207-3" aria-hidden="true" tabindex="-1"></a>⊢ ∀ (B : Set U),</span>
-<span id="cb207-4"><a href="#cb207-4" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;&gt;</span>  ∅ ∪ B = B</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb207-3"><a href="#cb207-3" aria-hidden="true" tabindex="-1"></a>⊢ ∃ A, ∀ (B : Set U),</span>
+<span id="cb207-4"><a href="#cb207-4" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;&gt;</span>  A ∪ B = B</span>
+<span id="cb207-5"><a href="#cb207-5" aria-hidden="true" tabindex="-1"></a><span class="re">case</span> Uniqueness</span>
+<span id="cb207-6"><a href="#cb207-6" aria-hidden="true" tabindex="-1"></a><span class="in">U </span>: Type</span>
+<span id="cb207-7"><a href="#cb207-7" aria-hidden="true" tabindex="-1"></a>⊢ ∀ (A_1 A_2 : Set U),</span>
+<span id="cb207-8"><a href="#cb207-8" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;&gt;</span>  (∀ (B : Set U),</span>
+<span id="cb207-9"><a href="#cb207-9" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;&gt;</span>      A_1 ∪ B = B) →</span>
+<span id="cb207-10"><a href="#cb207-10" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;&gt;</span>  (∀ (B : Set U),</span>
+<span id="cb207-11"><a href="#cb207-11" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;&gt;</span>      A_2 ∪ B = B) →</span>
+<span id="cb207-12"><a href="#cb207-12" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;&gt;</span>  A_1 = A_2</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </div>
-<p>The goal is now precisely the statement of the theorem <code>empty_union</code>, so we can prove it by simply citing that theorem.</p>
+<p>We have two goals, labeled <code>Existence</code> and <code>Uniqueness</code>. Imitating the proof from <em>HTPI</em>, we prove existence by using the value <code>∅</code> for <code>A</code>. It turns out that in this context, Lean is able to figure out which empty set we mean by <code>∅</code>, so we don’t need to specify the type.</p>
 <div class="inout">
 <div class="inpt">
 <div class="sourceCode" id="cb208"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb208-1"><a href="#cb208-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Example_3_6_2 (U : <span class="kw">Type</span>) :</span>
@@ -2796,22 +2801,16 @@ x \in A \cap (B \setmin C) &amp;\text{ iff } x \in A \wedge x \in B \setmin C\\
 <span id="cb208-3"><a href="#cb208-3" aria-hidden="true" tabindex="-1"></a>    A ∪ B = B := <span class="kw">by</span></span>
 <span id="cb208-4"><a href="#cb208-4" aria-hidden="true" tabindex="-1"></a>  <span class="kw">exists_unique</span></span>
 <span id="cb208-5"><a href="#cb208-5" aria-hidden="true" tabindex="-1"></a>  <span class="co">-- Existence</span></span>
-<span id="cb208-6"><a href="#cb208-6" aria-hidden="true" tabindex="-1"></a>  <span class="kw">apply</span> Exists.intro ∅</span>
-<span id="cb208-7"><a href="#cb208-7" aria-hidden="true" tabindex="-1"></a>  <span class="kw">show</span> ∀ (B : Set U), ∅ ∪ B = B <span class="kw">from</span> empty_union</span>
-<span id="cb208-8"><a href="#cb208-8" aria-hidden="true" tabindex="-1"></a>  <span class="co">-- Uniqueness</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb208-6"><a href="#cb208-6" aria-hidden="true" tabindex="-1"></a>  <span class="kw">apply</span> Exists.intro ∅</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="outpt">
-<div class="sourceCode" id="cb209"><pre class="sourceCode state code-with-copy"><code class="sourceCode state"><span id="cb209-1"><a href="#cb209-1" aria-hidden="true" tabindex="-1"></a><span class="re">case</span> Uniqueness</span>
+<div class="sourceCode" id="cb209"><pre class="sourceCode state code-with-copy"><code class="sourceCode state"><span id="cb209-1"><a href="#cb209-1" aria-hidden="true" tabindex="-1"></a><span class="re">case</span> Existence</span>
 <span id="cb209-2"><a href="#cb209-2" aria-hidden="true" tabindex="-1"></a><span class="in">U </span>: Type</span>
-<span id="cb209-3"><a href="#cb209-3" aria-hidden="true" tabindex="-1"></a>⊢ ∀ (A_1 A_2 : Set U),</span>
-<span id="cb209-4"><a href="#cb209-4" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;&gt;</span>  (∀ (B : Set U),</span>
-<span id="cb209-5"><a href="#cb209-5" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;&gt;</span>      A_1 ∪ B = B) →</span>
-<span id="cb209-6"><a href="#cb209-6" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;&gt;</span>  (∀ (B : Set U),</span>
-<span id="cb209-7"><a href="#cb209-7" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;&gt;</span>      A_2 ∪ B = B) →</span>
-<span id="cb209-8"><a href="#cb209-8" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;&gt;</span>  A_1 = A_2</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb209-3"><a href="#cb209-3" aria-hidden="true" tabindex="-1"></a>⊢ ∀ (B : Set U),</span>
+<span id="cb209-4"><a href="#cb209-4" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;&gt;</span>  ∅ ∪ B = B</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </div>
-<p>For the uniqueness proof, we begin by introducing arbitrary sets <code>C</code> and <code>D</code> and assuming <code>∀ (B : Set U), C ∪ B = B</code> and <code>∀ (B : Set U), D ∪ B = B</code>, exactly as in the <em>HTPI</em> proof.</p>
+<p>The goal is now precisely the statement of the theorem <code>empty_union</code>, so we can prove it by simply citing that theorem.</p>
 <div class="inout">
 <div class="inpt">
 <div class="sourceCode" id="cb210"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb210-1"><a href="#cb210-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Example_3_6_2 (U : <span class="kw">Type</span>) :</span>
@@ -2821,23 +2820,20 @@ x \in A \cap (B \setmin C) &amp;\text{ iff } x \in A \wedge x \in B \setmin C\\
 <span id="cb210-5"><a href="#cb210-5" aria-hidden="true" tabindex="-1"></a>  <span class="co">-- Existence</span></span>
 <span id="cb210-6"><a href="#cb210-6" aria-hidden="true" tabindex="-1"></a>  <span class="kw">apply</span> Exists.intro ∅</span>
 <span id="cb210-7"><a href="#cb210-7" aria-hidden="true" tabindex="-1"></a>  <span class="kw">show</span> ∀ (B : Set U), ∅ ∪ B = B <span class="kw">from</span> empty_union</span>
-<span id="cb210-8"><a href="#cb210-8" aria-hidden="true" tabindex="-1"></a>  <span class="co">-- Uniqueness</span></span>
-<span id="cb210-9"><a href="#cb210-9" aria-hidden="true" tabindex="-1"></a>  <span class="kw">fix</span> C : Set U; <span class="kw">fix</span> D : Set U</span>
-<span id="cb210-10"><a href="#cb210-10" aria-hidden="true" tabindex="-1"></a>  <span class="kw">assume</span> h1 : ∀ (B : Set U), C ∪ B = B</span>
-<span id="cb210-11"><a href="#cb210-11" aria-hidden="true" tabindex="-1"></a>  <span class="kw">assume</span> h2 : ∀ (B : Set U), D ∪ B = B</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb210-8"><a href="#cb210-8" aria-hidden="true" tabindex="-1"></a>  <span class="co">-- Uniqueness</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="outpt">
 <div class="sourceCode" id="cb211"><pre class="sourceCode state code-with-copy"><code class="sourceCode state"><span id="cb211-1"><a href="#cb211-1" aria-hidden="true" tabindex="-1"></a><span class="re">case</span> Uniqueness</span>
 <span id="cb211-2"><a href="#cb211-2" aria-hidden="true" tabindex="-1"></a><span class="in">U </span>: Type</span>
-<span id="cb211-3"><a href="#cb211-3" aria-hidden="true" tabindex="-1"></a><span class="in">C D </span>: Set U</span>
-<span id="cb211-4"><a href="#cb211-4" aria-hidden="true" tabindex="-1"></a><span class="in">h1 </span>: ∀ (B : Set U),</span>
-<span id="cb211-5"><a href="#cb211-5" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;&gt;</span>  C ∪ B = B</span>
-<span id="cb211-6"><a href="#cb211-6" aria-hidden="true" tabindex="-1"></a><span class="in">h2 </span>: ∀ (B : Set U),</span>
-<span id="cb211-7"><a href="#cb211-7" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;&gt;</span>  D ∪ B = B</span>
-<span id="cb211-8"><a href="#cb211-8" aria-hidden="true" tabindex="-1"></a>⊢ C = D</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb211-3"><a href="#cb211-3" aria-hidden="true" tabindex="-1"></a>⊢ ∀ (A_1 A_2 : Set U),</span>
+<span id="cb211-4"><a href="#cb211-4" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;&gt;</span>  (∀ (B : Set U),</span>
+<span id="cb211-5"><a href="#cb211-5" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;&gt;</span>      A_1 ∪ B = B) →</span>
+<span id="cb211-6"><a href="#cb211-6" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;&gt;</span>  (∀ (B : Set U),</span>
+<span id="cb211-7"><a href="#cb211-7" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;&gt;</span>      A_2 ∪ B = B) →</span>
+<span id="cb211-8"><a href="#cb211-8" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;&gt;</span>  A_1 = A_2</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </div>
-<p>The next step in <em>HTPI</em> was to apply <code>h1</code> to <code>D</code>, and <code>h2</code> to <code>C</code>. We do the same thing in Lean.</p>
+<p>For the uniqueness proof, we begin by introducing arbitrary sets <code>C</code> and <code>D</code> and assuming <code>∀ (B : Set U), C ∪ B = B</code> and <code>∀ (B : Set U), D ∪ B = B</code>, exactly as in the <em>HTPI</em> proof.</p>
 <div class="inout">
 <div class="inpt">
 <div class="sourceCode" id="cb212"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb212-1"><a href="#cb212-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Example_3_6_2 (U : <span class="kw">Type</span>) :</span>
@@ -2850,9 +2846,7 @@ x \in A \cap (B \setmin C) &amp;\text{ iff } x \in A \wedge x \in B \setmin C\\
 <span id="cb212-8"><a href="#cb212-8" aria-hidden="true" tabindex="-1"></a>  <span class="co">-- Uniqueness</span></span>
 <span id="cb212-9"><a href="#cb212-9" aria-hidden="true" tabindex="-1"></a>  <span class="kw">fix</span> C : Set U; <span class="kw">fix</span> D : Set U</span>
 <span id="cb212-10"><a href="#cb212-10" aria-hidden="true" tabindex="-1"></a>  <span class="kw">assume</span> h1 : ∀ (B : Set U), C ∪ B = B</span>
-<span id="cb212-11"><a href="#cb212-11" aria-hidden="true" tabindex="-1"></a>  <span class="kw">assume</span> h2 : ∀ (B : Set U), D ∪ B = B</span>
-<span id="cb212-12"><a href="#cb212-12" aria-hidden="true" tabindex="-1"></a>  <span class="kw">have</span> h3 : C ∪ D = D := h1 D</span>
-<span id="cb212-13"><a href="#cb212-13" aria-hidden="true" tabindex="-1"></a>  <span class="kw">have</span> h4 : D ∪ C = C := h2 C</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb212-11"><a href="#cb212-11" aria-hidden="true" tabindex="-1"></a>  <span class="kw">assume</span> h2 : ∀ (B : Set U), D ∪ B = B</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="outpt">
 <div class="sourceCode" id="cb213"><pre class="sourceCode state code-with-copy"><code class="sourceCode state"><span id="cb213-1"><a href="#cb213-1" aria-hidden="true" tabindex="-1"></a><span class="re">case</span> Uniqueness</span>
@@ -2862,12 +2856,12 @@ x \in A \cap (B \setmin C) &amp;\text{ iff } x \in A \wedge x \in B \setmin C\\
 <span id="cb213-5"><a href="#cb213-5" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;&gt;</span>  C ∪ B = B</span>
 <span id="cb213-6"><a href="#cb213-6" aria-hidden="true" tabindex="-1"></a><span class="in">h2 </span>: ∀ (B : Set U),</span>
 <span id="cb213-7"><a href="#cb213-7" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;&gt;</span>  D ∪ B = B</span>
-<span id="cb213-8"><a href="#cb213-8" aria-hidden="true" tabindex="-1"></a><span class="in">h3 </span>: C ∪ D = D</span>
-<span id="cb213-9"><a href="#cb213-9" aria-hidden="true" tabindex="-1"></a><span class="in">h4 </span>: D ∪ C = C</span>
-<span id="cb213-10"><a href="#cb213-10" aria-hidden="true" tabindex="-1"></a>⊢ C = D</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb213-8"><a href="#cb213-8" aria-hidden="true" tabindex="-1"></a>⊢ C = D</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </div>
-<p>The goal can now be achieved by stringing together a sequence of equations: <code>C = D ∪ C = C ∪ D = D</code>. The first of these equations is <code>h4.symm</code>—that is, <code>h4</code> read backwards; the second follows from the commutative law for union; and the third is <code>h3</code>. We saw in Section 3.4 that you can prove a biconditional statement in Lean by stringing together a sequence of biconditionals in a calculational proof. Exactly the same method applies to equations. Here is the complete proof of the theorem:</p>
+<p>The next step in <em>HTPI</em> was to apply <code>h1</code> to <code>D</code>, and <code>h2</code> to <code>C</code>. We do the same thing in Lean.</p>
+<div class="inout">
+<div class="inpt">
 <div class="sourceCode" id="cb214"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb214-1"><a href="#cb214-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Example_3_6_2 (U : <span class="kw">Type</span>) :</span>
 <span id="cb214-2"><a href="#cb214-2" aria-hidden="true" tabindex="-1"></a>    ∃! (A : Set U), ∀ (B : Set U),</span>
 <span id="cb214-3"><a href="#cb214-3" aria-hidden="true" tabindex="-1"></a>    A ∪ B = B := <span class="kw">by</span></span>
@@ -2880,12 +2874,40 @@ x \in A \cap (B \setmin C) &amp;\text{ iff } x \in A \wedge x \in B \setmin C\\
 <span id="cb214-10"><a href="#cb214-10" aria-hidden="true" tabindex="-1"></a>  <span class="kw">assume</span> h1 : ∀ (B : Set U), C ∪ B = B</span>
 <span id="cb214-11"><a href="#cb214-11" aria-hidden="true" tabindex="-1"></a>  <span class="kw">assume</span> h2 : ∀ (B : Set U), D ∪ B = B</span>
 <span id="cb214-12"><a href="#cb214-12" aria-hidden="true" tabindex="-1"></a>  <span class="kw">have</span> h3 : C ∪ D = D := h1 D</span>
-<span id="cb214-13"><a href="#cb214-13" aria-hidden="true" tabindex="-1"></a>  <span class="kw">have</span> h4 : D ∪ C = C := h2 C</span>
-<span id="cb214-14"><a href="#cb214-14" aria-hidden="true" tabindex="-1"></a>  <span class="kw">show</span> C = D <span class="kw">from</span></span>
-<span id="cb214-15"><a href="#cb214-15" aria-hidden="true" tabindex="-1"></a>    <span class="kw">calc</span></span>
-<span id="cb214-16"><a href="#cb214-16" aria-hidden="true" tabindex="-1"></a>      C = D ∪ C := h4.symm</span>
-<span id="cb214-17"><a href="#cb214-17" aria-hidden="true" tabindex="-1"></a>      _ = C ∪ D := union_comm D C</span>
-<span id="cb214-18"><a href="#cb214-18" aria-hidden="true" tabindex="-1"></a>      _ = D     := h3</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb214-13"><a href="#cb214-13" aria-hidden="true" tabindex="-1"></a>  <span class="kw">have</span> h4 : D ∪ C = C := h2 C</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="outpt">
+<div class="sourceCode" id="cb215"><pre class="sourceCode state code-with-copy"><code class="sourceCode state"><span id="cb215-1"><a href="#cb215-1" aria-hidden="true" tabindex="-1"></a><span class="re">case</span> Uniqueness</span>
+<span id="cb215-2"><a href="#cb215-2" aria-hidden="true" tabindex="-1"></a><span class="in">U </span>: Type</span>
+<span id="cb215-3"><a href="#cb215-3" aria-hidden="true" tabindex="-1"></a><span class="in">C D </span>: Set U</span>
+<span id="cb215-4"><a href="#cb215-4" aria-hidden="true" tabindex="-1"></a><span class="in">h1 </span>: ∀ (B : Set U),</span>
+<span id="cb215-5"><a href="#cb215-5" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;&gt;</span>  C ∪ B = B</span>
+<span id="cb215-6"><a href="#cb215-6" aria-hidden="true" tabindex="-1"></a><span class="in">h2 </span>: ∀ (B : Set U),</span>
+<span id="cb215-7"><a href="#cb215-7" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;&gt;</span>  D ∪ B = B</span>
+<span id="cb215-8"><a href="#cb215-8" aria-hidden="true" tabindex="-1"></a><span class="in">h3 </span>: C ∪ D = D</span>
+<span id="cb215-9"><a href="#cb215-9" aria-hidden="true" tabindex="-1"></a><span class="in">h4 </span>: D ∪ C = C</span>
+<span id="cb215-10"><a href="#cb215-10" aria-hidden="true" tabindex="-1"></a>⊢ C = D</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+<p>The goal can now be achieved by stringing together a sequence of equations: <code>C = D ∪ C = C ∪ D = D</code>. The first of these equations is <code>h4.symm</code>—that is, <code>h4</code> read backwards; the second follows from the commutative law for union; and the third is <code>h3</code>. We saw in Section 3.4 that you can prove a biconditional statement in Lean by stringing together a sequence of biconditionals in a calculational proof. Exactly the same method applies to equations. Here is the complete proof of the theorem:</p>
+<div class="sourceCode" id="cb216"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb216-1"><a href="#cb216-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Example_3_6_2 (U : <span class="kw">Type</span>) :</span>
+<span id="cb216-2"><a href="#cb216-2" aria-hidden="true" tabindex="-1"></a>    ∃! (A : Set U), ∀ (B : Set U),</span>
+<span id="cb216-3"><a href="#cb216-3" aria-hidden="true" tabindex="-1"></a>    A ∪ B = B := <span class="kw">by</span></span>
+<span id="cb216-4"><a href="#cb216-4" aria-hidden="true" tabindex="-1"></a>  <span class="kw">exists_unique</span></span>
+<span id="cb216-5"><a href="#cb216-5" aria-hidden="true" tabindex="-1"></a>  <span class="co">-- Existence</span></span>
+<span id="cb216-6"><a href="#cb216-6" aria-hidden="true" tabindex="-1"></a>  <span class="kw">apply</span> Exists.intro ∅</span>
+<span id="cb216-7"><a href="#cb216-7" aria-hidden="true" tabindex="-1"></a>  <span class="kw">show</span> ∀ (B : Set U), ∅ ∪ B = B <span class="kw">from</span> empty_union</span>
+<span id="cb216-8"><a href="#cb216-8" aria-hidden="true" tabindex="-1"></a>  <span class="co">-- Uniqueness</span></span>
+<span id="cb216-9"><a href="#cb216-9" aria-hidden="true" tabindex="-1"></a>  <span class="kw">fix</span> C : Set U; <span class="kw">fix</span> D : Set U</span>
+<span id="cb216-10"><a href="#cb216-10" aria-hidden="true" tabindex="-1"></a>  <span class="kw">assume</span> h1 : ∀ (B : Set U), C ∪ B = B</span>
+<span id="cb216-11"><a href="#cb216-11" aria-hidden="true" tabindex="-1"></a>  <span class="kw">assume</span> h2 : ∀ (B : Set U), D ∪ B = B</span>
+<span id="cb216-12"><a href="#cb216-12" aria-hidden="true" tabindex="-1"></a>  <span class="kw">have</span> h3 : C ∪ D = D := h1 D</span>
+<span id="cb216-13"><a href="#cb216-13" aria-hidden="true" tabindex="-1"></a>  <span class="kw">have</span> h4 : D ∪ C = C := h2 C</span>
+<span id="cb216-14"><a href="#cb216-14" aria-hidden="true" tabindex="-1"></a>  <span class="kw">show</span> C = D <span class="kw">from</span></span>
+<span id="cb216-15"><a href="#cb216-15" aria-hidden="true" tabindex="-1"></a>    <span class="kw">calc</span></span>
+<span id="cb216-16"><a href="#cb216-16" aria-hidden="true" tabindex="-1"></a>      C = D ∪ C := h4.symm</span>
+<span id="cb216-17"><a href="#cb216-17" aria-hidden="true" tabindex="-1"></a>      _ = C ∪ D := union_comm D C</span>
+<span id="cb216-18"><a href="#cb216-18" aria-hidden="true" tabindex="-1"></a>      _ = D     := h3</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>Since the statement <code>∃! (x : U), P x</code> asserts both the existence and the uniqueness of an object satisfying the predicate <code>P</code>, we have the following strategy for using a given of this form:</p>
 </section>
 <section id="to-use-a-given-of-the-form-x-u-p-x-2" class="level4">
@@ -2896,34 +2918,11 @@ x \in A \cap (B \setmin C) &amp;\text{ iff } x \in A \wedge x \in B \setmin C\\
 <p>If you have a given <code>h : ∃! (x : U), P x</code>, then the tactic <code>obtain (a : U) (h1 : P a)</code> <br><code>(h2 : ∀ (x_1 x_2 : U), P x_1 → P x_2 → x_1 = x_2) from h</code> will introduce into the tactic state a new variable <code>a</code> of type <code>U</code> and new givens <code>(h1 : P a)</code> and <code>(h2 : ∀ (x_1 x_2 : U), P x_1 → P x_2 → x_1 = x_2)</code>. To illustrate the use of this tactic, let’s prove the theorem in Example 3.6.4 of <em>HTPI</em>.</p>
 <div class="inout">
 <div class="inpt">
-<div class="sourceCode" id="cb215"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb215-1"><a href="#cb215-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Example_3_6_4 (U : <span class="kw">Type</span>) (A B C : Set U)</span>
-<span id="cb215-2"><a href="#cb215-2" aria-hidden="true" tabindex="-1"></a>    (h1 : ∃ (x : U), x ∈ A ∩ B)</span>
-<span id="cb215-3"><a href="#cb215-3" aria-hidden="true" tabindex="-1"></a>    (h2 : ∃ (x : U), x ∈ A ∩ C)</span>
-<span id="cb215-4"><a href="#cb215-4" aria-hidden="true" tabindex="-1"></a>    (h3 : ∃! (x : U), x ∈ A) :</span>
-<span id="cb215-5"><a href="#cb215-5" aria-hidden="true" tabindex="-1"></a>    ∃ (x : U), x ∈ B ∩ C := <span class="kw">by</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<div class="outpt">
-<div class="sourceCode" id="cb216"><pre class="sourceCode state code-with-copy"><code class="sourceCode state"><span id="cb216-1"><a href="#cb216-1" aria-hidden="true" tabindex="-1"></a><span class="in">U </span>: Type</span>
-<span id="cb216-2"><a href="#cb216-2" aria-hidden="true" tabindex="-1"></a><span class="in">A B C </span>: Set U</span>
-<span id="cb216-3"><a href="#cb216-3" aria-hidden="true" tabindex="-1"></a><span class="in">h1 </span>: ∃ x, x ∈ A ∩ B</span>
-<span id="cb216-4"><a href="#cb216-4" aria-hidden="true" tabindex="-1"></a><span class="in">h2 </span>: ∃ x, x ∈ A ∩ C</span>
-<span id="cb216-5"><a href="#cb216-5" aria-hidden="true" tabindex="-1"></a><span class="in">h3 </span>: ∃! x, x ∈ A</span>
-<span id="cb216-6"><a href="#cb216-6" aria-hidden="true" tabindex="-1"></a>⊢ ∃ x, x ∈ B ∩ C</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-</div>
-<p>We begin by applying the <code>obtain</code> tactic to <code>h1</code>, <code>h2</code>, and <code>h3</code>. In the case of <code>h3</code>, we get an extra given asserting the uniqueness of the element of <code>A</code>. We also write out the definitions of two of the new givens we obtain.</p>
-<div class="inout">
-<div class="inpt">
 <div class="sourceCode" id="cb217"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb217-1"><a href="#cb217-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Example_3_6_4 (U : <span class="kw">Type</span>) (A B C : Set U)</span>
 <span id="cb217-2"><a href="#cb217-2" aria-hidden="true" tabindex="-1"></a>    (h1 : ∃ (x : U), x ∈ A ∩ B)</span>
 <span id="cb217-3"><a href="#cb217-3" aria-hidden="true" tabindex="-1"></a>    (h2 : ∃ (x : U), x ∈ A ∩ C)</span>
 <span id="cb217-4"><a href="#cb217-4" aria-hidden="true" tabindex="-1"></a>    (h3 : ∃! (x : U), x ∈ A) :</span>
-<span id="cb217-5"><a href="#cb217-5" aria-hidden="true" tabindex="-1"></a>    ∃ (x : U), x ∈ B ∩ C := <span class="kw">by</span></span>
-<span id="cb217-6"><a href="#cb217-6" aria-hidden="true" tabindex="-1"></a>  <span class="kw">obtain</span> (b : U) (h4 : b ∈ A ∩ B) <span class="kw">from</span> h1</span>
-<span id="cb217-7"><a href="#cb217-7" aria-hidden="true" tabindex="-1"></a>  <span class="kw">obtain</span> (c : U) (h5 : c ∈ A ∩ C) <span class="kw">from</span> h2</span>
-<span id="cb217-8"><a href="#cb217-8" aria-hidden="true" tabindex="-1"></a>  <span class="kw">obtain</span> (a : U) (h6 : a ∈ A) (h7 : ∀ (y z : U),</span>
-<span id="cb217-9"><a href="#cb217-9" aria-hidden="true" tabindex="-1"></a>    y ∈ A → z ∈ A → y = z)  <span class="kw">from</span> h3</span>
-<span id="cb217-10"><a href="#cb217-10" aria-hidden="true" tabindex="-1"></a>  <span class="kw">define</span> <span class="kw">at</span> h4; <span class="kw">define</span> <span class="kw">at</span> h5</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb217-5"><a href="#cb217-5" aria-hidden="true" tabindex="-1"></a>    ∃ (x : U), x ∈ B ∩ C := <span class="kw">by</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="outpt">
 <div class="sourceCode" id="cb218"><pre class="sourceCode state code-with-copy"><code class="sourceCode state"><span id="cb218-1"><a href="#cb218-1" aria-hidden="true" tabindex="-1"></a><span class="in">U </span>: Type</span>
@@ -2931,18 +2930,10 @@ x \in A \cap (B \setmin C) &amp;\text{ iff } x \in A \wedge x \in B \setmin C\\
 <span id="cb218-3"><a href="#cb218-3" aria-hidden="true" tabindex="-1"></a><span class="in">h1 </span>: ∃ x, x ∈ A ∩ B</span>
 <span id="cb218-4"><a href="#cb218-4" aria-hidden="true" tabindex="-1"></a><span class="in">h2 </span>: ∃ x, x ∈ A ∩ C</span>
 <span id="cb218-5"><a href="#cb218-5" aria-hidden="true" tabindex="-1"></a><span class="in">h3 </span>: ∃! x, x ∈ A</span>
-<span id="cb218-6"><a href="#cb218-6" aria-hidden="true" tabindex="-1"></a><span class="in">b </span>: U</span>
-<span id="cb218-7"><a href="#cb218-7" aria-hidden="true" tabindex="-1"></a><span class="in">h4 </span>: b ∈ A ∧ b ∈ B</span>
-<span id="cb218-8"><a href="#cb218-8" aria-hidden="true" tabindex="-1"></a><span class="in">c </span>: U</span>
-<span id="cb218-9"><a href="#cb218-9" aria-hidden="true" tabindex="-1"></a><span class="in">h5 </span>: c ∈ A ∧ c ∈ C</span>
-<span id="cb218-10"><a href="#cb218-10" aria-hidden="true" tabindex="-1"></a><span class="in">a </span>: U</span>
-<span id="cb218-11"><a href="#cb218-11" aria-hidden="true" tabindex="-1"></a><span class="in">h6 </span>: a ∈ A</span>
-<span id="cb218-12"><a href="#cb218-12" aria-hidden="true" tabindex="-1"></a><span class="in">h7 </span>: ∀ (y z : U),</span>
-<span id="cb218-13"><a href="#cb218-13" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;&gt;</span>  y ∈ A → z ∈ A → y = z</span>
-<span id="cb218-14"><a href="#cb218-14" aria-hidden="true" tabindex="-1"></a>⊢ ∃ x, x ∈ B ∩ C</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb218-6"><a href="#cb218-6" aria-hidden="true" tabindex="-1"></a>⊢ ∃ x, x ∈ B ∩ C</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </div>
-<p>The key to the rest of the proof is the observation that, by the uniqueness of the element of <code>A</code>, <code>b</code> must be equal to <code>c</code>. To justify this conclusion, note that by two applications of universal instantiation, <code>h7 b c</code> is a proof of <code>b ∈ A → c ∈ A → b = c</code>, and therefore by two applications of modus ponens, <code>h7 b c h4.left h5.left</code> is a proof of <code>b = c</code>.</p>
+<p>We begin by applying the <code>obtain</code> tactic to <code>h1</code>, <code>h2</code>, and <code>h3</code>. In the case of <code>h3</code>, we get an extra given asserting the uniqueness of the element of <code>A</code>. We also write out the definitions of two of the new givens we obtain.</p>
 <div class="inout">
 <div class="inpt">
 <div class="sourceCode" id="cb219"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb219-1"><a href="#cb219-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Example_3_6_4 (U : <span class="kw">Type</span>) (A B C : Set U)</span>
@@ -2954,8 +2945,7 @@ x \in A \cap (B \setmin C) &amp;\text{ iff } x \in A \wedge x \in B \setmin C\\
 <span id="cb219-7"><a href="#cb219-7" aria-hidden="true" tabindex="-1"></a>  <span class="kw">obtain</span> (c : U) (h5 : c ∈ A ∩ C) <span class="kw">from</span> h2</span>
 <span id="cb219-8"><a href="#cb219-8" aria-hidden="true" tabindex="-1"></a>  <span class="kw">obtain</span> (a : U) (h6 : a ∈ A) (h7 : ∀ (y z : U),</span>
 <span id="cb219-9"><a href="#cb219-9" aria-hidden="true" tabindex="-1"></a>    y ∈ A → z ∈ A → y = z)  <span class="kw">from</span> h3</span>
-<span id="cb219-10"><a href="#cb219-10" aria-hidden="true" tabindex="-1"></a>  <span class="kw">define</span> <span class="kw">at</span> h4; <span class="kw">define</span> <span class="kw">at</span> h5</span>
-<span id="cb219-11"><a href="#cb219-11" aria-hidden="true" tabindex="-1"></a>  <span class="kw">have</span> h8 : b = c := h7 b c h4.left h5.left</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb219-10"><a href="#cb219-10" aria-hidden="true" tabindex="-1"></a>  <span class="kw">define</span> <span class="kw">at</span> h4; <span class="kw">define</span> <span class="kw">at</span> h5</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="outpt">
 <div class="sourceCode" id="cb220"><pre class="sourceCode state code-with-copy"><code class="sourceCode state"><span id="cb220-1"><a href="#cb220-1" aria-hidden="true" tabindex="-1"></a><span class="in">U </span>: Type</span>
@@ -2971,12 +2961,10 @@ x \in A \cap (B \setmin C) &amp;\text{ iff } x \in A \wedge x \in B \setmin C\\
 <span id="cb220-11"><a href="#cb220-11" aria-hidden="true" tabindex="-1"></a><span class="in">h6 </span>: a ∈ A</span>
 <span id="cb220-12"><a href="#cb220-12" aria-hidden="true" tabindex="-1"></a><span class="in">h7 </span>: ∀ (y z : U),</span>
 <span id="cb220-13"><a href="#cb220-13" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;&gt;</span>  y ∈ A → z ∈ A → y = z</span>
-<span id="cb220-14"><a href="#cb220-14" aria-hidden="true" tabindex="-1"></a><span class="in">h8 </span>: b = c</span>
-<span id="cb220-15"><a href="#cb220-15" aria-hidden="true" tabindex="-1"></a>⊢ ∃ x, x ∈ B ∩ C</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb220-14"><a href="#cb220-14" aria-hidden="true" tabindex="-1"></a>⊢ ∃ x, x ∈ B ∩ C</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </div>
-<p>For our next step, we will need a new tactic. Since we have <code>h8 : b = c</code>, we should be able to replace <code>b</code> with <code>c</code> anywhere it appears. The tactic that allows us to do this called <code>rewrite</code>. If <code>h</code> is a proof of any equation <code>s = t</code>, then <code>rewrite [h]</code> will replace all occurrences of <code>s</code> in the goal with <code>t</code>. Notice that it is the left side of the equation that is replaced with the right side; if you want the replacement to go in the other direction, so that <code>t</code> is replaced with <code>s</code>, you can use <code>rewrite [←h]</code>. (Alternatively, since <code>h.symm</code> is a proof of <code>t = s</code>, you can use <code>rewrite [h.symm]</code>.) You can also apply the <code>rewrite</code> tactic to biconditional statements. If you have <code>h : P ↔︎ Q</code>, then <code>rewrite [h]</code> will cause all occurrences of <code>P</code> in the goal to be replaced with <code>Q</code> (and <code>rewrite [←h]</code> will replace <code>Q</code> with <code>P</code>).</p>
-<p>As with many other tactics, you can add <code>at h'</code> to specify that the replacement should be done in the given <code>h'</code> rather than the goal. In our case, <code>rewrite [h8] at h4</code> will change both occurrences of <code>b</code> in <code>h4</code> to <code>c</code>.</p>
+<p>The key to the rest of the proof is the observation that, by the uniqueness of the element of <code>A</code>, <code>b</code> must be equal to <code>c</code>. To justify this conclusion, note that by two applications of universal instantiation, <code>h7 b c</code> is a proof of <code>b ∈ A → c ∈ A → b = c</code>, and therefore by two applications of modus ponens, <code>h7 b c h4.left h5.left</code> is a proof of <code>b = c</code>.</p>
 <div class="inout">
 <div class="inpt">
 <div class="sourceCode" id="cb221"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb221-1"><a href="#cb221-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Example_3_6_4 (U : <span class="kw">Type</span>) (A B C : Set U)</span>
@@ -2989,8 +2977,7 @@ x \in A \cap (B \setmin C) &amp;\text{ iff } x \in A \wedge x \in B \setmin C\\
 <span id="cb221-8"><a href="#cb221-8" aria-hidden="true" tabindex="-1"></a>  <span class="kw">obtain</span> (a : U) (h6 : a ∈ A) (h7 : ∀ (y z : U),</span>
 <span id="cb221-9"><a href="#cb221-9" aria-hidden="true" tabindex="-1"></a>    y ∈ A → z ∈ A → y = z)  <span class="kw">from</span> h3</span>
 <span id="cb221-10"><a href="#cb221-10" aria-hidden="true" tabindex="-1"></a>  <span class="kw">define</span> <span class="kw">at</span> h4; <span class="kw">define</span> <span class="kw">at</span> h5</span>
-<span id="cb221-11"><a href="#cb221-11" aria-hidden="true" tabindex="-1"></a>  <span class="kw">have</span> h8 : b = c := h7 b c h4.left h5.left</span>
-<span id="cb221-12"><a href="#cb221-12" aria-hidden="true" tabindex="-1"></a>  <span class="kw">rewrite</span> [h8] <span class="kw">at</span> h4</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb221-11"><a href="#cb221-11" aria-hidden="true" tabindex="-1"></a>  <span class="kw">have</span> h8 : b = c := h7 b c h4.left h5.left</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="outpt">
 <div class="sourceCode" id="cb222"><pre class="sourceCode state code-with-copy"><code class="sourceCode state"><span id="cb222-1"><a href="#cb222-1" aria-hidden="true" tabindex="-1"></a><span class="in">U </span>: Type</span>
@@ -2998,18 +2985,22 @@ x \in A \cap (B \setmin C) &amp;\text{ iff } x \in A \wedge x \in B \setmin C\\
 <span id="cb222-3"><a href="#cb222-3" aria-hidden="true" tabindex="-1"></a><span class="in">h1 </span>: ∃ x, x ∈ A ∩ B</span>
 <span id="cb222-4"><a href="#cb222-4" aria-hidden="true" tabindex="-1"></a><span class="in">h2 </span>: ∃ x, x ∈ A ∩ C</span>
 <span id="cb222-5"><a href="#cb222-5" aria-hidden="true" tabindex="-1"></a><span class="in">h3 </span>: ∃! x, x ∈ A</span>
-<span id="cb222-6"><a href="#cb222-6" aria-hidden="true" tabindex="-1"></a><span class="in">b c </span>: U</span>
-<span id="cb222-7"><a href="#cb222-7" aria-hidden="true" tabindex="-1"></a><span class="in">h4 </span>: c ∈ A ∧ c ∈ B</span>
-<span id="cb222-8"><a href="#cb222-8" aria-hidden="true" tabindex="-1"></a><span class="in">h5 </span>: c ∈ A ∧ c ∈ C</span>
-<span id="cb222-9"><a href="#cb222-9" aria-hidden="true" tabindex="-1"></a><span class="in">a </span>: U</span>
-<span id="cb222-10"><a href="#cb222-10" aria-hidden="true" tabindex="-1"></a><span class="in">h6 </span>: a ∈ A</span>
-<span id="cb222-11"><a href="#cb222-11" aria-hidden="true" tabindex="-1"></a><span class="in">h7 </span>: ∀ (y z : U),</span>
-<span id="cb222-12"><a href="#cb222-12" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;&gt;</span>  y ∈ A → z ∈ A → y = z</span>
-<span id="cb222-13"><a href="#cb222-13" aria-hidden="true" tabindex="-1"></a><span class="in">h8 </span>: b = c</span>
-<span id="cb222-14"><a href="#cb222-14" aria-hidden="true" tabindex="-1"></a>⊢ ∃ x, x ∈ B ∩ C</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb222-6"><a href="#cb222-6" aria-hidden="true" tabindex="-1"></a><span class="in">b </span>: U</span>
+<span id="cb222-7"><a href="#cb222-7" aria-hidden="true" tabindex="-1"></a><span class="in">h4 </span>: b ∈ A ∧ b ∈ B</span>
+<span id="cb222-8"><a href="#cb222-8" aria-hidden="true" tabindex="-1"></a><span class="in">c </span>: U</span>
+<span id="cb222-9"><a href="#cb222-9" aria-hidden="true" tabindex="-1"></a><span class="in">h5 </span>: c ∈ A ∧ c ∈ C</span>
+<span id="cb222-10"><a href="#cb222-10" aria-hidden="true" tabindex="-1"></a><span class="in">a </span>: U</span>
+<span id="cb222-11"><a href="#cb222-11" aria-hidden="true" tabindex="-1"></a><span class="in">h6 </span>: a ∈ A</span>
+<span id="cb222-12"><a href="#cb222-12" aria-hidden="true" tabindex="-1"></a><span class="in">h7 </span>: ∀ (y z : U),</span>
+<span id="cb222-13"><a href="#cb222-13" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;&gt;</span>  y ∈ A → z ∈ A → y = z</span>
+<span id="cb222-14"><a href="#cb222-14" aria-hidden="true" tabindex="-1"></a><span class="in">h8 </span>: b = c</span>
+<span id="cb222-15"><a href="#cb222-15" aria-hidden="true" tabindex="-1"></a>⊢ ∃ x, x ∈ B ∩ C</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </div>
-<p>Now the right sides of <code>h4</code> and <code>h5</code> tell us that we can prove the goal by plugging in <code>c</code> for <code>x</code>. Here is the complete proof:</p>
+<p>For our next step, we will need a new tactic. Since we have <code>h8 : b = c</code>, we should be able to replace <code>b</code> with <code>c</code> anywhere it appears. The tactic that allows us to do this called <code>rewrite</code>. If <code>h</code> is a proof of any equation <code>s = t</code>, then <code>rewrite [h]</code> will replace all occurrences of <code>s</code> in the goal with <code>t</code>. Notice that it is the left side of the equation that is replaced with the right side; if you want the replacement to go in the other direction, so that <code>t</code> is replaced with <code>s</code>, you can use <code>rewrite [←h]</code>. (Alternatively, since <code>h.symm</code> is a proof of <code>t = s</code>, you can use <code>rewrite [h.symm]</code>.) You can also apply the <code>rewrite</code> tactic to biconditional statements. If you have <code>h : P ↔︎ Q</code>, then <code>rewrite [h]</code> will cause all occurrences of <code>P</code> in the goal to be replaced with <code>Q</code> (and <code>rewrite [←h]</code> will replace <code>Q</code> with <code>P</code>).</p>
+<p>As with many other tactics, you can add <code>at h'</code> to specify that the replacement should be done in the given <code>h'</code> rather than the goal. In our case, <code>rewrite [h8] at h4</code> will change both occurrences of <code>b</code> in <code>h4</code> to <code>c</code>.</p>
+<div class="inout">
+<div class="inpt">
 <div class="sourceCode" id="cb223"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb223-1"><a href="#cb223-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Example_3_6_4 (U : <span class="kw">Type</span>) (A B C : Set U)</span>
 <span id="cb223-2"><a href="#cb223-2" aria-hidden="true" tabindex="-1"></a>    (h1 : ∃ (x : U), x ∈ A ∩ B)</span>
 <span id="cb223-3"><a href="#cb223-3" aria-hidden="true" tabindex="-1"></a>    (h2 : ∃ (x : U), x ∈ A ∩ C)</span>
@@ -3021,9 +3012,40 @@ x \in A \cap (B \setmin C) &amp;\text{ iff } x \in A \wedge x \in B \setmin C\\
 <span id="cb223-9"><a href="#cb223-9" aria-hidden="true" tabindex="-1"></a>    y ∈ A → z ∈ A → y = z)  <span class="kw">from</span> h3</span>
 <span id="cb223-10"><a href="#cb223-10" aria-hidden="true" tabindex="-1"></a>  <span class="kw">define</span> <span class="kw">at</span> h4; <span class="kw">define</span> <span class="kw">at</span> h5</span>
 <span id="cb223-11"><a href="#cb223-11" aria-hidden="true" tabindex="-1"></a>  <span class="kw">have</span> h8 : b = c := h7 b c h4.left h5.left</span>
-<span id="cb223-12"><a href="#cb223-12" aria-hidden="true" tabindex="-1"></a>  <span class="kw">rewrite</span> [h8] <span class="kw">at</span> h4</span>
-<span id="cb223-13"><a href="#cb223-13" aria-hidden="true" tabindex="-1"></a>  <span class="kw">show</span> ∃ (x : U), x ∈ B ∩ C <span class="kw">from</span></span>
-<span id="cb223-14"><a href="#cb223-14" aria-hidden="true" tabindex="-1"></a>    Exists.intro c (And.intro h4.right h5.right)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb223-12"><a href="#cb223-12" aria-hidden="true" tabindex="-1"></a>  <span class="kw">rewrite</span> [h8] <span class="kw">at</span> h4</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="outpt">
+<div class="sourceCode" id="cb224"><pre class="sourceCode state code-with-copy"><code class="sourceCode state"><span id="cb224-1"><a href="#cb224-1" aria-hidden="true" tabindex="-1"></a><span class="in">U </span>: Type</span>
+<span id="cb224-2"><a href="#cb224-2" aria-hidden="true" tabindex="-1"></a><span class="in">A B C </span>: Set U</span>
+<span id="cb224-3"><a href="#cb224-3" aria-hidden="true" tabindex="-1"></a><span class="in">h1 </span>: ∃ x, x ∈ A ∩ B</span>
+<span id="cb224-4"><a href="#cb224-4" aria-hidden="true" tabindex="-1"></a><span class="in">h2 </span>: ∃ x, x ∈ A ∩ C</span>
+<span id="cb224-5"><a href="#cb224-5" aria-hidden="true" tabindex="-1"></a><span class="in">h3 </span>: ∃! x, x ∈ A</span>
+<span id="cb224-6"><a href="#cb224-6" aria-hidden="true" tabindex="-1"></a><span class="in">b c </span>: U</span>
+<span id="cb224-7"><a href="#cb224-7" aria-hidden="true" tabindex="-1"></a><span class="in">h4 </span>: c ∈ A ∧ c ∈ B</span>
+<span id="cb224-8"><a href="#cb224-8" aria-hidden="true" tabindex="-1"></a><span class="in">h5 </span>: c ∈ A ∧ c ∈ C</span>
+<span id="cb224-9"><a href="#cb224-9" aria-hidden="true" tabindex="-1"></a><span class="in">a </span>: U</span>
+<span id="cb224-10"><a href="#cb224-10" aria-hidden="true" tabindex="-1"></a><span class="in">h6 </span>: a ∈ A</span>
+<span id="cb224-11"><a href="#cb224-11" aria-hidden="true" tabindex="-1"></a><span class="in">h7 </span>: ∀ (y z : U),</span>
+<span id="cb224-12"><a href="#cb224-12" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;&gt;</span>  y ∈ A → z ∈ A → y = z</span>
+<span id="cb224-13"><a href="#cb224-13" aria-hidden="true" tabindex="-1"></a><span class="in">h8 </span>: b = c</span>
+<span id="cb224-14"><a href="#cb224-14" aria-hidden="true" tabindex="-1"></a>⊢ ∃ x, x ∈ B ∩ C</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+<p>Now the right sides of <code>h4</code> and <code>h5</code> tell us that we can prove the goal by plugging in <code>c</code> for <code>x</code>. Here is the complete proof:</p>
+<div class="sourceCode" id="cb225"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb225-1"><a href="#cb225-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Example_3_6_4 (U : <span class="kw">Type</span>) (A B C : Set U)</span>
+<span id="cb225-2"><a href="#cb225-2" aria-hidden="true" tabindex="-1"></a>    (h1 : ∃ (x : U), x ∈ A ∩ B)</span>
+<span id="cb225-3"><a href="#cb225-3" aria-hidden="true" tabindex="-1"></a>    (h2 : ∃ (x : U), x ∈ A ∩ C)</span>
+<span id="cb225-4"><a href="#cb225-4" aria-hidden="true" tabindex="-1"></a>    (h3 : ∃! (x : U), x ∈ A) :</span>
+<span id="cb225-5"><a href="#cb225-5" aria-hidden="true" tabindex="-1"></a>    ∃ (x : U), x ∈ B ∩ C := <span class="kw">by</span></span>
+<span id="cb225-6"><a href="#cb225-6" aria-hidden="true" tabindex="-1"></a>  <span class="kw">obtain</span> (b : U) (h4 : b ∈ A ∩ B) <span class="kw">from</span> h1</span>
+<span id="cb225-7"><a href="#cb225-7" aria-hidden="true" tabindex="-1"></a>  <span class="kw">obtain</span> (c : U) (h5 : c ∈ A ∩ C) <span class="kw">from</span> h2</span>
+<span id="cb225-8"><a href="#cb225-8" aria-hidden="true" tabindex="-1"></a>  <span class="kw">obtain</span> (a : U) (h6 : a ∈ A) (h7 : ∀ (y z : U),</span>
+<span id="cb225-9"><a href="#cb225-9" aria-hidden="true" tabindex="-1"></a>    y ∈ A → z ∈ A → y = z)  <span class="kw">from</span> h3</span>
+<span id="cb225-10"><a href="#cb225-10" aria-hidden="true" tabindex="-1"></a>  <span class="kw">define</span> <span class="kw">at</span> h4; <span class="kw">define</span> <span class="kw">at</span> h5</span>
+<span id="cb225-11"><a href="#cb225-11" aria-hidden="true" tabindex="-1"></a>  <span class="kw">have</span> h8 : b = c := h7 b c h4.left h5.left</span>
+<span id="cb225-12"><a href="#cb225-12" aria-hidden="true" tabindex="-1"></a>  <span class="kw">rewrite</span> [h8] <span class="kw">at</span> h4</span>
+<span id="cb225-13"><a href="#cb225-13" aria-hidden="true" tabindex="-1"></a>  <span class="kw">show</span> ∃ (x : U), x ∈ B ∩ C <span class="kw">from</span></span>
+<span id="cb225-14"><a href="#cb225-14" aria-hidden="true" tabindex="-1"></a>    Exists.intro c (And.intro h4.right h5.right)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>You might want to compare the Lean proof above to the proof of this theorem as it appears in <em>HTPI</em>:</p>
 <div class="thm">
 <p>Suppose <span class="math inline">\(A\)</span>, <span class="math inline">\(B\)</span>, and <span class="math inline">\(C\)</span> are sets, <span class="math inline">\(A\)</span> and <span class="math inline">\(B\)</span> are not disjoint, <span class="math inline">\(A\)</span> and <span class="math inline">\(C\)</span> are not disjoint, and <span class="math inline">\(A\)</span> has exactly one element. Then <span class="math inline">\(B\)</span> and <span class="math inline">\(C\)</span> are not disjoint</p>
@@ -3032,22 +3054,6 @@ x \in A \cap (B \setmin C) &amp;\text{ iff } x \in A \wedge x \in B \setmin C\\
 <p><span class="proof-title"><em>Proof</em>. </span>Since <span class="math inline">\(A\)</span> and <span class="math inline">\(B\)</span> are not disjoint, we can let <span class="math inline">\(b\)</span> be something such that <span class="math inline">\(b \in A\)</span> and <span class="math inline">\(b \in B\)</span>. Similarly, since <span class="math inline">\(A\)</span> and <span class="math inline">\(C\)</span> are not disjoint, there is some object <span class="math inline">\(c\)</span> such that <span class="math inline">\(c \in A\)</span> and <span class="math inline">\(c \in C\)</span>. Since <span class="math inline">\(A\)</span> has only one element, we must have <span class="math inline">\(b = c\)</span>. Thus <span class="math inline">\(b = c \in B \cap C\)</span> and therefore <span class="math inline">\(B\)</span> and <span class="math inline">\(C\)</span> are not disjoint. <span class="excl">&nbsp;□</span></p>
 </div>
 <p>Before ending this section, we return to the question of how you can tell if a theorem you want to use is in Lean’s library. In an earlier example, we guessed that the commutative law for “or” might be in Lean’s library, and we were then able to use the <code>#check</code> command to confirm it. But there is another technique that we could have used: the tactic <code>library_search</code>. Let’s return to our proof of the theorem <code>union_comm</code>, which started like this:</p>
-<div class="inout">
-<div class="inpt">
-<div class="sourceCode" id="cb224"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb224-1"><a href="#cb224-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> union_comm {U : <span class="kw">Type</span>} (X Y : Set U) :</span>
-<span id="cb224-2"><a href="#cb224-2" aria-hidden="true" tabindex="-1"></a>    X ∪ Y = Y ∪ X := <span class="kw">by</span></span>
-<span id="cb224-3"><a href="#cb224-3" aria-hidden="true" tabindex="-1"></a>  <span class="kw">apply</span> Set.ext</span>
-<span id="cb224-4"><a href="#cb224-4" aria-hidden="true" tabindex="-1"></a>  <span class="kw">fix</span> x : U</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<div class="outpt">
-<div class="sourceCode" id="cb225"><pre class="sourceCode state code-with-copy"><code class="sourceCode state"><span id="cb225-1"><a href="#cb225-1" aria-hidden="true" tabindex="-1"></a><span class="re">case</span> h</span>
-<span id="cb225-2"><a href="#cb225-2" aria-hidden="true" tabindex="-1"></a><span class="in">U </span>: Type</span>
-<span id="cb225-3"><a href="#cb225-3" aria-hidden="true" tabindex="-1"></a><span class="in">X Y </span>: Set U</span>
-<span id="cb225-4"><a href="#cb225-4" aria-hidden="true" tabindex="-1"></a><span class="in">x </span>: U</span>
-<span id="cb225-5"><a href="#cb225-5" aria-hidden="true" tabindex="-1"></a>⊢ x ∈ X ∪ Y ↔ x ∈ Y ∪ X</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-</div>
-<p>To make the goal easier for the <code>library_search</code> tactic to recognize, we’ll write out the definitions of the two sides of the biconditional. We use an extension of the <code>define</code> tactic that allows us to write out the definition of just a part of a given or the goal. The tactic <code>define : x ∈ X ∪ Y</code> will replace <code>x ∈ X ∪ Y</code> with its definition wherever it appears in the goal, and then <code>define : x ∈ Y ∪ X</code> will replace <code>x ∈ Y ∪ X</code> with its definition. (As usual, you can add <code>at</code> to do the replacements in a given rather than the goal.)</p>
 <div class="inout">
 <div class="inpt">
 <div class="sourceCode" id="cb226"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb226-1"><a href="#cb226-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> union_comm {U : <span class="kw">Type</span>} (X Y : Set U) :</span>
@@ -3066,8 +3072,7 @@ x \in A \cap (B \setmin C) &amp;\text{ iff } x \in A \wedge x \in B \setmin C\\
 <span id="cb227-6"><a href="#cb227-6" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;&gt;</span>  x ∈ Y ∨ x ∈ X</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </div>
-<p>By the way, there are similar extensions of all of the tactics <code>contrapos</code>, <code>demorgan</code>, <code>conditional</code>, <code>double_neg</code>, <code>bicond_neg</code>, and <code>quant_neg</code> that allow you to use a logical equivalence to rewrite just a part of a formula. For example, if your goal is <code>P ∧ (¬Q → R)</code>, then the tactic <code>contrapos : ¬Q → R</code> will change the goal to <code>P ∧ (¬R → Q)</code>. If you have a given <code>h : P → ¬∀ (x : U), Q x</code>, then the tactic <code>quant_neg : ¬∀ (x : U), Q x at h</code> will change <code>h</code> to <code>h : P → ∃ (x : U), ¬Q x</code>.</p>
-<p>Returning to our proof of <code>union_comm</code>: We have used the <code>define</code> tactic in order to give the <code>library_search</code> tactic the best chance of recognizing the goal as the commutative law for “or”. Let’s give it a try.</p>
+<p>Now let’s give the <code>library_search</code> tactic a try.</p>
 <div class="sourceCode" id="cb228"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb228-1"><a href="#cb228-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> union_comm {U : <span class="kw">Type</span>} (X Y : Set U) :</span>
 <span id="cb228-2"><a href="#cb228-2" aria-hidden="true" tabindex="-1"></a>    X ∪ Y = Y ∪ X := <span class="kw">by</span></span>
 <span id="cb228-3"><a href="#cb228-3" aria-hidden="true" tabindex="-1"></a>  <span class="kw">apply</span> Set.ext</span>
@@ -3113,7 +3118,7 @@ x \in A \cap (B \setmin C) &amp;\text{ iff } x \in A \wedge x \in B \setmin C\\
 <span id="cb229-21"><a href="#cb229-21" aria-hidden="true" tabindex="-1"></a>    (h1 : ∀ (F : Set (Set U)), ⋃₀F = A → A ∈ F) : ∃! (x : U), x ∈ A := <span class="kw">by</span></span>
 <span id="cb229-22"><a href="#cb229-22" aria-hidden="true" tabindex="-1"></a>  <span class="co">--Hint:  Start like this:</span></span>
 <span id="cb229-23"><a href="#cb229-23" aria-hidden="true" tabindex="-1"></a>  let F0 := {X : Set U | X ⊆ A ∧ ∃! (x : U), x ∈ X}</span>
-<span id="cb229-24"><a href="#cb229-24" aria-hidden="true" tabindex="-1"></a>  <span class="co">--Now F0 is in tactic state, with definition above</span></span>
+<span id="cb229-24"><a href="#cb229-24" aria-hidden="true" tabindex="-1"></a>  <span class="co">--Now F0 is in the tactic state, with the definition above</span></span>
 <span id="cb229-25"><a href="#cb229-25" aria-hidden="true" tabindex="-1"></a>  <span class="kw">have</span> h2 : ⋃₀F0 = A := <span class="cn">sorry</span></span>
 <span id="cb229-26"><a href="#cb229-26" aria-hidden="true" tabindex="-1"></a>  <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
@@ -3319,7 +3324,8 @@ x \in A \cap (B \setmin C) &amp;\text{ iff } x \in A \wedge x \in B \setmin C\\
 <span id="cb247-6"><a href="#cb247-6" aria-hidden="true" tabindex="-1"></a>  <span class="kw">assume</span> h1 : 6 ∣ n; <span class="kw">define</span> <span class="kw">at</span> h1</span>
 <span id="cb247-7"><a href="#cb247-7" aria-hidden="true" tabindex="-1"></a>  <span class="kw">obtain</span> (k : Int) (h2 : n = 6 * k) <span class="kw">from</span> h1</span>
 <span id="cb247-8"><a href="#cb247-8" aria-hidden="true" tabindex="-1"></a>  <span class="kw">apply</span> And.intro</span>
-<span id="cb247-9"><a href="#cb247-9" aria-hidden="true" tabindex="-1"></a>  <span class="kw">define</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb247-9"><a href="#cb247-9" aria-hidden="true" tabindex="-1"></a>  <span class="co">-- Proof that 2 ∣ n</span></span>
+<span id="cb247-10"><a href="#cb247-10" aria-hidden="true" tabindex="-1"></a>  <span class="kw">define</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="outpt">
 <div class="sourceCode" id="cb248"><pre class="sourceCode state code-with-copy"><code class="sourceCode state"><span id="cb248-1"><a href="#cb248-1" aria-hidden="true" tabindex="-1"></a><span class="re">case</span> mp.left</span>
@@ -3341,8 +3347,9 @@ x \in A \cap (B \setmin C) &amp;\text{ iff } x \in A \wedge x \in B \setmin C\\
 <span id="cb249-6"><a href="#cb249-6" aria-hidden="true" tabindex="-1"></a>  <span class="kw">assume</span> h1 : 6 ∣ n; <span class="kw">define</span> <span class="kw">at</span> h1</span>
 <span id="cb249-7"><a href="#cb249-7" aria-hidden="true" tabindex="-1"></a>  <span class="kw">obtain</span> (k : Int) (h2 : n = 6 * k) <span class="kw">from</span> h1</span>
 <span id="cb249-8"><a href="#cb249-8" aria-hidden="true" tabindex="-1"></a>  <span class="kw">apply</span> And.intro</span>
-<span id="cb249-9"><a href="#cb249-9" aria-hidden="true" tabindex="-1"></a>  <span class="kw">define</span></span>
-<span id="cb249-10"><a href="#cb249-10" aria-hidden="true" tabindex="-1"></a>  <span class="kw">apply</span> Exists.intro (3 * k)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb249-9"><a href="#cb249-9" aria-hidden="true" tabindex="-1"></a>  <span class="co">-- Proof that 2 ∣ n</span></span>
+<span id="cb249-10"><a href="#cb249-10" aria-hidden="true" tabindex="-1"></a>  <span class="kw">define</span></span>
+<span id="cb249-11"><a href="#cb249-11" aria-hidden="true" tabindex="-1"></a>  <span class="kw">apply</span> Exists.intro (3 * k)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="outpt">
 <div class="sourceCode" id="cb250"><pre class="sourceCode state code-with-copy"><code class="sourceCode state"><span id="cb250-1"><a href="#cb250-1" aria-hidden="true" tabindex="-1"></a><span class="re">case</span> mp.left</span>
@@ -3364,9 +3371,10 @@ x \in A \cap (B \setmin C) &amp;\text{ iff } x \in A \wedge x \in B \setmin C\\
 <span id="cb251-6"><a href="#cb251-6" aria-hidden="true" tabindex="-1"></a>  <span class="kw">assume</span> h1 : 6 ∣ n; <span class="kw">define</span> <span class="kw">at</span> h1</span>
 <span id="cb251-7"><a href="#cb251-7" aria-hidden="true" tabindex="-1"></a>  <span class="kw">obtain</span> (k : Int) (h2 : n = 6 * k) <span class="kw">from</span> h1</span>
 <span id="cb251-8"><a href="#cb251-8" aria-hidden="true" tabindex="-1"></a>  <span class="kw">apply</span> And.intro</span>
-<span id="cb251-9"><a href="#cb251-9" aria-hidden="true" tabindex="-1"></a>  <span class="kw">define</span></span>
-<span id="cb251-10"><a href="#cb251-10" aria-hidden="true" tabindex="-1"></a>  <span class="kw">apply</span> Exists.intro (3 * k)</span>
-<span id="cb251-11"><a href="#cb251-11" aria-hidden="true" tabindex="-1"></a>  <span class="kw">rewrite</span> [←mul_assoc 2 3 k]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb251-9"><a href="#cb251-9" aria-hidden="true" tabindex="-1"></a>  <span class="co">-- Proof that 2 ∣ n</span></span>
+<span id="cb251-10"><a href="#cb251-10" aria-hidden="true" tabindex="-1"></a>  <span class="kw">define</span></span>
+<span id="cb251-11"><a href="#cb251-11" aria-hidden="true" tabindex="-1"></a>  <span class="kw">apply</span> Exists.intro (3 * k)</span>
+<span id="cb251-12"><a href="#cb251-12" aria-hidden="true" tabindex="-1"></a>  <span class="kw">rewrite</span> [←mul_assoc 2 3 k]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="outpt">
 <div class="sourceCode" id="cb252"><pre class="sourceCode state code-with-copy"><code class="sourceCode state"><span id="cb252-1"><a href="#cb252-1" aria-hidden="true" tabindex="-1"></a><span class="re">case</span> mp.left</span>
@@ -3388,10 +3396,11 @@ x \in A \cap (B \setmin C) &amp;\text{ iff } x \in A \wedge x \in B \setmin C\\
 <span id="cb253-6"><a href="#cb253-6" aria-hidden="true" tabindex="-1"></a>  <span class="kw">assume</span> h1 : 6 ∣ n; <span class="kw">define</span> <span class="kw">at</span> h1</span>
 <span id="cb253-7"><a href="#cb253-7" aria-hidden="true" tabindex="-1"></a>  <span class="kw">obtain</span> (k : Int) (h2 : n = 6 * k) <span class="kw">from</span> h1</span>
 <span id="cb253-8"><a href="#cb253-8" aria-hidden="true" tabindex="-1"></a>  <span class="kw">apply</span> And.intro</span>
-<span id="cb253-9"><a href="#cb253-9" aria-hidden="true" tabindex="-1"></a>  <span class="kw">define</span></span>
-<span id="cb253-10"><a href="#cb253-10" aria-hidden="true" tabindex="-1"></a>  <span class="kw">apply</span> Exists.intro (3 * k)</span>
-<span id="cb253-11"><a href="#cb253-11" aria-hidden="true" tabindex="-1"></a>  <span class="kw">rewrite</span> [←mul_assoc 2 3 k]</span>
-<span id="cb253-12"><a href="#cb253-12" aria-hidden="true" tabindex="-1"></a>  <span class="kw">show</span> n = 2 * 3 * k <span class="kw">from</span> h2</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb253-9"><a href="#cb253-9" aria-hidden="true" tabindex="-1"></a>  <span class="co">-- Proof that 2 ∣ n</span></span>
+<span id="cb253-10"><a href="#cb253-10" aria-hidden="true" tabindex="-1"></a>  <span class="kw">define</span></span>
+<span id="cb253-11"><a href="#cb253-11" aria-hidden="true" tabindex="-1"></a>  <span class="kw">apply</span> Exists.intro (3 * k)</span>
+<span id="cb253-12"><a href="#cb253-12" aria-hidden="true" tabindex="-1"></a>  <span class="kw">rewrite</span> [←mul_assoc 2 3 k]</span>
+<span id="cb253-13"><a href="#cb253-13" aria-hidden="true" tabindex="-1"></a>  <span class="kw">show</span> n = 2 * 3 * k <span class="kw">from</span> h2</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="outpt">
 <div class="sourceCode" id="cb254"><pre class="sourceCode state code-with-copy"><code class="sourceCode state"><span id="cb254-1"><a href="#cb254-1" aria-hidden="true" tabindex="-1"></a><span class="re">case</span> mp.right</span>
@@ -3413,14 +3422,16 @@ x \in A \cap (B \setmin C) &amp;\text{ iff } x \in A \wedge x \in B \setmin C\\
 <span id="cb255-6"><a href="#cb255-6" aria-hidden="true" tabindex="-1"></a>  <span class="kw">assume</span> h1 : 6 ∣ n; <span class="kw">define</span> <span class="kw">at</span> h1</span>
 <span id="cb255-7"><a href="#cb255-7" aria-hidden="true" tabindex="-1"></a>  <span class="kw">obtain</span> (k : Int) (h2 : n = 6 * k) <span class="kw">from</span> h1</span>
 <span id="cb255-8"><a href="#cb255-8" aria-hidden="true" tabindex="-1"></a>  <span class="kw">apply</span> And.intro</span>
-<span id="cb255-9"><a href="#cb255-9" aria-hidden="true" tabindex="-1"></a>  <span class="kw">define</span></span>
-<span id="cb255-10"><a href="#cb255-10" aria-hidden="true" tabindex="-1"></a>  <span class="kw">apply</span> Exists.intro (3 * k)</span>
-<span id="cb255-11"><a href="#cb255-11" aria-hidden="true" tabindex="-1"></a>  <span class="kw">rewrite</span> [←mul_assoc 2 3 k]</span>
-<span id="cb255-12"><a href="#cb255-12" aria-hidden="true" tabindex="-1"></a>  <span class="kw">show</span> n = 2 * 3 * k <span class="kw">from</span> h2</span>
-<span id="cb255-13"><a href="#cb255-13" aria-hidden="true" tabindex="-1"></a>  <span class="kw">define</span></span>
-<span id="cb255-14"><a href="#cb255-14" aria-hidden="true" tabindex="-1"></a>  <span class="kw">apply</span> Exists.intro (2 * k)</span>
-<span id="cb255-15"><a href="#cb255-15" aria-hidden="true" tabindex="-1"></a>  <span class="kw">rewrite</span> [←mul_assoc 3 2 k]</span>
-<span id="cb255-16"><a href="#cb255-16" aria-hidden="true" tabindex="-1"></a>  <span class="kw">show</span> n = 3 * 2 * k <span class="kw">from</span> h2</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb255-9"><a href="#cb255-9" aria-hidden="true" tabindex="-1"></a>  <span class="co">-- Proof that 2 ∣ n</span></span>
+<span id="cb255-10"><a href="#cb255-10" aria-hidden="true" tabindex="-1"></a>  <span class="kw">define</span></span>
+<span id="cb255-11"><a href="#cb255-11" aria-hidden="true" tabindex="-1"></a>  <span class="kw">apply</span> Exists.intro (3 * k)</span>
+<span id="cb255-12"><a href="#cb255-12" aria-hidden="true" tabindex="-1"></a>  <span class="kw">rewrite</span> [←mul_assoc 2 3 k]</span>
+<span id="cb255-13"><a href="#cb255-13" aria-hidden="true" tabindex="-1"></a>  <span class="kw">show</span> n = 2 * 3 * k <span class="kw">from</span> h2</span>
+<span id="cb255-14"><a href="#cb255-14" aria-hidden="true" tabindex="-1"></a>  <span class="co">-- Proof that 3 ∣ n</span></span>
+<span id="cb255-15"><a href="#cb255-15" aria-hidden="true" tabindex="-1"></a>  <span class="kw">define</span></span>
+<span id="cb255-16"><a href="#cb255-16" aria-hidden="true" tabindex="-1"></a>  <span class="kw">apply</span> Exists.intro (2 * k)</span>
+<span id="cb255-17"><a href="#cb255-17" aria-hidden="true" tabindex="-1"></a>  <span class="kw">rewrite</span> [←mul_assoc 3 2 k]</span>
+<span id="cb255-18"><a href="#cb255-18" aria-hidden="true" tabindex="-1"></a>  <span class="kw">show</span> n = 3 * 2 * k <span class="kw">from</span> h2</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="outpt">
 <div class="sourceCode" id="cb256"><pre class="sourceCode state code-with-copy"><code class="sourceCode state"><span id="cb256-1"><a href="#cb256-1" aria-hidden="true" tabindex="-1"></a><span class="re">case</span> mpr</span>
