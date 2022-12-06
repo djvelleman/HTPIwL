@@ -120,12 +120,22 @@ code span.re {      /* "case" label in Infoview */
   text-decoration-line: underline
 }
 
+.numex::before {
+  content: attr(data-arguments)".";
+  float: left;
+  padding-right: 0.6em
+}
+
 .quote {
   margin-left: 10%
 }
 
 .ind {
   margin-left: 3%
+}
+
+.ms {     /* vertical space, comparable to \medskip */
+  margin: 10px
 }
 
 .thm {

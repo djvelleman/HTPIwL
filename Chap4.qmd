@@ -153,7 +153,7 @@ theorem Theorem_4_2_5_5 {A B C : Type}
   define : (b, a) ∈ inv R
 ```
 
-After the tactics `apply Set.ext` and `fix (c, a) : C × A`, the goal is `(c, a) ∈ inv (comp S R) ↔ (c, a) ∈ comp (inv R) (inv S)`.  For the proof of the left-to-right direction, we assume `h1 : (c, a) ∈ inv (comp S R)`, and we must prove `(c, a) ∈ comp (inv R) (inv S)`.  The definition of `h1` is an existential statement, so we apply existential instantiation to obtain `b : B` and `h2 : (a, b) ∈ R ∧ (b, c) ∈ S`.  The definition of the goal is also an existential statement, and after the tactic `apply And.intro b`, the goal is `(c, b) ∈ inv S ∧ (b, a) ∈ inv R`.  It looks like this goal will follow easily from `h2`, using the definitions of the inverses of `S` and `R`.
+After the tactics `apply Set.ext` and `fix (c, a) : C × A`, the goal is `(c, a) ∈ inv (comp S R) ↔ (c, a) ∈ comp (inv R) (inv S)`.  For the proof of the left-to-right direction, we assume `h1 : (c, a) ∈ inv (comp S R)`, and we must prove `(c, a) ∈ comp (inv R) (inv S)`.  The definition of `h1` is an existential statement, so we apply existential instantiation to obtain `b : B` and `h2 : (a, b) ∈ R ∧ (b, c) ∈ S`.  The definition of the goal is also an existential statement, and after the tactic `apply Exists.intro b`, the goal is `(c, b) ∈ inv S ∧ (b, a) ∈ inv R`.  It looks like this goal will follow easily from `h2`, using the definitions of the inverses of `S` and `R`.
 
 The tactic `define : (b, a) ∈ inv R` should rewrite the second half of the goal, using the definition of `inv R`.  You might expect the definition to be `(a, b) ∈ R`, but what the tactic produces is `R (a, b)`.  Usually, the `define` tactic does a good job of writing out definitions, but in this case it has let us down a bit.  The definition isn't wrong (explaining why would take us too far afield), but it isn't what we wanted.
 
@@ -199,22 +199,38 @@ theorem Theorem_4_2_5_5 {A B C : Type}
 By the way, an alternative way to complete both directions of this proof would have been to apply the commutativity of "and".  See if you can guess the name of that theorem (you can use `#check` to confirm your guess) and apply it as a third rewriting rule in the `rewrite` steps.
 
 ### Exercises
+
+::: {.numex arguments="1"}
 ```lean
 theorem Exercise_4_2_9a {A B C : Type} (R : Set (A × B))
     (S : Set (B × C)) : Dom (comp S R) ⊆ Dom R := sorry
+```
+:::
 
+::: {.numex arguments="2"}
+```lean
 theorem Exercise_4_2_9b {A B C : Type} (R : Set (A × B))
     (S : Set (B × C)) : Ran R ⊆ Dom S → Dom (comp S R) = Dom R := sorry
+```
+:::
 
+::: {.numex arguments="3"}
+```lean
 --Fill in the blank to get a correct theorem and then prove the theorem
 theorem Exercise_4_2_9c {A B C : Type} (R : Set (A × B))
     (S : Set (B × C)) : ___ → Ran (comp S R) = Ran S := sorry
-
-theorem Exercise_4_2_12a {A B C : Type} (R : Set (A × B))
-    (S T : Set (B × C)) : (comp S R) \ (comp T R) ⊆ comp (S \ T) R := sorry
 ```
+:::
 
-Here is an incorrect theorem with an incorrect proof.
+::: {.numex arguments="4"}
+```lean
+theorem Exercise_4_2_12a {A B C : Type}
+    (R : Set (A × B)) (S T : Set (B × C)) :
+    (comp S R) \ (comp T R) ⊆ comp (S \ T) R := sorry
+```
+:::
+
+5\excl{}. Here is an incorrect theorem with an incorrect proof.
 
 ::: {.nthm arguments="Incorrect Theorem"}
 Suppose $R$ is a relation from $A$ to $B$ and $S$ and $T$ are relations from $B$ to $C$.  Then $(S \setmin T) \circ R \subseteq (S \circ R) \setmin (T \circ R)$.
@@ -228,16 +244,18 @@ Find the mistake in the proof by attempting to write the proof in Lean:
 
 ```lean
 --You won't be able to complete this proof
-theorem Exercise_4_2_12b {A B C : Type} (R : Set (A × B))
-    (S T : Set (B × C)) : comp (S \ T) R ⊆ (comp S R) \ (comp T R) := sorry
+theorem Exercise_4_2_12b {A B C : Type}
+    (R : Set (A × B)) (S T : Set (B × C)) :
+    comp (S \ T) R ⊆ (comp S R) \ (comp T R) := sorry
 ```
 
-Is the following theorem correct?  Try to prove it in Lean.  If you can't prove it, see if you can find a counterexample.
+6\excl{}. Is the following theorem correct?  Try to prove it in Lean.  If you can't prove it, see if you can find a counterexample.
 
 ```lean
 --You might not be able to complete this proof
-theorem Exercise_4_2_14c {A B C : Type} (R : Set (A × B))
-    (S T : Set (B × C)) : comp (S ∩ T) R = (comp S R) ∩ (comp T R) := sorry
+theorem Exercise_4_2_14c {A B C : Type}
+    (R : Set (A × B)) (S T : Set (B × C)) :
+    comp (S ∩ T) R = (comp S R) ∩ (comp T R) := sorry
 
 ```
 
@@ -305,7 +323,7 @@ theorem Theorem_4_3_4_2 {A : Type} (R : BinRel A) :
   show R b a from h2
 ```
 
-Note that at the end of the proof, we assume `h2 : R a b`, and our goal is `R b a`.  We convert `R a b` to `R b a` by a sequence of rewrites.  Applying the right-to-left direction of the theorem `simp_ext R a b` converts `R a b` to `(a, b) ∈ extension R`.  Then rewriting with `h1` converts this to `(a, b) ∈ inv (extension R)`, using `simp_inv (extension R) b a` converts this to `(b, a) ∈ extension R`, and finally `simp_ext R b a` produces `R b a`.  Usually we can leave out the arguments when we use a theorem as a rewriting rule, and Lean will figure them out for itself.  But in this case, if you try using `←simp_ext` as the first rewriting rule, you will see that Lean is unable to figure out that it should use the right-to-left direction of `simp_ext R a b`.  Supplying the first argument turns out to be enough of a hint for Lean to figure out the rest.  That's why our first rewriting rule is `←simp_ext R`.
+Note that near the end of the proof, we assume `h2 : R a b`, and our goal is `R b a`.  We convert `R a b` to `R b a` by a sequence of rewrites.  Applying the right-to-left direction of the theorem `simp_ext R a b` converts `R a b` to `(a, b) ∈ extension R`.  Then rewriting with `h1` converts this to `(a, b) ∈ inv (extension R)`, using `simp_inv (extension R) b a` converts this to `(b, a) ∈ extension R`, and finally `simp_ext R b a` produces `R b a`.  Usually we can leave out the arguments when we use a theorem as a rewriting rule, and Lean will figure them out for itself.  But in this case, if you try using `←simp_ext` as the first rewriting rule, you will see that Lean is unable to figure out that it should use the right-to-left direction of `simp_ext R a b`.  Supplying the first argument turns out to be enough of a hint for Lean to figure out the rest.  That's why our first rewriting rule is `←simp_ext R`.
 
 We'll leave the proofs of the other two statements in Theorem 4.3.4 as exercises for you.
 
@@ -319,15 +337,29 @@ This definition says that if `A` is a type, `a` has type `A`, and `X` has type `
 
 ### Exercises
 
+::: {.numex arguments="1"}
 ```lean
-example : elementhood Int 6 { n : Int | ∃ (k : Int), n = 2 * k } := sorry
+example :
+    elementhood Int 6 { n : Int | ∃ (k : Int), n = 2 * k } := sorry
+```
+:::
 
+::: {.numex arguments="2"}
+```lean
 theorem Theorem_4_3_4_1 {A : Type} (R : BinRel A) :
     reflexive R ↔ { (x, y) : A × A | x = y } ⊆ extension R := sorry
-
-theorem Theorem_4_3_4_3 {A : Type} (R : BinRel A) :
-    transitive R ↔ comp (extension R) (extension R) ⊆ extension R := sorry
 ```
+:::
+
+::: {.numex arguments="3"}
+```lean
+theorem Theorem_4_3_4_3 {A : Type} (R : BinRel A) :
+    transitive R ↔
+        comp (extension R) (extension R) ⊆ extension R := sorry
+```
+:::
+
+\medskip<pre class="ms"></pre>
 
 To state our remaining exercises, we'll need a definition.  If `R` has type `Set (A × B)`, then we define `RelFromExt R` to be the relation whose extension is `R`.  A few simple theorems, which follow directly from the definition, clarify the meaning of `RelFromExt R`.
 
@@ -344,33 +376,53 @@ example {A B : Type} (R : Rel A B) :
 
 example {A B : Type} (R : Set (A × B)) :
     extension (RelFromExt R) = R := by rfl
+```
 
+::: {.numex arguments="4"}
+```lean
 theorem Exercise_4_3_12a {A : Type} (R : BinRel A) (h1 : reflexive R) :
     reflexive (RelFromExt (inv (extension R))) := sorry
+```
+:::
 
+::: {.numex arguments="5"}
+```lean
 theorem Exercise_4_3_12c {A : Type} (R : BinRel A) (h1 : transitive R) :
     transitive (RelFromExt (inv (extension R))) := sorry
+```
+:::
 
+::: {.numex arguments="6"}
+```lean
 theorem Exercise_4_3_18 {A : Type}
     (R S : BinRel A) (h1 : transitive R) (h2 : transitive S)
     (h3 : comp (extension S) (extension R) ⊆
         comp (extension R) (extension S)) :
     transitive (RelFromExt (comp (extension R) (extension S))) := sorry
 ```
+:::
 
-Are the following theorems correct?
+\medskip<pre class="ms"></pre>
 
+In the next two exercises, determine whether or not the theorem is correct.
+
+::: {.numex arguments="7"}
 ```lean
 --You might not be able to complete this proof
 theorem Exercise_4_3_13b {A : Type}
     (R1 R2 : BinRel A) (h1 : symmetric R1) (h2 : symmetric R2) :
     symmetric (RelFromExt ((extension R1) ∪ (extension R2))) := sorry
+```
+:::
 
+::: {.numex arguments="8"}
+```lean
 --You might not be able to complete this proof
 theorem Exercise_4_3_13c {A : Type}
     (R1 R2 : BinRel A) (h1 : transitive R1) (h2 : transitive R2) :
     transitive (RelFromExt ((extension R1) ∪ (extension R2))) := sorry
 ```
+:::
 
 ## 4.4. Ordering Relations
 
@@ -387,6 +439,8 @@ def total_order {A : Type} (R : BinRel A) : Prop :=
     partial_order R ∧ ∀ (x y : A), R x y ∨ R y x
 ```
 
+If `R` has type `BinRel A`, then `partial_order R` is the proposition saying that `R` is reflexive, transitive, and antisymmetric.  We say in this case that `R` is a *partial order on `A`*---or just that `R` is a *partial order*, if `A` is clear from context.  Similarly, `total_order R` says that `R` is a *total order on `A`*.
+
 Example 4.4.3 in *HTPI* gives several examples of partial orders and total orders.  We'll give one of those examples here.  For any type `A`, we define `sub A` to be the subset relation on sets of objects of type `A`:
 
 ```lean
@@ -397,7 +451,7 @@ According to this definition, `sub A` is a binary relation on `Set A`, and for a
 
 Notice that `X ⊆ Y` could be thought of as expressing a sense in which `Y` is "at least as large as" `X`.  Often, if `R` is a partial order on `A` and `a` and `b` have type `A`, then `R a b` can be thought of as meaning that `b` is in some sense "at least as large as" `a`.  Many of the concepts we study for partial and total orders are motivated by this interpretation of `R`.
 
-For example, if `R` is a partial order on `A`, `B` has type `Set A`, and `b` has type `A`, then we say that `b` is an `R`-smallest element of `B` if it is an element of `B`, and every element of `B` is at least as large as `b`, according to this interpretation of the ordering `R`.  We say that `b` is an `R`-minimal element of `B` if it is an element of `B` and there is no other element of `B` that is smaller than `b`, according to the ordering `R`.  We can state these precisely as definitions in Lean:
+For example, if `R` is a partial order on `A`, `B` has type `Set A`, and `b` has type `A`, then we say that `b` is an *`R`-smallest element of `B`* if it is an element of `B`, and every element of `B` is at least as large as `b`, according to this interpretation of the ordering `R`.  We say that `b` is an *`R`-minimal element of `B`* if it is an element of `B` and there is no other element of `B` that is smaller than `b`, according to the ordering `R`.  We can state these precisely as definitions in Lean:
 
 ```lean
 def smallestElt {A : Type} (R : BinRel A) (b : A) (B : Set A) : Prop :=
@@ -462,7 +516,7 @@ theorem Theorem_4_4_6_2 {A : Type} (R : BinRel A) (B : Set A) (b : A)
   show b = c from h5 
 ```
 
-Finally, the third statement in Theorem 4.4.6 says that if `R` is a total order, then an `R`-minimal element of a set `B` must be the `R`-smallest element of `B`.  The beginning of the proof is straightforward:
+Finally, the third statement in Theorem 4.4.6 says that if `R` is a total order, then any `R`-minimal element of a set `B` must be the `R`-smallest element of `B`.  The beginning of the proof is straightforward:
 
 ```lean
 theorem Theorem_4_4_6_3 {A : Type} (R : BinRel A) (B : Set A) (b : A)
@@ -505,9 +559,108 @@ theorem Theorem_4_4_6_3 {A : Type} (R : BinRel A) (B : Set A) (b : A)
   show R b x from h6
 ```
 
-### Exercises
+Imitating the definitions above, you should be able to formulate definitions of `R`-largest and `R`-maximal elements.  Section 4.4 of *HTPI* defines four more terms: upper bound, lower bound, least upper bound, and greatest lower bound.  We will discuss upper bounds and least upper bounds, and leave lower bounds and greatest lower bounds for you to figure out on your own.
+
+If `R` is a partial order on `A`, `B` has type `Set A`, and `a` has type `A`, then `a` is called an *upper bound* for `B` if it is at least as large as every element of `B`.  If it is the smallest element of the set of upper bounds, then it is called the *least upper bound* of `B`.  The phrase "least upper bound" is often abbreviated "lub".  Here are these definitions, written in Lean:
 
 ```lean
-theorem Example_4_4_3_1 {A : Type} : partial_order (sub A) := sorry
+def upperBd {A : Type} (R : BinRel A) (a : A) (B : Set A) : Prop :=
+    ∀ x ∈ B, R x a
 
+def lub {A : Type} (R : BinRel A) (a : A) (B : Set A) : Prop :=
+    smallestElt R a { c : A | upperBd R c B }
 ```
+
+As usual, we will let you consult *HTPI* for examples of these concepts.  But we will mention one example:  If `A` is a type and `F` has type `Set (Set A)`---that is, `F` is a set whose elements are sets of objects of type `A`---then the least upper bound of `F`, with respect to the partial order `sub A`, is `⋃₀F`.  We leave the proof of this fact as an exercise.
+
+### Exercises
+
+::: {.numex arguments="1"}
+```lean
+theorem Example_4_4_3_1 {A : Type} : partial_order (sub A) := sorry
+```
+:::
+
+::: {.numex arguments="2"}
+```lean
+theorem Theorem_4_4_6_1 {A : Type} (R : BinRel A) (B : Set A) (b : A)
+    (h1 : partial_order R) (h2 : smallestElt R b B) :
+    ∀ (c : A), smallestElt R c B → b = c := sorry
+```
+:::
+
+::: {.numex arguments="3"}
+```lean
+--If F is a set of sets, then ⋃₀F is the lub of F in the subset ordering
+theorem Theorem_4_4_11 {A : Type} (F : Set (Set A)) :
+    lub (sub A) (⋃₀F) F := sorry
+```
+:::
+
+::: {.numex arguments="4"}
+```lean
+theorem Exercise_4_4_8 {A B : Type} (R : BinRel A) (S : BinRel B)
+    (T : BinRel (A × B)) (h1 : partial_order R) (h2 : partial_order S)
+    (h3 : ∀ (a a' : A) (b b' : B),
+        T (a, b) (a', b') ↔ R a a' ∧ S b b') :
+    partial_order T := sorry
+```
+:::
+
+::: {.numex arguments="5"}
+```lean
+theorem Exercise_4_4_9_part {A B : Type} (R : BinRel A) (S : BinRel B)
+    (L : BinRel (A × B)) (h1 : total_order R) (h2 : total_order S)
+    (h3 : ∀ (a a' : A) (b b' : B),
+        L (a, b) (a', b') ↔ R a a' ∧ (a = a' → S b b')) :
+    ∀ (a a' : A) (b b' : B),
+        L (a, b) (a', b') ∨ L (a', b') (a, b) := sorry
+```
+:::
+
+::: {.numex arguments="6"}
+```lean
+theorem Exercise_4_4_15a {A : Type}
+    (R1 R2 : BinRel A) (B : Set A) (b : A)
+    (h1 : partial_order R1) (h2 : partial_order R2)
+    (h3 : extension R1 ⊆ extension R2) :
+    smallestElt R1 b B → smallestElt R2 b B := sorry
+```
+:::
+
+::: {.numex arguments="7"}
+```lean
+theorem Exercise_4_4_15b {A : Type}
+    (R1 R2 : BinRel A) (B : Set A) (b : A)
+    (h1 : partial_order R1) (h2 : partial_order R2)
+    (h3 : extension R1 ⊆ extension R2) :
+    minimalElt R2 b B → minimalElt R1 b B := sorry
+```
+:::
+
+::: {.numex arguments="8"}
+```lean
+theorem Exercise_4_4_18a {A : Type}
+    (R : BinRel A) (B1 B2 : Set A) (h1 : partial_order R)
+    (h2 : ∀ x ∈ B1, ∃ y ∈ B2, R x y) (h3 : ∀ x ∈ B2, ∃ y ∈ B1, R x y) :
+    ∀ (x : A), upperBd R x B1 ↔ upperBd R x B2 := sorry
+```
+:::
+
+::: {.numex arguments="9"}
+```lean
+theorem Exercise_4_4_22 {A : Type}
+    (R : BinRel A) (B1 B2 : Set A) (x1 x2 : A)
+    (h1 : lub R x1 B1) (h2 : lub R x2 B2) :
+    B1 ⊆ B2 → R x1 x2 := sorry
+```
+:::
+
+::: {.numex arguments="10"}
+```lean
+theorem Exercise_4_4_24 {A : Type} (R : BinRel A) :
+    smallestElt (sub (A × A)) ((extension R) ∪ (inv (extension R)))
+    { T : Set (A × A) |
+        extension R ⊆ T ∧ symmetric (RelFromExt T) } := sorry
+```
+:::
