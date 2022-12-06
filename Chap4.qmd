@@ -451,7 +451,7 @@ According to this definition, `sub A` is a binary relation on `Set A`, and for a
 
 Notice that `X ⊆ Y` could be thought of as expressing a sense in which `Y` is "at least as large as" `X`.  Often, if `R` is a partial order on `A` and `a` and `b` have type `A`, then `R a b` can be thought of as meaning that `b` is in some sense "at least as large as" `a`.  Many of the concepts we study for partial and total orders are motivated by this interpretation of `R`.
 
-For example, if `R` is a partial order on `A`, `B` has type `Set A`, and `b` has type `A`, then we say that `b` is an *`R`-smallest element of `B`* if it is an element of `B`, and every element of `B` is at least as large as `b`, according to this interpretation of the ordering `R`.  We say that `b` is an *`R`-minimal element of `B`* if it is an element of `B` and there is no other element of `B` that is smaller than `b`, according to the ordering `R`.  We can state these precisely as definitions in Lean:
+For example, if `R` is a partial order on `A`, `B` has type `Set A`, and `b` has type `A`, then we say that `b` is an *`R`-smallest element* of `B` if it is an element of `B`, and every element of `B` is at least as large as `b`, according to this interpretation of the ordering `R`.  We say that `b` is an *`R`-minimal element* of `B` if it is an element of `B` and there is no other element of `B` that is smaller than `b`, according to the ordering `R`.  We can state these precisely as definitions in Lean:
 
 ```lean
 def smallestElt {A : Type} (R : BinRel A) (b : A) (B : Set A) : Prop :=
