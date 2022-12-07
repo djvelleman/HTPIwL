@@ -541,7 +541,7 @@ $$
 <span id="cb27-6"><a href="#cb27-6" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb27-7"><a href="#cb27-7" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> total_order {A : <span class="kw">Type</span>} (R : BinRel A) : <span class="kw">Prop</span> :=</span>
 <span id="cb27-8"><a href="#cb27-8" aria-hidden="true" tabindex="-1"></a>    partial_order R ∧ ∀ (x y : A), R x y ∨ R y x</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>If <code>R</code> has type <code>BinRel A</code>, then <code>partial_order R</code> is the proposition saying that <code>R</code> is reflexive, transitive, and antisymmetric. We say in this case that <code>R</code> is a <em>partial order on <code>A</code></em>—or just that <code>R</code> is a <em>partial order</em>, if <code>A</code> is clear from context. Similarly, <code>total_order R</code> says that <code>R</code> is a <em>total order on <code>A</code></em>.</p>
+<p>These definitions say that if <code>R</code> is a binary relation on <code>A</code>, then <code>R</code> is <em>antisymmetric</em> if <code>R x y</code> and <code>R y x</code> cannot both be true unless <code>x = y</code>. We say that <code>R</code> is a <em>partial order on <code>A</code></em>—or just a <em>partial order</em>, if <code>A</code> is clear from context—if it is reflexive, transitive, and antisymmetric. And <code>R</code> is a <em>total order on <code>A</code></em> if it is a partial order and also, for any <code>x</code> and <code>y</code> of type <code>A</code>, either <code>R x y</code> or <code>R y x</code>.</p>
 <p>Example 4.4.3 in <em>HTPI</em> gives several examples of partial orders and total orders. We’ll give one of those examples here. For any type <code>A</code>, we define <code>sub A</code> to be the subset relation on sets of objects of type <code>A</code>:</p>
 <div class="sourceCode" id="cb28"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> sub (A : <span class="kw">Type</span>) (X Y : Set A) : <span class="kw">Prop</span> := X ⊆ Y</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>According to this definition, <code>sub A</code> is a binary relation on <code>Set A</code>, and for any two sets <code>X</code> and <code>Y</code> of type <code>Set A</code>, <code>sub A X Y</code> is the proposition <code>X ⊆ Y</code>. We will leave it as an exercise for you to prove that <code>sub A</code> is a partial order on the type <code>Set A</code>.</p>
@@ -585,19 +585,15 @@ $$
 <span id="cb31-17"><a href="#cb31-17" aria-hidden="true" tabindex="-1"></a>  <span class="kw">have</span> h6 : antisymmetric R := h1.right.right</span>
 <span id="cb31-18"><a href="#cb31-18" aria-hidden="true" tabindex="-1"></a>  <span class="kw">define</span> <span class="kw">at</span> h6     <span class="co">--h6: ∀ (x y : A), R x y → R y x → x = y</span></span>
 <span id="cb31-19"><a href="#cb31-19" aria-hidden="true" tabindex="-1"></a>  <span class="kw">show</span> x = b <span class="kw">from</span> h6 x b h4 h5</span>
-<span id="cb31-20"><a href="#cb31-20" aria-hidden="true" tabindex="-1"></a>  <span class="co">-- Proof that b is the only minimal element</span></span>
+<span id="cb31-20"><a href="#cb31-20" aria-hidden="true" tabindex="-1"></a>  <span class="co">-- Proof that b is only minimal element</span></span>
 <span id="cb31-21"><a href="#cb31-21" aria-hidden="true" tabindex="-1"></a>  <span class="kw">fix</span> c : A</span>
 <span id="cb31-22"><a href="#cb31-22" aria-hidden="true" tabindex="-1"></a>  <span class="kw">assume</span> h3 : minimalElt R c B</span>
 <span id="cb31-23"><a href="#cb31-23" aria-hidden="true" tabindex="-1"></a>  <span class="kw">define</span> <span class="kw">at</span> h3</span>
-<span id="cb31-24"><a href="#cb31-24" aria-hidden="true" tabindex="-1"></a>  <span class="kw">have</span> h4 : ¬∃ (x : A), x ∈ B ∧ R x c ∧ x ≠ c := h3.right</span>
-<span id="cb31-25"><a href="#cb31-25" aria-hidden="true" tabindex="-1"></a>  <span class="kw">quant_neg</span> <span class="kw">at</span> h4</span>
-<span id="cb31-26"><a href="#cb31-26" aria-hidden="true" tabindex="-1"></a>  <span class="kw">have</span> h5 : ¬(b ∈ B ∧ R b c ∧ b ≠ c) := h4 b</span>
-<span id="cb31-27"><a href="#cb31-27" aria-hidden="true" tabindex="-1"></a>  <span class="kw">demorgan</span> <span class="kw">at</span> h5</span>
-<span id="cb31-28"><a href="#cb31-28" aria-hidden="true" tabindex="-1"></a>  <span class="kw">disj_syll</span> h5 h2.left  <span class="co">--h5 : ¬(R b c ∧ b ≠ c)</span></span>
-<span id="cb31-29"><a href="#cb31-29" aria-hidden="true" tabindex="-1"></a>  <span class="kw">demorgan</span> <span class="kw">at</span> h5</span>
-<span id="cb31-30"><a href="#cb31-30" aria-hidden="true" tabindex="-1"></a>  <span class="kw">have</span> h6 : R b c := h2.right c h3.left</span>
-<span id="cb31-31"><a href="#cb31-31" aria-hidden="true" tabindex="-1"></a>  <span class="kw">disj_syll</span> h5 h6       <span class="co">--h5 : b = c</span></span>
-<span id="cb31-32"><a href="#cb31-32" aria-hidden="true" tabindex="-1"></a>  <span class="kw">show</span> b = c <span class="kw">from</span> h5 </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb31-24"><a href="#cb31-24" aria-hidden="true" tabindex="-1"></a>  <span class="kw">contradict</span> h3.right <span class="kw">with</span> h4</span>
+<span id="cb31-25"><a href="#cb31-25" aria-hidden="true" tabindex="-1"></a>                  <span class="co">--h4: ¬b = c; Goal: ∃ (x : A), x ∈ B ∧ R x c ∧ x ≠ c</span></span>
+<span id="cb31-26"><a href="#cb31-26" aria-hidden="true" tabindex="-1"></a>  <span class="kw">have</span> h5 : R b c := h2.right c h3.left</span>
+<span id="cb31-27"><a href="#cb31-27" aria-hidden="true" tabindex="-1"></a>  <span class="kw">show</span> ∃ (x : A), x ∈ B ∧ R x c ∧ x ≠ c <span class="kw">from</span></span>
+<span id="cb31-28"><a href="#cb31-28" aria-hidden="true" tabindex="-1"></a>    Exists.intro b (And.intro h2.left (And.intro h5 h4))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>Finally, the third statement in Theorem 4.4.6 says that if <code>R</code> is a total order, then any <code>R</code>-minimal element of a set <code>B</code> must be the <code>R</code>-smallest element of <code>B</code>. The beginning of the proof is straightforward:</p>
 <div class="sourceCode" id="cb32"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Theorem_4_4_6_3 {A : <span class="kw">Type</span>} (R : BinRel A) (B : Set A) (b : A)</span>
 <span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a>    (h1 : total_order R) (h2 : minimalElt R b B) : smallestElt R b B := <span class="kw">by</span></span>
@@ -698,10 +694,9 @@ $$
 <span id="cb43-4"><a href="#cb43-4" aria-hidden="true" tabindex="-1"></a>    B1 ⊆ B2 → R x1 x2 := <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="numex" data-arguments="10">
-<div class="sourceCode" id="cb44"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Exercise_4_4_24 {A : <span class="kw">Type</span>} (R : BinRel A) :</span>
-<span id="cb44-2"><a href="#cb44-2" aria-hidden="true" tabindex="-1"></a>    smallestElt (sub (A × A)) ((extension R) ∪ (inv (extension R)))</span>
-<span id="cb44-3"><a href="#cb44-3" aria-hidden="true" tabindex="-1"></a>    { T : Set (A × A) |</span>
-<span id="cb44-4"><a href="#cb44-4" aria-hidden="true" tabindex="-1"></a>        extension R ⊆ T ∧ symmetric (RelFromExt T) } := <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb44"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Exercise_4_4_24 (A : <span class="kw">Type</span>) (R : Set (A × A)) :</span>
+<span id="cb44-2"><a href="#cb44-2" aria-hidden="true" tabindex="-1"></a>    smallestElt (sub (A × A)) (R ∪ (inv R))</span>
+<span id="cb44-3"><a href="#cb44-3" aria-hidden="true" tabindex="-1"></a>    { T : Set (A × A) | R ⊆ T ∧ symmetric (RelFromExt T) } := <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 
 

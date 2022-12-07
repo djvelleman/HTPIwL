@@ -439,7 +439,7 @@ def total_order {A : Type} (R : BinRel A) : Prop :=
     partial_order R ∧ ∀ (x y : A), R x y ∨ R y x
 ```
 
-If `R` has type `BinRel A`, then `partial_order R` is the proposition saying that `R` is reflexive, transitive, and antisymmetric.  We say in this case that `R` is a *partial order on `A`*---or just that `R` is a *partial order*, if `A` is clear from context.  Similarly, `total_order R` says that `R` is a *total order on `A`*.
+These definitions say that if `R` is a binary relation on `A`, then `R` is *antisymmetric* if `R x y` and `R y x` cannot both be true unless `x = y`.  We say that `R` is a *partial order on `A`*---or just a *partial order*, if `A` is clear from context---if it is reflexive, transitive, and antisymmetric.  And `R` is a *total order on `A`* if it is a partial order and also, for any `x` and `y` of type `A`, either `R x y` or `R y x`.
 
 Example 4.4.3 in *HTPI* gives several examples of partial orders and total orders.  We'll give one of those examples here.  For any type `A`, we define `sub A` to be the subset relation on sets of objects of type `A`:
 
@@ -501,19 +501,15 @@ theorem Theorem_4_4_6_2 {A : Type} (R : BinRel A) (B : Set A) (b : A)
   have h6 : antisymmetric R := h1.right.right
   define at h6     --h6: ∀ (x y : A), R x y → R y x → x = y
   show x = b from h6 x b h4 h5
-  -- Proof that b is the only minimal element
+  -- Proof that b is only minimal element
   fix c : A
   assume h3 : minimalElt R c B
   define at h3
-  have h4 : ¬∃ (x : A), x ∈ B ∧ R x c ∧ x ≠ c := h3.right
-  quant_neg at h4
-  have h5 : ¬(b ∈ B ∧ R b c ∧ b ≠ c) := h4 b
-  demorgan at h5
-  disj_syll h5 h2.left  --h5 : ¬(R b c ∧ b ≠ c)
-  demorgan at h5
-  have h6 : R b c := h2.right c h3.left
-  disj_syll h5 h6       --h5 : b = c
-  show b = c from h5 
+  contradict h3.right with h4
+                  --h4: ¬b = c; Goal: ∃ (x : A), x ∈ B ∧ R x c ∧ x ≠ c
+  have h5 : R b c := h2.right c h3.left
+  show ∃ (x : A), x ∈ B ∧ R x c ∧ x ≠ c from
+    Exists.intro b (And.intro h2.left (And.intro h5 h4))
 ```
 
 Finally, the third statement in Theorem 4.4.6 says that if `R` is a total order, then any `R`-minimal element of a set `B` must be the `R`-smallest element of `B`.  The beginning of the proof is straightforward:
@@ -658,9 +654,8 @@ theorem Exercise_4_4_22 {A : Type}
 
 ::: {.numex arguments="10"}
 ```lean
-theorem Exercise_4_4_24 {A : Type} (R : BinRel A) :
-    smallestElt (sub (A × A)) ((extension R) ∪ (inv (extension R)))
-    { T : Set (A × A) |
-        extension R ⊆ T ∧ symmetric (RelFromExt T) } := sorry
+theorem Exercise_4_4_24 (A : Type) (R : Set (A × A)) :
+    smallestElt (sub (A × A)) (R ∪ (inv R))
+    { T : Set (A × A) | R ⊆ T ∧ symmetric (RelFromExt T) } := sorry
 ```
 :::
