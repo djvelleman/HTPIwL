@@ -200,6 +200,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   <li><a href="#relations" id="toc-relations" class="nav-link" data-scroll-target="#relations">4.2. Relations</a></li>
   <li><a href="#more-about-relations" id="toc-more-about-relations" class="nav-link" data-scroll-target="#more-about-relations">4.3. More About Relations</a></li>
   <li><a href="#ordering-relations" id="toc-ordering-relations" class="nav-link" data-scroll-target="#ordering-relations">4.4. Ordering Relations</a></li>
+  <li><a href="#equivalence-relations" id="toc-equivalence-relations" class="nav-link" data-scroll-target="#equivalence-relations">4.5 Equivalence Relations</a></li>
   </ul>
 </nav>
     </div>
@@ -483,8 +484,9 @@ $$
 <span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>    transitive R ↔</span>
 <span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>        comp (extension R) (extension R) ⊆ extension R := <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
+<div class="mdsk">
 
-<pre class="ms"></pre>
+</div>
 <p>To state our remaining exercises, we’ll need a definition. If <code>R</code> has type <code>Set (A × B)</code>, then we define <code>RelFromExt R</code> to be the relation whose extension is <code>R</code>. A few simple theorems, which follow directly from the definition, clarify the meaning of <code>RelFromExt R</code>.</p>
 <div class="sourceCode" id="cb21"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> RelFromExt {A B : <span class="kw">Type</span>}</span>
 <span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>    (R : Set (A × B)) (a : A) (b : B) : <span class="kw">Prop</span> := (a, b) ∈ R</span>
@@ -513,8 +515,9 @@ $$
 <span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a>        comp (extension R) (extension S)) :</span>
 <span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a>    transitive (RelFromExt (comp (extension R) (extension S))) := <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
+<div class="mdsk">
 
-<pre class="ms"></pre>
+</div>
 <p>In the next two exercises, determine whether or not the theorem is correct.</p>
 <div class="numex" data-arguments="7">
 <div class="sourceCode" id="cb25"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="co">--You might not be able to complete this proof</span></span>
@@ -541,12 +544,12 @@ $$
 <span id="cb27-6"><a href="#cb27-6" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb27-7"><a href="#cb27-7" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> total_order {A : <span class="kw">Type</span>} (R : BinRel A) : <span class="kw">Prop</span> :=</span>
 <span id="cb27-8"><a href="#cb27-8" aria-hidden="true" tabindex="-1"></a>    partial_order R ∧ ∀ (x y : A), R x y ∨ R y x</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>These definitions say that if <code>R</code> is a binary relation on <code>A</code>, then <code>R</code> is <em>antisymmetric</em> if <code>R x y</code> and <code>R y x</code> cannot both be true unless <code>x = y</code>. We say that <code>R</code> is a <em>partial order on <code>A</code></em>—or just a <em>partial order</em>, if <code>A</code> is clear from context—if it is reflexive, transitive, and antisymmetric. And <code>R</code> is a <em>total order on <code>A</code></em> if it is a partial order and also, for any <code>x</code> and <code>y</code> of type <code>A</code>, either <code>R x y</code> or <code>R y x</code>.</p>
+<p>These definitions say that if <code>R</code> is a binary relation on <code>A</code>, then <code>R</code> is <em>antisymmetric</em> if <code>R x y</code> and <code>R y x</code> cannot both be true unless <code>x = y</code>. <code>R</code> is a <em>partial order on <code>A</code></em>—or just a <em>partial order</em>, if <code>A</code> is clear from context—if it is reflexive, transitive, and antisymmetric. And <code>R</code> is a <em>total order on <code>A</code></em> if it is a partial order and also, for any <code>x</code> and <code>y</code> of type <code>A</code>, either <code>R x y</code> or <code>R y x</code>.</p>
 <p>Example 4.4.3 in <em>HTPI</em> gives several examples of partial orders and total orders. We’ll give one of those examples here. For any type <code>A</code>, we define <code>sub A</code> to be the subset relation on sets of objects of type <code>A</code>:</p>
 <div class="sourceCode" id="cb28"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> sub (A : <span class="kw">Type</span>) (X Y : Set A) : <span class="kw">Prop</span> := X ⊆ Y</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>According to this definition, <code>sub A</code> is a binary relation on <code>Set A</code>, and for any two sets <code>X</code> and <code>Y</code> of type <code>Set A</code>, <code>sub A X Y</code> is the proposition <code>X ⊆ Y</code>. We will leave it as an exercise for you to prove that <code>sub A</code> is a partial order on the type <code>Set A</code>.</p>
 <p>Notice that <code>X ⊆ Y</code> could be thought of as expressing a sense in which <code>Y</code> is “at least as large as” <code>X</code>. Often, if <code>R</code> is a partial order on <code>A</code> and <code>a</code> and <code>b</code> have type <code>A</code>, then <code>R a b</code> can be thought of as meaning that <code>b</code> is in some sense “at least as large as” <code>a</code>. Many of the concepts we study for partial and total orders are motivated by this interpretation of <code>R</code>.</p>
-<p>For example, if <code>R</code> is a partial order on <code>A</code>, <code>B</code> has type <code>Set A</code>, and <code>b</code> has type <code>A</code>, then we say that <code>b</code> is an <em><code>R</code>-smallest element</em> of <code>B</code> if it is an element of <code>B</code>, and every element of <code>B</code> is at least as large as <code>b</code>, according to this interpretation of the ordering <code>R</code>. We say that <code>b</code> is an <em><code>R</code>-minimal element</em> of <code>B</code> if it is an element of <code>B</code> and there is no other element of <code>B</code> that is smaller than <code>b</code>, according to the ordering <code>R</code>. We can state these precisely as definitions in Lean:</p>
+<p>For example, if <code>R</code> is a partial order on <code>A</code>, <code>B</code> has type <code>Set A</code>, and <code>b</code> has type <code>A</code>, then we say that <code>b</code> is an <em><code>R</code>-smallest element</em> of <code>B</code> if it is an element of <code>B</code>, and every element of <code>B</code> is at least as large as <code>b</code>, according to this interpretation of the ordering <code>R</code>. We say that <code>b</code> is an <em><code>R</code>-minimal element</em> of <code>B</code> if it is an element of <code>B</code>, and there is no other element of <code>B</code> that is smaller than <code>b</code>, according to the ordering <code>R</code>. We can state these precisely as definitions in Lean:</p>
 <div class="sourceCode" id="cb29"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> smallestElt {A : <span class="kw">Type</span>} (R : BinRel A) (b : A) (B : Set A) : <span class="kw">Prop</span> :=</span>
 <span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>    b ∈ B ∧ ∀ x ∈ B, R b x</span>
 <span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -588,7 +591,7 @@ $$
 <span id="cb31-20"><a href="#cb31-20" aria-hidden="true" tabindex="-1"></a>  <span class="co">-- Proof that b is only minimal element</span></span>
 <span id="cb31-21"><a href="#cb31-21" aria-hidden="true" tabindex="-1"></a>  <span class="kw">fix</span> c : A</span>
 <span id="cb31-22"><a href="#cb31-22" aria-hidden="true" tabindex="-1"></a>  <span class="kw">assume</span> h3 : minimalElt R c B</span>
-<span id="cb31-23"><a href="#cb31-23" aria-hidden="true" tabindex="-1"></a>  <span class="kw">define</span> <span class="kw">at</span> h3</span>
+<span id="cb31-23"><a href="#cb31-23" aria-hidden="true" tabindex="-1"></a>  <span class="kw">define</span> <span class="kw">at</span> h3    <span class="co">--h3: c ∈ B ∧ ¬∃ (x : A), x ∈ B ∧ R x c ∧ x ≠ c</span></span>
 <span id="cb31-24"><a href="#cb31-24" aria-hidden="true" tabindex="-1"></a>  <span class="kw">contradict</span> h3.right <span class="kw">with</span> h4</span>
 <span id="cb31-25"><a href="#cb31-25" aria-hidden="true" tabindex="-1"></a>                  <span class="co">--h4: ¬b = c; Goal: ∃ (x : A), x ∈ B ∧ R x c ∧ x ≠ c</span></span>
 <span id="cb31-26"><a href="#cb31-26" aria-hidden="true" tabindex="-1"></a>  <span class="kw">have</span> h5 : R b c := h2.right c h3.left</span>
@@ -693,14 +696,136 @@ $$
 <span id="cb43-3"><a href="#cb43-3" aria-hidden="true" tabindex="-1"></a>    (h1 : lub R x1 B1) (h2 : lub R x2 B2) :</span>
 <span id="cb43-4"><a href="#cb43-4" aria-hidden="true" tabindex="-1"></a>    B1 ⊆ B2 → R x1 x2 := <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div class="numex" data-arguments="10">
+<p>10. See the exercises in the previous section for the definition of the operation <code>RelFromExt</code> that is used in this exercise.</p>
 <div class="sourceCode" id="cb44"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Exercise_4_4_24 (A : <span class="kw">Type</span>) (R : Set (A × A)) :</span>
 <span id="cb44-2"><a href="#cb44-2" aria-hidden="true" tabindex="-1"></a>    smallestElt (sub (A × A)) (R ∪ (inv R))</span>
 <span id="cb44-3"><a href="#cb44-3" aria-hidden="true" tabindex="-1"></a>    { T : Set (A × A) | R ⊆ T ∧ symmetric (RelFromExt T) } := <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-
-
 </section>
+</section>
+<section id="equivalence-relations" class="level2">
+<h2 class="anchored" data-anchor-id="equivalence-relations">4.5 Equivalence Relations</h2>
+<p>Chapter 4 of <em>HTPI</em> concludes with the study of one more combination of properties that a relation might have. A binary relation <span class="math inline">\(R\)</span> on a set <span class="math inline">\(A\)</span> is called an <em>equivalence relation</em> if it is reflexive, symmetric, and transitive. If <span class="math inline">\(x \in A\)</span>, then the <em>equivalence class</em> of <span class="math inline">\(x\)</span> with respect to <span class="math inline">\(R\)</span> is the set of all <span class="math inline">\(y \in A\)</span> such that <span class="math inline">\(yRx\)</span>. In <em>HTPI</em>, this equivalence class is denoted <span class="math inline">\([x]_R\)</span>, so we have <span class="math display">\[
+[x]_R = \{y \in A \mid yRx\}.
+\]</span> The set whose elements are all of these equivalence classes is called <span class="math inline">\(A\)</span> <em>mod</em> <span class="math inline">\(R\)</span>. It is written <span class="math inline">\(A/R\)</span>, so <span class="math display">\[
+A/R = \{[x]_R \mid x \in A\}.
+\]</span> Note that <span class="math inline">\(A/R\)</span> is a set whose elements are sets: for each <span class="math inline">\(x \in A\)</span>, <span class="math inline">\([x]_R\)</span> is a subset of <span class="math inline">\(A\)</span>, and <span class="math inline">\([x]_R \in A/R\)</span>.</p>
+<p>To define these concepts in Lean, we write:</p>
+<div class="sourceCode" id="cb45"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> equiv_rel {A : <span class="kw">Type</span>} (R : BinRel A) : <span class="kw">Prop</span> :=</span>
+<span id="cb45-2"><a href="#cb45-2" aria-hidden="true" tabindex="-1"></a>  reflexive R ∧ symmetric R ∧ transitive R</span>
+<span id="cb45-3"><a href="#cb45-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-4"><a href="#cb45-4" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> equivClass {A : <span class="kw">Type</span>} (R : BinRel A) (x : A) : Set A :=</span>
+<span id="cb45-5"><a href="#cb45-5" aria-hidden="true" tabindex="-1"></a>  { y : A | R y x }</span>
+<span id="cb45-6"><a href="#cb45-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-7"><a href="#cb45-7" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> mod (A : <span class="kw">Type</span>) (R : BinRel A) : Set (Set A) :=</span>
+<span id="cb45-8"><a href="#cb45-8" aria-hidden="true" tabindex="-1"></a>  { equivClass R x | x : A }</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Thus, <code>equiv_rel R</code> is the proposition that <code>R</code> is an equivalence relation, <code>equivClass R x</code> is the equivalence class of <code>x</code> with respect to <code>R</code>, and <code>mod A R</code> is <code>A</code> mod <code>R</code>. Note that <code>equivClass R x</code> has type <code>Set A</code>, while <code>mod A R</code> has type <code>Set (Set A)</code>.</p>
+<p><em>HTPI</em> gives several examples of equivalence relations, and these examples illustrate that equivalence classes always have certain properties. The most important of these are that each equivalence class is a nonempty set, the equivalence classes do not overlap, and their union is all of <code>A</code>. We say that the equivalence classes form a <em>partition</em> of <code>A</code>. To state and prove these properties in Lean we will need some definitions. We start with these:</p>
+<div class="sourceCode" id="cb46"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> is_empty {A : <span class="kw">Type</span>} (X : Set A) : <span class="kw">Prop</span> := ¬∃ (x : A), x ∈ X </span>
+<span id="cb46-2"><a href="#cb46-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb46-3"><a href="#cb46-3" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> pairwise_disjoint {A : <span class="kw">Type</span>} (F : Set (Set A)) : <span class="kw">Prop</span> :=</span>
+<span id="cb46-4"><a href="#cb46-4" aria-hidden="true" tabindex="-1"></a>  ∀ X ∈ F, ∀ Y ∈ F, X ≠ Y → is_empty (X ∩ Y)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>To say that a set <code>X</code> is empty, we could write <code>X = ∅</code>, but it is more convenient to have a statement that says more explicitly what it means for a set to be empty. Thus, we have defined <code>is_empty X</code> to be the proposition saying that <code>X</code> has no elements. If <code>F</code> has type <code>Set (Set A)</code>, then <code>pairwise_disjoint F</code> is the proposition that no two distinct elements of <code>F</code> have any element in common—in other words, the elements of <code>F</code> do not overlap. We can now give the precise definition of a partition:</p>
+<div class="sourceCode" id="cb47"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> partition {A : <span class="kw">Type</span>} (F : Set (Set A)) : <span class="kw">Prop</span> :=</span>
+<span id="cb47-2"><a href="#cb47-2" aria-hidden="true" tabindex="-1"></a>  (∀ (x : A), x ∈ ⋃₀F) ∧ pairwise_disjoint F ∧ ∀ X ∈ F, ¬is_empty X</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>The main theorem about equivalence relations in <em>HTPI</em> is Theorem 4.5.4, which says that <code>mod A R</code> is a partition of <code>A</code>. The proof of this theorem is hard enough that <em>HTPI</em> proves two facts about equivalence classes first. A fact that is proven just for the purpose of using it to prove something else is often called a <em>lemma</em>. We can use this term in Lean as well. Here is the first part of Lemma 4.5.5 from <em>HTPI</em></p>
+<div class="sourceCode" id="cb48"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a><span class="kw">lemma</span> Lemma_4_5_5_1 {A : <span class="kw">Type</span>} (R : BinRel A) (h : equiv_rel R) :</span>
+<span id="cb48-2"><a href="#cb48-2" aria-hidden="true" tabindex="-1"></a>    ∀ (x : A), x ∈ equivClass R x := <span class="kw">by</span></span>
+<span id="cb48-3"><a href="#cb48-3" aria-hidden="true" tabindex="-1"></a>  <span class="kw">fix</span> x : A</span>
+<span id="cb48-4"><a href="#cb48-4" aria-hidden="true" tabindex="-1"></a>  <span class="kw">define</span>           <span class="co">--Goal: R x x</span></span>
+<span id="cb48-5"><a href="#cb48-5" aria-hidden="true" tabindex="-1"></a>  <span class="kw">define</span> <span class="kw">at</span> h      <span class="co">--h: reflexive R ∧ symmetric R ∧ transitive R</span></span>
+<span id="cb48-6"><a href="#cb48-6" aria-hidden="true" tabindex="-1"></a>  <span class="kw">have</span> href : reflexive R := h.left</span>
+<span id="cb48-7"><a href="#cb48-7" aria-hidden="true" tabindex="-1"></a>  <span class="kw">show</span> R x x <span class="kw">from</span> href x</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>The command <code>#check @Lemma_4_5_5_1</code> produces the result</p>
+<div class="quote">
+<pre><code>@Lemma_4_5_5_1 : ∀ {A : Type} (R : BinRel A),
+    equiv_rel R → ∀ (x : A), x ∈ equivClass R x</code></pre>
+</div>
+<p>Thus, if we have <code>R : BinRel A</code>, <code>h : equiv_rel R</code>, and <code>x : A</code>, then <code>Lemma_4_5_5_1 R h x</code> is a proof of <code>x ∈ equivClass R x</code>. We will use this at the end of the proof of our next lemma:</p>
+<div class="sourceCode" id="cb50"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb50-1"><a href="#cb50-1" aria-hidden="true" tabindex="-1"></a><span class="kw">lemma</span> Lemma_4_5_5_2 {A : <span class="kw">Type</span>} (R : BinRel A) (h : equiv_rel R) :</span>
+<span id="cb50-2"><a href="#cb50-2" aria-hidden="true" tabindex="-1"></a>    ∀ (x y : A), y ∈ equivClass R x ↔</span>
+<span id="cb50-3"><a href="#cb50-3" aria-hidden="true" tabindex="-1"></a>      equivClass R y = equivClass R x := <span class="kw">by</span></span>
+<span id="cb50-4"><a href="#cb50-4" aria-hidden="true" tabindex="-1"></a>  <span class="kw">have</span> hsymm : symmetric R := h.right.left</span>
+<span id="cb50-5"><a href="#cb50-5" aria-hidden="true" tabindex="-1"></a>  <span class="kw">have</span> htrans : transitive R := h.right.right</span>
+<span id="cb50-6"><a href="#cb50-6" aria-hidden="true" tabindex="-1"></a>  <span class="kw">fix</span> x : A; <span class="kw">fix</span> y : A</span>
+<span id="cb50-7"><a href="#cb50-7" aria-hidden="true" tabindex="-1"></a>  <span class="kw">apply</span> Iff.intro</span>
+<span id="cb50-8"><a href="#cb50-8" aria-hidden="true" tabindex="-1"></a>  <span class="co">-- (→)</span></span>
+<span id="cb50-9"><a href="#cb50-9" aria-hidden="true" tabindex="-1"></a>  <span class="kw">assume</span> h2 : y ∈ equivClass R x <span class="co">--Goal:  equivClass R y = equivClass R x</span></span>
+<span id="cb50-10"><a href="#cb50-10" aria-hidden="true" tabindex="-1"></a>  <span class="kw">define</span> <span class="kw">at</span> h2                   <span class="co">--h2: R y x</span></span>
+<span id="cb50-11"><a href="#cb50-11" aria-hidden="true" tabindex="-1"></a>  <span class="kw">apply</span> Set.ext</span>
+<span id="cb50-12"><a href="#cb50-12" aria-hidden="true" tabindex="-1"></a>  <span class="kw">fix</span> z : A</span>
+<span id="cb50-13"><a href="#cb50-13" aria-hidden="true" tabindex="-1"></a>  <span class="kw">apply</span> Iff.intro</span>
+<span id="cb50-14"><a href="#cb50-14" aria-hidden="true" tabindex="-1"></a>  <span class="co">-- Proof that z ∈ equivClass R y → z ∈ equivClass R x</span></span>
+<span id="cb50-15"><a href="#cb50-15" aria-hidden="true" tabindex="-1"></a>  <span class="kw">assume</span> h3 : z ∈ equivClass R y</span>
+<span id="cb50-16"><a href="#cb50-16" aria-hidden="true" tabindex="-1"></a>  <span class="kw">define</span>                         <span class="co">--Goal: R z x</span></span>
+<span id="cb50-17"><a href="#cb50-17" aria-hidden="true" tabindex="-1"></a>  <span class="kw">define</span> <span class="kw">at</span> h3                   <span class="co">--h3: R z y</span></span>
+<span id="cb50-18"><a href="#cb50-18" aria-hidden="true" tabindex="-1"></a>  <span class="kw">show</span> R z x <span class="kw">from</span> htrans z y x h3 h2</span>
+<span id="cb50-19"><a href="#cb50-19" aria-hidden="true" tabindex="-1"></a>  <span class="co">-- Proof that z ∈ equivClass R x → z ∈ equivClass R y</span></span>
+<span id="cb50-20"><a href="#cb50-20" aria-hidden="true" tabindex="-1"></a>  <span class="kw">assume</span> h3 : z ∈ equivClass R x</span>
+<span id="cb50-21"><a href="#cb50-21" aria-hidden="true" tabindex="-1"></a>  <span class="kw">define</span>                         <span class="co">--Goal: R z y</span></span>
+<span id="cb50-22"><a href="#cb50-22" aria-hidden="true" tabindex="-1"></a>  <span class="kw">define</span> <span class="kw">at</span> h3                   <span class="co">--h3: R z x</span></span>
+<span id="cb50-23"><a href="#cb50-23" aria-hidden="true" tabindex="-1"></a>  <span class="kw">have</span> h4 : R x y := hsymm y x h2</span>
+<span id="cb50-24"><a href="#cb50-24" aria-hidden="true" tabindex="-1"></a>  <span class="kw">show</span> R z y <span class="kw">from</span> htrans z x y h3 h4</span>
+<span id="cb50-25"><a href="#cb50-25" aria-hidden="true" tabindex="-1"></a>  <span class="co">-- (←)</span></span>
+<span id="cb50-26"><a href="#cb50-26" aria-hidden="true" tabindex="-1"></a>  <span class="kw">assume</span> h2 : equivClass R y = equivClass R x</span>
+<span id="cb50-27"><a href="#cb50-27" aria-hidden="true" tabindex="-1"></a>  <span class="kw">rewrite</span> [←h2]                  <span class="co">--Goal: y ∈ equivClass R y</span></span>
+<span id="cb50-28"><a href="#cb50-28" aria-hidden="true" tabindex="-1"></a>  <span class="kw">show</span> y ∈ equivClass R y <span class="kw">from</span> Lemma_4_5_5_1 R h y</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>The definition of “partition” has three parts, so to prove Theorem 4.5.4 we will have to prove three statements. It will make the proof easier to read if we prove the three statements separately.</p>
+<div class="sourceCode" id="cb51"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb51-1"><a href="#cb51-1" aria-hidden="true" tabindex="-1"></a><span class="kw">lemma</span> Theorem_4_5_4_part_1 {A : <span class="kw">Type</span>} (R : BinRel A) (h : equiv_rel R) :</span>
+<span id="cb51-2"><a href="#cb51-2" aria-hidden="true" tabindex="-1"></a>    ∀ (x : A), x ∈ ⋃₀(mod A R) := <span class="kw">by</span></span>
+<span id="cb51-3"><a href="#cb51-3" aria-hidden="true" tabindex="-1"></a>  <span class="kw">fix</span> x : A</span>
+<span id="cb51-4"><a href="#cb51-4" aria-hidden="true" tabindex="-1"></a>  <span class="kw">define</span>        <span class="co">--Goal: ∃ (a : Set A), a ∈ mod A R ∧ x ∈ a</span></span>
+<span id="cb51-5"><a href="#cb51-5" aria-hidden="true" tabindex="-1"></a>  <span class="kw">apply</span> Exists.intro (equivClass R x)</span>
+<span id="cb51-6"><a href="#cb51-6" aria-hidden="true" tabindex="-1"></a>  <span class="kw">apply</span> And.intro</span>
+<span id="cb51-7"><a href="#cb51-7" aria-hidden="true" tabindex="-1"></a>  <span class="co">-- Proof that equivClass R x ∈ mod A R</span></span>
+<span id="cb51-8"><a href="#cb51-8" aria-hidden="true" tabindex="-1"></a>  <span class="kw">define</span>        <span class="co">--Goal: ∃ (x_1 : A), equivClass R x_1 = equivClass R x</span></span>
+<span id="cb51-9"><a href="#cb51-9" aria-hidden="true" tabindex="-1"></a>  <span class="kw">apply</span> Exists.intro x</span>
+<span id="cb51-10"><a href="#cb51-10" aria-hidden="true" tabindex="-1"></a>  <span class="kw">rfl</span></span>
+<span id="cb51-11"><a href="#cb51-11" aria-hidden="true" tabindex="-1"></a>  <span class="co">-- Proof that x ∈ equivClass R x</span></span>
+<span id="cb51-12"><a href="#cb51-12" aria-hidden="true" tabindex="-1"></a>  <span class="kw">show</span> x ∈ equivClass R x <span class="kw">from</span> Lemma_4_5_5_1 R h x</span>
+<span id="cb51-13"><a href="#cb51-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb51-14"><a href="#cb51-14" aria-hidden="true" tabindex="-1"></a><span class="kw">lemma</span> Theorem_4_5_4_part_2 {A : <span class="kw">Type</span>} (R : BinRel A) (h : equiv_rel R) :</span>
+<span id="cb51-15"><a href="#cb51-15" aria-hidden="true" tabindex="-1"></a>    pairwise_disjoint (mod A R) := <span class="kw">by</span></span>
+<span id="cb51-16"><a href="#cb51-16" aria-hidden="true" tabindex="-1"></a>  <span class="kw">define</span></span>
+<span id="cb51-17"><a href="#cb51-17" aria-hidden="true" tabindex="-1"></a>  <span class="kw">fix</span> X : Set A</span>
+<span id="cb51-18"><a href="#cb51-18" aria-hidden="true" tabindex="-1"></a>  <span class="kw">assume</span> h2 : X ∈ mod A R</span>
+<span id="cb51-19"><a href="#cb51-19" aria-hidden="true" tabindex="-1"></a>  <span class="kw">fix</span> Y : Set A</span>
+<span id="cb51-20"><a href="#cb51-20" aria-hidden="true" tabindex="-1"></a>  <span class="kw">assume</span> h3 : Y ∈ mod A R           <span class="co">--Goal: X ≠ Y → is_empty (X ∩ Y)</span></span>
+<span id="cb51-21"><a href="#cb51-21" aria-hidden="true" tabindex="-1"></a>  <span class="kw">define</span> <span class="kw">at</span> h2; <span class="kw">define</span> <span class="kw">at</span> h3</span>
+<span id="cb51-22"><a href="#cb51-22" aria-hidden="true" tabindex="-1"></a>  <span class="kw">obtain</span> (x : A) (h4 : equivClass R x = X) <span class="kw">from</span> h2</span>
+<span id="cb51-23"><a href="#cb51-23" aria-hidden="true" tabindex="-1"></a>  <span class="kw">obtain</span> (y : A) (h5 : equivClass R y = Y) <span class="kw">from</span> h3</span>
+<span id="cb51-24"><a href="#cb51-24" aria-hidden="true" tabindex="-1"></a>  <span class="kw">contrapos</span></span>
+<span id="cb51-25"><a href="#cb51-25" aria-hidden="true" tabindex="-1"></a>  <span class="kw">assume</span> h6 : ∃ (x : A), x ∈ X ∩ Y  <span class="co">--Goal: X = Y</span></span>
+<span id="cb51-26"><a href="#cb51-26" aria-hidden="true" tabindex="-1"></a>  <span class="kw">obtain</span> (z : A) (h7 : z ∈ X ∩ Y) <span class="kw">from</span> h6</span>
+<span id="cb51-27"><a href="#cb51-27" aria-hidden="true" tabindex="-1"></a>  <span class="kw">define</span> <span class="kw">at</span> h7</span>
+<span id="cb51-28"><a href="#cb51-28" aria-hidden="true" tabindex="-1"></a>  <span class="kw">rewrite</span> [←h4, ←h5] <span class="kw">at</span> h7 <span class="co">--h7: z ∈ equivClass R x ∧ z ∈ equivClass R y</span></span>
+<span id="cb51-29"><a href="#cb51-29" aria-hidden="true" tabindex="-1"></a>  <span class="kw">have</span> h8 : equivClass R z = equivClass R x :=</span>
+<span id="cb51-30"><a href="#cb51-30" aria-hidden="true" tabindex="-1"></a>    (Lemma_4_5_5_2 R h x z).ltr h7.left</span>
+<span id="cb51-31"><a href="#cb51-31" aria-hidden="true" tabindex="-1"></a>  <span class="kw">have</span> h9 : equivClass R z = equivClass R y :=</span>
+<span id="cb51-32"><a href="#cb51-32" aria-hidden="true" tabindex="-1"></a>    (Lemma_4_5_5_2 R h y z).ltr h7.right</span>
+<span id="cb51-33"><a href="#cb51-33" aria-hidden="true" tabindex="-1"></a>  <span class="kw">show</span> X = Y <span class="kw">from</span></span>
+<span id="cb51-34"><a href="#cb51-34" aria-hidden="true" tabindex="-1"></a>    <span class="kw">calc</span></span>
+<span id="cb51-35"><a href="#cb51-35" aria-hidden="true" tabindex="-1"></a>      X = equivClass R x := h4.symm</span>
+<span id="cb51-36"><a href="#cb51-36" aria-hidden="true" tabindex="-1"></a>      _ = equivClass R z := h8.symm</span>
+<span id="cb51-37"><a href="#cb51-37" aria-hidden="true" tabindex="-1"></a>      _ = equivClass R y := h9</span>
+<span id="cb51-38"><a href="#cb51-38" aria-hidden="true" tabindex="-1"></a>      _ = Y              := h5</span>
+<span id="cb51-39"><a href="#cb51-39" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb51-40"><a href="#cb51-40" aria-hidden="true" tabindex="-1"></a><span class="kw">lemma</span> Theorem_4_5_4_part_3 {A : <span class="kw">Type</span>} (R : BinRel A) (h : equiv_rel R) :</span>
+<span id="cb51-41"><a href="#cb51-41" aria-hidden="true" tabindex="-1"></a>    ∀ X ∈ mod A R, ¬is_empty X := <span class="kw">by</span></span>
+<span id="cb51-42"><a href="#cb51-42" aria-hidden="true" tabindex="-1"></a>  <span class="kw">fix</span> X : Set A</span>
+<span id="cb51-43"><a href="#cb51-43" aria-hidden="true" tabindex="-1"></a>  <span class="kw">assume</span> h2 : X ∈ mod A R  <span class="co">--Goal: ¬is_empty X</span></span>
+<span id="cb51-44"><a href="#cb51-44" aria-hidden="true" tabindex="-1"></a>  <span class="kw">define</span> <span class="kw">at</span> h2</span>
+<span id="cb51-45"><a href="#cb51-45" aria-hidden="true" tabindex="-1"></a>  <span class="kw">obtain</span> (x : A) (h3 : equivClass R x = X) <span class="kw">from</span> h2</span>
+<span id="cb51-46"><a href="#cb51-46" aria-hidden="true" tabindex="-1"></a>  <span class="kw">rewrite</span> [←h3]</span>
+<span id="cb51-47"><a href="#cb51-47" aria-hidden="true" tabindex="-1"></a>  <span class="kw">define</span></span>
+<span id="cb51-48"><a href="#cb51-48" aria-hidden="true" tabindex="-1"></a>  <span class="kw">double_neg</span></span>
+<span id="cb51-49"><a href="#cb51-49" aria-hidden="true" tabindex="-1"></a>  <span class="kw">show</span> ∃ (x_1 : A), x_1 ∈ equivClass R x <span class="kw">from</span></span>
+<span id="cb51-50"><a href="#cb51-50" aria-hidden="true" tabindex="-1"></a>    Exists.intro x (Lemma_4_5_5_1 R h x)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Its easy now to put everything together to prove Theorem 4.5.4.</p>
+<div class="sourceCode" id="cb52"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb52-1"><a href="#cb52-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Theorem_4_5_4 {A : <span class="kw">Type</span>} (R : BinRel A) (h : equiv_rel R) :</span>
+<span id="cb52-2"><a href="#cb52-2" aria-hidden="true" tabindex="-1"></a>    partition (mod A R) := And.intro (Theorem_4_5_4_part_1 R h)</span>
+<span id="cb52-3"><a href="#cb52-3" aria-hidden="true" tabindex="-1"></a>      (And.intro (Theorem_4_5_4_part_2 R h) (Theorem_4_5_4_part_3 R h))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+
+
 </section>
 
 </main> <!-- /main -->

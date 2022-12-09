@@ -230,7 +230,7 @@ theorem Exercise_4_2_12a {A B C : Type}
 ```
 :::
 
-5\excl{}. Here is an incorrect theorem with an incorrect proof.
+5\. Here is an incorrect theorem with an incorrect proof.
 
 ::: {.nthm arguments="Incorrect Theorem"}
 Suppose $R$ is a relation from $A$ to $B$ and $S$ and $T$ are relations from $B$ to $C$.  Then $(S \setmin T) \circ R \subseteq (S \circ R) \setmin (T \circ R)$.
@@ -249,7 +249,7 @@ theorem Exercise_4_2_12b {A B C : Type}
     comp (S \ T) R ⊆ (comp S R) \ (comp T R) := sorry
 ```
 
-6\excl{}. Is the following theorem correct?  Try to prove it in Lean.  If you can't prove it, see if you can find a counterexample.
+6\. Is the following theorem correct?  Try to prove it in Lean.  If you can't prove it, see if you can find a counterexample.
 
 ```lean
 --You might not be able to complete this proof
@@ -359,7 +359,8 @@ theorem Theorem_4_3_4_3 {A : Type} (R : BinRel A) :
 ```
 :::
 
-\medskip<pre class="ms"></pre>
+::: {.mdsk}
+:::
 
 To state our remaining exercises, we'll need a definition.  If `R` has type `Set (A × B)`, then we define `RelFromExt R` to be the relation whose extension is `R`.  A few simple theorems, which follow directly from the definition, clarify the meaning of `RelFromExt R`.
 
@@ -402,7 +403,8 @@ theorem Exercise_4_3_18 {A : Type}
 ```
 :::
 
-\medskip<pre class="ms"></pre>
+::: {.mdsk}
+:::
 
 In the next two exercises, determine whether or not the theorem is correct.
 
@@ -439,7 +441,7 @@ def total_order {A : Type} (R : BinRel A) : Prop :=
     partial_order R ∧ ∀ (x y : A), R x y ∨ R y x
 ```
 
-These definitions say that if `R` is a binary relation on `A`, then `R` is *antisymmetric* if `R x y` and `R y x` cannot both be true unless `x = y`.  We say that `R` is a *partial order on `A`*---or just a *partial order*, if `A` is clear from context---if it is reflexive, transitive, and antisymmetric.  And `R` is a *total order on `A`* if it is a partial order and also, for any `x` and `y` of type `A`, either `R x y` or `R y x`.
+These definitions say that if `R` is a binary relation on `A`, then `R` is *antisymmetric* if `R x y` and `R y x` cannot both be true unless `x = y`.  `R` is a *partial order on `A`*---or just a *partial order*, if `A` is clear from context---if it is reflexive, transitive, and antisymmetric.  And `R` is a *total order on `A`* if it is a partial order and also, for any `x` and `y` of type `A`, either `R x y` or `R y x`.
 
 Example 4.4.3 in *HTPI* gives several examples of partial orders and total orders.  We'll give one of those examples here.  For any type `A`, we define `sub A` to be the subset relation on sets of objects of type `A`:
 
@@ -451,7 +453,7 @@ According to this definition, `sub A` is a binary relation on `Set A`, and for a
 
 Notice that `X ⊆ Y` could be thought of as expressing a sense in which `Y` is "at least as large as" `X`.  Often, if `R` is a partial order on `A` and `a` and `b` have type `A`, then `R a b` can be thought of as meaning that `b` is in some sense "at least as large as" `a`.  Many of the concepts we study for partial and total orders are motivated by this interpretation of `R`.
 
-For example, if `R` is a partial order on `A`, `B` has type `Set A`, and `b` has type `A`, then we say that `b` is an *`R`-smallest element* of `B` if it is an element of `B`, and every element of `B` is at least as large as `b`, according to this interpretation of the ordering `R`.  We say that `b` is an *`R`-minimal element* of `B` if it is an element of `B` and there is no other element of `B` that is smaller than `b`, according to the ordering `R`.  We can state these precisely as definitions in Lean:
+For example, if `R` is a partial order on `A`, `B` has type `Set A`, and `b` has type `A`, then we say that `b` is an *`R`-smallest element* of `B` if it is an element of `B`, and every element of `B` is at least as large as `b`, according to this interpretation of the ordering `R`.  We say that `b` is an *`R`-minimal element* of `B` if it is an element of `B`, and there is no other element of `B` that is smaller than `b`, according to the ordering `R`.  We can state these precisely as definitions in Lean:
 
 ```lean
 def smallestElt {A : Type} (R : BinRel A) (b : A) (B : Set A) : Prop :=
@@ -504,7 +506,7 @@ theorem Theorem_4_4_6_2 {A : Type} (R : BinRel A) (B : Set A) (b : A)
   -- Proof that b is only minimal element
   fix c : A
   assume h3 : minimalElt R c B
-  define at h3
+  define at h3    --h3: c ∈ B ∧ ¬∃ (x : A), x ∈ B ∧ R x c ∧ x ≠ c
   contradict h3.right with h4
                   --h4: ¬b = c; Goal: ∃ (x : A), x ∈ B ∧ R x c ∧ x ≠ c
   have h5 : R b c := h2.right c h3.left
@@ -652,10 +654,171 @@ theorem Exercise_4_4_22 {A : Type}
 ```
 :::
 
-::: {.numex arguments="10"}
+10\.  See the exercises in the previous section for the definition of the operation `RelFromExt` that is used in this exercise.
+
 ```lean
 theorem Exercise_4_4_24 (A : Type) (R : Set (A × A)) :
     smallestElt (sub (A × A)) (R ∪ (inv R))
     { T : Set (A × A) | R ⊆ T ∧ symmetric (RelFromExt T) } := sorry
 ```
+
+
+## 4.5 Equivalence Relations
+
+Chapter 4 of *HTPI* concludes with the study of one more combination of properties that a relation might have.  A binary relation $R$ on a set $A$ is called an *equivalence relation* if it is reflexive, symmetric, and transitive.  If $x \in A$, then the *equivalence class* of $x$ with respect to $R$ is the set of all $y \in A$ such that $yRx$.  In *HTPI*, this equivalence class is denoted $[x]_R$, so we have
+$$
+[x]_R = \{y \in A \mid yRx\}.
+$$
+The set whose elements are all of these equivalence classes is called $A$ *mod* $R$.  It is written $A/R$, so
+$$
+A/R = \{[x]_R \mid x \in A\}.
+$$
+Note that $A/R$ is a set whose elements are sets: for each $x \in A$, $[x]_R$ is a subset of $A$, and $[x]_R \in A/R$.
+
+To define these concepts in Lean, we write:
+
+```lean
+def equiv_rel {A : Type} (R : BinRel A) : Prop :=
+  reflexive R ∧ symmetric R ∧ transitive R
+
+def equivClass {A : Type} (R : BinRel A) (x : A) : Set A :=
+  { y : A | R y x }
+
+def mod (A : Type) (R : BinRel A) : Set (Set A) :=
+  { equivClass R x | x : A }
+```
+
+Thus, `equiv_rel R` is the proposition that `R` is an equivalence relation, `equivClass R x` is the equivalence class of `x` with respect to `R`, and `mod A R` is `A` mod `R`.  Note that `equivClass R x` has type `Set A`, while `mod A R` has type `Set (Set A)`.
+
+*HTPI* gives several examples of equivalence relations, and these examples illustrate that equivalence classes always have certain properties.  The most important of these are that each equivalence class is a nonempty set, the equivalence classes do not overlap, and their union is all of `A`.  We say that the equivalence classes form a *partition* of `A`.  To state and prove these properties in Lean we will need some definitions.  We start with these:
+
+```lean
+def is_empty {A : Type} (X : Set A) : Prop := ¬∃ (x : A), x ∈ X 
+
+def pairwise_disjoint {A : Type} (F : Set (Set A)) : Prop :=
+  ∀ X ∈ F, ∀ Y ∈ F, X ≠ Y → is_empty (X ∩ Y)
+```
+
+To say that a set `X` is empty, we could write `X = ∅`, but it is more convenient to have a statement that says more explicitly what it means for a set to be empty.  Thus, we have defined `is_empty X` to be the proposition saying that `X` has no elements.  If `F` has type `Set (Set A)`, then `pairwise_disjoint F` is the proposition that no two distinct elements of `F` have any element in common---in other words, the elements of `F` do not overlap.  We can now give the precise definition of a partition:
+
+```lean
+def partition {A : Type} (F : Set (Set A)) : Prop :=
+  (∀ (x : A), x ∈ ⋃₀F) ∧ pairwise_disjoint F ∧ ∀ X ∈ F, ¬is_empty X
+```
+
+The main theorem about equivalence relations in *HTPI* is Theorem 4.5.4, which says that `mod A R` is a partition of `A`.  The proof of this theorem is hard enough that *HTPI* proves two facts about equivalence classes first.  A fact that is proven just for the purpose of using it to prove something else is often called a *lemma*.  We can use this term in Lean as well.  Here is the first part of Lemma 4.5.5 from *HTPI*
+
+```lean
+lemma Lemma_4_5_5_1 {A : Type} (R : BinRel A) (h : equiv_rel R) :
+    ∀ (x : A), x ∈ equivClass R x := by
+  fix x : A
+  define           --Goal: R x x
+  define at h      --h: reflexive R ∧ symmetric R ∧ transitive R
+  have href : reflexive R := h.left
+  show R x x from href x
+```
+
+The command `#check @Lemma_4_5_5_1` produces the result
+
+::: {.quote}
+```
+@Lemma_4_5_5_1 : ∀ {A : Type} (R : BinRel A),
+    equiv_rel R → ∀ (x : A), x ∈ equivClass R x
+```
 :::
+
+Thus, if we have `R : BinRel A`, `h : equiv_rel R`, and `x : A`, then `Lemma_4_5_5_1 R h x` is a proof of `x ∈ equivClass R x`.  We will use this at the end of the proof of our next lemma:
+
+```lean
+lemma Lemma_4_5_5_2 {A : Type} (R : BinRel A) (h : equiv_rel R) :
+    ∀ (x y : A), y ∈ equivClass R x ↔
+      equivClass R y = equivClass R x := by
+  have hsymm : symmetric R := h.right.left
+  have htrans : transitive R := h.right.right
+  fix x : A; fix y : A
+  apply Iff.intro
+  -- (→)
+  assume h2 : y ∈ equivClass R x --Goal:  equivClass R y = equivClass R x
+  define at h2                   --h2: R y x
+  apply Set.ext
+  fix z : A
+  apply Iff.intro
+  -- Proof that z ∈ equivClass R y → z ∈ equivClass R x
+  assume h3 : z ∈ equivClass R y
+  define                         --Goal: R z x
+  define at h3                   --h3: R z y
+  show R z x from htrans z y x h3 h2
+  -- Proof that z ∈ equivClass R x → z ∈ equivClass R y
+  assume h3 : z ∈ equivClass R x
+  define                         --Goal: R z y
+  define at h3                   --h3: R z x
+  have h4 : R x y := hsymm y x h2
+  show R z y from htrans z x y h3 h4
+  -- (←)
+  assume h2 : equivClass R y = equivClass R x
+  rewrite [←h2]                  --Goal: y ∈ equivClass R y
+  show y ∈ equivClass R y from Lemma_4_5_5_1 R h y
+```
+
+The definition of "partition" has three parts, so to prove Theorem 4.5.4 we will have to prove three statements.  It will make the proof easier to read if we prove the three statements separately.
+
+```lean
+lemma Theorem_4_5_4_part_1 {A : Type} (R : BinRel A) (h : equiv_rel R) :
+    ∀ (x : A), x ∈ ⋃₀(mod A R) := by
+  fix x : A
+  define        --Goal: ∃ (a : Set A), a ∈ mod A R ∧ x ∈ a
+  apply Exists.intro (equivClass R x)
+  apply And.intro
+  -- Proof that equivClass R x ∈ mod A R
+  define        --Goal: ∃ (x_1 : A), equivClass R x_1 = equivClass R x
+  apply Exists.intro x
+  rfl
+  -- Proof that x ∈ equivClass R x
+  show x ∈ equivClass R x from Lemma_4_5_5_1 R h x
+
+lemma Theorem_4_5_4_part_2 {A : Type} (R : BinRel A) (h : equiv_rel R) :
+    pairwise_disjoint (mod A R) := by
+  define
+  fix X : Set A
+  assume h2 : X ∈ mod A R
+  fix Y : Set A
+  assume h3 : Y ∈ mod A R           --Goal: X ≠ Y → is_empty (X ∩ Y)
+  define at h2; define at h3
+  obtain (x : A) (h4 : equivClass R x = X) from h2
+  obtain (y : A) (h5 : equivClass R y = Y) from h3
+  contrapos
+  assume h6 : ∃ (x : A), x ∈ X ∩ Y  --Goal: X = Y
+  obtain (z : A) (h7 : z ∈ X ∩ Y) from h6
+  define at h7
+  rewrite [←h4, ←h5] at h7 --h7: z ∈ equivClass R x ∧ z ∈ equivClass R y
+  have h8 : equivClass R z = equivClass R x :=
+    (Lemma_4_5_5_2 R h x z).ltr h7.left
+  have h9 : equivClass R z = equivClass R y :=
+    (Lemma_4_5_5_2 R h y z).ltr h7.right
+  show X = Y from
+    calc
+      X = equivClass R x := h4.symm
+      _ = equivClass R z := h8.symm
+      _ = equivClass R y := h9
+      _ = Y              := h5
+
+lemma Theorem_4_5_4_part_3 {A : Type} (R : BinRel A) (h : equiv_rel R) :
+    ∀ X ∈ mod A R, ¬is_empty X := by
+  fix X : Set A
+  assume h2 : X ∈ mod A R  --Goal: ¬is_empty X
+  define at h2
+  obtain (x : A) (h3 : equivClass R x = X) from h2
+  rewrite [←h3]
+  define
+  double_neg
+  show ∃ (x_1 : A), x_1 ∈ equivClass R x from
+    Exists.intro x (Lemma_4_5_5_1 R h x)
+```
+
+Its easy now to put everything together to prove Theorem 4.5.4.
+
+```lean
+theorem Theorem_4_5_4 {A : Type} (R : BinRel A) (h : equiv_rel R) :
+    partition (mod A R) := And.intro (Theorem_4_5_4_part_1 R h)
+      (And.intro (Theorem_4_5_4_part_2 R h) (Theorem_4_5_4_part_3 R h))
+```
