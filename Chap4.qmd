@@ -441,7 +441,7 @@ def total_order {A : Type} (R : BinRel A) : Prop :=
     partial_order R ∧ ∀ (x y : A), R x y ∨ R y x
 ```
 
-These definitions say that if `R` is a binary relation on `A`, then `R` is *antisymmetric* if `R x y` and `R y x` cannot both be true unless `x = y`.  `R` is a *partial order on `A`*---or just a *partial order*, if `A` is clear from context---if it is reflexive, transitive, and antisymmetric.  And `R` is a *total order on `A`* if it is a partial order and also, for any `x` and `y` of type `A`, either `R x y` or `R y x`.
+These definitions say that if `R` is a binary relation on `A`, then `R` is *antisymmetric* if `R x y` and `R y x` cannot both be true unless `x = y`.  `R` is a *partial order on `A`*---or just a *partial order*, if `A` is clear from context---if it is reflexive, transitive, and antisymmetric.  And `R` is a *total order on `A`* if it is a partial order and also, for any `x` and `y` of type `A`, either `R x y` or `R y x`.  Note that, since Lean groups the connective `∧` to the right, `partial_order R` means `reflexive R ∧ (transitive R ∧ antisymmetric R)`, and therefore if `h` is a proof of `partial_order R`, then `h.left` is a proof of `reflexive R`, `h.right.left` is a proof of `transitive R`, and `h.right.right` is a proof of `antisymmetric R`. 
 
 Example 4.4.3 in *HTPI* gives several examples of partial orders and total orders.  We'll give one of those examples here.  For any type `A`, we define `sub A` to be the subset relation on sets of objects of type `A`:
 
@@ -688,7 +688,7 @@ def mod (A : Type) (R : BinRel A) : Set (Set A) :=
   { equivClass R x | x : A }
 ```
 
-Thus, `equiv_rel R` is the proposition that `R` is an equivalence relation, `equivClass R x` is the equivalence class of `x` with respect to `R`, and `mod A R` is `A` mod `R`.  Note that `equivClass R x` has type `Set A`, while `mod A R` has type `Set (Set A)`.
+Thus, `equiv_rel R` is the proposition that `R` is an equivalence relation, `equivClass R x` is the equivalence class of `x` with respect to `R`, and `mod A R` is `A` mod `R`.  Note that `equivClass R x` has type `Set A`, while `mod A R` has type `Set (Set A)`.  The definition of `mod A R` is shorthand for `{ X : Set A | ∃ (x : A), equivClass R x = X }`.
 
 *HTPI* gives several examples of equivalence relations, and these examples illustrate that equivalence classes always have certain properties.  The most important of these are that each equivalence class is a nonempty set, the equivalence classes do not overlap, and their union is all of `A`.  We say that the equivalence classes form a *partition* of `A`.  To state and prove these properties in Lean we will need some definitions.  We start with these:
 
@@ -755,7 +755,7 @@ lemma Lemma_4_5_5_2 {A : Type} (R : BinRel A) (h : equiv_rel R) :
   have h4 : R x y := hsymm y x h2
   show R z y from htrans z x y h3 h4
   -- (←)
-  assume h2 : equivClass R y = equivClass R x
+  assume h2 : equivClass R y = equivClass R x  --Goal: y ∈ equivClass R x
   rewrite [←h2]                  --Goal: y ∈ equivClass R y
   show y ∈ equivClass R y from Lemma_4_5_5_1 R h y
 ```
@@ -768,13 +768,11 @@ lemma Theorem_4_5_4_part_1 {A : Type} (R : BinRel A) (h : equiv_rel R) :
   fix x : A
   define        --Goal: ∃ (a : Set A), a ∈ mod A R ∧ x ∈ a
   apply Exists.intro (equivClass R x)
-  apply And.intro
-  -- Proof that equivClass R x ∈ mod A R
+  apply And.intro _ (Lemma_4_5_5_1 R h x)
+                --Goal: equivClass R x ∈ mod A R
   define        --Goal: ∃ (x_1 : A), equivClass R x_1 = equivClass R x
   apply Exists.intro x
   rfl
-  -- Proof that x ∈ equivClass R x
-  show x ∈ equivClass R x from Lemma_4_5_5_1 R h x
 
 lemma Theorem_4_5_4_part_2 {A : Type} (R : BinRel A) (h : equiv_rel R) :
     pairwise_disjoint (mod A R) := by
@@ -806,11 +804,10 @@ lemma Theorem_4_5_4_part_3 {A : Type} (R : BinRel A) (h : equiv_rel R) :
     ∀ X ∈ mod A R, ¬is_empty X := by
   fix X : Set A
   assume h2 : X ∈ mod A R  --Goal: ¬is_empty X
-  define at h2
+  define; double_neg       --Goal: ∃ (x : A), x ∈ X
+  define at h2             --h2: ∃ (x : A), equivClass R x = X
   obtain (x : A) (h3 : equivClass R x = X) from h2
   rewrite [←h3]
-  define
-  double_neg
   show ∃ (x_1 : A), x_1 ∈ equivClass R x from
     Exists.intro x (Lemma_4_5_5_1 R h x)
 ```
@@ -822,3 +819,167 @@ theorem Theorem_4_5_4 {A : Type} (R : BinRel A) (h : equiv_rel R) :
     partition (mod A R) := And.intro (Theorem_4_5_4_part_1 R h)
       (And.intro (Theorem_4_5_4_part_2 R h) (Theorem_4_5_4_part_3 R h))
 ```
+
+Theorem 4.5.4 shows that an equivalence relation on `A` determines a partition of `A`, namely `mod A R`.  Our next project will be to prove Theorem 4.5.6 in *HTPI*, which says that every partition of `A` arises in this way; that is, every partition is `mod A R` for some equivalence relation `R`.  To prove this, we must show how to use a partition `F` to define an equivalence relation `R` for which `mod A R = F`.  The proof in *HTPI* defines the required equivalence relation `R` as a set of ordered pairs, but in Lean we will need to define it instead as a binary relation on `A`.  Translating *HTPI*'s set-theoretic definition into Lean's notation for binary relations leads to the following definition:
+
+```lean
+def EqRelFromPart {A : Type} (F : Set (Set A)) (x y : A) : Prop :=
+    ∃ X ∈ F, x ∈ X ∧ y ∈ X
+```
+
+In other words, `EqRelFromPart F` is the binary relation on `A` that is true of any two objects `x` and `y` of type `A` if and only if `x` and `y` belong to the same set in `F`.  Our plan now is to show that if `F` is a partition of `A`, then `EqRelFromPart F` is an equivalence relation on `A`, and `mod A (EqRelFromPart F) = F`.
+
+Once again, *HTPI* breaks the proof up by proving some lemmas first, and we will find it convenient to break the proof into even smaller pieces.  We will leave the proofs of most of these lemmas as exercises for you.
+
+```lean
+lemma overlap_implies_equal {A : Type}
+    (F : Set (Set A)) (h : partition F) :
+    ∀ X ∈ F, ∀ Y ∈ F, ∀ (x : A), x ∈ X → x ∈ Y → X = Y := sorry
+
+lemma Lemma_4_5_7_ref {A : Type} (F : Set (Set A)) (h : partition F):
+    reflexive (EqRelFromPart F) := sorry
+  
+lemma Lemma_4_5_7_symm {A : Type} (F : Set (Set A)) (h : partition F):
+    symmetric (EqRelFromPart F) := sorry
+
+lemma Lemma_4_5_7_trans {A : Type} (F : Set (Set A)) (h : partition F):
+    transitive (EqRelFromPart F) := sorry
+```
+
+It is now easy to put these pieces together to prove Lemma 4.5.7 in *HTPI*:
+
+```lean
+lemma Lemma_4_5_7 {A : Type} (F : Set (Set A)) (h : partition F) :
+    equiv_rel (EqRelFromPart F) := And.intro (Lemma_4_5_7_ref F h)
+      (And.intro (Lemma_4_5_7_symm F h) (Lemma_4_5_7_trans F h))
+```
+
+We need one more lemma before we can prove Theorem 4.5.6:
+
+```lean
+lemma Lemma_4_5_8 {A : Type} (F : Set (Set A)) (h : partition F) :
+    ∀ X ∈ F, ∀ x ∈ X, equivClass (EqRelFromPart F) x = X := sorry
+```
+
+We are finally now ready to address Theorem 4.5.6.  Here is the statement of the theorem:
+
+```lean
+theorem Theorem_4_5_6 {A : Type} (F : Set (Set A)) (h: partition F) :
+    ∃ (R : BinRel A), equiv_rel R ∧ mod A R = F
+```
+
+Of course, the relation `R` that we will use to prove the theorem is `EqRelFromPart F`, so we could start the proof with the tactic `apply Exists.intro (EqRelFromPart F)`.  But this means that the rest of the proof will involve many statements about the relation `EqRelFromPart F`.  When a complicated object appears multiple times in a proof, it can make the proof a little easier to read if we give that object a name.  We can do that by using a new tactic.  The tactic `let R : BinRel A := EqRelFromPart F` introduces the new variable `R` into the tactic state.  The variable `R` has type `BinRel A`, and it is definitionally equal to `EqRelFromPart F`.  That means that, when necessary, Lean will fill in this definition of `R`.  For example, one of our first steps will be to apply `Lemma_4_5_7` to `F` and `h`.  The conclusion of that lemma is `equiv_rel (EqRelFromPart F)`, but Lean will recognize this as meaning the same thing as `equiv_rel R`.  Here is the proof of the theorem:
+
+```lean
+theorem Theorem_4_5_6 {A : Type} (F : Set (Set A)) (h: partition F) :
+    ∃ (R : BinRel A), equiv_rel R ∧ mod A R = F := by
+  let R : BinRel A := EqRelFromPart F
+  apply Exists.intro R              --Goal: equiv_rel R ∧ mod A R = F
+  apply And.intro (Lemma_4_5_7 F h) --Goal: mod A R = F
+  apply Set.ext
+  fix X : Set A                     --Goal:  X ∈ mod A R ↔ X ∈ F
+  apply Iff.intro
+  -- (→)
+  assume h2 : X ∈ mod A R           --Goal: X ∈ F
+  define at h2                      --h2: ∃ (x : A), equivClass R x = X
+  obtain (x : A) (h3 : equivClass R x = X) from h2
+  have h4 : x ∈ ⋃₀F := h.left x
+  define at h4
+  obtain (Y : Set A) (h5 : Y ∈ F ∧ x ∈ Y) from h4
+  have h6 : equivClass R x = Y :=
+    Lemma_4_5_8 F h Y h5.left x h5.right
+  rewrite [←h3, h6]
+  show Y ∈ F from h5.left
+  -- (←)
+  assume h2 : X ∈ F                 --Goal: X ∈ mod A R
+  have h3 : ¬is_empty X := h.right.right X h2
+  define at h3; double_neg at h3    --h3: ∃ (x : A), x ∈ X
+  obtain (x : A) (h4 : x ∈ X) from h3
+  define                       --Goal: ∃ (x : A), equivClass R x = X
+  show ∃ (x : A), equivClass R x = X from
+    Exists.intro x (Lemma_4_5_8 F h X h2 x h4)
+```
+
+### Exercises
+
+::: {.numex arguments="1"}
+```lean
+lemma overlap_implies_equal {A : Type}
+    (F : Set (Set A)) (h : partition F) :
+    ∀ X ∈ F, ∀ Y ∈ F, ∀ (x : A), x ∈ X → x ∈ Y → X = Y := sorry
+```
+:::
+
+::: {.numex arguments="2"}
+```lean
+lemma Lemma_4_5_7_ref {A : Type} (F : Set (Set A)) (h : partition F):
+    reflexive (EqRelFromPart F) := sorry
+```
+:::
+
+::: {.numex arguments="3"}
+```lean
+lemma Lemma_4_5_7_symm {A : Type} (F : Set (Set A)) (h : partition F):
+    symmetric (EqRelFromPart F) := sorry
+```
+:::
+
+::: {.numex arguments="4"}
+```lean
+lemma Lemma_4_5_7_trans {A : Type} (F : Set (Set A)) (h : partition F):
+    transitive (EqRelFromPart F) := sorry
+```
+:::
+
+::: {.numex arguments="5"}
+```lean
+lemma Lemma_4_5_8 {A : Type} (F : Set (Set A)) (h : partition F) :
+    ∀ X ∈ F, ∀ x ∈ X, equivClass (EqRelFromPart F) x = X := sorry
+```
+:::
+
+::: {.numex arguments="6"}
+```lean
+lemma elt_mod_equiv_class_of_elt
+    {A : Type} (R : BinRel A) (h : equiv_rel R) :
+    ∀ X ∈ mod A R, ∀ x ∈ X, equivClass R x = X := sorry
+```
+:::
+
+::: {.mdsk}
+:::
+
+The next exercises use the following definitions:
+
+```lean
+def dot {A : Type} (F G : Set (Set A)) : Set (Set A) :=
+    { Z : Set A | ¬is_empty Z ∧ ∃ X ∈ F, ∃ Y ∈ G, Z = X ∩ Y }
+
+def conj {A : Type} (R S : BinRel A) (x y : A) : Prop :=
+    R x y ∧ S x y
+```
+
+::: {.numex arguments="7"}
+```lean
+theorem Exercise_4_5_20a {A : Type} (R S : BinRel A)
+    (h1 : equiv_rel R) (h2 : equiv_rel S) :
+    equiv_rel (conj R S) := sorry
+```
+:::
+
+::: {.numex arguments="8"}
+```lean
+theorem Exercise_4_5_20b {A : Type} (R S : BinRel A)
+    (h1 : equiv_rel R) (h2 : equiv_rel S) :
+    ∀ (x : A), equivClass (conj R S) x =
+      equivClass R x ∩ equivClass S x := sorry
+```
+:::
+
+::: {.numex arguments="9"}
+```lean
+theorem Exercise_4_5_20c {A : Type} (R S : BinRel A)
+    (h1 : equiv_rel R) (h2 : equiv_rel S) :
+    mod A (conj R S) = dot (mod A R) (mod A S) := sorry
+```
+:::
