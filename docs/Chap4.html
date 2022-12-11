@@ -851,7 +851,7 @@ A/R = \{[x]_R \mid x \in A\}.
 <p>Of course, the relation <code>R</code> that we will use to prove the theorem is <code>EqRelFromPart F</code>, so we could start the proof with the tactic <code>apply Exists.intro (EqRelFromPart F)</code>. But this means that the rest of the proof will involve many statements about the relation <code>EqRelFromPart F</code>. When a complicated object appears multiple times in a proof, it can make the proof a little easier to read if we give that object a name. We can do that by using a new tactic. The tactic <code>let R : BinRel A := EqRelFromPart F</code> introduces the new variable <code>R</code> into the tactic state. The variable <code>R</code> has type <code>BinRel A</code>, and it is definitionally equal to <code>EqRelFromPart F</code>. That means that, when necessary, Lean will fill in this definition of <code>R</code>. For example, one of our first steps will be to apply <code>Lemma_4_5_7</code> to <code>F</code> and <code>h</code>. The conclusion of that lemma is <code>equiv_rel (EqRelFromPart F)</code>, but Lean will recognize this as meaning the same thing as <code>equiv_rel R</code>. Here is the proof of the theorem:</p>
 <div class="sourceCode" id="cb58"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb58-1"><a href="#cb58-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Theorem_4_5_6 {A : <span class="kw">Type</span>} (F : Set (Set A)) (h: partition F) :</span>
 <span id="cb58-2"><a href="#cb58-2" aria-hidden="true" tabindex="-1"></a>    ∃ (R : BinRel A), equiv_rel R ∧ mod A R = F := <span class="kw">by</span></span>
-<span id="cb58-3"><a href="#cb58-3" aria-hidden="true" tabindex="-1"></a>  let R : BinRel A := EqRelFromPart F</span>
+<span id="cb58-3"><a href="#cb58-3" aria-hidden="true" tabindex="-1"></a>  <span class="kw">let</span> R : BinRel A := EqRelFromPart F</span>
 <span id="cb58-4"><a href="#cb58-4" aria-hidden="true" tabindex="-1"></a>  <span class="kw">apply</span> Exists.intro R              <span class="co">--Goal: equiv_rel R ∧ mod A R = F</span></span>
 <span id="cb58-5"><a href="#cb58-5" aria-hidden="true" tabindex="-1"></a>  <span class="kw">apply</span> And.intro (Lemma_4_5_7 F h) <span class="co">--Goal: mod A R = F</span></span>
 <span id="cb58-6"><a href="#cb58-6" aria-hidden="true" tabindex="-1"></a>  <span class="kw">apply</span> Set.ext</span>
@@ -907,7 +907,7 @@ A/R = \{[x]_R \mid x \in A\}.
 <div class="mdsk">
 
 </div>
-<p>The next exercises use the following definitions:</p>
+<p>The next three exercises use the following definitions:</p>
 <div class="sourceCode" id="cb65"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb65-1"><a href="#cb65-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> dot {A : <span class="kw">Type</span>} (F G : Set (Set A)) : Set (Set A) :=</span>
 <span id="cb65-2"><a href="#cb65-2" aria-hidden="true" tabindex="-1"></a>    { Z : Set A | ¬is_empty Z ∧ ∃ X ∈ F, ∃ Y ∈ G, Z = X ∩ Y }</span>
 <span id="cb65-3"><a href="#cb65-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -928,6 +928,14 @@ A/R = \{[x]_R \mid x \in A\}.
 <div class="sourceCode" id="cb68"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb68-1"><a href="#cb68-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Exercise_4_5_20c {A : <span class="kw">Type</span>} (R S : BinRel A)</span>
 <span id="cb68-2"><a href="#cb68-2" aria-hidden="true" tabindex="-1"></a>    (h1 : equiv_rel R) (h2 : equiv_rel S) :</span>
 <span id="cb68-3"><a href="#cb68-3" aria-hidden="true" tabindex="-1"></a>    mod A (conj R S) = dot (mod A R) (mod A S) := <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="mdsk">
+
+</div>
+<p>The next exercise uses the following definition:</p>
+<div class="sourceCode" id="cb69"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb69-1"><a href="#cb69-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> equiv_mod (m x y : Int) : <span class="kw">Prop</span> := m ∣ (x - y)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="numex" data-arguments="10">
+<div class="sourceCode" id="cb70"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb70-1"><a href="#cb70-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Theorem_4_5_10 : ∀ (m : Int), equiv_rel (equiv_mod m) := <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 
 

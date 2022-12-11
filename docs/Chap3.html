@@ -780,7 +780,7 @@ $$
 </tr>
 <tr class="even">
 <td style="text-align: center;"><code>△</code></td>
-<td style="text-align: center;"><code>\bigtriangleup</code></td>
+<td style="text-align: center;"><code>\bigtriangle</code></td>
 </tr>
 <tr class="odd">
 <td style="text-align: center;"><code>∅</code></td>
@@ -3153,7 +3153,7 @@ x \in A \cap (B \setmin C) &amp;\text{ iff } x \in A \wedge x \in B \setmin C\\
 <span id="cb254-2"><a href="#cb254-2" aria-hidden="true" tabindex="-1"></a>    (h1 : ∀ (F : Set (Set U)), ⋃₀F = A → A ∈ F) :</span>
 <span id="cb254-3"><a href="#cb254-3" aria-hidden="true" tabindex="-1"></a>    ∃! (x : U), x ∈ A := <span class="kw">by</span></span>
 <span id="cb254-4"><a href="#cb254-4" aria-hidden="true" tabindex="-1"></a>  <span class="co">--Hint:  Start like this:</span></span>
-<span id="cb254-5"><a href="#cb254-5" aria-hidden="true" tabindex="-1"></a>  let F0 := {X : Set U | X ⊆ A ∧ ∃! (x : U), x ∈ X}</span>
+<span id="cb254-5"><a href="#cb254-5" aria-hidden="true" tabindex="-1"></a>  <span class="kw">let</span> F0 := {X : Set U | X ⊆ A ∧ ∃! (x : U), x ∈ X}</span>
 <span id="cb254-6"><a href="#cb254-6" aria-hidden="true" tabindex="-1"></a>  <span class="co">--Now F0 is in the tactic state, with the definition above</span></span>
 <span id="cb254-7"><a href="#cb254-7" aria-hidden="true" tabindex="-1"></a>  <span class="kw">have</span> h2 : ⋃₀F0 = A := <span class="cn">sorry</span></span>
 <span id="cb254-8"><a href="#cb254-8" aria-hidden="true" tabindex="-1"></a>  </span>

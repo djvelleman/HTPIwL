@@ -949,7 +949,7 @@ lemma elt_mod_equiv_class_of_elt
 ::: {.mdsk}
 :::
 
-The next exercises use the following definitions:
+The next three exercises use the following definitions:
 
 ```lean
 def dot {A : Type} (F G : Set (Set A)) : Set (Set A) :=
@@ -981,5 +981,20 @@ theorem Exercise_4_5_20b {A : Type} (R S : BinRel A)
 theorem Exercise_4_5_20c {A : Type} (R S : BinRel A)
     (h1 : equiv_rel R) (h2 : equiv_rel S) :
     mod A (conj R S) = dot (mod A R) (mod A S) := sorry
+```
+:::
+
+::: {.mdsk}
+:::
+
+The next exercise uses the following definition:
+
+```lean
+def equiv_mod (m x y : Int) : Prop := m ∣ (x - y)
+```
+
+::: {.numex arguments="10"}
+```lean
+theorem Theorem_4_5_10 : ∀ (m : Int), equiv_rel (equiv_mod m) := sorry
 ```
 :::
