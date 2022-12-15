@@ -236,7 +236,7 @@ theorem Exercise_4_2_12a {A B C : Type}
 Suppose $R$ is a relation from $A$ to $B$ and $S$ and $T$ are relations from $B$ to $C$.  Then $(S \setmin T) \circ R \subseteq (S \circ R) \setmin (T \circ R)$.
 :::
 
-::: {.incproof}
+::: {.npf arguments="Incorrect Proof"}
 Suppose $(a, c) \in (S \setmin T) \circ R$. Then we can choose some $b \in B$ such that $(a, b) \in R$ and $(b, c) \in S \setmin T$, so $(b, c) \in S$ and $(b, c) \notin T$.  Since $(a, b) \in R$ and $(b, c) \in S$, $(a, c) \in S \circ R$.  Similarly, since $(a, b) \in R$ and $(b, c) \notin T$, $(a, c) \notin T \circ R$.  Therefore $(a, c) \in (S \circ R) \setmin (T \circ R)$.  Since $(a, c)$ was arbitrary, this shows that $(S \setmin T) \circ R \subseteq (S \circ R) \setmin (T \circ R)$.  [&nbsp;□]{.excl}\qedhere
 :::
 
@@ -256,7 +256,15 @@ theorem Exercise_4_2_12b {A B C : Type}
 theorem Exercise_4_2_14c {A B C : Type}
     (R : Set (A × B)) (S T : Set (B × C)) :
     comp (S ∩ T) R = (comp S R) ∩ (comp T R) := sorry
+```
 
+7\. Is the following theorem correct?  Try to prove it in Lean.  If you can't prove it, see if you can find a counterexample.
+
+```lean
+--You might not be able to complete this proof
+theorem Exercise_4_2_14d {A B C : Type}
+    (R : Set (A × B)) (S T : Set (B × C)) :
+    comp (S ∪ T) R = (comp S R) ∪ (comp T R) := sorry
 ```
 
 ## 4.3. More About Relations
@@ -661,7 +669,7 @@ theorem Exercise_4_4_24 (A : Type) (R : Set (A × A)) :
 
 ## 4.5 Equivalence Relations
 
-Chapter 4 of *HTPI* concludes with the study of one more combination of properties that a relation might have.  A binary relation $R$ on a set $A$ is called an *equivalence relation* if it is reflexive, symmetric, and transitive.  If $x \in A$, then the *equivalence class* of $x$ with respect to $R$ is the set of all $y \in A$ such that $yRx$.  In *HTPI*, this equivalence class is denoted $[x]_R$, so we have
+Chapter 4 of *HTPI* concludes with the study of one more important combination of properties that a relation might have.  A binary relation $R$ on a set $A$ is called an *equivalence relation* if it is reflexive, symmetric, and transitive.  If $x \in A$, then the *equivalence class* of $x$ with respect to $R$ is the set of all $y \in A$ such that $yRx$.  In *HTPI*, this equivalence class is denoted $[x]_R$, so we have
 $$
 [x]_R = \{y \in A \mid yRx\}.
 $$
@@ -675,13 +683,13 @@ To define these concepts in Lean, we write:
 
 ```lean
 def equiv_rel {A : Type} (R : BinRel A) : Prop :=
-  reflexive R ∧ symmetric R ∧ transitive R
+    reflexive R ∧ symmetric R ∧ transitive R
 
 def equivClass {A : Type} (R : BinRel A) (x : A) : Set A :=
-  { y : A | R y x }
+    { y : A | R y x }
 
 def mod (A : Type) (R : BinRel A) : Set (Set A) :=
-  { equivClass R x | x : A }
+    { equivClass R x | x : A }
 ```
 
 Thus, `equiv_rel R` is the proposition that `R` is an equivalence relation, `equivClass R x` is the equivalence class of `x` with respect to `R`, and `mod A R` is `A` mod `R`.  Note that `equivClass R x` has type `Set A`, while `mod A R` has type `Set (Set A)`.  The definition of `mod A R` is shorthand for `{ X : Set A | ∃ (x : A), equivClass R x = X }`.
@@ -692,14 +700,14 @@ Thus, `equiv_rel R` is the proposition that `R` is an equivalence relation, `equ
 def is_empty {A : Type} (X : Set A) : Prop := ¬∃ (x : A), x ∈ X 
 
 def pairwise_disjoint {A : Type} (F : Set (Set A)) : Prop :=
-  ∀ X ∈ F, ∀ Y ∈ F, X ≠ Y → is_empty (X ∩ Y)
+    ∀ X ∈ F, ∀ Y ∈ F, X ≠ Y → is_empty (X ∩ Y)
 ```
 
 To say that a set `X` is empty, we could write `X = ∅`, but it is more convenient to have a statement that says more explicitly what it means for a set to be empty.  Thus, we have defined `is_empty X` to be the proposition saying that `X` has no elements.  If `F` has type `Set (Set A)`, then `pairwise_disjoint F` is the proposition that no two distinct elements of `F` have any element in common---in other words, the elements of `F` do not overlap.  We can now give the precise definition of a partition:
 
 ```lean
 def partition {A : Type} (F : Set (Set A)) : Prop :=
-  (∀ (x : A), x ∈ ⋃₀F) ∧ pairwise_disjoint F ∧ ∀ X ∈ F, ¬is_empty X
+    (∀ (x : A), x ∈ ⋃₀F) ∧ pairwise_disjoint F ∧ ∀ X ∈ F, ¬is_empty X
 ```
 
 The main theorem about equivalence relations in *HTPI* is Theorem 4.5.4, which says that `mod A R` is a partition of `A`.  The proof of this theorem is hard enough that *HTPI* proves two facts about equivalence classes first.  A fact that is proven just for the purpose of using it to prove something else is often called a *lemma*.  We can use this term in Lean as well.  Here is the first part of Lemma 4.5.5 from *HTPI*

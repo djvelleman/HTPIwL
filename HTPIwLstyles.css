@@ -168,8 +168,8 @@ code span.re {      /* "case" label in Infoview */
   float: left
 }
 
-.incproof::before {
-  content: "Incorrect Proof.";
+.npf::before {
+  content: attr(data-arguments)".";
   font-style: italic;
   padding-right: 0.4em;
   float: left

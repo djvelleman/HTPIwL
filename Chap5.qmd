@@ -1,0 +1,208 @@
+# Functions
+
+## 5.1. Functions
+
+The first definition in Chapter 5 of *HTPI* says that if $F \subseteq A \times B$, then $F$ is called a *function* from $A$ to $B$ if for every $a \in A$ there is exactly one $b \in B$ such that $(a, b) \in F$.  The notation $F : A \to B$ means that $F$ is a function from $A$ to $B$.  If $F$ is a function from $A$ to $B$ and $a \in A$, then *HTPI* introduces the notation $F(a)$ for the unique $b \in B$ such that $(a, b) \in F$.  Thus, if $F : A \to B$, $a \in A$, and $b \in B$, then $F(a) = b$ means the same thing as $(a, b) \in F$.  We sometimes call $F(a)$ the *value of $F$ at $a$*, or the *result of applying $F$ to $a$*.
+
+This might remind you of the situation we faced in Chapter 4.  If $R \subseteq A \times B$, $a \in A$, and $b \in B$, then Chapter 4 of *HTPI* uses the notation $aRb$ to mean the same thing as $(a, b) \in R$.  But in Lean, we found it necessary to change this notation.  Instead of using *HTPI*'s notation $aRb$, we introduced the notation `R a b`, which we use when `R` has type `Rel A B`, `a` has type `A`, and `b` has type `B`.  (The notation `(a, b) ∈ R`, in contrast, can be used only when `R` has type `Set (A × B)`.)  If `R` has type `Rel A B`, then we think of `R` as representing some relationship that might hold between `a` and `b`, and `R a b` as the proposition saying that this relationship holds.  And although `R` is not a set of ordered pairs, there is a corresponding set, `extension R`, of type `Set (A × B)`, with the property that `(a, b) ∈ extension R` if and only if `R a b`.
+
+We will take a similar approach to functions in this chapter.  For any types `A` and `B`, we introduce a new type `A → B`.  If `f` has type `A → B`, then we think of `f` as representing some operation that can be applied to an object of type `A` to produce a corresponding object of type `B`.  We will say that `f` is a *function* from `A` to `B`, and if `a` has type `A`, then we write `f a` (with a space but no parentheses) for the result of applying the operation represented by `f` to the object `a`.  Thus, if we have `f : A → B` and `a : A`, then `f a` has type `B`.  As with relations, if `f` has type `A → B`, then `f` is not a set of ordered pairs.  But there is a corresponding set of ordered pairs, which we will call the *graph* of `f`, whose elements are the ordered pairs `(a, b)` for which `f a = b`:
+
+```lean
+def graph {A B : Type} (f : A → B) : Set (A × B) :=
+    { (a, b) : A × B | f a = b }
+
+theorem simp_graph {A B : Type} (f : A → B) (a : A) (b : B) :
+    (a, b) ∈ graph f ↔ f a = b := by rfl
+```
+
+Every set of type `Set (A × B)` is the extension of some relation from `A` to `B`, but not every such set is the graph of a function from `A` to `B`.  To be the graph of a function, it must have the property that was used to define functions in *HTPI*: each object of type `A` must be paired in the set with exactly one object of type `B`.  Let's give this property a name:
+
+```lean
+def is_func_graph {A B : Type} (F : Set (A × B)) : Prop :=
+    ∀ (x : A), ∃! (y : B), (x, y) ∈ F
+```
+
+And now we can say that the sets of type `Set (A × B)` that are graphs of functions from `A` to `B` are precisely the ones that have the property `is_func_graph`:
+
+```lean
+theorem func_from_graph {A B : Type} (F : Set (A × B)) :
+    (∃ (f : A → B), graph f = F) ↔ is_func_graph F
+```
+
+We will ask you to prove the left-to-right direction of this theorem in the exercises.  The right-to-left direction can also be proven in Lean, but the proof requires methods that go beyond the scope of this book.  Nevertheless, we will go ahead and use the theorem when we find it useful.
+
+Section 5.1 of *HTPI* proves two theorems about functions.  The first gives a convenient way of proving that two functions are equal:
+
+::: {.nthm arguments="Theorem 5.1.4"}
+Suppose $f$ and $g$ are functions from $A$ to $B$.  If $\forall a \in A(f(a) = g(a))$, then $f = g$.
+:::
+
+The proof of this theorem in *HTPI* is based on the axiom of extensionality for sets.  But in Lean, functions aren't sets of ordered pairs, so this method of proof won't work.  Fortunately, Lean has a similar axiom of extensionality for functions.  The axiom is called `funext`, and it proves Theorem 5.1.4.
+
+```lean
+theorem Theorem_5_1_4 {A B : Type} (f g : A → B) :
+    (∀ (a : A), f a = g a) → f = g := funext
+```
+
+We saw previously that if we are trying to prove `X = Y`, where `X` and `Y` both have type `Set U`, then often the best first step is the tactic `apply Set.ext`, which converts the goal to `∀ (x : U), x ∈ X ↔ x ∈ Y`.  Similary, if we are trying to prove `f = g`, where `f` and `g` both have type `A → B`, then we will usually start with the tactic `apply funext`, which will convert the goal to `∀ (x : A), f x = g x`.  By Theorem_5_1_4, this implies the original goal `f = g`.  For example, here is a proof that if two functions have the same graph, then they are equal:
+
+```lean
+example {A B : Type} (f g : A → B) :
+    graph f = graph g → f = g := by
+  assume h1 : graph f = graph g  --Goal: f = g
+  apply funext                   --Goal: ∀ (x : A), f x = g x
+  fix x : A
+  have h2 : (x, f x) ∈ graph f := by
+    define                       --Goal: f x = f x
+    rfl
+  rewrite [h1] at h2             --h2: (x, f x) ∈ graph g
+  define at h2                   --h2: g x = f x
+  show f x = g x from h2.symm
+```
+
+The axiom of extensionality for sets says that a set is completely determined by its elements.  This is what justifies our usual method of defining a set: we specify what its elements are, using notation like `{0, 1, 2}` or `{ x : Nat | x < 3 }`.  Similarly, the axiom of extensionality for functions says that a function is completely determined by its values, and therefore we can define a function by specifying its values.  For instance, we can define a function from `Nat` to `Nat` by specifying, for any `n : Nat`, the result of applying the function to `n`.  As an example of this, we could define the "squaring function" from `Nat` to `Nat` to be the function that, when applied to any `n : Nat`, produces the result `n^2`.  Here are two ways to define this function in Lean:
+
+```lean
+def square1 (n : Nat) : Nat := n^2
+def square2 : Nat → Nat := fun (n : Nat) => n^2
+```
+
+The first of these definitions uses notation we have used before; it says that if `n` has type `Nat`, then the expression `square1 n` also has type `Nat`, and it is definitionally equal to `n^2`.  The second definition introduces new Lean notation.  It says that `square2` has type `Nat → Nat`, and it defines it to be the function that, when applied to any `n : Nat`, yields the result `n^2`.  Of course, this also means that `square2 n` is definitionally equal to `n^2`.  In general, the notation `fun (x : A) => ...` means "the function which, when applied to any `x` of type `A`, yields the result ..."  The two definitions above are equivalent.  You can ask Lean to confirm this, and try out the squaring function, as follows:
+
+```lean
+example : square1 = square2 := by rfl
+example : square1 7 = 49 := by rfl
+```
+
+There is one more theorem in Section 5.1 of *HTPI*.  Theorem 5.1.5 says that if $f$ is a function from $A$ to $B$ and $g$ is a function from $B$ to $C$, then the composition of $g$ and $f$ is a function from $A$ to $C$.  To state this theorem in Lean, we will have to make adjustments for the differences between the treatment of functions in *HTPI* and Lean.  In Chapter 4, we defined `comp S R` to be the composition of `S` and `R`, where `R` has type `Set (A × B)` and `S` had type `Set (B × C)`.  But functions in Lean are not sets of ordered pairs, so we cannot apply the operation `comp` to them.  We can, however, apply it to their graphs.  So the theorem corresponding to Theorem 5.1.5 in *HTPI* is this:
+
+```lean
+theorem Theorem_5_1_5 {A B C : Type} (f : A → B) (g : B → C) :
+    ∃ (h : A → C), graph h = comp (graph g) (graph f) := by
+  let h : A → C := fun (x : A) => g (f x)
+  apply Exists.intro h
+  apply Set.ext
+  fix (a, c) : A × C
+  apply Iff.intro
+  -- Proof that (a, c) ∈ graph h → (a, c) ∈ comp (graph g) (graph f)
+  assume h1 : (a, c) ∈ graph h
+  define at h1    --h1: h a = c
+  define          --Goal:  ∃ (x : B), (a, x) ∈ graph f ∧ (x, c) ∈ graph g
+  apply Exists.intro (f a)
+  apply And.intro
+  -- Proof that (a, f a) ∈ graph f
+  define; rfl
+  -- Proof that (f a, c) ∈ graph g
+  define
+  show g (f a) = c from h1
+  -- Proof that (a, c) ∈ comp (graph g) (graph f) → (a, c) ∈ graph h
+  assume h1 : (a, c) ∈ comp (graph g) (graph f)
+  define          --Goal: h a = c
+  define at h1    --h1: ∃ (x : B), (a, x) ∈ graph f ∧ (x, c) ∈ graph g
+  obtain (b : B) (h2 : (a, b) ∈ graph f ∧ (b, c) ∈ graph g) from h1
+  have h3 : (a, b) ∈ graph f := h2.left
+  have h4 : (b, c) ∈ graph g := h2.right
+  define at h3          --h3: f a = b
+  define at h4          --h4: g b = c
+  rewrite [←h3] at h4   --h4: g (f a) = c
+  show h a = c from h4
+```
+
+Notice that the proof of `Theorem_5_1_5` begins by defining the function `h` for which `graph h = comp (graph g) (graph f)`.  The definition says that for all `x` of type `A`, `h x = g (f x)`.  This function `h` is called the *composition* of `g` and `f`, and it is denoted `g ∘ f`.  (To type `∘` in VSCode, type `\circ`.)  In other words, `g ∘ f` has type `A → C`, and for all `x` of type `A`, `(g ∘ f) x` is definitionally equal to `g (f x)`.  In *HTPI*, functions are sets of ordered pairs, and the operation of composition of functions is literally the same as the operation `comp` that we used in Chapter 4.  But in Lean, we distinguish among functions, relations, and sets of ordered pairs, so all we can say is that the operation of composition of functions corresponds to the operation `comp` from Chapter 4.  The correspondence is that, as shown in the proof of `Theorem_5_1_5`, if `h = g ∘ f`, then `graph h = comp (graph g) (graph f)`.
+
+### Exercises
+
+::: {.numex arguments="1"}
+```lean
+theorem func_from_graph_ltr {A B : Type} (F : Set (A × B)) :
+    (∃ (f : A → B), graph f = F) → is_func_graph F := sorry
+```
+:::
+
+::: {.numex arguments="2"}
+```lean
+theorem Exercise_5_1_13a
+    {A B C : Type} (R : Set (A × B)) (S : Set (B × C))
+    (h1 : ∀ (b : B), b ∈ Ran R ∧ b ∈ Dom S)
+    (h2 : is_func_graph (comp S R)) :
+    is_func_graph S := sorry
+```
+:::
+
+::: {.numex arguments="3"}
+```lean
+theorem Exercise_5_1_14a
+    {A B : Type} (f : A → B) (R : BinRel A) (S : BinRel B)
+    (h : ∀ (x y : A), R x y ↔ S (f x) (f y)) :
+    reflexive S → reflexive R := sorry
+```
+:::
+
+4\. Here is a putative theorem:
+
+::: {.nthm arguments="Theorem?"}
+Suppose $f : A \to B$, $R$ is a binary relation on $A$, and $S$ is the binary relation on $B$ defined as follows:
+$$
+\forall x \in B \forall y \in B(xSy \leftrightarrow \exists u \in A\exists v \in A(f(u) = x \wedge f(v) = y \wedge uRv)).
+$$
+If $R$ is symmetric then $S$ is symmetric.
+:::
+
+Is the theorem correct?  Try to prove it in Lean. If you can’t prove it, see if you can find a counterexample.
+
+```lean
+--You might not be able to complete this proof
+theorem Exercise_5_1_15b
+    {A B : Type} (f : A → B) (R : BinRel A) (S : BinRel B)
+    (h : ∀ (x y : B), S x y ↔ ∃ (u v : A), f u = x ∧ f v = y ∧ R u v) :
+    symmetric R → symmetric S := sorry
+```
+
+5\. Here is a putative theorem with an incorrect proof:
+
+::: {.nthm arguments="Theorem?"}
+Suppose $f : A \to B$, $R$ is a binary relation on $A$, and $S$ is the binary relation on $B$ defined as follows:
+$$
+\forall x \in B \forall y \in B(xSy \leftrightarrow \exists u \in A\exists v \in A(f(u) = x \wedge f(v) = y \wedge uRv)).
+$$
+If $R$ is transitive then $S$ is transitive.
+:::
+
+::: {.npf arguments="Incorrect Proof"}
+Suppose $R$ is transitive.  Let $x$, $y$, and $z$ be arbitrary elements of $B$.  Assume that $xSy$ and $ySz$.  By the definition of $S$, this means that there are $u$, $v$, and $w$ in $A$ such that $f(u) = x$, $f(v) = y$, $f(w) = z$, $uRv$, and $vRw$.  Since $R$ is transitive, it follows that $uRw$.  Since $f(u) = x$, $f(w) = z$, and $uRw$, $xSz$.  Therefore $S$ is transitive. [&nbsp;□]{.excl}\qedhere
+:::
+
+Find the mistake in the proof by attempting to write the proof in Lean.  Is the theorem correct?
+
+```lean
+--You might not be able to complete this proof
+theorem Exercise_5_1_15c
+    {A B : Type} (f : A → B) (R : BinRel A) (S : BinRel B)
+    (h : ∀ (x y : B), S x y ↔ ∃ (u v : A), f u = x ∧ f v = y ∧ R u v) :
+    transitive R → transitive S := sorry
+```
+
+::: {.numex arguments="6"}
+```lean
+theorem Exercise_5_1_16b
+    {A B : Type} (R : BinRel B) (S : BinRel (A → B))
+    (h : ∀ (f g : A → B), S f g ↔ ∀ (x : A), R (f x) (g x)) :
+    symmetric R → symmetric S := sorry
+```
+:::
+
+::: {.numex arguments="7"}
+```lean
+theorem Exercise_5_1_17a {A : Type} (f : A → A) (a : A)
+    (h : ∀ (x : A), f x = a) : ∀ (g : A → A), f ∘ g = f := sorry
+```
+:::
+
+::: {.numex arguments="8"}
+```lean
+theorem Exercise_5_1_17b {A : Type} (f : A → A) (a : A)
+    (h : ∀ (g : A → A), f ∘ g = f) :
+    ∃ (y : A), ∀ (x : A), f x = y := sorry
+```
+:::
