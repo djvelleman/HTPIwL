@@ -109,7 +109,7 @@ theorem Theorem_5_1_5 {A B C : Type} (f : A → B) (g : B → C) :
   show h a = c from h4
 ```
 
-Notice that the proof of `Theorem_5_1_5` begins by defining the function `h` for which `graph h = comp (graph g) (graph f)`.  The definition says that for all `x` of type `A`, `h x = g (f x)`.  This function `h` is called the *composition* of `g` and `f`, and it is denoted `g ∘ f`.  (To type `∘` in VSCode, type `\circ`.)  In other words, `g ∘ f` has type `A → C`, and for all `x` of type `A`, `(g ∘ f) x` is definitionally equal to `g (f x)`.  In *HTPI*, functions are sets of ordered pairs, and the operation of composition of functions is literally the same as the operation `comp` that we used in Chapter 4.  But in Lean, we distinguish among functions, relations, and sets of ordered pairs, so all we can say is that the operation of composition of functions corresponds to the operation `comp` from Chapter 4.  The correspondence is that, as shown in the proof of `Theorem_5_1_5`, if `h = g ∘ f`, then `graph h = comp (graph g) (graph f)`.
+Notice that the proof of `Theorem_5_1_5` begins by defining the function `h` for which `graph h = comp (graph g) (graph f)`.  The definition says that for all `x` of type `A`, `h x = g (f x)`.  This function `h` is called the *composition* of `g` and `f`, and it is denoted `g ∘ f`.  (To type `∘` in VSCode, type `\comp` or `\circ`.)  In other words, `g ∘ f` has type `A → C`, and for all `x` of type `A`, `(g ∘ f) x` is definitionally equal to `g (f x)`.  In *HTPI*, functions are sets of ordered pairs, and the operation of composition of functions is literally the same as the operation `comp` that we used in Chapter 4.  But in Lean, we distinguish among functions, relations, and sets of ordered pairs, so all we can say is that the operation of composition of functions corresponds to the operation `comp` from Chapter 4.  The correspondence is that, as shown in the proof of `Theorem_5_1_5`, if `h = g ∘ f`, then `graph h = comp (graph g) (graph f)`.
 
 We saw in part 4 of Theorem 4.2.5 that composition of relations is associative.  Composition of functions is also associative.  In fact, if `f : A → B`, `g : B → C`, and `h : C → D`, then `h ∘ (g ∘ f)` and `(h ∘ g) ∘ f` are definitionally equal, since they both mean the same thing as `fun (x : A) => h (g (f a))`.  As a result, the tactic `rfl` proves the associativity of composition of functions:
 
@@ -137,10 +137,9 @@ theorem func_from_graph_ltr {A B : Type} (F : Set (A × B)) :
 ::: {.numex arguments="2"}
 ```lean
 theorem Exercise_5_1_13a
-    {A B C : Type} (R : Set (A × B)) (S : Set (B × C))
-    (h1 : ∀ (b : B), b ∈ Ran R ∧ b ∈ Dom S)
-    (h2 : is_func_graph (comp S R)) :
-    is_func_graph S := sorry
+    {A B C : Type} (R : Set (A × B)) (S : Set (B × C)) (f : A → C)
+    (h1 : ∀ (b : B), b ∈ Ran R ∧ b ∈ Dom S) (h2 : graph f = comp S R) :
+    is_func_graph S := by
 ```
 :::
 
@@ -274,3 +273,83 @@ theorem Theorem_5_2_5_2 {A B C : Type} (f : A → B) (g : B → C) :
   rewrite [←h4] at h3
   show g (f a) = c from h3
 ```
+
+### Exercises
+
+::: {.numex arguments="1"}
+```lean
+theorem Exercise_5_2_10a {A B C : Type} (f: A → B) (g : B → C) :
+    onto (g ∘ f) → onto g := sorry
+```
+:::
+
+::: {.numex arguments="2"}
+```lean
+theorem Exercise_5_2_10b {A B C : Type} (f: A → B) (g : B → C) :
+    one_to_one (g ∘ f) → one_to_one f := sorry
+```
+:::
+
+::: {.numex arguments="3"}
+```lean
+theorem Exercise_5_2_11a {A B C : Type} (f: A → B) (g : B → C) :
+    onto f → ¬(one_to_one g) → ¬(one_to_one (g ∘ f)) := sorry
+```
+:::
+
+::: {.numex arguments="4"}
+```lean
+theorem Exercise_5_2_11b {A B C : Type} (f: A → B) (g : B → C) :
+    ¬(onto f) → one_to_one g → ¬(onto (g ∘ f)) := sorry
+```
+:::
+
+::: {.numex arguments="5"}
+```lean
+theorem Exercise_5_2_12 {A B : Type} (f : A → B) (g : B → Set A)
+    (h : ∀ (b : B), g b = { a : A | f a = b }) :
+    onto f → one_to_one g := sorry
+```
+:::
+
+::: {.numex arguments="6"}
+```lean
+theorem Exercise_5_2_16 {A B C : Type}
+    (R : Set (A × B)) (S : Set (B × C)) (f : A → C) (g : B → C)
+    (h1 : graph f = comp S R) (h2 : graph g = S) (h3 : one_to_one g) :
+    is_func_graph R := sorry
+```
+:::
+
+::: {.numex arguments="7"}
+```lean
+theorem Exercise_5_2_17a
+    {A B : Type} (f : A → B) (R : BinRel A) (S : BinRel B)
+    (h1 : ∀ (x y : B), S x y ↔ ∃ (u v : A), f u = x ∧ f v = y ∧ R u v)
+    (h2 : onto f) : reflexive R → reflexive S := sorry
+```
+:::
+
+::: {.numex arguments="8"}
+```lean
+theorem Exercise_5_2_17b
+    {A B : Type} (f : A → B) (R : BinRel A) (S : BinRel B)
+    (h1 : ∀ (x y : B), S x y ↔ ∃ (u v : A), f u = x ∧ f v = y ∧ R u v)
+    (h2 : one_to_one f) : transitive R → transitive S := sorry
+```
+:::
+
+::: {.numex arguments="9"}
+```lean
+theorem Exercise_5_2_21a {A B C : Type} (f : B → C) (g h : A → B)
+    (h1 : one_to_one f) (h2 : f ∘ g = f ∘ h) : g = h := sorry
+```
+:::
+
+::: {.numex arguments="10"}
+```lean
+theorem Exercise_5_2_21b {A B C : Type} (f : B → C) (a : A)
+    (h1 : ∀ (g h : A → B), f ∘ g = f ∘ h → g = h) :
+    one_to_one f := sorry
+```
+:::

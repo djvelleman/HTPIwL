@@ -303,7 +303,7 @@ $$
 <span id="cb8-27"><a href="#cb8-27" aria-hidden="true" tabindex="-1"></a>  <span class="kw">define</span> <span class="kw">at</span> h4          <span class="co">--h4: g b = c</span></span>
 <span id="cb8-28"><a href="#cb8-28" aria-hidden="true" tabindex="-1"></a>  <span class="kw">rewrite</span> [←h3] <span class="kw">at</span> h4   <span class="co">--h4: g (f a) = c</span></span>
 <span id="cb8-29"><a href="#cb8-29" aria-hidden="true" tabindex="-1"></a>  <span class="kw">show</span> h a = c <span class="kw">from</span> h4</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>Notice that the proof of <code>Theorem_5_1_5</code> begins by defining the function <code>h</code> for which <code>graph h = comp (graph g) (graph f)</code>. The definition says that for all <code>x</code> of type <code>A</code>, <code>h x = g (f x)</code>. This function <code>h</code> is called the <em>composition</em> of <code>g</code> and <code>f</code>, and it is denoted <code>g ∘ f</code>. (To type <code>∘</code> in VSCode, type <code>\circ</code>.) In other words, <code>g ∘ f</code> has type <code>A → C</code>, and for all <code>x</code> of type <code>A</code>, <code>(g ∘ f) x</code> is definitionally equal to <code>g (f x)</code>. In <em>HTPI</em>, functions are sets of ordered pairs, and the operation of composition of functions is literally the same as the operation <code>comp</code> that we used in Chapter 4. But in Lean, we distinguish among functions, relations, and sets of ordered pairs, so all we can say is that the operation of composition of functions corresponds to the operation <code>comp</code> from Chapter 4. The correspondence is that, as shown in the proof of <code>Theorem_5_1_5</code>, if <code>h = g ∘ f</code>, then <code>graph h = comp (graph g) (graph f)</code>.</p>
+<p>Notice that the proof of <code>Theorem_5_1_5</code> begins by defining the function <code>h</code> for which <code>graph h = comp (graph g) (graph f)</code>. The definition says that for all <code>x</code> of type <code>A</code>, <code>h x = g (f x)</code>. This function <code>h</code> is called the <em>composition</em> of <code>g</code> and <code>f</code>, and it is denoted <code>g ∘ f</code>. (To type <code>∘</code> in VSCode, type <code>\comp</code> or <code>\circ</code>.) In other words, <code>g ∘ f</code> has type <code>A → C</code>, and for all <code>x</code> of type <code>A</code>, <code>(g ∘ f) x</code> is definitionally equal to <code>g (f x)</code>. In <em>HTPI</em>, functions are sets of ordered pairs, and the operation of composition of functions is literally the same as the operation <code>comp</code> that we used in Chapter 4. But in Lean, we distinguish among functions, relations, and sets of ordered pairs, so all we can say is that the operation of composition of functions corresponds to the operation <code>comp</code> from Chapter 4. The correspondence is that, as shown in the proof of <code>Theorem_5_1_5</code>, if <code>h = g ∘ f</code>, then <code>graph h = comp (graph g) (graph f)</code>.</p>
 <p>We saw in part 4 of Theorem 4.2.5 that composition of relations is associative. Composition of functions is also associative. In fact, if <code>f : A → B</code>, <code>g : B → C</code>, and <code>h : C → D</code>, then <code>h ∘ (g ∘ f)</code> and <code>(h ∘ g) ∘ f</code> are definitionally equal, since they both mean the same thing as <code>fun (x : A) =&gt; h (g (f a))</code>. As a result, the tactic <code>rfl</code> proves the associativity of composition of functions:</p>
 <div class="sourceCode" id="cb9"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="kw">example</span> {A B C D : <span class="kw">Type</span>} (f : A → B) (g : B → C) (h : C → D) :</span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>    h ∘ (g ∘ f) = (h ∘ g) ∘ f := <span class="kw">by</span> <span class="kw">rfl</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -318,10 +318,9 @@ $$
 </div>
 <div class="numex" data-arguments="2">
 <div class="sourceCode" id="cb12"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Exercise_5_1_13a</span>
-<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>    {A B C : <span class="kw">Type</span>} (R : Set (A × B)) (S : Set (B × C))</span>
-<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>    (h1 : ∀ (b : B), b ∈ Ran R ∧ b ∈ Dom S)</span>
-<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>    (h2 : is_func_graph (comp S R)) :</span>
-<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>    is_func_graph S := <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>    {A B C : <span class="kw">Type</span>} (R : Set (A × B)) (S : Set (B × C)) (f : A → C)</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>    (h1 : ∀ (b : B), b ∈ Ran R ∧ b ∈ Dom S) (h2 : graph f = comp S R) :</span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>    is_func_graph S := <span class="kw">by</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="numex" data-arguments="3">
 <div class="sourceCode" id="cb13"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Exercise_5_1_14a</span>
@@ -411,8 +410,59 @@ $$
 <span id="cb22-12"><a href="#cb22-12" aria-hidden="true" tabindex="-1"></a>  <span class="kw">define</span> : (g ∘ f) a     <span class="co">--Goal: g (f a) = c</span></span>
 <span id="cb22-13"><a href="#cb22-13" aria-hidden="true" tabindex="-1"></a>  <span class="kw">rewrite</span> [←h4] <span class="kw">at</span> h3</span>
 <span id="cb22-14"><a href="#cb22-14" aria-hidden="true" tabindex="-1"></a>  <span class="kw">show</span> g (f a) = c <span class="kw">from</span> h3</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<section id="exercises-1" class="level3">
+<h3 class="anchored" data-anchor-id="exercises-1">Exercises</h3>
+<div class="numex" data-arguments="1">
+<div class="sourceCode" id="cb23"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Exercise_5_2_10a {A B C : <span class="kw">Type</span>} (f: A → B) (g : B → C) :</span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>    onto (g ∘ f) → onto g := <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="numex" data-arguments="2">
+<div class="sourceCode" id="cb24"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Exercise_5_2_10b {A B C : <span class="kw">Type</span>} (f: A → B) (g : B → C) :</span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>    one_to_one (g ∘ f) → one_to_one f := <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="numex" data-arguments="3">
+<div class="sourceCode" id="cb25"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Exercise_5_2_11a {A B C : <span class="kw">Type</span>} (f: A → B) (g : B → C) :</span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>    onto f → ¬(one_to_one g) → ¬(one_to_one (g ∘ f)) := <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="numex" data-arguments="4">
+<div class="sourceCode" id="cb26"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Exercise_5_2_11b {A B C : <span class="kw">Type</span>} (f: A → B) (g : B → C) :</span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>    ¬(onto f) → one_to_one g → ¬(onto (g ∘ f)) := <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="numex" data-arguments="5">
+<div class="sourceCode" id="cb27"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Exercise_5_2_12 {A B : <span class="kw">Type</span>} (f : A → B) (g : B → Set A)</span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>    (h : ∀ (b : B), g b = { a : A | f a = b }) :</span>
+<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a>    onto f → one_to_one g := <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="numex" data-arguments="6">
+<div class="sourceCode" id="cb28"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Exercise_5_2_16 {A B C : <span class="kw">Type</span>}</span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>    (R : Set (A × B)) (S : Set (B × C)) (f : A → C) (g : B → C)</span>
+<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a>    (h1 : graph f = comp S R) (h2 : graph g = S) (h3 : one_to_one g) :</span>
+<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a>    is_func_graph R := <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="numex" data-arguments="7">
+<div class="sourceCode" id="cb29"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Exercise_5_2_17a</span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>    {A B : <span class="kw">Type</span>} (f : A → B) (R : BinRel A) (S : BinRel B)</span>
+<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a>    (h1 : ∀ (x y : B), S x y ↔ ∃ (u v : A), f u = x ∧ f v = y ∧ R u v)</span>
+<span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a>    (h2 : onto f) : reflexive R → reflexive S := <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="numex" data-arguments="8">
+<div class="sourceCode" id="cb30"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Exercise_5_2_17b</span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a>    {A B : <span class="kw">Type</span>} (f : A → B) (R : BinRel A) (S : BinRel B)</span>
+<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a>    (h1 : ∀ (x y : B), S x y ↔ ∃ (u v : A), f u = x ∧ f v = y ∧ R u v)</span>
+<span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a>    (h2 : one_to_one f) : transitive R → transitive S := <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="numex" data-arguments="9">
+<div class="sourceCode" id="cb31"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Exercise_5_2_21a {A B C : <span class="kw">Type</span>} (f : B → C) (g h : A → B)</span>
+<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a>    (h1 : one_to_one f) (h2 : f ∘ g = f ∘ h) : g = h := <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="numex" data-arguments="10">
+<div class="sourceCode" id="cb32"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Exercise_5_2_21b {A B C : <span class="kw">Type</span>} (f : B → C) (a : A)</span>
+<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a>    (h1 : ∀ (g h : A → B), f ∘ g = f ∘ h → g = h) :</span>
+<span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a>    one_to_one f := <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
 
 
+</section>
 </section>
 
 </main> <!-- /main -->
