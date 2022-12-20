@@ -469,3 +469,72 @@ theorem Theorem_5_3_5 {A B : Type} (f : A → B) (g : B → A)
   rewrite [←h7] at h5
   show graph g = inv (graph f) from h5
 ```
+
+### Exercises
+
+::: {.numex arguments="1"}
+```lean
+theorem Theorem_5_3_2_2 {A B : Type} (f : A → B) (g : B → A)
+    (h1 : graph g = inv (graph f)) : f ∘ g = id := sorry
+```
+:::
+
+::: {.numex arguments="2"}
+```lean
+theorem Theorem_5_3_3_2 {A B : Type} (f : A → B) :
+    (∃ (g : B → A), f ∘ g = id) → onto f := sorry
+```
+:::
+
+::: {.numex arguments="3"}
+```lean
+theorem Exercise_5_3_11a {A B : Type} (f : A → B) (g : B → A) :
+    one_to_one f → f ∘ g = id → graph g = inv (graph f) := sorry
+```
+:::
+
+::: {.numex arguments="4"}
+```lean
+theorem Exercise_5_3_11b {A B : Type} (f : A → B) (g : B → A) :
+    onto f → g ∘ f = id → graph g = inv (graph f) := sorry
+```
+:::
+
+::: {.numex arguments="5"}
+```lean
+theorem Exercise_5_3_14a {A B : Type} (f : A → B) (g : B → A)
+    (h : f ∘ g = id) : ∀ x ∈ Ran (graph g), g (f x) = x := sorry
+```
+:::
+
+::: {.numex arguments="6"}
+```lean
+theorem Exercise_5_3_18 {A B C : Type} (f : A → C) (g : B → C)
+    (h1 : one_to_one g) (h2 : onto g) :
+    ∃ (h : A → B), g ∘ h = f := sorry
+```
+:::
+
+::: {.mdsk}
+:::
+
+The next two exercises will use the following definition:
+
+```lean
+def conj (A : Type) (f1 f2 : A → A) : Prop :=
+  ∃ (g g' : A → A), (f1 = g' ∘ f2 ∘ g) ∧ (g ∘ g' = id) ∧ (g' ∘ g = id)
+```
+
+::: {.numex arguments="7"}
+```lean
+theorem Exercise_5_3_17a {A : Type} : symmetric (conj A) := sorry
+```
+:::
+
+::: {.numex arguments="8"}
+```lean
+theorem Exercise_5_3_17b {A : Type} (f1 f2 : A → A)
+    (h1 : conj A f1 f2) (h2 : ∃ (a : A), f1 a = a) :
+    ∃ (a : A), f2 a = a := sorry
+```
+:::

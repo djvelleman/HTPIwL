@@ -553,8 +553,50 @@ $$
 <span id="cb38-14"><a href="#cb38-14" aria-hidden="true" tabindex="-1"></a>      _ = g' := <span class="kw">by</span> <span class="kw">rfl</span></span>
 <span id="cb38-15"><a href="#cb38-15" aria-hidden="true" tabindex="-1"></a>  <span class="kw">rewrite</span> [←h7] <span class="kw">at</span> h5</span>
 <span id="cb38-16"><a href="#cb38-16" aria-hidden="true" tabindex="-1"></a>  <span class="kw">show</span> graph g = inv (graph f) <span class="kw">from</span> h5</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<section id="exercises-2" class="level3">
+<h3 class="anchored" data-anchor-id="exercises-2">Exercises</h3>
+<div class="numex" data-arguments="1">
+<div class="sourceCode" id="cb39"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Theorem_5_3_2_2 {A B : <span class="kw">Type</span>} (f : A → B) (g : B → A)</span>
+<span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a>    (h1 : graph g = inv (graph f)) : f ∘ g = id := <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="numex" data-arguments="2">
+<div class="sourceCode" id="cb40"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Theorem_5_3_3_2 {A B : <span class="kw">Type</span>} (f : A → B) :</span>
+<span id="cb40-2"><a href="#cb40-2" aria-hidden="true" tabindex="-1"></a>    (∃ (g : B → A), f ∘ g = id) → onto f := <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="numex" data-arguments="3">
+<div class="sourceCode" id="cb41"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Exercise_5_3_11a {A B : <span class="kw">Type</span>} (f : A → B) (g : B → A) :</span>
+<span id="cb41-2"><a href="#cb41-2" aria-hidden="true" tabindex="-1"></a>    one_to_one f → f ∘ g = id → graph g = inv (graph f) := <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="numex" data-arguments="4">
+<div class="sourceCode" id="cb42"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Exercise_5_3_11b {A B : <span class="kw">Type</span>} (f : A → B) (g : B → A) :</span>
+<span id="cb42-2"><a href="#cb42-2" aria-hidden="true" tabindex="-1"></a>    onto f → g ∘ f = id → graph g = inv (graph f) := <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="numex" data-arguments="5">
+<div class="sourceCode" id="cb43"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Exercise_5_3_14a {A B : <span class="kw">Type</span>} (f : A → B) (g : B → A)</span>
+<span id="cb43-2"><a href="#cb43-2" aria-hidden="true" tabindex="-1"></a>    (h : f ∘ g = id) : ∀ x ∈ Ran (graph g), g (f x) = x := <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="numex" data-arguments="6">
+<div class="sourceCode" id="cb44"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Exercise_5_3_18 {A B C : <span class="kw">Type</span>} (f : A → C) (g : B → C)</span>
+<span id="cb44-2"><a href="#cb44-2" aria-hidden="true" tabindex="-1"></a>    (h1 : one_to_one g) (h2 : onto g) :</span>
+<span id="cb44-3"><a href="#cb44-3" aria-hidden="true" tabindex="-1"></a>    ∃ (h : A → B), g ∘ h = f := <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="mdsk">
+
+</div>
+<p>The next two exercises will use the following definition:</p>
+<div class="sourceCode" id="cb45"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> conj (A : <span class="kw">Type</span>) (f1 f2 : A → A) : <span class="kw">Prop</span> :=</span>
+<span id="cb45-2"><a href="#cb45-2" aria-hidden="true" tabindex="-1"></a>  ∃ (g g' : A → A), (f1 = g' ∘ f2 ∘ g) ∧ (g ∘ g' = id) ∧ (g' ∘ g = id)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="numex" data-arguments="7">
+<div class="sourceCode" id="cb46"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Exercise_5_3_17a {A : <span class="kw">Type</span>} : symmetric (conj A) := <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="numex" data-arguments="8">
+<div class="sourceCode" id="cb47"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Exercise_5_3_17b {A : <span class="kw">Type</span>} (f1 f2 : A → A)</span>
+<span id="cb47-2"><a href="#cb47-2" aria-hidden="true" tabindex="-1"></a>    (h1 : conj A f1 f2) (h2 : ∃ (a : A), f1 a = a) :</span>
+<span id="cb47-3"><a href="#cb47-3" aria-hidden="true" tabindex="-1"></a>    ∃ (a : A), f2 a = a := <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
 
 
+</section>
 </section>
 
 </main> <!-- /main -->
