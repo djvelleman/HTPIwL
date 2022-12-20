@@ -203,6 +203,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   <ul class="collapse">
   <li><a href="#functions" id="toc-functions" class="nav-link active" data-scroll-target="#functions">5.1. Functions</a></li>
   <li><a href="#one-to-one-and-onto" id="toc-one-to-one-and-onto" class="nav-link" data-scroll-target="#one-to-one-and-onto">5.2. One-to-One and Onto</a></li>
+  <li><a href="#inverses-of-functions" id="toc-inverses-of-functions" class="nav-link" data-scroll-target="#inverses-of-functions">5.3. Inverses of Functions</a></li>
   </ul>
 </nav>
     </div>
@@ -270,7 +271,7 @@ $$
 <p>The axiom of extensionality for sets says that a set is completely determined by its elements. This is what justifies our usual method of defining a set: we specify what its elements are, using notation like <code>{0, 1, 2}</code> or <code>{ x : Nat | x &lt; 3 }</code>. Similarly, the axiom of extensionality for functions says that a function is completely determined by its values, and therefore we can define a function by specifying its values. For instance, we can define a function from <code>Nat</code> to <code>Nat</code> by specifying, for any <code>n : Nat</code>, the result of applying the function to <code>n</code>. As an example of this, we could define the “squaring function” from <code>Nat</code> to <code>Nat</code> to be the function that, when applied to any <code>n : Nat</code>, produces the result <code>n^2</code>. Here are two ways to define this function in Lean:</p>
 <div class="sourceCode" id="cb6"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> square1 (n : Nat) : Nat := n^2</span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> square2 : Nat → Nat := fun (n : Nat) =&gt; n^2</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>The first of these definitions uses notation we have used before; it says that if <code>n</code> has type <code>Nat</code>, then the expression <code>square1 n</code> also has type <code>Nat</code>, and it is definitionally equal to <code>n^2</code>. The second definition introduces new Lean notation. It says that <code>square2</code> has type <code>Nat → Nat</code>, and it defines it to be the function that, when applied to any <code>n : Nat</code>, yields the result <code>n^2</code>. Of course, this also means that <code>square2 n</code> is definitionally equal to <code>n^2</code>. In general, the notation <code>fun (x : A) =&gt; ...</code> means “the function which, when applied to any <code>x</code> of type <code>A</code>, yields the result …” The two definitions above are equivalent. You can ask Lean to confirm this, and try out the squaring function, as follows:</p>
+<p>The first of these definitions uses notation we have used before; it says that if <code>n</code> has type <code>Nat</code>, then the expression <code>square1 n</code> also has type <code>Nat</code>, and it is definitionally equal to <code>n^2</code>. The second definition introduces new Lean notation. It says that <code>square2</code> has type <code>Nat → Nat</code>, and it defines it to be the function that, when applied to any <code>n</code> of type <code>Nat</code>, yields the result <code>n^2</code>. Of course, this also means that <code>square2 n</code> is definitionally equal to <code>n^2</code>. In general, the notation <code>fun (x : A) =&gt; ...</code> means “the function which, when applied to any <code>x</code> of type <code>A</code>, yields the result …” The two definitions above are equivalent. You can ask Lean to confirm this, and try out the squaring function, as follows:</p>
 <div class="sourceCode" id="cb7"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="kw">example</span> : square1 = square2 := <span class="kw">by</span> <span class="kw">rfl</span></span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="kw">example</span> : square1 7 = 49 := <span class="kw">by</span> <span class="kw">rfl</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>There is one more theorem in Section 5.1 of <em>HTPI</em>. Theorem 5.1.5 says that if <span class="math inline">\(f\)</span> is a function from <span class="math inline">\(A\)</span> to <span class="math inline">\(B\)</span> and <span class="math inline">\(g\)</span> is a function from <span class="math inline">\(B\)</span> to <span class="math inline">\(C\)</span>, then the composition of <span class="math inline">\(g\)</span> and <span class="math inline">\(f\)</span> is a function from <span class="math inline">\(A\)</span> to <span class="math inline">\(C\)</span>. To state this theorem in Lean, we will have to make adjustments for the differences between the treatment of functions in <em>HTPI</em> and Lean. In Chapter 4, we defined <code>comp S R</code> to be the composition of <code>S</code> and <code>R</code>, where <code>R</code> has type <code>Set (A × B)</code> and <code>S</code> had type <code>Set (B × C)</code>. But functions in Lean are not sets of ordered pairs, so we cannot apply the operation <code>comp</code> to them. We can, however, apply it to their graphs. So the theorem corresponding to Theorem 5.1.5 in <em>HTPI</em> is this:</p>
@@ -460,9 +461,100 @@ $$
 <span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a>    (h1 : ∀ (g h : A → B), f ∘ g = f ∘ h → g = h) :</span>
 <span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a>    one_to_one f := <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-
-
 </section>
+</section>
+<section id="inverses-of-functions" class="level2">
+<h2 class="anchored" data-anchor-id="inverses-of-functions">5.3. Inverses of Functions</h2>
+<p>Section 5.3 of <em>HTPI</em> is motivated by the following question: If <span class="math inline">\(f\)</span> is a function from <span class="math inline">\(A\)</span> to <span class="math inline">\(B\)</span>, is <span class="math inline">\(f^{-1}\)</span> a function from <span class="math inline">\(B\)</span> to <span class="math inline">\(A\)</span>? Here is the first theorem in that section:</p>
+<div class="nthm" data-arguments="Theorem 5.3.1">
+<p>Suppose <span class="math inline">\(f : A \to B\)</span>. If <span class="math inline">\(f\)</span> is one-to-one and onto, then <span class="math inline">\(f^{-1} : B \to A\)</span>.</p>
+</div>
+<p>Of course, we will have to rephrase this theorem slightly to prove it in Lean. If <code>f</code> has type <code>A → B</code>, then the inverse operation <code>inv</code> cannot be applied to <code>f</code>, but it can be applied to <code>graph f</code>. So we must rephrase the theorem like this:</p>
+<div class="sourceCode" id="cb33"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Theorem_5_3_1 {A B : <span class="kw">Type</span>}</span>
+<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a>    (f : A → B) (h1 : one_to_one f) (h2 : onto f) :</span>
+<span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a>    ∃ (g : B → A), graph g = inv (graph f)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>To prove this theorem, we will use the theorem <code>func_from_graph</code> that was stated in Section 5.1. We can remind ourselves of what that theorem says by using the command <code>#check @func_from_graph</code>, which gives the result:</p>
+<div class="quote">
+<pre><code>@func_from_graph : ∀ {A B : Type} (F : Set (A × B)),
+    (∃ f, graph f = F) ↔ is_func_graph F</code></pre>
+</div>
+<p>This means that, in the context of the proof of <code>Theorem_5_3_1</code>, <code>func_from_graph (inv (graph f))</code> is a proof of the statement <code>∃ (g : B → A), graph g = inv (graph f) ↔︎ is_func_graph (inv (graph f))</code>, and therefore <code>(func_from_graph (inv (graph f))).rtl _</code> will prove the theorem, if we can fill in the blank with a proof of <code>is_func_graph (inv (func f))</code>. So we can begin the proof by using the tactic <code>apply (func_from_graph (inv (graph f))).rtl</code>. The rest of the proof is straightforward.</p>
+<div class="sourceCode" id="cb35"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Theorem_5_3_1 {A B : <span class="kw">Type</span>}</span>
+<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a>    (f : A → B) (h1 : one_to_one f) (h2 : onto f) :</span>
+<span id="cb35-3"><a href="#cb35-3" aria-hidden="true" tabindex="-1"></a>    ∃ (g : B → A), graph g = inv (graph f) := <span class="kw">by</span></span>
+<span id="cb35-4"><a href="#cb35-4" aria-hidden="true" tabindex="-1"></a>  <span class="kw">apply</span> (func_from_graph (inv (graph f))).rtl</span>
+<span id="cb35-5"><a href="#cb35-5" aria-hidden="true" tabindex="-1"></a>                <span class="co">--goal: is_func_graph (inv (graph f))</span></span>
+<span id="cb35-6"><a href="#cb35-6" aria-hidden="true" tabindex="-1"></a>  <span class="kw">define</span>        <span class="co">--goal: ∀ (x : B), ∃! (y : A), (x, y) ∈ inv (graph f)</span></span>
+<span id="cb35-7"><a href="#cb35-7" aria-hidden="true" tabindex="-1"></a>  <span class="kw">fix</span> b : B</span>
+<span id="cb35-8"><a href="#cb35-8" aria-hidden="true" tabindex="-1"></a>  <span class="kw">exists_unique</span></span>
+<span id="cb35-9"><a href="#cb35-9" aria-hidden="true" tabindex="-1"></a>  <span class="co">-- Existence</span></span>
+<span id="cb35-10"><a href="#cb35-10" aria-hidden="true" tabindex="-1"></a>  <span class="kw">define</span> <span class="kw">at</span> h2          <span class="co">--h2: ∀ (y : B), ∃ (x : A), f x = y</span></span>
+<span id="cb35-11"><a href="#cb35-11" aria-hidden="true" tabindex="-1"></a>  <span class="kw">obtain</span> (a : A) (h4 : f a = b) <span class="kw">from</span> h2 b</span>
+<span id="cb35-12"><a href="#cb35-12" aria-hidden="true" tabindex="-1"></a>  <span class="kw">apply</span> Exists.intro a  <span class="co">--goal: (b, a) ∈ inv (graph f)</span></span>
+<span id="cb35-13"><a href="#cb35-13" aria-hidden="true" tabindex="-1"></a>  <span class="kw">define</span>                <span class="co">--goal: f a = b</span></span>
+<span id="cb35-14"><a href="#cb35-14" aria-hidden="true" tabindex="-1"></a>  <span class="kw">show</span> f a = b <span class="kw">from</span> h4</span>
+<span id="cb35-15"><a href="#cb35-15" aria-hidden="true" tabindex="-1"></a>  <span class="co">-- Uniqueness</span></span>
+<span id="cb35-16"><a href="#cb35-16" aria-hidden="true" tabindex="-1"></a>  <span class="kw">fix</span> a1 : A; <span class="kw">fix</span> a2 : A</span>
+<span id="cb35-17"><a href="#cb35-17" aria-hidden="true" tabindex="-1"></a>  <span class="kw">assume</span> h3 : (b, a1) ∈ inv (graph f)</span>
+<span id="cb35-18"><a href="#cb35-18" aria-hidden="true" tabindex="-1"></a>  <span class="kw">assume</span> h4 : (b, a2) ∈ inv (graph f) <span class="co">--goal: a1 = a2</span></span>
+<span id="cb35-19"><a href="#cb35-19" aria-hidden="true" tabindex="-1"></a>  <span class="kw">define</span> <span class="kw">at</span> h3          <span class="co">--h3: f a1 = b</span></span>
+<span id="cb35-20"><a href="#cb35-20" aria-hidden="true" tabindex="-1"></a>  <span class="kw">define</span> <span class="kw">at</span> h4          <span class="co">--h4: f a2 = b</span></span>
+<span id="cb35-21"><a href="#cb35-21" aria-hidden="true" tabindex="-1"></a>  <span class="kw">rewrite</span> [←h4] <span class="kw">at</span> h3   <span class="co">--h3: f a1 = f a2</span></span>
+<span id="cb35-22"><a href="#cb35-22" aria-hidden="true" tabindex="-1"></a>  <span class="kw">define</span> <span class="kw">at</span> h1          <span class="co">--h1: ∀ (x1 x2 : A), f x1 = f x2 → x1 = x2</span></span>
+<span id="cb35-23"><a href="#cb35-23" aria-hidden="true" tabindex="-1"></a>  <span class="kw">show</span> a1 = a2 <span class="kw">from</span> h1 a1 a2 h3</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Suppose, now, that we have <code>f : A → B</code>, <code>g : B → A</code>, and <code>graph g = inv (graph f)</code>, as in <code>Theorem_5_3_1</code>. What can we say about the relationship between <code>f</code> and <code>g</code>? One answer is that <code>g ∘ f = id</code> and <code>f ∘ g = id</code>, as shown in Theorem 5.3.2 of <em>HTPI</em>. We’ll prove one of these facts, and leave the other as an exercise for you.</p>
+<div class="sourceCode" id="cb36"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Theorem_5_3_2_1 {A B : <span class="kw">Type</span>} (f : A → B) (g : B → A)</span>
+<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a>    (h1 : graph g = inv (graph f)) : g ∘ f = id := <span class="kw">by</span></span>
+<span id="cb36-3"><a href="#cb36-3" aria-hidden="true" tabindex="-1"></a>  <span class="kw">apply</span> funext           <span class="co">--goal: ∀ (x : A), (g ∘ f) x = id x</span></span>
+<span id="cb36-4"><a href="#cb36-4" aria-hidden="true" tabindex="-1"></a>  <span class="kw">fix</span> a : A              <span class="co">--goal: (g ∘ f) a = id a</span></span>
+<span id="cb36-5"><a href="#cb36-5" aria-hidden="true" tabindex="-1"></a>  <span class="kw">have</span> h2 : (f a, a) ∈ graph g := <span class="kw">by</span></span>
+<span id="cb36-6"><a href="#cb36-6" aria-hidden="true" tabindex="-1"></a>    <span class="kw">rewrite</span> [h1]         <span class="co">--goal: (f a, a) ∈ inv (graph f)</span></span>
+<span id="cb36-7"><a href="#cb36-7" aria-hidden="true" tabindex="-1"></a>    <span class="kw">define</span>               <span class="co">--goal:  f a = f a</span></span>
+<span id="cb36-8"><a href="#cb36-8" aria-hidden="true" tabindex="-1"></a>    <span class="kw">rfl</span></span>
+<span id="cb36-9"><a href="#cb36-9" aria-hidden="true" tabindex="-1"></a>  <span class="kw">define</span> <span class="kw">at</span> h2           <span class="co">--h2: g (f a) = a</span></span>
+<span id="cb36-10"><a href="#cb36-10" aria-hidden="true" tabindex="-1"></a>  <span class="kw">show</span> (g ∘ f) a = id a <span class="kw">from</span> h2</span>
+<span id="cb36-11"><a href="#cb36-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-12"><a href="#cb36-12" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Theorem_5_3_2_2 {A B : <span class="kw">Type</span>} (f : A → B) (g : B → A)</span>
+<span id="cb36-13"><a href="#cb36-13" aria-hidden="true" tabindex="-1"></a>    (h1 : graph g = inv (graph f)) : f ∘ g = id := <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Combining the theorems above, we have shown that if <code>f</code> is one-to-one and onto, then there is a function <code>g</code> such that <code>g ∘ f = id</code> and <code>f ∘ g = id</code>. In fact, the converse is true as well: if such a function <code>g</code> exists, then <code>f</code> must be one-to-one and onto. Again, we’ll prove one statement as leave the second as an exercise.</p>
+<div class="sourceCode" id="cb37"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Theorem_5_3_3_1 {A B : <span class="kw">Type</span>} (f : A → B) :</span>
+<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a>    (∃ (g : B → A), g ∘ f = id) → one_to_one f := <span class="kw">by</span></span>
+<span id="cb37-3"><a href="#cb37-3" aria-hidden="true" tabindex="-1"></a>  <span class="kw">assume</span> h1 : ∃ (g : B → A), g ∘ f = id</span>
+<span id="cb37-4"><a href="#cb37-4" aria-hidden="true" tabindex="-1"></a>  <span class="kw">obtain</span> (g : B → A) (h2 : g ∘ f = id) <span class="kw">from</span> h1</span>
+<span id="cb37-5"><a href="#cb37-5" aria-hidden="true" tabindex="-1"></a>  <span class="kw">define</span>              <span class="co">--goal: ∀ (x1 x2 : A), f x1 = f x2 → x1 = x2</span></span>
+<span id="cb37-6"><a href="#cb37-6" aria-hidden="true" tabindex="-1"></a>  <span class="kw">fix</span> a1 : A; <span class="kw">fix</span> a2 : A</span>
+<span id="cb37-7"><a href="#cb37-7" aria-hidden="true" tabindex="-1"></a>  <span class="kw">assume</span> h3 : f a1 = f a2</span>
+<span id="cb37-8"><a href="#cb37-8" aria-hidden="true" tabindex="-1"></a>  <span class="kw">show</span> a1 = a2 <span class="kw">from</span></span>
+<span id="cb37-9"><a href="#cb37-9" aria-hidden="true" tabindex="-1"></a>    <span class="kw">calc</span> a1</span>
+<span id="cb37-10"><a href="#cb37-10" aria-hidden="true" tabindex="-1"></a>        = id a1 := <span class="kw">by</span> <span class="kw">rfl</span></span>
+<span id="cb37-11"><a href="#cb37-11" aria-hidden="true" tabindex="-1"></a>      _ = (g ∘ f) a1 := <span class="kw">by</span> <span class="kw">rw</span> [h2]</span>
+<span id="cb37-12"><a href="#cb37-12" aria-hidden="true" tabindex="-1"></a>      _ = g (f a1) := <span class="kw">by</span> <span class="kw">rfl</span></span>
+<span id="cb37-13"><a href="#cb37-13" aria-hidden="true" tabindex="-1"></a>      _ = g (f a2) := <span class="kw">by</span> <span class="kw">rw</span> [h3]</span>
+<span id="cb37-14"><a href="#cb37-14" aria-hidden="true" tabindex="-1"></a>      _ = (g ∘ f) a2 := <span class="kw">by</span> <span class="kw">rfl</span></span>
+<span id="cb37-15"><a href="#cb37-15" aria-hidden="true" tabindex="-1"></a>      _ = id a2 := <span class="kw">by</span> <span class="kw">rw</span> [h2]</span>
+<span id="cb37-16"><a href="#cb37-16" aria-hidden="true" tabindex="-1"></a>      _ = a2 := <span class="kw">by</span> <span class="kw">rfl</span></span>
+<span id="cb37-17"><a href="#cb37-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-18"><a href="#cb37-18" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Theorem_5_3_3_2 {A B : <span class="kw">Type</span>} (f : A → B) :</span>
+<span id="cb37-19"><a href="#cb37-19" aria-hidden="true" tabindex="-1"></a>    (∃ (g : B → A), f ∘ g = id) → onto f := <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>We can combine the theorems above to show that if we have <code>f : A → B</code>, <code>g : B → A</code>, <code>g ∘ f = id</code>, and <code>f ∘ g = id</code>, then <code>graph g</code> must be the inverse of <code>graph f</code>. Compare the proof below to the proof of Theorem 5.3.5 in <em>HTPI</em>.</p>
+<div class="sourceCode" id="cb38"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Theorem_5_3_5 {A B : <span class="kw">Type</span>} (f : A → B) (g : B → A)</span>
+<span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a>    (h1 : g ∘ f = id) (h2 : f ∘ g = id) : graph g = inv (graph f) := <span class="kw">by</span></span>
+<span id="cb38-3"><a href="#cb38-3" aria-hidden="true" tabindex="-1"></a>  <span class="kw">have</span> h3 : one_to_one f := Theorem_5_3_3_1 f (Exists.intro g h1)</span>
+<span id="cb38-4"><a href="#cb38-4" aria-hidden="true" tabindex="-1"></a>  <span class="kw">have</span> h4 : onto f := Theorem_5_3_3_2 f (Exists.intro g h2)</span>
+<span id="cb38-5"><a href="#cb38-5" aria-hidden="true" tabindex="-1"></a>  <span class="kw">obtain</span> (g' : B → A) (h5 : graph g' = inv (graph f))</span>
+<span id="cb38-6"><a href="#cb38-6" aria-hidden="true" tabindex="-1"></a>    <span class="kw">from</span> Theorem_5_3_1 f h3 h4</span>
+<span id="cb38-7"><a href="#cb38-7" aria-hidden="true" tabindex="-1"></a>  <span class="kw">have</span> h6 : g' ∘ f = id := Theorem_5_3_2_1 f g' h5</span>
+<span id="cb38-8"><a href="#cb38-8" aria-hidden="true" tabindex="-1"></a>  <span class="kw">have</span> h7 : g = g' :=</span>
+<span id="cb38-9"><a href="#cb38-9" aria-hidden="true" tabindex="-1"></a>    <span class="kw">calc</span> g</span>
+<span id="cb38-10"><a href="#cb38-10" aria-hidden="true" tabindex="-1"></a>        = id ∘ g := <span class="kw">by</span> <span class="kw">rfl</span></span>
+<span id="cb38-11"><a href="#cb38-11" aria-hidden="true" tabindex="-1"></a>      _ = (g' ∘ f) ∘ g := <span class="kw">by</span> <span class="kw">rw</span> [h6]</span>
+<span id="cb38-12"><a href="#cb38-12" aria-hidden="true" tabindex="-1"></a>      _ = g' ∘ (f ∘ g) := <span class="kw">by</span> <span class="kw">rfl</span></span>
+<span id="cb38-13"><a href="#cb38-13" aria-hidden="true" tabindex="-1"></a>      _ = g' ∘ id := <span class="kw">by</span> <span class="kw">rw</span> [h2]</span>
+<span id="cb38-14"><a href="#cb38-14" aria-hidden="true" tabindex="-1"></a>      _ = g' := <span class="kw">by</span> <span class="kw">rfl</span></span>
+<span id="cb38-15"><a href="#cb38-15" aria-hidden="true" tabindex="-1"></a>  <span class="kw">rewrite</span> [←h7] <span class="kw">at</span> h5</span>
+<span id="cb38-16"><a href="#cb38-16" aria-hidden="true" tabindex="-1"></a>  <span class="kw">show</span> graph g = inv (graph f) <span class="kw">from</span> h5</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+
+
 </section>
 
 </main> <!-- /main -->

@@ -68,7 +68,7 @@ def square1 (n : Nat) : Nat := n^2
 def square2 : Nat → Nat := fun (n : Nat) => n^2
 ```
 
-The first of these definitions uses notation we have used before; it says that if `n` has type `Nat`, then the expression `square1 n` also has type `Nat`, and it is definitionally equal to `n^2`.  The second definition introduces new Lean notation.  It says that `square2` has type `Nat → Nat`, and it defines it to be the function that, when applied to any `n : Nat`, yields the result `n^2`.  Of course, this also means that `square2 n` is definitionally equal to `n^2`.  In general, the notation `fun (x : A) => ...` means "the function which, when applied to any `x` of type `A`, yields the result ..."  The two definitions above are equivalent.  You can ask Lean to confirm this, and try out the squaring function, as follows:
+The first of these definitions uses notation we have used before; it says that if `n` has type `Nat`, then the expression `square1 n` also has type `Nat`, and it is definitionally equal to `n^2`.  The second definition introduces new Lean notation.  It says that `square2` has type `Nat → Nat`, and it defines it to be the function that, when applied to any `n` of type `Nat`, yields the result `n^2`.  Of course, this also means that `square2 n` is definitionally equal to `n^2`.  In general, the notation `fun (x : A) => ...` means "the function which, when applied to any `x` of type `A`, yields the result ..."  The two definitions above are equivalent.  You can ask Lean to confirm this, and try out the squaring function, as follows:
 
 ```lean
 example : square1 = square2 := by rfl
@@ -353,3 +353,119 @@ theorem Exercise_5_2_21b {A B C : Type} (f : B → C) (a : A)
     one_to_one f := sorry
 ```
 :::
+
+## 5.3. Inverses of Functions
+
+Section 5.3 of *HTPI* is motivated by the following question: If $f$ is a function from $A$ to $B$, is $f^{-1}$ a function from $B$ to $A$?  Here is the first theorem in that section:
+
+::: {.nthm arguments="Theorem 5.3.1"}
+Suppose $f : A \to B$.  If $f$ is one-to-one and onto, then $f^{-1} : B \to A$.
+:::
+
+Of course, we will have to rephrase this theorem slightly to prove it in Lean.  If `f` has type `A → B`, then the inverse operation `inv` cannot be applied to `f`, but it can be applied to `graph f`.  So we must rephrase the theorem like this:
+
+```lean
+theorem Theorem_5_3_1 {A B : Type}
+    (f : A → B) (h1 : one_to_one f) (h2 : onto f) :
+    ∃ (g : B → A), graph g = inv (graph f)
+```
+
+To prove this theorem, we will use the theorem `func_from_graph` that was stated in Section 5.1.  We can remind ourselves of what that theorem says by using the command `#check @func_from_graph`, which gives the result:
+
+:::{.quote}
+```
+@func_from_graph : ∀ {A B : Type} (F : Set (A × B)),
+    (∃ f, graph f = F) ↔ is_func_graph F
+```
+:::
+
+This means that, in the context of the proof of `Theorem_5_3_1`, `func_from_graph (inv (graph f))` is a proof of the statement `∃ (g : B → A), graph g = inv (graph f) ↔ is_func_graph (inv (graph f))`, and therefore `(func_from_graph (inv (graph f))).rtl _` will prove the theorem, if we can fill in the blank with a proof of `is_func_graph (inv (func f))`.  So we can begin the proof by using the tactic `apply (func_from_graph (inv (graph f))).rtl`.  The rest of the proof is straightforward.
+
+```lean
+theorem Theorem_5_3_1 {A B : Type}
+    (f : A → B) (h1 : one_to_one f) (h2 : onto f) :
+    ∃ (g : B → A), graph g = inv (graph f) := by
+  apply (func_from_graph (inv (graph f))).rtl
+                --goal: is_func_graph (inv (graph f))
+  define        --goal: ∀ (x : B), ∃! (y : A), (x, y) ∈ inv (graph f)
+  fix b : B
+  exists_unique
+  -- Existence
+  define at h2          --h2: ∀ (y : B), ∃ (x : A), f x = y
+  obtain (a : A) (h4 : f a = b) from h2 b
+  apply Exists.intro a  --goal: (b, a) ∈ inv (graph f)
+  define                --goal: f a = b
+  show f a = b from h4
+  -- Uniqueness
+  fix a1 : A; fix a2 : A
+  assume h3 : (b, a1) ∈ inv (graph f)
+  assume h4 : (b, a2) ∈ inv (graph f) --goal: a1 = a2
+  define at h3          --h3: f a1 = b
+  define at h4          --h4: f a2 = b
+  rewrite [←h4] at h3   --h3: f a1 = f a2
+  define at h1          --h1: ∀ (x1 x2 : A), f x1 = f x2 → x1 = x2
+  show a1 = a2 from h1 a1 a2 h3
+```
+
+Suppose, now, that we have `f : A → B`, `g : B → A`, and `graph g = inv (graph f)`, as in `Theorem_5_3_1`.  What can we say about the relationship between `f` and `g`?  One answer is that `g ∘ f = id` and `f ∘ g = id`, as shown in Theorem 5.3.2 of *HTPI*.  We'll prove one of these facts, and leave the other as an exercise for you.
+
+```lean
+theorem Theorem_5_3_2_1 {A B : Type} (f : A → B) (g : B → A)
+    (h1 : graph g = inv (graph f)) : g ∘ f = id := by
+  apply funext           --goal: ∀ (x : A), (g ∘ f) x = id x
+  fix a : A              --goal: (g ∘ f) a = id a
+  have h2 : (f a, a) ∈ graph g := by
+    rewrite [h1]         --goal: (f a, a) ∈ inv (graph f)
+    define               --goal:  f a = f a
+    rfl
+  define at h2           --h2: g (f a) = a
+  show (g ∘ f) a = id a from h2
+
+theorem Theorem_5_3_2_2 {A B : Type} (f : A → B) (g : B → A)
+    (h1 : graph g = inv (graph f)) : f ∘ g = id := sorry
+```
+
+Combining the theorems above, we have shown that if `f` is one-to-one and onto, then there is a function `g` such that `g ∘ f = id` and `f ∘ g = id`.  In fact, the converse is true as well: if such a function `g` exists, then `f` must be one-to-one and onto.  Again, we'll prove one statement as leave the second as an exercise.
+
+```lean
+theorem Theorem_5_3_3_1 {A B : Type} (f : A → B) :
+    (∃ (g : B → A), g ∘ f = id) → one_to_one f := by
+  assume h1 : ∃ (g : B → A), g ∘ f = id
+  obtain (g : B → A) (h2 : g ∘ f = id) from h1
+  define              --goal: ∀ (x1 x2 : A), f x1 = f x2 → x1 = x2
+  fix a1 : A; fix a2 : A
+  assume h3 : f a1 = f a2
+  show a1 = a2 from
+    calc a1
+        = id a1 := by rfl
+      _ = (g ∘ f) a1 := by rw [h2]
+      _ = g (f a1) := by rfl
+      _ = g (f a2) := by rw [h3]
+      _ = (g ∘ f) a2 := by rfl
+      _ = id a2 := by rw [h2]
+      _ = a2 := by rfl
+
+theorem Theorem_5_3_3_2 {A B : Type} (f : A → B) :
+    (∃ (g : B → A), f ∘ g = id) → onto f := sorry
+```
+
+We can combine the theorems above to show that if we have `f : A → B`, `g : B → A`, `g ∘ f = id`, and `f ∘ g = id`, then `graph g` must be the inverse of `graph f`.  Compare the proof below to the proof of Theorem 5.3.5 in *HTPI*.
+
+```lean
+theorem Theorem_5_3_5 {A B : Type} (f : A → B) (g : B → A)
+    (h1 : g ∘ f = id) (h2 : f ∘ g = id) : graph g = inv (graph f) := by
+  have h3 : one_to_one f := Theorem_5_3_3_1 f (Exists.intro g h1)
+  have h4 : onto f := Theorem_5_3_3_2 f (Exists.intro g h2)
+  obtain (g' : B → A) (h5 : graph g' = inv (graph f))
+    from Theorem_5_3_1 f h3 h4
+  have h6 : g' ∘ f = id := Theorem_5_3_2_1 f g' h5
+  have h7 : g = g' :=
+    calc g
+        = id ∘ g := by rfl
+      _ = (g' ∘ f) ∘ g := by rw [h6]
+      _ = g' ∘ (f ∘ g) := by rfl
+      _ = g' ∘ id := by rw [h2]
+      _ = g' := by rfl
+  rewrite [←h7] at h5
+  show graph g = inv (graph f) from h5
+```
