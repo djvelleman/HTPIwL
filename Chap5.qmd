@@ -538,3 +538,102 @@ theorem Exercise_5_3_17b {A : Type} (f1 f2 : A → A)
     ∃ (a : A), f2 a = a := sorry
 ```
 :::
+
+## 5.4. Closures
+
+Suppose we have `f : A → A` and `C : Set A`.  We say that `C` is *closed* under `f` if the value of `f` at any element of `C` is again an element of `C`:
+
+```lean
+def closed {A : Type} (f : A → A) (C : Set A) : Prop := ∀ x ∈ C, f x ∈ C
+```
+
+According to this definition, `closed f C` means that `C` is closed under `f`.  Sometimes, if we have a set `B` of type `Set A` that is not closed under `f`, we are interested in adding more elements to the set to make it closed.  The *closure* of `B` under `f` is the smallest set containing `B` that is closed under `f`.  That is, it is the smallest element of `{ D : Set A | B ⊆ D ∧ closed f D }`, where we use the subset partial ordering on `Set A` to determine which element is smallest.  We will write `closure f B C` to mean that the closure of `B` under `f` is `C`.  We can define this as follows:
+
+```lean
+def closure {A : Type} (f : A → A) (B C : Set A) : Prop :=
+    smallestElt (sub A) C { D : Set A | B ⊆ D ∧ closed f D }
+```
+
+We know that smallest elements, when they exist, are unique, so it makes sense to talk about *the* closure of `B` under `f`.  But not every set has a smallest element.  Does every set have a closure?  Theorem 5.4.5 in *HTPI* says that the answer is yes.  The idea behind the proof is that, for any family of sets `F`, if `F` has a smallest element under the subset partial order, then that smallest element is equal to `⋂₀F`.  (We'll ask you to prove this in the exercises.)
+
+```lean
+theorem Theorem_5_4_5 {A : Type} (f : A → A) (B : Set A) :
+    ∃ (C : Set A), closure f B C := by
+  let F : Set (Set A) := { D : Set A | B ⊆ D ∧ closed f D }
+  let C : Set A := ⋂₀F
+  apply Exists.intro C    --goal: closure f B C
+  define                  --goal: C ∈ F ∧ ∀ D ∈ F, C ⊆ D
+  apply And.intro
+  -- Proof that C ∈ F
+  define                  --goal: B ⊆ C ∧ closed f C
+  apply And.intro
+  -- Proof that B ⊆ C
+  fix a : A
+  assume h1 : a ∈ B       --goal: a ∈ C
+  define                  --goal: ∀ D ∈ F, a ∈ D
+  fix D : Set A
+  assume h2 : D ∈ F
+  define at h2            --h2: B ⊆ D ∧ closed f D
+  show a ∈ D from h2.left h1
+  -- Proof that C is closed under f
+  define                  --goal: ∀ x ∈ C, f x ∈ C
+  fix a : A
+  assume h1 : a ∈ C       --goal: f a ∈ C
+  define                  --goal: ∀ D ∈ F, f a ∈ D
+  fix D : Set A
+  assume h2 : D ∈ F       --goal: f a ∈ D
+  define at h1            --h1: ∀ A_1 ∈ F, a ∈ A_1
+  have h3 : a ∈ D := h1 D h2
+  define at h2            --h2: B ⊆ D ∧ closed f D
+  have h4 : closed f D := h2.right
+  define at h4            --h4: ∀ x ∈ D, f x ∈ D
+  show f a ∈ D from h4 a h3
+  -- Proof that C is smallest
+  fix D : Set A
+  assume h1 : D ∈ F      --goal: sub A C D
+  define
+  fix a : A
+  assume h2 : a ∈ C       --goal: a ∈ D
+  define at h2            --h2: ∀ A_1 ∈ F, a ∈ A_1
+  show a ∈ D from h2 D h1
+```
+
+The idea of the closure of a set under a function can also be applied to functions of two variables.  One way to represent a function of two variables on a type `A` would be to use a function `g` of type `(A × A) → A`.  If `a` and `b` have type `A`, then `(a, b)` has type `A × A`, and the result of applying the function `g` to the pair of values `a` and `b` would be written `g (a, b)`.
+
+However, there is another way to represent a function of two variables in Lean that turns out to be more convenient.  Suppose `f` has type `A → A → A`.  As with the arrow used in conditional propositions, the arrow for function types groups to the right, so `A → A → A` means `A → (A → A)`.  Thus, if `a` has type `A`, then `f a` has type `A → A`.  In other words, `f a` is a function from `A` to `A`, and therefore if `b` has type `A` then `f a b` has type `A`.  The upshot is that if `f` is followed by two objects of type `A`, then the resulting expression has type `A`, so `f` can be thought of as a function that applies to a pair of objects of type `A` and gives a value of type `A`.
+
+For example, we can think of addition of integers as a function of two variables.  Here are three ways to define this function in Lean.
+
+```lean
+def plus (m n : Int) : Int := m + n
+def plus' : Int → Int → Int := fun (m n : Int) => m + n
+def plus'' : Int → Int → Int := fun (m : Int) => (fun (n : Int) => m + n)
+```
+
+The third definition matches the description above most closely:  `plus''` is a function that, when applied to an integer `m`, produces a new function `plus'' m : Int → Int`.  The function `plus'' m` is defined to be the function that, when applied to an integer `n`, produces the value `m + n`.  In other words, `plus'' m n = m + n`.  The first two definitions are more convenient ways of defining exactly the same function.  Let's have Lean confirm this, and try out the function:
+
+```lean
+example : plus = plus'' := by rfl
+example : plus' = plus'' := by rfl
+example : plus 3 2 = 5 := by rfl
+```
+
+There are two reasons why this way of representing functions of two variables in Lean is more convenient.  First, it saves us the trouble of grouping the arguments of the function together into an ordered pair before applying the function.  If we have `f : A → A → A` and `a b : A`, then to apply the function `f` to the arguments `a` and `b` we can just write `f a b`.  Second, it allows for the possibility of "partially applying" the function `f`.  The expression `f a` is meaningful, and denotes the function that, when applied to any `b : A`, produces the result `f a b`.  For example, if `m` is an integer, then `plus m` denotes the function that, when applied to an integer `n`, produces the result `m + n`.  We might call `plus m` the "add to `m`" function.
+
+We have actually been using these ideas for a long time.  In Chapter 3, we introduced the type `Pred U` of predicates applying to objects of type `U`, but we did not explain how such predicates are represented internally in Lean.  In fact, `Pred U` is defined to be the type `U → Prop`, so if `P` has type `Pred U`, then `P` is a function from `U` to `Prop`, and if `x` has type `U`, then the proposition `P x` is the result of applying the function `P` to `x`.  Similarly, `Rel A B` stands for `A → B → Prop`, so if `R` has type `Rel A B`, then `R` is a function of two variables, one of type `A` and one of type `B`.  Earlier in this section, we defined `closed f C` to be the proposition asserting that `C` is closed under `f`.  This means that `closed` is a function of two variables, the first a function `f` of type `A → A` and the second a set `C` of type `Set A` (where the type `A` is an implicit argument of `closed`).  But that means that the partial application `closed f` denotes a function from `Set A` to `Prop`.  In other words, `closed f` is a predicate applying to sets of type `Set A`; we could think of it as the "is closed under `f`" predicate.  Similarly, in Section 4.4 we defined `sub` to be a function of three variables: if `A` is a type and `X` and `Y` have type `Set A`, then `sub A X Y` is the proposition `X ⊆ Y`.  Since then, we have used the partial application `sub A`, which is the subset relation on `Set A`.  For example, we used it earlier in this section in the definition of `closure`.
+
+Returning to the subject of closures, here's how we can extend the idea of closures to functions of two variables:
+
+```lean
+def closed2 {A : Type} (f : A → A → A) (C : Set A) : Prop :=
+    ∀ x ∈ C, ∀ y ∈ C, f x y ∈ C
+def closure2 {A : Type} (f : A → A → A) (B C : Set A) : Prop := 
+    smallestElt (sub A) C { D : Set A | B ⊆ D ∧ closed2 f D }
+```
+
+We will leave it as an exercise for you to prove that closures under functions of two variables also exist.
+
+```lean
+theorem Theorem_5_4_9 {A : Type} (f : A → A → A) (B : Set A) :
+    ∃ (C : Set A), closure2 f B C := sorry
+```
