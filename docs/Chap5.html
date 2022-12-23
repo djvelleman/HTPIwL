@@ -645,7 +645,7 @@ $$
 <span id="cb50-38"><a href="#cb50-38" aria-hidden="true" tabindex="-1"></a>  <span class="kw">define</span> <span class="kw">at</span> h2            <span class="co">--h2: ∀ A_1 ∈ F, a ∈ A_1</span></span>
 <span id="cb50-39"><a href="#cb50-39" aria-hidden="true" tabindex="-1"></a>  <span class="kw">show</span> a ∈ D <span class="kw">from</span> h2 D h1</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>The idea of the closure of a set under a function can also be applied to functions of two variables. One way to represent a function of two variables on a type <code>A</code> would be to use a function <code>g</code> of type <code>(A × A) → A</code>. If <code>a</code> and <code>b</code> have type <code>A</code>, then <code>(a, b)</code> has type <code>A × A</code>, and the result of applying the function <code>g</code> to the pair of values <code>a</code> and <code>b</code> would be written <code>g (a, b)</code>.</p>
-<p>However, there is another way to represent a function of two variables in Lean that turns out to be more convenient. Suppose <code>f</code> has type <code>A → A → A</code>. As with the arrow used in conditional propositions, the arrow for function types groups to the right, so <code>A → A → A</code> means <code>A → (A → A)</code>. Thus, if <code>a</code> has type <code>A</code>, then <code>f a</code> has type <code>A → A</code>. In other words, <code>f a</code> is a function from <code>A</code> to <code>A</code>, and therefore if <code>b</code> has type <code>A</code> then <code>f a b</code> has type <code>A</code>. The upshot is that if <code>f</code> is followed by two objects of type <code>A</code>, then the resulting expression has type <code>A</code>, so <code>f</code> can be thought of as a function that applies to a pair of objects of type <code>A</code> and gives a value of type <code>A</code>.</p>
+<p>However, there is another way to represent a function of two variables that turns out to be more convenient in Lean. Suppose <code>f</code> has type <code>A → A → A</code>. As with the arrow used in conditional propositions, the arrow for function types groups to the right, so <code>A → A → A</code> means <code>A → (A → A)</code>. Thus, if <code>a</code> has type <code>A</code>, then <code>f a</code> has type <code>A → A</code>. In other words, <code>f a</code> is a function from <code>A</code> to <code>A</code>, and therefore if <code>b</code> has type <code>A</code> then <code>f a b</code> has type <code>A</code>. The upshot is that if <code>f</code> is followed by two objects of type <code>A</code>, then the resulting expression has type <code>A</code>, so <code>f</code> can be thought of as a function that applies to a pair of objects of type <code>A</code> and gives a value of type <code>A</code>.</p>
 <p>For example, we can think of addition of integers as a function of two variables. Here are three ways to define this function in Lean.</p>
 <div class="sourceCode" id="cb51"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb51-1"><a href="#cb51-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> plus (m n : Int) : Int := m + n</span>
 <span id="cb51-2"><a href="#cb51-2" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> plus' : Int → Int → Int := fun (m n : Int) =&gt; m + n</span>
@@ -664,8 +664,48 @@ $$
 <p>We will leave it as an exercise for you to prove that closures under functions of two variables also exist.</p>
 <div class="sourceCode" id="cb54"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb54-1"><a href="#cb54-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Theorem_5_4_9 {A : <span class="kw">Type</span>} (f : A → A → A) (B : Set A) :</span>
 <span id="cb54-2"><a href="#cb54-2" aria-hidden="true" tabindex="-1"></a>    ∃ (C : Set A), closure2 f B C := <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<section id="exercises-3" class="level3">
+<h3 class="anchored" data-anchor-id="exercises-3">Exercises</h3>
+<div class="numex" data-arguments="1">
+<div class="sourceCode" id="cb55"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb55-1"><a href="#cb55-1" aria-hidden="true" tabindex="-1"></a><span class="kw">example</span> {A : <span class="kw">Type</span>} (F : Set (Set A)) (B : Set A) :</span>
+<span id="cb55-2"><a href="#cb55-2" aria-hidden="true" tabindex="-1"></a>    smallestElt (sub A) B F → B = ⋂₀F := <span class="kw">by</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>2. If <code>B</code> has type <code>Set A</code>, then <code>complement B</code> is the set <code>{ a : A | a ∉ B }</code>. Thus, for any <code>a</code> of type <code>A</code>, <code>a ∈ complement B</code> if and only if <code>a ∉ B</code>:</p>
+<div class="sourceCode" id="cb56"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb56-1"><a href="#cb56-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> complement {A : <span class="kw">Type</span>} (B : Set A) : Set A := { a : A | a ∉ B }</span>
+<span id="cb56-2"><a href="#cb56-2" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> simp_complement {A : <span class="kw">Type</span>} (a : A) (B : Set A) :</span>
+<span id="cb56-3"><a href="#cb56-3" aria-hidden="true" tabindex="-1"></a>    a ∈ complement B ↔ a ∉ B := <span class="kw">by</span> <span class="kw">rfl</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Use this definition and theorem to prove the following theorem:</p>
+<div class="sourceCode" id="cb57"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb57-1"><a href="#cb57-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Exercise_5_4_7 {A : <span class="kw">Type</span>} (f g : A → A) (C : Set A)</span>
+<span id="cb57-2"><a href="#cb57-2" aria-hidden="true" tabindex="-1"></a>    (h1 : f ∘ g = id) (h2 : closed f C) : closed g (complement C) := <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="numex" data-arguments="3">
+<div class="sourceCode" id="cb58"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb58-1"><a href="#cb58-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Exercise_5_4_9a {A : <span class="kw">Type</span>} (f : A → A) (C1 C2 : Set A)</span>
+<span id="cb58-2"><a href="#cb58-2" aria-hidden="true" tabindex="-1"></a>    (h1 : closed f C1) (h2 : closed f C2) : closed f (C1 ∪ C2) := <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="numex" data-arguments="4">
+<div class="sourceCode" id="cb59"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb59-1"><a href="#cb59-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Exercise_5_4_10a {A : <span class="kw">Type</span>} (f : A → A) (B1 B2 C1 C2 : Set A)</span>
+<span id="cb59-2"><a href="#cb59-2" aria-hidden="true" tabindex="-1"></a>    (h1 : closure f B1 C1) (h2 : closure f B2 C2) :</span>
+<span id="cb59-3"><a href="#cb59-3" aria-hidden="true" tabindex="-1"></a>    B1 ⊆ B2 → C1 ⊆ C2 := <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="numex" data-arguments="5">
+<div class="sourceCode" id="cb60"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb60-1"><a href="#cb60-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Exercise_5_4_10b {A : <span class="kw">Type</span>} (f : A → A) (B1 B2 C1 C2 : Set A)</span>
+<span id="cb60-2"><a href="#cb60-2" aria-hidden="true" tabindex="-1"></a>    (h1 : closure f B1 C1) (h2 : closure f B2 C2) :</span>
+<span id="cb60-3"><a href="#cb60-3" aria-hidden="true" tabindex="-1"></a>    closure f (B1 ∪ B2) (C1 ∪ C2) := <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="numex" data-arguments="6">
+<div class="sourceCode" id="cb61"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb61-1"><a href="#cb61-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Theorem_5_4_9 {A : <span class="kw">Type</span>} (f : A → A → A) (B : Set A) :</span>
+<span id="cb61-2"><a href="#cb61-2" aria-hidden="true" tabindex="-1"></a>    ∃ (C : Set A), closure2 f B C := <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>7. Suppose we define a set to be closed under a family of functions if it is closed under all of the functions in the family. Of course, the closure of a set <code>B</code> under a family of functions is the smallest set containing <code>B</code> that is closed under the family.</p>
+<div class="sourceCode" id="cb62"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb62-1"><a href="#cb62-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> closed_family {A : <span class="kw">Type</span>} (F : Set (A → A)) (C : Set A) : <span class="kw">Prop</span> :=</span>
+<span id="cb62-2"><a href="#cb62-2" aria-hidden="true" tabindex="-1"></a>    ∀ f ∈ F, closed f C</span>
+<span id="cb62-3"><a href="#cb62-3" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> closure_family {A : <span class="kw">Type</span>} (F : Set (A → A)) (B C : Set A) : <span class="kw">Prop</span> :=</span>
+<span id="cb62-4"><a href="#cb62-4" aria-hidden="true" tabindex="-1"></a>    smallestElt (sub A) C { D : Set A | B ⊆ D ∧ closed_family F D }</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Prove that the closure of a set under a family of functions always exists:</p>
+<div class="sourceCode" id="cb63"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb63-1"><a href="#cb63-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Exercise_5_4_13a {A : <span class="kw">Type</span>} (F : Set (A → A)) (B : Set A) :</span>
+<span id="cb63-2"><a href="#cb63-2" aria-hidden="true" tabindex="-1"></a>    ∃ (C : Set A), closure_family F B C := <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 
 
+</section>
 </section>
 
 </main> <!-- /main -->

@@ -600,7 +600,7 @@ theorem Theorem_5_4_5 {A : Type} (f : A → A) (B : Set A) :
 
 The idea of the closure of a set under a function can also be applied to functions of two variables.  One way to represent a function of two variables on a type `A` would be to use a function `g` of type `(A × A) → A`.  If `a` and `b` have type `A`, then `(a, b)` has type `A × A`, and the result of applying the function `g` to the pair of values `a` and `b` would be written `g (a, b)`.
 
-However, there is another way to represent a function of two variables in Lean that turns out to be more convenient.  Suppose `f` has type `A → A → A`.  As with the arrow used in conditional propositions, the arrow for function types groups to the right, so `A → A → A` means `A → (A → A)`.  Thus, if `a` has type `A`, then `f a` has type `A → A`.  In other words, `f a` is a function from `A` to `A`, and therefore if `b` has type `A` then `f a b` has type `A`.  The upshot is that if `f` is followed by two objects of type `A`, then the resulting expression has type `A`, so `f` can be thought of as a function that applies to a pair of objects of type `A` and gives a value of type `A`.
+However, there is another way to represent a function of two variables that turns out to be more convenient in Lean.  Suppose `f` has type `A → A → A`.  As with the arrow used in conditional propositions, the arrow for function types groups to the right, so `A → A → A` means `A → (A → A)`.  Thus, if `a` has type `A`, then `f a` has type `A → A`.  In other words, `f a` is a function from `A` to `A`, and therefore if `b` has type `A` then `f a b` has type `A`.  The upshot is that if `f` is followed by two objects of type `A`, then the resulting expression has type `A`, so `f` can be thought of as a function that applies to a pair of objects of type `A` and gives a value of type `A`.
 
 For example, we can think of addition of integers as a function of two variables.  Here are three ways to define this function in Lean.
 
@@ -636,4 +636,74 @@ We will leave it as an exercise for you to prove that closures under functions o
 ```lean
 theorem Theorem_5_4_9 {A : Type} (f : A → A → A) (B : Set A) :
     ∃ (C : Set A), closure2 f B C := sorry
+```
+
+### Exercises
+
+::: {.numex arguments="1"}
+```lean
+example {A : Type} (F : Set (Set A)) (B : Set A) :
+    smallestElt (sub A) B F → B = ⋂₀F := by
+```
+:::
+
+2\. If `B` has type `Set A`, then `complement B` is the set `{ a : A | a ∉ B }`.  Thus, for any `a` of type `A`, `a ∈ complement B` if and only if `a ∉ B`:
+
+```lean
+def complement {A : Type} (B : Set A) : Set A := { a : A | a ∉ B }
+theorem simp_complement {A : Type} (a : A) (B : Set A) :
+    a ∈ complement B ↔ a ∉ B := by rfl
+```
+
+Use this definition and theorem to prove the following theorem:
+
+```lean
+theorem Exercise_5_4_7 {A : Type} (f g : A → A) (C : Set A)
+    (h1 : f ∘ g = id) (h2 : closed f C) : closed g (complement C) := sorry
+```
+
+::: {.numex arguments="3"}
+```lean
+theorem Exercise_5_4_9a {A : Type} (f : A → A) (C1 C2 : Set A)
+    (h1 : closed f C1) (h2 : closed f C2) : closed f (C1 ∪ C2) := sorry
+```
+:::
+
+::: {.numex arguments="4"}
+```lean
+theorem Exercise_5_4_10a {A : Type} (f : A → A) (B1 B2 C1 C2 : Set A)
+    (h1 : closure f B1 C1) (h2 : closure f B2 C2) :
+    B1 ⊆ B2 → C1 ⊆ C2 := sorry
+```
+:::
+
+::: {.numex arguments="5"}
+```lean
+theorem Exercise_5_4_10b {A : Type} (f : A → A) (B1 B2 C1 C2 : Set A)
+    (h1 : closure f B1 C1) (h2 : closure f B2 C2) :
+    closure f (B1 ∪ B2) (C1 ∪ C2) := sorry
+```
+:::
+
+::: {.numex arguments="6"}
+```lean
+theorem Theorem_5_4_9 {A : Type} (f : A → A → A) (B : Set A) :
+    ∃ (C : Set A), closure2 f B C := sorry
+```
+:::
+
+7\. Suppose we define a set to be closed under a family of functions if it is closed under all of the functions in the family.  Of course, the closure of a set `B` under a family of functions is the smallest set containing `B` that is closed under the family.
+
+```lean
+def closed_family {A : Type} (F : Set (A → A)) (C : Set A) : Prop :=
+    ∀ f ∈ F, closed f C
+def closure_family {A : Type} (F : Set (A → A)) (B C : Set A) : Prop :=
+    smallestElt (sub A) C { D : Set A | B ⊆ D ∧ closed_family F D }
+```
+
+Prove that the closure of a set under a family of functions always exists:
+
+```lean
+theorem Exercise_5_4_13a {A : Type} (F : Set (A → A)) (B : Set A) :
+    ∃ (C : Set A), closure_family F B C := sorry
 ```
