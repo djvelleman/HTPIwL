@@ -386,20 +386,20 @@ theorem Theorem_5_3_1 {A B : Type}
     (f : A → B) (h1 : one_to_one f) (h2 : onto f) :
     ∃ (g : B → A), graph g = inv (graph f) := by
   apply (func_from_graph (inv (graph f))).rtl
-                --goal: is_func_graph (inv (graph f))
-  define        --goal: ∀ (x : B), ∃! (y : A), (x, y) ∈ inv (graph f)
+                --Goal: is_func_graph (inv (graph f))
+  define        --Goal: ∀ (x : B), ∃! (y : A), (x, y) ∈ inv (graph f)
   fix b : B
   exists_unique
   -- Existence
   define at h2          --h2: ∀ (y : B), ∃ (x : A), f x = y
   obtain (a : A) (h4 : f a = b) from h2 b
-  apply Exists.intro a  --goal: (b, a) ∈ inv (graph f)
-  define                --goal: f a = b
+  apply Exists.intro a  --Goal: (b, a) ∈ inv (graph f)
+  define                --Goal: f a = b
   show f a = b from h4
   -- Uniqueness
   fix a1 : A; fix a2 : A
   assume h3 : (b, a1) ∈ inv (graph f)
-  assume h4 : (b, a2) ∈ inv (graph f) --goal: a1 = a2
+  assume h4 : (b, a2) ∈ inv (graph f) --Goal: a1 = a2
   define at h3          --h3: f a1 = b
   define at h4          --h4: f a2 = b
   rewrite [←h4] at h3   --h3: f a1 = f a2
@@ -412,11 +412,11 @@ Suppose, now, that we have `f : A → B`, `g : B → A`, and `graph g = inv (gra
 ```lean
 theorem Theorem_5_3_2_1 {A B : Type} (f : A → B) (g : B → A)
     (h1 : graph g = inv (graph f)) : g ∘ f = id := by
-  apply funext           --goal: ∀ (x : A), (g ∘ f) x = id x
-  fix a : A              --goal: (g ∘ f) a = id a
+  apply funext           --Goal: ∀ (x : A), (g ∘ f) x = id x
+  fix a : A              --Goal: (g ∘ f) a = id a
   have h2 : (f a, a) ∈ graph g := by
-    rewrite [h1]         --goal: (f a, a) ∈ inv (graph f)
-    define               --goal:  f a = f a
+    rewrite [h1]         --Goal: (f a, a) ∈ inv (graph f)
+    define               --Goal:  f a = f a
     rfl
   define at h2           --h2: g (f a) = a
   show (g ∘ f) a = id a from h2
@@ -432,7 +432,7 @@ theorem Theorem_5_3_3_1 {A B : Type} (f : A → B) :
     (∃ (g : B → A), g ∘ f = id) → one_to_one f := by
   assume h1 : ∃ (g : B → A), g ∘ f = id
   obtain (g : B → A) (h2 : g ∘ f = id) from h1
-  define              --goal: ∀ (x1 x2 : A), f x1 = f x2 → x1 = x2
+  define              --Goal: ∀ (x1 x2 : A), f x1 = f x2 → x1 = x2
   fix a1 : A; fix a2 : A
   assume h3 : f a1 = f a2
   show a1 = a2 from
@@ -561,27 +561,27 @@ theorem Theorem_5_4_5 {A : Type} (f : A → A) (B : Set A) :
     ∃ (C : Set A), closure f B C := by
   let F : Set (Set A) := { D : Set A | B ⊆ D ∧ closed f D }
   let C : Set A := ⋂₀F
-  apply Exists.intro C    --goal: closure f B C
-  define                  --goal: C ∈ F ∧ ∀ D ∈ F, C ⊆ D
+  apply Exists.intro C    --Goal: closure f B C
+  define                  --Goal: C ∈ F ∧ ∀ D ∈ F, C ⊆ D
   apply And.intro
   -- Proof that C ∈ F
-  define                  --goal: B ⊆ C ∧ closed f C
+  define                  --Goal: B ⊆ C ∧ closed f C
   apply And.intro
   -- Proof that B ⊆ C
   fix a : A
-  assume h1 : a ∈ B       --goal: a ∈ C
-  define                  --goal: ∀ D ∈ F, a ∈ D
+  assume h1 : a ∈ B       --Goal: a ∈ C
+  define                  --Goal: ∀ D ∈ F, a ∈ D
   fix D : Set A
   assume h2 : D ∈ F
   define at h2            --h2: B ⊆ D ∧ closed f D
   show a ∈ D from h2.left h1
   -- Proof that C is closed under f
-  define                  --goal: ∀ x ∈ C, f x ∈ C
+  define                  --Goal: ∀ x ∈ C, f x ∈ C
   fix a : A
-  assume h1 : a ∈ C       --goal: f a ∈ C
-  define                  --goal: ∀ D ∈ F, f a ∈ D
+  assume h1 : a ∈ C       --Goal: f a ∈ C
+  define                  --Goal: ∀ D ∈ F, f a ∈ D
   fix D : Set A
-  assume h2 : D ∈ F       --goal: f a ∈ D
+  assume h2 : D ∈ F       --Goal: f a ∈ D
   define at h1            --h1: ∀ A_1 ∈ F, a ∈ A_1
   have h3 : a ∈ D := h1 D h2
   define at h2            --h2: B ⊆ D ∧ closed f D
@@ -590,10 +590,10 @@ theorem Theorem_5_4_5 {A : Type} (f : A → A) (B : Set A) :
   show f a ∈ D from h4 a h3
   -- Proof that C is smallest
   fix D : Set A
-  assume h1 : D ∈ F      --goal: sub A C D
+  assume h1 : D ∈ F      --Goal: sub A C D
   define
   fix a : A
-  assume h2 : a ∈ C       --goal: a ∈ D
+  assume h2 : a ∈ C       --Goal: a ∈ D
   define at h2            --h2: ∀ A_1 ∈ F, a ∈ A_1
   show a ∈ D from h2 D h1
 ```
@@ -706,4 +706,119 @@ Prove that the closure of a set under a family of functions always exists:
 ```lean
 theorem Exercise_5_4_13a {A : Type} (F : Set (A → A)) (B : Set A) :
     ∃ (C : Set A), closure_family F B C := sorry
+```
+
+## 5.5. Images and Inverse Images: A Research Project
+
+Section 5.5 of *HTPI* introduces two new definitions.  Suppose $f : A \to B$.  If $X \subseteq A$, then the *image* of $X$ under $f$ is the set $f(X)$ defined as follows:
+$$
+f(X) = \{f(x) \mid x \in X\} = \{b \in B \mid \exists x \in X(f(x) = b)\}.
+$$
+If $Y \subseteq B$, then the *inverse image* of $Y$ under $f$ is the set $f^{-1}(Y)$ defined as follows:
+$$
+f^{-1}(Y) = \{a \in A \mid f(a) \in Y\}.
+$$
+
+Here are definitions of these concepts in Lean:
+
+```lean
+def image {A B : Type} (f : A → B) (X : Set A) : Set B :=
+    { f x | x ∈ X }
+def inverse_image {A B : Type} (f : A → B) (Y : Set B) : Set A :=
+    { a : A | f a ∈ Y }
+-- The following theorems illustrate the meaning of these definitions:
+theorem simp_image {A B : Type} (f : A → B) (X : Set A) (b : B) :
+    b ∈ image f X ↔ ∃ x ∈ X, f x = b := by rfl
+theorem simp_inverse_image {A B : Type} (f : A → B) (Y : Set B) (a : A) :
+    a ∈ inverse_image f Y ↔ f a ∈ Y := by rfl
+```
+
+It is natural to wonder how these concepts interact with familiar operations on sets.  *HTPI* gives an example of such an interaction in Theorem 5.5.2.  The theorem makes two assertions.  Here are proofs of the two parts of the theorem in Lean.
+
+```lean
+theorem Theorem_5_5_2_1 {A B : Type} (f : A → B) (W X : Set A) :
+    image f (W ∩ X) ⊆ image f W ∩ image f X := by
+  fix y : B
+  assume h1 : y ∈ image f (W ∩ X)  --Goal: y ∈ image f W ∩ image f X
+  define at h1                     --h1: ∃ (x : A), x ∈ W ∩ X ∧ f x = y
+  obtain (x : A) (h2 : x ∈ W ∩ X ∧ f x = y) from h1
+  define : x ∈ W ∩ X at h2         --h2: (x ∈ W ∧ x ∈ X) ∧ f x = y
+  apply And.intro
+  -- Proof that y ∈ image f W
+  define                           --Goal: ∃ (x : A), x ∈ W ∧ f x = y
+  show ∃ (x : A), x ∈ W ∧ f x = y from
+    Exists.intro x (And.intro h2.left.left h2.right)
+  -- Proof that y ∈ image f X
+  show y ∈ image f X from
+    Exists.intro x (And.intro h2.left.right h2.right)
+
+theorem Theorem_5_5_2_2 {A B : Type} (f : A → B) (W X : Set A)
+    (h1 : one_to_one f) : image f (W ∩ X) = image f W ∩ image f X := by
+  apply Set.ext
+  fix y : B      --Goal: y ∈ image f (W ∩ X) ↔ y ∈ image f W ∩ image f X
+  apply Iff.intro
+  -- (→)
+  assume h2 : y ∈ image f (W ∩ X)
+  show y ∈ image f W ∩ image f X from Theorem_5_5_2_1 f W X h2
+  -- (←)
+  assume h2 : y ∈ image f W ∩ image f X  --Goal: y ∈ image f (W ∩ X)
+  define at h2                  --h2: y ∈ image f W ∧ y ∈ image f X
+  rewrite [simp_image, simp_image] at h2
+          --h2: (∃ (x : A), x ∈ W ∧ f x = y) ∧ ∃ (x : A), x ∈ X ∧ f x = y
+  obtain (x1 : A) (h3 : x1 ∈ W ∧ f x1 = y) from h2.left
+  obtain (x2 : A) (h4 : x2 ∈ X ∧ f x2 = y) from h2.right
+  have h5 : f x2 = y := h4.right
+  rewrite [←h3.right] at h5    --h5: f x2 = f x1
+  define at h1                 --h1: ∀ (x1 x2 : A), f x1 = f x2 → x1 = x2
+  have h6 : x2 = x1 := h1 x2 x1 h5
+  rewrite [h6] at h4           --h4: x1 ∈ X ∧ f x1 = y
+  show y ∈ image f (W ∩ X) from
+    Exists.intro x1 (And.intro (And.intro h3.left h4.left) h3.right)
+```
+
+The rest of Section 5.5 of *HTPI* consists of statements for you to try to prove.  Here are the statements, written as examples in Lean.  Some are correct and some are not; some can be made correct by adding additional hypotheses or weakening the conclusion.  Prove as much as you can.
+
+```lean
+example {A B : Type} (f : A → B) (W X : Set A) :
+    image f (W ∪ X) = image f W ∪ image f X := sorry
+
+example {A B : Type} (f : A → B) (W X : Set A) :
+    image f (W \ X) = image f W \ image f X := sorry
+
+example {A B : Type} (f : A → B) (W X : Set A) :
+    W ⊆ X ↔ image f W ⊆ image f X := sorry
+
+example {A B : Type} (f : A → B) (Y Z : Set B) :
+    inverse_image f  (Y ∩ Z) =
+        inverse_image f Y ∩ inverse_image f Z := sorry
+
+example {A B : Type} (f : A → B) (Y Z : Set B) :
+    inverse_image f  (Y ∪ Z) =
+        inverse_image f Y ∪ inverse_image f Z := sorry
+
+example {A B : Type} (f : A → B) (Y Z : Set B) :
+    inverse_image f  (Y \ Z) =
+        inverse_image f Y \ inverse_image f Z := sorry
+
+example {A B : Type} (f : A → B) (Y Z : Set B) :
+    Y ⊆ Z ↔ inverse_image f Y ⊆ inverse_image f Z := sorry
+
+example {A B : Type} (f : A → B) (X : Set A) :
+    inverse_image f (image f X) = X := sorry
+
+example {A B : Type} (f : A → B) (Y : Set B) :
+    image f (inverse_image f Y) = Y := sorry
+
+example {A : Type} (f : A → A) (C : Set A) :
+    closed f C → image f C ⊆ C := sorry
+
+example {A : Type} (f : A → A) (C : Set A) :
+    image f C ⊆ C → C ⊆ inverse_image f C := sorry
+
+example {A : Type} (f : A → A) (C : Set A) :
+    C ⊆ inverse_image f C → closed f C := sorry
+
+example {A B : Type} (f : A → B) (g : B → A) (Y : Set B)
+    (h1 : f ∘ g = id) (h2 : g ∘ f = id) :
+    inverse_image f Y = image g Y := sorry
 ```
