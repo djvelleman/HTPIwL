@@ -150,22 +150,18 @@ theorem Theorem_4_2_5_5 {A B C : Type}
   define                    --Goal: ∃ x, (c, x) ∈ inv S ∧ (x, a) ∈ inv R
   obtain (b : B) (h2 : (a, b) ∈ R ∧ (b, c) ∈ S) from h1
   apply Exists.intro b      --Goal: (c, b) ∈ inv S ∧ (b, a) ∈ inv R
-  define : (b, a) ∈ inv R
 ```
 
 After the tactics `apply Set.ext` and `fix (c, a) : C × A`, the goal is `(c, a) ∈ inv (comp S R) ↔ (c, a) ∈ comp (inv R) (inv S)`.  For the proof of the left-to-right direction, we assume `h1 : (c, a) ∈ inv (comp S R)`, and we must prove `(c, a) ∈ comp (inv R) (inv S)`.  The definition of `h1` is an existential statement, so we apply existential instantiation to obtain `b : B` and `h2 : (a, b) ∈ R ∧ (b, c) ∈ S`.  The definition of the goal is also an existential statement, and after the tactic `apply Exists.intro b`, the goal is `(c, b) ∈ inv S ∧ (b, a) ∈ inv R`.  It looks like this goal will follow easily from `h2`, using the definitions of the inverses of `S` and `R`.
 
-The tactic `define : (b, a) ∈ inv R` should rewrite the second half of the goal, using the definition of `inv R`.  You might expect the definition to be `(a, b) ∈ R`, but what the tactic produces is `R (a, b)`.  Usually, the `define` tactic does a good job of writing out definitions, but in this case it has let us down a bit.  The definition isn't wrong (explaining why would take us too far afield), but it isn't what we wanted.
-
-Of course, we don't really need to use the `define` tactic---Lean will recognize that `(b, a) ∈ inv R` and `(a, b) ∈ R` are definitionally equally on its own.  But it would be nice if we could teach Lean to do a better job of writing out the definitions of inverses.  We can do that by proving a preliminary theorem before proving part 5 of Theorem 4.2.5:
+One way to write out these definitions would be to use the tactics `define : (c, b) ∈ inv S` and `define : (b, a) ∈ inv R`.  But we're going to use this example to illustrate another way to proceed.  To use this alternative method, we'll need to prove a preliminary theorem before proving part 5 of Theorem 4.2.5:
 
 ```lean
-theorem simp_inv
-    {A B : Type} (R : Set (A × B)) (a : A) (b : B) :
+theorem simp_inv {A B : Type} (R : Set (A × B)) (a : A) (b : B) :
     (b, a) ∈ inv R ↔ (a, b) ∈ R := by rfl
 ```
 
-Now, any time we have a relation `R : Set (A × B)` and objects `a : A` and `b : B`, the expression `simp_inv R a b` will be a proof of the statement `(b, a) ∈ inv R ↔ (a, b) ∈ R`.  (Note that `A` and `B` are implicit arguments and don't need to be specified.)  And that means that the tactic `rewrite [simp_inv R a b]` will change `(b, a) ∈ inv R` to `(a, b) ∈ R`, exactly as we wanted.  In fact, as we've seen before, you can just write `rewrite [simp_inv]`, and Lean will figure out how to apply the theorem `simp_inv` to rewrite some part of the goal.
+Now, any time we have a relation `R : Set (A × B)` and objects `a : A` and `b : B`, the expression `simp_inv R a b` will be a proof of the statement `(b, a) ∈ inv R ↔ (a, b) ∈ R`.  (Note that `A` and `B` are implicit arguments and don't need to be specified.)  And that means that the tactic `rewrite [simp_inv R a b]` will change `(b, a) ∈ inv R` to `(a, b) ∈ R`.  In fact, as we've seen before, you can just write `rewrite [simp_inv]`, and Lean will figure out how to apply the theorem `simp_inv` to rewrite some part of the goal.
 
 Returning to our proof of part 5 of Theorem 4.2.5, recall that after the step `apply Exists.intro b`, the goal is `(c, b) ∈ inv S ∧ (b, a) ∈ inv R`.  Rather than using the `define` tactic to write out the definitions of the inverses, we'll use the tactic `rewrite [simp_inv, simp_inv]`.  Why do we list `simp_inv` twice in the `rewrite` tactic?  When we ask Lean to use the theorem `simp_inv` as a rewriting rule, it figures out that `simp_inv S b c` is a proof of the statement `(c, b) ∈ inv S ↔ (b, c) ∈ S`, which can be used to rewrite the left half of the goal.  To rewrite the right half, we need a different application of the `simp_inv` theorem, `simp_inv R a b`.  So we have to ask Lean to apply the theorem a second time.  After the `rewrite` tactic, the goal is `(b, c) ∈ S ∧ (a, b) ∈ R`, which will follow easily from `h2`.
 
