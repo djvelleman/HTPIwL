@@ -239,7 +239,7 @@ $$
 
 <section id="functions" class="level2">
 <h2 class="anchored" data-anchor-id="functions">5.1. Functions</h2>
-<p>The first definition in Chapter 5 of <em>HTPI</em> says that if <span class="math inline">\(F \subseteq A \times B\)</span>, then <span class="math inline">\(F\)</span> is called a <em>function</em> from <span class="math inline">\(A\)</span> to <span class="math inline">\(B\)</span> if for every <span class="math inline">\(a \in A\)</span> there is exactly one <span class="math inline">\(b \in B\)</span> such that <span class="math inline">\((a, b) \in F\)</span>. The notation <span class="math inline">\(F : A \to B\)</span> means that <span class="math inline">\(F\)</span> is a function from <span class="math inline">\(A\)</span> to <span class="math inline">\(B\)</span>. If <span class="math inline">\(F\)</span> is a function from <span class="math inline">\(A\)</span> to <span class="math inline">\(B\)</span> and <span class="math inline">\(a \in A\)</span>, then <em>HTPI</em> introduces the notation <span class="math inline">\(F(a)\)</span> for the unique <span class="math inline">\(b \in B\)</span> such that <span class="math inline">\((a, b) \in F\)</span>. Thus, if <span class="math inline">\(F : A \to B\)</span>, <span class="math inline">\(a \in A\)</span>, and <span class="math inline">\(b \in B\)</span>, then <span class="math inline">\(F(a) = b\)</span> means the same thing as <span class="math inline">\((a, b) \in F\)</span>. We sometimes call <span class="math inline">\(F(a)\)</span> the <em>value of <span class="math inline">\(F\)</span> at <span class="math inline">\(a\)</span></em>, or the <em>result of applying <span class="math inline">\(F\)</span> to <span class="math inline">\(a\)</span></em>.</p>
+<p>The first definition in Chapter 5 of <em>HTPI</em> says that if <span class="math inline">\(F \subseteq A \times B\)</span>, then <span class="math inline">\(F\)</span> is called a <em>function</em> from <span class="math inline">\(A\)</span> to <span class="math inline">\(B\)</span> if for every <span class="math inline">\(a \in A\)</span> there is exactly one <span class="math inline">\(b \in B\)</span> such that <span class="math inline">\((a, b) \in F\)</span>. The notation <span class="math inline">\(F : A \to B\)</span> means that <span class="math inline">\(F\)</span> is a function from <span class="math inline">\(A\)</span> to <span class="math inline">\(B\)</span>. If <span class="math inline">\(F\)</span> is a function from <span class="math inline">\(A\)</span> to <span class="math inline">\(B\)</span> and <span class="math inline">\(a \in A\)</span>, then <em>HTPI</em> introduces the notation <span class="math inline">\(F(a)\)</span> for the unique <span class="math inline">\(b \in B\)</span> such that <span class="math inline">\((a, b) \in F\)</span>. Thus, if <span class="math inline">\(F : A \to B\)</span>, <span class="math inline">\(a \in A\)</span>, and <span class="math inline">\(b \in B\)</span>, then <span class="math inline">\(F(a) = b\)</span> means the same thing as <span class="math inline">\((a, b) \in F\)</span>. We sometimes think of <span class="math inline">\(F\)</span> as representing an operation that can be applied to an element <span class="math inline">\(a\)</span> of <span class="math inline">\(A\)</span> to produce a corresponding element <span class="math inline">\(F(a)\)</span> of <span class="math inline">\(B\)</span>, and we call <span class="math inline">\(F(a)\)</span> the <em>value of <span class="math inline">\(F\)</span> at <span class="math inline">\(a\)</span></em>, or the <em>result of applying <span class="math inline">\(F\)</span> to <span class="math inline">\(a\)</span></em>.</p>
 <p>This might remind you of the situation we faced in Chapter 4. If <span class="math inline">\(R \subseteq A \times B\)</span>, <span class="math inline">\(a \in A\)</span>, and <span class="math inline">\(b \in B\)</span>, then Chapter 4 of <em>HTPI</em> uses the notation <span class="math inline">\(aRb\)</span> to mean the same thing as <span class="math inline">\((a, b) \in R\)</span>. But in Lean, we found it necessary to change this notation. Instead of using <em>HTPI</em>’s notation <span class="math inline">\(aRb\)</span>, we introduced the notation <code>R a b</code>, which we use when <code>R</code> has type <code>Rel A B</code>, <code>a</code> has type <code>A</code>, and <code>b</code> has type <code>B</code>. (The notation <code>(a, b) ∈ R</code>, in contrast, can be used only when <code>R</code> has type <code>Set (A × B)</code>.) If <code>R</code> has type <code>Rel A B</code>, then we think of <code>R</code> as representing some relationship that might hold between <code>a</code> and <code>b</code>, and <code>R a b</code> as the proposition saying that this relationship holds. And although <code>R</code> is not a set of ordered pairs, there is a corresponding set, <code>extension R</code>, of type <code>Set (A × B)</code>, with the property that <code>(a, b) ∈ extension R</code> if and only if <code>R a b</code>.</p>
 <p>We will take a similar approach to functions in this chapter. For any types <code>A</code> and <code>B</code>, we introduce a new type <code>A → B</code>. If <code>f</code> has type <code>A → B</code>, then we think of <code>f</code> as representing some operation that can be applied to an object of type <code>A</code> to produce a corresponding object of type <code>B</code>. We will say that <code>f</code> is a <em>function</em> from <code>A</code> to <code>B</code>, and <code>A</code> is the <em>domain</em> of <code>f</code>. If <code>a</code> has type <code>A</code>, then we write <code>f a</code> (with a space but no parentheses) for the result of applying the operation represented by <code>f</code> to the object <code>a</code>. Thus, if we have <code>f : A → B</code> and <code>a : A</code>, then <code>f a</code> has type <code>B</code>. As with relations, if <code>f</code> has type <code>A → B</code>, then <code>f</code> is not a set of ordered pairs. But there is a corresponding set of ordered pairs, which we will call the <em>graph</em> of <code>f</code>, whose elements are the ordered pairs <code>(a, b)</code> for which <code>f a = b</code>:</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> graph {A B : <span class="kw">Type</span>} (f : A → B) : Set (A × B) :=</span>
@@ -270,9 +270,11 @@ $$
 <span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>  <span class="kw">have</span> h2 : (x, f x) ∈ graph f := <span class="kw">by</span></span>
 <span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>    <span class="kw">define</span>                       <span class="co">--Goal: f x = f x</span></span>
 <span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>    <span class="kw">rfl</span></span>
-<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>  <span class="kw">rewrite</span> [h1] <span class="kw">at</span> h2             <span class="co">--h2: (x, f x) ∈ graph g</span></span>
-<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>  <span class="kw">define</span> <span class="kw">at</span> h2                   <span class="co">--h2: g x = f x</span></span>
-<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>  <span class="kw">show</span> f x = g x <span class="kw">from</span> h2.symm</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>    <span class="kw">done</span></span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>  <span class="kw">rewrite</span> [h1] <span class="kw">at</span> h2             <span class="co">--h2: (x, f x) ∈ graph g</span></span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>  <span class="kw">define</span> <span class="kw">at</span> h2                   <span class="co">--h2: g x = f x</span></span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>  <span class="kw">show</span> f x = g x <span class="kw">from</span> h2.symm</span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>  <span class="kw">done</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>The axiom of extensionality for sets says that a set is completely determined by its elements. This is what justifies our usual method of defining a set: we specify what its elements are, using notation like <code>{0, 1, 2}</code> or <code>{ x : Nat | x &lt; 3 }</code>. Similarly, the axiom of extensionality for functions says that a function is completely determined by its values, and therefore we can define a function by specifying its values. For instance, we can define a function from <code>Nat</code> to <code>Nat</code> by specifying, for any <code>n : Nat</code>, the result of applying the function to <code>n</code>. As an example of this, we could define the “squaring function” from <code>Nat</code> to <code>Nat</code> to be the function that, when applied to any <code>n : Nat</code>, produces the result <code>n^2</code>. Here are two ways to define this function in Lean:</p>
 <div class="sourceCode" id="cb6"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> square1 (n : Nat) : Nat := n^2</span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> square2 : Nat → Nat := fun (n : Nat) =&gt; n^2</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -287,28 +289,34 @@ $$
 <span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>  <span class="kw">apply</span> Set.ext</span>
 <span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>  <span class="kw">fix</span> (a, c) : A × C</span>
 <span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>  <span class="kw">apply</span> Iff.intro</span>
-<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>  <span class="co">-- Proof that (a, c) ∈ graph h → (a, c) ∈ comp (graph g) (graph f)</span></span>
-<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>  <span class="kw">assume</span> h1 : (a, c) ∈ graph h</span>
-<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>  <span class="kw">define</span> <span class="kw">at</span> h1    <span class="co">--h1: h a = c</span></span>
-<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>  <span class="kw">define</span>          <span class="co">--Goal:  ∃ (x : B), (a, x) ∈ graph f ∧ (x, c) ∈ graph g</span></span>
-<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>  <span class="kw">apply</span> Exists.intro (f a)</span>
-<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>  <span class="kw">apply</span> And.intro</span>
-<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a>  <span class="co">-- Proof that (a, f a) ∈ graph f</span></span>
-<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a>  <span class="kw">define</span>; <span class="kw">rfl</span></span>
-<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a>  <span class="co">-- Proof that (f a, c) ∈ graph g</span></span>
-<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a>  <span class="kw">define</span></span>
-<span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a>  <span class="kw">show</span> g (f a) = c <span class="kw">from</span> h1</span>
-<span id="cb8-19"><a href="#cb8-19" aria-hidden="true" tabindex="-1"></a>  <span class="co">-- Proof that (a, c) ∈ comp (graph g) (graph f) → (a, c) ∈ graph h</span></span>
-<span id="cb8-20"><a href="#cb8-20" aria-hidden="true" tabindex="-1"></a>  <span class="kw">assume</span> h1 : (a, c) ∈ comp (graph g) (graph f)</span>
-<span id="cb8-21"><a href="#cb8-21" aria-hidden="true" tabindex="-1"></a>  <span class="kw">define</span>          <span class="co">--Goal: h a = c</span></span>
-<span id="cb8-22"><a href="#cb8-22" aria-hidden="true" tabindex="-1"></a>  <span class="kw">define</span> <span class="kw">at</span> h1    <span class="co">--h1: ∃ (x : B), (a, x) ∈ graph f ∧ (x, c) ∈ graph g</span></span>
-<span id="cb8-23"><a href="#cb8-23" aria-hidden="true" tabindex="-1"></a>  <span class="kw">obtain</span> (b : B) (h2 : (a, b) ∈ graph f ∧ (b, c) ∈ graph g) <span class="kw">from</span> h1</span>
-<span id="cb8-24"><a href="#cb8-24" aria-hidden="true" tabindex="-1"></a>  <span class="kw">have</span> h3 : (a, b) ∈ graph f := h2.left</span>
-<span id="cb8-25"><a href="#cb8-25" aria-hidden="true" tabindex="-1"></a>  <span class="kw">have</span> h4 : (b, c) ∈ graph g := h2.right</span>
-<span id="cb8-26"><a href="#cb8-26" aria-hidden="true" tabindex="-1"></a>  <span class="kw">define</span> <span class="kw">at</span> h3          <span class="co">--h3: f a = b</span></span>
-<span id="cb8-27"><a href="#cb8-27" aria-hidden="true" tabindex="-1"></a>  <span class="kw">define</span> <span class="kw">at</span> h4          <span class="co">--h4: g b = c</span></span>
-<span id="cb8-28"><a href="#cb8-28" aria-hidden="true" tabindex="-1"></a>  <span class="kw">rewrite</span> [←h3] <span class="kw">at</span> h4   <span class="co">--h4: g (f a) = c</span></span>
-<span id="cb8-29"><a href="#cb8-29" aria-hidden="true" tabindex="-1"></a>  <span class="kw">show</span> h a = c <span class="kw">from</span> h4</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>  · <span class="co">-- Proof that (a, c) ∈ graph h → (a, c) ∈ comp (graph g) (graph f)</span></span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>    <span class="kw">assume</span> h1 : (a, c) ∈ graph h</span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>    <span class="kw">define</span> <span class="kw">at</span> h1  <span class="co">--h1: h a = c</span></span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>    <span class="kw">define</span>        <span class="co">--Goal:  ∃ (x : B), (a, x) ∈ graph f ∧ (x, c) ∈ graph g</span></span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>    <span class="kw">apply</span> Exists.intro (f a)</span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>    <span class="kw">apply</span> And.intro</span>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a>    · <span class="co">-- Proof that (a, f a) ∈ graph f</span></span>
+<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a>      <span class="kw">define</span></span>
+<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a>      <span class="kw">rfl</span></span>
+<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a>      <span class="kw">done</span></span>
+<span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a>    · <span class="co">-- Proof that (f a, c) ∈ graph g</span></span>
+<span id="cb8-19"><a href="#cb8-19" aria-hidden="true" tabindex="-1"></a>      <span class="kw">define</span></span>
+<span id="cb8-20"><a href="#cb8-20" aria-hidden="true" tabindex="-1"></a>      <span class="kw">show</span> g (f a) = c <span class="kw">from</span> h1</span>
+<span id="cb8-21"><a href="#cb8-21" aria-hidden="true" tabindex="-1"></a>      <span class="kw">done</span></span>
+<span id="cb8-22"><a href="#cb8-22" aria-hidden="true" tabindex="-1"></a>    <span class="kw">done</span></span>
+<span id="cb8-23"><a href="#cb8-23" aria-hidden="true" tabindex="-1"></a>  · <span class="co">-- Proof that (a, c) ∈ comp (graph g) (graph f) → (a, c) ∈ graph h</span></span>
+<span id="cb8-24"><a href="#cb8-24" aria-hidden="true" tabindex="-1"></a>    <span class="kw">assume</span> h1 : (a, c) ∈ comp (graph g) (graph f)</span>
+<span id="cb8-25"><a href="#cb8-25" aria-hidden="true" tabindex="-1"></a>    <span class="kw">define</span>        <span class="co">--Goal: h a = c</span></span>
+<span id="cb8-26"><a href="#cb8-26" aria-hidden="true" tabindex="-1"></a>    <span class="kw">define</span> <span class="kw">at</span> h1  <span class="co">--h1: ∃ (x : B), (a, x) ∈ graph f ∧ (x, c) ∈ graph g</span></span>
+<span id="cb8-27"><a href="#cb8-27" aria-hidden="true" tabindex="-1"></a>    <span class="kw">obtain</span> (b : B) (h2 : (a, b) ∈ graph f ∧ (b, c) ∈ graph g) <span class="kw">from</span> h1</span>
+<span id="cb8-28"><a href="#cb8-28" aria-hidden="true" tabindex="-1"></a>    <span class="kw">have</span> h3 : (a, b) ∈ graph f := h2.left</span>
+<span id="cb8-29"><a href="#cb8-29" aria-hidden="true" tabindex="-1"></a>    <span class="kw">have</span> h4 : (b, c) ∈ graph g := h2.right</span>
+<span id="cb8-30"><a href="#cb8-30" aria-hidden="true" tabindex="-1"></a>    <span class="kw">define</span> <span class="kw">at</span> h3          <span class="co">--h3: f a = b</span></span>
+<span id="cb8-31"><a href="#cb8-31" aria-hidden="true" tabindex="-1"></a>    <span class="kw">define</span> <span class="kw">at</span> h4          <span class="co">--h4: g b = c</span></span>
+<span id="cb8-32"><a href="#cb8-32" aria-hidden="true" tabindex="-1"></a>    <span class="kw">rewrite</span> [←h3] <span class="kw">at</span> h4   <span class="co">--h4: g (f a) = c</span></span>
+<span id="cb8-33"><a href="#cb8-33" aria-hidden="true" tabindex="-1"></a>    <span class="kw">show</span> h a = c <span class="kw">from</span> h4</span>
+<span id="cb8-34"><a href="#cb8-34" aria-hidden="true" tabindex="-1"></a>    <span class="kw">done</span></span>
+<span id="cb8-35"><a href="#cb8-35" aria-hidden="true" tabindex="-1"></a>  <span class="kw">done</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>Notice that the proof of <code>Theorem_5_1_5</code> begins by defining the function <code>h</code> for which <code>graph h = comp (graph g) (graph f)</code>. The definition says that for all <code>x</code> of type <code>A</code>, <code>h x = g (f x)</code>. This function <code>h</code> is called the <em>composition</em> of <code>g</code> and <code>f</code>, and it is denoted <code>g ∘ f</code>. (To type <code>∘</code> in VSCode, type <code>\comp</code> or <code>\circ</code>.) In other words, <code>g ∘ f</code> has type <code>A → C</code>, and for all <code>x</code> of type <code>A</code>, <code>(g ∘ f) x</code> is definitionally equal to <code>g (f x)</code>. In <em>HTPI</em>, functions are sets of ordered pairs, and the operation of composition of functions is literally the same as the operation <code>comp</code> that we used in Chapter 4. But in Lean, we distinguish among functions, relations, and sets of ordered pairs, so all we can say is that the operation of composition of functions corresponds to the operation <code>comp</code> from Chapter 4. The correspondence is that, as shown in the proof of <code>Theorem_5_1_5</code>, if <code>h = g ∘ f</code>, then <code>graph h = comp (graph g) (graph f)</code>.</p>
 <p>We saw in part 4 of Theorem 4.2.5 that composition of relations is associative. Composition of functions is also associative. In fact, if <code>f : A → B</code>, <code>g : B → C</code>, and <code>h : C → D</code>, then <code>h ∘ (g ∘ f)</code> and <code>(h ∘ g) ∘ f</code> are definitionally equal, since they both mean the same thing as <code>fun (x : A) =&gt; h (g (f a))</code>. As a result, the tactic <code>rfl</code> proves the associativity of composition of functions:</p>
 <div class="sourceCode" id="cb9"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="kw">example</span> {A B C D : <span class="kw">Type</span>} (f : A → B) (g : B → C) (h : C → D) :</span>
@@ -400,7 +408,8 @@ $$
 <span id="cb21-11"><a href="#cb21-11" aria-hidden="true" tabindex="-1"></a>                <span class="co">--Goal: g (f a1) = g (f a2) → a1 = a2</span></span>
 <span id="cb21-12"><a href="#cb21-12" aria-hidden="true" tabindex="-1"></a>  <span class="kw">assume</span> h3 : g (f a1) = g (f a2)</span>
 <span id="cb21-13"><a href="#cb21-13" aria-hidden="true" tabindex="-1"></a>  <span class="kw">have</span> h4 : f a1 = f a2 := h2 (f a1) (f a2) h3</span>
-<span id="cb21-14"><a href="#cb21-14" aria-hidden="true" tabindex="-1"></a>  <span class="kw">show</span> a1 = a2 <span class="kw">from</span> h1 a1 a2 h4</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb21-14"><a href="#cb21-14" aria-hidden="true" tabindex="-1"></a>  <span class="kw">show</span> a1 = a2 <span class="kw">from</span> h1 a1 a2 h4</span>
+<span id="cb21-15"><a href="#cb21-15" aria-hidden="true" tabindex="-1"></a>  <span class="kw">done</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>Notice that the tactic <code>define : (g ∘ f) a1</code> replaces <code>(g ∘ f) a1</code> with its definition, <code>g (f a1)</code>. As usual, this step isn’t really needed—Lean will apply the definition on its own when necessary, without being told. But using this tactic makes the proof easier to read. We use a similar approach for the second part of the theorem.</p>
 <div class="sourceCode" id="cb22"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Theorem_5_2_5_2 {A B C : <span class="kw">Type</span>} (f : A → B) (g : B → C) :</span>
 <span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>    onto f → onto g → onto (g ∘ f) := <span class="kw">by</span></span>
@@ -415,7 +424,8 @@ $$
 <span id="cb22-11"><a href="#cb22-11" aria-hidden="true" tabindex="-1"></a>  <span class="kw">apply</span> Exists.intro a   <span class="co">--Goal: (g ∘ f) a = c</span></span>
 <span id="cb22-12"><a href="#cb22-12" aria-hidden="true" tabindex="-1"></a>  <span class="kw">define</span> : (g ∘ f) a     <span class="co">--Goal: g (f a) = c</span></span>
 <span id="cb22-13"><a href="#cb22-13" aria-hidden="true" tabindex="-1"></a>  <span class="kw">rewrite</span> [←h4] <span class="kw">at</span> h3</span>
-<span id="cb22-14"><a href="#cb22-14" aria-hidden="true" tabindex="-1"></a>  <span class="kw">show</span> g (f a) = c <span class="kw">from</span> h3</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb22-14"><a href="#cb22-14" aria-hidden="true" tabindex="-1"></a>  <span class="kw">show</span> g (f a) = c <span class="kw">from</span> h3</span>
+<span id="cb22-15"><a href="#cb22-15" aria-hidden="true" tabindex="-1"></a>  <span class="kw">done</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <section id="exercises-1" class="level3">
 <h3 class="anchored" data-anchor-id="exercises-1">Exercises</h3>
 <div class="numex" data-arguments="1">
@@ -479,9 +489,9 @@ $$
 <span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a>    (f : A → B) (h1 : one_to_one f) (h2 : onto f) :</span>
 <span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a>    ∃ (g : B → A), graph g = inv (graph f)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>To prove this theorem, we will use the theorem <code>func_from_graph</code> that was stated in Section 5.1. We can remind ourselves of what that theorem says by using the command <code>#check @func_from_graph</code>, which gives the result:</p>
-<div class="quote">
+<div class="ind">
 <pre><code>@func_from_graph : ∀ {A B : Type} (F : Set (A × B)),
-    (∃ f, graph f = F) ↔ is_func_graph F</code></pre>
+                    (∃ (f : A → B), graph f = F) ↔ is_func_graph F</code></pre>
 </div>
 <p>This means that, in the context of the proof of <code>Theorem_5_3_1</code>, <code>func_from_graph (inv (graph f))</code> is a proof of the statement <code>∃ (g : B → A), graph g = inv (graph f) ↔︎ is_func_graph (inv (graph f))</code>, and therefore <code>(func_from_graph (inv (graph f))).rtl _</code> will prove the theorem, if we can fill in the blank with a proof of <code>is_func_graph (inv (func f))</code>. So we can begin the proof by using the tactic <code>apply (func_from_graph (inv (graph f))).rtl</code>. The rest of the proof is straightforward.</p>
 <div class="sourceCode" id="cb35"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Theorem_5_3_1 {A B : <span class="kw">Type</span>}</span>
@@ -492,21 +502,24 @@ $$
 <span id="cb35-6"><a href="#cb35-6" aria-hidden="true" tabindex="-1"></a>  <span class="kw">define</span>        <span class="co">--Goal: ∀ (x : B), ∃! (y : A), (x, y) ∈ inv (graph f)</span></span>
 <span id="cb35-7"><a href="#cb35-7" aria-hidden="true" tabindex="-1"></a>  <span class="kw">fix</span> b : B</span>
 <span id="cb35-8"><a href="#cb35-8" aria-hidden="true" tabindex="-1"></a>  <span class="kw">exists_unique</span></span>
-<span id="cb35-9"><a href="#cb35-9" aria-hidden="true" tabindex="-1"></a>  <span class="co">-- Existence</span></span>
-<span id="cb35-10"><a href="#cb35-10" aria-hidden="true" tabindex="-1"></a>  <span class="kw">define</span> <span class="kw">at</span> h2          <span class="co">--h2: ∀ (y : B), ∃ (x : A), f x = y</span></span>
-<span id="cb35-11"><a href="#cb35-11" aria-hidden="true" tabindex="-1"></a>  <span class="kw">obtain</span> (a : A) (h4 : f a = b) <span class="kw">from</span> h2 b</span>
-<span id="cb35-12"><a href="#cb35-12" aria-hidden="true" tabindex="-1"></a>  <span class="kw">apply</span> Exists.intro a  <span class="co">--Goal: (b, a) ∈ inv (graph f)</span></span>
-<span id="cb35-13"><a href="#cb35-13" aria-hidden="true" tabindex="-1"></a>  <span class="kw">define</span>                <span class="co">--Goal: f a = b</span></span>
-<span id="cb35-14"><a href="#cb35-14" aria-hidden="true" tabindex="-1"></a>  <span class="kw">show</span> f a = b <span class="kw">from</span> h4</span>
-<span id="cb35-15"><a href="#cb35-15" aria-hidden="true" tabindex="-1"></a>  <span class="co">-- Uniqueness</span></span>
-<span id="cb35-16"><a href="#cb35-16" aria-hidden="true" tabindex="-1"></a>  <span class="kw">fix</span> a1 : A; <span class="kw">fix</span> a2 : A</span>
-<span id="cb35-17"><a href="#cb35-17" aria-hidden="true" tabindex="-1"></a>  <span class="kw">assume</span> h3 : (b, a1) ∈ inv (graph f)</span>
-<span id="cb35-18"><a href="#cb35-18" aria-hidden="true" tabindex="-1"></a>  <span class="kw">assume</span> h4 : (b, a2) ∈ inv (graph f) <span class="co">--Goal: a1 = a2</span></span>
-<span id="cb35-19"><a href="#cb35-19" aria-hidden="true" tabindex="-1"></a>  <span class="kw">define</span> <span class="kw">at</span> h3          <span class="co">--h3: f a1 = b</span></span>
-<span id="cb35-20"><a href="#cb35-20" aria-hidden="true" tabindex="-1"></a>  <span class="kw">define</span> <span class="kw">at</span> h4          <span class="co">--h4: f a2 = b</span></span>
-<span id="cb35-21"><a href="#cb35-21" aria-hidden="true" tabindex="-1"></a>  <span class="kw">rewrite</span> [←h4] <span class="kw">at</span> h3   <span class="co">--h3: f a1 = f a2</span></span>
-<span id="cb35-22"><a href="#cb35-22" aria-hidden="true" tabindex="-1"></a>  <span class="kw">define</span> <span class="kw">at</span> h1          <span class="co">--h1: ∀ (x1 x2 : A), f x1 = f x2 → x1 = x2</span></span>
-<span id="cb35-23"><a href="#cb35-23" aria-hidden="true" tabindex="-1"></a>  <span class="kw">show</span> a1 = a2 <span class="kw">from</span> h1 a1 a2 h3</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb35-9"><a href="#cb35-9" aria-hidden="true" tabindex="-1"></a>  · <span class="co">-- Existence</span></span>
+<span id="cb35-10"><a href="#cb35-10" aria-hidden="true" tabindex="-1"></a>    <span class="kw">define</span> <span class="kw">at</span> h2          <span class="co">--h2: ∀ (y : B), ∃ (x : A), f x = y</span></span>
+<span id="cb35-11"><a href="#cb35-11" aria-hidden="true" tabindex="-1"></a>    <span class="kw">obtain</span> (a : A) (h4 : f a = b) <span class="kw">from</span> h2 b</span>
+<span id="cb35-12"><a href="#cb35-12" aria-hidden="true" tabindex="-1"></a>    <span class="kw">apply</span> Exists.intro a  <span class="co">--Goal: (b, a) ∈ inv (graph f)</span></span>
+<span id="cb35-13"><a href="#cb35-13" aria-hidden="true" tabindex="-1"></a>    <span class="kw">define</span>                <span class="co">--Goal: f a = b</span></span>
+<span id="cb35-14"><a href="#cb35-14" aria-hidden="true" tabindex="-1"></a>    <span class="kw">show</span> f a = b <span class="kw">from</span> h4</span>
+<span id="cb35-15"><a href="#cb35-15" aria-hidden="true" tabindex="-1"></a>    <span class="kw">done</span></span>
+<span id="cb35-16"><a href="#cb35-16" aria-hidden="true" tabindex="-1"></a>  · <span class="co">-- Uniqueness</span></span>
+<span id="cb35-17"><a href="#cb35-17" aria-hidden="true" tabindex="-1"></a>    <span class="kw">fix</span> a1 : A; <span class="kw">fix</span> a2 : A</span>
+<span id="cb35-18"><a href="#cb35-18" aria-hidden="true" tabindex="-1"></a>    <span class="kw">assume</span> h3 : (b, a1) ∈ inv (graph f)</span>
+<span id="cb35-19"><a href="#cb35-19" aria-hidden="true" tabindex="-1"></a>    <span class="kw">assume</span> h4 : (b, a2) ∈ inv (graph f) <span class="co">--Goal: a1 = a2</span></span>
+<span id="cb35-20"><a href="#cb35-20" aria-hidden="true" tabindex="-1"></a>    <span class="kw">define</span> <span class="kw">at</span> h3          <span class="co">--h3: f a1 = b</span></span>
+<span id="cb35-21"><a href="#cb35-21" aria-hidden="true" tabindex="-1"></a>    <span class="kw">define</span> <span class="kw">at</span> h4          <span class="co">--h4: f a2 = b</span></span>
+<span id="cb35-22"><a href="#cb35-22" aria-hidden="true" tabindex="-1"></a>    <span class="kw">rewrite</span> [←h4] <span class="kw">at</span> h3   <span class="co">--h3: f a1 = f a2</span></span>
+<span id="cb35-23"><a href="#cb35-23" aria-hidden="true" tabindex="-1"></a>    <span class="kw">define</span> <span class="kw">at</span> h1          <span class="co">--h1: ∀ (x1 x2 : A), f x1 = f x2 → x1 = x2</span></span>
+<span id="cb35-24"><a href="#cb35-24" aria-hidden="true" tabindex="-1"></a>    <span class="kw">show</span> a1 = a2 <span class="kw">from</span> h1 a1 a2 h3</span>
+<span id="cb35-25"><a href="#cb35-25" aria-hidden="true" tabindex="-1"></a>    <span class="kw">done</span></span>
+<span id="cb35-26"><a href="#cb35-26" aria-hidden="true" tabindex="-1"></a>  <span class="kw">done</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>Suppose, now, that we have <code>f : A → B</code>, <code>g : B → A</code>, and <code>graph g = inv (graph f)</code>, as in <code>Theorem_5_3_1</code>. What can we say about the relationship between <code>f</code> and <code>g</code>? One answer is that <code>g ∘ f = id</code> and <code>f ∘ g = id</code>, as shown in Theorem 5.3.2 of <em>HTPI</em>. We’ll prove one of these facts, and leave the other as an exercise for you.</p>
 <div class="sourceCode" id="cb36"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Theorem_5_3_2_1 {A B : <span class="kw">Type</span>} (f : A → B) (g : B → A)</span>
 <span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a>    (h1 : graph g = inv (graph f)) : g ∘ f = id := <span class="kw">by</span></span>
@@ -516,11 +529,13 @@ $$
 <span id="cb36-6"><a href="#cb36-6" aria-hidden="true" tabindex="-1"></a>    <span class="kw">rewrite</span> [h1]         <span class="co">--Goal: (f a, a) ∈ inv (graph f)</span></span>
 <span id="cb36-7"><a href="#cb36-7" aria-hidden="true" tabindex="-1"></a>    <span class="kw">define</span>               <span class="co">--Goal:  f a = f a</span></span>
 <span id="cb36-8"><a href="#cb36-8" aria-hidden="true" tabindex="-1"></a>    <span class="kw">rfl</span></span>
-<span id="cb36-9"><a href="#cb36-9" aria-hidden="true" tabindex="-1"></a>  <span class="kw">define</span> <span class="kw">at</span> h2           <span class="co">--h2: g (f a) = a</span></span>
-<span id="cb36-10"><a href="#cb36-10" aria-hidden="true" tabindex="-1"></a>  <span class="kw">show</span> (g ∘ f) a = id a <span class="kw">from</span> h2</span>
-<span id="cb36-11"><a href="#cb36-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-12"><a href="#cb36-12" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Theorem_5_3_2_2 {A B : <span class="kw">Type</span>} (f : A → B) (g : B → A)</span>
-<span id="cb36-13"><a href="#cb36-13" aria-hidden="true" tabindex="-1"></a>    (h1 : graph g = inv (graph f)) : f ∘ g = id := <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb36-9"><a href="#cb36-9" aria-hidden="true" tabindex="-1"></a>    <span class="kw">done</span></span>
+<span id="cb36-10"><a href="#cb36-10" aria-hidden="true" tabindex="-1"></a>  <span class="kw">define</span> <span class="kw">at</span> h2           <span class="co">--h2: g (f a) = a</span></span>
+<span id="cb36-11"><a href="#cb36-11" aria-hidden="true" tabindex="-1"></a>  <span class="kw">show</span> (g ∘ f) a = id a <span class="kw">from</span> h2</span>
+<span id="cb36-12"><a href="#cb36-12" aria-hidden="true" tabindex="-1"></a>  <span class="kw">done</span></span>
+<span id="cb36-13"><a href="#cb36-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-14"><a href="#cb36-14" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Theorem_5_3_2_2 {A B : <span class="kw">Type</span>} (f : A → B) (g : B → A)</span>
+<span id="cb36-15"><a href="#cb36-15" aria-hidden="true" tabindex="-1"></a>    (h1 : graph g = inv (graph f)) : f ∘ g = id := <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>Combining the theorems above, we have shown that if <code>f</code> is one-to-one and onto, then there is a function <code>g</code> such that <code>g ∘ f = id</code> and <code>f ∘ g = id</code>. In fact, the converse is true as well: if such a function <code>g</code> exists, then <code>f</code> must be one-to-one and onto. Again, we’ll prove one statement as leave the second as an exercise.</p>
 <div class="sourceCode" id="cb37"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Theorem_5_3_3_1 {A B : <span class="kw">Type</span>} (f : A → B) :</span>
 <span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a>    (∃ (g : B → A), g ∘ f = id) → one_to_one f := <span class="kw">by</span></span>
@@ -538,9 +553,10 @@ $$
 <span id="cb37-14"><a href="#cb37-14" aria-hidden="true" tabindex="-1"></a>      _ = (g ∘ f) a2 := <span class="kw">by</span> <span class="kw">rfl</span></span>
 <span id="cb37-15"><a href="#cb37-15" aria-hidden="true" tabindex="-1"></a>      _ = id a2 := <span class="kw">by</span> <span class="kw">rw</span> [h2]</span>
 <span id="cb37-16"><a href="#cb37-16" aria-hidden="true" tabindex="-1"></a>      _ = a2 := <span class="kw">by</span> <span class="kw">rfl</span></span>
-<span id="cb37-17"><a href="#cb37-17" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb37-18"><a href="#cb37-18" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Theorem_5_3_3_2 {A B : <span class="kw">Type</span>} (f : A → B) :</span>
-<span id="cb37-19"><a href="#cb37-19" aria-hidden="true" tabindex="-1"></a>    (∃ (g : B → A), f ∘ g = id) → onto f := <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb37-17"><a href="#cb37-17" aria-hidden="true" tabindex="-1"></a>  <span class="kw">done</span></span>
+<span id="cb37-18"><a href="#cb37-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-19"><a href="#cb37-19" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Theorem_5_3_3_2 {A B : <span class="kw">Type</span>} (f : A → B) :</span>
+<span id="cb37-20"><a href="#cb37-20" aria-hidden="true" tabindex="-1"></a>    (∃ (g : B → A), f ∘ g = id) → onto f := <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>We can combine the theorems above to show that if we have <code>f : A → B</code>, <code>g : B → A</code>, <code>g ∘ f = id</code>, and <code>f ∘ g = id</code>, then <code>graph g</code> must be the inverse of <code>graph f</code>. Compare the proof below to the proof of Theorem 5.3.5 in <em>HTPI</em>.</p>
 <div class="sourceCode" id="cb38"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Theorem_5_3_5 {A B : <span class="kw">Type</span>} (f : A → B) (g : B → A)</span>
 <span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a>    (h1 : g ∘ f = id) (h2 : f ∘ g = id) : graph g = inv (graph f) := <span class="kw">by</span></span>
@@ -557,7 +573,8 @@ $$
 <span id="cb38-13"><a href="#cb38-13" aria-hidden="true" tabindex="-1"></a>      _ = g' ∘ id := <span class="kw">by</span> <span class="kw">rw</span> [h2]</span>
 <span id="cb38-14"><a href="#cb38-14" aria-hidden="true" tabindex="-1"></a>      _ = g' := <span class="kw">by</span> <span class="kw">rfl</span></span>
 <span id="cb38-15"><a href="#cb38-15" aria-hidden="true" tabindex="-1"></a>  <span class="kw">rewrite</span> [←h7] <span class="kw">at</span> h5</span>
-<span id="cb38-16"><a href="#cb38-16" aria-hidden="true" tabindex="-1"></a>  <span class="kw">show</span> graph g = inv (graph f) <span class="kw">from</span> h5</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb38-16"><a href="#cb38-16" aria-hidden="true" tabindex="-1"></a>  <span class="kw">show</span> graph g = inv (graph f) <span class="kw">from</span> h5</span>
+<span id="cb38-17"><a href="#cb38-17" aria-hidden="true" tabindex="-1"></a>  <span class="kw">done</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <section id="exercises-2" class="level3">
 <h3 class="anchored" data-anchor-id="exercises-2">Exercises</h3>
 <div class="numex" data-arguments="1">
@@ -614,40 +631,45 @@ $$
 <span id="cb50-3"><a href="#cb50-3" aria-hidden="true" tabindex="-1"></a>  <span class="kw">let</span> F : Set (Set A) := { D : Set A | B ⊆ D ∧ closed f D }</span>
 <span id="cb50-4"><a href="#cb50-4" aria-hidden="true" tabindex="-1"></a>  <span class="kw">let</span> C : Set A := ⋂₀F</span>
 <span id="cb50-5"><a href="#cb50-5" aria-hidden="true" tabindex="-1"></a>  <span class="kw">apply</span> Exists.intro C    <span class="co">--Goal: closure f B C</span></span>
-<span id="cb50-6"><a href="#cb50-6" aria-hidden="true" tabindex="-1"></a>  <span class="kw">define</span>                  <span class="co">--Goal: C ∈ F ∧ ∀ D ∈ F, C ⊆ D</span></span>
+<span id="cb50-6"><a href="#cb50-6" aria-hidden="true" tabindex="-1"></a>  <span class="kw">define</span>                  <span class="co">--Goal: C ∈ F ∧ ∀ x ∈ F, C ⊆ x</span></span>
 <span id="cb50-7"><a href="#cb50-7" aria-hidden="true" tabindex="-1"></a>  <span class="kw">apply</span> And.intro</span>
-<span id="cb50-8"><a href="#cb50-8" aria-hidden="true" tabindex="-1"></a>  <span class="co">-- Proof that C ∈ F</span></span>
-<span id="cb50-9"><a href="#cb50-9" aria-hidden="true" tabindex="-1"></a>  <span class="kw">define</span>                  <span class="co">--Goal: B ⊆ C ∧ closed f C</span></span>
-<span id="cb50-10"><a href="#cb50-10" aria-hidden="true" tabindex="-1"></a>  <span class="kw">apply</span> And.intro</span>
-<span id="cb50-11"><a href="#cb50-11" aria-hidden="true" tabindex="-1"></a>  <span class="co">-- Proof that B ⊆ C</span></span>
-<span id="cb50-12"><a href="#cb50-12" aria-hidden="true" tabindex="-1"></a>  <span class="kw">fix</span> a : A</span>
-<span id="cb50-13"><a href="#cb50-13" aria-hidden="true" tabindex="-1"></a>  <span class="kw">assume</span> h1 : a ∈ B       <span class="co">--Goal: a ∈ C</span></span>
-<span id="cb50-14"><a href="#cb50-14" aria-hidden="true" tabindex="-1"></a>  <span class="kw">define</span>                  <span class="co">--Goal: ∀ D ∈ F, a ∈ D</span></span>
-<span id="cb50-15"><a href="#cb50-15" aria-hidden="true" tabindex="-1"></a>  <span class="kw">fix</span> D : Set A</span>
-<span id="cb50-16"><a href="#cb50-16" aria-hidden="true" tabindex="-1"></a>  <span class="kw">assume</span> h2 : D ∈ F</span>
-<span id="cb50-17"><a href="#cb50-17" aria-hidden="true" tabindex="-1"></a>  <span class="kw">define</span> <span class="kw">at</span> h2            <span class="co">--h2: B ⊆ D ∧ closed f D</span></span>
-<span id="cb50-18"><a href="#cb50-18" aria-hidden="true" tabindex="-1"></a>  <span class="kw">show</span> a ∈ D <span class="kw">from</span> h2.left h1</span>
-<span id="cb50-19"><a href="#cb50-19" aria-hidden="true" tabindex="-1"></a>  <span class="co">-- Proof that C is closed under f</span></span>
-<span id="cb50-20"><a href="#cb50-20" aria-hidden="true" tabindex="-1"></a>  <span class="kw">define</span>                  <span class="co">--Goal: ∀ x ∈ C, f x ∈ C</span></span>
-<span id="cb50-21"><a href="#cb50-21" aria-hidden="true" tabindex="-1"></a>  <span class="kw">fix</span> a : A</span>
-<span id="cb50-22"><a href="#cb50-22" aria-hidden="true" tabindex="-1"></a>  <span class="kw">assume</span> h1 : a ∈ C       <span class="co">--Goal: f a ∈ C</span></span>
-<span id="cb50-23"><a href="#cb50-23" aria-hidden="true" tabindex="-1"></a>  <span class="kw">define</span>                  <span class="co">--Goal: ∀ D ∈ F, f a ∈ D</span></span>
-<span id="cb50-24"><a href="#cb50-24" aria-hidden="true" tabindex="-1"></a>  <span class="kw">fix</span> D : Set A</span>
-<span id="cb50-25"><a href="#cb50-25" aria-hidden="true" tabindex="-1"></a>  <span class="kw">assume</span> h2 : D ∈ F       <span class="co">--Goal: f a ∈ D</span></span>
-<span id="cb50-26"><a href="#cb50-26" aria-hidden="true" tabindex="-1"></a>  <span class="kw">define</span> <span class="kw">at</span> h1            <span class="co">--h1: ∀ A_1 ∈ F, a ∈ A_1</span></span>
-<span id="cb50-27"><a href="#cb50-27" aria-hidden="true" tabindex="-1"></a>  <span class="kw">have</span> h3 : a ∈ D := h1 D h2</span>
-<span id="cb50-28"><a href="#cb50-28" aria-hidden="true" tabindex="-1"></a>  <span class="kw">define</span> <span class="kw">at</span> h2            <span class="co">--h2: B ⊆ D ∧ closed f D</span></span>
-<span id="cb50-29"><a href="#cb50-29" aria-hidden="true" tabindex="-1"></a>  <span class="kw">have</span> h4 : closed f D := h2.right</span>
-<span id="cb50-30"><a href="#cb50-30" aria-hidden="true" tabindex="-1"></a>  <span class="kw">define</span> <span class="kw">at</span> h4            <span class="co">--h4: ∀ x ∈ D, f x ∈ D</span></span>
-<span id="cb50-31"><a href="#cb50-31" aria-hidden="true" tabindex="-1"></a>  <span class="kw">show</span> f a ∈ D <span class="kw">from</span> h4 a h3</span>
-<span id="cb50-32"><a href="#cb50-32" aria-hidden="true" tabindex="-1"></a>  <span class="co">-- Proof that C is smallest</span></span>
-<span id="cb50-33"><a href="#cb50-33" aria-hidden="true" tabindex="-1"></a>  <span class="kw">fix</span> D : Set A</span>
-<span id="cb50-34"><a href="#cb50-34" aria-hidden="true" tabindex="-1"></a>  <span class="kw">assume</span> h1 : D ∈ F      <span class="co">--Goal: sub A C D</span></span>
-<span id="cb50-35"><a href="#cb50-35" aria-hidden="true" tabindex="-1"></a>  <span class="kw">define</span></span>
-<span id="cb50-36"><a href="#cb50-36" aria-hidden="true" tabindex="-1"></a>  <span class="kw">fix</span> a : A</span>
-<span id="cb50-37"><a href="#cb50-37" aria-hidden="true" tabindex="-1"></a>  <span class="kw">assume</span> h2 : a ∈ C       <span class="co">--Goal: a ∈ D</span></span>
-<span id="cb50-38"><a href="#cb50-38" aria-hidden="true" tabindex="-1"></a>  <span class="kw">define</span> <span class="kw">at</span> h2            <span class="co">--h2: ∀ A_1 ∈ F, a ∈ A_1</span></span>
-<span id="cb50-39"><a href="#cb50-39" aria-hidden="true" tabindex="-1"></a>  <span class="kw">show</span> a ∈ D <span class="kw">from</span> h2 D h1</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb50-8"><a href="#cb50-8" aria-hidden="true" tabindex="-1"></a>  · <span class="co">-- Proof that C ∈ F</span></span>
+<span id="cb50-9"><a href="#cb50-9" aria-hidden="true" tabindex="-1"></a>    <span class="kw">define</span>                  <span class="co">--Goal: B ⊆ C ∧ closed f C</span></span>
+<span id="cb50-10"><a href="#cb50-10" aria-hidden="true" tabindex="-1"></a>    <span class="kw">apply</span> And.intro</span>
+<span id="cb50-11"><a href="#cb50-11" aria-hidden="true" tabindex="-1"></a>    · <span class="co">-- Proof that B ⊆ C</span></span>
+<span id="cb50-12"><a href="#cb50-12" aria-hidden="true" tabindex="-1"></a>      <span class="kw">fix</span> a : A</span>
+<span id="cb50-13"><a href="#cb50-13" aria-hidden="true" tabindex="-1"></a>      <span class="kw">assume</span> h1 : a ∈ B       <span class="co">--Goal: a ∈ C</span></span>
+<span id="cb50-14"><a href="#cb50-14" aria-hidden="true" tabindex="-1"></a>      <span class="kw">define</span>                  <span class="co">--Goal: ∀ t ∈ F, a ∈ t</span></span>
+<span id="cb50-15"><a href="#cb50-15" aria-hidden="true" tabindex="-1"></a>      <span class="kw">fix</span> D : Set A</span>
+<span id="cb50-16"><a href="#cb50-16" aria-hidden="true" tabindex="-1"></a>      <span class="kw">assume</span> h2 : D ∈ F</span>
+<span id="cb50-17"><a href="#cb50-17" aria-hidden="true" tabindex="-1"></a>      <span class="kw">define</span> <span class="kw">at</span> h2            <span class="co">--h2: B ⊆ D ∧ closed f D</span></span>
+<span id="cb50-18"><a href="#cb50-18" aria-hidden="true" tabindex="-1"></a>      <span class="kw">show</span> a ∈ D <span class="kw">from</span> h2.left h1</span>
+<span id="cb50-19"><a href="#cb50-19" aria-hidden="true" tabindex="-1"></a>      <span class="kw">done</span></span>
+<span id="cb50-20"><a href="#cb50-20" aria-hidden="true" tabindex="-1"></a>    · <span class="co">-- Proof that C is closed under f</span></span>
+<span id="cb50-21"><a href="#cb50-21" aria-hidden="true" tabindex="-1"></a>      <span class="kw">define</span>                  <span class="co">--Goal: ∀ x ∈ C, f x ∈ C</span></span>
+<span id="cb50-22"><a href="#cb50-22" aria-hidden="true" tabindex="-1"></a>      <span class="kw">fix</span> a : A</span>
+<span id="cb50-23"><a href="#cb50-23" aria-hidden="true" tabindex="-1"></a>      <span class="kw">assume</span> h1 : a ∈ C       <span class="co">--Goal: f a ∈ C</span></span>
+<span id="cb50-24"><a href="#cb50-24" aria-hidden="true" tabindex="-1"></a>      <span class="kw">define</span>                  <span class="co">--Goal: ∀ t ∈ F, f a ∈ t</span></span>
+<span id="cb50-25"><a href="#cb50-25" aria-hidden="true" tabindex="-1"></a>      <span class="kw">fix</span> D : Set A</span>
+<span id="cb50-26"><a href="#cb50-26" aria-hidden="true" tabindex="-1"></a>      <span class="kw">assume</span> h2 : D ∈ F       <span class="co">--Goal: f a ∈ D</span></span>
+<span id="cb50-27"><a href="#cb50-27" aria-hidden="true" tabindex="-1"></a>      <span class="kw">define</span> <span class="kw">at</span> h1            <span class="co">--h1: ∀ t ∈ F, a ∈ t</span></span>
+<span id="cb50-28"><a href="#cb50-28" aria-hidden="true" tabindex="-1"></a>      <span class="kw">have</span> h3 : a ∈ D := h1 D h2</span>
+<span id="cb50-29"><a href="#cb50-29" aria-hidden="true" tabindex="-1"></a>      <span class="kw">define</span> <span class="kw">at</span> h2            <span class="co">--h2: B ⊆ D ∧ closed f D</span></span>
+<span id="cb50-30"><a href="#cb50-30" aria-hidden="true" tabindex="-1"></a>      <span class="kw">have</span> h4 : closed f D := h2.right</span>
+<span id="cb50-31"><a href="#cb50-31" aria-hidden="true" tabindex="-1"></a>      <span class="kw">define</span> <span class="kw">at</span> h4            <span class="co">--h4: ∀ x ∈ D, f x ∈ D</span></span>
+<span id="cb50-32"><a href="#cb50-32" aria-hidden="true" tabindex="-1"></a>      <span class="kw">show</span> f a ∈ D <span class="kw">from</span> h4 a h3</span>
+<span id="cb50-33"><a href="#cb50-33" aria-hidden="true" tabindex="-1"></a>      <span class="kw">done</span></span>
+<span id="cb50-34"><a href="#cb50-34" aria-hidden="true" tabindex="-1"></a>    <span class="kw">done</span></span>
+<span id="cb50-35"><a href="#cb50-35" aria-hidden="true" tabindex="-1"></a>  · <span class="co">-- Proof that C is smallest</span></span>
+<span id="cb50-36"><a href="#cb50-36" aria-hidden="true" tabindex="-1"></a>    <span class="kw">fix</span> D : Set A</span>
+<span id="cb50-37"><a href="#cb50-37" aria-hidden="true" tabindex="-1"></a>    <span class="kw">assume</span> h1 : D ∈ F      <span class="co">--Goal: sub A C D</span></span>
+<span id="cb50-38"><a href="#cb50-38" aria-hidden="true" tabindex="-1"></a>    <span class="kw">define</span></span>
+<span id="cb50-39"><a href="#cb50-39" aria-hidden="true" tabindex="-1"></a>    <span class="kw">fix</span> a : A</span>
+<span id="cb50-40"><a href="#cb50-40" aria-hidden="true" tabindex="-1"></a>    <span class="kw">assume</span> h2 : a ∈ C       <span class="co">--Goal: a ∈ D</span></span>
+<span id="cb50-41"><a href="#cb50-41" aria-hidden="true" tabindex="-1"></a>    <span class="kw">define</span> <span class="kw">at</span> h2            <span class="co">--h2: ∀ t ∈ F, a ∈ t</span></span>
+<span id="cb50-42"><a href="#cb50-42" aria-hidden="true" tabindex="-1"></a>    <span class="kw">show</span> a ∈ D <span class="kw">from</span> h2 D h1</span>
+<span id="cb50-43"><a href="#cb50-43" aria-hidden="true" tabindex="-1"></a>    <span class="kw">done</span></span>
+<span id="cb50-44"><a href="#cb50-44" aria-hidden="true" tabindex="-1"></a>  <span class="kw">done</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>The idea of the closure of a set under a function can also be applied to functions of two variables. One way to represent a function of two variables on a type <code>A</code> would be to use a function <code>g</code> of type <code>(A × A) → A</code>. If <code>a</code> and <code>b</code> have type <code>A</code>, then <code>(a, b)</code> has type <code>A × A</code>, and the result of applying the function <code>g</code> to the pair of values <code>a</code> and <code>b</code> would be written <code>g (a, b)</code>.</p>
 <p>However, there is another way to represent a function of two variables that turns out to be more convenient in Lean. Suppose <code>f</code> has type <code>A → A → A</code>. As with the arrow used in conditional propositions, the arrow for function types groups to the right, so <code>A → A → A</code> means <code>A → (A → A)</code>. Thus, if <code>a</code> has type <code>A</code>, then <code>f a</code> has type <code>A → A</code>. In other words, <code>f a</code> is a function from <code>A</code> to <code>A</code>, and therefore if <code>b</code> has type <code>A</code> then <code>f a b</code> has type <code>A</code>. The upshot is that if <code>f</code> is followed by two objects of type <code>A</code>, then the resulting expression has type <code>A</code>, so <code>f</code> can be thought of as a function that applies to a pair of objects of type <code>A</code> and gives a value of type <code>A</code>.</p>
 <p>For example, we can think of addition of integers as a function of two variables. Here are three ways to define this function in Lean.</p>
@@ -672,7 +694,7 @@ $$
 <h3 class="anchored" data-anchor-id="exercises-3">Exercises</h3>
 <div class="numex" data-arguments="1">
 <div class="sourceCode" id="cb55"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb55-1"><a href="#cb55-1" aria-hidden="true" tabindex="-1"></a><span class="kw">example</span> {A : <span class="kw">Type</span>} (F : Set (Set A)) (B : Set A) :</span>
-<span id="cb55-2"><a href="#cb55-2" aria-hidden="true" tabindex="-1"></a>    smallestElt (sub A) B F → B = ⋂₀F := <span class="kw">by</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb55-2"><a href="#cb55-2" aria-hidden="true" tabindex="-1"></a>    smallestElt (sub A) B F → B = ⋂₀F := <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>2. If <code>B</code> has type <code>Set A</code>, then <code>complement B</code> is the set <code>{ a : A | a ∉ B }</code>. Thus, for any <code>a</code> of type <code>A</code>, <code>a ∈ complement B</code> if and only if <code>a ∉ B</code>:</p>
 <div class="sourceCode" id="cb56"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb56-1"><a href="#cb56-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> complement {A : <span class="kw">Type</span>} (B : Set A) : Set A := { a : A | a ∉ B }</span>
@@ -735,36 +757,42 @@ f^{-1}(Y) = \{a \in A \mid f(a) \in Y\}.
 <span id="cb65-6"><a href="#cb65-6" aria-hidden="true" tabindex="-1"></a>  <span class="kw">obtain</span> (x : A) (h2 : x ∈ W ∩ X ∧ f x = y) <span class="kw">from</span> h1</span>
 <span id="cb65-7"><a href="#cb65-7" aria-hidden="true" tabindex="-1"></a>  <span class="kw">define</span> : x ∈ W ∩ X <span class="kw">at</span> h2         <span class="co">--h2: (x ∈ W ∧ x ∈ X) ∧ f x = y</span></span>
 <span id="cb65-8"><a href="#cb65-8" aria-hidden="true" tabindex="-1"></a>  <span class="kw">apply</span> And.intro</span>
-<span id="cb65-9"><a href="#cb65-9" aria-hidden="true" tabindex="-1"></a>  <span class="co">-- Proof that y ∈ image f W</span></span>
-<span id="cb65-10"><a href="#cb65-10" aria-hidden="true" tabindex="-1"></a>  <span class="kw">define</span>                           <span class="co">--Goal: ∃ (x : A), x ∈ W ∧ f x = y</span></span>
-<span id="cb65-11"><a href="#cb65-11" aria-hidden="true" tabindex="-1"></a>  <span class="kw">show</span> ∃ (x : A), x ∈ W ∧ f x = y <span class="kw">from</span></span>
-<span id="cb65-12"><a href="#cb65-12" aria-hidden="true" tabindex="-1"></a>    Exists.intro x (And.intro h2.left.left h2.right)</span>
-<span id="cb65-13"><a href="#cb65-13" aria-hidden="true" tabindex="-1"></a>  <span class="co">-- Proof that y ∈ image f X</span></span>
-<span id="cb65-14"><a href="#cb65-14" aria-hidden="true" tabindex="-1"></a>  <span class="kw">show</span> y ∈ image f X <span class="kw">from</span></span>
-<span id="cb65-15"><a href="#cb65-15" aria-hidden="true" tabindex="-1"></a>    Exists.intro x (And.intro h2.left.right h2.right)</span>
-<span id="cb65-16"><a href="#cb65-16" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb65-17"><a href="#cb65-17" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Theorem_5_5_2_2 {A B : <span class="kw">Type</span>} (f : A → B) (W X : Set A)</span>
-<span id="cb65-18"><a href="#cb65-18" aria-hidden="true" tabindex="-1"></a>    (h1 : one_to_one f) : image f (W ∩ X) = image f W ∩ image f X := <span class="kw">by</span></span>
-<span id="cb65-19"><a href="#cb65-19" aria-hidden="true" tabindex="-1"></a>  <span class="kw">apply</span> Set.ext</span>
-<span id="cb65-20"><a href="#cb65-20" aria-hidden="true" tabindex="-1"></a>  <span class="kw">fix</span> y : B      <span class="co">--Goal: y ∈ image f (W ∩ X) ↔ y ∈ image f W ∩ image f X</span></span>
-<span id="cb65-21"><a href="#cb65-21" aria-hidden="true" tabindex="-1"></a>  <span class="kw">apply</span> Iff.intro</span>
-<span id="cb65-22"><a href="#cb65-22" aria-hidden="true" tabindex="-1"></a>  <span class="co">-- (→)</span></span>
-<span id="cb65-23"><a href="#cb65-23" aria-hidden="true" tabindex="-1"></a>  <span class="kw">assume</span> h2 : y ∈ image f (W ∩ X)</span>
-<span id="cb65-24"><a href="#cb65-24" aria-hidden="true" tabindex="-1"></a>  <span class="kw">show</span> y ∈ image f W ∩ image f X <span class="kw">from</span> Theorem_5_5_2_1 f W X h2</span>
-<span id="cb65-25"><a href="#cb65-25" aria-hidden="true" tabindex="-1"></a>  <span class="co">-- (←)</span></span>
-<span id="cb65-26"><a href="#cb65-26" aria-hidden="true" tabindex="-1"></a>  <span class="kw">assume</span> h2 : y ∈ image f W ∩ image f X  <span class="co">--Goal: y ∈ image f (W ∩ X)</span></span>
-<span id="cb65-27"><a href="#cb65-27" aria-hidden="true" tabindex="-1"></a>  <span class="kw">define</span> <span class="kw">at</span> h2                  <span class="co">--h2: y ∈ image f W ∧ y ∈ image f X</span></span>
-<span id="cb65-28"><a href="#cb65-28" aria-hidden="true" tabindex="-1"></a>  <span class="kw">rewrite</span> [simp_image, simp_image] <span class="kw">at</span> h2</span>
-<span id="cb65-29"><a href="#cb65-29" aria-hidden="true" tabindex="-1"></a>          <span class="co">--h2: (∃ (x : A), x ∈ W ∧ f x = y) ∧ ∃ (x : A), x ∈ X ∧ f x = y</span></span>
-<span id="cb65-30"><a href="#cb65-30" aria-hidden="true" tabindex="-1"></a>  <span class="kw">obtain</span> (x1 : A) (h3 : x1 ∈ W ∧ f x1 = y) <span class="kw">from</span> h2.left</span>
-<span id="cb65-31"><a href="#cb65-31" aria-hidden="true" tabindex="-1"></a>  <span class="kw">obtain</span> (x2 : A) (h4 : x2 ∈ X ∧ f x2 = y) <span class="kw">from</span> h2.right</span>
-<span id="cb65-32"><a href="#cb65-32" aria-hidden="true" tabindex="-1"></a>  <span class="kw">have</span> h5 : f x2 = y := h4.right</span>
-<span id="cb65-33"><a href="#cb65-33" aria-hidden="true" tabindex="-1"></a>  <span class="kw">rewrite</span> [←h3.right] <span class="kw">at</span> h5    <span class="co">--h5: f x2 = f x1</span></span>
-<span id="cb65-34"><a href="#cb65-34" aria-hidden="true" tabindex="-1"></a>  <span class="kw">define</span> <span class="kw">at</span> h1                 <span class="co">--h1: ∀ (x1 x2 : A), f x1 = f x2 → x1 = x2</span></span>
-<span id="cb65-35"><a href="#cb65-35" aria-hidden="true" tabindex="-1"></a>  <span class="kw">have</span> h6 : x2 = x1 := h1 x2 x1 h5</span>
-<span id="cb65-36"><a href="#cb65-36" aria-hidden="true" tabindex="-1"></a>  <span class="kw">rewrite</span> [h6] <span class="kw">at</span> h4           <span class="co">--h4: x1 ∈ X ∧ f x1 = y</span></span>
-<span id="cb65-37"><a href="#cb65-37" aria-hidden="true" tabindex="-1"></a>  <span class="kw">show</span> y ∈ image f (W ∩ X) <span class="kw">from</span></span>
-<span id="cb65-38"><a href="#cb65-38" aria-hidden="true" tabindex="-1"></a>    Exists.intro x1 (And.intro (And.intro h3.left h4.left) h3.right)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb65-9"><a href="#cb65-9" aria-hidden="true" tabindex="-1"></a>  · <span class="co">-- Proof that y ∈ image f W</span></span>
+<span id="cb65-10"><a href="#cb65-10" aria-hidden="true" tabindex="-1"></a>    <span class="kw">define</span>                           <span class="co">--Goal: ∃ (x : A), x ∈ W ∧ f x = y</span></span>
+<span id="cb65-11"><a href="#cb65-11" aria-hidden="true" tabindex="-1"></a>    <span class="kw">show</span> ∃ (x : A), x ∈ W ∧ f x = y <span class="kw">from</span></span>
+<span id="cb65-12"><a href="#cb65-12" aria-hidden="true" tabindex="-1"></a>      Exists.intro x (And.intro h2.left.left h2.right)</span>
+<span id="cb65-13"><a href="#cb65-13" aria-hidden="true" tabindex="-1"></a>    <span class="kw">done</span></span>
+<span id="cb65-14"><a href="#cb65-14" aria-hidden="true" tabindex="-1"></a>  · <span class="co">-- Proof that y ∈ image f X</span></span>
+<span id="cb65-15"><a href="#cb65-15" aria-hidden="true" tabindex="-1"></a>    <span class="kw">show</span> y ∈ image f X <span class="kw">from</span></span>
+<span id="cb65-16"><a href="#cb65-16" aria-hidden="true" tabindex="-1"></a>      Exists.intro x (And.intro h2.left.right h2.right)</span>
+<span id="cb65-17"><a href="#cb65-17" aria-hidden="true" tabindex="-1"></a>    <span class="kw">done</span></span>
+<span id="cb65-18"><a href="#cb65-18" aria-hidden="true" tabindex="-1"></a>  <span class="kw">done</span></span>
+<span id="cb65-19"><a href="#cb65-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb65-20"><a href="#cb65-20" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Theorem_5_5_2_2 {A B : <span class="kw">Type</span>} (f : A → B) (W X : Set A)</span>
+<span id="cb65-21"><a href="#cb65-21" aria-hidden="true" tabindex="-1"></a>    (h1 : one_to_one f) : image f (W ∩ X) = image f W ∩ image f X := <span class="kw">by</span></span>
+<span id="cb65-22"><a href="#cb65-22" aria-hidden="true" tabindex="-1"></a>  <span class="kw">apply</span> Set.ext</span>
+<span id="cb65-23"><a href="#cb65-23" aria-hidden="true" tabindex="-1"></a>  <span class="kw">fix</span> y : B      <span class="co">--Goal: y ∈ image f (W ∩ X) ↔ y ∈ image f W ∩ image f X</span></span>
+<span id="cb65-24"><a href="#cb65-24" aria-hidden="true" tabindex="-1"></a>  <span class="kw">apply</span> Iff.intro</span>
+<span id="cb65-25"><a href="#cb65-25" aria-hidden="true" tabindex="-1"></a>  · <span class="co">-- (→)</span></span>
+<span id="cb65-26"><a href="#cb65-26" aria-hidden="true" tabindex="-1"></a>    <span class="kw">assume</span> h2 : y ∈ image f (W ∩ X)</span>
+<span id="cb65-27"><a href="#cb65-27" aria-hidden="true" tabindex="-1"></a>    <span class="kw">show</span> y ∈ image f W ∩ image f X <span class="kw">from</span> Theorem_5_5_2_1 f W X h2</span>
+<span id="cb65-28"><a href="#cb65-28" aria-hidden="true" tabindex="-1"></a>    <span class="kw">done</span></span>
+<span id="cb65-29"><a href="#cb65-29" aria-hidden="true" tabindex="-1"></a>  · <span class="co">-- (←)</span></span>
+<span id="cb65-30"><a href="#cb65-30" aria-hidden="true" tabindex="-1"></a>    <span class="kw">assume</span> h2 : y ∈ image f W ∩ image f X  <span class="co">--Goal: y ∈ image f (W ∩ X)</span></span>
+<span id="cb65-31"><a href="#cb65-31" aria-hidden="true" tabindex="-1"></a>    <span class="kw">define</span> <span class="kw">at</span> h2                  <span class="co">--h2: y ∈ image f W ∧ y ∈ image f X</span></span>
+<span id="cb65-32"><a href="#cb65-32" aria-hidden="true" tabindex="-1"></a>    <span class="kw">rewrite</span> [simp_image, simp_image] <span class="kw">at</span> h2</span>
+<span id="cb65-33"><a href="#cb65-33" aria-hidden="true" tabindex="-1"></a>          <span class="co">--h2: (∃ (x : A), x ∈ W ∧ f x = y) ∧ ∃ (x : A), x ∈ X ∧ f x = y</span></span>
+<span id="cb65-34"><a href="#cb65-34" aria-hidden="true" tabindex="-1"></a>    <span class="kw">obtain</span> (x1 : A) (h3 : x1 ∈ W ∧ f x1 = y) <span class="kw">from</span> h2.left</span>
+<span id="cb65-35"><a href="#cb65-35" aria-hidden="true" tabindex="-1"></a>    <span class="kw">obtain</span> (x2 : A) (h4 : x2 ∈ X ∧ f x2 = y) <span class="kw">from</span> h2.right</span>
+<span id="cb65-36"><a href="#cb65-36" aria-hidden="true" tabindex="-1"></a>    <span class="kw">have</span> h5 : f x2 = y := h4.right</span>
+<span id="cb65-37"><a href="#cb65-37" aria-hidden="true" tabindex="-1"></a>    <span class="kw">rewrite</span> [←h3.right] <span class="kw">at</span> h5  <span class="co">--h5: f x2 = f x1</span></span>
+<span id="cb65-38"><a href="#cb65-38" aria-hidden="true" tabindex="-1"></a>    <span class="kw">define</span> <span class="kw">at</span> h1               <span class="co">--h1: ∀ (x1 x2 : A), f x1 = f x2 → x1 = x2</span></span>
+<span id="cb65-39"><a href="#cb65-39" aria-hidden="true" tabindex="-1"></a>    <span class="kw">have</span> h6 : x2 = x1 := h1 x2 x1 h5</span>
+<span id="cb65-40"><a href="#cb65-40" aria-hidden="true" tabindex="-1"></a>    <span class="kw">rewrite</span> [h6] <span class="kw">at</span> h4           <span class="co">--h4: x1 ∈ X ∧ f x1 = y</span></span>
+<span id="cb65-41"><a href="#cb65-41" aria-hidden="true" tabindex="-1"></a>    <span class="kw">show</span> y ∈ image f (W ∩ X) <span class="kw">from</span></span>
+<span id="cb65-42"><a href="#cb65-42" aria-hidden="true" tabindex="-1"></a>      Exists.intro x1 (And.intro (And.intro h3.left h4.left) h3.right)</span>
+<span id="cb65-43"><a href="#cb65-43" aria-hidden="true" tabindex="-1"></a>    <span class="kw">done</span></span>
+<span id="cb65-44"><a href="#cb65-44" aria-hidden="true" tabindex="-1"></a>  <span class="kw">done</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>The rest of Section 5.5 of <em>HTPI</em> consists of statements for you to try to prove. Here are the statements, written as examples in Lean. Some are correct and some are not; some can be made correct by adding additional hypotheses or weakening the conclusion. Prove as much as you can.</p>
 <div class="sourceCode" id="cb66"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb66-1"><a href="#cb66-1" aria-hidden="true" tabindex="-1"></a><span class="kw">example</span> {A B : <span class="kw">Type</span>} (f : A → B) (W X : Set A) :</span>
 <span id="cb66-2"><a href="#cb66-2" aria-hidden="true" tabindex="-1"></a>    image f (W ∪ X) = image f W ∪ image f X := <span class="cn">sorry</span></span>

@@ -2,7 +2,7 @@
 
 ## 5.1. Functions
 
-The first definition in Chapter 5 of *HTPI* says that if $F \subseteq A \times B$, then $F$ is called a *function* from $A$ to $B$ if for every $a \in A$ there is exactly one $b \in B$ such that $(a, b) \in F$.  The notation $F : A \to B$ means that $F$ is a function from $A$ to $B$.  If $F$ is a function from $A$ to $B$ and $a \in A$, then *HTPI* introduces the notation $F(a)$ for the unique $b \in B$ such that $(a, b) \in F$.  Thus, if $F : A \to B$, $a \in A$, and $b \in B$, then $F(a) = b$ means the same thing as $(a, b) \in F$.  We sometimes call $F(a)$ the *value of $F$ at $a$*, or the *result of applying $F$ to $a$*.
+The first definition in Chapter 5 of *HTPI* says that if $F \subseteq A \times B$, then $F$ is called a *function* from $A$ to $B$ if for every $a \in A$ there is exactly one $b \in B$ such that $(a, b) \in F$.  The notation $F : A \to B$ means that $F$ is a function from $A$ to $B$.  If $F$ is a function from $A$ to $B$ and $a \in A$, then *HTPI* introduces the notation $F(a)$ for the unique $b \in B$ such that $(a, b) \in F$.  Thus, if $F : A \to B$, $a \in A$, and $b \in B$, then $F(a) = b$ means the same thing as $(a, b) \in F$.  We sometimes think of $F$ as representing an operation that can be applied to an element $a$ of $A$ to produce a corresponding element $F(a)$ of $B$, and we call $F(a)$ the *value of $F$ at $a$*, or the *result of applying $F$ to $a$*.
 
 This might remind you of the situation we faced in Chapter 4.  If $R \subseteq A \times B$, $a \in A$, and $b \in B$, then Chapter 4 of *HTPI* uses the notation $aRb$ to mean the same thing as $(a, b) \in R$.  But in Lean, we found it necessary to change this notation.  Instead of using *HTPI*'s notation $aRb$, we introduced the notation `R a b`, which we use when `R` has type `Rel A B`, `a` has type `A`, and `b` has type `B`.  (The notation `(a, b) ∈ R`, in contrast, can be used only when `R` has type `Set (A × B)`.)  If `R` has type `Rel A B`, then we think of `R` as representing some relationship that might hold between `a` and `b`, and `R a b` as the proposition saying that this relationship holds.  And although `R` is not a set of ordered pairs, there is a corresponding set, `extension R`, of type `Set (A × B)`, with the property that `(a, b) ∈ extension R` if and only if `R a b`.
 
@@ -56,9 +56,11 @@ example {A B : Type} (f g : A → B) :
   have h2 : (x, f x) ∈ graph f := by
     define                       --Goal: f x = f x
     rfl
+    done
   rewrite [h1] at h2             --h2: (x, f x) ∈ graph g
   define at h2                   --h2: g x = f x
   show f x = g x from h2.symm
+  done
 ```
 
 The axiom of extensionality for sets says that a set is completely determined by its elements.  This is what justifies our usual method of defining a set: we specify what its elements are, using notation like `{0, 1, 2}` or `{ x : Nat | x < 3 }`.  Similarly, the axiom of extensionality for functions says that a function is completely determined by its values, and therefore we can define a function by specifying its values.  For instance, we can define a function from `Nat` to `Nat` by specifying, for any `n : Nat`, the result of applying the function to `n`.  As an example of this, we could define the "squaring function" from `Nat` to `Nat` to be the function that, when applied to any `n : Nat`, produces the result `n^2`.  Here are two ways to define this function in Lean:
@@ -85,28 +87,34 @@ theorem Theorem_5_1_5 {A B C : Type} (f : A → B) (g : B → C) :
   apply Set.ext
   fix (a, c) : A × C
   apply Iff.intro
-  -- Proof that (a, c) ∈ graph h → (a, c) ∈ comp (graph g) (graph f)
-  assume h1 : (a, c) ∈ graph h
-  define at h1    --h1: h a = c
-  define          --Goal:  ∃ (x : B), (a, x) ∈ graph f ∧ (x, c) ∈ graph g
-  apply Exists.intro (f a)
-  apply And.intro
-  -- Proof that (a, f a) ∈ graph f
-  define; rfl
-  -- Proof that (f a, c) ∈ graph g
-  define
-  show g (f a) = c from h1
-  -- Proof that (a, c) ∈ comp (graph g) (graph f) → (a, c) ∈ graph h
-  assume h1 : (a, c) ∈ comp (graph g) (graph f)
-  define          --Goal: h a = c
-  define at h1    --h1: ∃ (x : B), (a, x) ∈ graph f ∧ (x, c) ∈ graph g
-  obtain (b : B) (h2 : (a, b) ∈ graph f ∧ (b, c) ∈ graph g) from h1
-  have h3 : (a, b) ∈ graph f := h2.left
-  have h4 : (b, c) ∈ graph g := h2.right
-  define at h3          --h3: f a = b
-  define at h4          --h4: g b = c
-  rewrite [←h3] at h4   --h4: g (f a) = c
-  show h a = c from h4
+  · -- Proof that (a, c) ∈ graph h → (a, c) ∈ comp (graph g) (graph f)
+    assume h1 : (a, c) ∈ graph h
+    define at h1  --h1: h a = c
+    define        --Goal:  ∃ (x : B), (a, x) ∈ graph f ∧ (x, c) ∈ graph g
+    apply Exists.intro (f a)
+    apply And.intro
+    · -- Proof that (a, f a) ∈ graph f
+      define
+      rfl
+      done
+    · -- Proof that (f a, c) ∈ graph g
+      define
+      show g (f a) = c from h1
+      done
+    done
+  · -- Proof that (a, c) ∈ comp (graph g) (graph f) → (a, c) ∈ graph h
+    assume h1 : (a, c) ∈ comp (graph g) (graph f)
+    define        --Goal: h a = c
+    define at h1  --h1: ∃ (x : B), (a, x) ∈ graph f ∧ (x, c) ∈ graph g
+    obtain (b : B) (h2 : (a, b) ∈ graph f ∧ (b, c) ∈ graph g) from h1
+    have h3 : (a, b) ∈ graph f := h2.left
+    have h4 : (b, c) ∈ graph g := h2.right
+    define at h3          --h3: f a = b
+    define at h4          --h4: g b = c
+    rewrite [←h3] at h4   --h4: g (f a) = c
+    show h a = c from h4
+    done
+  done
 ```
 
 Notice that the proof of `Theorem_5_1_5` begins by defining the function `h` for which `graph h = comp (graph g) (graph f)`.  The definition says that for all `x` of type `A`, `h x = g (f x)`.  This function `h` is called the *composition* of `g` and `f`, and it is denoted `g ∘ f`.  (To type `∘` in VSCode, type `\comp` or `\circ`.)  In other words, `g ∘ f` has type `A → C`, and for all `x` of type `A`, `(g ∘ f) x` is definitionally equal to `g (f x)`.  In *HTPI*, functions are sets of ordered pairs, and the operation of composition of functions is literally the same as the operation `comp` that we used in Chapter 4.  But in Lean, we distinguish among functions, relations, and sets of ordered pairs, so all we can say is that the operation of composition of functions corresponds to the operation `comp` from Chapter 4.  The correspondence is that, as shown in the proof of `Theorem_5_1_5`, if `h = g ∘ f`, then `graph h = comp (graph g) (graph f)`.
@@ -253,6 +261,7 @@ theorem Theorem_5_2_5_1 {A B C : Type} (f : A → B) (g : B → C) :
   assume h3 : g (f a1) = g (f a2)
   have h4 : f a1 = f a2 := h2 (f a1) (f a2) h3
   show a1 = a2 from h1 a1 a2 h4
+  done
 ```
 
 Notice that the tactic `define : (g ∘ f) a1` replaces `(g ∘ f) a1` with its definition, `g (f a1)`.  As usual, this step isn't really needed---Lean will apply the definition on its own when necessary, without being told.  But using this tactic makes the proof easier to read.  We use a similar approach for the second part of the theorem.
@@ -272,6 +281,7 @@ theorem Theorem_5_2_5_2 {A B C : Type} (f : A → B) (g : B → C) :
   define : (g ∘ f) a     --Goal: g (f a) = c
   rewrite [←h4] at h3
   show g (f a) = c from h3
+  done
 ```
 
 ### Exercises
@@ -372,10 +382,10 @@ theorem Theorem_5_3_1 {A B : Type}
 
 To prove this theorem, we will use the theorem `func_from_graph` that was stated in Section 5.1.  We can remind ourselves of what that theorem says by using the command `#check @func_from_graph`, which gives the result:
 
-:::{.quote}
+:::{.ind}
 ```
 @func_from_graph : ∀ {A B : Type} (F : Set (A × B)),
-    (∃ f, graph f = F) ↔ is_func_graph F
+                    (∃ (f : A → B), graph f = F) ↔ is_func_graph F
 ```
 :::
 
@@ -390,21 +400,24 @@ theorem Theorem_5_3_1 {A B : Type}
   define        --Goal: ∀ (x : B), ∃! (y : A), (x, y) ∈ inv (graph f)
   fix b : B
   exists_unique
-  -- Existence
-  define at h2          --h2: ∀ (y : B), ∃ (x : A), f x = y
-  obtain (a : A) (h4 : f a = b) from h2 b
-  apply Exists.intro a  --Goal: (b, a) ∈ inv (graph f)
-  define                --Goal: f a = b
-  show f a = b from h4
-  -- Uniqueness
-  fix a1 : A; fix a2 : A
-  assume h3 : (b, a1) ∈ inv (graph f)
-  assume h4 : (b, a2) ∈ inv (graph f) --Goal: a1 = a2
-  define at h3          --h3: f a1 = b
-  define at h4          --h4: f a2 = b
-  rewrite [←h4] at h3   --h3: f a1 = f a2
-  define at h1          --h1: ∀ (x1 x2 : A), f x1 = f x2 → x1 = x2
-  show a1 = a2 from h1 a1 a2 h3
+  · -- Existence
+    define at h2          --h2: ∀ (y : B), ∃ (x : A), f x = y
+    obtain (a : A) (h4 : f a = b) from h2 b
+    apply Exists.intro a  --Goal: (b, a) ∈ inv (graph f)
+    define                --Goal: f a = b
+    show f a = b from h4
+    done
+  · -- Uniqueness
+    fix a1 : A; fix a2 : A
+    assume h3 : (b, a1) ∈ inv (graph f)
+    assume h4 : (b, a2) ∈ inv (graph f) --Goal: a1 = a2
+    define at h3          --h3: f a1 = b
+    define at h4          --h4: f a2 = b
+    rewrite [←h4] at h3   --h3: f a1 = f a2
+    define at h1          --h1: ∀ (x1 x2 : A), f x1 = f x2 → x1 = x2
+    show a1 = a2 from h1 a1 a2 h3
+    done
+  done
 ```
 
 Suppose, now, that we have `f : A → B`, `g : B → A`, and `graph g = inv (graph f)`, as in `Theorem_5_3_1`.  What can we say about the relationship between `f` and `g`?  One answer is that `g ∘ f = id` and `f ∘ g = id`, as shown in Theorem 5.3.2 of *HTPI*.  We'll prove one of these facts, and leave the other as an exercise for you.
@@ -418,8 +431,10 @@ theorem Theorem_5_3_2_1 {A B : Type} (f : A → B) (g : B → A)
     rewrite [h1]         --Goal: (f a, a) ∈ inv (graph f)
     define               --Goal:  f a = f a
     rfl
+    done
   define at h2           --h2: g (f a) = a
   show (g ∘ f) a = id a from h2
+  done
 
 theorem Theorem_5_3_2_2 {A B : Type} (f : A → B) (g : B → A)
     (h1 : graph g = inv (graph f)) : f ∘ g = id := sorry
@@ -444,6 +459,7 @@ theorem Theorem_5_3_3_1 {A B : Type} (f : A → B) :
       _ = (g ∘ f) a2 := by rfl
       _ = id a2 := by rw [h2]
       _ = a2 := by rfl
+  done
 
 theorem Theorem_5_3_3_2 {A B : Type} (f : A → B) :
     (∃ (g : B → A), f ∘ g = id) → onto f := sorry
@@ -468,6 +484,7 @@ theorem Theorem_5_3_5 {A B : Type} (f : A → B) (g : B → A)
       _ = g' := by rfl
   rewrite [←h7] at h5
   show graph g = inv (graph f) from h5
+  done
 ```
 
 ### Exercises
@@ -562,40 +579,45 @@ theorem Theorem_5_4_5 {A : Type} (f : A → A) (B : Set A) :
   let F : Set (Set A) := { D : Set A | B ⊆ D ∧ closed f D }
   let C : Set A := ⋂₀F
   apply Exists.intro C    --Goal: closure f B C
-  define                  --Goal: C ∈ F ∧ ∀ D ∈ F, C ⊆ D
+  define                  --Goal: C ∈ F ∧ ∀ x ∈ F, C ⊆ x
   apply And.intro
-  -- Proof that C ∈ F
-  define                  --Goal: B ⊆ C ∧ closed f C
-  apply And.intro
-  -- Proof that B ⊆ C
-  fix a : A
-  assume h1 : a ∈ B       --Goal: a ∈ C
-  define                  --Goal: ∀ D ∈ F, a ∈ D
-  fix D : Set A
-  assume h2 : D ∈ F
-  define at h2            --h2: B ⊆ D ∧ closed f D
-  show a ∈ D from h2.left h1
-  -- Proof that C is closed under f
-  define                  --Goal: ∀ x ∈ C, f x ∈ C
-  fix a : A
-  assume h1 : a ∈ C       --Goal: f a ∈ C
-  define                  --Goal: ∀ D ∈ F, f a ∈ D
-  fix D : Set A
-  assume h2 : D ∈ F       --Goal: f a ∈ D
-  define at h1            --h1: ∀ A_1 ∈ F, a ∈ A_1
-  have h3 : a ∈ D := h1 D h2
-  define at h2            --h2: B ⊆ D ∧ closed f D
-  have h4 : closed f D := h2.right
-  define at h4            --h4: ∀ x ∈ D, f x ∈ D
-  show f a ∈ D from h4 a h3
-  -- Proof that C is smallest
-  fix D : Set A
-  assume h1 : D ∈ F      --Goal: sub A C D
-  define
-  fix a : A
-  assume h2 : a ∈ C       --Goal: a ∈ D
-  define at h2            --h2: ∀ A_1 ∈ F, a ∈ A_1
-  show a ∈ D from h2 D h1
+  · -- Proof that C ∈ F
+    define                  --Goal: B ⊆ C ∧ closed f C
+    apply And.intro
+    · -- Proof that B ⊆ C
+      fix a : A
+      assume h1 : a ∈ B       --Goal: a ∈ C
+      define                  --Goal: ∀ t ∈ F, a ∈ t
+      fix D : Set A
+      assume h2 : D ∈ F
+      define at h2            --h2: B ⊆ D ∧ closed f D
+      show a ∈ D from h2.left h1
+      done
+    · -- Proof that C is closed under f
+      define                  --Goal: ∀ x ∈ C, f x ∈ C
+      fix a : A
+      assume h1 : a ∈ C       --Goal: f a ∈ C
+      define                  --Goal: ∀ t ∈ F, f a ∈ t
+      fix D : Set A
+      assume h2 : D ∈ F       --Goal: f a ∈ D
+      define at h1            --h1: ∀ t ∈ F, a ∈ t
+      have h3 : a ∈ D := h1 D h2
+      define at h2            --h2: B ⊆ D ∧ closed f D
+      have h4 : closed f D := h2.right
+      define at h4            --h4: ∀ x ∈ D, f x ∈ D
+      show f a ∈ D from h4 a h3
+      done
+    done
+  · -- Proof that C is smallest
+    fix D : Set A
+    assume h1 : D ∈ F      --Goal: sub A C D
+    define
+    fix a : A
+    assume h2 : a ∈ C       --Goal: a ∈ D
+    define at h2            --h2: ∀ t ∈ F, a ∈ t
+    show a ∈ D from h2 D h1
+    done
+  done
 ```
 
 The idea of the closure of a set under a function can also be applied to functions of two variables.  One way to represent a function of two variables on a type `A` would be to use a function `g` of type `(A × A) → A`.  If `a` and `b` have type `A`, then `(a, b)` has type `A × A`, and the result of applying the function `g` to the pair of values `a` and `b` would be written `g (a, b)`.
@@ -643,7 +665,7 @@ theorem Theorem_5_4_9 {A : Type} (f : A → A → A) (B : Set A) :
 ::: {.numex arguments="1"}
 ```lean
 example {A : Type} (F : Set (Set A)) (B : Set A) :
-    smallestElt (sub A) B F → B = ⋂₀F := by
+    smallestElt (sub A) B F → B = ⋂₀F := sorry
 ```
 :::
 
@@ -744,36 +766,42 @@ theorem Theorem_5_5_2_1 {A B : Type} (f : A → B) (W X : Set A) :
   obtain (x : A) (h2 : x ∈ W ∩ X ∧ f x = y) from h1
   define : x ∈ W ∩ X at h2         --h2: (x ∈ W ∧ x ∈ X) ∧ f x = y
   apply And.intro
-  -- Proof that y ∈ image f W
-  define                           --Goal: ∃ (x : A), x ∈ W ∧ f x = y
-  show ∃ (x : A), x ∈ W ∧ f x = y from
-    Exists.intro x (And.intro h2.left.left h2.right)
-  -- Proof that y ∈ image f X
-  show y ∈ image f X from
-    Exists.intro x (And.intro h2.left.right h2.right)
+  · -- Proof that y ∈ image f W
+    define                           --Goal: ∃ (x : A), x ∈ W ∧ f x = y
+    show ∃ (x : A), x ∈ W ∧ f x = y from
+      Exists.intro x (And.intro h2.left.left h2.right)
+    done
+  · -- Proof that y ∈ image f X
+    show y ∈ image f X from
+      Exists.intro x (And.intro h2.left.right h2.right)
+    done
+  done
 
 theorem Theorem_5_5_2_2 {A B : Type} (f : A → B) (W X : Set A)
     (h1 : one_to_one f) : image f (W ∩ X) = image f W ∩ image f X := by
   apply Set.ext
   fix y : B      --Goal: y ∈ image f (W ∩ X) ↔ y ∈ image f W ∩ image f X
   apply Iff.intro
-  -- (→)
-  assume h2 : y ∈ image f (W ∩ X)
-  show y ∈ image f W ∩ image f X from Theorem_5_5_2_1 f W X h2
-  -- (←)
-  assume h2 : y ∈ image f W ∩ image f X  --Goal: y ∈ image f (W ∩ X)
-  define at h2                  --h2: y ∈ image f W ∧ y ∈ image f X
-  rewrite [simp_image, simp_image] at h2
+  · -- (→)
+    assume h2 : y ∈ image f (W ∩ X)
+    show y ∈ image f W ∩ image f X from Theorem_5_5_2_1 f W X h2
+    done
+  · -- (←)
+    assume h2 : y ∈ image f W ∩ image f X  --Goal: y ∈ image f (W ∩ X)
+    define at h2                  --h2: y ∈ image f W ∧ y ∈ image f X
+    rewrite [simp_image, simp_image] at h2
           --h2: (∃ (x : A), x ∈ W ∧ f x = y) ∧ ∃ (x : A), x ∈ X ∧ f x = y
-  obtain (x1 : A) (h3 : x1 ∈ W ∧ f x1 = y) from h2.left
-  obtain (x2 : A) (h4 : x2 ∈ X ∧ f x2 = y) from h2.right
-  have h5 : f x2 = y := h4.right
-  rewrite [←h3.right] at h5    --h5: f x2 = f x1
-  define at h1                 --h1: ∀ (x1 x2 : A), f x1 = f x2 → x1 = x2
-  have h6 : x2 = x1 := h1 x2 x1 h5
-  rewrite [h6] at h4           --h4: x1 ∈ X ∧ f x1 = y
-  show y ∈ image f (W ∩ X) from
-    Exists.intro x1 (And.intro (And.intro h3.left h4.left) h3.right)
+    obtain (x1 : A) (h3 : x1 ∈ W ∧ f x1 = y) from h2.left
+    obtain (x2 : A) (h4 : x2 ∈ X ∧ f x2 = y) from h2.right
+    have h5 : f x2 = y := h4.right
+    rewrite [←h3.right] at h5  --h5: f x2 = f x1
+    define at h1               --h1: ∀ (x1 x2 : A), f x1 = f x2 → x1 = x2
+    have h6 : x2 = x1 := h1 x2 x1 h5
+    rewrite [h6] at h4           --h4: x1 ∈ X ∧ f x1 = y
+    show y ∈ image f (W ∩ X) from
+      Exists.intro x1 (And.intro (And.intro h3.left h4.left) h3.right)
+    done
+  done
 ```
 
 The rest of Section 5.5 of *HTPI* consists of statements for you to try to prove.  Here are the statements, written as examples in Lean.  Some are correct and some are not; some can be made correct by adding additional hypotheses or weakening the conclusion.  Prove as much as you can.

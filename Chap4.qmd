@@ -105,32 +105,35 @@ theorem Theorem_4_2_5_4 {A B C D : Type}
   apply Set.ext
   fix (a, d) : A × D
   apply Iff.intro
-  -- (→)
-  assume h1 : (a, d) ∈ comp T (comp S R)
+  · -- (→)
+    assume h1 : (a, d) ∈ comp T (comp S R)
                      --Goal: (a, d) ∈ comp (comp T S) R
-  define             --Goal: ∃ (x : B), (a, x) ∈ R ∧ (x, d) ∈ comp T S
-  define at h1       --h1: ∃ (x : C), (a, x) ∈ comp S R ∧ (x, d) ∈ T
-  obtain (c : C) (h2 : (a, c) ∈ comp S R ∧ (c, d) ∈ T) from h1
-  have h3 : (a, c) ∈ comp S R := h2.left
-  define at h3       --h3: ∃ (x : B), (a, x) ∈ R ∧ (x, c) ∈ S
-  obtain (b : B) (h4 : (a, b) ∈ R ∧ (b, c) ∈ S) from h3
-  apply Exists.intro b    --Goal: (a, b) ∈ R ∧ (b, d) ∈ comp T S
-  apply And.intro h4.left --Goal: (b, d) ∈ comp T S
-  define                  --Goal: ∃ (x : C), (b, x) ∈ S ∧ (x, d) ∈ T
-  show ∃ (x : C), (b, x) ∈ S ∧ (x, d) ∈ T from
-    Exists.intro c (And.intro h4.right h2.right)
-  -- (←)
-  assume h1 : (a, d) ∈ comp (comp T S) R
-  define; define at h1
-  obtain (b : B) (h2 : (a, b) ∈ R ∧ (b, d) ∈ comp T S) from h1
-  have h3 : (b, d) ∈ comp T S := h2.right
-  define at h3
-  obtain (c : C) (h4 : (b, c) ∈ S ∧ (c, d) ∈ T) from h3
-  apply Exists.intro c
-  apply And.intro _ h4.right
-  define
-  show ∃ (x : B), (a, x) ∈ R ∧ (x, c) ∈ S from
-    Exists.intro b (And.intro h2.left h4.left)
+    define           --Goal: ∃ (x : B), (a, x) ∈ R ∧ (x, d) ∈ comp T S
+    define at h1     --h1: ∃ (x : C), (a, x) ∈ comp S R ∧ (x, d) ∈ T
+    obtain (c : C) (h2 : (a, c) ∈ comp S R ∧ (c, d) ∈ T) from h1
+    have h3 : (a, c) ∈ comp S R := h2.left
+    define at h3     --h3: ∃ (x : B), (a, x) ∈ R ∧ (x, c) ∈ S
+    obtain (b : B) (h4 : (a, b) ∈ R ∧ (b, c) ∈ S) from h3
+    apply Exists.intro b    --Goal: (a, b) ∈ R ∧ (b, d) ∈ comp T S
+    apply And.intro h4.left --Goal: (b, d) ∈ comp T S
+    define                  --Goal: ∃ (x : C), (b, x) ∈ S ∧ (x, d) ∈ T
+    show ∃ (x : C), (b, x) ∈ S ∧ (x, d) ∈ T from
+      Exists.intro c (And.intro h4.right h2.right)
+    done
+  · -- (←)
+    assume h1 : (a, d) ∈ comp (comp T S) R
+    define; define at h1
+    obtain (b : B) (h2 : (a, b) ∈ R ∧ (b, d) ∈ comp T S) from h1
+    have h3 : (b, d) ∈ comp T S := h2.right
+    define at h3
+    obtain (c : C) (h4 : (b, c) ∈ S ∧ (c, d) ∈ T) from h3
+    apply Exists.intro c
+    apply And.intro _ h4.right
+    define
+    show ∃ (x : B), (a, x) ∈ R ∧ (x, c) ∈ S from
+      Exists.intro b (And.intro h2.left h4.left)
+    done
+  done
 ```
 
 Of course, if you have trouble reading this proof, you can enter it into Lean and see how the tactic state changes over the course of the proof.
@@ -144,12 +147,18 @@ theorem Theorem_4_2_5_5 {A B C : Type}
   apply Set.ext
   fix (c, a) : C × A
   apply Iff.intro
-  -- (→)
-  assume h1 : (c, a) ∈ inv (comp S R) --Goal: (c, a) ∈ comp (inv R) (inv S)
-  define at h1              --h1: ∃ x, (a, x) ∈ R ∧ (x, c) ∈ S
-  define                    --Goal: ∃ x, (c, x) ∈ inv S ∧ (x, a) ∈ inv R
-  obtain (b : B) (h2 : (a, b) ∈ R ∧ (b, c) ∈ S) from h1
-  apply Exists.intro b      --Goal: (c, b) ∈ inv S ∧ (b, a) ∈ inv R
+  · -- (→)
+    assume h1 : (c, a) ∈ inv (comp S R)
+                              --Goal: (c, a) ∈ comp (inv R) (inv S)
+    define at h1              --h1: ∃ x, (a, x) ∈ R ∧ (x, c) ∈ S
+    define                    --Goal: ∃ x, (c, x) ∈ inv S ∧ (x, a) ∈ inv R
+    obtain (b : B) (h2 : (a, b) ∈ R ∧ (b, c) ∈ S) from h1
+    apply Exists.intro b         --Goal: (c, b) ∈ inv S ∧ (b, a) ∈ inv R
+    **done::
+  · -- (←)
+
+    **done::
+  done
 ```
 
 After the tactics `apply Set.ext` and `fix (c, a) : C × A`, the goal is `(c, a) ∈ inv (comp S R) ↔ (c, a) ∈ comp (inv R) (inv S)`.  For the proof of the left-to-right direction, we assume `h1 : (c, a) ∈ inv (comp S R)`, and we must prove `(c, a) ∈ comp (inv R) (inv S)`.  The definition of `h1` is an existential statement, so we apply existential instantiation to obtain `b : B` and `h2 : (a, b) ∈ R ∧ (b, c) ∈ S`.  The definition of the goal is also an existential statement, and after the tactic `apply Exists.intro b`, the goal is `(c, b) ∈ inv S ∧ (b, a) ∈ inv R`.  It looks like this goal will follow easily from `h2`, using the definitions of the inverses of `S` and `R`.
@@ -174,22 +183,26 @@ theorem Theorem_4_2_5_5 {A B C : Type}
   apply Set.ext
   fix (c, a) : C × A
   apply Iff.intro
-  -- (→)
-  assume h1 : (c, a) ∈ inv (comp S R) --Goal: (c, a) ∈ comp (inv R) (inv S)
-  define at h1                 --h1: ∃ x, (a, x) ∈ R ∧ (x, c) ∈ S
-  define                       --Goal: ∃ x, (c, x) ∈ inv S ∧ (x, a) ∈ inv R
-  obtain (b : B) (h2 : (a, b) ∈ R ∧ (b, c) ∈ S) from h1
-  apply Exists.intro b         --Goal: (c, b) ∈ inv S ∧ (b, a) ∈ inv R
-  rewrite [simp_inv, simp_inv] --Goal: (b, c) ∈ S ∧ (a, b) ∈ R
-  show (b, c) ∈ S ∧ (a, b) ∈ R from And.intro h2.right h2.left
-  -- (←)
-  assume h1 : (c, a) ∈ comp (inv R) (inv S)
-  define at h1
-  define
-  obtain (b : B) (h2 : (c, b) ∈ inv S ∧ (b, a) ∈ inv R) from h1
-  apply Exists.intro b
-  rewrite [simp_inv, simp_inv] at h2
-  show (a, b) ∈ R ∧ (b, c) ∈ S from And.intro h2.right h2.left
+  · -- (→)
+    assume h1 : (c, a) ∈ inv (comp S R)
+                              --Goal: (c, a) ∈ comp (inv R) (inv S)
+    define at h1              --h1: ∃ x, (a, x) ∈ R ∧ (x, c) ∈ S
+    define                    --Goal: ∃ x, (c, x) ∈ inv S ∧ (x, a) ∈ inv R
+    obtain (b : B) (h2 : (a, b) ∈ R ∧ (b, c) ∈ S) from h1
+    apply Exists.intro b         --Goal: (c, b) ∈ inv S ∧ (b, a) ∈ inv R
+    rewrite [simp_inv, simp_inv] --Goal: (b, c) ∈ S ∧ (a, b) ∈ R
+    show (b, c) ∈ S ∧ (a, b) ∈ R from And.intro h2.right h2.left
+    done
+  · -- (←)
+    assume h1 : (c, a) ∈ comp (inv R) (inv S)
+    define at h1
+    define
+    obtain (b : B) (h2 : (c, b) ∈ inv S ∧ (b, a) ∈ inv R) from h1
+    apply Exists.intro b
+    rewrite [simp_inv, simp_inv] at h2
+    show (a, b) ∈ R ∧ (b, c) ∈ S from And.intro h2.right h2.left
+    done
+  done
 ```
 
 By the way, an alternative way to complete both directions of this proof would have been to apply the commutativity of "and".  See if you can guess the name of that theorem (you can use `#check` to confirm your guess) and apply it as a third rewriting rule in the `rewrite` steps.
@@ -308,23 +321,26 @@ We can prove corresponding statements in Lean, but we'll have to be careful to d
 theorem Theorem_4_3_4_2 {A : Type} (R : BinRel A) :
     symmetric R ↔ extension R = inv (extension R) := by
   apply Iff.intro
-  -- (→)
-  assume h1 : symmetric R
-  define at h1             --h1: ∀ (x y : A), R x y → R y x
-  apply Set.ext
-  fix (a, b) : A × A
-  show (a, b) ∈ extension R ↔ (a, b) ∈ inv (extension R) from
-    calc
-      (a, b) ∈ extension R ↔ R a b   := by rfl
-      _ ↔ R b a                      := Iff.intro (h1 a b) (h1 b a)
+  · -- (→)
+    assume h1 : symmetric R
+    define at h1             --h1: ∀ (x y : A), R x y → R y x
+    apply Set.ext
+    fix (a, b) : A × A
+    show (a, b) ∈ extension R ↔ (a, b) ∈ inv (extension R) from
+      calc (a, b) ∈ extension R
+        ↔ R a b := by rfl
+      _ ↔ R b a := Iff.intro (h1 a b) (h1 b a)
       _ ↔ (a, b) ∈ inv (extension R) := by rfl
-  -- (←)
-  assume h1 : extension R = inv (extension R)
-  define                   --Goal:  ∀ (x y : A), R x y → R y x
-  fix a : A; fix b : A
-  assume h2 : R a b        --Goal:  R b a
-  rewrite [←simp_ext R, h1, simp_inv, simp_ext] at h2
-  show R b a from h2
+    done
+  · -- (←)
+    assume h1 : extension R = inv (extension R)
+    define                   --Goal:  ∀ (x y : A), R x y → R y x
+    fix a : A; fix b : A
+    assume h2 : R a b        --Goal:  R b a
+    rewrite [←simp_ext R, h1, simp_inv, simp_ext] at h2
+    show R b a from h2
+    done
+  done
 ```
 
 Note that near the end of the proof, we assume `h2 : R a b`, and our goal is `R b a`.  We convert `R a b` to `R b a` by a sequence of rewrites.  Applying the right-to-left direction of the theorem `simp_ext R a b` converts `R a b` to `(a, b) ∈ extension R`.  Then rewriting with `h1` converts this to `(a, b) ∈ inv (extension R)`, using `simp_inv (extension R) b a` converts this to `(b, a) ∈ extension R`, and finally `simp_ext R b a` produces `R b a`.  Usually we can leave out the arguments when we use a theorem as a rewriting rule, and Lean will figure them out for itself.  But in this case, if you try using `←simp_ext` as the first rewriting rule, you will see that Lean is unable to figure out that it should use the right-to-left direction of `simp_ext R a b`.  Supplying the first argument turns out to be enough of a hint for Lean to figure out the rest.  That's why our first rewriting rule is `←simp_ext R`.
@@ -472,14 +488,19 @@ Theorem 4.4.6 in *HTPI* asserts three statements about these concepts.  We'll pr
 theorem Theorem_4_4_6_2 {A : Type} (R : BinRel A) (B : Set A) (b : A)
     (h1 : partial_order R) (h2 : smallestElt R b B) :
     minimalElt R b B ∧ ∀ (c : A), minimalElt R c B → b = c := by
-  define at h1  --h1: reflexive R ∧ transitive R ∧ antisymmetric R
-  define at h2  --h2: b ∈ B ∧ ∀ (x : A), x ∈ B → R b x
+  define at h1     --h1: reflexive R ∧ transitive R ∧ antisymmetric R
+  define at h2     --h2: b ∈ B ∧ ∀ (x : A), x ∈ B → R b x
   apply And.intro
-  -- Proof that b is minimal
-  define        --Goal: b ∈ B ∧ ¬∃ (x : A), x ∈ B ∧ R x b ∧ x ≠ b
-  apply And.intro h2.left
-  quant_neg     --Goal: ∀ (x : A), ¬(x ∈ B ∧ R x b ∧ x ≠ b)
-  **demorgan : ¬(x ∈ B ∧ R x b ∧ x ≠ b)::
+  · -- Proof that b is minimal
+    define           --Goal: b ∈ B ∧ ¬∃ (x : A), x ∈ B ∧ R x b ∧ x ≠ b
+    apply And.intro h2.left
+    quant_neg        --Goal: ∀ (x : A), ¬(x ∈ B ∧ R x b ∧ x ≠ b)
+    **demorgan : ¬(x ∈ B ∧ R x b ∧ x ≠ b)::
+    done
+  · -- Proof that b is only minimal element
+
+    **done::
+  done
 ```
 
 When the goal is `∀ (x : A), ¬(x ∈ B ∧ R x b ∧ x ≠ b)`, it is tempting to apply the `demorgan` tactic to `¬(x ∈ B ∧ R x b ∧ x ≠ b)`, but unfortunately this generates an error in Lean:  `unknown identifier 'x'`.  The problem is that `x` is not defined in the tactic state, so without the quantifier `∀ (x : A)` in front of it, `¬(x ∈ B ∧ R x b ∧ x ≠ b)` doesn't mean anything to Lean.  The solution to the problem is to deal with the universal quantifier first by introducing an arbitrary `x` of type `A`.  Once `x` has been introduced, we can apply the `demorgan` tactic.
@@ -491,28 +512,31 @@ theorem Theorem_4_4_6_2 {A : Type} (R : BinRel A) (B : Set A) (b : A)
   define at h1     --h1: reflexive R ∧ transitive R ∧ antisymmetric R
   define at h2     --h2: b ∈ B ∧ ∀ (x : A), x ∈ B → R b x
   apply And.intro
-  -- Proof that b is minimal
-  define           --Goal: b ∈ B ∧ ¬∃ (x : A), x ∈ B ∧ R x b ∧ x ≠ b
-  apply And.intro h2.left
-  quant_neg        --Goal: ∀ (x : A), ¬(x ∈ B ∧ R x b ∧ x ≠ b)
-  fix x : A
-  demorgan         --Goal: ¬x ∈ B ∨ ¬(R x b ∧ x ≠ b)
-  or_right with h3 --h3: x ∈ B; Goal: ¬(R x b ∧ x ≠ b)
-  demorgan         --Goal: ¬R x b ∨ x = b
-  or_right with h4 --h4: R x b; Goal: x = b
-  have h5 : R b x := h2.right x h3
-  have h6 : antisymmetric R := h1.right.right
-  define at h6     --h6: ∀ (x y : A), R x y → R y x → x = y
-  show x = b from h6 x b h4 h5
-  -- Proof that b is only minimal element
-  fix c : A
-  assume h3 : minimalElt R c B
-  define at h3    --h3: c ∈ B ∧ ¬∃ (x : A), x ∈ B ∧ R x c ∧ x ≠ c
-  contradict h3.right with h4
+  · -- Proof that b is minimal
+    define           --Goal: b ∈ B ∧ ¬∃ (x : A), x ∈ B ∧ R x b ∧ x ≠ b
+    apply And.intro h2.left
+    quant_neg        --Goal: ∀ (x : A), ¬(x ∈ B ∧ R x b ∧ x ≠ b)
+    fix x : A
+    demorgan         --Goal: ¬x ∈ B ∨ ¬(R x b ∧ x ≠ b)
+    or_right with h3 --h3: x ∈ B; Goal: ¬(R x b ∧ x ≠ b)
+    demorgan         --Goal: ¬R x b ∨ x = b
+    or_right with h4 --h4: R x b; Goal: x = b
+    have h5 : R b x := h2.right x h3
+    have h6 : antisymmetric R := h1.right.right
+    define at h6     --h6: ∀ (x y : A), R x y → R y x → x = y
+    show x = b from h6 x b h4 h5
+    done
+  · -- Proof that b is only minimal element
+    fix c : A
+    assume h3 : minimalElt R c B
+    define at h3    --h3: c ∈ B ∧ ¬∃ (x : A), x ∈ B ∧ R x c ∧ x ≠ c
+    contradict h3.right with h4
                   --h4: ¬b = c; Goal: ∃ (x : A), x ∈ B ∧ R x c ∧ x ≠ c
-  have h5 : R b c := h2.right c h3.left
-  show ∃ (x : A), x ∈ B ∧ R x c ∧ x ≠ c from
-    Exists.intro b (And.intro h2.left (And.intro h5 h4))
+    have h5 : R b c := h2.right c h3.left
+    show ∃ (x : A), x ∈ B ∧ R x c ∧ x ≠ c from
+      Exists.intro b (And.intro h2.left (And.intro h5 h4))
+    done
+  done
 ```
 
 Finally, the third statement in Theorem 4.4.6 says that if `R` is a total order, then any `R`-minimal element of a set `B` must be the `R`-smallest element of `B`.  The beginning of the proof is straightforward:
@@ -526,6 +550,7 @@ theorem Theorem_4_4_6_3 {A : Type} (R : BinRel A) (B : Set A) (b : A)
   apply And.intro h2.left  --Goal: ∀ (x : A), x ∈ B → R b x
   fix x : A
   assume h3 : x ∈ B        --Goal: R b x
+  **done::
 ```
 
 Surprisingly, at this point it is difficult to find a way to reach the goal `R b x`.  See *HTPI* for an explanation of why it turns out to be helpful to split the proof into two cases, depending on whether or not `x = b`.  Of course, we use the `by_cases` tactic for this.
@@ -540,22 +565,26 @@ theorem Theorem_4_4_6_3 {A : Type} (R : BinRel A) (B : Set A) (b : A)
   fix x : A
   assume h3 : x ∈ B        --Goal: R b x
   by_cases h4 : x = b
-  -- Case 1 : x = b
-  rewrite [h4]             --Goal: R b b
-  have h5 : partial_order R := h1.left
-  define at h5
-  have h6 : reflexive R := h5.left
-  define at h6
-  show R b b from h6 b
-  -- Case 2 : x ≠ b
-  have h5 : ∀ (x y : A), R x y ∨ R y x := h1.right
-  have h6 : R x b ∨ R b x := h5 x b
-  have h7 : ¬R x b := by
-    contradict h2.right with h8
-    show ∃ (x : A), x ∈ B ∧ R x b ∧ x ≠ b from
-      Exists.intro x (And.intro h3 (And.intro h8 h4))
-  disj_syll h6 h7
-  show R b x from h6
+  · -- Case 1 : x = b
+    rewrite [h4]             --Goal: R b b
+    have h5 : partial_order R := h1.left
+    define at h5
+    have h6 : reflexive R := h5.left
+    define at h6
+    show R b b from h6 b
+    done
+  · -- Case 2 : x ≠ b
+    have h5 : ∀ (x y : A), R x y ∨ R y x := h1.right
+    have h6 : R x b ∨ R b x := h5 x b
+    have h7 : ¬R x b := by
+      contradict h2.right with h8
+      show ∃ (x : A), x ∈ B ∧ R x b ∧ x ≠ b from
+        Exists.intro x (And.intro h3 (And.intro h8 h4))
+      done
+    disj_syll h6 h7
+    show R b x from h6
+    done
+  done
 ```
 
 Imitating the definitions above, you should be able to formulate definitions of `R`-largest and `R`-maximal elements.  Section 4.4 of *HTPI* defines four more terms: upper bound, lower bound, least upper bound, and greatest lower bound.  We will discuss upper bounds and least upper bounds, and leave lower bounds and greatest lower bounds for you to figure out on your own.
@@ -716,14 +745,15 @@ lemma Lemma_4_5_5_1 {A : Type} (R : BinRel A) (h : equiv_rel R) :
   define at h      --h: reflexive R ∧ symmetric R ∧ transitive R
   have href : reflexive R := h.left
   show R x x from href x
+  done
 ```
 
 The command `#check @Lemma_4_5_5_1` produces the result
 
-::: {.quote}
+::: {.ind}
 ```
 @Lemma_4_5_5_1 : ∀ {A : Type} (R : BinRel A),
-    equiv_rel R → ∀ (x : A), x ∈ equivClass R x
+                  equiv_rel R → ∀ (x : A), x ∈ equivClass R x
 ```
 :::
 
@@ -737,27 +767,32 @@ lemma Lemma_4_5_5_2 {A : Type} (R : BinRel A) (h : equiv_rel R) :
   have htrans : transitive R := h.right.right
   fix x : A; fix y : A
   apply Iff.intro
-  -- (→)
-  assume h2 : y ∈ equivClass R x --Goal:  equivClass R y = equivClass R x
-  define at h2                   --h2: R y x
-  apply Set.ext
-  fix z : A
-  apply Iff.intro
-  -- Proof that z ∈ equivClass R y → z ∈ equivClass R x
-  assume h3 : z ∈ equivClass R y
-  define                         --Goal: R z x
-  define at h3                   --h3: R z y
-  show R z x from htrans z y x h3 h2
-  -- Proof that z ∈ equivClass R x → z ∈ equivClass R y
-  assume h3 : z ∈ equivClass R x
-  define                         --Goal: R z y
-  define at h3                   --h3: R z x
-  have h4 : R x y := hsymm y x h2
-  show R z y from htrans z x y h3 h4
-  -- (←)
-  assume h2 : equivClass R y = equivClass R x  --Goal: y ∈ equivClass R x
-  rewrite [←h2]                  --Goal: y ∈ equivClass R y
-  show y ∈ equivClass R y from Lemma_4_5_5_1 R h y
+  · -- (→)
+    assume h2 : y ∈ equivClass R x --Goal: equivClass R y = equivClass R x
+    define at h2                   --h2: R y x
+    apply Set.ext
+    fix z : A
+    apply Iff.intro
+    · -- Proof that z ∈ equivClass R y → z ∈ equivClass R x
+      assume h3 : z ∈ equivClass R y
+      define                         --Goal: R z x
+      define at h3                   --h3: R z y
+      show R z x from htrans z y x h3 h2
+      done
+    · -- Proof that z ∈ equivClass R x → z ∈ equivClass R y
+      assume h3 : z ∈ equivClass R x
+      define                         --Goal: R z y
+      define at h3                   --h3: R z x
+      have h4 : R x y := hsymm y x h2
+      show R z y from htrans z x y h3 h4
+      done
+    done
+  · -- (←)
+    assume h2 : equivClass R y = equivClass R x --Goal: y ∈ equivClass R x
+    rewrite [←h2]                  --Goal: y ∈ equivClass R y
+    show y ∈ equivClass R y from Lemma_4_5_5_1 R h y
+    done
+  done
 ```
 
 The definition of "partition" has three parts, so to prove Theorem 4.5.4 we will have to prove three statements.  It will make the proof easier to read if we prove the three statements separately.
@@ -794,11 +829,12 @@ lemma Theorem_4_5_4_part_2 {A : Type} (R : BinRel A) (h : equiv_rel R) :
   have h9 : equivClass R z = equivClass R y :=
     (Lemma_4_5_5_2 R h y z).ltr h7.right
   show X = Y from
-    calc
-      X = equivClass R x := h4.symm
+    calc X
+        = equivClass R x := h4.symm
       _ = equivClass R z := h8.symm
       _ = equivClass R y := h9
       _ = Y              := h5
+  done
 
 lemma Theorem_4_5_4_part_3 {A : Type} (R : BinRel A) (h : equiv_rel R) :
     ∀ X ∈ mod A R, ¬is_empty X := by
@@ -810,6 +846,7 @@ lemma Theorem_4_5_4_part_3 {A : Type} (R : BinRel A) (h : equiv_rel R) :
   rewrite [←h3]
   show ∃ (x_1 : A), x_1 ∈ equivClass R x from
     Exists.intro x (Lemma_4_5_5_1 R h x)
+  done
 ```
 
 Its easy now to put everything together to prove Theorem 4.5.4.
@@ -879,25 +916,28 @@ theorem Theorem_4_5_6 {A : Type} (F : Set (Set A)) (h: partition F) :
   apply Set.ext
   fix X : Set A                     --Goal:  X ∈ mod A R ↔ X ∈ F
   apply Iff.intro
-  -- (→)
-  assume h2 : X ∈ mod A R           --Goal: X ∈ F
-  define at h2                      --h2: ∃ (x : A), equivClass R x = X
-  obtain (x : A) (h3 : equivClass R x = X) from h2
-  have h4 : x ∈ ⋃₀F := h.left x
-  define at h4
-  obtain (Y : Set A) (h5 : Y ∈ F ∧ x ∈ Y) from h4
-  have h6 : equivClass R x = Y :=
-    Lemma_4_5_8 F h Y h5.left x h5.right
-  rewrite [←h3, h6]
-  show Y ∈ F from h5.left
-  -- (←)
-  assume h2 : X ∈ F                 --Goal: X ∈ mod A R
-  have h3 : ¬is_empty X := h.right.right X h2
-  define at h3; double_neg at h3    --h3: ∃ (x : A), x ∈ X
-  obtain (x : A) (h4 : x ∈ X) from h3
-  define                       --Goal: ∃ (x : A), equivClass R x = X
-  show ∃ (x : A), equivClass R x = X from
-    Exists.intro x (Lemma_4_5_8 F h X h2 x h4)
+  · -- (→)
+    assume h2 : X ∈ mod A R           --Goal: X ∈ F
+    define at h2                      --h2: ∃ (x : A), equivClass R x = X
+    obtain (x : A) (h3 : equivClass R x = X) from h2
+    have h4 : x ∈ ⋃₀F := h.left x
+    define at h4
+    obtain (Y : Set A) (h5 : Y ∈ F ∧ x ∈ Y) from h4
+    have h6 : equivClass R x = Y :=
+      Lemma_4_5_8 F h Y h5.left x h5.right
+    rewrite [←h3, h6]
+    show Y ∈ F from h5.left
+    done
+  · -- (←)
+    assume h2 : X ∈ F                 --Goal: X ∈ mod A R
+    have h3 : ¬is_empty X := h.right.right X h2
+    define at h3; double_neg at h3    --h3: ∃ (x : A), x ∈ X
+    obtain (x : A) (h4 : x ∈ X) from h3
+    define                       --Goal: ∃ (x : A), equivClass R x = X
+    show ∃ (x : A), equivClass R x = X from
+      Exists.intro x (Lemma_4_5_8 F h X h2 x h4)
+    done
+  done
 ```
 
 ### Exercises
