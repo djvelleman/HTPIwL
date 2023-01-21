@@ -86,6 +86,7 @@ theorem Theorem_4_2_5_4 {A B C D : Type}
     comp T (comp S R) = comp (comp T S) R := by
   apply Set.ext
   fix (a, d) : A × D
+  **done::
 ```
 
 After the `apply Set.ext` tactic, the goal is
@@ -149,9 +150,9 @@ theorem Theorem_4_2_5_5 {A B C : Type}
   apply Iff.intro
   · -- (→)
     assume h1 : (c, a) ∈ inv (comp S R)
-                              --Goal: (c, a) ∈ comp (inv R) (inv S)
-    define at h1              --h1: ∃ x, (a, x) ∈ R ∧ (x, c) ∈ S
-    define                    --Goal: ∃ x, (c, x) ∈ inv S ∧ (x, a) ∈ inv R
+                         --Goal: (c, a) ∈ comp (inv R) (inv S)
+    define at h1         --h1: ∃ (x : B), (a, x) ∈ R ∧ (x, c) ∈ S
+    define               --Goal: ∃ (x : B), (c, x) ∈ inv S ∧ (x, a) ∈ inv R
     obtain (b : B) (h2 : (a, b) ∈ R ∧ (b, c) ∈ S) from h1
     apply Exists.intro b         --Goal: (c, b) ∈ inv S ∧ (b, a) ∈ inv R
     **done::
@@ -185,9 +186,9 @@ theorem Theorem_4_2_5_5 {A B C : Type}
   apply Iff.intro
   · -- (→)
     assume h1 : (c, a) ∈ inv (comp S R)
-                              --Goal: (c, a) ∈ comp (inv R) (inv S)
-    define at h1              --h1: ∃ x, (a, x) ∈ R ∧ (x, c) ∈ S
-    define                    --Goal: ∃ x, (c, x) ∈ inv S ∧ (x, a) ∈ inv R
+                         --Goal: (c, a) ∈ comp (inv R) (inv S)
+    define at h1         --h1: ∃ (x : B), (a, x) ∈ R ∧ (x, c) ∈ S
+    define               --Goal: ∃ (x : B), (c, x) ∈ inv S ∧ (x, a) ∈ inv R
     obtain (b : B) (h2 : (a, b) ∈ R ∧ (b, c) ∈ S) from h1
     apply Exists.intro b         --Goal: (c, b) ∈ inv S ∧ (b, a) ∈ inv R
     rewrite [simp_inv, simp_inv] --Goal: (b, c) ∈ S ∧ (a, b) ∈ R
@@ -545,7 +546,7 @@ Finally, the third statement in Theorem 4.4.6 says that if `R` is a total order,
 theorem Theorem_4_4_6_3 {A : Type} (R : BinRel A) (B : Set A) (b : A)
     (h1 : total_order R) (h2 : minimalElt R b B) : smallestElt R b B := by
   define at h1         --h1: partial_order R ∧ ∀ (x y : A), R x y ∨ R y x
-  define at h2         --h2: b ∈ B ∧ ¬∃ x, x ∈ B ∧ R x b ∧ x ≠ b
+  define at h2         --h2: b ∈ B ∧ ¬∃ (x : A), x ∈ B ∧ R x b ∧ x ≠ b
   define               --Goal: b ∈ B ∧ ∀ (x : A), x ∈ B → R b x
   apply And.intro h2.left  --Goal: ∀ (x : A), x ∈ B → R b x
   fix x : A
@@ -559,7 +560,7 @@ Surprisingly, at this point it is difficult to find a way to reach the goal `R b
 theorem Theorem_4_4_6_3 {A : Type} (R : BinRel A) (B : Set A) (b : A)
     (h1 : total_order R) (h2 : minimalElt R b B) : smallestElt R b B := by
   define at h1         --h1: partial_order R ∧ ∀ (x y : A), R x y ∨ R y x
-  define at h2         --h2: b ∈ B ∧ ¬∃ x, x ∈ B ∧ R x b ∧ x ≠ b
+  define at h2         --h2: b ∈ B ∧ ¬∃ (x : A), x ∈ B ∧ R x b ∧ x ≠ b
   define               --Goal: b ∈ B ∧ ∀ (x : A), x ∈ B → R b x
   apply And.intro h2.left  --Goal: ∀ (x : A), x ∈ B → R b x
   fix x : A
@@ -801,7 +802,7 @@ The definition of "partition" has three parts, so to prove Theorem 4.5.4 we will
 lemma Theorem_4_5_4_part_1 {A : Type} (R : BinRel A) (h : equiv_rel R) :
     ∀ (x : A), x ∈ ⋃₀(mod A R) := by
   fix x : A
-  define        --Goal: ∃ (a : Set A), a ∈ mod A R ∧ x ∈ a
+  define        --Goal: ∃ (t : Set A), t ∈ mod A R ∧ x ∈ t
   apply Exists.intro (equivClass R x)
   apply And.intro _ (Lemma_4_5_5_1 R h x)
                 --Goal: equivClass R x ∈ mod A R
