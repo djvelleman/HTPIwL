@@ -4675,7 +4675,7 @@ To justify the first line of the calculational proof, try replacing `sorry` with
 ```
 :::
 
-Thus we can fill in `mul_sub_left_distrib 6 j k` as a proof of the first equation.
+Don't worry too much about the confusing implicit arguments in the first line; they are implicit, so you won't have to supply them.  The second line tells us that we can fill in `mul_sub_left_distrib 6 j k` as a proof of the first equation.
 
 It looks like we'll have to use the associativity of multiplication again to prove the second equation, but it will take more than one step.  Let's try writing a tactic-mode proof.  In the display below, we'll just focus on the calculational proof.
 
@@ -4685,7 +4685,7 @@ It looks like we'll have to use the associativity of multiplication again to pro
 have h6 : 6 * (j - k) = n :=
   calc 6 * (j - k)
       = 6 * j - 6 * k :=
-          mul_sub_left_distrib 6 j k
+        mul_sub_left_distrib 6 j k
     _ = 3 * (2 * j) - 2 * (3 * k) :=
         by
 
@@ -4723,7 +4723,7 @@ To justify the second equation, we'll have to use associativity to rewrite both 
 have h6 : 6 * (j - k) = n :=
   calc 6 * (j - k)
       = 6 * j - 6 * k :=
-          mul_sub_left_distrib 6 j k
+        mul_sub_left_distrib 6 j k
     _ = 3 * (2 * j) - 2 * (3 * k) :=
         by
           rewrite [←mul_assoc 3 2 j]
@@ -4762,7 +4762,7 @@ To finish off the justification of the second equation, we'll use the theorem `E
 have h6 : 6 * (j - k) = n :=
   calc 6 * (j - k)
       = 6 * j - 6 * k :=
-          mul_sub_left_distrib 6 j k
+        mul_sub_left_distrib 6 j k
     _ = 3 * (2 * j) - 2 * (3 * k) :=
         by
           rewrite [←mul_assoc 3 2 j]
@@ -4804,7 +4804,7 @@ To justify the third equation we have to substitute `n` for both `2 * j` and `3 
 have h6 : 6 * (j - k) = n :=
   calc 6 * (j - k)
       = 6 * j - 6 * k :=
-          mul_sub_left_distrib 6 j k
+        mul_sub_left_distrib 6 j k
     _ = 3 * (2 * j) - 2 * (3 * k) :=
         by
           rewrite [←mul_assoc 3 2 j]
@@ -4871,7 +4871,7 @@ So `one_mul n` should justify the last equation.  Here's the complete calculatio
 have h6 : 6 * (j - k) = n :=
   calc 6 * (j - k)
       = 6 * j - 6 * k :=
-          mul_sub_left_distrib 6 j k
+        mul_sub_left_distrib 6 j k
     _ = 3 * (2 * j) - 2 * (3 * k) :=
         by rewrite [←mul_assoc 3 2 j, ←mul_assoc 2 3 k]; rfl
     _ = 3 * n - 2 * n := by rewrite [←h4, ←h5]; rfl

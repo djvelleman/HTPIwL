@@ -3892,14 +3892,14 @@ x \in A \cap (B \setmin C) &amp;\text{ iff } x \in A \wedge x \in B \setmin C\\
 <pre><code>@mul_sub_left_distrib : ∀ {α : Type u_1} [inst : NonUnitalNonAssocRing α]
                           (a b c : α), a * (b - c) = a * b - a * c</code></pre>
 </div>
-<p>Thus we can fill in <code>mul_sub_left_distrib 6 j k</code> as a proof of the first equation.</p>
+<p>Don’t worry too much about the confusing implicit arguments in the first line; they are implicit, so you won’t have to supply them. The second line tells us that we can fill in <code>mul_sub_left_distrib 6 j k</code> as a proof of the first equation.</p>
 <p>It looks like we’ll have to use the associativity of multiplication again to prove the second equation, but it will take more than one step. Let’s try writing a tactic-mode proof. In the display below, we’ll just focus on the calculational proof.</p>
 <div class="inout">
 <div class="inpt">
 <div class="sourceCode" id="cb294"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb294-1"><a href="#cb294-1" aria-hidden="true" tabindex="-1"></a><span class="kw">have</span> h6 : 6 * (j - k) = n :=</span>
 <span id="cb294-2"><a href="#cb294-2" aria-hidden="true" tabindex="-1"></a>  <span class="kw">calc</span> 6 * (j - k)</span>
 <span id="cb294-3"><a href="#cb294-3" aria-hidden="true" tabindex="-1"></a>      = 6 * j - 6 * k :=</span>
-<span id="cb294-4"><a href="#cb294-4" aria-hidden="true" tabindex="-1"></a>          mul_sub_left_distrib 6 j k</span>
+<span id="cb294-4"><a href="#cb294-4" aria-hidden="true" tabindex="-1"></a>        mul_sub_left_distrib 6 j k</span>
 <span id="cb294-5"><a href="#cb294-5" aria-hidden="true" tabindex="-1"></a>    _ = 3 * (2 * j) - 2 * (3 * k) :=</span>
 <span id="cb294-6"><a href="#cb294-6" aria-hidden="true" tabindex="-1"></a>        <span class="kw">by</span></span>
 <span id="cb294-7"><a href="#cb294-7" aria-hidden="true" tabindex="-1"></a></span>
@@ -3930,7 +3930,7 @@ x \in A \cap (B \setmin C) &amp;\text{ iff } x \in A \wedge x \in B \setmin C\\
 <div class="sourceCode" id="cb296"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb296-1"><a href="#cb296-1" aria-hidden="true" tabindex="-1"></a><span class="kw">have</span> h6 : 6 * (j - k) = n :=</span>
 <span id="cb296-2"><a href="#cb296-2" aria-hidden="true" tabindex="-1"></a>  <span class="kw">calc</span> 6 * (j - k)</span>
 <span id="cb296-3"><a href="#cb296-3" aria-hidden="true" tabindex="-1"></a>      = 6 * j - 6 * k :=</span>
-<span id="cb296-4"><a href="#cb296-4" aria-hidden="true" tabindex="-1"></a>          mul_sub_left_distrib 6 j k</span>
+<span id="cb296-4"><a href="#cb296-4" aria-hidden="true" tabindex="-1"></a>        mul_sub_left_distrib 6 j k</span>
 <span id="cb296-5"><a href="#cb296-5" aria-hidden="true" tabindex="-1"></a>    _ = 3 * (2 * j) - 2 * (3 * k) :=</span>
 <span id="cb296-6"><a href="#cb296-6" aria-hidden="true" tabindex="-1"></a>        <span class="kw">by</span></span>
 <span id="cb296-7"><a href="#cb296-7" aria-hidden="true" tabindex="-1"></a>          <span class="kw">rewrite</span> [←mul_assoc 3 2 j]</span>
@@ -3962,7 +3962,7 @@ x \in A \cap (B \setmin C) &amp;\text{ iff } x \in A \wedge x \in B \setmin C\\
 <div class="sourceCode" id="cb298"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb298-1"><a href="#cb298-1" aria-hidden="true" tabindex="-1"></a><span class="kw">have</span> h6 : 6 * (j - k) = n :=</span>
 <span id="cb298-2"><a href="#cb298-2" aria-hidden="true" tabindex="-1"></a>  <span class="kw">calc</span> 6 * (j - k)</span>
 <span id="cb298-3"><a href="#cb298-3" aria-hidden="true" tabindex="-1"></a>      = 6 * j - 6 * k :=</span>
-<span id="cb298-4"><a href="#cb298-4" aria-hidden="true" tabindex="-1"></a>          mul_sub_left_distrib 6 j k</span>
+<span id="cb298-4"><a href="#cb298-4" aria-hidden="true" tabindex="-1"></a>        mul_sub_left_distrib 6 j k</span>
 <span id="cb298-5"><a href="#cb298-5" aria-hidden="true" tabindex="-1"></a>    _ = 3 * (2 * j) - 2 * (3 * k) :=</span>
 <span id="cb298-6"><a href="#cb298-6" aria-hidden="true" tabindex="-1"></a>        <span class="kw">by</span></span>
 <span id="cb298-7"><a href="#cb298-7" aria-hidden="true" tabindex="-1"></a>          <span class="kw">rewrite</span> [←mul_assoc 3 2 j]</span>
@@ -3998,7 +3998,7 @@ x \in A \cap (B \setmin C) &amp;\text{ iff } x \in A \wedge x \in B \setmin C\\
 <div class="sourceCode" id="cb300"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb300-1"><a href="#cb300-1" aria-hidden="true" tabindex="-1"></a><span class="kw">have</span> h6 : 6 * (j - k) = n :=</span>
 <span id="cb300-2"><a href="#cb300-2" aria-hidden="true" tabindex="-1"></a>  <span class="kw">calc</span> 6 * (j - k)</span>
 <span id="cb300-3"><a href="#cb300-3" aria-hidden="true" tabindex="-1"></a>      = 6 * j - 6 * k :=</span>
-<span id="cb300-4"><a href="#cb300-4" aria-hidden="true" tabindex="-1"></a>          mul_sub_left_distrib 6 j k</span>
+<span id="cb300-4"><a href="#cb300-4" aria-hidden="true" tabindex="-1"></a>        mul_sub_left_distrib 6 j k</span>
 <span id="cb300-5"><a href="#cb300-5" aria-hidden="true" tabindex="-1"></a>    _ = 3 * (2 * j) - 2 * (3 * k) :=</span>
 <span id="cb300-6"><a href="#cb300-6" aria-hidden="true" tabindex="-1"></a>        <span class="kw">by</span></span>
 <span id="cb300-7"><a href="#cb300-7" aria-hidden="true" tabindex="-1"></a>          <span class="kw">rewrite</span> [←mul_assoc 3 2 j]</span>
@@ -4044,7 +4044,7 @@ x \in A \cap (B \setmin C) &amp;\text{ iff } x \in A \wedge x \in B \setmin C\\
 <div class="sourceCode" id="cb305"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb305-1"><a href="#cb305-1" aria-hidden="true" tabindex="-1"></a><span class="kw">have</span> h6 : 6 * (j - k) = n :=</span>
 <span id="cb305-2"><a href="#cb305-2" aria-hidden="true" tabindex="-1"></a>  <span class="kw">calc</span> 6 * (j - k)</span>
 <span id="cb305-3"><a href="#cb305-3" aria-hidden="true" tabindex="-1"></a>      = 6 * j - 6 * k :=</span>
-<span id="cb305-4"><a href="#cb305-4" aria-hidden="true" tabindex="-1"></a>          mul_sub_left_distrib 6 j k</span>
+<span id="cb305-4"><a href="#cb305-4" aria-hidden="true" tabindex="-1"></a>        mul_sub_left_distrib 6 j k</span>
 <span id="cb305-5"><a href="#cb305-5" aria-hidden="true" tabindex="-1"></a>    _ = 3 * (2 * j) - 2 * (3 * k) :=</span>
 <span id="cb305-6"><a href="#cb305-6" aria-hidden="true" tabindex="-1"></a>        <span class="kw">by</span> <span class="kw">rewrite</span> [←mul_assoc 3 2 j, ←mul_assoc 2 3 k]; <span class="kw">rfl</span></span>
 <span id="cb305-7"><a href="#cb305-7" aria-hidden="true" tabindex="-1"></a>    _ = 3 * n - 2 * n := <span class="kw">by</span> <span class="kw">rewrite</span> [←h4, ←h5]; <span class="kw">rfl</span></span>
