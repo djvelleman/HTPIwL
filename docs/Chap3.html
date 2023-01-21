@@ -2422,7 +2422,7 @@ x \in A \cap (B \setmin C) &amp;\text{ iff } x \in A \wedge x \in B \setmin C\\
 <span id="cb175-7"><a href="#cb175-7" aria-hidden="true" tabindex="-1"></a>⊢ x ∈ C</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </div>
-<p>We can now complete the proof. <code>h1 _</code> will be a proof of the goal <code>x ∈ C</code>, if we can fill in the blank with a proof of <code>x ∈ A \ B</code>. Since <code>x ∈ A \ B</code> means <code>x ∈ A ∧ ¬x ∈ B</code>, we can prove it with the expression <code>And.intro h2 h3</code>.</p>
+<p>We can now complete the proof. Notice that <code>h1 _</code> will be a proof of the goal <code>x ∈ C</code>, if we can fill in the blank with a proof of <code>x ∈ A \ B</code>. Since <code>x ∈ A \ B</code> means <code>x ∈ A ∧ ¬x ∈ B</code>, we can prove it with the expression <code>And.intro h2 h3</code>.</p>
 <div class="inout">
 <div class="inpt">
 <div class="sourceCode" id="cb176"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb176-1"><a href="#cb176-1" aria-hidden="true" tabindex="-1"></a><span class="kw">example</span> (U : <span class="kw">Type</span>) (A B C : Set U)</span>
