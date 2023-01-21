@@ -722,17 +722,17 @@ Thus, `equiv_rel R` is the proposition that `R` is an equivalence relation, `equ
 *HTPI* gives several examples of equivalence relations, and these examples illustrate that equivalence classes always have certain properties.  The most important of these are that each equivalence class is a nonempty set, the equivalence classes do not overlap, and their union is all of `A`.  We say that the equivalence classes form a *partition* of `A`.  To state and prove these properties in Lean we will need some definitions.  We start with these:
 
 ```lean
-def is_empty {A : Type} (X : Set A) : Prop := ¬∃ (x : A), x ∈ X 
+def empty {A : Type} (X : Set A) : Prop := ¬∃ (x : A), x ∈ X 
 
 def pairwise_disjoint {A : Type} (F : Set (Set A)) : Prop :=
-    ∀ X ∈ F, ∀ Y ∈ F, X ≠ Y → is_empty (X ∩ Y)
+    ∀ X ∈ F, ∀ Y ∈ F, X ≠ Y → empty (X ∩ Y)
 ```
 
-To say that a set `X` is empty, we could write `X = ∅`, but it is more convenient to have a statement that says more explicitly what it means for a set to be empty.  Thus, we have defined `is_empty X` to be the proposition saying that `X` has no elements.  If `F` has type `Set (Set A)`, then `pairwise_disjoint F` is the proposition that no two distinct elements of `F` have any element in common---in other words, the elements of `F` do not overlap.  We can now give the precise definition of a partition:
+To say that a set `X` is empty, we could write `X = ∅`, but it is more convenient to have a statement that says more explicitly what it means for a set to be empty.  Thus, we have defined `empty X` to be the proposition saying that `X` has no elements.  If `F` has type `Set (Set A)`, then `pairwise_disjoint F` is the proposition that no two distinct elements of `F` have any element in common---in other words, the elements of `F` do not overlap.  We can now give the precise definition of a partition:
 
 ```lean
 def partition {A : Type} (F : Set (Set A)) : Prop :=
-    (∀ (x : A), x ∈ ⋃₀F) ∧ pairwise_disjoint F ∧ ∀ X ∈ F, ¬is_empty X
+    (∀ (x : A), x ∈ ⋃₀F) ∧ pairwise_disjoint F ∧ ∀ X ∈ F, ¬empty X
 ```
 
 The main theorem about equivalence relations in *HTPI* is Theorem 4.5.4, which says that `mod A R` is a partition of `A`.  The proof of this theorem is hard enough that *HTPI* proves two facts about equivalence classes first.  A fact that is proven just for the purpose of using it to prove something else is often called a *lemma*.  We can use this term in Lean as well.  Here is the first part of Lemma 4.5.5 from *HTPI*
@@ -815,7 +815,7 @@ lemma Theorem_4_5_4_part_2 {A : Type} (R : BinRel A) (h : equiv_rel R) :
   fix X : Set A
   assume h2 : X ∈ mod A R
   fix Y : Set A
-  assume h3 : Y ∈ mod A R           --Goal: X ≠ Y → is_empty (X ∩ Y)
+  assume h3 : Y ∈ mod A R           --Goal: X ≠ Y → empty (X ∩ Y)
   define at h2; define at h3
   obtain (x : A) (h4 : equivClass R x = X) from h2
   obtain (y : A) (h5 : equivClass R y = Y) from h3
@@ -837,9 +837,9 @@ lemma Theorem_4_5_4_part_2 {A : Type} (R : BinRel A) (h : equiv_rel R) :
   done
 
 lemma Theorem_4_5_4_part_3 {A : Type} (R : BinRel A) (h : equiv_rel R) :
-    ∀ X ∈ mod A R, ¬is_empty X := by
+    ∀ X ∈ mod A R, ¬empty X := by
   fix X : Set A
-  assume h2 : X ∈ mod A R  --Goal: ¬is_empty X
+  assume h2 : X ∈ mod A R  --Goal: ¬empty X
   define; double_neg       --Goal: ∃ (x : A), x ∈ X
   define at h2             --h2: ∃ (x : A), equivClass R x = X
   obtain (x : A) (h3 : equivClass R x = X) from h2
@@ -930,7 +930,7 @@ theorem Theorem_4_5_6 {A : Type} (F : Set (Set A)) (h: partition F) :
     done
   · -- (←)
     assume h2 : X ∈ F                 --Goal: X ∈ mod A R
-    have h3 : ¬is_empty X := h.right.right X h2
+    have h3 : ¬empty X := h.right.right X h2
     define at h3; double_neg at h3    --h3: ∃ (x : A), x ∈ X
     obtain (x : A) (h4 : x ∈ X) from h3
     define                       --Goal: ∃ (x : A), equivClass R x = X
@@ -993,7 +993,7 @@ The next three exercises use the following definitions:
 
 ```lean
 def dot {A : Type} (F G : Set (Set A)) : Set (Set A) :=
-    { Z : Set A | ¬is_empty Z ∧ ∃ X ∈ F, ∃ Y ∈ G, Z = X ∩ Y }
+    { Z : Set A | ¬empty Z ∧ ∃ X ∈ F, ∃ Y ∈ G, Z = X ∩ Y }
 
 def conj {A : Type} (R S : BinRel A) (x y : A) : Prop :=
     R x y ∧ S x y
