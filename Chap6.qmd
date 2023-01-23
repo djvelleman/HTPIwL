@@ -1,0 +1,318 @@
+# Mathematical Induction
+
+## 6.1.  Proof by Mathematical Induction
+
+Section 6.1 of *HTPI* introduces a new proof technique called *mathematical induction*.  It is used for proving statements of the form `∀ (n : Nat), P n`.  Here is how it works:
+
+#### To prove a goal of the form `∀ (n : Nat), P n`:
+
+::: {.ind}
+First prove `P 0`, and then prove `∀ (n : Nat), P n → P (n + 1)`.  The first of these proofs is sometimes called the *base case* and the second the *induction step*.
+:::
+
+For an explanation of why this strategy works to establish the truth of `∀ (n : Nat), P n`, see *HTPI*.  Here we focus on using mathematical induction in Lean.
+
+To use mathematical induction in a Lean proof, we will use the tactic `by_induc`.  If the goal has the form `∀ (n : Nat), P n`, then the `by_induc` tactic leaves the list of givens unchanged, but it replaces the goal with the goals for the base case and induction step.  Thus, the effect of the tactic can be summarized as follows:
+
+::: {.lftrt}
+::: {.bef}
+```state
+>> ⋮
+⊢ ∀ (n : ℕ), P n
+```
+:::
+
+::: {.aft}
+```state
+case Base_Case
+>> ⋮
+⊢ P 0
+case Induction_Step
+>> ⋮
+⊢ ∀ (n : ℕ), P n → P (n + 1)
+```
+:::
+:::
+
+To illustrate proof by mathematical induction in Lean, we turn first to Example 6.1.2 in *HTPI*, which gives a proof of the statement $\forall n \in \mathbb{N} (3 \mid (n^3 - n))$.  For reasons that we will explain a little later, we will prove a slightly different theorem:  $\forall n \in \mathbb{N} (3 \mid (n^3 + 2n))$.  Here is a proof of the theorem, modeled on the proof in Example 6.1.2 of *HTPI*.
+
+::: {.thm}
+For every natural number $n$, $3 \mid (n^3 + 2n)$.
+:::
+
+::: {.proof}
+We use mathematical induction.
+
+Base Case:  If $n = 0$, then $n^3 + 2n = 0 = 3 \cdot 0$, so $3 \mid (n^3 + 2n)$.
+
+Induction Step:  Let $n$ be an arbitrary natural number and suppose $3 \mid (n^3 + 2n)$.  Then we can choose an integer $k$ such that $3k = n^3 + 2n$.  Thus,
+\begin{align*}
+(n+1)^3 + 2(n+1) &= n^3 + 3n^2 + 3n + 1 + 2n + 2\\
+&= (n^3 + 2n) + 3n^2 + 3n + 3\\
+&= 3k + 3n^2 + 3n + 3\\
+&= 3(k + n^2 + n + 1).
+\end{align*}
+Therefore $3 \mid ((n+1)^3 + 2(n+1))$, as required. [&nbsp;□]{.excl}\qedhere
+:::
+
+Now let's try writing the same proof in Lean.  We start, of course, with the `by_induc` tactic.
+
+::: {.inout}
+::: {.inpt}
+```lean
+theorem Like_Example_6_1_2 :
+    ∀ (n : Nat), 3 ∣ n ^ 3 + 2 * n := by
+  by_induc
+  **done::
+```
+:::
+
+::: {.outpt}
+```state
+case Base_Case
+⊢ 3 ∣ 0 ^ 3 + 2 * 0
+case Induction_Step
+⊢ ∀ (n : ℕ),
+>>  3 ∣ n ^ 3 + 2 * n →
+>>  3 ∣ (n + 1) ^ 3 +
+>>      2 * (n + 1)
+```
+:::
+:::
+
+The base case is easy:  The `define` tactic tells us that the goal means `∃ (c : Nat), 0 ^ 3 + 2 * 0 = 3 * c`, and then `apply Exists.intro 0` changes the goal to `0 ^ 3 + 2 * 0 = 3 * 0`.  Both sides are definitionally equal to `0`, so `rfl` finishes off the base case.  For the induction step, we begin, as in the *HTPI* proof, by introducing an arbitrary natural number `n` and assuming `3 ∣ n ^ 3 + 2 * n`.  This assumption is called the *inductive hypothesis*, so in the Lean proof we give it the identifier `ih`.  Our goal now is to prove `3 ∣ (n + 1) ^ 3 + 2 * (n + 1)`.
+
+::: {.inout}
+::: {.inpt}
+```lean
+theorem Like_Example_6_1_2 :
+    ∀ (n : Nat), 3 ∣ n ^ 3 + 2 * n := by
+  by_induc
+  · -- Base Case
+    define
+    apply Exists.intro 0
+    rfl
+    done
+  · -- Induction Step
+    fix n : Nat
+    assume ih : 3 ∣ n ^ 3 + 2 * n
+    **done::
+  done
+```
+:::
+
+::: {.outpt}
+```state
+case Induction_Step
+n : ℕ
+ih : 3 ∣ n ^ 3 + 2 * n
+⊢ 3 ∣ (n + 1) ^ 3 +
+>>      2 * (n + 1)
+```
+:::
+:::
+
+The rest of the Lean proof follows the model of the *HTPI* proof:  we use the inductive hypothesis to introduce a `k` such that `n ^ 3 + 2 * n = 3 * k`, and then we use a calculational proof to show that `(n + 1) ^ 3 + 2 * (n + 1) = 3 * (k + n ^ 2 + n + 1)`.
+
+```lean
+theorem Like_Example_6_1_2 :
+    ∀ (n : Nat), 3 ∣ n ^ 3 + 2 * n := by
+  by_induc
+  · -- Base Case
+    define         --Goal: ∃ (c : ℕ), 0 ^ 3 + 2 * 0 = 3 * c
+    apply Exists.intro 0
+    rfl
+    done
+  · -- Induction Step
+    fix n : Nat
+    assume ih : 3 ∣ n ^ 3 + 2 * n
+    define at ih   --ih: ∃ (c : ℕ), n ^ 3 + 2 * n = 3 * c
+    obtain (k : Nat) (h1 : n ^ 3 + 2 * n = 3 * k) from ih
+    define         --Goal: ∃ (c : ℕ), (n + 1) ^ 3 + 2 * (n + 1) = 3 * c
+    apply Exists.intro (k + n ^ 2 + n + 1)
+    show (n + 1) ^ 3 + 2 * (n + 1) = 3 * (k + n ^ 2 + n + 1) from
+      calc (n + 1) ^ 3 + 2 * (n + 1)
+          = n ^ 3 + 2 * n + 3 * n ^ 2 + 3 * n + 3 := by ring
+        _ = 3 * k + 3 * n ^ 2 + 3 * n + 3 := by rw [h1]
+        _ = 3 * (k + n ^ 2 + n + 1) := by ring
+    done
+  done
+```
+
+Next we'll look at Example 6.1.1 in *HTPI*, which proves that for every natural number $n$, $2^0 + 2^1 + \cdots + 2^n = 2^{n+1} - 1$.  Once again, we will change the theorem slightly before proving it in Lean.  What we will prove is that for every $n$, $(2^0 + 2^1 + \cdots + 2^n) + 1 = 2^{n+1}$.  To understand this theorem you must be able to recognize what the "$\cdots$" stands for.  A human reader will probably realize that the numbers being added up here are the numbers of the form $2^i$, where $i$ runs through all of the natural numbers from 0 to $n$.  But Lean can't be expected to figure out this pattern, so we must be more explicit.
+
+Section 6.3 of *HTPI* introduces the explicit notation that mathematicians usually use for such sums.  If $f$ is a function whose domain is the natural numbers, then
+$$
+\sum_{i=0}^n f(i) = f(0) + f(1) + \cdots + f(n).
+$$
+More generally, if $k \le n$ then
+$$
+\sum_{i=k}^n f(i) = f(k) + f(k+1) + \cdots + f(n).
+$$
+
+The notation we will use in Lean for this sum is `Sum i from k to n, f i`.  Thus, a mathematician would state our theorem like this:
+
+::: {.thm}
+For every natural number $n$,
+$$
+\left(\sum_{i=0}^n 2^i\right) + 1 = 2^{n+1}.
+$$
+:::
+
+And to state the same theorem in Lean, we will write:
+
+```lean
+theorem Like_Example_6_1_1 :
+    ∀ (n : Nat), (Sum i from 0 to n, 2 ^ i) + 1 = 2 ^ (n + 1)
+```
+
+We will have more to say later about how the notation `Sum i from k to n, f i` is defined.  But to use the notation in a proof, we will just need to know a couple of theorems.  The `#check` command will tell us the meanings of the theorems `sum_from_to_base` and `sum_from_to_step`:
+
+::: {.ind}
+```
+@sum_from_to_base : ∀ {A : Type} [inst : AddZeroClass A]
+                    {k : ℕ} {f : ℕ → A},
+                    Sum i from k to k, f i = f k
+@sum_from_to_step : ∀ {A : Type} [inst : AddZeroClass A]
+                    {k n : ℕ} {f : ℕ → A},
+                    k ≤ n → Sum i from k to n + 1, f i =
+                    (Sum i from k to n, f i) + f (n + 1)
+```
+:::
+
+As usual, we don't need to pay too much attention to the implicit arguments in the first two lines of each statement.  What is important is that `sum_from_to_base` can be used to prove any statement of the form
+
+::: {.ind}
+```
+Sum i from k to k, f i = f k
+```
+:::
+
+and `sum_from_to_step` proves any statement of the form
+
+::: {.ind}
+```
+k ≤ n → Sum i from k to n + 1, f i = (Sum i from k to n, f i) + f (n + 1)
+```
+:::
+
+With that preparation, we can start on the proof.  Once again we begin with the `by_induc` tactic.  Our goal for the base case is `(Sum i from 0 to 0, 2 ^ i) + 1 = 2 ^ (0 + 1)`.  To deal with the term `Sum i from 0 to 0, 2 ^ i`, we use that fact that `sum_from_to_base` proves `Sum i from 0 to 0, 2 ^ i = 2 ^ 0`.  It follows that the tactic `rewrite [sum_from_to_base]` will change the goal to `2 ^ 0 + 1 = 2 ^ (0 + 1)`.  Of course, this means `2 = 2`, so `rfl` finishes the base case.  For the induction step, we start by introducing an arbitrary natural number `n` and assuming the inductive hypothesis
+
+```lean
+theorem Like_Example_6_1_1 :
+    ∀ (n : Nat), (Sum i from 0 to n, 2 ^ i) + 1 = 2 ^ (n + 1) := by
+  by_induc
+  · -- Base case
+    rewrite [sum_from_to_base]
+    rfl
+    done
+  · -- Induction step
+    fix n : Nat
+    assume ih : (Sum i from 0 to n, 2 ^ i) + 1 = 2 ^ (n + 1)
+    **done::
+  done
+```
+
+Our goal is now `(Sum i from 0 to n + 1, 2 ^ i) + 1 = 2 ^ (n + 1 + 1)`, and we use a calculational proof to prove this.  Often the key to the proof of the induction step is to find a relationship between the inductive hypothesis and the goal.  In this case, that means finding a relationship between `Sum i from 0 to n, 2 ^ i` and `Sum i from 0 to n + 1, 2 ^ i`.  The relationship we need is given by the theorem `sum_from_to_step`.  The tactic `rewrite [sum_from_to_step _]` will replace `Sum i from 0 to n + 1, 2 ^ i` with `(Sum i from 0 to n, 2 ^ i) + 2 ^ (n + 1)`, if we can fill in the blank with a proof of `0 ≤ n`.  Fortunately, this is easy to prove: you can use the `#check` command to confirm that `Nat.zero_le` is the theorem `∀ (n : Nat), 0 ≤ n`, so `Nat.zero_le n` is the proof we need.  The rest of the calculation proof involves straightforward algebra, handled by the `ring` tactic, together with an application of the inductive hypothesis.
+
+```lean
+theorem Like_Example_6_1_1 :
+    ∀ (n : Nat), (Sum i from 0 to n, 2 ^ i) + 1 = 2 ^ (n + 1) := by
+  by_induc
+  · -- Base case
+    rewrite [sum_from_to_base]
+    rfl
+    done
+  · -- Induction step
+    fix n : Nat
+    assume ih : (Sum i from 0 to n, 2 ^ i) + 1 = 2 ^ (n + 1)
+    show (Sum i from 0 to n + 1, 2 ^ i) + 1 = 2 ^ (n + 1 + 1) from
+      calc (Sum i from 0 to n + 1, 2 ^ i) + 1
+          = (Sum i from 0 to n, 2 ^ i) + 2 ^ (n + 1) + 1 :=
+            by rw [sum_from_to_step (Nat.zero_le n)]
+        _ = (Sum i from 0 to n, 2 ^ i) + 1 + 2 ^ (n + 1) := by ring
+        _ = 2 ^ (n + 1) + 2 ^ (n + 1) := by rw [ih]
+        _ = 2 ^ (n + 1 + 1) := by ring
+    done
+  done
+```
+
+The last example in Section 6.1 of *HTPI* gives a proof of the statement $\forall n \ge 5 (2^n > n^2)$.  The proof is by mathematical induction, but since we are only interested in natural numbers greater than or equal to 5, it uses 5 in the base case instead of 0.  Here are the theorem and proof from *HTPI*:
+
+::: {.thm}
+For every natural number $n \ge 5$, $2^n > n^2$.
+:::
+
+::: {.proof}
+By mathematical induction.
+
+Base case:  When $n = 5$ we have $2^n = 32 > 25 = n^2$.
+
+Induction step:  Let $n \ge 5$ be arbitrary, and suppose that $2^n > n^2$.  Then
+\begin{align*}
+2^{n+1} &= 2 \cdot 2^n\\
+&> 2n^2 &&\text{(inductive hypothesis)}\\
+&= n^2 + n^2\\
+&\ge n^2 + 5n &&\text{(since $n \ge 5$)}\\
+&= n^2 + 2n + 3n\\
+&> n^2 + 2n + 1 = (n+1)^2. &&\Box
+\end{align*}
+\renewcommand{\qed}{}
+:::
+
+Notice that the sequence of calculations at the end of the proof mixes $=$, $>$, and $\ge$ in a way that establishes the final conclusion $2^{n+1} > (n+1)^2$.  As we'll see, such a mixture is allowed in calculational proofs in Lean as well.
+
+To write this proof in Lean, there is no need to specify that the base case should be `n = 5`; the `by_induc` tactic is smart enough to figure that out on its own, as you can see in the tactic state below:
+
+::: {.inout}
+::: {.inpt}
+```lean
+ theorem Example_6_1_3 :
+    ∀ n ≥ 5, 2 ^ n > n ^ 2 := by
+  by_induc
+  · -- Base case.
+
+    **done::
+  · -- Induction step.
+
+    **done::
+  done
+```
+:::
+
+::: {.outpt}
+```state
+case Base_Case
+⊢ 2 ^ 5 > 5 ^ 2
+case Induction_Step
+⊢ ∀ (n : ℕ), n ≥ 5 →
+>>  2 ^ n > n ^ 2 →
+>>  2 ^ (n + 1) >
+>>      (n + 1) ^ 2
+```
+:::
+:::
+
+To complete this proof we'll use two tactics we haven't used before: `norm_num` and `linarith`.  The base case can be proven by simply doing the arithmetic necessary to check that the inequality holds when `n = 5`.  The tactic `norm_num` does such numerical calculations, and it proves the base case.
+
+For the induction step, we introduce an arbitrary natural number `n`, assume `n ≥ 5`, and assume the inductive hypothesis, `2 ^ n > n ^ 2`.  Then we use a calculational proof to imitate the reasoning at the end of the *HTPI* proof.  The tactic `linarith` makes inferences that involve combining linear equations and inequalities.  It is able to prove almost all of the inequalities in the calculational proof.  The exception is `n * n ≥ 5 * n`, so we prove that inequality separately, using a theorem from Lean's library.  (You can use the `#check` command to see what that theorem says.)
+
+```lean
+  theorem Example_6_1_3 : ∀ n ≥ 5, 2 ^ n > n ^ 2 := by
+  by_induc
+  · -- Base case.
+    norm_num
+    done
+  · -- Induction step.
+    fix n : Nat
+    assume h1 : n ≥ 5
+    assume ih : 2 ^ n > n ^ 2
+    have h2 : n * n ≥ 5 * n := Nat.mul_le_mul_right n h1
+    show 2 ^ (n + 1) > (n + 1) ^ 2 from
+      calc 2 ^ (n + 1)
+          = 2 * 2 ^ n := by ring
+        _ > n ^ 2 + 2 * n + 1 := by linarith
+        _ = (n + 1) ^ 2 := by ring
+    done
+  done
+```

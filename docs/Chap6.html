@@ -1,0 +1,593 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.1.189">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>How To Prove It With Lean - 6&nbsp; Mathematical Induction</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1.6em;
+  vertical-align: middle;
+}
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href="./Chap5.html" rel="prev">
+<script src="site_libs/quarto-html/quarto.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit"
+  }
+}</script>
+
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<link rel="stylesheet" href="HTPIwLstyles.css">
+</head>
+
+<body class="nav-sidebar floating">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+    <div class="container-fluid d-flex justify-content-between">
+      <h1 class="quarto-secondary-nav-title"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Mathematical Induction</span></h1>
+      <button type="button" class="quarto-btn-toggle btn" aria-label="Show secondary navigation">
+        <i class="bi bi-chevron-right"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="./">How To Prove It With Lean</a> 
+        <div class="sidebar-tools-main">
+    <a href="./How-To-Prove-It-With-Lean.pdf" title="Download PDF" class="sidebar-tool px-1"><i class="bi bi-file-pdf"></i></a>
+</div>
+    </div>
+      </div>
+      <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+      </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">Preface</a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Chap1.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Sentential Logic</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Chap2.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Quantificational Logic</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IntroLean.html" class="sidebar-item-text sidebar-link">Introduction to Lean</a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Chap3.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Proofs</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Chap4.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Relations</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Chap5.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Functions</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Chap6.html" class="sidebar-item-text sidebar-link active"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Mathematical Induction</span></a>
+  </div>
+</li>
+    </ul>
+    </div>
+</nav>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul class="collapse">
+  <li><a href="#proof-by-mathematical-induction" id="toc-proof-by-mathematical-induction" class="nav-link active" data-scroll-target="#proof-by-mathematical-induction">6.1. Proof by Mathematical Induction</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+<div class="hidden">
+$$
+\newcommand{\setmin}{\mathbin{\backslash}}
+\newcommand{\symmdiff}{\bigtriangleup}
+$$
+</div>
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title d-none d-lg-block"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Mathematical Induction</span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+    
+  </div>
+  
+
+</header>
+
+<section id="proof-by-mathematical-induction" class="level2">
+<h2 class="anchored" data-anchor-id="proof-by-mathematical-induction">6.1. Proof by Mathematical Induction</h2>
+<p>Section 6.1 of <em>HTPI</em> introduces a new proof technique called <em>mathematical induction</em>. It is used for proving statements of the form <code>∀ (n : Nat), P n</code>. Here is how it works:</p>
+<section id="to-prove-a-goal-of-the-form-n-nat-p-n" class="level4">
+<h4 class="anchored" data-anchor-id="to-prove-a-goal-of-the-form-n-nat-p-n">To prove a goal of the form <code>∀ (n : Nat), P n</code>:</h4>
+<div class="ind">
+<p>First prove <code>P 0</code>, and then prove <code>∀ (n : Nat), P n → P (n + 1)</code>. The first of these proofs is sometimes called the <em>base case</em> and the second the <em>induction step</em>.</p>
+</div>
+<p>For an explanation of why this strategy works to establish the truth of <code>∀ (n : Nat), P n</code>, see <em>HTPI</em>. Here we focus on using mathematical induction in Lean.</p>
+<p>To use mathematical induction in a Lean proof, we will use the tactic <code>by_induc</code>. If the goal has the form <code>∀ (n : Nat), P n</code>, then the <code>by_induc</code> tactic leaves the list of givens unchanged, but it replaces the goal with the goals for the base case and induction step. Thus, the effect of the tactic can be summarized as follows:</p>
+<div class="lftrt">
+<div class="bef">
+<div class="sourceCode" id="cb1"><pre class="sourceCode state code-with-copy"><code class="sourceCode state"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;&gt;</span> ⋮</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>⊢ ∀ (n : ℕ), P n</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="aft">
+<div class="sourceCode" id="cb2"><pre class="sourceCode state code-with-copy"><code class="sourceCode state"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="re">case</span> Base_Case</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;&gt;</span> ⋮</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>⊢ P 0</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="re">case</span> Induction_Step</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;&gt;</span> ⋮</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>⊢ ∀ (n : ℕ), P n → P (n + 1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+<p>To illustrate proof by mathematical induction in Lean, we turn first to Example 6.1.2 in <em>HTPI</em>, which gives a proof of the statement <span class="math inline">\(\forall n \in \mathbb{N} (3 \mid (n^3 - n))\)</span>. For reasons that we will explain a little later, we will prove a slightly different theorem: <span class="math inline">\(\forall n \in \mathbb{N} (3 \mid (n^3 + 2n))\)</span>. Here is a proof of the theorem, modeled on the proof in Example 6.1.2 of <em>HTPI</em>.</p>
+<div class="thm">
+<p>For every natural number <span class="math inline">\(n\)</span>, <span class="math inline">\(3 \mid (n^3 + 2n)\)</span>.</p>
+</div>
+<div class="proof">
+<p><span class="proof-title"><em>Proof</em>. </span>We use mathematical induction.</p>
+<p>Base Case: If <span class="math inline">\(n = 0\)</span>, then <span class="math inline">\(n^3 + 2n = 0 = 3 \cdot 0\)</span>, so <span class="math inline">\(3 \mid (n^3 + 2n)\)</span>.</p>
+<p>Induction Step: Let <span class="math inline">\(n\)</span> be an arbitrary natural number and suppose <span class="math inline">\(3 \mid (n^3 + 2n)\)</span>. Then we can choose an integer <span class="math inline">\(k\)</span> such that <span class="math inline">\(3k = n^3 + 2n\)</span>. Thus, <span class="math display">\[\begin{align*}
+(n+1)^3 + 2(n+1) &amp;= n^3 + 3n^2 + 3n + 1 + 2n + 2\\
+&amp;= (n^3 + 2n) + 3n^2 + 3n + 3\\
+&amp;= 3k + 3n^2 + 3n + 3\\
+&amp;= 3(k + n^2 + n + 1).
+\end{align*}\]</span> Therefore <span class="math inline">\(3 \mid ((n+1)^3 + 2(n+1))\)</span>, as required. <span class="excl">&nbsp;□</span></p>
+</div>
+<p>Now let’s try writing the same proof in Lean. We start, of course, with the <code>by_induc</code> tactic.</p>
+<div class="inout">
+<div class="inpt">
+<div class="sourceCode" id="cb3"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Like_Example_6_1_2 :</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>    ∀ (n : Nat), 3 ∣ n ^ 3 + 2 * n := <span class="kw">by</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>  <span class="kw">by_induc</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>  <span class="sc">**</span><span class="wa">done</span><span class="sc">::</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="outpt">
+<div class="sourceCode" id="cb4"><pre class="sourceCode state code-with-copy"><code class="sourceCode state"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="re">case</span> Base_Case</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>⊢ 3 ∣ 0 ^ 3 + 2 * 0</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="re">case</span> Induction_Step</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>⊢ ∀ (n : ℕ),</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;&gt;</span>  3 ∣ n ^ 3 + 2 * n →</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;&gt;</span>  3 ∣ (n + 1) ^ 3 +</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;&gt;</span>      2 * (n + 1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+<p>The base case is easy: The <code>define</code> tactic tells us that the goal means <code>∃ (c : Nat), 0 ^ 3 + 2 * 0 = 3 * c</code>, and then <code>apply Exists.intro 0</code> changes the goal to <code>0 ^ 3 + 2 * 0 = 3 * 0</code>. Both sides are definitionally equal to <code>0</code>, so <code>rfl</code> finishes off the base case. For the induction step, we begin, as in the <em>HTPI</em> proof, by introducing an arbitrary natural number <code>n</code> and assuming <code>3 ∣ n ^ 3 + 2 * n</code>. This assumption is called the <em>inductive hypothesis</em>, so in the Lean proof we give it the identifier <code>ih</code>. Our goal now is to prove <code>3 ∣ (n + 1) ^ 3 + 2 * (n + 1)</code>.</p>
+<div class="inout">
+<div class="inpt">
+<div class="sourceCode" id="cb5"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Like_Example_6_1_2 :</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>    ∀ (n : Nat), 3 ∣ n ^ 3 + 2 * n := <span class="kw">by</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  <span class="kw">by_induc</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>  · <span class="co">-- Base Case</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>    <span class="kw">define</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>    <span class="kw">apply</span> Exists.intro 0</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>    <span class="kw">rfl</span></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>    <span class="kw">done</span></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>  · <span class="co">-- Induction Step</span></span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>    <span class="kw">fix</span> n : Nat</span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>    <span class="kw">assume</span> ih : 3 ∣ n ^ 3 + 2 * n</span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>    <span class="sc">**</span><span class="wa">done</span><span class="sc">::</span></span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>  <span class="kw">done</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="outpt">
+<div class="sourceCode" id="cb6"><pre class="sourceCode state code-with-copy"><code class="sourceCode state"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="re">case</span> Induction_Step</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="in">n </span>: ℕ</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="in">ih </span>: 3 ∣ n ^ 3 + 2 * n</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>⊢ 3 ∣ (n + 1) ^ 3 +</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;&gt;</span>      2 * (n + 1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+<p>The rest of the Lean proof follows the model of the <em>HTPI</em> proof: we use the inductive hypothesis to introduce a <code>k</code> such that <code>n ^ 3 + 2 * n = 3 * k</code>, and then we use a calculational proof to show that <code>(n + 1) ^ 3 + 2 * (n + 1) = 3 * (k + n ^ 2 + n + 1)</code>.</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Like_Example_6_1_2 :</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>    ∀ (n : Nat), 3 ∣ n ^ 3 + 2 * n := <span class="kw">by</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>  <span class="kw">by_induc</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>  · <span class="co">-- Base Case</span></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>    <span class="kw">define</span>         <span class="co">--Goal: ∃ (c : ℕ), 0 ^ 3 + 2 * 0 = 3 * c</span></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>    <span class="kw">apply</span> Exists.intro 0</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>    <span class="kw">rfl</span></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>    <span class="kw">done</span></span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>  · <span class="co">-- Induction Step</span></span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>    <span class="kw">fix</span> n : Nat</span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>    <span class="kw">assume</span> ih : 3 ∣ n ^ 3 + 2 * n</span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>    <span class="kw">define</span> <span class="kw">at</span> ih   <span class="co">--ih: ∃ (c : ℕ), n ^ 3 + 2 * n = 3 * c</span></span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>    <span class="kw">obtain</span> (k : Nat) (h1 : n ^ 3 + 2 * n = 3 * k) <span class="kw">from</span> ih</span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>    <span class="kw">define</span>         <span class="co">--Goal: ∃ (c : ℕ), (n + 1) ^ 3 + 2 * (n + 1) = 3 * c</span></span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a>    <span class="kw">apply</span> Exists.intro (k + n ^ 2 + n + 1)</span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a>    <span class="kw">show</span> (n + 1) ^ 3 + 2 * (n + 1) = 3 * (k + n ^ 2 + n + 1) <span class="kw">from</span></span>
+<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a>      <span class="kw">calc</span> (n + 1) ^ 3 + 2 * (n + 1)</span>
+<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a>          = n ^ 3 + 2 * n + 3 * n ^ 2 + 3 * n + 3 := <span class="kw">by</span> <span class="kw">ring</span></span>
+<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a>        _ = 3 * k + 3 * n ^ 2 + 3 * n + 3 := <span class="kw">by</span> <span class="kw">rw</span> [h1]</span>
+<span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a>        _ = 3 * (k + n ^ 2 + n + 1) := <span class="kw">by</span> <span class="kw">ring</span></span>
+<span id="cb7-21"><a href="#cb7-21" aria-hidden="true" tabindex="-1"></a>    <span class="kw">done</span></span>
+<span id="cb7-22"><a href="#cb7-22" aria-hidden="true" tabindex="-1"></a>  <span class="kw">done</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Next we’ll look at Example 6.1.1 in <em>HTPI</em>, which proves that for every natural number <span class="math inline">\(n\)</span>, <span class="math inline">\(2^0 + 2^1 + \cdots + 2^n = 2^{n+1} - 1\)</span>. Once again, we will change the theorem slightly before proving it in Lean. What we will prove is that for every <span class="math inline">\(n\)</span>, <span class="math inline">\((2^0 + 2^1 + \cdots + 2^n) + 1 = 2^{n+1}\)</span>. To understand this theorem you must be able to recognize what the “<span class="math inline">\(\cdots\)</span>” stands for. A human reader will probably realize that the numbers being added up here are the numbers of the form <span class="math inline">\(2^i\)</span>, where <span class="math inline">\(i\)</span> runs through all of the natural numbers from 0 to <span class="math inline">\(n\)</span>. But Lean can’t be expected to figure out this pattern, so we must be more explicit.</p>
+<p>Section 6.3 of <em>HTPI</em> introduces the explicit notation that mathematicians usually use for such sums. If <span class="math inline">\(f\)</span> is a function whose domain is the natural numbers, then <span class="math display">\[
+\sum_{i=0}^n f(i) = f(0) + f(1) + \cdots + f(n).
+\]</span> More generally, if <span class="math inline">\(k \le n\)</span> then <span class="math display">\[
+\sum_{i=k}^n f(i) = f(k) + f(k+1) + \cdots + f(n).
+\]</span></p>
+<p>The notation we will use in Lean for this sum is <code>Sum i from k to n, f i</code>. Thus, a mathematician would state our theorem like this:</p>
+<div class="thm">
+<p>For every natural number <span class="math inline">\(n\)</span>, <span class="math display">\[
+\left(\sum_{i=0}^n 2^i\right) + 1 = 2^{n+1}.
+\]</span></p>
+</div>
+<p>And to state the same theorem in Lean, we will write:</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Like_Example_6_1_1 :</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>    ∀ (n : Nat), (<span class="kw">Sum</span> i <span class="kw">from</span> 0 <span class="kw">to</span> n, 2 ^ i) + 1 = 2 ^ (n + 1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>We will have more to say later about how the notation <code>Sum i from k to n, f i</code> is defined. But to use the notation in a proof, we will just need to know a couple of theorems. The <code>#check</code> command will tell us the meanings of the theorems <code>sum_from_to_base</code> and <code>sum_from_to_step</code>:</p>
+<div class="ind">
+<pre><code>@sum_from_to_base : ∀ {A : Type} [inst : AddZeroClass A]
+                    {k : ℕ} {f : ℕ → A},
+                    Sum i from k to k, f i = f k
+@sum_from_to_step : ∀ {A : Type} [inst : AddZeroClass A]
+                    {k n : ℕ} {f : ℕ → A},
+                    k ≤ n → Sum i from k to n + 1, f i =
+                    (Sum i from k to n, f i) + f (n + 1)</code></pre>
+</div>
+<p>As usual, we don’t need to pay too much attention to the implicit arguments in the first two lines of each statement. What is important is that <code>sum_from_to_base</code> can be used to prove any statement of the form</p>
+<div class="ind">
+<pre><code>Sum i from k to k, f i = f k</code></pre>
+</div>
+<p>and <code>sum_from_to_step</code> proves any statement of the form</p>
+<div class="ind">
+<pre><code>k ≤ n → Sum i from k to n + 1, f i = (Sum i from k to n, f i) + f (n + 1)</code></pre>
+</div>
+<p>With that preparation, we can start on the proof. Once again we begin with the <code>by_induc</code> tactic. Our goal for the base case is <code>(Sum i from 0 to 0, 2 ^ i) + 1 = 2 ^ (0 + 1)</code>. To deal with the term <code>Sum i from 0 to 0, 2 ^ i</code>, we use that fact that <code>sum_from_to_base</code> proves <code>Sum i from 0 to 0, 2 ^ i = 2 ^ 0</code>. It follows that the tactic <code>rewrite [sum_from_to_base]</code> will change the goal to <code>2 ^ 0 + 1 = 2 ^ (0 + 1)</code>. Of course, this means <code>2 = 2</code>, so <code>rfl</code> finishes the base case. For the induction step, we start by introducing an arbitrary natural number <code>n</code> and assuming the inductive hypothesis</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Like_Example_6_1_1 :</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>    ∀ (n : Nat), (<span class="kw">Sum</span> i <span class="kw">from</span> 0 <span class="kw">to</span> n, 2 ^ i) + 1 = 2 ^ (n + 1) := <span class="kw">by</span></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>  <span class="kw">by_induc</span></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>  · <span class="co">-- Base case</span></span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>    <span class="kw">rewrite</span> [sum_from_to_base]</span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>    <span class="kw">rfl</span></span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>    <span class="kw">done</span></span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>  · <span class="co">-- Induction step</span></span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>    <span class="kw">fix</span> n : Nat</span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a>    <span class="kw">assume</span> ih : (<span class="kw">Sum</span> i <span class="kw">from</span> 0 <span class="kw">to</span> n, 2 ^ i) + 1 = 2 ^ (n + 1)</span>
+<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a>    <span class="sc">**</span><span class="wa">done</span><span class="sc">::</span></span>
+<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a>  <span class="kw">done</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Our goal is now <code>(Sum i from 0 to n + 1, 2 ^ i) + 1 = 2 ^ (n + 1 + 1)</code>, and we use a calculational proof to prove this. Often the key to the proof of the induction step is to find a relationship between the inductive hypothesis and the goal. In this case, that means finding a relationship between <code>Sum i from 0 to n, 2 ^ i</code> and <code>Sum i from 0 to n + 1, 2 ^ i</code>. The relationship we need is given by the theorem <code>sum_from_to_step</code>. The tactic <code>rewrite [sum_from_to_step _]</code> will replace <code>Sum i from 0 to n + 1, 2 ^ i</code> with <code>(Sum i from 0 to n, 2 ^ i) + 2 ^ (n + 1)</code>, if we can fill in the blank with a proof of <code>0 ≤ n</code>. Fortunately, this is easy to prove: you can use the <code>#check</code> command to confirm that <code>Nat.zero_le</code> is the theorem <code>∀ (n : Nat), 0 ≤ n</code>, so <code>Nat.zero_le n</code> is the proof we need. The rest of the calculation proof involves straightforward algebra, handled by the <code>ring</code> tactic, together with an application of the inductive hypothesis.</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Like_Example_6_1_1 :</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>    ∀ (n : Nat), (<span class="kw">Sum</span> i <span class="kw">from</span> 0 <span class="kw">to</span> n, 2 ^ i) + 1 = 2 ^ (n + 1) := <span class="kw">by</span></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>  <span class="kw">by_induc</span></span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>  · <span class="co">-- Base case</span></span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>    <span class="kw">rewrite</span> [sum_from_to_base]</span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>    <span class="kw">rfl</span></span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>    <span class="kw">done</span></span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a>  · <span class="co">-- Induction step</span></span>
+<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a>    <span class="kw">fix</span> n : Nat</span>
+<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a>    <span class="kw">assume</span> ih : (<span class="kw">Sum</span> i <span class="kw">from</span> 0 <span class="kw">to</span> n, 2 ^ i) + 1 = 2 ^ (n + 1)</span>
+<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a>    <span class="kw">show</span> (<span class="kw">Sum</span> i <span class="kw">from</span> 0 <span class="kw">to</span> n + 1, 2 ^ i) + 1 = 2 ^ (n + 1 + 1) <span class="kw">from</span></span>
+<span id="cb13-12"><a href="#cb13-12" aria-hidden="true" tabindex="-1"></a>      <span class="kw">calc</span> (<span class="kw">Sum</span> i <span class="kw">from</span> 0 <span class="kw">to</span> n + 1, 2 ^ i) + 1</span>
+<span id="cb13-13"><a href="#cb13-13" aria-hidden="true" tabindex="-1"></a>          = (<span class="kw">Sum</span> i <span class="kw">from</span> 0 <span class="kw">to</span> n, 2 ^ i) + 2 ^ (n + 1) + 1 :=</span>
+<span id="cb13-14"><a href="#cb13-14" aria-hidden="true" tabindex="-1"></a>            <span class="kw">by</span> <span class="kw">rw</span> [sum_from_to_step (Nat.zero_le n)]</span>
+<span id="cb13-15"><a href="#cb13-15" aria-hidden="true" tabindex="-1"></a>        _ = (<span class="kw">Sum</span> i <span class="kw">from</span> 0 <span class="kw">to</span> n, 2 ^ i) + 1 + 2 ^ (n + 1) := <span class="kw">by</span> <span class="kw">ring</span></span>
+<span id="cb13-16"><a href="#cb13-16" aria-hidden="true" tabindex="-1"></a>        _ = 2 ^ (n + 1) + 2 ^ (n + 1) := <span class="kw">by</span> <span class="kw">rw</span> [ih]</span>
+<span id="cb13-17"><a href="#cb13-17" aria-hidden="true" tabindex="-1"></a>        _ = 2 ^ (n + 1 + 1) := <span class="kw">by</span> <span class="kw">ring</span></span>
+<span id="cb13-18"><a href="#cb13-18" aria-hidden="true" tabindex="-1"></a>    <span class="kw">done</span></span>
+<span id="cb13-19"><a href="#cb13-19" aria-hidden="true" tabindex="-1"></a>  <span class="kw">done</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>The last example in Section 6.1 of <em>HTPI</em> gives a proof of the statement <span class="math inline">\(\forall n \ge 5 (2^n &gt; n^2)\)</span>. The proof is by mathematical induction, but since we are only interested in natural numbers greater than or equal to 5, it uses 5 in the base case instead of 0. Here are the theorem and proof from <em>HTPI</em>:</p>
+<div class="thm">
+<p>For every natural number <span class="math inline">\(n \ge 5\)</span>, <span class="math inline">\(2^n &gt; n^2\)</span>.</p>
+</div>
+<div class="proof">
+<p><span class="proof-title"><em>Proof</em>. </span>By mathematical induction.</p>
+<p>Base case: When <span class="math inline">\(n = 5\)</span> we have <span class="math inline">\(2^n = 32 &gt; 25 = n^2\)</span>.</p>
+<p>Induction step: Let <span class="math inline">\(n \ge 5\)</span> be arbitrary, and suppose that <span class="math inline">\(2^n &gt; n^2\)</span>. Then <span class="math display">\[\begin{align*}
+2^{n+1} &amp;= 2 \cdot 2^n\\
+&amp;&gt; 2n^2 &amp;&amp;\text{(inductive hypothesis)}\\
+&amp;= n^2 + n^2\\
+&amp;\ge n^2 + 5n &amp;&amp;\text{(since $n \ge 5$)}\\
+&amp;= n^2 + 2n + 3n\\
+&amp;&gt; n^2 + 2n + 1 = (n+1)^2. &amp;&amp;\Box
+\end{align*}\]</span> </p>
+</div>
+<p>Notice that the sequence of calculations at the end of the proof mixes <span class="math inline">\(=\)</span>, <span class="math inline">\(&gt;\)</span>, and <span class="math inline">\(\ge\)</span> in a way that establishes the final conclusion <span class="math inline">\(2^{n+1} &gt; (n+1)^2\)</span>. As we’ll see, such a mixture is allowed in calculational proofs in Lean as well.</p>
+<p>To write this proof in Lean, there is no need to specify that the base case should be <code>n = 5</code>; the <code>by_induc</code> tactic is smart enough to figure that out on its own, as you can see in the tactic state below:</p>
+<div class="inout">
+<div class="inpt">
+<div class="sourceCode" id="cb14"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a> <span class="kw">theorem</span> Example_6_1_3 :</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>    ∀ n ≥ 5, 2 ^ n &gt; n ^ 2 := <span class="kw">by</span></span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>  <span class="kw">by_induc</span></span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>  · <span class="co">-- Base case.</span></span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>    <span class="sc">**</span><span class="wa">done</span><span class="sc">::</span></span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>  · <span class="co">-- Induction step.</span></span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a>    <span class="sc">**</span><span class="wa">done</span><span class="sc">::</span></span>
+<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a>  <span class="kw">done</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="outpt">
+<div class="sourceCode" id="cb15"><pre class="sourceCode state code-with-copy"><code class="sourceCode state"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="re">case</span> Base_Case</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>⊢ 2 ^ 5 &gt; 5 ^ 2</span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a><span class="re">case</span> Induction_Step</span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>⊢ ∀ (n : ℕ), n ≥ 5 →</span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;&gt;</span>  2 ^ n &gt; n ^ 2 →</span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;&gt;</span>  2 ^ (n + 1) &gt;</span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;&gt;</span>      (n + 1) ^ 2</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+<p>To complete this proof we’ll use two tactics we haven’t used before: <code>norm_num</code> and <code>linarith</code>. The base case can be proven by simply doing the arithmetic necessary to check that the inequality holds when <code>n = 5</code>. The tactic <code>norm_num</code> does such numerical calculations, and it proves the base case.</p>
+<p>For the induction step, we introduce an arbitrary natural number <code>n</code>, assume <code>n ≥ 5</code>, and assume the inductive hypothesis, <code>2 ^ n &gt; n ^ 2</code>. Then we use a calculational proof to imitate the reasoning at the end of the <em>HTPI</em> proof. The tactic <code>linarith</code> makes inferences that involve combining linear equations and inequalities. It is able to prove almost all of the inequalities in the calculational proof. The exception is <code>n * n ≥ 5 * n</code>, so we prove that inequality separately, using a theorem from Lean’s library. (You can use the <code>#check</code> command to see what that theorem says.)</p>
+<div class="sourceCode" id="cb16"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>  <span class="kw">theorem</span> Example_6_1_3 : ∀ n ≥ 5, 2 ^ n &gt; n ^ 2 := <span class="kw">by</span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>  <span class="kw">by_induc</span></span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>  · <span class="co">-- Base case.</span></span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>    <span class="kw">norm_num</span></span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>    <span class="kw">done</span></span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>  · <span class="co">-- Induction step.</span></span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a>    <span class="kw">fix</span> n : Nat</span>
+<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a>    <span class="kw">assume</span> h1 : n ≥ 5</span>
+<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a>    <span class="kw">assume</span> ih : 2 ^ n &gt; n ^ 2</span>
+<span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a>    <span class="kw">have</span> h2 : n * n ≥ 5 * n := Nat.mul_le_mul_right n h1</span>
+<span id="cb16-11"><a href="#cb16-11" aria-hidden="true" tabindex="-1"></a>    <span class="kw">show</span> 2 ^ (n + 1) &gt; (n + 1) ^ 2 <span class="kw">from</span></span>
+<span id="cb16-12"><a href="#cb16-12" aria-hidden="true" tabindex="-1"></a>      <span class="kw">calc</span> 2 ^ (n + 1)</span>
+<span id="cb16-13"><a href="#cb16-13" aria-hidden="true" tabindex="-1"></a>          = 2 * 2 ^ n := <span class="kw">by</span> <span class="kw">ring</span></span>
+<span id="cb16-14"><a href="#cb16-14" aria-hidden="true" tabindex="-1"></a>        _ &gt; n ^ 2 + 2 * n + 1 := <span class="kw">by</span> <span class="kw">linarith</span></span>
+<span id="cb16-15"><a href="#cb16-15" aria-hidden="true" tabindex="-1"></a>        _ = (n + 1) ^ 2 := <span class="kw">by</span> <span class="kw">ring</span></span>
+<span id="cb16-16"><a href="#cb16-16" aria-hidden="true" tabindex="-1"></a>    <span class="kw">done</span></span>
+<span id="cb16-17"><a href="#cb16-17" aria-hidden="true" tabindex="-1"></a>  <span class="kw">done</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+
+
+</section>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    setTimeout(function() {
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const cites = ref.parentNode.getAttribute('data-cites').split(' ');
+    tippyHover(ref, function() {
+      var popup = window.document.createElement('div');
+      cites.forEach(function(cite) {
+        var citeDiv = window.document.createElement('div');
+        citeDiv.classList.add('hanging-indent');
+        citeDiv.classList.add('csl-entry');
+        var biblioDiv = window.document.getElementById('ref-' + cite);
+        if (biblioDiv) {
+          citeDiv.innerHTML = biblioDiv.innerHTML;
+        }
+        popup.appendChild(citeDiv);
+      });
+      return popup.innerHTML;
+    });
+  }
+});
+</script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="./Chap5.html" class="pagination-link">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Functions</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+  </div>
+</nav>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+      <div class="nav-footer-center">© 2023 Daniel J. Velleman. Short excerpts from <a href="https://doi.org/10.1017/9781108539890"><i>How To Prove It</i></a>, published by Cambridge University Press, reproduced with permission.</div>
+  </div>
+</footer>
+
+
+
+</body></html>

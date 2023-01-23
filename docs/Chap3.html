@@ -196,6 +196,11 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   <a href="./Chap5.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Functions</span></a>
   </div>
 </li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Chap6.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Mathematical Induction</span></a>
+  </div>
+</li>
     </ul>
     </div>
 </nav>
@@ -4040,7 +4045,7 @@ x \in A \cap (B \setmin C) &amp;\text{ iff } x \in A \wedge x \in B \setmin C\\
 <div class="ind">
 <pre><code>@one_mul : ∀ {M : Type u_1} [inst : MulOneClass M] (a : M), 1 * a = a</code></pre>
 </div>
-<p>So <code>one_mul n</code> should justify the last equation. Here’s the complete calculational proof, where we have shortened the second step a bit by doing both <code>rewrite</code>s in one step. When a tactic proof is short enough that it can be written on one line, we usually leave off <code>done</code>.</p>
+<p>So <code>one_mul n</code> should justify the last equation. Here’s the complete calculational proof, where we have shortened the second step a bit by doing both <code>rewrite</code>s in one step. When a tactic proof is short enough that it can be written on one line, we generally leave off <code>done</code>.</p>
 <div class="sourceCode" id="cb305"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb305-1"><a href="#cb305-1" aria-hidden="true" tabindex="-1"></a><span class="kw">have</span> h6 : 6 * (j - k) = n :=</span>
 <span id="cb305-2"><a href="#cb305-2" aria-hidden="true" tabindex="-1"></a>  <span class="kw">calc</span> 6 * (j - k)</span>
 <span id="cb305-3"><a href="#cb305-3" aria-hidden="true" tabindex="-1"></a>      = 6 * j - 6 * k :=</span>

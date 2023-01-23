@@ -4865,7 +4865,7 @@ Lean responds with `exact one_mul n`, and `#check @one_mul` yields
 ```
 :::
 
-So `one_mul n` should justify the last equation.  Here's the complete calculational proof, where we have shortened the second step a bit by doing both `rewrite`s in one step.  When a tactic proof is short enough that it can be written on one line, we usually leave off `done`.
+So `one_mul n` should justify the last equation.  Here's the complete calculational proof, where we have shortened the second step a bit by doing both `rewrite`s in one step.  When a tactic proof is short enough that it can be written on one line, we generally leave off `done`.
 
 ```lean
 have h6 : 6 * (j - k) = n :=

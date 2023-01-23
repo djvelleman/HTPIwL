@@ -196,6 +196,11 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   <a href="./Chap5.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Functions</span></a>
   </div>
 </li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Chap6.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Mathematical Induction</span></a>
+  </div>
+</li>
     </ul>
     </div>
 </nav>
@@ -479,9 +484,9 @@ $$
 <span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a>    <span class="kw">fix</span> (a, b) : A × A</span>
 <span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a>    <span class="kw">show</span> (a, b) ∈ extension R ↔ (a, b) ∈ inv (extension R) <span class="kw">from</span></span>
 <span id="cb17-10"><a href="#cb17-10" aria-hidden="true" tabindex="-1"></a>      <span class="kw">calc</span> (a, b) ∈ extension R</span>
-<span id="cb17-11"><a href="#cb17-11" aria-hidden="true" tabindex="-1"></a>        ↔ R a b := <span class="kw">by</span> <span class="kw">rfl</span></span>
-<span id="cb17-12"><a href="#cb17-12" aria-hidden="true" tabindex="-1"></a>      _ ↔ R b a := Iff.intro (h1 a b) (h1 b a)</span>
-<span id="cb17-13"><a href="#cb17-13" aria-hidden="true" tabindex="-1"></a>      _ ↔ (a, b) ∈ inv (extension R) := <span class="kw">by</span> <span class="kw">rfl</span></span>
+<span id="cb17-11"><a href="#cb17-11" aria-hidden="true" tabindex="-1"></a>          ↔ R a b := <span class="kw">by</span> <span class="kw">rfl</span></span>
+<span id="cb17-12"><a href="#cb17-12" aria-hidden="true" tabindex="-1"></a>        _ ↔ R b a := Iff.intro (h1 a b) (h1 b a)</span>
+<span id="cb17-13"><a href="#cb17-13" aria-hidden="true" tabindex="-1"></a>        _ ↔ (a, b) ∈ inv (extension R) := <span class="kw">by</span> <span class="kw">rfl</span></span>
 <span id="cb17-14"><a href="#cb17-14" aria-hidden="true" tabindex="-1"></a>    <span class="kw">done</span></span>
 <span id="cb17-15"><a href="#cb17-15" aria-hidden="true" tabindex="-1"></a>  · <span class="co">-- (←)</span></span>
 <span id="cb17-16"><a href="#cb17-16" aria-hidden="true" tabindex="-1"></a>    <span class="kw">assume</span> h1 : extension R = inv (extension R)</span>
