@@ -202,11 +202,11 @@ With that preparation, we can start on the proof.  Once again we begin with the 
 theorem Like_Example_6_1_1 :
     ∀ (n : Nat), (Sum i from 0 to n, 2 ^ i) + 1 = 2 ^ (n + 1) := by
   by_induc
-  · -- Base case
+  · -- Base Case
     rewrite [sum_from_to_base]
     rfl
     done
-  · -- Induction step
+  · -- Induction Step
     fix n : Nat
     assume ih : (Sum i from 0 to n, 2 ^ i) + 1 = 2 ^ (n + 1)
     **done::
@@ -219,11 +219,11 @@ Our goal is now `(Sum i from 0 to n + 1, 2 ^ i) + 1 = 2 ^ (n + 1 + 1)`, and we u
 theorem Like_Example_6_1_1 :
     ∀ (n : Nat), (Sum i from 0 to n, 2 ^ i) + 1 = 2 ^ (n + 1) := by
   by_induc
-  · -- Base case
+  · -- Base Case
     rewrite [sum_from_to_base]
     rfl
     done
-  · -- Induction step
+  · -- Induction Step
     fix n : Nat
     assume ih : (Sum i from 0 to n, 2 ^ i) + 1 = 2 ^ (n + 1)
     show (Sum i from 0 to n + 1, 2 ^ i) + 1 = 2 ^ (n + 1 + 1) from
@@ -267,16 +267,10 @@ To write this proof in Lean, there is no need to specify that the base case shou
 ::: {.inout}
 ::: {.inpt}
 ```lean
- theorem Example_6_1_3 :
+theorem Example_6_1_3 :
     ∀ n ≥ 5, 2 ^ n > n ^ 2 := by
   by_induc
-  · -- Base case.
-
-    **done::
-  · -- Induction step.
-
-    **done::
-  done
+  **done::
 ```
 :::
 
@@ -295,15 +289,15 @@ case Induction_Step
 
 To complete this proof we'll use two tactics we haven't used before: `norm_num` and `linarith`.  The base case can be proven by simply doing the arithmetic necessary to check that the inequality holds when `n = 5`.  The tactic `norm_num` does such numerical calculations, and it proves the base case.
 
-For the induction step, we introduce an arbitrary natural number `n`, assume `n ≥ 5`, and assume the inductive hypothesis, `2 ^ n > n ^ 2`.  Then we use a calculational proof to imitate the reasoning at the end of the *HTPI* proof.  The tactic `linarith` makes inferences that involve combining linear equations and inequalities.  It is able to prove almost all of the inequalities in the calculational proof.  The exception is `n * n ≥ 5 * n`, so we prove that inequality separately, using a theorem from Lean's library.  (You can use the `#check` command to see what that theorem says.)
+For the induction step, we introduce an arbitrary natural number `n`, assume `n ≥ 5`, and assume the inductive hypothesis, `2 ^ n > n ^ 2`.  Then we use a calculational proof to imitate the reasoning at the end of the *HTPI* proof.  The tactic `linarith` makes inferences that involve combining linear equations and inequalities.  It is able to prove almost all of the inequalities in the calculational proof.  The exception is `n * n ≥ 5 * n`, so we prove that inequality separately, using a theorem from Lean's library.  (You can use the `#check` command to see what that theorem says.)  Once we have proven that inequality, the `linarith` tactic can use it to complete the required inequality reasoning.
 
 ```lean
-  theorem Example_6_1_3 : ∀ n ≥ 5, 2 ^ n > n ^ 2 := by
+theorem Example_6_1_3 : ∀ n ≥ 5, 2 ^ n > n ^ 2 := by
   by_induc
-  · -- Base case.
+  · -- Base Case
     norm_num
     done
-  · -- Induction step.
+  · -- Induction Step
     fix n : Nat
     assume h1 : n ≥ 5
     assume ih : 2 ^ n > n ^ 2
@@ -316,3 +310,94 @@ For the induction step, we introduce an arbitrary natural number `n`, assume `n 
     done
   done
 ```
+
+Finally, we turn to the question of why we made small changes in two of the examples from *HTPI*.  Perhaps you have guessed by now that we were trying to avoid the use of subtraction.  All of the numbers in the examples in this section were natural numbers, and subtraction of natural numbers is problematic.  In the natural numbers, `3 - 2` is equal to `1`, but what is `2 - 3`?  Lean's answer is `0`.
+
+```lean
+++#eval:: 2 - 3     --Answer: 0
+```
+
+In Lean, if `a` and `b` are natural numbers and `a < b`, then `a - b` is defined to be `0`.  As a result, the algebraic laws of natural number subtraction are complicated.  For example, `2 - 3 + 1 = 0 + 1 = 1`, but `2 + 1 - 3 = 3 - 3 = 0`, so it is not true that for all natural numbers `a`, `b`, and `c`, `a - b + c = a + c - b`.
+
+If you thought that the answer to the subtraction problem `2 - 3` was `-1`, then you automatically switched from the natural numbers to the integers.  (Recall that the natural numbers are the numbers 0, 1, 2, ..., and the integers include negative integers as well.)  To a human mathematician, this is a perfectly natural thing to do: the natural numbers are a subset of the integers, so `2` and `3` are not only natural numbers but also integers, and we can compute `2 - 3` in the integers.
+
+However, that's not how things work in Lean.  In Lean, different types are completely separate.  In particular, `Nat` and `Int` are separate types, and therefore the natural numbers are not a subset of the integers.  Of course, there is an integer 2, but it is different from the natural number 2.  By default, Lean assumes that `2` denotes the natural number 2, but you can specify that you want the integer 2 by writing `(2 : Int)`.  Subtraction of integers in Lean is the subtraction you are familiar with, and it has all the algebraic properties you would expect.  If we want to use subtraction in the theorems in this section, we are better off using familiar integer subtraction rather than funky natural number subtraction.
+
+To prove the theorem in Example 6.1.1 as it appears in *HTPI*, we could state the theorem like this:
+
+```lean
+theorem Example_6_1_1 :
+    ∀ (n : Nat), Sum i from 0 to n, (2 : Int) ^ i =
+    (2 : Int) ^ (n + 1) - (1 : Int)
+```
+
+The expression `Sum i from 0 to n, (2 : Int) ^ i` denotes a sum of integers, so it is an integer.  Similarly, the right side of the equation is an integer, and the equation asserts the equality of two integers.  The subtraction on the right side of the equation is integer subtraction, so we can use the usual algebraic laws to reason about it.  In fact, the proof of the theorem in this form is not hard:
+
+```lean
+theorem Example_6_1_1 :
+    ∀ (n : Nat), Sum i from 0 to n, (2 : Int) ^ i =
+    (2 : Int) ^ (n + 1) - (1 : Int) := by
+  by_induc
+  · -- Base Case
+    rewrite [sum_from_to_base]
+    rfl
+    done
+  · -- Induction Step
+    fix n : Nat
+    assume ih : Sum i from 0 to n, (2 : Int) ^ i =
+      (2 : Int) ^ (n + 1) - (1 : Int)
+    rewrite [sum_from_to_step (Nat.zero_le n), ih]
+    ring
+    done
+  done
+```
+
+If you change `(2 : Int)` and `(1 : Int)` to `2` and `1`, then the right side of the equation will be a difference of two natural numbers, and Lean will interpret the subtraction as natural number subtraction.  The proof won't work because the `ring` tactic is not able to deal with the peculiar algebraic properties of natural number subtraction.  (The theorem is still true, but the proof is harder.)
+
+### Exercises
+
+::: {.numex arguments="1"}
+```lean
+theorem Like_Exercise_6_1_1 :
+    ∀ (n : Nat), 2 * Sum i from 0 to n, i = n * (n + 1) := sorry
+```
+:::
+
+::: {.numex arguments="2"}
+```lean
+theorem Like_Exercise_6_1_4 :
+    ∀ (n : Nat), Sum i from 0 to n, 2 * i + 1 = (n + 1) ^ 2 := sorry
+```
+:::
+
+::: {.numex arguments="3"}
+```lean
+theorem Exercise_6_1_9a : ∀ (n : Nat), 2 ∣ n ^ 2 + n := sorry
+```
+:::
+
+::: {.numex arguments="4"}
+```lean
+theorem Exercise_6_1_13 :
+    ∀ (a b : Int) (n : Nat), (a - b) ∣ (a ^ n - b ^ n) := sorry
+```
+:::
+
+::: {.numex arguments="5"}
+```lean
+theorem Exercise_6_1_15 : ∀ n ≥ 10, 2 ^ n > n ^ 3 := sorry
+```
+:::
+
+For the next exercise you will need the following definitions:
+
+```lean
+def even_nat (n : Nat) : Prop := ∃ (k : Nat), n = 2 * k
+def odd_nat (n : Nat) : Prop := ∃ (k : Nat), n = 2 * k + 1
+```
+
+::: {.numex arguments="6"}
+```lean
+theorem Exercise_6_1_16a : ∀ (n : Nat), even_nat n ∨ odd_nat n := sorry
+```
+:::

@@ -70,11 +70,11 @@ def square1 (n : Nat) : Nat := n^2
 def square2 : Nat → Nat := fun (n : Nat) => n^2
 ```
 
-The first of these definitions uses notation we have used before; it says that if `n` has type `Nat`, then the expression `square1 n` also has type `Nat`, and it is definitionally equal to `n^2`.  The second definition introduces new Lean notation.  It says that `square2` has type `Nat → Nat`, and it defines it to be the function that, when applied to any `n` of type `Nat`, yields the result `n^2`.  Of course, this also means that `square2 n` is definitionally equal to `n^2`.  In general, the notation `fun (x : A) => ...` means "the function which, when applied to any `x` of type `A`, yields the result ..."  The two definitions above are equivalent.  You can ask Lean to confirm this, and try out the squaring function, as follows:
+The first of these definitions uses notation we have used before; it says that if `n` has type `Nat`, then the expression `square1 n` also has type `Nat`, and it is definitionally equal to `n^2`.  The second definition introduces new Lean notation.  It says that `square2` has type `Nat → Nat`, and it defines it to be the function that, when applied to any `n` of type `Nat`, yields the result `n^2`.  Of course, this also means that `square2 n` is definitionally equal to `n^2`.  In general, the notation `fun (x : A) => ...` means "the function which, when applied to any `x` of type `A`, yields the result ..."  The two definitions above are equivalent.  You can ask Lean to confirm this, and try out the squaring function, as follows (the `#eval` command asks Lean to evaluate an expression):
 
 ```lean
 example : square1 = square2 := by rfl
-example : square1 7 = 49 := by rfl
+++#eval:: square1 7     --Answer: 49
 ```
 
 There is one more theorem in Section 5.1 of *HTPI*.  Theorem 5.1.5 says that if $f$ is a function from $A$ to $B$ and $g$ is a function from $B$ to $C$, then the composition of $g$ and $f$ is a function from $A$ to $C$.  To state this theorem in Lean, we will have to make adjustments for the differences between the treatment of functions in *HTPI* and Lean.  In Chapter 4, we defined `comp S R` to be the composition of `S` and `R`, where `R` has type `Set (A × B)` and `S` had type `Set (B × C)`.  But functions in Lean are not sets of ordered pairs, so we cannot apply the operation `comp` to them.  We can, however, apply it to their graphs.  So the theorem corresponding to Theorem 5.1.5 in *HTPI* is this:
@@ -637,7 +637,7 @@ The third definition matches the description above most closely:  `plus''` is a 
 ```lean
 example : plus = plus'' := by rfl
 example : plus' = plus'' := by rfl
-example : plus 3 2 = 5 := by rfl
+++#eval:: plus 3 2     --Answer: 5
 ```
 
 There are two reasons why this way of representing functions of two variables in Lean is more convenient.  First, it saves us the trouble of grouping the arguments of the function together into an ordered pair before applying the function.  If we have `f : A → A → A` and `a b : A`, then to apply the function `f` to the arguments `a` and `b` we can just write `f a b`.  Second, it allows for the possibility of "partially applying" the function `f`.  The expression `f a` is meaningful, and denotes the function that, when applied to any `b : A`, produces the result `f a b`.  For example, if `m` is an integer, then `plus m` denotes the function that, when applied to an integer `n`, produces the result `m + n`.  We might call `plus m` the "add to `m`" function.

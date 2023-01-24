@@ -68,6 +68,7 @@
 <Detect2Chars attribute="Error Delim" context="normerr" char="*" char1="*" />
 <Detect2Chars attribute="Error Delim" context="normalert" char="?" char1="?" />
 <Detect2Chars attribute="Error Delim" context="normoutput" char="#" char1="#" />
+<Detect2Chars attribute="Error Delim" context="command" char="+" char1="+" />
 </context>
 <context attribute="Normal Error" lineEndContext="#stay" name="normerr" >
 <keyword attribute="Keyword Error" context="#stay" String="keywords" />
@@ -88,6 +89,9 @@
 </context>
 <context attribute="Comment" lineEndContext="#stay" name="multicomment" >
 <Detect2Chars attribute="Comment" context="#pop" char="-" char1="/" />
+</context>
+<context attribute="Keyword" lineEndContext="#stay" name="command" >
+<Detect2Chars attribute="Error Delim" context="#pop" char=":" char1=":" />
 </context>
 </contexts>
 <itemDatas>
