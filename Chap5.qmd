@@ -539,7 +539,7 @@ The next two exercises will use the following definition:
 
 ```lean
 def conj (A : Type) (f1 f2 : A → A) : Prop :=
-  ∃ (g g' : A → A), (f1 = g' ∘ f2 ∘ g) ∧ (g ∘ g' = id) ∧ (g' ∘ g = id)
+    ∃ (g g' : A → A), (f1 = g' ∘ f2 ∘ g) ∧ (g ∘ g' = id) ∧ (g' ∘ g = id)
 ```
 
 ::: {.numex arguments="7"}
