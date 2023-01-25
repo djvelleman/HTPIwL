@@ -2,6 +2,14 @@
 \usepackage{twemojis}
 \usepackage{myunixode}
 \usepackage[normalem]{ulem}
+\usepackage{scrlayer-scrpage}
+\newcommand{\copyrightnotice}{\footnotesize\copyright\ 2023 Daniel J. Velleman.  Short excerpts from
+\href{https://doi.org/10.1017/9781108539890}{\textit{How To Prove It}},\\
+published by Cambridge Univ. Press, reproduced with permission.}
+\setkomafont{pagefoot}{\upshape}
+\ifoot*{\copyrightnotice}
+\cfoot*{}
+\ofoot*{\pagemark}
 
 \makeatletter
 \def\redsquiggly{\bgroup \markoverwith{\textcolor{red}{\lower3.5\p@\hbox{\sixly \char58}}}\ULon}
