@@ -3011,12 +3011,12 @@ x \in A \cap (B \setmin C) &amp;\text{ iff } x \in A \wedge x \in B \setmin C\\
 <div class="sourceCode" id="cb226"><pre class="sourceCode state code-with-copy"><code class="sourceCode state"><span id="cb226-1"><a href="#cb226-1" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;&gt;</span>No goals</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </div>
-<p>We have now proven the two statements that were said to be “clearly” true in the proof in Example 3.6.2 of <em>HTPI</em>, and we have given them names. We can now use these theorems, in the file containing these proofs, to prove other theorems. As with any theorem in Lean’s library, you can use the <code>#check</code> command to confirm what these theorems say. If you type <code>#check @empty_union</code> and <code>#check @union_comm</code>, you will get these results:</p>
+<p>We have now proven the two statements that were said to be “clearly” true in the proof in Example 3.6.2 of <em>HTPI</em>, and we have given them names. And that means that we can now use these theorems, in the file containing these proofs, to prove other theorems. As with any theorem in Lean’s library, you can use the <code>#check</code> command to confirm what these theorems say. If you type <code>#check @empty_union</code> and <code>#check @union_comm</code>, you will get these results:</p>
 <div class="ind">
 <pre><code>@empty_union : ∀ {U : Type} (B : Set U), ∅ ∪ B = B
 @union_comm : ∀ {U : Type} (X Y : Set U), X ∪ Y = Y ∪ X</code></pre>
 </div>
-<p>Notice that in both theorems we used curly braces when we introduced the type <code>U</code>, so it is an implicit argument and will not need to be specified when we apply the theorems.</p>
+<p>Notice that in both theorems we used curly braces when we introduced the type <code>U</code>, so it is an implicit argument and will not need to be specified when we apply the theorems. (Why did we decide to make <code>U</code> an implicit argument? Well, when we apply the theorem <code>empty_union</code> we will be specifying the set <code>B</code>, and when we apply <code>union_comm</code> we will be specifying the sets <code>X</code> and <code>Y</code>. Lean can figure out what <code>U</code> is by examining the types of these sets, so there is no need to specify it separately.)</p>
 <p>We are finally ready to prove the theorem from Example 3.6.2. Here is the theorem:</p>
 <div class="inout">
 <div class="inpt">

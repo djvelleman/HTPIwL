@@ -3536,7 +3536,7 @@ theorem union_comm {U : Type} (X Y : Set U) :
 :::
 :::
 
-We have now proven the two statements that were said to be "clearly" true in the proof in Example 3.6.2 of *HTPI*, and we have given them names.  We can now use these theorems, in the file containing these proofs, to prove other theorems.  As with any theorem in Lean's library, you can use the `#check` command to confirm what these theorems say.  If you type `#check @empty_union` and `#check @union_comm`, you will get these results:
+We have now proven the two statements that were said to be "clearly" true in the proof in Example 3.6.2 of *HTPI*, and we have given them names.  And that means that we can now use these theorems, in the file containing these proofs, to prove other theorems.  As with any theorem in Lean's library, you can use the `#check` command to confirm what these theorems say.  If you type `#check @empty_union` and `#check @union_comm`, you will get these results:
 
 ::: {.ind}
 ```
@@ -3545,7 +3545,7 @@ We have now proven the two statements that were said to be "clearly" true in the
 ```
 :::
 
-Notice that in both theorems we used curly braces when we introduced the type `U`, so it is an implicit argument and will not need to be specified when we apply the theorems.
+Notice that in both theorems we used curly braces when we introduced the type `U`, so it is an implicit argument and will not need to be specified when we apply the theorems.  (Why did we decide to make `U` an implicit argument?  Well, when we apply the theorem `empty_union` we will be specifying the set `B`, and when we apply `union_comm` we will be specifying the sets `X` and `Y`.  Lean can figure out what `U` is by examining the types of these sets, so there is no need to specify it separately.)
 
 We are finally ready to prove the theorem from Example 3.6.2.  Here is the theorem:
 
