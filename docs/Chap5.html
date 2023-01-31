@@ -298,7 +298,7 @@ $$
 <span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>  · <span class="co">-- Proof that (a, c) ∈ graph h → (a, c) ∈ comp (graph g) (graph f)</span></span>
 <span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>    <span class="kw">assume</span> h1 : (a, c) ∈ graph h</span>
 <span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>    <span class="kw">define</span> <span class="kw">at</span> h1  <span class="co">--h1: h a = c</span></span>
-<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>    <span class="kw">define</span>        <span class="co">--Goal:  ∃ (x : B), (a, x) ∈ graph f ∧ (x, c) ∈ graph g</span></span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>    <span class="kw">define</span>        <span class="co">--Goal: ∃ (x : B), (a, x) ∈ graph f ∧ (x, c) ∈ graph g</span></span>
 <span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>    <span class="kw">apply</span> Exists.intro (f a)</span>
 <span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>    <span class="kw">apply</span> And.intro</span>
 <span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a>    · <span class="co">-- Proof that (a, f a) ∈ graph f</span></span>
@@ -533,7 +533,7 @@ $$
 <span id="cb36-4"><a href="#cb36-4" aria-hidden="true" tabindex="-1"></a>  <span class="kw">fix</span> a : A              <span class="co">--Goal: (g ∘ f) a = id a</span></span>
 <span id="cb36-5"><a href="#cb36-5" aria-hidden="true" tabindex="-1"></a>  <span class="kw">have</span> h2 : (f a, a) ∈ graph g := <span class="kw">by</span></span>
 <span id="cb36-6"><a href="#cb36-6" aria-hidden="true" tabindex="-1"></a>    <span class="kw">rewrite</span> [h1]         <span class="co">--Goal: (f a, a) ∈ inv (graph f)</span></span>
-<span id="cb36-7"><a href="#cb36-7" aria-hidden="true" tabindex="-1"></a>    <span class="kw">define</span>               <span class="co">--Goal:  f a = f a</span></span>
+<span id="cb36-7"><a href="#cb36-7" aria-hidden="true" tabindex="-1"></a>    <span class="kw">define</span>               <span class="co">--Goal: f a = f a</span></span>
 <span id="cb36-8"><a href="#cb36-8" aria-hidden="true" tabindex="-1"></a>    <span class="kw">rfl</span></span>
 <span id="cb36-9"><a href="#cb36-9" aria-hidden="true" tabindex="-1"></a>    <span class="kw">done</span></span>
 <span id="cb36-10"><a href="#cb36-10" aria-hidden="true" tabindex="-1"></a>  <span class="kw">define</span> <span class="kw">at</span> h2           <span class="co">--h2: g (f a) = a</span></span>

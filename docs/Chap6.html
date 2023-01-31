@@ -210,6 +210,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
    
   <ul class="collapse">
   <li><a href="#proof-by-mathematical-induction" id="toc-proof-by-mathematical-induction" class="nav-link active" data-scroll-target="#proof-by-mathematical-induction">6.1. Proof by Mathematical Induction</a></li>
+  <li><a href="#more-examples" id="toc-more-examples" class="nav-link" data-scroll-target="#more-examples">6.2. More Examples</a></li>
   </ul>
 </nav>
     </div>
@@ -375,7 +376,7 @@ $$
 <div class="ind">
 <pre><code>k ≤ n → Sum i from k to n + 1, f i = (Sum i from k to n, f i) + f (n + 1)</code></pre>
 </div>
-<p>With that preparation, we can start on the proof. Once again we begin with the <code>by_induc</code> tactic. Our goal for the base case is <code>(Sum i from 0 to 0, 2 ^ i) + 1 = 2 ^ (0 + 1)</code>. To deal with the term <code>Sum i from 0 to 0, 2 ^ i</code>, we use that fact that <code>sum_from_to_base</code> proves <code>Sum i from 0 to 0, 2 ^ i = 2 ^ 0</code>. It follows that the tactic <code>rewrite [sum_from_to_base]</code> will change the goal to <code>2 ^ 0 + 1 = 2 ^ (0 + 1)</code>. Of course, this means <code>2 = 2</code>, so <code>rfl</code> finishes the base case. For the induction step, we start by introducing an arbitrary natural number <code>n</code> and assuming the inductive hypothesis</p>
+<p>With that preparation, we can start on the proof. Once again we begin with the <code>by_induc</code> tactic. Our goal for the base case is <code>(Sum i from 0 to 0, 2 ^ i) + 1 = 2 ^ (0 + 1)</code>. To deal with the term <code>Sum i from 0 to 0, 2 ^ i</code>, we use that fact that <code>sum_from_to_base</code> proves <code>Sum i from 0 to 0, 2 ^ i = 2 ^ 0</code>. It follows that the tactic <code>rewrite [sum_from_to_base]</code> will change the goal to <code>2 ^ 0 + 1 = 2 ^ (0 + 1)</code>. Of course, this means <code>2 = 2</code>, so <code>rfl</code> finishes the base case. For the induction step, we start by introducing an arbitrary natural number <code>n</code> and assuming the inductive hypothesis.</p>
 <div class="sourceCode" id="cb12"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Like_Example_6_1_1 :</span>
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>    ∀ (n : Nat), (<span class="kw">Sum</span> i <span class="kw">from</span> 0 <span class="kw">to</span> n, 2 ^ i) + 1 = 2 ^ (n + 1) := <span class="kw">by</span></span>
 <span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>  <span class="kw">by_induc</span></span>
@@ -485,9 +486,10 @@ $$
 <span id="cb19-11"><a href="#cb19-11" aria-hidden="true" tabindex="-1"></a>    <span class="kw">assume</span> ih : <span class="kw">Sum</span> i <span class="kw">from</span> 0 <span class="kw">to</span> n, (2 : Int) ^ i =</span>
 <span id="cb19-12"><a href="#cb19-12" aria-hidden="true" tabindex="-1"></a>      (2 : Int) ^ (n + 1) - (1 : Int)</span>
 <span id="cb19-13"><a href="#cb19-13" aria-hidden="true" tabindex="-1"></a>    <span class="kw">rewrite</span> [sum_from_to_step (Nat.zero_le n), ih]</span>
-<span id="cb19-14"><a href="#cb19-14" aria-hidden="true" tabindex="-1"></a>    <span class="kw">ring</span></span>
-<span id="cb19-15"><a href="#cb19-15" aria-hidden="true" tabindex="-1"></a>    <span class="kw">done</span></span>
-<span id="cb19-16"><a href="#cb19-16" aria-hidden="true" tabindex="-1"></a>  <span class="kw">done</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb19-14"><a href="#cb19-14" aria-hidden="true" tabindex="-1"></a>      <span class="co">--Goal: 2 ^ (n + 1) - 1 + 2 ^ (n + 1) = 2 ^ (n + 1 + 1) - 1</span></span>
+<span id="cb19-15"><a href="#cb19-15" aria-hidden="true" tabindex="-1"></a>    <span class="kw">ring</span></span>
+<span id="cb19-16"><a href="#cb19-16" aria-hidden="true" tabindex="-1"></a>    <span class="kw">done</span></span>
+<span id="cb19-17"><a href="#cb19-17" aria-hidden="true" tabindex="-1"></a>  <span class="kw">done</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>If you change <code>(2 : Int)</code> and <code>(1 : Int)</code> to <code>2</code> and <code>1</code>, then the right side of the equation will be a difference of two natural numbers, and Lean will interpret the subtraction as natural number subtraction. The proof won’t work because the <code>ring</code> tactic is not able to deal with the peculiar algebraic properties of natural number subtraction. (The theorem is still true, but the proof is harder.)</p>
 </section>
 <section id="exercises" class="level3">
@@ -515,6 +517,279 @@ $$
 <span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> odd_nat (n : Nat) : <span class="kw">Prop</span> := ∃ (k : Nat), n = 2 * k + 1</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="numex" data-arguments="6">
 <div class="sourceCode" id="cb26"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Exercise_6_1_16a : ∀ (n : Nat), even_nat n ∨ odd_nat n := <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+</section>
+<section id="more-examples" class="level2">
+<h2 class="anchored" data-anchor-id="more-examples">6.2. More Examples</h2>
+<p>We saw in the last section that mathematical induction can be used to prove theorems about calculations involving natural numbers. But mathematical induction has a much wider range of uses. Section 6.2 of <em>HTPI</em> illustrates this by proving two theorems about finite sets.</p>
+<p>How can mathematical induction be used to prove a statement about finite sets? To say that a set is finite means that it has <span class="math inline">\(n\)</span> elements, for some natural number <span class="math inline">\(n\)</span>. Thus, to say that all finite sets have some property, we can say that for every natural number <span class="math inline">\(n\)</span>, every set with <span class="math inline">\(n\)</span> elements has the property. Since this statement starts with “for every natural number <span class="math inline">\(n\)</span>,” we can use mathematical induction to try to prove it.</p>
+<p>What does it mean to say that a set “has <span class="math inline">\(n\)</span> elements”? Section 6.2 of <em>HTPI</em> says that for the proofs in that section, “an intuitive understanding of this concept will suffice.” Unfortunately, intuition is not Lean’s strong suit! So we’ll need to be more explicit about how to talk about finite sets in Lean.</p>
+<p>In Chapter 8, we’ll define <code>numElts X n</code> to be a proposition saying that the set <code>X</code> has <code>n</code> elements, and we’ll prove several theorems involving that proposition. Those theorems make precise and explicit the intuitive ideas that we’ll need in this section. We’ll state those theorems here and use them in our proofs, but you’ll have to wait until Chapter 8 to see how they are proven. Here are the theorems we’ll need:</p>
+<div class="sourceCode" id="cb27"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> zero_elts_iff_empty {A : <span class="kw">Type</span>} (X : Set A) :</span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>    numElts X 0 ↔ empty X</span>
+<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> one_elt_iff_singleton {A : <span class="kw">Type</span>} (X : Set A) :</span>
+<span id="cb27-5"><a href="#cb27-5" aria-hidden="true" tabindex="-1"></a>    numElts X 1 ↔ ∃ (x : A), X = {x}</span>
+<span id="cb27-6"><a href="#cb27-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-7"><a href="#cb27-7" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> nonempty_of_pos_numElts {A : <span class="kw">Type</span>} {X : Set A} {n : Nat}</span>
+<span id="cb27-8"><a href="#cb27-8" aria-hidden="true" tabindex="-1"></a>    (h1 : numElts X n) (h2 : n &gt; 0) : ∃ (x : A), x ∈ X</span>
+<span id="cb27-9"><a href="#cb27-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-10"><a href="#cb27-10" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> remove_one_numElts {A : <span class="kw">Type</span>} {X : Set A} {n : Nat} {x : A}</span>
+<span id="cb27-11"><a href="#cb27-11" aria-hidden="true" tabindex="-1"></a>    (h1 : numElts X (n + 1)) (h2 : x ∈ X) : numElts (X \ {x}) n</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>These theorems should make intuitive sense. The first says that a set has zero elements if and only if it is empty, and the second says that a set has one element if and only if it is a singleton set. The third theorem says that if a set has a positive number of elements, then there is something in the set. And the fourth says that if a set has <span class="math inline">\(n + 1\)</span> elements and you remove one element, then the resulting set has <span class="math inline">\(n\)</span> elements. You can probably guess that we’ll be using the last theorem in the induction steps of our proofs.</p>
+<p>Our first theorem about finite sets says that if <span class="math inline">\(R\)</span> is a partial order on <span class="math inline">\(A\)</span>, then every finite, nonempty subset of <span class="math inline">\(A\)</span> has an <span class="math inline">\(R\)</span>-minimal element. (This is not true in general for infinite subsets of <span class="math inline">\(A\)</span>. Can you think of an example of an infinite subset of a partially ordered set that has no minimal element?) To say that a set is finite and nonempty we can say that it has <span class="math inline">\(n\)</span> elements for some <span class="math inline">\(n \ge 1\)</span>. So here’s how we state our theorem in Lean:</p>
+<div class="sourceCode" id="cb28"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Example_6_2_1 {A : <span class="kw">Type</span>} (R : BinRel A) (h : partial_order R) :</span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>    ∀ n ≥ 1, ∀ (B : Set A), numElts B n →</span>
+<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a>      ∃ (x : A), minimalElt R x B</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>When we use mathematical induction to prove this theorem, the base case will be <code>n = 1</code>. To prove the base case, we start by assuming <code>B</code> is a set with one element. We can then use the theorem <code>one_elt_iff_singleton</code> to conclude that <code>B = {b}</code>, for some <code>b</code> of type <code>A</code>. We need to prove that <code>B</code> has a minimal element, and the only possibility for the minimal element is <code>b</code>. Verifying that <code>minimalElt R b B</code> is straightforward. Here is the proof of the base case:</p>
+<div class="sourceCode" id="cb29"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Example_6_2_1 {A : <span class="kw">Type</span>} (R : BinRel A) (h : partial_order R) :</span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>    ∀ n ≥ 1, ∀ (B : Set A), numElts B n →</span>
+<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a>      ∃ (x : A), minimalElt R x B := <span class="kw">by</span></span>
+<span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a>  <span class="kw">by_induc</span></span>
+<span id="cb29-5"><a href="#cb29-5" aria-hidden="true" tabindex="-1"></a>  · <span class="co">-- Base Case</span></span>
+<span id="cb29-6"><a href="#cb29-6" aria-hidden="true" tabindex="-1"></a>    <span class="kw">fix</span> B : Set A</span>
+<span id="cb29-7"><a href="#cb29-7" aria-hidden="true" tabindex="-1"></a>    <span class="kw">assume</span> h2 : numElts B 1</span>
+<span id="cb29-8"><a href="#cb29-8" aria-hidden="true" tabindex="-1"></a>    <span class="kw">rewrite</span> [one_elt_iff_singleton] <span class="kw">at</span> h2</span>
+<span id="cb29-9"><a href="#cb29-9" aria-hidden="true" tabindex="-1"></a>    <span class="kw">obtain</span> (b : A) (h3 : B = {b}) <span class="kw">from</span> h2</span>
+<span id="cb29-10"><a href="#cb29-10" aria-hidden="true" tabindex="-1"></a>    <span class="kw">apply</span> Exists.intro b</span>
+<span id="cb29-11"><a href="#cb29-11" aria-hidden="true" tabindex="-1"></a>    <span class="kw">define</span>         <span class="co">--Goal: b ∈ B ∧ ¬∃ (x : A), x ∈ B ∧ R x b ∧ x ≠ b</span></span>
+<span id="cb29-12"><a href="#cb29-12" aria-hidden="true" tabindex="-1"></a>    <span class="kw">apply</span> And.intro</span>
+<span id="cb29-13"><a href="#cb29-13" aria-hidden="true" tabindex="-1"></a>    · <span class="co">-- Proof that b ∈ B</span></span>
+<span id="cb29-14"><a href="#cb29-14" aria-hidden="true" tabindex="-1"></a>      <span class="kw">rewrite</span> [h3]    <span class="co">--Goal: b ∈ {b}</span></span>
+<span id="cb29-15"><a href="#cb29-15" aria-hidden="true" tabindex="-1"></a>      <span class="kw">define</span></span>
+<span id="cb29-16"><a href="#cb29-16" aria-hidden="true" tabindex="-1"></a>      <span class="kw">rfl</span></span>
+<span id="cb29-17"><a href="#cb29-17" aria-hidden="true" tabindex="-1"></a>      <span class="kw">done</span></span>
+<span id="cb29-18"><a href="#cb29-18" aria-hidden="true" tabindex="-1"></a>    · <span class="co">-- Proof that nothing in B is smaller than b</span></span>
+<span id="cb29-19"><a href="#cb29-19" aria-hidden="true" tabindex="-1"></a>      <span class="kw">by_contra</span> h4</span>
+<span id="cb29-20"><a href="#cb29-20" aria-hidden="true" tabindex="-1"></a>      <span class="kw">obtain</span> (x : A) (h5 : x ∈ B ∧ R x b ∧ x ≠ b) <span class="kw">from</span> h4</span>
+<span id="cb29-21"><a href="#cb29-21" aria-hidden="true" tabindex="-1"></a>      <span class="kw">have</span> h6 : x ∈ B := h5.left</span>
+<span id="cb29-22"><a href="#cb29-22" aria-hidden="true" tabindex="-1"></a>      <span class="kw">rewrite</span> [h3] <span class="kw">at</span> h6   <span class="co">--h6: x ∈ {b}</span></span>
+<span id="cb29-23"><a href="#cb29-23" aria-hidden="true" tabindex="-1"></a>      <span class="kw">define</span> <span class="kw">at</span> h6         <span class="co">--h6: x = b</span></span>
+<span id="cb29-24"><a href="#cb29-24" aria-hidden="true" tabindex="-1"></a>      <span class="kw">show</span> False <span class="kw">from</span> h5.right.right h6</span>
+<span id="cb29-25"><a href="#cb29-25" aria-hidden="true" tabindex="-1"></a>      <span class="kw">done</span></span>
+<span id="cb29-26"><a href="#cb29-26" aria-hidden="true" tabindex="-1"></a>    <span class="kw">done</span></span>
+<span id="cb29-27"><a href="#cb29-27" aria-hidden="true" tabindex="-1"></a>  · <span class="co">-- Induction Step</span></span>
+<span id="cb29-28"><a href="#cb29-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-29"><a href="#cb29-29" aria-hidden="true" tabindex="-1"></a>    <span class="sc">**</span><span class="wa">done</span><span class="sc">::</span></span>
+<span id="cb29-30"><a href="#cb29-30" aria-hidden="true" tabindex="-1"></a>  <span class="kw">done</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Notice that since the definition of <code>minimalElt R b B</code> involves a negative statement, we found it convenient to use proof by contradiction to prove it.</p>
+<p>For the induction step, we assume that <code>n ≥ 1</code> and that every set with <code>n</code> elements has an <code>R</code>-minimal element. We must prove that every set with <code>n + 1</code> elements has a minimal element, so we let <code>B</code> be an arbitrary set with <code>n + 1</code> elements. To apply the inductive hypothesis, we need a set with <code>n</code> elements. So we pick some <code>b ∈ B</code> (using the theorem <code>nonempty_of_pos_numElts</code>) and then remove it from <code>B</code> to get the set <code>B' = B \ {b}</code>. The theorem <code>remove_one_numElts</code> tells us that <code>B'</code> has <code>n</code> elements, so by the inductive hypothesis, we can then let <code>c</code> be a minimal element of <code>B'</code>. We now know about two elements of <code>B</code>: <code>b</code> and <code>c</code>. Which will be a minimal element of <code>B</code>? As explained in <em>HTPI</em>, it depends on whether or not <code>R b c</code>. We’ll prove that if <code>R b c</code>, then <code>b</code> is a minimal element of <code>B</code>, and if not, then <code>c</code> is a minimal element. It will be convenient to prove these last two facts separately as lemmas. The first lemma says that in the situation at this point in the proof, if <code>R b c</code>, then <code>b</code> is an <code>R</code>-minimal element of <code>B</code>. Here is the proof.</p>
+<div class="sourceCode" id="cb30"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="kw">lemma</span> Lemma_6_2_1_1 {A : <span class="kw">Type</span>} {R : BinRel A} {B : Set A} {b c : A}</span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a>    (h1 : partial_order R) (h2 : b ∈ B) (h3 : minimalElt R c (B \ {b}))</span>
+<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a>    (h4 : R b c) : minimalElt R b B := <span class="kw">by</span></span>
+<span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a>  <span class="kw">define</span> <span class="kw">at</span> h3</span>
+<span id="cb30-5"><a href="#cb30-5" aria-hidden="true" tabindex="-1"></a>    <span class="co">--h3: c ∈ B \ {b} ∧ ¬∃ (x : A), x ∈ B \ {b} ∧ R x c ∧ x ≠ c</span></span>
+<span id="cb30-6"><a href="#cb30-6" aria-hidden="true" tabindex="-1"></a>  <span class="kw">define</span>  <span class="co">--Goal: b ∈ B ∧ ¬∃ (x : A), x ∈ B ∧ R x b ∧ x ≠ b</span></span>
+<span id="cb30-7"><a href="#cb30-7" aria-hidden="true" tabindex="-1"></a>  <span class="kw">apply</span> And.intro h2  <span class="co">--Goal: ¬∃ (x : A), x ∈ B ∧ R x b ∧ x ≠ b</span></span>
+<span id="cb30-8"><a href="#cb30-8" aria-hidden="true" tabindex="-1"></a>  <span class="kw">contradict</span> h3.right <span class="kw">with</span> h5</span>
+<span id="cb30-9"><a href="#cb30-9" aria-hidden="true" tabindex="-1"></a>  <span class="kw">obtain</span> (x : A) (h6 : x ∈ B ∧ R x b ∧ x ≠ b) <span class="kw">from</span> h5</span>
+<span id="cb30-10"><a href="#cb30-10" aria-hidden="true" tabindex="-1"></a>  <span class="kw">apply</span> Exists.intro x</span>
+<span id="cb30-11"><a href="#cb30-11" aria-hidden="true" tabindex="-1"></a>  <span class="kw">apply</span> And.intro</span>
+<span id="cb30-12"><a href="#cb30-12" aria-hidden="true" tabindex="-1"></a>  · <span class="co">-- Proof that x ∈ B \ {b}</span></span>
+<span id="cb30-13"><a href="#cb30-13" aria-hidden="true" tabindex="-1"></a>    <span class="kw">show</span> x ∈ B \ {b} <span class="kw">from</span> And.intro h6.left h6.right.right</span>
+<span id="cb30-14"><a href="#cb30-14" aria-hidden="true" tabindex="-1"></a>    <span class="kw">done</span></span>
+<span id="cb30-15"><a href="#cb30-15" aria-hidden="true" tabindex="-1"></a>  · <span class="co">-- Proof that R x c ∧ x ≠ c</span></span>
+<span id="cb30-16"><a href="#cb30-16" aria-hidden="true" tabindex="-1"></a>    <span class="kw">have</span> Rtrans : transitive R := h1.right.left</span>
+<span id="cb30-17"><a href="#cb30-17" aria-hidden="true" tabindex="-1"></a>    <span class="kw">have</span> h7 : R x c := Rtrans x b c h6.right.left h4</span>
+<span id="cb30-18"><a href="#cb30-18" aria-hidden="true" tabindex="-1"></a>    <span class="kw">apply</span> And.intro h7</span>
+<span id="cb30-19"><a href="#cb30-19" aria-hidden="true" tabindex="-1"></a>    <span class="kw">by_contra</span> h8</span>
+<span id="cb30-20"><a href="#cb30-20" aria-hidden="true" tabindex="-1"></a>    <span class="kw">rewrite</span> [h8] <span class="kw">at</span> h6</span>
+<span id="cb30-21"><a href="#cb30-21" aria-hidden="true" tabindex="-1"></a>    <span class="kw">have</span> Rantisymm : antisymmetric R := h1.right.right</span>
+<span id="cb30-22"><a href="#cb30-22" aria-hidden="true" tabindex="-1"></a>    <span class="kw">have</span> h9 : c = b := Rantisymm c b h6.right.left h4</span>
+<span id="cb30-23"><a href="#cb30-23" aria-hidden="true" tabindex="-1"></a>    <span class="kw">show</span> False <span class="kw">from</span> h6.right.right h9</span>
+<span id="cb30-24"><a href="#cb30-24" aria-hidden="true" tabindex="-1"></a>    <span class="kw">done</span></span>
+<span id="cb30-25"><a href="#cb30-25" aria-hidden="true" tabindex="-1"></a>  <span class="kw">done</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>The second lemma says that if <code>¬R b c</code>, then <code>c</code> is an <code>R</code>-minimal element of <code>B</code>. We’ll leave the proof as an exercise for you:</p>
+<div class="sourceCode" id="cb31"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="kw">lemma</span> Lemma_6_2_1_2 {A : <span class="kw">Type</span>} {R : BinRel A} {B : Set A} {b c : A}</span>
+<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a>    (h1 : partial_order R) (h2 : b ∈ B) (h3 : minimalElt R c (B \ {b}))</span>
+<span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a>    (h4 : ¬R b c) : minimalElt R c B := <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>With this preparation, we are finally ready to give the proof of the induction step of <code>Example_6_2_1</code>:</p>
+<div class="sourceCode" id="cb32"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Example_6_2_1 {A : <span class="kw">Type</span>} (R : BinRel A) (h : partial_order R) :</span>
+<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a>    ∀ n ≥ 1, ∀ (B : Set A), numElts B n →</span>
+<span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a>      ∃ (x : A), minimalElt R x B := <span class="kw">by</span></span>
+<span id="cb32-4"><a href="#cb32-4" aria-hidden="true" tabindex="-1"></a>  <span class="kw">by_induc</span></span>
+<span id="cb32-5"><a href="#cb32-5" aria-hidden="true" tabindex="-1"></a>  · <span class="co">-- Base Case</span></span>
+<span id="cb32-6"><a href="#cb32-6" aria-hidden="true" tabindex="-1"></a>    ...</span>
+<span id="cb32-7"><a href="#cb32-7" aria-hidden="true" tabindex="-1"></a>  · <span class="co">-- Induction Step</span></span>
+<span id="cb32-8"><a href="#cb32-8" aria-hidden="true" tabindex="-1"></a>    <span class="kw">fix</span> n : Nat</span>
+<span id="cb32-9"><a href="#cb32-9" aria-hidden="true" tabindex="-1"></a>    <span class="kw">assume</span> h2 : n ≥ 1</span>
+<span id="cb32-10"><a href="#cb32-10" aria-hidden="true" tabindex="-1"></a>    <span class="kw">assume</span> ih : ∀ (B : Set A), numElts B n → ∃ (x : A), minimalElt R x B</span>
+<span id="cb32-11"><a href="#cb32-11" aria-hidden="true" tabindex="-1"></a>    <span class="kw">fix</span> B : Set A</span>
+<span id="cb32-12"><a href="#cb32-12" aria-hidden="true" tabindex="-1"></a>    <span class="kw">assume</span> h3 : numElts B (n + 1)</span>
+<span id="cb32-13"><a href="#cb32-13" aria-hidden="true" tabindex="-1"></a>    <span class="kw">have</span> h4 : n + 1 &gt; 0 := <span class="kw">by</span> <span class="kw">linarith</span></span>
+<span id="cb32-14"><a href="#cb32-14" aria-hidden="true" tabindex="-1"></a>    <span class="kw">obtain</span> (b : A) (h5 : b ∈ B) <span class="kw">from</span> nonempty_of_pos_numElts h3 h4</span>
+<span id="cb32-15"><a href="#cb32-15" aria-hidden="true" tabindex="-1"></a>    <span class="kw">let</span> B' : Set A := B \ {b}</span>
+<span id="cb32-16"><a href="#cb32-16" aria-hidden="true" tabindex="-1"></a>    <span class="kw">have</span> h6 : numElts B' n := remove_one_numElts h3 h5</span>
+<span id="cb32-17"><a href="#cb32-17" aria-hidden="true" tabindex="-1"></a>    <span class="kw">obtain</span> (c : A) (h7 : minimalElt R c B') <span class="kw">from</span> ih B' h6</span>
+<span id="cb32-18"><a href="#cb32-18" aria-hidden="true" tabindex="-1"></a>    <span class="kw">by_cases</span> h8 : R b c</span>
+<span id="cb32-19"><a href="#cb32-19" aria-hidden="true" tabindex="-1"></a>    · <span class="co">-- Case 1. h8: R b c</span></span>
+<span id="cb32-20"><a href="#cb32-20" aria-hidden="true" tabindex="-1"></a>      <span class="kw">have</span> h9 : minimalElt R b B := Lemma_6_2_1_1 h h5 h7 h8</span>
+<span id="cb32-21"><a href="#cb32-21" aria-hidden="true" tabindex="-1"></a>      <span class="kw">show</span> ∃ (x : A), minimalElt R x B <span class="kw">from</span> Exists.intro b h9</span>
+<span id="cb32-22"><a href="#cb32-22" aria-hidden="true" tabindex="-1"></a>      <span class="kw">done</span></span>
+<span id="cb32-23"><a href="#cb32-23" aria-hidden="true" tabindex="-1"></a>    · <span class="co">-- Case 2. h8: ¬R b c</span></span>
+<span id="cb32-24"><a href="#cb32-24" aria-hidden="true" tabindex="-1"></a>      <span class="kw">have</span> h9 : minimalElt R c B := Lemma_6_2_1_2 h h5 h7 h8</span>
+<span id="cb32-25"><a href="#cb32-25" aria-hidden="true" tabindex="-1"></a>      <span class="kw">show</span> ∃ (x : A), minimalElt R x B <span class="kw">from</span> Exists.intro c h9</span>
+<span id="cb32-26"><a href="#cb32-26" aria-hidden="true" tabindex="-1"></a>      <span class="kw">done</span></span>
+<span id="cb32-27"><a href="#cb32-27" aria-hidden="true" tabindex="-1"></a>    <span class="kw">done</span></span>
+<span id="cb32-28"><a href="#cb32-28" aria-hidden="true" tabindex="-1"></a>  <span class="kw">done</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>We’ll consider one more theorem from Section 6.2 of <em>HTPI</em>. Example 6.2.2 proves that a partial order on a finite set can always be extended to a total order. Rather than give that proof, we are going to prove the more general theorem that is stated in Exercise 2 in Section 6.2 of <em>HTPI</em>. To explain the theorem in that exercise, it will be helpful to introduce a bit of terminology. Suppose <code>R</code> is a partial order on <code>A</code> and <code>b</code> has type <code>A</code>. We will say that <code>b</code> is <em><code>R</code>-comparable to everything</em> if <code>∀ (x : A), R b x ∨ R x b</code>. If <code>B</code> is a set of objects of type <code>A</code>, we say that <code>B</code> is <em><code>R</code>-comparable to everything</em> if every element of <code>B</code> is <code>R</code>-comparable to everything; that is, if <code>∀ b ∈ B, ∀ (x : A), R b x ∨ R x b</code>. Finally, we say that another binary relation <code>T</code> <em>extends</em> <code>R</code> if <code>∀ (x y : A), R x y → T x y</code>. We are going to prove that if <code>R</code> is a partial order on <code>A</code> and <code>B</code> is a finite set of objects of type <code>A</code>, then there is a partial order <code>T</code> that extends <code>R</code> such that <code>B</code> is <code>T</code>-comparable to everything. In other words, we are going to prove the following theorem:</p>
+<div class="sourceCode" id="cb33"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Exercise_6_2_2 {A : <span class="kw">Type</span>} (R : BinRel A) (h : partial_order R) :</span>
+<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a>    ∀ (n : Nat) (B : Set A), numElts B n → ∃ (T : BinRel A),</span>
+<span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a>    partial_order T ∧ (∀ (x y : A), R x y → T x y) ∧</span>
+<span id="cb33-4"><a href="#cb33-4" aria-hidden="true" tabindex="-1"></a>    ∀ x ∈ B, ∀ (y : A), T x y ∨ T y x</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>In the exercises, we will ask you to show that this implies the theorem in Example 6.2.2.</p>
+<p>It will be helpful to begin with a warm-up exercise. We’ll show that a partial order can always be extended to make a single object comparable to everthing. In other words, we’ll show that if <code>R</code> is a partial order on <code>A</code> and <code>b</code> has type <code>A</code>, then we can define a partial order <code>T</code> extending <code>R</code> such that <code>b</code> is <code>T</code>-comparable to everything. To define <code>T</code>, we will need to make sure that for every <code>x</code> of type <code>A</code>, either <code>T b x</code> or <code>T x b</code>. If <code>R x b</code>, then since <code>T</code> must extend <code>R</code>, we must have <code>T x b</code>. If <code>¬R x b</code>, then we will define <code>T</code> so that <code>T b x</code>. But notice that if we follow this plan, then for any <code>x</code> and <code>y</code>, if we have <code>R x b</code> and <code>¬R y b</code>, then we will have <code>T x b</code> and <code>T b y</code>, and since <code>T</code> must be transitive, we must then have <code>T x y</code>. Summing up, if we have <code>R x y</code> then we must have <code>T x y</code>, and if we have <code>R x b</code> and <code>¬R y b</code> then we will also need to have <code>T x y</code>. So let’s try defining <code>T x y</code> to mean <code>R x y ∨ (R x b ∧ ¬R y b)</code>.</p>
+<p>It will be useful to have a name for this relation <code>T</code>. Since it is an extension of <code>R</code> determined by the element <code>b</code>, we will give it the name <code>extendPO R b</code>. Here is the definition of this relation:</p>
+<div class="sourceCode" id="cb34"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> extendPO {A : <span class="kw">Type</span>} (R : BinRel A) (b : A) (x y : A) : <span class="kw">Prop</span> :=</span>
+<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a>    R x y ∨ (R x b ∧ ¬R y b)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>We need to prove a number of things about <code>extendPO R b</code>. First of all, we need to prove that it is a partial order. We’ll leave most of the details as exercises for you:</p>
+<div class="sourceCode" id="cb35"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="kw">lemma</span> extendPO_is_ref {A : <span class="kw">Type</span>} (R : BinRel A) (b : A)</span>
+<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a>    (h : partial_order R) : reflexive (extendPO R b) := <span class="cn">sorry</span></span>
+<span id="cb35-3"><a href="#cb35-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-4"><a href="#cb35-4" aria-hidden="true" tabindex="-1"></a><span class="kw">lemma</span> extendPO_is_trans {A : <span class="kw">Type</span>} (R : BinRel A) (b : A)</span>
+<span id="cb35-5"><a href="#cb35-5" aria-hidden="true" tabindex="-1"></a>    (h : partial_order R) : transitive (extendPO R b) := <span class="cn">sorry</span></span>
+<span id="cb35-6"><a href="#cb35-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-7"><a href="#cb35-7" aria-hidden="true" tabindex="-1"></a><span class="kw">lemma</span> extendPO_is_antisymm {A : <span class="kw">Type</span>} (R : BinRel A) (b : A)</span>
+<span id="cb35-8"><a href="#cb35-8" aria-hidden="true" tabindex="-1"></a>    (h : partial_order R) : antisymmetric (extendPO R b) := <span class="cn">sorry</span></span>
+<span id="cb35-9"><a href="#cb35-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-10"><a href="#cb35-10" aria-hidden="true" tabindex="-1"></a><span class="kw">lemma</span> extendPO_is_po {A : <span class="kw">Type</span>} (R : BinRel A) (b : A)</span>
+<span id="cb35-11"><a href="#cb35-11" aria-hidden="true" tabindex="-1"></a>    (h : partial_order R) : partial_order (extendPO R b) := </span>
+<span id="cb35-12"><a href="#cb35-12" aria-hidden="true" tabindex="-1"></a>  And.intro (extendPO_is_ref R b h)</span>
+<span id="cb35-13"><a href="#cb35-13" aria-hidden="true" tabindex="-1"></a>    (And.intro (extendPO_is_trans R b h) (extendPO_is_antisymm R b h))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>It is easy to prove that <code>extendPO R b</code> extends <code>R</code>:</p>
+<div class="sourceCode" id="cb36"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="kw">lemma</span> extendPO_extends {A : <span class="kw">Type</span>} (R : BinRel A) (b : A) (x y : A) :</span>
+<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a>    R x y → extendPO R b x y := <span class="kw">by</span></span>
+<span id="cb36-3"><a href="#cb36-3" aria-hidden="true" tabindex="-1"></a>  <span class="kw">assume</span> h1 : R x y</span>
+<span id="cb36-4"><a href="#cb36-4" aria-hidden="true" tabindex="-1"></a>  <span class="kw">define</span></span>
+<span id="cb36-5"><a href="#cb36-5" aria-hidden="true" tabindex="-1"></a>  <span class="kw">show</span> R x y ∨ R x b ∧ ¬R y b <span class="kw">from</span> Or.inl h1</span>
+<span id="cb36-6"><a href="#cb36-6" aria-hidden="true" tabindex="-1"></a>  <span class="kw">done</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Finally, we verify that <code>extendPO R b</code> does what it was supposed to do: it makes <code>b</code> comparable with everything:</p>
+<div class="sourceCode" id="cb37"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="kw">lemma</span> extendPO_all_comp {A : <span class="kw">Type</span>} (R : BinRel A) (b : A)</span>
+<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a>    (h : partial_order R) :</span>
+<span id="cb37-3"><a href="#cb37-3" aria-hidden="true" tabindex="-1"></a>    ∀ (x : A), extendPO R b b x ∨ extendPO R b x b := <span class="kw">by</span></span>
+<span id="cb37-4"><a href="#cb37-4" aria-hidden="true" tabindex="-1"></a>  <span class="kw">have</span> Rref : reflexive R := h.left</span>
+<span id="cb37-5"><a href="#cb37-5" aria-hidden="true" tabindex="-1"></a>  <span class="kw">fix</span> x : A</span>
+<span id="cb37-6"><a href="#cb37-6" aria-hidden="true" tabindex="-1"></a>  <span class="kw">or_left</span> <span class="kw">with</span> h1</span>
+<span id="cb37-7"><a href="#cb37-7" aria-hidden="true" tabindex="-1"></a>  <span class="kw">define</span> <span class="kw">at</span> h1     <span class="co">--h1: ¬(R x b ∨ R x b ∧ ¬R b b)</span></span>
+<span id="cb37-8"><a href="#cb37-8" aria-hidden="true" tabindex="-1"></a>  <span class="kw">demorgan</span> <span class="kw">at</span> h1   <span class="co">--h1: ¬R x b ∧ ¬(R x b ∧ ¬R b b)</span></span>
+<span id="cb37-9"><a href="#cb37-9" aria-hidden="true" tabindex="-1"></a>  <span class="kw">define</span>           <span class="co">--Goal: R b x ∨ R b b ∧ ¬R x b</span></span>
+<span id="cb37-10"><a href="#cb37-10" aria-hidden="true" tabindex="-1"></a>  <span class="kw">apply</span> Or.inr</span>
+<span id="cb37-11"><a href="#cb37-11" aria-hidden="true" tabindex="-1"></a>  <span class="kw">show</span> R b b ∧ ¬R x b <span class="kw">from</span> And.intro (Rref b) h1.left</span>
+<span id="cb37-12"><a href="#cb37-12" aria-hidden="true" tabindex="-1"></a>  <span class="kw">done</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>With this preparation, we can finally return to our theorem <code>Exercise_6_2_2</code>. We will prove it by mathematical induction. In the base case we must show that if <code>B</code> has 0 elements then we can extend <code>R</code> to make everything in <code>B</code> comparable to everything. Of course, no extension is necessary, since it is vacuously true that all elements of <code>B</code> are <code>R</code>-comparable to everything. For the induction step, after assuming the inductive hypothesis, we must prove that if <code>B</code> has <code>n + 1</code> elements then we can extend <code>R</code> to make all elements of <code>B</code> comparable to everything. As before, we choose <code>b ∈ B</code> and let <code>B' = B \ {b}</code>. By inductive hypothesis, we can find an extension <code>T'</code> of <code>R</code> that makes all elements of <code>B'</code> comparable to everything, so we just have to extend <code>T'</code> further to make <code>b</code> comparable to everything. But as we have just seen, we can do this with <code>extendPO T' b</code>.</p>
+<div class="sourceCode" id="cb38"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Exercise_6_2_2 {A : <span class="kw">Type</span>} (R : BinRel A) (h : partial_order R) :</span>
+<span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a>    ∀ (n : Nat) (B : Set A), numElts B n → ∃ (T : BinRel A),</span>
+<span id="cb38-3"><a href="#cb38-3" aria-hidden="true" tabindex="-1"></a>    partial_order T ∧ (∀ (x y : A), R x y → T x y) ∧</span>
+<span id="cb38-4"><a href="#cb38-4" aria-hidden="true" tabindex="-1"></a>    ∀ x ∈ B, ∀ (y : A), T x y ∨ T y x := <span class="kw">by</span></span>
+<span id="cb38-5"><a href="#cb38-5" aria-hidden="true" tabindex="-1"></a>  <span class="kw">by_induc</span></span>
+<span id="cb38-6"><a href="#cb38-6" aria-hidden="true" tabindex="-1"></a>  · <span class="co">-- Base Case</span></span>
+<span id="cb38-7"><a href="#cb38-7" aria-hidden="true" tabindex="-1"></a>    <span class="kw">fix</span> B : Set A</span>
+<span id="cb38-8"><a href="#cb38-8" aria-hidden="true" tabindex="-1"></a>    <span class="kw">assume</span> h2 : numElts B 0</span>
+<span id="cb38-9"><a href="#cb38-9" aria-hidden="true" tabindex="-1"></a>    <span class="kw">rewrite</span> [zero_elts_iff_empty] <span class="kw">at</span> h2</span>
+<span id="cb38-10"><a href="#cb38-10" aria-hidden="true" tabindex="-1"></a>    <span class="kw">define</span> <span class="kw">at</span> h2     <span class="co">--h2 : ¬∃ (x : A), x ∈ B</span></span>
+<span id="cb38-11"><a href="#cb38-11" aria-hidden="true" tabindex="-1"></a>    <span class="kw">apply</span> Exists.intro R</span>
+<span id="cb38-12"><a href="#cb38-12" aria-hidden="true" tabindex="-1"></a>    <span class="kw">apply</span> And.intro h</span>
+<span id="cb38-13"><a href="#cb38-13" aria-hidden="true" tabindex="-1"></a>    <span class="kw">apply</span> And.intro</span>
+<span id="cb38-14"><a href="#cb38-14" aria-hidden="true" tabindex="-1"></a>    · <span class="co">-- Proof that R extends R</span></span>
+<span id="cb38-15"><a href="#cb38-15" aria-hidden="true" tabindex="-1"></a>      <span class="kw">fix</span> x : A; <span class="kw">fix</span> y : A</span>
+<span id="cb38-16"><a href="#cb38-16" aria-hidden="true" tabindex="-1"></a>      <span class="kw">assume</span> h3 : R x y</span>
+<span id="cb38-17"><a href="#cb38-17" aria-hidden="true" tabindex="-1"></a>      <span class="kw">show</span> R x y <span class="kw">from</span> h3</span>
+<span id="cb38-18"><a href="#cb38-18" aria-hidden="true" tabindex="-1"></a>      <span class="kw">done</span></span>
+<span id="cb38-19"><a href="#cb38-19" aria-hidden="true" tabindex="-1"></a>    · <span class="co">-- Proof that everything in B comparable to everything under R</span></span>
+<span id="cb38-20"><a href="#cb38-20" aria-hidden="true" tabindex="-1"></a>      <span class="kw">fix</span> x : A</span>
+<span id="cb38-21"><a href="#cb38-21" aria-hidden="true" tabindex="-1"></a>      <span class="kw">assume</span> h3 : x ∈ B</span>
+<span id="cb38-22"><a href="#cb38-22" aria-hidden="true" tabindex="-1"></a>      <span class="kw">contradict</span> h2</span>
+<span id="cb38-23"><a href="#cb38-23" aria-hidden="true" tabindex="-1"></a>      <span class="kw">show</span> ∃ (x : A), x ∈ B <span class="kw">from</span> Exists.intro x h3</span>
+<span id="cb38-24"><a href="#cb38-24" aria-hidden="true" tabindex="-1"></a>      <span class="kw">done</span></span>
+<span id="cb38-25"><a href="#cb38-25" aria-hidden="true" tabindex="-1"></a>    <span class="kw">done</span></span>
+<span id="cb38-26"><a href="#cb38-26" aria-hidden="true" tabindex="-1"></a>  · <span class="co">-- Induction Step</span></span>
+<span id="cb38-27"><a href="#cb38-27" aria-hidden="true" tabindex="-1"></a>    <span class="kw">fix</span> n : Nat</span>
+<span id="cb38-28"><a href="#cb38-28" aria-hidden="true" tabindex="-1"></a>    <span class="kw">assume</span> ih : ∀ (B : Set A), numElts B n → ∃ (T : BinRel A),</span>
+<span id="cb38-29"><a href="#cb38-29" aria-hidden="true" tabindex="-1"></a>      partial_order T ∧ (∀ (x y : A), R x y → T x y) ∧</span>
+<span id="cb38-30"><a href="#cb38-30" aria-hidden="true" tabindex="-1"></a>      ∀ (x : A), x ∈ B → ∀ (y : A), T x y ∨ T y x</span>
+<span id="cb38-31"><a href="#cb38-31" aria-hidden="true" tabindex="-1"></a>    <span class="kw">fix</span> B</span>
+<span id="cb38-32"><a href="#cb38-32" aria-hidden="true" tabindex="-1"></a>    <span class="kw">assume</span> h2 : numElts B (n + 1)</span>
+<span id="cb38-33"><a href="#cb38-33" aria-hidden="true" tabindex="-1"></a>    <span class="kw">have</span> h3 : n + 1 &gt; 0 := <span class="kw">by</span> <span class="kw">linarith</span></span>
+<span id="cb38-34"><a href="#cb38-34" aria-hidden="true" tabindex="-1"></a>    <span class="kw">obtain</span> (b : A) (h5 : b ∈ B) <span class="kw">from</span> nonempty_of_pos_numElts h2 h3</span>
+<span id="cb38-35"><a href="#cb38-35" aria-hidden="true" tabindex="-1"></a>    <span class="kw">let</span> B' : Set A := B \ {b}</span>
+<span id="cb38-36"><a href="#cb38-36" aria-hidden="true" tabindex="-1"></a>    <span class="kw">have</span> h6 : numElts B' n := remove_one_numElts h2 h5</span>
+<span id="cb38-37"><a href="#cb38-37" aria-hidden="true" tabindex="-1"></a>    <span class="kw">have</span> h7 : ∃ (T : BinRel A), partial_order T ∧</span>
+<span id="cb38-38"><a href="#cb38-38" aria-hidden="true" tabindex="-1"></a>      (∀ (x y : A), R x y → T x y) ∧</span>
+<span id="cb38-39"><a href="#cb38-39" aria-hidden="true" tabindex="-1"></a>      ∀ (x : A), x ∈ B' → ∀ (y : A), T x y ∨ T y x := ih B' h6</span>
+<span id="cb38-40"><a href="#cb38-40" aria-hidden="true" tabindex="-1"></a>    <span class="kw">obtain</span> (T' : BinRel A)</span>
+<span id="cb38-41"><a href="#cb38-41" aria-hidden="true" tabindex="-1"></a>      (h8 : partial_order T' ∧ (∀ (x y : A), R x y → T' x y) ∧</span>
+<span id="cb38-42"><a href="#cb38-42" aria-hidden="true" tabindex="-1"></a>      ∀ (x : A), x ∈ B' → ∀ (y : A), T' x y ∨ T' y x) <span class="kw">from</span> h7</span>
+<span id="cb38-43"><a href="#cb38-43" aria-hidden="true" tabindex="-1"></a>    <span class="kw">have</span> h9 : partial_order T' := h8.left</span>
+<span id="cb38-44"><a href="#cb38-44" aria-hidden="true" tabindex="-1"></a>    <span class="kw">let</span> T : BinRel A := extendPO T' b</span>
+<span id="cb38-45"><a href="#cb38-45" aria-hidden="true" tabindex="-1"></a>    <span class="kw">apply</span> Exists.intro T</span>
+<span id="cb38-46"><a href="#cb38-46" aria-hidden="true" tabindex="-1"></a>    <span class="kw">apply</span> And.intro (extendPO_is_po T' b h9)</span>
+<span id="cb38-47"><a href="#cb38-47" aria-hidden="true" tabindex="-1"></a>    <span class="kw">apply</span> And.intro</span>
+<span id="cb38-48"><a href="#cb38-48" aria-hidden="true" tabindex="-1"></a>    · <span class="co">-- Proof that T extends R</span></span>
+<span id="cb38-49"><a href="#cb38-49" aria-hidden="true" tabindex="-1"></a>      <span class="kw">fix</span> x : A; <span class="kw">fix</span> y : A</span>
+<span id="cb38-50"><a href="#cb38-50" aria-hidden="true" tabindex="-1"></a>      <span class="kw">assume</span> h10 : R x y</span>
+<span id="cb38-51"><a href="#cb38-51" aria-hidden="true" tabindex="-1"></a>      <span class="kw">have</span> h11 : T' x y := h8.right.left x y h10</span>
+<span id="cb38-52"><a href="#cb38-52" aria-hidden="true" tabindex="-1"></a>      <span class="kw">show</span> T x y <span class="kw">from</span> (extendPO_extends T' b x y h11)</span>
+<span id="cb38-53"><a href="#cb38-53" aria-hidden="true" tabindex="-1"></a>      <span class="kw">done</span></span>
+<span id="cb38-54"><a href="#cb38-54" aria-hidden="true" tabindex="-1"></a>    · <span class="co">-- Proof that everything in B comparable to everything under T</span></span>
+<span id="cb38-55"><a href="#cb38-55" aria-hidden="true" tabindex="-1"></a>      <span class="kw">fix</span> x : A</span>
+<span id="cb38-56"><a href="#cb38-56" aria-hidden="true" tabindex="-1"></a>      <span class="kw">assume</span> h10 : x ∈ B</span>
+<span id="cb38-57"><a href="#cb38-57" aria-hidden="true" tabindex="-1"></a>      <span class="kw">by_cases</span> h11 : x = b</span>
+<span id="cb38-58"><a href="#cb38-58" aria-hidden="true" tabindex="-1"></a>      · <span class="co">-- Case 1. h11: x = b</span></span>
+<span id="cb38-59"><a href="#cb38-59" aria-hidden="true" tabindex="-1"></a>        <span class="kw">rewrite</span> [h11]</span>
+<span id="cb38-60"><a href="#cb38-60" aria-hidden="true" tabindex="-1"></a>        <span class="kw">show</span> ∀ (y : A), T b y ∨ T y b <span class="kw">from</span> extendPO_all_comp T' b h9</span>
+<span id="cb38-61"><a href="#cb38-61" aria-hidden="true" tabindex="-1"></a>        <span class="kw">done</span></span>
+<span id="cb38-62"><a href="#cb38-62" aria-hidden="true" tabindex="-1"></a>      · <span class="co">-- Case 2. h11: x ≠ b</span></span>
+<span id="cb38-63"><a href="#cb38-63" aria-hidden="true" tabindex="-1"></a>        <span class="kw">have</span> h12 : x ∈ B' := And.intro h10 h11</span>
+<span id="cb38-64"><a href="#cb38-64" aria-hidden="true" tabindex="-1"></a>        <span class="kw">fix</span> y : A</span>
+<span id="cb38-65"><a href="#cb38-65" aria-hidden="true" tabindex="-1"></a>        <span class="kw">have</span> h13 : T' x y ∨ T' y x := h8.right.right x h12 y</span>
+<span id="cb38-66"><a href="#cb38-66" aria-hidden="true" tabindex="-1"></a>        <span class="kw">by_cases</span> <span class="kw">on</span> h13</span>
+<span id="cb38-67"><a href="#cb38-67" aria-hidden="true" tabindex="-1"></a>        · <span class="co">-- Case 1. h13: T' x y</span></span>
+<span id="cb38-68"><a href="#cb38-68" aria-hidden="true" tabindex="-1"></a>          <span class="kw">show</span> T x y ∨ T y x <span class="kw">from</span></span>
+<span id="cb38-69"><a href="#cb38-69" aria-hidden="true" tabindex="-1"></a>            Or.inl (extendPO_extends T' b x y h13)</span>
+<span id="cb38-70"><a href="#cb38-70" aria-hidden="true" tabindex="-1"></a>          <span class="kw">done</span></span>
+<span id="cb38-71"><a href="#cb38-71" aria-hidden="true" tabindex="-1"></a>        · <span class="co">-- Case 2. h13: T' y x</span></span>
+<span id="cb38-72"><a href="#cb38-72" aria-hidden="true" tabindex="-1"></a>          <span class="kw">show</span> T x y ∨ T y x <span class="kw">from</span></span>
+<span id="cb38-73"><a href="#cb38-73" aria-hidden="true" tabindex="-1"></a>            Or.inr (extendPO_extends T' b y x h13)</span>
+<span id="cb38-74"><a href="#cb38-74" aria-hidden="true" tabindex="-1"></a>          <span class="kw">done</span></span>
+<span id="cb38-75"><a href="#cb38-75" aria-hidden="true" tabindex="-1"></a>        <span class="kw">done</span></span>
+<span id="cb38-76"><a href="#cb38-76" aria-hidden="true" tabindex="-1"></a>      <span class="kw">done</span></span>
+<span id="cb38-77"><a href="#cb38-77" aria-hidden="true" tabindex="-1"></a>    <span class="kw">done</span></span>
+<span id="cb38-78"><a href="#cb38-78" aria-hidden="true" tabindex="-1"></a>  <span class="kw">done</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<section id="exercises-1" class="level3">
+<h3 class="anchored" data-anchor-id="exercises-1">Exercises</h3>
+<div class="numex" data-arguments="1">
+<div class="sourceCode" id="cb39"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a><span class="kw">lemma</span> Lemma_6_2_1_2 {A : <span class="kw">Type</span>} {R : BinRel A} {B : Set A} {b c : A}</span>
+<span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a>    (h1 : partial_order R) (h2 : b ∈ B) (h3 : minimalElt R c (B \ {b}))</span>
+<span id="cb39-3"><a href="#cb39-3" aria-hidden="true" tabindex="-1"></a>    (h4 : ¬R b c) : minimalElt R c B := <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="numex" data-arguments="2">
+<div class="sourceCode" id="cb40"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a><span class="kw">lemma</span> extendPO_is_ref {A : <span class="kw">Type</span>} (R : BinRel A) (b : A)</span>
+<span id="cb40-2"><a href="#cb40-2" aria-hidden="true" tabindex="-1"></a>    (h : partial_order R) : reflexive (extendPO R b) := <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="numex" data-arguments="3">
+<div class="sourceCode" id="cb41"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a><span class="kw">lemma</span> extendPO_is_trans {A : <span class="kw">Type</span>} (R : BinRel A) (b : A)</span>
+<span id="cb41-2"><a href="#cb41-2" aria-hidden="true" tabindex="-1"></a>    (h : partial_order R) : transitive (extendPO R b) := <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="numex" data-arguments="4">
+<div class="sourceCode" id="cb42"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a><span class="kw">lemma</span> extendPO_is_antisymm {A : <span class="kw">Type</span>} (R : BinRel A) (b : A)</span>
+<span id="cb42-2"><a href="#cb42-2" aria-hidden="true" tabindex="-1"></a>    (h : partial_order R) : antisymmetric (extendPO R b) := <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="numex" data-arguments="5">
+<div class="sourceCode" id="cb43"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Exercise_6_2_3 (A : <span class="kw">Type</span>) (R : BinRel A)</span>
+<span id="cb43-2"><a href="#cb43-2" aria-hidden="true" tabindex="-1"></a>    (h : total_order R) : ∀ n ≥ 1, ∀ (B : Set A),</span>
+<span id="cb43-3"><a href="#cb43-3" aria-hidden="true" tabindex="-1"></a>    numElts B n → ∃ (b : A), smallestElt R b B := <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="numex" data-arguments="6">
+<div class="sourceCode" id="cb44"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Exercise_6_2_4a {A : <span class="kw">Type</span>} (R : BinRel A)</span>
+<span id="cb44-2"><a href="#cb44-2" aria-hidden="true" tabindex="-1"></a>    (h : ∀ (x y : A), R x y ∨ R y x) : ∀ n ≥ 1, ∀ (B : Set A),</span>
+<span id="cb44-3"><a href="#cb44-3" aria-hidden="true" tabindex="-1"></a>    numElts B n → ∃ x ∈ B, ∀ y ∈ B, ∃ (z : A), R x z ∧ R z y := <span class="cn">sorry</span></span>
+<span id="cb44-4"><a href="#cb44-4" aria-hidden="true" tabindex="-1"></a><span class="co">--Hint:  First prove that R is reflexive</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="numex" data-arguments="7">
+<div class="sourceCode" id="cb45"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Like_Exercise_6_2_16 (f : Nat → Nat) (h : one_to_one f) :</span>
+<span id="cb45-2"><a href="#cb45-2" aria-hidden="true" tabindex="-1"></a>    ∀ (n : Nat) (A : Set Nat), numElts A n →</span>
+<span id="cb45-3"><a href="#cb45-3" aria-hidden="true" tabindex="-1"></a>    closed f A → ∀ y ∈ A, ∃ x ∈ A, f x = y := <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 
 

@@ -196,7 +196,7 @@ k ≤ n → Sum i from k to n + 1, f i = (Sum i from k to n, f i) + f (n + 1)
 ```
 :::
 
-With that preparation, we can start on the proof.  Once again we begin with the `by_induc` tactic.  Our goal for the base case is `(Sum i from 0 to 0, 2 ^ i) + 1 = 2 ^ (0 + 1)`.  To deal with the term `Sum i from 0 to 0, 2 ^ i`, we use that fact that `sum_from_to_base` proves `Sum i from 0 to 0, 2 ^ i = 2 ^ 0`.  It follows that the tactic `rewrite [sum_from_to_base]` will change the goal to `2 ^ 0 + 1 = 2 ^ (0 + 1)`.  Of course, this means `2 = 2`, so `rfl` finishes the base case.  For the induction step, we start by introducing an arbitrary natural number `n` and assuming the inductive hypothesis
+With that preparation, we can start on the proof.  Once again we begin with the `by_induc` tactic.  Our goal for the base case is `(Sum i from 0 to 0, 2 ^ i) + 1 = 2 ^ (0 + 1)`.  To deal with the term `Sum i from 0 to 0, 2 ^ i`, we use that fact that `sum_from_to_base` proves `Sum i from 0 to 0, 2 ^ i = 2 ^ 0`.  It follows that the tactic `rewrite [sum_from_to_base]` will change the goal to `2 ^ 0 + 1 = 2 ^ (0 + 1)`.  Of course, this means `2 = 2`, so `rfl` finishes the base case.  For the induction step, we start by introducing an arbitrary natural number `n` and assuming the inductive hypothesis.
 
 ```lean
 theorem Like_Example_6_1_1 :
@@ -347,6 +347,7 @@ theorem Example_6_1_1 :
     assume ih : Sum i from 0 to n, (2 : Int) ^ i =
       (2 : Int) ^ (n + 1) - (1 : Int)
     rewrite [sum_from_to_step (Nat.zero_le n), ih]
+      --Goal: 2 ^ (n + 1) - 1 + 2 ^ (n + 1) = 2 ^ (n + 1 + 1) - 1
     ring
     done
   done
@@ -399,5 +400,352 @@ def odd_nat (n : Nat) : Prop := ∃ (k : Nat), n = 2 * k + 1
 ::: {.numex arguments="6"}
 ```lean
 theorem Exercise_6_1_16a : ∀ (n : Nat), even_nat n ∨ odd_nat n := sorry
+```
+:::
+
+## 6.2. More Examples
+
+We saw in the last section that mathematical induction can be used to prove theorems about calculations involving natural numbers.  But mathematical induction has a much wider range of uses.  Section 6.2 of *HTPI* illustrates this by proving two theorems about finite sets.
+
+How can mathematical induction be used to prove a statement about finite sets?  To say that a set is finite means that it has $n$ elements, for some natural number $n$.  Thus, to say that all finite sets have some property, we can say that for every natural number $n$, every set with $n$ elements has the property.  Since this statement starts with "for every natural number $n$," we can use mathematical induction to try to prove it.
+
+What does it mean to say that a set "has $n$ elements"?  Section 6.2 of *HTPI* says that for the proofs in that section, "an intuitive understanding of this concept will suffice."  Unfortunately, intuition is not Lean's strong suit!  So we'll need to be more explicit about how to talk about finite sets in Lean.
+
+In Chapter 8, we'll define `numElts X n` to be a proposition saying that the set `X` has `n` elements, and we'll prove several theorems involving that proposition.  Those theorems make precise and explicit the intuitive ideas that we'll need in this section.  We'll state those theorems here and use them in our proofs, but you'll have to wait until Chapter 8 to see how they are proven.  Here are the theorems we'll need:
+
+```lean
+theorem zero_elts_iff_empty {A : Type} (X : Set A) :
+    numElts X 0 ↔ empty X
+
+theorem one_elt_iff_singleton {A : Type} (X : Set A) :
+    numElts X 1 ↔ ∃ (x : A), X = {x}
+
+theorem nonempty_of_pos_numElts {A : Type} {X : Set A} {n : Nat}
+    (h1 : numElts X n) (h2 : n > 0) : ∃ (x : A), x ∈ X
+
+theorem remove_one_numElts {A : Type} {X : Set A} {n : Nat} {x : A}
+    (h1 : numElts X (n + 1)) (h2 : x ∈ X) : numElts (X \ {x}) n
+```
+
+These theorems should make intuitive sense.  The first says that a set has zero elements if and only if it is empty, and the second says that a set has one element if and only if it is a singleton set.  The third theorem says that if a set has a positive number of elements, then there is something in the set.  And the fourth says that if a set has $n + 1$ elements and you remove one element, then the resulting set has $n$ elements.  You can probably guess that we'll be using the last theorem in the induction steps of our proofs.
+
+Our first theorem about finite sets says that if $R$ is a partial order on $A$, then every finite, nonempty subset of $A$ has an $R$-minimal element.  (This is not true in general for infinite subsets of $A$.  Can you think of an example of an infinite subset of a partially ordered set that has no minimal element?)  To say that a set is finite and nonempty we can say that it has $n$ elements for some $n \ge 1$.  So here's how we state our theorem in Lean:
+
+```lean
+theorem Example_6_2_1 {A : Type} (R : BinRel A) (h : partial_order R) :
+    ∀ n ≥ 1, ∀ (B : Set A), numElts B n →
+      ∃ (x : A), minimalElt R x B
+```
+
+When we use mathematical induction to prove this theorem, the base case will be `n = 1`.  To prove the base case, we start by assuming `B` is a set with one element.  We can then use the theorem `one_elt_iff_singleton` to conclude that `B = {b}`, for some `b` of type `A`.  We need to prove that `B` has a minimal element, and the only possibility for the minimal element is `b`.  Verifying that `minimalElt R b B` is straightforward.  Here is the proof of the base case:
+
+```lean
+theorem Example_6_2_1 {A : Type} (R : BinRel A) (h : partial_order R) :
+    ∀ n ≥ 1, ∀ (B : Set A), numElts B n →
+      ∃ (x : A), minimalElt R x B := by
+  by_induc
+  · -- Base Case
+    fix B : Set A
+    assume h2 : numElts B 1
+    rewrite [one_elt_iff_singleton] at h2
+    obtain (b : A) (h3 : B = {b}) from h2
+    apply Exists.intro b
+    define         --Goal: b ∈ B ∧ ¬∃ (x : A), x ∈ B ∧ R x b ∧ x ≠ b
+    apply And.intro
+    · -- Proof that b ∈ B
+      rewrite [h3]    --Goal: b ∈ {b}
+      define
+      rfl
+      done
+    · -- Proof that nothing in B is smaller than b
+      by_contra h4
+      obtain (x : A) (h5 : x ∈ B ∧ R x b ∧ x ≠ b) from h4
+      have h6 : x ∈ B := h5.left
+      rewrite [h3] at h6   --h6: x ∈ {b}
+      define at h6         --h6: x = b
+      show False from h5.right.right h6
+      done
+    done
+  · -- Induction Step
+
+    **done::
+  done
+```
+
+Notice that since the definition of `minimalElt R b B` involves a negative statement, we found it convenient to use proof by contradiction to prove it.
+
+For the induction step, we assume that `n ≥ 1` and that every set with `n` elements has an `R`-minimal element.  We must prove that every set with `n + 1` elements has a minimal element, so we let `B` be an arbitrary set with `n + 1` elements.  To apply the inductive hypothesis, we need a set with `n` elements.  So we pick some `b ∈ B` (using the theorem `nonempty_of_pos_numElts`) and then remove it from `B` to get the set `B' = B \ {b}`.  The theorem `remove_one_numElts` tells us that `B'` has `n` elements, so by the inductive hypothesis, we can then let `c` be a minimal element of `B'`.  We now know about two elements of `B`:  `b` and `c`.  Which will be a minimal element of `B`?  As explained in *HTPI*, it depends on whether or not `R b c`.  We'll prove that if `R b c`, then `b` is a minimal element of `B`, and if not, then `c` is a minimal element.  It will be convenient to prove these last two facts separately as lemmas.  The first lemma says that in the situation at this point in the proof, if `R b c`, then `b` is an `R`-minimal element of `B`.  Here is the proof.
+
+```lean
+lemma Lemma_6_2_1_1 {A : Type} {R : BinRel A} {B : Set A} {b c : A}
+    (h1 : partial_order R) (h2 : b ∈ B) (h3 : minimalElt R c (B \ {b}))
+    (h4 : R b c) : minimalElt R b B := by
+  define at h3
+    --h3: c ∈ B \ {b} ∧ ¬∃ (x : A), x ∈ B \ {b} ∧ R x c ∧ x ≠ c
+  define  --Goal: b ∈ B ∧ ¬∃ (x : A), x ∈ B ∧ R x b ∧ x ≠ b
+  apply And.intro h2  --Goal: ¬∃ (x : A), x ∈ B ∧ R x b ∧ x ≠ b
+  contradict h3.right with h5
+  obtain (x : A) (h6 : x ∈ B ∧ R x b ∧ x ≠ b) from h5
+  apply Exists.intro x
+  apply And.intro
+  · -- Proof that x ∈ B \ {b}
+    show x ∈ B \ {b} from And.intro h6.left h6.right.right
+    done
+  · -- Proof that R x c ∧ x ≠ c
+    have Rtrans : transitive R := h1.right.left
+    have h7 : R x c := Rtrans x b c h6.right.left h4
+    apply And.intro h7
+    by_contra h8
+    rewrite [h8] at h6
+    have Rantisymm : antisymmetric R := h1.right.right
+    have h9 : c = b := Rantisymm c b h6.right.left h4
+    show False from h6.right.right h9
+    done
+  done
+```
+
+The second lemma says that if `¬R b c`, then `c` is an `R`-minimal element of `B`.  We'll leave the proof as an exercise for you:
+
+```lean
+lemma Lemma_6_2_1_2 {A : Type} {R : BinRel A} {B : Set A} {b c : A}
+    (h1 : partial_order R) (h2 : b ∈ B) (h3 : minimalElt R c (B \ {b}))
+    (h4 : ¬R b c) : minimalElt R c B := sorry
+```
+
+With this preparation, we are finally ready to give the proof of the induction step of `Example_6_2_1`:
+
+```lean
+theorem Example_6_2_1 {A : Type} (R : BinRel A) (h : partial_order R) :
+    ∀ n ≥ 1, ∀ (B : Set A), numElts B n →
+      ∃ (x : A), minimalElt R x B := by
+  by_induc
+  · -- Base Case
+    ...
+  · -- Induction Step
+    fix n : Nat
+    assume h2 : n ≥ 1
+    assume ih : ∀ (B : Set A), numElts B n → ∃ (x : A), minimalElt R x B
+    fix B : Set A
+    assume h3 : numElts B (n + 1)
+    have h4 : n + 1 > 0 := by linarith
+    obtain (b : A) (h5 : b ∈ B) from nonempty_of_pos_numElts h3 h4
+    let B' : Set A := B \ {b}
+    have h6 : numElts B' n := remove_one_numElts h3 h5
+    obtain (c : A) (h7 : minimalElt R c B') from ih B' h6
+    by_cases h8 : R b c
+    · -- Case 1. h8: R b c
+      have h9 : minimalElt R b B := Lemma_6_2_1_1 h h5 h7 h8
+      show ∃ (x : A), minimalElt R x B from Exists.intro b h9
+      done
+    · -- Case 2. h8: ¬R b c
+      have h9 : minimalElt R c B := Lemma_6_2_1_2 h h5 h7 h8
+      show ∃ (x : A), minimalElt R x B from Exists.intro c h9
+      done
+    done
+  done
+```
+
+We'll consider one more theorem from Section 6.2 of *HTPI*.  Example 6.2.2 proves that a partial order on a finite set can always be extended to a total order.  Rather than give that proof, we are going to prove the more general theorem that is stated in Exercise 2 in Section 6.2 of *HTPI*.  To explain the theorem in that exercise, it will be helpful to introduce a bit of terminology.  Suppose `R` is a partial order on `A` and `b` has type `A`.  We will say that `b` is *`R`-comparable to everything* if `∀ (x : A), R b x ∨ R x b`.  If `B` is a set of objects of type `A`, we say that `B` is *`R`-comparable to everything* if every element of `B` is `R`-comparable to everything; that is, if `∀ b ∈ B, ∀ (x : A), R b x ∨ R x b`.  Finally, we say that another binary relation `T` *extends* `R` if `∀ (x y : A), R x y → T x y`.  We are going to prove that if `R` is a partial order on `A` and `B` is a finite set of objects of type `A`, then there is a partial order `T` that extends `R` such that `B` is `T`-comparable to everything.  In other words, we are going to prove the following theorem:
+
+```lean
+theorem Exercise_6_2_2 {A : Type} (R : BinRel A) (h : partial_order R) :
+    ∀ (n : Nat) (B : Set A), numElts B n → ∃ (T : BinRel A),
+    partial_order T ∧ (∀ (x y : A), R x y → T x y) ∧
+    ∀ x ∈ B, ∀ (y : A), T x y ∨ T y x
+```
+
+In the exercises, we will ask you to show that this implies the theorem in Example 6.2.2.
+
+It will be helpful to begin with a warm-up exercise.  We'll show that a partial order can always be extended to make a single object comparable to everthing.  In other words, we'll show that if `R` is a partial order on `A` and `b` has type `A`, then we can define a partial order `T` extending `R` such that `b` is `T`-comparable to everything.  To define `T`, we will need to make sure that for every `x` of type `A`, either `T b x` or `T x b`.  If `R x b`, then since `T` must extend `R`, we must have `T x b`.  If `¬R x b`, then we will define `T` so that `T b x`.  But notice that if we follow this plan, then for any `x` and `y`, if we have `R x b` and `¬R y b`, then we will have `T x b` and `T b y`, and since `T` must be transitive, we must then have `T x y`.  Summing up, if we have `R x y` then we must have `T x y`, and if we have `R x b` and `¬R y b` then we will also need to have `T x y`.  So let's try defining `T x y` to mean `R x y ∨ (R x b ∧ ¬R y b)`.
+
+It will be useful to have a name for this relation `T`.  Since it is an extension of `R` determined by the element `b`, we will give it the name `extendPO R b`.  Here is the definition of this relation:
+
+```lean
+def extendPO {A : Type} (R : BinRel A) (b : A) (x y : A) : Prop :=
+    R x y ∨ (R x b ∧ ¬R y b)
+```
+
+We need to prove a number of things about `extendPO R b`.  First of all, we need to prove that it is a partial order.  We'll leave most of the details as exercises for you:
+
+```lean
+lemma extendPO_is_ref {A : Type} (R : BinRel A) (b : A)
+    (h : partial_order R) : reflexive (extendPO R b) := sorry
+
+lemma extendPO_is_trans {A : Type} (R : BinRel A) (b : A)
+    (h : partial_order R) : transitive (extendPO R b) := sorry
+
+lemma extendPO_is_antisymm {A : Type} (R : BinRel A) (b : A)
+    (h : partial_order R) : antisymmetric (extendPO R b) := sorry
+
+lemma extendPO_is_po {A : Type} (R : BinRel A) (b : A)
+    (h : partial_order R) : partial_order (extendPO R b) := 
+  And.intro (extendPO_is_ref R b h)
+    (And.intro (extendPO_is_trans R b h) (extendPO_is_antisymm R b h))
+```
+
+It is easy to prove that `extendPO R b` extends `R`:
+
+```lean
+lemma extendPO_extends {A : Type} (R : BinRel A) (b : A) (x y : A) :
+    R x y → extendPO R b x y := by
+  assume h1 : R x y
+  define
+  show R x y ∨ R x b ∧ ¬R y b from Or.inl h1
+  done
+```
+
+Finally, we verify that `extendPO R b` does what it was supposed to do: it makes `b` comparable with everything:
+
+```lean
+lemma extendPO_all_comp {A : Type} (R : BinRel A) (b : A)
+    (h : partial_order R) :
+    ∀ (x : A), extendPO R b b x ∨ extendPO R b x b := by
+  have Rref : reflexive R := h.left
+  fix x : A
+  or_left with h1
+  define at h1     --h1: ¬(R x b ∨ R x b ∧ ¬R b b)
+  demorgan at h1   --h1: ¬R x b ∧ ¬(R x b ∧ ¬R b b)
+  define           --Goal: R b x ∨ R b b ∧ ¬R x b
+  apply Or.inr
+  show R b b ∧ ¬R x b from And.intro (Rref b) h1.left
+  done
+```
+
+With this preparation, we can finally return to our theorem `Exercise_6_2_2`.  We will prove it by mathematical induction.  In the base case we must show that if `B` has 0 elements then we can extend `R` to make everything in `B` comparable to everything.  Of course, no extension is necessary, since it is vacuously true that all elements of `B` are `R`-comparable to everything.  For the induction step, after assuming the inductive hypothesis, we must prove that if `B` has `n + 1` elements then we can extend `R` to make all elements of `B` comparable to everything.  As before, we choose `b ∈ B` and let `B' = B \ {b}`.  By inductive hypothesis, we can find an extension `T'` of `R` that makes all elements of `B'` comparable to everything, so we just have to extend `T'` further to make `b` comparable to everything.  But as we have just seen, we can do this with `extendPO T' b`.
+
+```lean
+theorem Exercise_6_2_2 {A : Type} (R : BinRel A) (h : partial_order R) :
+    ∀ (n : Nat) (B : Set A), numElts B n → ∃ (T : BinRel A),
+    partial_order T ∧ (∀ (x y : A), R x y → T x y) ∧
+    ∀ x ∈ B, ∀ (y : A), T x y ∨ T y x := by
+  by_induc
+  · -- Base Case
+    fix B : Set A
+    assume h2 : numElts B 0
+    rewrite [zero_elts_iff_empty] at h2
+    define at h2     --h2 : ¬∃ (x : A), x ∈ B
+    apply Exists.intro R
+    apply And.intro h
+    apply And.intro
+    · -- Proof that R extends R
+      fix x : A; fix y : A
+      assume h3 : R x y
+      show R x y from h3
+      done
+    · -- Proof that everything in B comparable to everything under R
+      fix x : A
+      assume h3 : x ∈ B
+      contradict h2
+      show ∃ (x : A), x ∈ B from Exists.intro x h3
+      done
+    done
+  · -- Induction Step
+    fix n : Nat
+    assume ih : ∀ (B : Set A), numElts B n → ∃ (T : BinRel A),
+      partial_order T ∧ (∀ (x y : A), R x y → T x y) ∧
+      ∀ (x : A), x ∈ B → ∀ (y : A), T x y ∨ T y x
+    fix B
+    assume h2 : numElts B (n + 1)
+    have h3 : n + 1 > 0 := by linarith
+    obtain (b : A) (h5 : b ∈ B) from nonempty_of_pos_numElts h2 h3
+    let B' : Set A := B \ {b}
+    have h6 : numElts B' n := remove_one_numElts h2 h5
+    have h7 : ∃ (T : BinRel A), partial_order T ∧
+      (∀ (x y : A), R x y → T x y) ∧
+      ∀ (x : A), x ∈ B' → ∀ (y : A), T x y ∨ T y x := ih B' h6
+    obtain (T' : BinRel A)
+      (h8 : partial_order T' ∧ (∀ (x y : A), R x y → T' x y) ∧
+      ∀ (x : A), x ∈ B' → ∀ (y : A), T' x y ∨ T' y x) from h7
+    have h9 : partial_order T' := h8.left
+    let T : BinRel A := extendPO T' b
+    apply Exists.intro T
+    apply And.intro (extendPO_is_po T' b h9)
+    apply And.intro
+    · -- Proof that T extends R
+      fix x : A; fix y : A
+      assume h10 : R x y
+      have h11 : T' x y := h8.right.left x y h10
+      show T x y from (extendPO_extends T' b x y h11)
+      done
+    · -- Proof that everything in B comparable to everything under T
+      fix x : A
+      assume h10 : x ∈ B
+      by_cases h11 : x = b
+      · -- Case 1. h11: x = b
+        rewrite [h11]
+        show ∀ (y : A), T b y ∨ T y b from extendPO_all_comp T' b h9
+        done
+      · -- Case 2. h11: x ≠ b
+        have h12 : x ∈ B' := And.intro h10 h11
+        fix y : A
+        have h13 : T' x y ∨ T' y x := h8.right.right x h12 y
+        by_cases on h13
+        · -- Case 1. h13: T' x y
+          show T x y ∨ T y x from
+            Or.inl (extendPO_extends T' b x y h13)
+          done
+        · -- Case 2. h13: T' y x
+          show T x y ∨ T y x from
+            Or.inr (extendPO_extends T' b y x h13)
+          done
+        done
+      done
+    done
+  done
+```
+
+### Exercises
+
+::: {.numex arguments="1"}
+```lean
+lemma Lemma_6_2_1_2 {A : Type} {R : BinRel A} {B : Set A} {b c : A}
+    (h1 : partial_order R) (h2 : b ∈ B) (h3 : minimalElt R c (B \ {b}))
+    (h4 : ¬R b c) : minimalElt R c B := sorry
+```
+:::
+
+::: {.numex arguments="2"}
+```lean
+lemma extendPO_is_ref {A : Type} (R : BinRel A) (b : A)
+    (h : partial_order R) : reflexive (extendPO R b) := sorry
+```
+:::
+
+::: {.numex arguments="3"}
+```lean
+lemma extendPO_is_trans {A : Type} (R : BinRel A) (b : A)
+    (h : partial_order R) : transitive (extendPO R b) := sorry
+```
+:::
+
+::: {.numex arguments="4"}
+```lean
+lemma extendPO_is_antisymm {A : Type} (R : BinRel A) (b : A)
+    (h : partial_order R) : antisymmetric (extendPO R b) := sorry
+```
+:::
+
+::: {.numex arguments="5"}
+```lean
+theorem Exercise_6_2_3 (A : Type) (R : BinRel A)
+    (h : total_order R) : ∀ n ≥ 1, ∀ (B : Set A),
+    numElts B n → ∃ (b : A), smallestElt R b B := sorry
+```
+:::
+
+::: {.numex arguments="6"}
+```lean
+theorem Exercise_6_2_4a {A : Type} (R : BinRel A)
+    (h : ∀ (x y : A), R x y ∨ R y x) : ∀ n ≥ 1, ∀ (B : Set A),
+    numElts B n → ∃ x ∈ B, ∀ y ∈ B, ∃ (z : A), R x z ∧ R z y := sorry
+--Hint:  First prove that R is reflexive
+```
+:::
+
+::: {.numex arguments="7"}
+```lean
+theorem Like_Exercise_6_2_16 (f : Nat → Nat) (h : one_to_one f) :
+    ∀ (n : Nat) (A : Set Nat), numElts A n →
+    closed f A → ∀ y ∈ A, ∃ x ∈ A, f x = y := sorry
 ```
 :::

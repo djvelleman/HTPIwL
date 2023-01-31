@@ -914,7 +914,7 @@ $$
 <span id="cb53-4"><a href="#cb53-4" aria-hidden="true" tabindex="-1"></a>  <span class="kw">fix</span> y : U</span>
 <span id="cb53-5"><a href="#cb53-5" aria-hidden="true" tabindex="-1"></a>  <span class="kw">assume</span> h3 : y ∈ A</span>
 <span id="cb53-6"><a href="#cb53-6" aria-hidden="true" tabindex="-1"></a>  <span class="kw">have</span> h4 : y ∉ B := h2 y h3</span>
-<span id="cb53-7"><a href="#cb53-7" aria-hidden="true" tabindex="-1"></a>  <span class="kw">define</span> <span class="kw">at</span> h1  <span class="co">--h1 : ∀ ⦃a : U⦄, a ∈ A → a ∈ B ∪ C</span></span>
+<span id="cb53-7"><a href="#cb53-7" aria-hidden="true" tabindex="-1"></a>  <span class="kw">define</span> <span class="kw">at</span> h1  <span class="co">--h1: ∀ ⦃a : U⦄, a ∈ A → a ∈ B ∪ C</span></span>
 <span id="cb53-8"><a href="#cb53-8" aria-hidden="true" tabindex="-1"></a>  <span class="sc">**</span><span class="wa">done</span><span class="sc">::</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="outpt">
@@ -940,7 +940,7 @@ $$
 <span id="cb55-4"><a href="#cb55-4" aria-hidden="true" tabindex="-1"></a>  <span class="kw">fix</span> y : U</span>
 <span id="cb55-5"><a href="#cb55-5" aria-hidden="true" tabindex="-1"></a>  <span class="kw">assume</span> h3 : y ∈ A</span>
 <span id="cb55-6"><a href="#cb55-6" aria-hidden="true" tabindex="-1"></a>  <span class="kw">have</span> h4 : y ∉ B := h2 y h3</span>
-<span id="cb55-7"><a href="#cb55-7" aria-hidden="true" tabindex="-1"></a>  <span class="kw">define</span> <span class="kw">at</span> h1  <span class="co">--h1 : ∀ ⦃a : U⦄, a ∈ A → a ∈ B ∪ C</span></span>
+<span id="cb55-7"><a href="#cb55-7" aria-hidden="true" tabindex="-1"></a>  <span class="kw">define</span> <span class="kw">at</span> h1  <span class="co">--h1: ∀ ⦃a : U⦄, a ∈ A → a ∈ B ∪ C</span></span>
 <span id="cb55-8"><a href="#cb55-8" aria-hidden="true" tabindex="-1"></a>  <span class="kw">have</span> h5 : y ∈ B ∪ C := h1 h3</span>
 <span id="cb55-9"><a href="#cb55-9" aria-hidden="true" tabindex="-1"></a>  <span class="sc">**</span><span class="wa">done</span><span class="sc">::</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
@@ -969,9 +969,9 @@ $$
 <span id="cb57-4"><a href="#cb57-4" aria-hidden="true" tabindex="-1"></a>  <span class="kw">fix</span> y : U</span>
 <span id="cb57-5"><a href="#cb57-5" aria-hidden="true" tabindex="-1"></a>  <span class="kw">assume</span> h3 : y ∈ A</span>
 <span id="cb57-6"><a href="#cb57-6" aria-hidden="true" tabindex="-1"></a>  <span class="kw">have</span> h4 : y ∉ B := h2 y h3</span>
-<span id="cb57-7"><a href="#cb57-7" aria-hidden="true" tabindex="-1"></a>  <span class="kw">define</span> <span class="kw">at</span> h1  <span class="co">--h1 : ∀ ⦃a : U⦄, a ∈ A → a ∈ B ∪ C</span></span>
+<span id="cb57-7"><a href="#cb57-7" aria-hidden="true" tabindex="-1"></a>  <span class="kw">define</span> <span class="kw">at</span> h1  <span class="co">--h1: ∀ ⦃a : U⦄, a ∈ A → a ∈ B ∪ C</span></span>
 <span id="cb57-8"><a href="#cb57-8" aria-hidden="true" tabindex="-1"></a>  <span class="kw">have</span> h5 : y ∈ B ∪ C := h1 h3</span>
-<span id="cb57-9"><a href="#cb57-9" aria-hidden="true" tabindex="-1"></a>  <span class="kw">define</span> <span class="kw">at</span> h5  <span class="co">--h5 : y ∈ B ∨ y ∈ C</span></span>
+<span id="cb57-9"><a href="#cb57-9" aria-hidden="true" tabindex="-1"></a>  <span class="kw">define</span> <span class="kw">at</span> h5  <span class="co">--h5: y ∈ B ∨ y ∈ C</span></span>
 <span id="cb57-10"><a href="#cb57-10" aria-hidden="true" tabindex="-1"></a>  <span class="sc">**</span><span class="wa">done</span><span class="sc">::</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="outpt">
@@ -997,10 +997,10 @@ $$
 <span id="cb59-4"><a href="#cb59-4" aria-hidden="true" tabindex="-1"></a>  <span class="kw">fix</span> y : U</span>
 <span id="cb59-5"><a href="#cb59-5" aria-hidden="true" tabindex="-1"></a>  <span class="kw">assume</span> h3 : y ∈ A</span>
 <span id="cb59-6"><a href="#cb59-6" aria-hidden="true" tabindex="-1"></a>  <span class="kw">have</span> h4 : y ∉ B := h2 y h3</span>
-<span id="cb59-7"><a href="#cb59-7" aria-hidden="true" tabindex="-1"></a>  <span class="kw">define</span> <span class="kw">at</span> h1  <span class="co">--h1 : ∀ ⦃a : U⦄, a ∈ A → a ∈ B ∪ C</span></span>
+<span id="cb59-7"><a href="#cb59-7" aria-hidden="true" tabindex="-1"></a>  <span class="kw">define</span> <span class="kw">at</span> h1  <span class="co">--h1: ∀ ⦃a : U⦄, a ∈ A → a ∈ B ∪ C</span></span>
 <span id="cb59-8"><a href="#cb59-8" aria-hidden="true" tabindex="-1"></a>  <span class="kw">have</span> h5 : y ∈ B ∪ C := h1 h3</span>
-<span id="cb59-9"><a href="#cb59-9" aria-hidden="true" tabindex="-1"></a>  <span class="kw">define</span> <span class="kw">at</span> h5  <span class="co">--h5 : y ∈ B ∨ y ∈ C</span></span>
-<span id="cb59-10"><a href="#cb59-10" aria-hidden="true" tabindex="-1"></a>  <span class="kw">conditional</span> <span class="kw">at</span> h5  <span class="co">--h5 : ¬y ∈ B → y ∈ C</span></span>
+<span id="cb59-9"><a href="#cb59-9" aria-hidden="true" tabindex="-1"></a>  <span class="kw">define</span> <span class="kw">at</span> h5  <span class="co">--h5: y ∈ B ∨ y ∈ C</span></span>
+<span id="cb59-10"><a href="#cb59-10" aria-hidden="true" tabindex="-1"></a>  <span class="kw">conditional</span> <span class="kw">at</span> h5  <span class="co">--h5: ¬y ∈ B → y ∈ C</span></span>
 <span id="cb59-11"><a href="#cb59-11" aria-hidden="true" tabindex="-1"></a>  <span class="kw">show</span> y ∈ C <span class="kw">from</span> h5 h4</span>
 <span id="cb59-12"><a href="#cb59-12" aria-hidden="true" tabindex="-1"></a>  <span class="kw">done</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
@@ -2219,7 +2219,7 @@ x \in A \cap (B \setmin C) &amp;\text{ iff } x \in A \wedge x \in B \setmin C\\
 <span id="cb158-6"><a href="#cb158-6" aria-hidden="true" tabindex="-1"></a>  <span class="kw">define</span>; <span class="kw">define</span> <span class="kw">at</span> h1</span>
 <span id="cb158-7"><a href="#cb158-7" aria-hidden="true" tabindex="-1"></a>  <span class="kw">have</span> h2 : ¬x ∈ B \ C := h1.right</span>
 <span id="cb158-8"><a href="#cb158-8" aria-hidden="true" tabindex="-1"></a>  <span class="kw">define</span> <span class="kw">at</span> h2; <span class="kw">demorgan</span> <span class="kw">at</span> h2</span>
-<span id="cb158-9"><a href="#cb158-9" aria-hidden="true" tabindex="-1"></a>            <span class="co">--Now h2 : ¬x ∈ B ∨ x ∈ C</span></span>
+<span id="cb158-9"><a href="#cb158-9" aria-hidden="true" tabindex="-1"></a>            <span class="co">--h2: ¬x ∈ B ∨ x ∈ C</span></span>
 <span id="cb158-10"><a href="#cb158-10" aria-hidden="true" tabindex="-1"></a>  <span class="sc">**</span><span class="wa">done</span><span class="sc">::</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="outpt">
@@ -2242,7 +2242,7 @@ x \in A \cap (B \setmin C) &amp;\text{ iff } x \in A \wedge x \in B \setmin C\\
 <span id="cb160-6"><a href="#cb160-6" aria-hidden="true" tabindex="-1"></a>  <span class="kw">define</span>; <span class="kw">define</span> <span class="kw">at</span> h1</span>
 <span id="cb160-7"><a href="#cb160-7" aria-hidden="true" tabindex="-1"></a>  <span class="kw">have</span> h2 : ¬x ∈ B \ C := h1.right</span>
 <span id="cb160-8"><a href="#cb160-8" aria-hidden="true" tabindex="-1"></a>  <span class="kw">define</span> <span class="kw">at</span> h2; <span class="kw">demorgan</span> <span class="kw">at</span> h2</span>
-<span id="cb160-9"><a href="#cb160-9" aria-hidden="true" tabindex="-1"></a>            <span class="co">--Now h2 : ¬x ∈ B ∨ x ∈ C</span></span>
+<span id="cb160-9"><a href="#cb160-9" aria-hidden="true" tabindex="-1"></a>            <span class="co">--h2: ¬x ∈ B ∨ x ∈ C</span></span>
 <span id="cb160-10"><a href="#cb160-10" aria-hidden="true" tabindex="-1"></a>  <span class="kw">by_cases</span> <span class="kw">on</span> h2</span>
 <span id="cb160-11"><a href="#cb160-11" aria-hidden="true" tabindex="-1"></a>  <span class="sc">**</span><span class="wa">done</span><span class="sc">::</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
@@ -2274,12 +2274,12 @@ x \in A \cap (B \setmin C) &amp;\text{ iff } x \in A \wedge x \in B \setmin C\\
 <span id="cb162-6"><a href="#cb162-6" aria-hidden="true" tabindex="-1"></a>  <span class="kw">define</span>; <span class="kw">define</span> <span class="kw">at</span> h1</span>
 <span id="cb162-7"><a href="#cb162-7" aria-hidden="true" tabindex="-1"></a>  <span class="kw">have</span> h2 : ¬x ∈ B \ C := h1.right</span>
 <span id="cb162-8"><a href="#cb162-8" aria-hidden="true" tabindex="-1"></a>  <span class="kw">define</span> <span class="kw">at</span> h2; <span class="kw">demorgan</span> <span class="kw">at</span> h2</span>
-<span id="cb162-9"><a href="#cb162-9" aria-hidden="true" tabindex="-1"></a>            <span class="co">--Now h2 : ¬x ∈ B ∨ x ∈ C</span></span>
+<span id="cb162-9"><a href="#cb162-9" aria-hidden="true" tabindex="-1"></a>            <span class="co">--h2: ¬x ∈ B ∨ x ∈ C</span></span>
 <span id="cb162-10"><a href="#cb162-10" aria-hidden="true" tabindex="-1"></a>  <span class="kw">by_cases</span> <span class="kw">on</span> h2</span>
-<span id="cb162-11"><a href="#cb162-11" aria-hidden="true" tabindex="-1"></a>  · <span class="co">-- Case 1.  h2 : ¬x ∈ B</span></span>
+<span id="cb162-11"><a href="#cb162-11" aria-hidden="true" tabindex="-1"></a>  · <span class="co">-- Case 1. h2: ¬x ∈ B</span></span>
 <span id="cb162-12"><a href="#cb162-12" aria-hidden="true" tabindex="-1"></a>    <span class="kw">apply</span> Or.inl</span>
 <span id="cb162-13"><a href="#cb162-13" aria-hidden="true" tabindex="-1"></a>    <span class="sc">**</span><span class="wa">done</span><span class="sc">::</span></span>
-<span id="cb162-14"><a href="#cb162-14" aria-hidden="true" tabindex="-1"></a>  · <span class="co">-- Case 2.  h2 : x ∈ C</span></span>
+<span id="cb162-14"><a href="#cb162-14" aria-hidden="true" tabindex="-1"></a>  · <span class="co">-- Case 2. h2: x ∈ C</span></span>
 <span id="cb162-15"><a href="#cb162-15" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb162-16"><a href="#cb162-16" aria-hidden="true" tabindex="-1"></a>    <span class="sc">**</span><span class="wa">done</span><span class="sc">::</span></span>
 <span id="cb162-17"><a href="#cb162-17" aria-hidden="true" tabindex="-1"></a>  <span class="kw">done</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -2305,13 +2305,13 @@ x \in A \cap (B \setmin C) &amp;\text{ iff } x \in A \wedge x \in B \setmin C\\
 <span id="cb164-6"><a href="#cb164-6" aria-hidden="true" tabindex="-1"></a>  <span class="kw">define</span>; <span class="kw">define</span> <span class="kw">at</span> h1</span>
 <span id="cb164-7"><a href="#cb164-7" aria-hidden="true" tabindex="-1"></a>  <span class="kw">have</span> h2 : ¬x ∈ B \ C := h1.right</span>
 <span id="cb164-8"><a href="#cb164-8" aria-hidden="true" tabindex="-1"></a>  <span class="kw">define</span> <span class="kw">at</span> h2; <span class="kw">demorgan</span> <span class="kw">at</span> h2</span>
-<span id="cb164-9"><a href="#cb164-9" aria-hidden="true" tabindex="-1"></a>            <span class="co">--Now h2 : ¬x ∈ B ∨ x ∈ C</span></span>
+<span id="cb164-9"><a href="#cb164-9" aria-hidden="true" tabindex="-1"></a>            <span class="co">--h2: ¬x ∈ B ∨ x ∈ C</span></span>
 <span id="cb164-10"><a href="#cb164-10" aria-hidden="true" tabindex="-1"></a>  <span class="kw">by_cases</span> <span class="kw">on</span> h2</span>
-<span id="cb164-11"><a href="#cb164-11" aria-hidden="true" tabindex="-1"></a>  · <span class="co">-- Case 1.  h2 : ¬x ∈ B</span></span>
+<span id="cb164-11"><a href="#cb164-11" aria-hidden="true" tabindex="-1"></a>  · <span class="co">-- Case 1. h2: ¬x ∈ B</span></span>
 <span id="cb164-12"><a href="#cb164-12" aria-hidden="true" tabindex="-1"></a>    <span class="kw">apply</span> Or.inl</span>
 <span id="cb164-13"><a href="#cb164-13" aria-hidden="true" tabindex="-1"></a>    <span class="kw">show</span> x ∈ A \ B <span class="kw">from</span> And.intro h1.left h2</span>
 <span id="cb164-14"><a href="#cb164-14" aria-hidden="true" tabindex="-1"></a>    <span class="kw">done</span></span>
-<span id="cb164-15"><a href="#cb164-15" aria-hidden="true" tabindex="-1"></a>  · <span class="co">-- Case 2.  h2 : x ∈ C</span></span>
+<span id="cb164-15"><a href="#cb164-15" aria-hidden="true" tabindex="-1"></a>  · <span class="co">-- Case 2. h2: x ∈ C</span></span>
 <span id="cb164-16"><a href="#cb164-16" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb164-17"><a href="#cb164-17" aria-hidden="true" tabindex="-1"></a>    <span class="sc">**</span><span class="wa">done</span><span class="sc">::</span></span>
 <span id="cb164-18"><a href="#cb164-18" aria-hidden="true" tabindex="-1"></a>  <span class="kw">done</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -2337,13 +2337,13 @@ x \in A \cap (B \setmin C) &amp;\text{ iff } x \in A \wedge x \in B \setmin C\\
 <span id="cb166-6"><a href="#cb166-6" aria-hidden="true" tabindex="-1"></a>  <span class="kw">define</span>; <span class="kw">define</span> <span class="kw">at</span> h1</span>
 <span id="cb166-7"><a href="#cb166-7" aria-hidden="true" tabindex="-1"></a>  <span class="kw">have</span> h2 : ¬x ∈ B \ C := h1.right</span>
 <span id="cb166-8"><a href="#cb166-8" aria-hidden="true" tabindex="-1"></a>  <span class="kw">define</span> <span class="kw">at</span> h2; <span class="kw">demorgan</span> <span class="kw">at</span> h2</span>
-<span id="cb166-9"><a href="#cb166-9" aria-hidden="true" tabindex="-1"></a>            <span class="co">--Now h2 : ¬x ∈ B ∨ x ∈ C</span></span>
+<span id="cb166-9"><a href="#cb166-9" aria-hidden="true" tabindex="-1"></a>            <span class="co">--h2: ¬x ∈ B ∨ x ∈ C</span></span>
 <span id="cb166-10"><a href="#cb166-10" aria-hidden="true" tabindex="-1"></a>  <span class="kw">by_cases</span> <span class="kw">on</span> h2</span>
-<span id="cb166-11"><a href="#cb166-11" aria-hidden="true" tabindex="-1"></a>  · <span class="co">-- Case 1.  h2 : ¬x ∈ B</span></span>
+<span id="cb166-11"><a href="#cb166-11" aria-hidden="true" tabindex="-1"></a>  · <span class="co">-- Case 1. h2: ¬x ∈ B</span></span>
 <span id="cb166-12"><a href="#cb166-12" aria-hidden="true" tabindex="-1"></a>    <span class="kw">apply</span> Or.inl</span>
 <span id="cb166-13"><a href="#cb166-13" aria-hidden="true" tabindex="-1"></a>    <span class="kw">show</span> x ∈ A \ B <span class="kw">from</span> And.intro h1.left h2</span>
 <span id="cb166-14"><a href="#cb166-14" aria-hidden="true" tabindex="-1"></a>    <span class="kw">done</span></span>
-<span id="cb166-15"><a href="#cb166-15" aria-hidden="true" tabindex="-1"></a>  · <span class="co">-- Case 2.  h2 : x ∈ C</span></span>
+<span id="cb166-15"><a href="#cb166-15" aria-hidden="true" tabindex="-1"></a>  · <span class="co">-- Case 2. h2: x ∈ C</span></span>
 <span id="cb166-16"><a href="#cb166-16" aria-hidden="true" tabindex="-1"></a>    <span class="kw">apply</span> Or.inr</span>
 <span id="cb166-17"><a href="#cb166-17" aria-hidden="true" tabindex="-1"></a>    <span class="kw">show</span> x ∈ C <span class="kw">from</span> h2</span>
 <span id="cb166-18"><a href="#cb166-18" aria-hidden="true" tabindex="-1"></a>    <span class="kw">done</span></span>
@@ -2532,8 +2532,8 @@ x \in A \cap (B \setmin C) &amp;\text{ iff } x \in A \wedge x \in B \setmin C\\
 <span id="cb184-8"><a href="#cb184-8" aria-hidden="true" tabindex="-1"></a>  <span class="kw">have</span> h5 : a ∉ A ∩ B := h2 a</span>
 <span id="cb184-9"><a href="#cb184-9" aria-hidden="true" tabindex="-1"></a>  <span class="kw">define</span> <span class="kw">at</span> h4</span>
 <span id="cb184-10"><a href="#cb184-10" aria-hidden="true" tabindex="-1"></a>  <span class="kw">define</span> <span class="kw">at</span> h5; <span class="kw">demorgan</span> <span class="kw">at</span> h5</span>
-<span id="cb184-11"><a href="#cb184-11" aria-hidden="true" tabindex="-1"></a>  <span class="kw">disj_syll</span> h5 h3  <span class="co">--Now h5 : ¬a ∈ B</span></span>
-<span id="cb184-12"><a href="#cb184-12" aria-hidden="true" tabindex="-1"></a>  <span class="kw">disj_syll</span> h4 h5  <span class="co">--Now h4 : a ∈ C</span></span>
+<span id="cb184-11"><a href="#cb184-11" aria-hidden="true" tabindex="-1"></a>  <span class="kw">disj_syll</span> h5 h3  <span class="co">--h5: ¬a ∈ B</span></span>
+<span id="cb184-12"><a href="#cb184-12" aria-hidden="true" tabindex="-1"></a>  <span class="kw">disj_syll</span> h4 h5  <span class="co">--h4: a ∈ C</span></span>
 <span id="cb184-13"><a href="#cb184-13" aria-hidden="true" tabindex="-1"></a>  <span class="kw">show</span> a ∈ C <span class="kw">from</span> h4</span>
 <span id="cb184-14"><a href="#cb184-14" aria-hidden="true" tabindex="-1"></a>  <span class="kw">done</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
@@ -2576,7 +2576,7 @@ x \in A \cap (B \setmin C) &amp;\text{ iff } x \in A \wedge x \in B \setmin C\\
 <span id="cb188-6"><a href="#cb188-6" aria-hidden="true" tabindex="-1"></a>  <span class="kw">have</span> h4 : a ∈ B ∪ C := h1 h3</span>
 <span id="cb188-7"><a href="#cb188-7" aria-hidden="true" tabindex="-1"></a>  <span class="kw">define</span> <span class="kw">at</span> h4</span>
 <span id="cb188-8"><a href="#cb188-8" aria-hidden="true" tabindex="-1"></a>  <span class="kw">have</span> h5 : a ∉ B := <span class="cn">sorry</span></span>
-<span id="cb188-9"><a href="#cb188-9" aria-hidden="true" tabindex="-1"></a>  <span class="kw">disj_syll</span> h4 h5  <span class="co">--Now h4 : a ∈ C</span></span>
+<span id="cb188-9"><a href="#cb188-9" aria-hidden="true" tabindex="-1"></a>  <span class="kw">disj_syll</span> h4 h5  <span class="co">--h4: a ∈ C</span></span>
 <span id="cb188-10"><a href="#cb188-10" aria-hidden="true" tabindex="-1"></a>  <span class="kw">show</span> a ∈ C <span class="kw">from</span> h4</span>
 <span id="cb188-11"><a href="#cb188-11" aria-hidden="true" tabindex="-1"></a>  <span class="kw">done</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
@@ -2599,7 +2599,7 @@ x \in A \cap (B \setmin C) &amp;\text{ iff } x \in A \wedge x \in B \setmin C\\
 <span id="cb190-8"><a href="#cb190-8" aria-hidden="true" tabindex="-1"></a>  <span class="kw">have</span> h5 : a ∉ B := <span class="kw">by</span></span>
 <span id="cb190-9"><a href="#cb190-9" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb190-10"><a href="#cb190-10" aria-hidden="true" tabindex="-1"></a>    <span class="sc">**</span><span class="wa">done</span><span class="sc">::</span></span>
-<span id="cb190-11"><a href="#cb190-11" aria-hidden="true" tabindex="-1"></a>  <span class="kw">disj_syll</span> h4 h5  <span class="co">--Now h4 : a ∈ C</span></span>
+<span id="cb190-11"><a href="#cb190-11" aria-hidden="true" tabindex="-1"></a>  <span class="kw">disj_syll</span> h4 h5  <span class="co">--h4: a ∈ C</span></span>
 <span id="cb190-12"><a href="#cb190-12" aria-hidden="true" tabindex="-1"></a>  <span class="kw">show</span> a ∈ C <span class="kw">from</span> h4</span>
 <span id="cb190-13"><a href="#cb190-13" aria-hidden="true" tabindex="-1"></a>  <span class="kw">done</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
@@ -2628,7 +2628,7 @@ x \in A \cap (B \setmin C) &amp;\text{ iff } x \in A \wedge x \in B \setmin C\\
 <span id="cb192-8"><a href="#cb192-8" aria-hidden="true" tabindex="-1"></a>  <span class="kw">have</span> h5 : a ∉ B := <span class="kw">by</span></span>
 <span id="cb192-9"><a href="#cb192-9" aria-hidden="true" tabindex="-1"></a>    <span class="kw">contradict</span> h2 <span class="kw">with</span> h6</span>
 <span id="cb192-10"><a href="#cb192-10" aria-hidden="true" tabindex="-1"></a>    <span class="sc">**</span><span class="wa">done</span><span class="sc">::</span></span>
-<span id="cb192-11"><a href="#cb192-11" aria-hidden="true" tabindex="-1"></a>  <span class="kw">disj_syll</span> h4 h5  <span class="co">--Now h4 : a ∈ C</span></span>
+<span id="cb192-11"><a href="#cb192-11" aria-hidden="true" tabindex="-1"></a>  <span class="kw">disj_syll</span> h4 h5  <span class="co">--h4: a ∈ C</span></span>
 <span id="cb192-12"><a href="#cb192-12" aria-hidden="true" tabindex="-1"></a>  <span class="kw">show</span> a ∈ C <span class="kw">from</span> h4</span>
 <span id="cb192-13"><a href="#cb192-13" aria-hidden="true" tabindex="-1"></a>  <span class="kw">done</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
@@ -2660,7 +2660,7 @@ x \in A \cap (B \setmin C) &amp;\text{ iff } x \in A \wedge x \in B \setmin C\\
 <span id="cb194-10"><a href="#cb194-10" aria-hidden="true" tabindex="-1"></a>    <span class="kw">show</span> ∃ (x : U), x ∈ A ∩ B <span class="kw">from</span></span>
 <span id="cb194-11"><a href="#cb194-11" aria-hidden="true" tabindex="-1"></a>      Exists.intro a (And.intro h3 h6)</span>
 <span id="cb194-12"><a href="#cb194-12" aria-hidden="true" tabindex="-1"></a>    <span class="kw">done</span></span>
-<span id="cb194-13"><a href="#cb194-13" aria-hidden="true" tabindex="-1"></a>  <span class="kw">disj_syll</span> h4 h5  <span class="co">--Now h4 : a ∈ C</span></span>
+<span id="cb194-13"><a href="#cb194-13" aria-hidden="true" tabindex="-1"></a>  <span class="kw">disj_syll</span> h4 h5  <span class="co">--h4: a ∈ C</span></span>
 <span id="cb194-14"><a href="#cb194-14" aria-hidden="true" tabindex="-1"></a>  <span class="kw">show</span> a ∈ C <span class="kw">from</span> h4</span>
 <span id="cb194-15"><a href="#cb194-15" aria-hidden="true" tabindex="-1"></a>  <span class="kw">done</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
@@ -2862,7 +2862,7 @@ x \in A \cap (B \setmin C) &amp;\text{ iff } x \in A \wedge x \in B \setmin C\\
 <span id="cb213-8"><a href="#cb213-8" aria-hidden="true" tabindex="-1"></a>    <span class="kw">define</span> <span class="kw">at</span> h1</span>
 <span id="cb213-9"><a href="#cb213-9" aria-hidden="true" tabindex="-1"></a>    <span class="kw">have</span> h2 : x ∉ (∅ : Set U) := <span class="kw">by</span></span>
 <span id="cb213-10"><a href="#cb213-10" aria-hidden="true" tabindex="-1"></a>      <span class="kw">by_contra</span> h3</span>
-<span id="cb213-11"><a href="#cb213-11" aria-hidden="true" tabindex="-1"></a>      <span class="kw">define</span> <span class="kw">at</span> h3  <span class="co">--Now h3 : False</span></span>
+<span id="cb213-11"><a href="#cb213-11" aria-hidden="true" tabindex="-1"></a>      <span class="kw">define</span> <span class="kw">at</span> h3  <span class="co">--h3: False</span></span>
 <span id="cb213-12"><a href="#cb213-12" aria-hidden="true" tabindex="-1"></a>      <span class="kw">show</span> False <span class="kw">from</span> h3</span>
 <span id="cb213-13"><a href="#cb213-13" aria-hidden="true" tabindex="-1"></a>      <span class="kw">done</span></span>
 <span id="cb213-14"><a href="#cb213-14" aria-hidden="true" tabindex="-1"></a>    <span class="sc">**</span><span class="wa">done</span><span class="sc">::</span></span>
@@ -2894,10 +2894,10 @@ x \in A \cap (B \setmin C) &amp;\text{ iff } x \in A \wedge x \in B \setmin C\\
 <span id="cb215-8"><a href="#cb215-8" aria-hidden="true" tabindex="-1"></a>    <span class="kw">define</span> <span class="kw">at</span> h1</span>
 <span id="cb215-9"><a href="#cb215-9" aria-hidden="true" tabindex="-1"></a>    <span class="kw">have</span> h2 : x ∉ (∅ : Set U) := <span class="kw">by</span></span>
 <span id="cb215-10"><a href="#cb215-10" aria-hidden="true" tabindex="-1"></a>      <span class="kw">by_contra</span> h3</span>
-<span id="cb215-11"><a href="#cb215-11" aria-hidden="true" tabindex="-1"></a>      <span class="kw">define</span> <span class="kw">at</span> h3  <span class="co">--Now h3 : False</span></span>
+<span id="cb215-11"><a href="#cb215-11" aria-hidden="true" tabindex="-1"></a>      <span class="kw">define</span> <span class="kw">at</span> h3  <span class="co">--h3: False</span></span>
 <span id="cb215-12"><a href="#cb215-12" aria-hidden="true" tabindex="-1"></a>      <span class="kw">show</span> False <span class="kw">from</span> h3</span>
 <span id="cb215-13"><a href="#cb215-13" aria-hidden="true" tabindex="-1"></a>      <span class="kw">done</span></span>
-<span id="cb215-14"><a href="#cb215-14" aria-hidden="true" tabindex="-1"></a>    <span class="kw">disj_syll</span> h1 h2  <span class="co">--Now h1 : x ∈ B</span></span>
+<span id="cb215-14"><a href="#cb215-14" aria-hidden="true" tabindex="-1"></a>    <span class="kw">disj_syll</span> h1 h2  <span class="co">--h1: x ∈ B</span></span>
 <span id="cb215-15"><a href="#cb215-15" aria-hidden="true" tabindex="-1"></a>    <span class="kw">show</span> x ∈ B <span class="kw">from</span> h1</span>
 <span id="cb215-16"><a href="#cb215-16" aria-hidden="true" tabindex="-1"></a>    <span class="kw">done</span></span>
 <span id="cb215-17"><a href="#cb215-17" aria-hidden="true" tabindex="-1"></a>  · <span class="co">-- (←)</span></span>
@@ -2926,10 +2926,10 @@ x \in A \cap (B \setmin C) &amp;\text{ iff } x \in A \wedge x \in B \setmin C\\
 <span id="cb217-8"><a href="#cb217-8" aria-hidden="true" tabindex="-1"></a>    <span class="kw">define</span> <span class="kw">at</span> h1</span>
 <span id="cb217-9"><a href="#cb217-9" aria-hidden="true" tabindex="-1"></a>    <span class="kw">have</span> h2 : x ∉ (∅ : Set U) := <span class="kw">by</span></span>
 <span id="cb217-10"><a href="#cb217-10" aria-hidden="true" tabindex="-1"></a>      <span class="kw">by_contra</span> h3</span>
-<span id="cb217-11"><a href="#cb217-11" aria-hidden="true" tabindex="-1"></a>      <span class="kw">define</span> <span class="kw">at</span> h3  <span class="co">--Now h3 : False</span></span>
+<span id="cb217-11"><a href="#cb217-11" aria-hidden="true" tabindex="-1"></a>      <span class="kw">define</span> <span class="kw">at</span> h3  <span class="co">--h3: False</span></span>
 <span id="cb217-12"><a href="#cb217-12" aria-hidden="true" tabindex="-1"></a>      <span class="kw">show</span> False <span class="kw">from</span> h3</span>
 <span id="cb217-13"><a href="#cb217-13" aria-hidden="true" tabindex="-1"></a>      <span class="kw">done</span></span>
-<span id="cb217-14"><a href="#cb217-14" aria-hidden="true" tabindex="-1"></a>    <span class="kw">disj_syll</span> h1 h2  <span class="co">--Now h1 : x ∈ B</span></span>
+<span id="cb217-14"><a href="#cb217-14" aria-hidden="true" tabindex="-1"></a>    <span class="kw">disj_syll</span> h1 h2  <span class="co">--h1: x ∈ B</span></span>
 <span id="cb217-15"><a href="#cb217-15" aria-hidden="true" tabindex="-1"></a>    <span class="kw">show</span> x ∈ B <span class="kw">from</span> h1</span>
 <span id="cb217-16"><a href="#cb217-16" aria-hidden="true" tabindex="-1"></a>    <span class="kw">done</span></span>
 <span id="cb217-17"><a href="#cb217-17" aria-hidden="true" tabindex="-1"></a>  · <span class="co">-- (←)</span></span>
