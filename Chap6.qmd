@@ -166,21 +166,23 @@ theorem Like_Example_6_1_1 :
     ∀ (n : Nat), (Sum i from 0 to n, 2 ^ i) + 1 = 2 ^ (n + 1)
 ```
 
-We will have more to say later about how the notation `Sum i from k to n, f i` is defined.  But to use the notation in a proof, we will just need to know a couple of theorems.  The `#check` command will tell us the meanings of the theorems `sum_from_to_base` and `sum_from_to_step`:
+We will have more to say later about how the notation `Sum i from k to n, f i` is defined.  But to use the notation in a proof, we will just need to know a couple of theorems.  The `#check` command will tell us the meanings of the theorems `sum_base`, `sum_step`, and `sum_from_zero_step`:
 
 ::: {.ind}
 ```
-@sum_from_to_base : ∀ {A : Type} [inst : AddZeroClass A]
-                    {k : ℕ} {f : ℕ → A},
-                    Sum i from k to k, f i = f k
-@sum_from_to_step : ∀ {A : Type} [inst : AddZeroClass A]
-                    {k n : ℕ} {f : ℕ → A},
-                    k ≤ n → Sum i from k to n + 1, f i =
-                    (Sum i from k to n, f i) + f (n + 1)
+@sum_base : ∀ {A : Type} [inst : AddZeroClass A] {k : ℕ} {f : ℕ → A},
+            Sum i from k to k, f i = f k
+@sum_step : ∀ {A : Type} [inst : AddZeroClass A] {k n : ℕ} {f : ℕ → A},
+            k ≤ n → Sum i from k to n + 1, f i =
+              (Sum i from k to n, f i) + f (n + 1)
+@sum_from_zero_step :
+            ∀ {A : Type} [inst : AddZeroClass A] {n : ℕ} {f : ℕ → A},
+            Sum i from 0 to n + 1, f i =
+              (Sum i from 0 to n, f i) + f (n + 1)
 ```
 :::
 
-As usual, we don't need to pay too much attention to the implicit arguments in the first two lines of each statement.  What is important is that `sum_from_to_base` can be used to prove any statement of the form
+As usual, we don't need to pay too much attention to the implicit arguments in the first line of each statement.  What is important is that `sum_base` can be used to prove any statement of the form
 
 ::: {.ind}
 ```
@@ -188,7 +190,7 @@ Sum i from k to k, f i = f k
 ```
 :::
 
-and `sum_from_to_step` proves any statement of the form
+and `sum_step` proves any statement of the form
 
 ::: {.ind}
 ```
@@ -196,14 +198,22 @@ k ≤ n → Sum i from k to n + 1, f i = (Sum i from k to n, f i) + f (n + 1)
 ```
 :::
 
-With that preparation, we can start on the proof.  Once again we begin with the `by_induc` tactic.  Our goal for the base case is `(Sum i from 0 to 0, 2 ^ i) + 1 = 2 ^ (0 + 1)`.  To deal with the term `Sum i from 0 to 0, 2 ^ i`, we use that fact that `sum_from_to_base` proves `Sum i from 0 to 0, 2 ^ i = 2 ^ 0`.  It follows that the tactic `rewrite [sum_from_to_base]` will change the goal to `2 ^ 0 + 1 = 2 ^ (0 + 1)`.  Of course, this means `2 = 2`, so `rfl` finishes the base case.  For the induction step, we start by introducing an arbitrary natural number `n` and assuming the inductive hypothesis.
+In the case `k = 0`, we have the simpler theorem `sum_from_zero_step`, which proves
+
+::: {.ind}
+```
+Sum i from 0 to n + 1, f i = (Sum i from 0 to n, f i) + f (n + 1)
+```
+:::
+
+With that preparation, we can start on the proof.  Once again we begin with the `by_induc` tactic.  Our goal for the base case is `(Sum i from 0 to 0, 2 ^ i) + 1 = 2 ^ (0 + 1)`.  To deal with the term `Sum i from 0 to 0, 2 ^ i`, we use that fact that `sum_base` proves `Sum i from 0 to 0, 2 ^ i = 2 ^ 0`.  It follows that the tactic `rewrite [sum_base]` will change the goal to `2 ^ 0 + 1 = 2 ^ (0 + 1)`.  Of course, this means `2 = 2`, so `rfl` finishes the base case.  For the induction step, we start by introducing an arbitrary natural number `n` and assuming the inductive hypothesis.
 
 ```lean
 theorem Like_Example_6_1_1 :
     ∀ (n : Nat), (Sum i from 0 to n, 2 ^ i) + 1 = 2 ^ (n + 1) := by
   by_induc
   · -- Base Case
-    rewrite [sum_from_to_base]
+    rewrite [sum_base]
     rfl
     done
   · -- Induction Step
@@ -213,14 +223,14 @@ theorem Like_Example_6_1_1 :
   done
 ```
 
-Our goal is now `(Sum i from 0 to n + 1, 2 ^ i) + 1 = 2 ^ (n + 1 + 1)`, and we use a calculational proof to prove this.  Often the key to the proof of the induction step is to find a relationship between the inductive hypothesis and the goal.  In this case, that means finding a relationship between `Sum i from 0 to n, 2 ^ i` and `Sum i from 0 to n + 1, 2 ^ i`.  The relationship we need is given by the theorem `sum_from_to_step`.  The tactic `rewrite [sum_from_to_step _]` will replace `Sum i from 0 to n + 1, 2 ^ i` with `(Sum i from 0 to n, 2 ^ i) + 2 ^ (n + 1)`, if we can fill in the blank with a proof of `0 ≤ n`.  Fortunately, this is easy to prove: you can use the `#check` command to confirm that `Nat.zero_le` is the theorem `∀ (n : Nat), 0 ≤ n`, so `Nat.zero_le n` is the proof we need.  The rest of the calculation proof involves straightforward algebra, handled by the `ring` tactic, together with an application of the inductive hypothesis.
+Our goal is now `(Sum i from 0 to n + 1, 2 ^ i) + 1 = 2 ^ (n + 1 + 1)`, and we use a calculational proof to prove this.  Often the key to the proof of the induction step is to find a relationship between the inductive hypothesis and the goal.  In this case, that means finding a relationship between `Sum i from 0 to n, 2 ^ i` and `Sum i from 0 to n + 1, 2 ^ i`.  The relationship we need is given by the theorem `sum_from_zero_step`.  The tactic `rewrite [sum_from_zero_step]` will replace `Sum i from 0 to n + 1, 2 ^ i` with `(Sum i from 0 to n, 2 ^ i) + 2 ^ (n + 1)`.  The rest of the calculation proof involves straightforward algebra, handled by the `ring` tactic, together with an application of the inductive hypothesis.
 
 ```lean
 theorem Like_Example_6_1_1 :
     ∀ (n : Nat), (Sum i from 0 to n, 2 ^ i) + 1 = 2 ^ (n + 1) := by
   by_induc
   · -- Base Case
-    rewrite [sum_from_to_base]
+    rewrite [sum_base]
     rfl
     done
   · -- Induction Step
@@ -229,7 +239,7 @@ theorem Like_Example_6_1_1 :
     show (Sum i from 0 to n + 1, 2 ^ i) + 1 = 2 ^ (n + 1 + 1) from
       calc (Sum i from 0 to n + 1, 2 ^ i) + 1
           = (Sum i from 0 to n, 2 ^ i) + 2 ^ (n + 1) + 1 :=
-            by rw [sum_from_to_step (Nat.zero_le n)]
+            by rw [sum_from_zero_step]
         _ = (Sum i from 0 to n, 2 ^ i) + 1 + 2 ^ (n + 1) := by ring
         _ = 2 ^ (n + 1) + 2 ^ (n + 1) := by rw [ih]
         _ = 2 ^ (n + 1 + 1) := by ring
@@ -289,7 +299,15 @@ case Induction_Step
 
 To complete this proof we'll use two tactics we haven't used before: `norm_num` and `linarith`.  The base case can be proven by simply doing the arithmetic necessary to check that the inequality holds when `n = 5`.  The tactic `norm_num` does such numerical calculations, and it proves the base case.
 
-For the induction step, we introduce an arbitrary natural number `n`, assume `n ≥ 5`, and assume the inductive hypothesis, `2 ^ n > n ^ 2`.  Then we use a calculational proof to imitate the reasoning at the end of the *HTPI* proof.  The tactic `linarith` makes inferences that involve combining linear equations and inequalities.  It is able to prove almost all of the inequalities in the calculational proof.  The exception is `n * n ≥ 5 * n`, so we prove that inequality separately, using a theorem from Lean's library.  (You can use the `#check` command to see what that theorem says.)  Once we have proven that inequality, the `linarith` tactic can use it to complete the required inequality reasoning.
+For the induction step, we introduce an arbitrary natural number `n`, assume `n ≥ 5`, and assume the inductive hypothesis, `2 ^ n > n ^ 2`.  Then we use a calculational proof to imitate the reasoning at the end of the *HTPI* proof.  The tactic `linarith` makes inferences that involve combining linear equations and inequalities.  It is able to prove almost all of the inequalities in the calculational proof.  The exception is `n * n ≥ 5 * n` (which is not linear because of the term `n * n`).  So we prove that inequality separately, using a theorem from Lean's library, `Nat.mul_le_mul_right`.  The command `#check @Nat.mul_le_mul_right` tells us the meaning of that theorem:
+
+::: {.ind}
+```
+@Nat.mul_le_mul_right : ∀ {n m : ℕ} (k : ℕ), n ≤ m → n * k ≤ m * k
+```
+:::
+
+Thus, `Nat.mul_le_mul_right n` can be used to prove the statement `5 ≤ n → 5 * n ≤ n * n`.  Lean recognizes `x ≥ y` as meaning the same thing as `y ≤ x`, so we can apply this statement to our assumption `n ≥ 5` to prove that `n * n ≥ 5 * n`.  Once we have proven that inequality, the `linarith` tactic can use it to complete the required inequality reasoning.
 
 ```lean
 theorem Example_6_1_3 : ∀ n ≥ 5, 2 ^ n > n ^ 2 := by
@@ -319,7 +337,7 @@ Finally, we turn to the question of why we made small changes in two of the exam
 
 In Lean, if `a` and `b` are natural numbers and `a < b`, then `a - b` is defined to be `0`.  As a result, the algebraic laws of natural number subtraction are complicated.  For example, `2 - 3 + 1 = 0 + 1 = 1`, but `2 + 1 - 3 = 3 - 3 = 0`, so it is not true that for all natural numbers `a`, `b`, and `c`, `a - b + c = a + c - b`.
 
-If you thought that the answer to the subtraction problem `2 - 3` was `-1`, then you automatically switched from the natural numbers to the integers.  (Recall that the natural numbers are the numbers 0, 1, 2, ..., and the integers include negative integers as well.)  To a human mathematician, this is a perfectly natural thing to do: the natural numbers are a subset of the integers, so `2` and `3` are not only natural numbers but also integers, and we can compute `2 - 3` in the integers.
+If you thought that the answer to the subtraction problem `2 - 3` was `-1`, then you automatically switched from the natural numbers to the integers.  (Recall that the natural numbers are the numbers 0, 1, 2, ..., while the integers are the numbers ..., –3, –2, –1, 0, 1, 2, 3, ....)  To a human mathematician, this is a perfectly natural thing to do: the natural numbers are a subset of the integers, so `2` and `3` are not only natural numbers but also integers, and we can compute `2 - 3` in the integers.
 
 However, that's not how things work in Lean.  In Lean, different types are completely separate.  In particular, `Nat` and `Int` are separate types, and therefore the natural numbers are not a subset of the integers.  Of course, there is an integer 2, but it is different from the natural number 2.  By default, Lean assumes that `2` denotes the natural number 2, but you can specify that you want the integer 2 by writing `(2 : Int)`.  Subtraction of integers in Lean is the subtraction you are familiar with, and it has all the algebraic properties you would expect.  If we want to use subtraction in the theorems in this section, we are better off using familiar integer subtraction rather than funky natural number subtraction.
 
@@ -339,14 +357,14 @@ theorem Example_6_1_1 :
     (2 : Int) ^ (n + 1) - (1 : Int) := by
   by_induc
   · -- Base Case
-    rewrite [sum_from_to_base]
+    rewrite [sum_base]
     rfl
     done
   · -- Induction Step
     fix n : Nat
     assume ih : Sum i from 0 to n, (2 : Int) ^ i =
       (2 : Int) ^ (n + 1) - (1 : Int)
-    rewrite [sum_from_to_step (Nat.zero_le n), ih]
+    rewrite [sum_from_zero_step, ih]
       --Goal: 2 ^ (n + 1) - 1 + 2 ^ (n + 1) = 2 ^ (n + 1 + 1) - 1
     ring
     done
@@ -749,3 +767,472 @@ theorem Like_Exercise_6_2_16 (f : Nat → Nat) (h : one_to_one f) :
     closed f A → ∀ y ∈ A, ∃ x ∈ A, f x = y := sorry
 ```
 :::
+
+## 6.3. Recursion
+
+In the last two sections, we saw that we can prove that all natural numbers have some property by proving that 0 has the property, and also that for every natural number $n$, if $n$ has the property then so does $n + 1$.  In this section we will see that a similar idea can be used to define a function whose domain is the natural numbers.  We can define a function $f$ with domain $\mathbb{N}$ by specifying the value of $f(0)$, and also saying how to compute $f(n+1)$ if you already know the value of $f(n)$.
+
+For example, we can define a function $f : \mathbb{N} \to \mathbb{N}$ as follows:
+
+::: {.quote}
+$f(0) = 1$;<br>\newline
+for every $n \in \mathbb{N}$, $f(n+1) = (n+1) \cdot f(n)$.
+:::
+
+Here is the same definition written in Lean.  (For reasons that will become clear shortly, we have given the function the name `fact`.)
+
+```lean
+def fact (x : Nat) : Nat :=
+  match x with
+    | 0 => 1
+    | n + 1 => (n + 1) * fact n
+```
+
+Lean can use this definition to compute `fact x` for any natural number `x`.  The `match` statement tells Lean to try to match the input `x` with one of the two patterns `0` and `n + 1`, and then to use the corresponding formula after `=>` to compute `fact x`.  For example, if we ask Lean for `fact 4`, it first checks if `4` matches `0`.  Since it doesn't, it goes on to the next line and determines that `4` matches the pattern `n + 1`, with `n = 3`, so it uses the formula `fact 4 = 4 * fact 3`.  Of course, now it must compute `fact 3`, which it does in the same way: `3` matches `n + 1` with `n = 2`, so `fact 3 = 3 * fact 2`.  Continuing in this way, Lean determines that
+
+::: {.ind}
+```
+fact 4 = 4 * fact 3 = 4 * (3 * fact 2) = 4 * (3 * (2 * fact 1))
+       = 4 * (3 * (2 * (1 * fact 0))) = 4 * (3 * (2 * (1 * 1))) = 24
+```
+:::
+
+You can confirm this with the `#eval` command:
+
+```lean
+#eval fact 4   --Answer: 24
+```
+
+Of course, by now you have probably guessed why we used the name `fact` for his function: `fact x` is `x` factorial---the product of all the numbers from 1 to `x`.
+
+This style of definition is called a *recursive* definition.  If a function is defined by a recursive definition, then theorems about that function are often most easily proven by induction.  For example, here is a theorem about the factorial function.  It is Example 6.3.1 in *HTPI*, and we begin the Lean proof by imitating the proof in *HTPI*.
+
+```lean
+theorem ??Example_6_3_1:: : ∀ n ≥ 4, fact n > 2 ^ n := by
+  by_induc
+  · -- Base Case
+    norm_num
+    done
+  · -- Induction Step
+    fix n : Nat
+    assume h1 : n ≥ 4
+    assume ih : fact n > 2 ^ n
+    show fact (n + 1) > 2 ^ (n + 1) from
+      calc fact (n + 1)
+          = (n + 1) * fact n := by rfl
+        _ > (n + 1) * 2 ^ n := sorry
+        _ > 2 * 2 ^ n := sorry
+        _ = 2 ^ (n + 1) := by ring
+    done
+  done
+```
+
+There are two steps in the calculational proof at the end that require justification.  The first says that `(n + 1) * fact n > (n + 1) * 2 ^ n`, which should follow from the inductive hypothesis `ih : fact n > 2 ^ n` by multiplying both sides by `n + 1`.  Is there a theorem that would justify this inference?
+
+This may remind you a step in `Example_6_1_3` where we used the theorem `Nat.mul_le_mul_right`, which says `∀ {n m : ℕ} (k : ℕ), n ≤ m → n * k ≤ m * k`.  Our situation in this example is similar, but it involves a strict inequality (`>` rather than `≥`) and it involves multiplying on the left rather than the right.  Many theorems about inequalities in Lean's library contain either `le` (for "less than or equal to") or `lt` (for "less than") in their names, but they can also be used to prove statements involving `≥` or `>`.  Perhaps the theorem we need is named something like `Nat.mul_lt_mul_left`.  If you type `#check @Nat.mul_lt_mul` into VS Code, a pop-up window will appear listing several theorems that begin with `Nat.mul_lt_mul`.  There is no `Nat.mul_lt_mul_left`, but there is a theorem called `Nat.mul_lt_mul_of_pos_left`, and its meaning is
+
+::: {.ind}
+```
+@Nat.mul_lt_mul_of_pos_left : ∀ {n m k : ℕ},
+                                n < m → k > 0 → k * n < k * m
+```
+:::
+
+Lean has correctly reminded us that, to multiply both sides of a strict inequality by a number `k`, we need to know that `k > 0`.  So in our case, we'll need to prove that `n + 1 > 0`.  Once we have that, we can use the theorem `Nat.mul_lt_mul_of_pos_left` to eliminate the first `sorry`.
+
+The second `sorry` is similar: `(n + 1) * 2 ^ n > 2 * 2 ^ n` should follow from `n + 1 > 2` and `2 ^ n > 0`, and you can verify that the theorem that will justify this inference is `Nat.mul_lt_mul_of_pos_right`.
+
+So we have three inequalities that we need to prove before we can justify the steps of the calculational proof:  `n + 1 > 0`, `n + 1 > 2`, and `2 ^ n > 0`.  We'll insert `have` steps before the calculational proof to assert these three inequalities.  If you try it, you'll find that `linarith` can prove the first two, but not the third.
+
+How can we prove `2 ^ n > 0`?  It is often helpful to think about whether there is a general principle that is behind a statement we are trying to prove.  In our case, the inequality `2 ^ n > 0` is an instance of the general fact that if `m` and `n` are any natural numbers with `m > 0`, then `m ^ n > 0`.  Maybe that fact is in Lean's library:
+
+```lean
+example (m n : Nat) (h : m > 0) : m ^ n > 0 := by library_search
+```
+
+The `library_search` tactic comes up with `exact pow_pos h n`, and `#check @pow_pos` gives the result
+
+::: {.ind}
+```
+@pow_pos : ∀ {α : Type u_1} [inst : StrictOrderedSemiring α] {a : α},
+            0 < a → ∀ (n : ℕ), 0 < a ^ n
+```
+:::
+
+That means that we can use `pow_pos` to prove `2 ^ n > 0`, but first we'll need to prove that `2 > 0`.  We now have all the pieces we need; putting them together leads to this proof:
+
+```lean
+theorem Example_6_3_1 : ∀ n ≥ 4, fact n > 2 ^ n := by
+  by_induc
+  · -- Base Case
+    norm_num
+    done
+  · -- Induction Step
+    fix n : Nat
+    assume h1 : n ≥ 4
+    assume ih : fact n > 2 ^ n
+    have h2 : n + 1 > 0 := by linarith
+    have h3 : n + 1 > 2 := by linarith
+    have h4 : 2 > 0 := by linarith
+    have h5 : 2 ^ n > 0 := pow_pos h4 n
+    show fact (n + 1) > 2 ^ (n + 1) from
+      calc fact (n + 1)
+          = (n + 1) * fact n := by rfl
+        _ > (n + 1) * 2 ^ n := Nat.mul_lt_mul_of_pos_left ih h2
+        _ > 2 * 2 ^ n := Nat.mul_lt_mul_of_pos_right h3 h5
+        _ = 2 ^ (n + 1) := by ring
+    done
+  done
+```
+
+The next example in *HTPI* is a proof of one of the laws of exponents:  `a ^ (m + n) = a ^ m * a ^ n`.  Lean's definition of exponentiation with natural number exponents is recursive.  For some reason, the definitions are slightly different for different kinds of bases.  The definitions Lean uses are essentially as follows:
+
+```lean
+-- For natural numbers x and n, x ^ n = nat_pow x n:
+def nat_pow (x n : Nat) : Nat :=
+  match n with
+    | 0 => 1
+    | k + 1 => (nat_pow x k) * x
+
+-- For a real number x and a natural number n, x ^ n = real_pow x n:
+def real_pow (x : Real) (n : Nat) : Real :=
+  match n with
+    | 0 => 1
+    | k + 1 => x * (real_pow x k)
+```
+
+Let's prove the addition law for exponents:
+
+```lean
+theorem Example_6_3_2_cheating : ∀ (a : Real) (m n : Nat),
+    a ^ (m + n) = a ^ m * a ^ n := by
+  fix a : Real; fix m : Nat; fix n : Nat
+  ring
+  done
+```
+
+Well, that wasn't really fair.  The `ring` tactic knows the laws of exponents, so it has no trouble proving this theorem.  But we want to know why the law holds, so let's see if we can prove it without using `ring`.  The following proof is essentially the same as the proof in *HTPI*:
+
+```lean
+theorem Example_6_3_2 : ∀ (a : Real) (m n : Nat),
+    a ^ (m + n) = a ^ m * a ^ n := by
+  fix a : Real; fix m : Nat
+    --Goal: ∀ (n : Nat), a ^ (m + n) = a ^ m * a ^ n
+  by_induc
+  · -- Base Case
+    show a ^ (m + 0) = a ^ m * a ^ 0 from
+      calc a ^ (m + 0)
+          = a ^ m := by rfl
+        _ = a ^ m * 1 := (mul_one (a ^ m)).symm
+        _ = a ^ m * a ^ 0 := by rfl
+    done
+  · -- Induction Step
+    fix n : Nat
+    assume ih : a ^ (m + n) = a ^ m * a ^ n
+    show a ^ (m + (n + 1)) = a ^ m * a ^ (n + 1) from
+      calc a ^ (m + (n + 1))
+          = a ^ ((m + n) + 1) := by rw [add_assoc]
+        _ = a * a ^ (m + n) := by rfl
+        _ = a * (a ^ m * a ^ n) := by rw [ih]
+        _ = a ^ m * (a * a ^ n) :=
+            by rw [←mul_assoc, mul_comm a, mul_assoc]
+        _ = a ^ m * (a ^ (n + 1)) := by rfl
+    done
+  done
+```
+
+Finally, we'll prove the theorem in Example 6.3.4 of *HTPI*, which again involves exponentiation with natural number exponents.  Here's the beginning of the proof:
+
+::: {.inout}
+::: {.inpt}
+```lean
+theorem Example_6_3_4 : ∀ (x : Real), x > -1 →
+    ∀ (n : Nat), (1 + x) ^ n ≥ 1 + n * x := by
+  fix x : Real
+  assume h1 : x > -1
+  **done::
+```
+:::
+
+::: {.outpt}
+```state
+x : ℝ
+h1 : x > -1
+⊢ ∀ (n : ℕ),
+>>  (1 + x) ^ n ≥
+>>    1 + ↑n * x
+```
+:::
+:::
+
+Look carefully at the goal in the tactic state.  Why is there a `↑` before the last `n`?  The reason has to do with types.  The variable `x` has type `Real` and `n` has type `Nat`, so how can Lean multiply `n` by `x`?  Remember, in Lean, the natural numbers are not a subset of the real numbers.  The two types are completely separate, but for each natural number, there is a corresponding real number.  To multiply `n` by `x`, Lean had to convert `n` to the corresponding real number, through a process called *coercion*.  The notation `↑n` denotes the result of *coercing* (or *casting*) `n` to another type---in this case, `Real`.  Since `↑n` and `x` are both real numbers, Lean can use the multiplication operation on the real numbers to multiply them.  As we will see, the need for coercion in this example will make the proof a bit more complicated, because we'll need to use some theorems about coercions.  Theorems about coercion of natural numbers to some other type often have names that start `Nat.cast`.
+
+Continuing with the proof, let's try mathematical induction:
+
+::: {.inout}
+::: {.inpt}
+```lean
+theorem Example_6_3_4 : ∀ (x : Real), x > -1 →
+    ∀ (n : Nat), (1 + x) ^ n ≥ 1 + n * x := by
+  fix x : Real
+  assume h1 : x > -1
+  by_induc
+  · -- Base Case
+
+    **done::
+  · -- Induction Step
+
+    **done::  
+  done
+```
+:::
+
+::: {.outpt}
+```state
+case Base_Case
+x : ℝ
+h1 : x > -1
+⊢ (1 + x) ^ 0 ≥
+>>  1 + ↑0 * x
+```
+:::
+:::
+
+You might think that `linarith` could prove the goal for the base case, but it can't.  The problem is the `↑0`, which denotes the result of coercing the natural number `0` to a real number.  Of course, that should be the real number `0`, but is it?  Yes, but the `linarith` tactic doesn't know that.  The theorem `Nat.cast_zero` says that `↑0 = 0` (where the `0` on the right side of the equation is the *real number* `0`), so the tactic `rewrite [Nat.cast_zero]` will convert `↑0` to `0`.  After that step, `linarith` can complete the proof of the base case, and we can start on the induction step.
+
+::: {.inout}
+::: {.inpt}
+```lean
+theorem Example_6_3_4 : ∀ (x : Real), x > -1 →
+    ∀ (n : Nat), (1 + x) ^ n ≥ 1 + n * x := by
+  fix x : Real
+  assume h1 : x > -1
+  by_induc
+  · -- Base Case
+    rewrite [Nat.cast_zero]
+    linarith
+    done
+  · -- Induction Step
+    fix n : Nat
+    assume ih : (1 + x) ^ n ≥ 1 + n * x
+    **done::
+  done
+```
+:::
+
+::: {.outpt}
+```state
+case Induction_Step
+x : ℝ
+h1 : x > -1
+n : ℕ
+ih : (1 + x) ^ n ≥
+>>    1 + ↑n * x
+⊢ (1 + x) ^ (n + 1) ≥
+>>  1 + ↑(n + 1) * x
+```
+:::
+:::
+
+Once again, there's a complication caused by coercion.  The inductive hypothesis talks about `↑n`, but the goal involves `↑(n + 1)`.  What is the relationship between these?  Surely it should be the case that `↑(n + 1) = ↑n + 1`; that is, the result of coercing the natural number `n + 1` to a real number should be one larger than the result of coercing `n` to a real number.  The theorem `Nat.cast_succ` says exactly that, so `rewrite [Nat.cast_succ]` will change the `↑(n + 1)` in the goal to `↑n + 1`.  (The number `n + 1` is sometimes called the *successor* of `n`, and `succ` is short for "successor.")  With that change, we can continue with the proof.  The following proof is modeled on the proof in *HTPI*.
+
+```lean
+theorem ??Example_6_3_4:: : ∀ (x : Real), x > -1 →
+    ∀ (n : Nat), (1 + x) ^ n ≥ 1 + n * x := by
+  fix x : Real
+  assume h1 : x > -1
+  by_induc
+  · -- Base Case
+    rewrite [Nat.cast_zero]
+    linarith
+    done
+  · -- Induction Step
+    fix n : Nat
+    assume ih : (1 + x) ^ n ≥ 1 + n * x
+    rewrite [Nat.cast_succ]
+    show (1 + x) ^ (n + 1) ≥ 1 + (↑n + 1) * x from
+      calc (1 + x) ^ (n + 1)
+          = (1 + x) * (1 + x) ^ n := by rfl
+        _ ≥ (1 + x) * (1 + n * x) := sorry
+        _ = 1 + x + n * x + n * x * x := by ring
+        _ ≥ 1 + x + n * x + 0 := sorry
+        _ = 1 + (n + 1) * x := by ring
+    done
+  done
+```
+
+Note that in the calculational proof, each `n` that is multiplied by `x` is really `↑n`, but we don't need to say so explicitly; Lean fills in coercions automatically when they are required.
+
+All that's left is to replace the two occurrences of `sorry` with justifications.  We'll use two theorems:
+
+::: {.ind}
+```
+@mul_le_mul_of_nonneg_left : ∀ {α : Type u_1} {a b c : α} [inst : Mul α]
+        [inst_1 : Zero α] [inst_2 : Preorder α] [inst_3 : PosMulMono α],
+        b ≤ c → 0 ≤ a → a * b ≤ a * c
+@add_le_add_left : ∀ {α : Type u_1} [inst : Add α] [inst_1 : LE α]
+        [inst_2 : CovariantClass α α (fun (x x_1 : α) => x + x_1)
+        fun (x x_1 : α) => x ≤ x_1] {b c : α},
+        b ≤ c → ∀ (a : α), a + b ≤ a + c
+```
+:::
+
+As usual, we don't need to pay much attention to the long lists of implicit arguments; what is important is the last line of each statement.  Those lines tell us that `mul_le_mul_of_nonneg_left` can be applied to the inductive hypothesis to justify the first `sorry` step, if we can prove `1 + x ≥ 0`.  And then `add_le_add_left` will justify the second `sorry` step, if we can prove `n * x * x ≥ 0`.  So here is our next attempt:
+
+```lean
+theorem ??Example_6_3_4:: : ∀ (x : Real), x > -1 →
+    ∀ (n : Nat), (1 + x) ^ n ≥ 1 + n * x := by
+  fix x : Real
+  assume h1 : x > -1
+  by_induc
+  · -- Base Case
+    rewrite [Nat.cast_zero]
+    linarith
+    done
+  · -- Induction Step
+    fix n : Nat
+    assume ih : (1 + x) ^ n ≥ 1 + n * x
+    rewrite [Nat.cast_succ]
+    have h2 : 1 + x ≥ 0 := by linarith
+    have h3 : n * x * x ≥ 0 := sorry
+    show (1 + x) ^ (n + 1) ≥ 1 + (↑n + 1) * x from
+      calc (1 + x) ^ (n + 1)
+          = (1 + x) * (1 + x) ^ n := by rfl
+        _ ≥ (1 + x) * (1 + n * x) := mul_le_mul_of_nonneg_left ih h2
+        _ = 1 + x + n * x + n * x * x := by ring
+        _ ≥ 1 + x + n * x + 0 := add_le_add_left h3 _
+        _ = 1 + (n + 1) * x := by ring
+    done
+  done
+```
+
+The `linarith` tactic is able to prove `1 + x ≥ 0`, since it follows easily from `h1 : x > -1`.  But how can we prove `n * x * x ≥ 0`?  We start with the fact that the square of any real number is nonnegative:
+
+::: {.ind}
+```
+@mul_self_nonneg : ∀ {α : Type u_1} [inst : LinearOrderedRing α]
+                    (a : α), 0 ≤ a * a
+```
+:::
+
+So `mul_self_nonneg x` is a proof of `x * x ≥ 0`.  To get `n * x * x ≥ 0`, which means `↑n * x * x ≥ 0`, we'll need another application of `mul_le_mul_of_nonneg_left`, and we'll need to know `↑n ≥ 0`.  But if we write `have ... : ↑n ≥ 0 := ...`, then Lean won't know what we mean.  The problem is that this last statement is ambiguous.  The notation `↑n` means "`n` coerced to some other type," but what is the other type?  Lean can usually figure this out from context, but in the statement `↑n ≥ 0` there is no context to tell Lean what type to use.  So we must say `(↑n : Real) ≥ 0` to eliminate the ambiguity.  The theorem `Nat.cast_nonneg` proves this statement, providing the last piece of the puzzle.  Here's the complete proof:
+
+```lean
+theorem Example_6_3_4 : ∀ (x : Real), x > -1 →
+    ∀ (n : Nat), (1 + x) ^ n ≥ 1 + n * x := by
+  fix x : Real
+  assume h1 : x > -1
+  by_induc
+  · -- Base Case
+    rewrite [Nat.cast_zero]
+    linarith
+    done
+  · -- Induction Step
+    fix n : Nat
+    assume ih : (1 + x) ^ n ≥ 1 + n * x
+    rewrite [Nat.cast_succ]
+    have h2 : 1 + x ≥ 0 := by linarith
+    have h3 : n * x * x ≥ 0 := by
+      have h4 : x * x ≥ 0 := mul_self_nonneg x
+      have h5 : (↑n : Real) ≥ 0 := Nat.cast_nonneg n
+      calc n * x * x
+          = n * (x * x) := mul_assoc _ _ _
+        _ ≥ n * 0 := mul_le_mul_of_nonneg_left h4 h5
+        _ = 0 := by ring
+    show (1 + x) ^ (n + 1) ≥ 1 + (↑n + 1) * x from
+      calc (1 + x) ^ (n + 1)
+          = (1 + x) * (1 + x) ^ n := by rfl
+        _ ≥ (1 + x) * (1 + n * x) := mul_le_mul_of_nonneg_left ih h2
+        _ = 1 + x + n * x + n * x * x := by ring
+        _ ≥ 1 + x + n * x + 0 := add_le_add_left h3 _
+        _ = 1 + (n + 1) * x := by ring
+    done
+  done
+```
+
+Before ending this section, we'll return to a topic left unexplained before.  We can now describe how `Sum i from k to n, f i` is defined.  The key is a function `sum_less`, which is defined by recursion:
+
+```lean
+def sum_less {A : Type} [AddZeroClass A] (x : Nat) (f : Nat → A) : A :=
+  match x with
+    | 0 => 0
+    | n + 1 => sum_less n f + f n
+```
+
+To get an idea of what this definition means, let's try evaluating `sum_less 3 f`:
+
+::: {.ind}
+```
+sum_less 3 f = sum_less 2 f + f 2
+             = sum_less 1 f + f 1 + f 2
+             = sum_less 0 f + f 0 + f 1 + f 2
+             = 0 + f 0 + f 1 + f 2
+```
+:::
+
+So `sum_less 3 f` adds up all values of `f i`, for `i < 3`.  More generally, `sum_less x f` gives the sum of all values `f i` for `i < x`.  (The implicit arguments say that the type of `f i` can be any type for which `0` and `+` make sense.)  The notation `Sum i from k to n, f i` is now defined to be a shorthand for `sum_less (n + 1 - k) (fun x => f (k + x))`.  We'll leave it to you to puzzle out why that gives the desired result.
+
+### Exercises
+
+::: {.numex arguments="1"}
+```lean
+theorem Exercise_6_3_7b (f : Nat → Real) (c : Real) : ∀ (n : Nat),
+    Sum i from 0 to n, c * f i = c * Sum i from 0 to n, f i := sorry
+```
+:::
+
+::: {.numex arguments="2"}
+```lean
+theorem fact_pos : ∀ (n : Nat), fact n ≥ 1 := sorry
+```
+:::
+
+::: {.numex arguments="3"}
+```lean
+--Hint:  Use the theorem fact_pos from the previous exercise
+theorem Exercise_6_3_13a (k : Nat) : ∀ (n : Nat),
+    fact (k ^ 2 + n) ≥ k ^ (2 * n) := sorry
+```
+:::
+
+::: {.numex arguments="4"}
+```lean
+--Hint:  Use the theorem in the previous exercise.
+--You may find it useful to first prove a lemma:
+--∀ (k : Nat), 2 * k ^ 2 + 1 ≥ k
+theorem Exercise_6_3_13b (k : Nat) : ∀ n ≥ 2 * k ^ 2,
+    fact n ≥ k ^ n := sorry
+```
+:::
+
+5\. A sequence is defined recursively as follows:
+
+```lean
+def seq_6_3_15 (x : Nat) : Int :=
+  match x with
+    | 0 => 0
+    | n + 1 => 2 * seq_6_3_15 n + n
+```
+
+Prove the following theorem about this sequence:
+
+```lean
+theorem Exercise_6_3_15 : ∀ (n : Nat),
+    seq_6_3_15 n = 2 ^ n - n - 1 := sorry
+```
+
+6\. A sequence is defined recursively as follows:
+
+```lean
+def seq_6_3_16 (x : Nat) : Nat :=
+  match x with
+    | 0 => 2
+    | n + 1 => (seq_6_3_16 n) ^ 2
+```
+
+Find a formula for `seq_6_3_16 n`.  Fill in the blank in the theorem below with your formula and then prove the theorem.
+
+```lean
+theorem Exercise_6_3_16 : ∀ (n : Nat),
+    seq_6_3_16 n = ___ := sorry
+```

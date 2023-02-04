@@ -3163,15 +3163,15 @@ Uniqueness:  Suppose $\forall B(C \cup B = B)$ and $\forall B(D \cup B = B)$.  A
 
 You will notice that there are two statements in this proof that are described as "clearly" true.  This brings up one of the difficulties with proving theorems in Lean: things that are clear to *us* are not necessarily clear to *Lean*!  There are two ways to deal with such "clear" statements.  The first is to see if the statement is in the library of theorems that Lean knows.  The second is to prove the statement as a preliminary theorem that can then be used in the proof of our main theorem.  We'll take the second approach here, since proving these "clear" facts will give us more practice with Lean proofs, but later we'll have more to say about searching for statements in Lean's theorem library.
 
-The first theorem we need says that for every set `B`, `∅ ∪ B = B`, and it brings up a subtle issue: in Lean, the symbol `∅` is ambiguous!  The reason for this is Lean's strict typing rules.  For each type `U`, there is an empty set of type `Set U`.  There is, for example, the set of type `Set Nat` that contains no natural numbers, and also the set of type `Set Real` that contains no real numbers.  To Lean, these are different sets, because they have different types.  Which one does the symbol `∅` denote?  The answer will be different in different contexts.  Lean can sometimes figure out from context which empty set you have in mind, but if it can't, then you have to tell it explicitly by writing `(∅ : Set U)` rather than `∅`.
+The first theorem we need says that for every set `B`, `∅ ∪ B = B`, and it brings up a subtle issue: in Lean, the symbol `∅` is ambiguous!  The reason for this is Lean's strict typing rules.  For each type `U`, there is an empty set of type `Set U`.  There is, for example, the set of type `Set Nat` that contains no natural numbers, and also the set of type `Set Real` that contains no real numbers.  To Lean, these are different sets, because they have different types.  Which one does the symbol `∅` denote?  The answer will be different in different contexts.  Lean can often figure out from context which empty set you have in mind, but if it can't, then you have to tell it explicitly by writing `(∅ : Set U)` rather than `∅`.  Fortunately, in our theorems Lean is able to figure out which empty set we have in mind.
 
-With that preparation, we are ready to prove our first preliminary theorem.  To avoid problems with ambiguity, we'll tell Lean explicitly which empty set we have in mind in this theorem.  Since the goal is an equation between sets, our first step is to use the tactic `apply Set.ext`.
+With that preparation, we are ready to prove our first preliminary theorem.  Since the goal is an equation between sets, our first step is to use the tactic `apply Set.ext`.
 
 ::: {.inout}
 ::: {.inpt}
 ```lean
 theorem empty_union {U : Type} (B : Set U) :
-    (∅ : Set U) ∪ B = B := by
+    ∅ ∪ B = B := by
   apply Set.ext
   **done::
 ```
@@ -3194,7 +3194,7 @@ Based on the form of the goal, our next two tactics should be `fix x : U` and `a
 ::: {.inpt}
 ```lean
 theorem empty_union {U : Type} (B : Set U) :
-    (∅ : Set U) ∪ B = B := by
+    ∅ ∪ B = B := by
   apply Set.ext
   fix x : U
   apply Iff.intro
@@ -3219,18 +3219,18 @@ x : U
 :::
 :::
 
-Of course, our next step is to assume `x ∈ (∅ : Set U) ∪ B`.  To help us see how to move forward, we also write out the definition of this assumption.
+Of course, our next step is to assume `x ∈ ∅ ∪ B`.  To help us see how to move forward, we also write out the definition of this assumption.
 
 ::: {.inout}
 ::: {.inpt}
 ```lean
 theorem empty_union {U : Type} (B : Set U) :
-    (∅ : Set U) ∪ B = B := by
+    ∅ ∪ B = B := by
   apply Set.ext
   fix x : U
   apply Iff.intro
   · -- (→)
-    assume h1 : x ∈ (∅ : Set U) ∪ B
+    assume h1 : x ∈ ∅ ∪ B
     define at h1
     **done::
   · -- (←)
@@ -3252,20 +3252,20 @@ h1 : x ∈ ∅ ∨ x ∈ B
 :::
 :::
 
-Now you should see a way to complete the proof: the statement `x ∈ ∅` is false, so we should be able to apply the disjunctive syllogism rule to `h1` to infer the goal `x ∈ B`.  To carry out this plan, we'll first have to prove `x ∉ (∅ : Set U)`.  We'll use the `have` tactic, and since there's no obvious term-mode proof to justify it, we'll try a tactic-mode proof.
+Now you should see a way to complete the proof: the statement `x ∈ ∅` is false, so we should be able to apply the disjunctive syllogism rule to `h1` to infer the goal `x ∈ B`.  To carry out this plan, we'll first have to prove `x ∉ ∅`.  We'll use the `have` tactic, and since there's no obvious term-mode proof to justify it, we'll try a tactic-mode proof.
 
 ::: {.inout}
 ::: {.inpt}
 ```lean
 theorem empty_union {U : Type} (B : Set U) :
-    (∅ : Set U) ∪ B = B := by
+    ∅ ∪ B = B := by
   apply Set.ext
   fix x : U
   apply Iff.intro
   · -- (→)
-    assume h1 : x ∈ (∅ : Set U) ∪ B
+    assume h1 : x ∈ ∅ ∪ B
     define at h1
-    have h2 : x ∉ (∅ : Set U) := by
+    have h2 : x ∉ ∅ := by
 
       **done::
     **done::
@@ -3293,14 +3293,14 @@ The goal for our "proof within a proof" is a negative statement, so proof by con
 ::: {.inpt}
 ```lean
 theorem empty_union {U : Type} (B : Set U) :
-    (∅ : Set U) ∪ B = B := by
+    ∅ ∪ B = B := by
   apply Set.ext
   fix x : U
   apply Iff.intro
   · -- (→)
-    assume h1 : x ∈ (∅ : Set U) ∪ B
+    assume h1 : x ∈ ∅ ∪ B
     define at h1
-    have h2 : x ∉ (∅ : Set U) := by
+    have h2 : x ∉ ∅ := by
       by_contra h3
       **done::
     **done::
@@ -3329,14 +3329,14 @@ To see how to use the new assumption `h3`, we use the tactic `define at h3`.  Th
 ::: {.inpt}
 ```lean
 theorem empty_union {U : Type} (B : Set U) :
-    (∅ : Set U) ∪ B = B := by
+    ∅ ∪ B = B := by
   apply Set.ext
   fix x : U
   apply Iff.intro
   · -- (→)
-    assume h1 : x ∈ (∅ : Set U) ∪ B
+    assume h1 : x ∈ ∅ ∪ B
     define at h1
-    have h2 : x ∉ (∅ : Set U) := by
+    have h2 : x ∉ ∅ := by
       by_contra h3
       define at h3  --h3: False
       show False from h3
@@ -3368,14 +3368,14 @@ Now that we have established the claim `h2 : ¬x ∈ ∅`, we can apply the disj
 ::: {.inpt}
 ```lean
 theorem empty_union {U : Type} (B : Set U) :
-    (∅ : Set U) ∪ B = B := by
+    ∅ ∪ B = B := by
   apply Set.ext
   fix x : U
   apply Iff.intro
   · -- (→)
-    assume h1 : x ∈ (∅ : Set U) ∪ B
+    assume h1 : x ∈ ∅ ∪ B
     define at h1
-    have h2 : x ∉ (∅ : Set U) := by
+    have h2 : x ∉ ∅ := by
       by_contra h3
       define at h3  --h3: False
       show False from h3
@@ -3407,14 +3407,14 @@ This direction of the biconditional proof is easier: once we introduce the assum
 ::: {.inpt}
 ```lean
 theorem empty_union {U : Type} (B : Set U) :
-    (∅ : Set U) ∪ B = B := by
+    ∅ ∪ B = B := by
   apply Set.ext
   fix x : U
   apply Iff.intro
   · -- (→)
-    assume h1 : x ∈ (∅ : Set U) ∪ B
+    assume h1 : x ∈ ∅ ∪ B
     define at h1
-    have h2 : x ∉ (∅ : Set U) := by
+    have h2 : x ∉ ∅ := by
       by_contra h3
       define at h3  --h3: False
       show False from h3
@@ -3424,7 +3424,7 @@ theorem empty_union {U : Type} (B : Set U) :
     done
   · -- (←)
     assume h1 : x ∈ B
-    show x ∈ (∅ : Set U) ∪ B from Or.inr h1
+    show x ∈ ∅ ∪ B from Or.inr h1
     done
   done
 ```
@@ -3603,7 +3603,7 @@ U : Type
 :::
 :::
 
-We have two goals, labeled `Existence` and `Uniqueness`.  Imitating the proof from *HTPI*, we prove existence by using the value `∅` for `A`.  It turns out that in this context, Lean is able to figure out which empty set we mean by `∅`, so we don't need to specify the type.
+We have two goals, labeled `Existence` and `Uniqueness`.  Imitating the proof from *HTPI*, we prove existence by using the value `∅` for `A`.
 
 ::: {.inout}
 ::: {.inpt}

@@ -3,6 +3,7 @@
 \usepackage{myunixode}
 \usepackage[normalem]{ulem}
 \usepackage{scrlayer-scrpage}
+\automark{section}
 \newcommand{\copyrightnotice}{\footnotesize\copyright\ 2023 Daniel J. Velleman.  Short excerpts from
 \href{https://doi.org/10.1017/9781108539890}{\textit{How To Prove It}},\\
 published by Cambridge Univ. Press, reproduced with permission.}
@@ -94,3 +95,6 @@ published by Cambridge Univ. Press, reproduced with permission.}
 
 \newcommand{\setmin}{\mathbin{\backslash}}
 \newcommand{\symmdiff}{\bigtriangleup}
+
+\pagenumbering{roman}  %So front matter uses roman numerals.  Switch back to arabic at beginning of preface.
+\publishers{\copyrightnotice}

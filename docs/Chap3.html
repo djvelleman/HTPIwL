@@ -2725,12 +2725,12 @@ x \in A \cap (B \setmin C) &amp;\text{ iff } x \in A \wedge x \in B \setmin C\\
 <p>Uniqueness: Suppose <span class="math inline">\(\forall B(C \cup B = B)\)</span> and <span class="math inline">\(\forall B(D \cup B = B)\)</span>. Applying the first of these assumptions to <span class="math inline">\(D\)</span> we see that <span class="math inline">\(C \cup D = D\)</span>, and applying the second to <span class="math inline">\(C\)</span> we get <span class="math inline">\(D \cup C = C\)</span>. But clearly <span class="math inline">\(C \cup D = D \cup C\)</span>, so <span class="math inline">\(C = D\)</span>. <span class="excl">&nbsp;□</span></p>
 </div>
 <p>You will notice that there are two statements in this proof that are described as “clearly” true. This brings up one of the difficulties with proving theorems in Lean: things that are clear to <em>us</em> are not necessarily clear to <em>Lean</em>! There are two ways to deal with such “clear” statements. The first is to see if the statement is in the library of theorems that Lean knows. The second is to prove the statement as a preliminary theorem that can then be used in the proof of our main theorem. We’ll take the second approach here, since proving these “clear” facts will give us more practice with Lean proofs, but later we’ll have more to say about searching for statements in Lean’s theorem library.</p>
-<p>The first theorem we need says that for every set <code>B</code>, <code>∅ ∪ B = B</code>, and it brings up a subtle issue: in Lean, the symbol <code>∅</code> is ambiguous! The reason for this is Lean’s strict typing rules. For each type <code>U</code>, there is an empty set of type <code>Set U</code>. There is, for example, the set of type <code>Set Nat</code> that contains no natural numbers, and also the set of type <code>Set Real</code> that contains no real numbers. To Lean, these are different sets, because they have different types. Which one does the symbol <code>∅</code> denote? The answer will be different in different contexts. Lean can sometimes figure out from context which empty set you have in mind, but if it can’t, then you have to tell it explicitly by writing <code>(∅ : Set U)</code> rather than <code>∅</code>.</p>
-<p>With that preparation, we are ready to prove our first preliminary theorem. To avoid problems with ambiguity, we’ll tell Lean explicitly which empty set we have in mind in this theorem. Since the goal is an equation between sets, our first step is to use the tactic <code>apply Set.ext</code>.</p>
+<p>The first theorem we need says that for every set <code>B</code>, <code>∅ ∪ B = B</code>, and it brings up a subtle issue: in Lean, the symbol <code>∅</code> is ambiguous! The reason for this is Lean’s strict typing rules. For each type <code>U</code>, there is an empty set of type <code>Set U</code>. There is, for example, the set of type <code>Set Nat</code> that contains no natural numbers, and also the set of type <code>Set Real</code> that contains no real numbers. To Lean, these are different sets, because they have different types. Which one does the symbol <code>∅</code> denote? The answer will be different in different contexts. Lean can often figure out from context which empty set you have in mind, but if it can’t, then you have to tell it explicitly by writing <code>(∅ : Set U)</code> rather than <code>∅</code>. Fortunately, in our theorems Lean is able to figure out which empty set we have in mind.</p>
+<p>With that preparation, we are ready to prove our first preliminary theorem. Since the goal is an equation between sets, our first step is to use the tactic <code>apply Set.ext</code>.</p>
 <div class="inout">
 <div class="inpt">
 <div class="sourceCode" id="cb203"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb203-1"><a href="#cb203-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> empty_union {U : <span class="kw">Type</span>} (B : Set U) :</span>
-<span id="cb203-2"><a href="#cb203-2" aria-hidden="true" tabindex="-1"></a>    (∅ : Set U) ∪ B = B := <span class="kw">by</span></span>
+<span id="cb203-2"><a href="#cb203-2" aria-hidden="true" tabindex="-1"></a>    ∅ ∪ B = B := <span class="kw">by</span></span>
 <span id="cb203-3"><a href="#cb203-3" aria-hidden="true" tabindex="-1"></a>  <span class="kw">apply</span> Set.ext</span>
 <span id="cb203-4"><a href="#cb203-4" aria-hidden="true" tabindex="-1"></a>  <span class="sc">**</span><span class="wa">done</span><span class="sc">::</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
@@ -2746,7 +2746,7 @@ x \in A \cap (B \setmin C) &amp;\text{ iff } x \in A \wedge x \in B \setmin C\\
 <div class="inout">
 <div class="inpt">
 <div class="sourceCode" id="cb205"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb205-1"><a href="#cb205-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> empty_union {U : <span class="kw">Type</span>} (B : Set U) :</span>
-<span id="cb205-2"><a href="#cb205-2" aria-hidden="true" tabindex="-1"></a>    (∅ : Set U) ∪ B = B := <span class="kw">by</span></span>
+<span id="cb205-2"><a href="#cb205-2" aria-hidden="true" tabindex="-1"></a>    ∅ ∪ B = B := <span class="kw">by</span></span>
 <span id="cb205-3"><a href="#cb205-3" aria-hidden="true" tabindex="-1"></a>  <span class="kw">apply</span> Set.ext</span>
 <span id="cb205-4"><a href="#cb205-4" aria-hidden="true" tabindex="-1"></a>  <span class="kw">fix</span> x : U</span>
 <span id="cb205-5"><a href="#cb205-5" aria-hidden="true" tabindex="-1"></a>  <span class="kw">apply</span> Iff.intro</span>
@@ -2766,16 +2766,16 @@ x \in A \cap (B \setmin C) &amp;\text{ iff } x \in A \wedge x \in B \setmin C\\
 <span id="cb206-5"><a href="#cb206-5" aria-hidden="true" tabindex="-1"></a>⊢ x ∈ ∅ ∪ B → x ∈ B</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </div>
-<p>Of course, our next step is to assume <code>x ∈ (∅ : Set U) ∪ B</code>. To help us see how to move forward, we also write out the definition of this assumption.</p>
+<p>Of course, our next step is to assume <code>x ∈ ∅ ∪ B</code>. To help us see how to move forward, we also write out the definition of this assumption.</p>
 <div class="inout">
 <div class="inpt">
 <div class="sourceCode" id="cb207"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb207-1"><a href="#cb207-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> empty_union {U : <span class="kw">Type</span>} (B : Set U) :</span>
-<span id="cb207-2"><a href="#cb207-2" aria-hidden="true" tabindex="-1"></a>    (∅ : Set U) ∪ B = B := <span class="kw">by</span></span>
+<span id="cb207-2"><a href="#cb207-2" aria-hidden="true" tabindex="-1"></a>    ∅ ∪ B = B := <span class="kw">by</span></span>
 <span id="cb207-3"><a href="#cb207-3" aria-hidden="true" tabindex="-1"></a>  <span class="kw">apply</span> Set.ext</span>
 <span id="cb207-4"><a href="#cb207-4" aria-hidden="true" tabindex="-1"></a>  <span class="kw">fix</span> x : U</span>
 <span id="cb207-5"><a href="#cb207-5" aria-hidden="true" tabindex="-1"></a>  <span class="kw">apply</span> Iff.intro</span>
 <span id="cb207-6"><a href="#cb207-6" aria-hidden="true" tabindex="-1"></a>  · <span class="co">-- (→)</span></span>
-<span id="cb207-7"><a href="#cb207-7" aria-hidden="true" tabindex="-1"></a>    <span class="kw">assume</span> h1 : x ∈ (∅ : Set U) ∪ B</span>
+<span id="cb207-7"><a href="#cb207-7" aria-hidden="true" tabindex="-1"></a>    <span class="kw">assume</span> h1 : x ∈ ∅ ∪ B</span>
 <span id="cb207-8"><a href="#cb207-8" aria-hidden="true" tabindex="-1"></a>    <span class="kw">define</span> <span class="kw">at</span> h1</span>
 <span id="cb207-9"><a href="#cb207-9" aria-hidden="true" tabindex="-1"></a>    <span class="sc">**</span><span class="wa">done</span><span class="sc">::</span></span>
 <span id="cb207-10"><a href="#cb207-10" aria-hidden="true" tabindex="-1"></a>  · <span class="co">-- (←)</span></span>
@@ -2792,18 +2792,18 @@ x \in A \cap (B \setmin C) &amp;\text{ iff } x \in A \wedge x \in B \setmin C\\
 <span id="cb208-6"><a href="#cb208-6" aria-hidden="true" tabindex="-1"></a>⊢ x ∈ B</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </div>
-<p>Now you should see a way to complete the proof: the statement <code>x ∈ ∅</code> is false, so we should be able to apply the disjunctive syllogism rule to <code>h1</code> to infer the goal <code>x ∈ B</code>. To carry out this plan, we’ll first have to prove <code>x ∉ (∅ : Set U)</code>. We’ll use the <code>have</code> tactic, and since there’s no obvious term-mode proof to justify it, we’ll try a tactic-mode proof.</p>
+<p>Now you should see a way to complete the proof: the statement <code>x ∈ ∅</code> is false, so we should be able to apply the disjunctive syllogism rule to <code>h1</code> to infer the goal <code>x ∈ B</code>. To carry out this plan, we’ll first have to prove <code>x ∉ ∅</code>. We’ll use the <code>have</code> tactic, and since there’s no obvious term-mode proof to justify it, we’ll try a tactic-mode proof.</p>
 <div class="inout">
 <div class="inpt">
 <div class="sourceCode" id="cb209"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb209-1"><a href="#cb209-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> empty_union {U : <span class="kw">Type</span>} (B : Set U) :</span>
-<span id="cb209-2"><a href="#cb209-2" aria-hidden="true" tabindex="-1"></a>    (∅ : Set U) ∪ B = B := <span class="kw">by</span></span>
+<span id="cb209-2"><a href="#cb209-2" aria-hidden="true" tabindex="-1"></a>    ∅ ∪ B = B := <span class="kw">by</span></span>
 <span id="cb209-3"><a href="#cb209-3" aria-hidden="true" tabindex="-1"></a>  <span class="kw">apply</span> Set.ext</span>
 <span id="cb209-4"><a href="#cb209-4" aria-hidden="true" tabindex="-1"></a>  <span class="kw">fix</span> x : U</span>
 <span id="cb209-5"><a href="#cb209-5" aria-hidden="true" tabindex="-1"></a>  <span class="kw">apply</span> Iff.intro</span>
 <span id="cb209-6"><a href="#cb209-6" aria-hidden="true" tabindex="-1"></a>  · <span class="co">-- (→)</span></span>
-<span id="cb209-7"><a href="#cb209-7" aria-hidden="true" tabindex="-1"></a>    <span class="kw">assume</span> h1 : x ∈ (∅ : Set U) ∪ B</span>
+<span id="cb209-7"><a href="#cb209-7" aria-hidden="true" tabindex="-1"></a>    <span class="kw">assume</span> h1 : x ∈ ∅ ∪ B</span>
 <span id="cb209-8"><a href="#cb209-8" aria-hidden="true" tabindex="-1"></a>    <span class="kw">define</span> <span class="kw">at</span> h1</span>
-<span id="cb209-9"><a href="#cb209-9" aria-hidden="true" tabindex="-1"></a>    <span class="kw">have</span> h2 : x ∉ (∅ : Set U) := <span class="kw">by</span></span>
+<span id="cb209-9"><a href="#cb209-9" aria-hidden="true" tabindex="-1"></a>    <span class="kw">have</span> h2 : x ∉ ∅ := <span class="kw">by</span></span>
 <span id="cb209-10"><a href="#cb209-10" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb209-11"><a href="#cb209-11" aria-hidden="true" tabindex="-1"></a>      <span class="sc">**</span><span class="wa">done</span><span class="sc">::</span></span>
 <span id="cb209-12"><a href="#cb209-12" aria-hidden="true" tabindex="-1"></a>    <span class="sc">**</span><span class="wa">done</span><span class="sc">::</span></span>
@@ -2824,14 +2824,14 @@ x \in A \cap (B \setmin C) &amp;\text{ iff } x \in A \wedge x \in B \setmin C\\
 <div class="inout">
 <div class="inpt">
 <div class="sourceCode" id="cb211"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb211-1"><a href="#cb211-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> empty_union {U : <span class="kw">Type</span>} (B : Set U) :</span>
-<span id="cb211-2"><a href="#cb211-2" aria-hidden="true" tabindex="-1"></a>    (∅ : Set U) ∪ B = B := <span class="kw">by</span></span>
+<span id="cb211-2"><a href="#cb211-2" aria-hidden="true" tabindex="-1"></a>    ∅ ∪ B = B := <span class="kw">by</span></span>
 <span id="cb211-3"><a href="#cb211-3" aria-hidden="true" tabindex="-1"></a>  <span class="kw">apply</span> Set.ext</span>
 <span id="cb211-4"><a href="#cb211-4" aria-hidden="true" tabindex="-1"></a>  <span class="kw">fix</span> x : U</span>
 <span id="cb211-5"><a href="#cb211-5" aria-hidden="true" tabindex="-1"></a>  <span class="kw">apply</span> Iff.intro</span>
 <span id="cb211-6"><a href="#cb211-6" aria-hidden="true" tabindex="-1"></a>  · <span class="co">-- (→)</span></span>
-<span id="cb211-7"><a href="#cb211-7" aria-hidden="true" tabindex="-1"></a>    <span class="kw">assume</span> h1 : x ∈ (∅ : Set U) ∪ B</span>
+<span id="cb211-7"><a href="#cb211-7" aria-hidden="true" tabindex="-1"></a>    <span class="kw">assume</span> h1 : x ∈ ∅ ∪ B</span>
 <span id="cb211-8"><a href="#cb211-8" aria-hidden="true" tabindex="-1"></a>    <span class="kw">define</span> <span class="kw">at</span> h1</span>
-<span id="cb211-9"><a href="#cb211-9" aria-hidden="true" tabindex="-1"></a>    <span class="kw">have</span> h2 : x ∉ (∅ : Set U) := <span class="kw">by</span></span>
+<span id="cb211-9"><a href="#cb211-9" aria-hidden="true" tabindex="-1"></a>    <span class="kw">have</span> h2 : x ∉ ∅ := <span class="kw">by</span></span>
 <span id="cb211-10"><a href="#cb211-10" aria-hidden="true" tabindex="-1"></a>      <span class="kw">by_contra</span> h3</span>
 <span id="cb211-11"><a href="#cb211-11" aria-hidden="true" tabindex="-1"></a>      <span class="sc">**</span><span class="wa">done</span><span class="sc">::</span></span>
 <span id="cb211-12"><a href="#cb211-12" aria-hidden="true" tabindex="-1"></a>    <span class="sc">**</span><span class="wa">done</span><span class="sc">::</span></span>
@@ -2853,14 +2853,14 @@ x \in A \cap (B \setmin C) &amp;\text{ iff } x \in A \wedge x \in B \setmin C\\
 <div class="inout">
 <div class="inpt">
 <div class="sourceCode" id="cb213"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb213-1"><a href="#cb213-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> empty_union {U : <span class="kw">Type</span>} (B : Set U) :</span>
-<span id="cb213-2"><a href="#cb213-2" aria-hidden="true" tabindex="-1"></a>    (∅ : Set U) ∪ B = B := <span class="kw">by</span></span>
+<span id="cb213-2"><a href="#cb213-2" aria-hidden="true" tabindex="-1"></a>    ∅ ∪ B = B := <span class="kw">by</span></span>
 <span id="cb213-3"><a href="#cb213-3" aria-hidden="true" tabindex="-1"></a>  <span class="kw">apply</span> Set.ext</span>
 <span id="cb213-4"><a href="#cb213-4" aria-hidden="true" tabindex="-1"></a>  <span class="kw">fix</span> x : U</span>
 <span id="cb213-5"><a href="#cb213-5" aria-hidden="true" tabindex="-1"></a>  <span class="kw">apply</span> Iff.intro</span>
 <span id="cb213-6"><a href="#cb213-6" aria-hidden="true" tabindex="-1"></a>  · <span class="co">-- (→)</span></span>
-<span id="cb213-7"><a href="#cb213-7" aria-hidden="true" tabindex="-1"></a>    <span class="kw">assume</span> h1 : x ∈ (∅ : Set U) ∪ B</span>
+<span id="cb213-7"><a href="#cb213-7" aria-hidden="true" tabindex="-1"></a>    <span class="kw">assume</span> h1 : x ∈ ∅ ∪ B</span>
 <span id="cb213-8"><a href="#cb213-8" aria-hidden="true" tabindex="-1"></a>    <span class="kw">define</span> <span class="kw">at</span> h1</span>
-<span id="cb213-9"><a href="#cb213-9" aria-hidden="true" tabindex="-1"></a>    <span class="kw">have</span> h2 : x ∉ (∅ : Set U) := <span class="kw">by</span></span>
+<span id="cb213-9"><a href="#cb213-9" aria-hidden="true" tabindex="-1"></a>    <span class="kw">have</span> h2 : x ∉ ∅ := <span class="kw">by</span></span>
 <span id="cb213-10"><a href="#cb213-10" aria-hidden="true" tabindex="-1"></a>      <span class="kw">by_contra</span> h3</span>
 <span id="cb213-11"><a href="#cb213-11" aria-hidden="true" tabindex="-1"></a>      <span class="kw">define</span> <span class="kw">at</span> h3  <span class="co">--h3: False</span></span>
 <span id="cb213-12"><a href="#cb213-12" aria-hidden="true" tabindex="-1"></a>      <span class="kw">show</span> False <span class="kw">from</span> h3</span>
@@ -2885,14 +2885,14 @@ x \in A \cap (B \setmin C) &amp;\text{ iff } x \in A \wedge x \in B \setmin C\\
 <div class="inout">
 <div class="inpt">
 <div class="sourceCode" id="cb215"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb215-1"><a href="#cb215-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> empty_union {U : <span class="kw">Type</span>} (B : Set U) :</span>
-<span id="cb215-2"><a href="#cb215-2" aria-hidden="true" tabindex="-1"></a>    (∅ : Set U) ∪ B = B := <span class="kw">by</span></span>
+<span id="cb215-2"><a href="#cb215-2" aria-hidden="true" tabindex="-1"></a>    ∅ ∪ B = B := <span class="kw">by</span></span>
 <span id="cb215-3"><a href="#cb215-3" aria-hidden="true" tabindex="-1"></a>  <span class="kw">apply</span> Set.ext</span>
 <span id="cb215-4"><a href="#cb215-4" aria-hidden="true" tabindex="-1"></a>  <span class="kw">fix</span> x : U</span>
 <span id="cb215-5"><a href="#cb215-5" aria-hidden="true" tabindex="-1"></a>  <span class="kw">apply</span> Iff.intro</span>
 <span id="cb215-6"><a href="#cb215-6" aria-hidden="true" tabindex="-1"></a>  · <span class="co">-- (→)</span></span>
-<span id="cb215-7"><a href="#cb215-7" aria-hidden="true" tabindex="-1"></a>    <span class="kw">assume</span> h1 : x ∈ (∅ : Set U) ∪ B</span>
+<span id="cb215-7"><a href="#cb215-7" aria-hidden="true" tabindex="-1"></a>    <span class="kw">assume</span> h1 : x ∈ ∅ ∪ B</span>
 <span id="cb215-8"><a href="#cb215-8" aria-hidden="true" tabindex="-1"></a>    <span class="kw">define</span> <span class="kw">at</span> h1</span>
-<span id="cb215-9"><a href="#cb215-9" aria-hidden="true" tabindex="-1"></a>    <span class="kw">have</span> h2 : x ∉ (∅ : Set U) := <span class="kw">by</span></span>
+<span id="cb215-9"><a href="#cb215-9" aria-hidden="true" tabindex="-1"></a>    <span class="kw">have</span> h2 : x ∉ ∅ := <span class="kw">by</span></span>
 <span id="cb215-10"><a href="#cb215-10" aria-hidden="true" tabindex="-1"></a>      <span class="kw">by_contra</span> h3</span>
 <span id="cb215-11"><a href="#cb215-11" aria-hidden="true" tabindex="-1"></a>      <span class="kw">define</span> <span class="kw">at</span> h3  <span class="co">--h3: False</span></span>
 <span id="cb215-12"><a href="#cb215-12" aria-hidden="true" tabindex="-1"></a>      <span class="kw">show</span> False <span class="kw">from</span> h3</span>
@@ -2917,14 +2917,14 @@ x \in A \cap (B \setmin C) &amp;\text{ iff } x \in A \wedge x \in B \setmin C\\
 <div class="inout">
 <div class="inpt">
 <div class="sourceCode" id="cb217"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb217-1"><a href="#cb217-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> empty_union {U : <span class="kw">Type</span>} (B : Set U) :</span>
-<span id="cb217-2"><a href="#cb217-2" aria-hidden="true" tabindex="-1"></a>    (∅ : Set U) ∪ B = B := <span class="kw">by</span></span>
+<span id="cb217-2"><a href="#cb217-2" aria-hidden="true" tabindex="-1"></a>    ∅ ∪ B = B := <span class="kw">by</span></span>
 <span id="cb217-3"><a href="#cb217-3" aria-hidden="true" tabindex="-1"></a>  <span class="kw">apply</span> Set.ext</span>
 <span id="cb217-4"><a href="#cb217-4" aria-hidden="true" tabindex="-1"></a>  <span class="kw">fix</span> x : U</span>
 <span id="cb217-5"><a href="#cb217-5" aria-hidden="true" tabindex="-1"></a>  <span class="kw">apply</span> Iff.intro</span>
 <span id="cb217-6"><a href="#cb217-6" aria-hidden="true" tabindex="-1"></a>  · <span class="co">-- (→)</span></span>
-<span id="cb217-7"><a href="#cb217-7" aria-hidden="true" tabindex="-1"></a>    <span class="kw">assume</span> h1 : x ∈ (∅ : Set U) ∪ B</span>
+<span id="cb217-7"><a href="#cb217-7" aria-hidden="true" tabindex="-1"></a>    <span class="kw">assume</span> h1 : x ∈ ∅ ∪ B</span>
 <span id="cb217-8"><a href="#cb217-8" aria-hidden="true" tabindex="-1"></a>    <span class="kw">define</span> <span class="kw">at</span> h1</span>
-<span id="cb217-9"><a href="#cb217-9" aria-hidden="true" tabindex="-1"></a>    <span class="kw">have</span> h2 : x ∉ (∅ : Set U) := <span class="kw">by</span></span>
+<span id="cb217-9"><a href="#cb217-9" aria-hidden="true" tabindex="-1"></a>    <span class="kw">have</span> h2 : x ∉ ∅ := <span class="kw">by</span></span>
 <span id="cb217-10"><a href="#cb217-10" aria-hidden="true" tabindex="-1"></a>      <span class="kw">by_contra</span> h3</span>
 <span id="cb217-11"><a href="#cb217-11" aria-hidden="true" tabindex="-1"></a>      <span class="kw">define</span> <span class="kw">at</span> h3  <span class="co">--h3: False</span></span>
 <span id="cb217-12"><a href="#cb217-12" aria-hidden="true" tabindex="-1"></a>      <span class="kw">show</span> False <span class="kw">from</span> h3</span>
@@ -2934,7 +2934,7 @@ x \in A \cap (B \setmin C) &amp;\text{ iff } x \in A \wedge x \in B \setmin C\\
 <span id="cb217-16"><a href="#cb217-16" aria-hidden="true" tabindex="-1"></a>    <span class="kw">done</span></span>
 <span id="cb217-17"><a href="#cb217-17" aria-hidden="true" tabindex="-1"></a>  · <span class="co">-- (←)</span></span>
 <span id="cb217-18"><a href="#cb217-18" aria-hidden="true" tabindex="-1"></a>    <span class="kw">assume</span> h1 : x ∈ B</span>
-<span id="cb217-19"><a href="#cb217-19" aria-hidden="true" tabindex="-1"></a>    <span class="kw">show</span> x ∈ (∅ : Set U) ∪ B <span class="kw">from</span> Or.inr h1</span>
+<span id="cb217-19"><a href="#cb217-19" aria-hidden="true" tabindex="-1"></a>    <span class="kw">show</span> x ∈ ∅ ∪ B <span class="kw">from</span> Or.inr h1</span>
 <span id="cb217-20"><a href="#cb217-20" aria-hidden="true" tabindex="-1"></a>    <span class="kw">done</span></span>
 <span id="cb217-21"><a href="#cb217-21" aria-hidden="true" tabindex="-1"></a>  <span class="kw">done</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
@@ -3058,7 +3058,7 @@ x \in A \cap (B \setmin C) &amp;\text{ iff } x \in A \wedge x \in B \setmin C\\
 <span id="cb231-13"><a href="#cb231-13" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;&gt;</span>  A_1 = A_2</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </div>
-<p>We have two goals, labeled <code>Existence</code> and <code>Uniqueness</code>. Imitating the proof from <em>HTPI</em>, we prove existence by using the value <code>∅</code> for <code>A</code>. It turns out that in this context, Lean is able to figure out which empty set we mean by <code>∅</code>, so we don’t need to specify the type.</p>
+<p>We have two goals, labeled <code>Existence</code> and <code>Uniqueness</code>. Imitating the proof from <em>HTPI</em>, we prove existence by using the value <code>∅</code> for <code>A</code>.</p>
 <div class="inout">
 <div class="inpt">
 <div class="sourceCode" id="cb232"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb232-1"><a href="#cb232-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Example_3_6_2 (U : <span class="kw">Type</span>) :</span>

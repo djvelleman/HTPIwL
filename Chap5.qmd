@@ -147,7 +147,7 @@ theorem func_from_graph_ltr {A B : Type} (F : Set (A × B)) :
 theorem Exercise_5_1_13a
     {A B C : Type} (R : Set (A × B)) (S : Set (B × C)) (f : A → C)
     (h1 : ∀ (b : B), b ∈ Ran R ∧ b ∈ Dom S) (h2 : graph f = comp S R) :
-    is_func_graph S := by
+    is_func_graph S := sorry
 ```
 :::
 
@@ -389,14 +389,13 @@ To prove this theorem, we will use the theorem `func_from_graph` that was stated
 ```
 :::
 
-This means that, in the context of the proof of `Theorem_5_3_1`, `func_from_graph (inv (graph f))` is a proof of the statement `∃ (g : B → A), graph g = inv (graph f) ↔ is_func_graph (inv (graph f))`, and therefore `(func_from_graph (inv (graph f))).rtl _` will prove the theorem, if we can fill in the blank with a proof of `is_func_graph (inv (func f))`.  So we can begin the proof by using the tactic `apply (func_from_graph (inv (graph f))).rtl`.  The rest of the proof is straightforward.
+This means that, in the context of the proof of `Theorem_5_3_1`, `func_from_graph (inv (graph f))` is a proof of the statement `∃ (g : B → A), graph g = inv (graph f) ↔ is_func_graph (inv (graph f))`.  Therefore the tactic `rewrite [func_from_graph (inv (graph f))]` will change the goal to `is_func_graph (inv (func f))`.  In fact, we can just use `rewrite [func_from_graph]`, and Lean will figure out how to apply the theorem to rewrite the goal.  The rest of the proof is straightforward.
 
 ```lean
 theorem Theorem_5_3_1 {A B : Type}
     (f : A → B) (h1 : one_to_one f) (h2 : onto f) :
     ∃ (g : B → A), graph g = inv (graph f) := by
-  apply (func_from_graph (inv (graph f))).rtl
-                --Goal: is_func_graph (inv (graph f))
+  rewrite [func_from_graph]   --Goal: is_func_graph (inv (graph f))
   define        --Goal: ∀ (x : B), ∃! (y : A), (x, y) ∈ inv (graph f)
   fix b : B
   exists_unique

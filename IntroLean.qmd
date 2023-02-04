@@ -1,4 +1,5 @@
 # Introduction to Lean {.unnumbered}
+\markdouble{Introduction to Lean}
 
 If you are reading this book in conjunction with *How To Prove It*, you should complete Section 3.2 of *HTPI* before reading this chapter.  Once you have reached that point in *HTPI*, you are ready to start learning about Lean.  In this chapter we'll explain the basics of writing proofs in Lean and getting feedback from Lean.
 
@@ -88,7 +89,7 @@ theorem two_imp (P Q R : Prop)
     (h1 : P → Q) (h2 : Q → ¬R) : R → ¬P :=
 ```
 
-Lean is now waiting for you to type a proof in term mode.  To switch to tactic mode, type `by` after `:=`.  Although it is not necessary, we find it helpful to set off a tactic proof from the surrounding text by indenting it with one tab, and also by marking where the proof ends.  To do this, leave a blank line after the statement of the theorem, adjust the indenting to one tab, and type `done`.  You will type your proof between the statement of the theorem and the line containing `done`, so click on the blank line between them to position the cursor there.
+Lean is now waiting for you to type a proof in term mode.  To switch to tactic mode, type `by` after `:=`.  We find it helpful to set off a tactic proof from the surrounding text by indenting it with one tab, and also by marking where the proof ends.  To do this, leave a blank line after the statement of the theorem, adjust the indenting to one tab, and type `done`.  You will type your proof between the statement of the theorem and the line containing `done`, so click on the blank line between them to position the cursor there.  Lean can be fussy about indenting; it will be important to indent all steps of the proof by the same amount.
 
 One of the advantages of tactic mode is that Lean displays, in the Lean Infoview pane, information about the status of the proof as your write it.  As soon as you position your cursor on the blank line, Lean displays what it calls the "tactic state" in the Infoview pane.  Your screen should look like this:
 
@@ -114,7 +115,7 @@ h2 : Q → ¬R
 
 The red squiggle under `done` indicates that Lean knows that the proof isn't done.  The tactic state in the Infoview pane is very similar to the lists of givens and goals that are used in *HTPI*.  The hypotheses `h1 : P → Q` and `h2 : Q → ¬R` are examples of what are called *givens* in *HTPI*.  The tactic state above says that `P`, `Q`, and `R` stand for propositions, and then it lists the two givens `h1` and `h2`.  The symbol `⊢` in the last line labels the *goal*, `R → ¬P`.  The tactic state is a valuable tool for guiding you as you are figuring out a proof; whenever you are trying to decide on the next step of a proof, you should look at the tactic state to see what givens you have to work with and what goal you need to prove.
 
-From the givens `h1` and `h2` it shouldn't be hard to prove `P → ¬R`, but the goal is `R → ¬P`.  This suggests that we should prove the contrapositive of the goal.  Type `contrapos` (indented by one tab) to tell Lean that you want to replace the goal with its contrapositive.  As soon as you type `contrapos`, Lean will update the tactic state to reflect the change in the goal.  You should now see this:
+From the givens `h1` and `h2` it shouldn't be hard to prove `P → ¬R`, but the goal is `R → ¬P`.  This suggests that we should prove the contrapositive of the goal.  Type `contrapos` (indented by one tab, to match the indenting of `done`) to tell Lean that you want to replace the goal with its contrapositive.  As soon as you type `contrapos`, Lean will update the tactic state to reflect the change in the goal.  You should now see this:
 
 ::: {.inout}
 ::: {.inpt}
