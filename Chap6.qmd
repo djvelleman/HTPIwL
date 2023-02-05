@@ -166,7 +166,7 @@ theorem Like_Example_6_1_1 :
     ∀ (n : Nat), (Sum i from 0 to n, 2 ^ i) + 1 = 2 ^ (n + 1)
 ```
 
-We will have more to say later about how the notation `Sum i from k to n, f i` is defined.  But to use the notation in a proof, we will just need to know a couple of theorems.  The `#check` command will tell us the meanings of the theorems `sum_base`, `sum_step`, and `sum_from_zero_step`:
+We will have more to say later about how the notation `Sum i from k to n, f i` is defined.  But to use the notation in a proof, we will just need to know a few theorems.  The `#check` command will tell us the meanings of the theorems `sum_base`, `sum_step`, and `sum_from_zero_step`:
 
 ::: {.ind}
 ```
@@ -455,7 +455,7 @@ theorem Example_6_2_1 {A : Type} (R : BinRel A) (h : partial_order R) :
       ∃ (x : A), minimalElt R x B
 ```
 
-When we use mathematical induction to prove this theorem, the base case will be `n = 1`.  To prove the base case, we start by assuming `B` is a set with one element.  We can then use the theorem `one_elt_iff_singleton` to conclude that `B = {b}`, for some `b` of type `A`.  We need to prove that `B` has a minimal element, and the only possibility for the minimal element is `b`.  Verifying that `minimalElt R b B` is straightforward.  Here is the proof of the base case:
+When we use mathematical induction to prove this theorem, the base case will be `n = 1`.  To write the proof for the base case, we start by assuming `B` is a set with one element.  We can then use the theorem `one_elt_iff_singleton` to conclude that `B = {b}`, for some `b` of type `A`.  We need to prove that `B` has a minimal element, and the only possibility for the minimal element is `b`.  Verifying that `minimalElt R b B` is straightforward.  Here is the proof of the base case:
 
 ```lean
 theorem Example_6_2_1 {A : Type} (R : BinRel A) (h : partial_order R) :
@@ -911,7 +911,7 @@ theorem Example_6_3_2_cheating : ∀ (a : Real) (m n : Nat),
   done
 ```
 
-Well, that wasn't really fair.  The `ring` tactic knows the laws of exponents, so it has no trouble proving this theorem.  But we want to know why the law holds, so let's see if we can prove it without using `ring`.  The following proof is essentially the same as the proof in *HTPI*:
+Well, that wasn't really fair.  The `ring` tactic knows the laws of exponents, so it has no trouble proving this theorem.  But we want to know *why* the law holds, so let's see if we can prove it without using `ring`.  The following proof is essentially the same as the proof in *HTPI*:
 
 ```lean
 theorem Example_6_3_2 : ∀ (a : Real) (m n : Nat),
@@ -967,7 +967,7 @@ h1 : x > -1
 
 Look carefully at the goal in the tactic state.  Why is there a `↑` before the last `n`?  The reason has to do with types.  The variable `x` has type `Real` and `n` has type `Nat`, so how can Lean multiply `n` by `x`?  Remember, in Lean, the natural numbers are not a subset of the real numbers.  The two types are completely separate, but for each natural number, there is a corresponding real number.  To multiply `n` by `x`, Lean had to convert `n` to the corresponding real number, through a process called *coercion*.  The notation `↑n` denotes the result of *coercing* (or *casting*) `n` to another type---in this case, `Real`.  Since `↑n` and `x` are both real numbers, Lean can use the multiplication operation on the real numbers to multiply them.  As we will see, the need for coercion in this example will make the proof a bit more complicated, because we'll need to use some theorems about coercions.  Theorems about coercion of natural numbers to some other type often have names that start `Nat.cast`.
 
-Continuing with the proof, let's try mathematical induction:
+Continuing with the proof, since exponentiation is defined recursively, let's try mathematical induction:
 
 ::: {.inout}
 ::: {.inpt}
@@ -1056,7 +1056,7 @@ theorem ??Example_6_3_4:: : ∀ (x : Real), x > -1 →
         _ ≥ (1 + x) * (1 + n * x) := sorry
         _ = 1 + x + n * x + n * x * x := by ring
         _ ≥ 1 + x + n * x + 0 := sorry
-        _ = 1 + (n + 1) * x := by ring
+        _ = 1 + (↑n + 1) * x := by ring
     done
   done
 ```
@@ -1101,7 +1101,7 @@ theorem ??Example_6_3_4:: : ∀ (x : Real), x > -1 →
         _ ≥ (1 + x) * (1 + n * x) := mul_le_mul_of_nonneg_left ih h2
         _ = 1 + x + n * x + n * x * x := by ring
         _ ≥ 1 + x + n * x + 0 := add_le_add_left h3 _
-        _ = 1 + (n + 1) * x := by ring
+        _ = 1 + (↑n + 1) * x := by ring
     done
   done
 ```
@@ -1135,17 +1135,19 @@ theorem Example_6_3_4 : ∀ (x : Real), x > -1 →
     have h3 : n * x * x ≥ 0 := by
       have h4 : x * x ≥ 0 := mul_self_nonneg x
       have h5 : (↑n : Real) ≥ 0 := Nat.cast_nonneg n
-      calc n * x * x
-          = n * (x * x) := mul_assoc _ _ _
-        _ ≥ n * 0 := mul_le_mul_of_nonneg_left h4 h5
-        _ = 0 := by ring
+      show n * x * x ≥ 0 from 
+        calc n * x * x
+            = n * (x * x) := mul_assoc _ _ _
+          _ ≥ n * 0 := mul_le_mul_of_nonneg_left h4 h5
+          _ = 0 := by ring
+      done
     show (1 + x) ^ (n + 1) ≥ 1 + (↑n + 1) * x from
       calc (1 + x) ^ (n + 1)
           = (1 + x) * (1 + x) ^ n := by rfl
         _ ≥ (1 + x) * (1 + n * x) := mul_le_mul_of_nonneg_left ih h2
         _ = 1 + x + n * x + n * x * x := by ring
         _ ≥ 1 + x + n * x + 0 := add_le_add_left h3 _
-        _ = 1 + (n + 1) * x := by ring
+        _ = 1 + (↑n + 1) * x := by ring
     done
   done
 ```

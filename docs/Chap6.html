@@ -359,7 +359,7 @@ $$
 <p>And to state the same theorem in Lean, we will write:</p>
 <div class="sourceCode" id="cb8"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Like_Example_6_1_1 :</span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>    ∀ (n : Nat), (<span class="kw">Sum</span> i <span class="kw">from</span> 0 <span class="kw">to</span> n, 2 ^ i) + 1 = 2 ^ (n + 1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>We will have more to say later about how the notation <code>Sum i from k to n, f i</code> is defined. But to use the notation in a proof, we will just need to know a couple of theorems. The <code>#check</code> command will tell us the meanings of the theorems <code>sum_base</code>, <code>sum_step</code>, and <code>sum_from_zero_step</code>:</p>
+<p>We will have more to say later about how the notation <code>Sum i from k to n, f i</code> is defined. But to use the notation in a proof, we will just need to know a few theorems. The <code>#check</code> command will tell us the meanings of the theorems <code>sum_base</code>, <code>sum_step</code>, and <code>sum_from_zero_step</code>:</p>
 <div class="ind">
 <pre><code>@sum_base : ∀ {A : Type} [inst : AddZeroClass A] {k : ℕ} {f : ℕ → A},
             Sum i from k to k, f i = f k
@@ -553,7 +553,7 @@ $$
 <div class="sourceCode" id="cb30"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Example_6_2_1 {A : <span class="kw">Type</span>} (R : BinRel A) (h : partial_order R) :</span>
 <span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a>    ∀ n ≥ 1, ∀ (B : Set A), numElts B n →</span>
 <span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a>      ∃ (x : A), minimalElt R x B</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>When we use mathematical induction to prove this theorem, the base case will be <code>n = 1</code>. To prove the base case, we start by assuming <code>B</code> is a set with one element. We can then use the theorem <code>one_elt_iff_singleton</code> to conclude that <code>B = {b}</code>, for some <code>b</code> of type <code>A</code>. We need to prove that <code>B</code> has a minimal element, and the only possibility for the minimal element is <code>b</code>. Verifying that <code>minimalElt R b B</code> is straightforward. Here is the proof of the base case:</p>
+<p>When we use mathematical induction to prove this theorem, the base case will be <code>n = 1</code>. To write the proof for the base case, we start by assuming <code>B</code> is a set with one element. We can then use the theorem <code>one_elt_iff_singleton</code> to conclude that <code>B = {b}</code>, for some <code>b</code> of type <code>A</code>. We need to prove that <code>B</code> has a minimal element, and the only possibility for the minimal element is <code>b</code>. Verifying that <code>minimalElt R b B</code> is straightforward. Here is the proof of the base case:</p>
 <div class="sourceCode" id="cb31"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Example_6_2_1 {A : <span class="kw">Type</span>} (R : BinRel A) (h : partial_order R) :</span>
 <span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a>    ∀ n ≥ 1, ∀ (B : Set A), numElts B n →</span>
 <span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a>      ∃ (x : A), minimalElt R x B := <span class="kw">by</span></span>
@@ -898,7 +898,7 @@ $$
 <span id="cb57-3"><a href="#cb57-3" aria-hidden="true" tabindex="-1"></a>  <span class="kw">fix</span> a : Real; <span class="kw">fix</span> m : Nat; <span class="kw">fix</span> n : Nat</span>
 <span id="cb57-4"><a href="#cb57-4" aria-hidden="true" tabindex="-1"></a>  <span class="kw">ring</span></span>
 <span id="cb57-5"><a href="#cb57-5" aria-hidden="true" tabindex="-1"></a>  <span class="kw">done</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>Well, that wasn’t really fair. The <code>ring</code> tactic knows the laws of exponents, so it has no trouble proving this theorem. But we want to know why the law holds, so let’s see if we can prove it without using <code>ring</code>. The following proof is essentially the same as the proof in <em>HTPI</em>:</p>
+<p>Well, that wasn’t really fair. The <code>ring</code> tactic knows the laws of exponents, so it has no trouble proving this theorem. But we want to know <em>why</em> the law holds, so let’s see if we can prove it without using <code>ring</code>. The following proof is essentially the same as the proof in <em>HTPI</em>:</p>
 <div class="sourceCode" id="cb58"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb58-1"><a href="#cb58-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Example_6_3_2 : ∀ (a : Real) (m n : Nat),</span>
 <span id="cb58-2"><a href="#cb58-2" aria-hidden="true" tabindex="-1"></a>    a ^ (m + n) = a ^ m * a ^ n := <span class="kw">by</span></span>
 <span id="cb58-3"><a href="#cb58-3" aria-hidden="true" tabindex="-1"></a>  <span class="kw">fix</span> a : Real; <span class="kw">fix</span> m : Nat</span>
@@ -942,7 +942,7 @@ $$
 </div>
 </div>
 <p>Look carefully at the goal in the tactic state. Why is there a <code>↑</code> before the last <code>n</code>? The reason has to do with types. The variable <code>x</code> has type <code>Real</code> and <code>n</code> has type <code>Nat</code>, so how can Lean multiply <code>n</code> by <code>x</code>? Remember, in Lean, the natural numbers are not a subset of the real numbers. The two types are completely separate, but for each natural number, there is a corresponding real number. To multiply <code>n</code> by <code>x</code>, Lean had to convert <code>n</code> to the corresponding real number, through a process called <em>coercion</em>. The notation <code>↑n</code> denotes the result of <em>coercing</em> (or <em>casting</em>) <code>n</code> to another type—in this case, <code>Real</code>. Since <code>↑n</code> and <code>x</code> are both real numbers, Lean can use the multiplication operation on the real numbers to multiply them. As we will see, the need for coercion in this example will make the proof a bit more complicated, because we’ll need to use some theorems about coercions. Theorems about coercion of natural numbers to some other type often have names that start <code>Nat.cast</code>.</p>
-<p>Continuing with the proof, let’s try mathematical induction:</p>
+<p>Continuing with the proof, since exponentiation is defined recursively, let’s try mathematical induction:</p>
 <div class="inout">
 <div class="inpt">
 <div class="sourceCode" id="cb61"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb61-1"><a href="#cb61-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Example_6_3_4 : ∀ (x : Real), x &gt; -1 →</span>
@@ -1015,7 +1015,7 @@ $$
 <span id="cb65-17"><a href="#cb65-17" aria-hidden="true" tabindex="-1"></a>        _ ≥ (1 + x) * (1 + n * x) := <span class="cn">sorry</span></span>
 <span id="cb65-18"><a href="#cb65-18" aria-hidden="true" tabindex="-1"></a>        _ = 1 + x + n * x + n * x * x := <span class="kw">by</span> <span class="kw">ring</span></span>
 <span id="cb65-19"><a href="#cb65-19" aria-hidden="true" tabindex="-1"></a>        _ ≥ 1 + x + n * x + 0 := <span class="cn">sorry</span></span>
-<span id="cb65-20"><a href="#cb65-20" aria-hidden="true" tabindex="-1"></a>        _ = 1 + (n + 1) * x := <span class="kw">by</span> <span class="kw">ring</span></span>
+<span id="cb65-20"><a href="#cb65-20" aria-hidden="true" tabindex="-1"></a>        _ = 1 + (↑n + 1) * x := <span class="kw">by</span> <span class="kw">ring</span></span>
 <span id="cb65-21"><a href="#cb65-21" aria-hidden="true" tabindex="-1"></a>    <span class="kw">done</span></span>
 <span id="cb65-22"><a href="#cb65-22" aria-hidden="true" tabindex="-1"></a>  <span class="kw">done</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>Note that in the calculational proof, each <code>n</code> that is multiplied by <code>x</code> is really <code>↑n</code>, but we don’t need to say so explicitly; Lean fills in coercions automatically when they are required.</p>
@@ -1051,7 +1051,7 @@ $$
 <span id="cb67-19"><a href="#cb67-19" aria-hidden="true" tabindex="-1"></a>        _ ≥ (1 + x) * (1 + n * x) := mul_le_mul_of_nonneg_left ih h2</span>
 <span id="cb67-20"><a href="#cb67-20" aria-hidden="true" tabindex="-1"></a>        _ = 1 + x + n * x + n * x * x := <span class="kw">by</span> <span class="kw">ring</span></span>
 <span id="cb67-21"><a href="#cb67-21" aria-hidden="true" tabindex="-1"></a>        _ ≥ 1 + x + n * x + 0 := add_le_add_left h3 _</span>
-<span id="cb67-22"><a href="#cb67-22" aria-hidden="true" tabindex="-1"></a>        _ = 1 + (n + 1) * x := <span class="kw">by</span> <span class="kw">ring</span></span>
+<span id="cb67-22"><a href="#cb67-22" aria-hidden="true" tabindex="-1"></a>        _ = 1 + (↑n + 1) * x := <span class="kw">by</span> <span class="kw">ring</span></span>
 <span id="cb67-23"><a href="#cb67-23" aria-hidden="true" tabindex="-1"></a>    <span class="kw">done</span></span>
 <span id="cb67-24"><a href="#cb67-24" aria-hidden="true" tabindex="-1"></a>  <span class="kw">done</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>The <code>linarith</code> tactic is able to prove <code>1 + x ≥ 0</code>, since it follows easily from <code>h1 : x &gt; -1</code>. But how can we prove <code>n * x * x ≥ 0</code>? We start with the fact that the square of any real number is nonnegative:</p>
@@ -1077,19 +1077,21 @@ $$
 <span id="cb69-15"><a href="#cb69-15" aria-hidden="true" tabindex="-1"></a>    <span class="kw">have</span> h3 : n * x * x ≥ 0 := <span class="kw">by</span></span>
 <span id="cb69-16"><a href="#cb69-16" aria-hidden="true" tabindex="-1"></a>      <span class="kw">have</span> h4 : x * x ≥ 0 := mul_self_nonneg x</span>
 <span id="cb69-17"><a href="#cb69-17" aria-hidden="true" tabindex="-1"></a>      <span class="kw">have</span> h5 : (↑n : Real) ≥ 0 := Nat.cast_nonneg n</span>
-<span id="cb69-18"><a href="#cb69-18" aria-hidden="true" tabindex="-1"></a>      <span class="kw">calc</span> n * x * x</span>
-<span id="cb69-19"><a href="#cb69-19" aria-hidden="true" tabindex="-1"></a>          = n * (x * x) := mul_assoc _ _ _</span>
-<span id="cb69-20"><a href="#cb69-20" aria-hidden="true" tabindex="-1"></a>        _ ≥ n * 0 := mul_le_mul_of_nonneg_left h4 h5</span>
-<span id="cb69-21"><a href="#cb69-21" aria-hidden="true" tabindex="-1"></a>        _ = 0 := <span class="kw">by</span> <span class="kw">ring</span></span>
-<span id="cb69-22"><a href="#cb69-22" aria-hidden="true" tabindex="-1"></a>    <span class="kw">show</span> (1 + x) ^ (n + 1) ≥ 1 + (↑n + 1) * x <span class="kw">from</span></span>
-<span id="cb69-23"><a href="#cb69-23" aria-hidden="true" tabindex="-1"></a>      <span class="kw">calc</span> (1 + x) ^ (n + 1)</span>
-<span id="cb69-24"><a href="#cb69-24" aria-hidden="true" tabindex="-1"></a>          = (1 + x) * (1 + x) ^ n := <span class="kw">by</span> <span class="kw">rfl</span></span>
-<span id="cb69-25"><a href="#cb69-25" aria-hidden="true" tabindex="-1"></a>        _ ≥ (1 + x) * (1 + n * x) := mul_le_mul_of_nonneg_left ih h2</span>
-<span id="cb69-26"><a href="#cb69-26" aria-hidden="true" tabindex="-1"></a>        _ = 1 + x + n * x + n * x * x := <span class="kw">by</span> <span class="kw">ring</span></span>
-<span id="cb69-27"><a href="#cb69-27" aria-hidden="true" tabindex="-1"></a>        _ ≥ 1 + x + n * x + 0 := add_le_add_left h3 _</span>
-<span id="cb69-28"><a href="#cb69-28" aria-hidden="true" tabindex="-1"></a>        _ = 1 + (n + 1) * x := <span class="kw">by</span> <span class="kw">ring</span></span>
-<span id="cb69-29"><a href="#cb69-29" aria-hidden="true" tabindex="-1"></a>    <span class="kw">done</span></span>
-<span id="cb69-30"><a href="#cb69-30" aria-hidden="true" tabindex="-1"></a>  <span class="kw">done</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb69-18"><a href="#cb69-18" aria-hidden="true" tabindex="-1"></a>      <span class="kw">show</span> n * x * x ≥ 0 <span class="kw">from</span> </span>
+<span id="cb69-19"><a href="#cb69-19" aria-hidden="true" tabindex="-1"></a>        <span class="kw">calc</span> n * x * x</span>
+<span id="cb69-20"><a href="#cb69-20" aria-hidden="true" tabindex="-1"></a>            = n * (x * x) := mul_assoc _ _ _</span>
+<span id="cb69-21"><a href="#cb69-21" aria-hidden="true" tabindex="-1"></a>          _ ≥ n * 0 := mul_le_mul_of_nonneg_left h4 h5</span>
+<span id="cb69-22"><a href="#cb69-22" aria-hidden="true" tabindex="-1"></a>          _ = 0 := <span class="kw">by</span> <span class="kw">ring</span></span>
+<span id="cb69-23"><a href="#cb69-23" aria-hidden="true" tabindex="-1"></a>      <span class="kw">done</span></span>
+<span id="cb69-24"><a href="#cb69-24" aria-hidden="true" tabindex="-1"></a>    <span class="kw">show</span> (1 + x) ^ (n + 1) ≥ 1 + (↑n + 1) * x <span class="kw">from</span></span>
+<span id="cb69-25"><a href="#cb69-25" aria-hidden="true" tabindex="-1"></a>      <span class="kw">calc</span> (1 + x) ^ (n + 1)</span>
+<span id="cb69-26"><a href="#cb69-26" aria-hidden="true" tabindex="-1"></a>          = (1 + x) * (1 + x) ^ n := <span class="kw">by</span> <span class="kw">rfl</span></span>
+<span id="cb69-27"><a href="#cb69-27" aria-hidden="true" tabindex="-1"></a>        _ ≥ (1 + x) * (1 + n * x) := mul_le_mul_of_nonneg_left ih h2</span>
+<span id="cb69-28"><a href="#cb69-28" aria-hidden="true" tabindex="-1"></a>        _ = 1 + x + n * x + n * x * x := <span class="kw">by</span> <span class="kw">ring</span></span>
+<span id="cb69-29"><a href="#cb69-29" aria-hidden="true" tabindex="-1"></a>        _ ≥ 1 + x + n * x + 0 := add_le_add_left h3 _</span>
+<span id="cb69-30"><a href="#cb69-30" aria-hidden="true" tabindex="-1"></a>        _ = 1 + (↑n + 1) * x := <span class="kw">by</span> <span class="kw">ring</span></span>
+<span id="cb69-31"><a href="#cb69-31" aria-hidden="true" tabindex="-1"></a>    <span class="kw">done</span></span>
+<span id="cb69-32"><a href="#cb69-32" aria-hidden="true" tabindex="-1"></a>  <span class="kw">done</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>Before ending this section, we’ll return to a topic left unexplained before. We can now describe how <code>Sum i from k to n, f i</code> is defined. The key is a function <code>sum_less</code>, which is defined by recursion:</p>
 <div class="sourceCode" id="cb70"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb70-1"><a href="#cb70-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> sum_less {A : <span class="kw">Type</span>} [AddZeroClass A] (x : Nat) (f : Nat → A) : A :=</span>
 <span id="cb70-2"><a href="#cb70-2" aria-hidden="true" tabindex="-1"></a>  match x <span class="kw">with</span></span>
