@@ -1115,7 +1115,7 @@ The `linarith` tactic is able to prove `1 + x ≥ 0`, since it follows easily fr
 ```
 :::
 
-So `mul_self_nonneg x` is a proof of `x * x ≥ 0`.  To get `n * x * x ≥ 0`, which means `↑n * x * x ≥ 0`, we'll need another application of `mul_le_mul_of_nonneg_left`, and we'll need to know `↑n ≥ 0`.  But if we write `have ... : ↑n ≥ 0 := ...`, then Lean won't know what we mean.  The problem is that this last statement is ambiguous.  The notation `↑n` means "`n` coerced to some other type," but what is the other type?  Lean can usually figure this out from context, but in the statement `↑n ≥ 0` there is no context to tell Lean what type to use.  So we must say `(↑n : Real) ≥ 0` to eliminate the ambiguity.  The theorem `Nat.cast_nonneg` proves this statement, providing the last piece of the puzzle.  Here's the complete proof:
+So `mul_self_nonneg x` is a proof of `x * x ≥ 0`.  To get `n * x * x ≥ 0`, which means `↑n * x * x ≥ 0`, we'll need another application of `mul_le_mul_of_nonneg_left`, and we'll need to know `↑n ≥ 0`.  But if we use the `have` tactic to assert `↑n ≥ 0`, then Lean won't know what we mean.  The problem is that this last statement is ambiguous.  The notation `↑n` means "`n` coerced to some other type," but what is the other type?  Lean can usually figure this out from context, but in the statement `↑n ≥ 0` there is no context to tell Lean what type to use.  So we must say `(↑n : Real) ≥ 0` to eliminate the ambiguity.  The theorem `Nat.cast_nonneg` proves this statement, providing the last piece of the puzzle.  Here's the complete proof:
 
 ```lean
 theorem Example_6_3_4 : ∀ (x : Real), x > -1 →

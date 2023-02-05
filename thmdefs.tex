@@ -23,3 +23,6 @@
 % Usage:
 % ::: {.thm} will create an unnumbered thm environment with title Theorem.
 % ::: {.nthm arguments="Name of Theorem"} will create an unnumbered theorem whose title is Name of Theorem.
+
+\let\oldgreater\textgreater
+\renewcommand{\textgreater}{\null\oldgreater}   % To prevent => changing to double arrow

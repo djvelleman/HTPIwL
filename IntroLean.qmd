@@ -60,7 +60,7 @@ theorem extremely_easy (P : Prop) (h : P) : P := **f::
 
 This indicates that Lean has detected an error in the proof.  Lean always indicates errors by putting a red squiggle under the offending text.  Lean also puts a message in the Lean Infoview pane explaining what the error is.  (If you don't see the Infoview pane, choose "Command Palette ..." in the "View" menu, and then type "Lean" in the text box that appears.  You will see a list of commands that start with "Lean".  Click on "Lean 4: Infoview: Toggle" to make the Infoview pane appear.)  In this case, the message is `unknown identifier 'f'`.  The message is introduced by a heading, in red, that identifies the file, the line number, and the character position on that line where the error appears.  If you change `f` back to `h`, the red squiggle and error message go away.
 
-Let's try a slightly less trivial example.  You can type the next theorem below the previous one, leaving a blank line between them to keep them visually separate.  To type the `→` symbol in the next example, type `\to` and then hit either the space bar or the tab key; when you type either space or tab, the `\to` will change to `→`.  Alternatively, you can type `\r` (short for "right arrow") or `\imp` (short for "implies"), again followed by either space or tab.  Or, you can type [`->`]{.excl}\texttt{-\null>}, and Lean will interpret it as `→`.
+Let's try a slightly less trivial example.  You can type the next theorem below the previous one, leaving a blank line between them to keep them visually separate.  To type the `→` symbol in the next example, type `\to` and then hit either the space bar or the tab key; when you type either space or tab, the `\to` will change to `→`.  Alternatively, you can type `\r` (short for "right arrow") or `\imp` (short for "implies"), again followed by either space or tab.  Or, you can type `->`, and Lean will interpret it as `→`.
 
 ```lean
 theorem very_easy
@@ -221,8 +221,8 @@ Before continuing, it might be useful to summarize how you type statements into 
 | `¬` | `\not` or `\n` | `Not` |
 | `∧` | `\and` | `/\` |
 | `∨` | `\or` or `\v` | `\/` |
-| `→` | `\to` or `\r` or `\imp` | [`->`]{.excl}\texttt{-\null>} |
-| `↔` | `\iff` or `\lr` | [`<->`]{.excl}\texttt{<-\null>} |
+| `→` | `\to` or `\r` or `\imp` | `->` |
+| `↔` | `\iff` or `\lr` | `<->` |
 :::
 
 Lean has conventions that it follows to interpret a logical statement when there are not enough parentheses to indicate how terms are grouped in the statement.  For our purposes, the most important of these conventions is that `P → Q → R` is interpreted as `P → (Q → R)`, not `(P → Q) → R`.  The reason for this is simply that statements of the form `P → (Q → R)` come up much more often in proofs than statements of the form `(P → Q) → R`.  (Lean also follows this "grouping-to-the-right" convention for `∧` and `∨`, although this makes less of a difference, since these connectives are associative.)  Of course, when in doubt about how to type a statement, you can always put in extra parentheses to avoid confusion.
