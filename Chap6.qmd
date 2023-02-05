@@ -1178,18 +1178,26 @@ So `sum_less 3 f` adds up all values of `f i`, for `i < 3`.  More generally, `su
 
 ::: {.numex arguments="1"}
 ```lean
-theorem Exercise_6_3_7b (f : Nat → Real) (c : Real) : ∀ (n : Nat),
-    Sum i from 0 to n, c * f i = c * Sum i from 0 to n, f i := sorry
+theorem Exercise_6_3_4 : ∀ (n : Nat),
+    3 * (Sum i from 0 to n, (2 * i + 1) ^ 2) =
+    (n + 1) * (2 * n + 1) * (2 * n + 3) := sorry
 ```
 :::
 
 ::: {.numex arguments="2"}
 ```lean
-theorem fact_pos : ∀ (n : Nat), fact n ≥ 1 := sorry
+theorem Exercise_6_3_7b (f : Nat → Real) (c : Real) : ∀ (n : Nat),
+    Sum i from 0 to n, c * f i = c * Sum i from 0 to n, f i := sorry
 ```
 :::
 
 ::: {.numex arguments="3"}
+```lean
+theorem fact_pos : ∀ (n : Nat), fact n ≥ 1 := sorry
+```
+:::
+
+::: {.numex arguments="4"}
 ```lean
 --Hint:  Use the theorem fact_pos from the previous exercise
 theorem Exercise_6_3_13a (k : Nat) : ∀ (n : Nat),
@@ -1197,7 +1205,7 @@ theorem Exercise_6_3_13a (k : Nat) : ∀ (n : Nat),
 ```
 :::
 
-::: {.numex arguments="4"}
+::: {.numex arguments="5"}
 ```lean
 --Hint:  Use the theorem in the previous exercise.
 --You may find it useful to first prove a lemma:
@@ -1207,7 +1215,7 @@ theorem Exercise_6_3_13b (k : Nat) : ∀ n ≥ 2 * k ^ 2,
 ```
 :::
 
-5\. A sequence is defined recursively as follows:
+6\. A sequence is defined recursively as follows:
 
 ```lean
 def seq_6_3_15 (x : Nat) : Int :=
@@ -1223,7 +1231,7 @@ theorem Exercise_6_3_15 : ∀ (n : Nat),
     seq_6_3_15 n = 2 ^ n - n - 1 := sorry
 ```
 
-6\. A sequence is defined recursively as follows:
+7\. A sequence is defined recursively as follows:
 
 ```lean
 def seq_6_3_16 (x : Nat) : Nat :=

@@ -1108,40 +1108,45 @@ $$
 <section id="exercises-2" class="level3">
 <h3 class="anchored" data-anchor-id="exercises-2">Exercises</h3>
 <div class="numex" data-arguments="1">
-<div class="sourceCode" id="cb72"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb72-1"><a href="#cb72-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Exercise_6_3_7b (f : Nat → Real) (c : Real) : ∀ (n : Nat),</span>
-<span id="cb72-2"><a href="#cb72-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">Sum</span> i <span class="kw">from</span> 0 <span class="kw">to</span> n, c * f i = c * <span class="kw">Sum</span> i <span class="kw">from</span> 0 <span class="kw">to</span> n, f i := <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb72"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb72-1"><a href="#cb72-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Exercise_6_3_4 : ∀ (n : Nat),</span>
+<span id="cb72-2"><a href="#cb72-2" aria-hidden="true" tabindex="-1"></a>    3 * (<span class="kw">Sum</span> i <span class="kw">from</span> 0 <span class="kw">to</span> n, (2 * i + 1) ^ 2) =</span>
+<span id="cb72-3"><a href="#cb72-3" aria-hidden="true" tabindex="-1"></a>    (n + 1) * (2 * n + 1) * (2 * n + 3) := <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="numex" data-arguments="2">
-<div class="sourceCode" id="cb73"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb73-1"><a href="#cb73-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> fact_pos : ∀ (n : Nat), fact n ≥ 1 := <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb73"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb73-1"><a href="#cb73-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Exercise_6_3_7b (f : Nat → Real) (c : Real) : ∀ (n : Nat),</span>
+<span id="cb73-2"><a href="#cb73-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">Sum</span> i <span class="kw">from</span> 0 <span class="kw">to</span> n, c * f i = c * <span class="kw">Sum</span> i <span class="kw">from</span> 0 <span class="kw">to</span> n, f i := <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="numex" data-arguments="3">
-<div class="sourceCode" id="cb74"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb74-1"><a href="#cb74-1" aria-hidden="true" tabindex="-1"></a><span class="co">--Hint:  Use the theorem fact_pos from the previous exercise</span></span>
-<span id="cb74-2"><a href="#cb74-2" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Exercise_6_3_13a (k : Nat) : ∀ (n : Nat),</span>
-<span id="cb74-3"><a href="#cb74-3" aria-hidden="true" tabindex="-1"></a>    fact (k ^ 2 + n) ≥ k ^ (2 * n) := <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb74"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb74-1"><a href="#cb74-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> fact_pos : ∀ (n : Nat), fact n ≥ 1 := <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="numex" data-arguments="4">
-<div class="sourceCode" id="cb75"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb75-1"><a href="#cb75-1" aria-hidden="true" tabindex="-1"></a><span class="co">--Hint:  Use the theorem in the previous exercise.</span></span>
-<span id="cb75-2"><a href="#cb75-2" aria-hidden="true" tabindex="-1"></a><span class="co">--You may find it useful to first prove a lemma:</span></span>
-<span id="cb75-3"><a href="#cb75-3" aria-hidden="true" tabindex="-1"></a><span class="co">--∀ (k : Nat), 2 * k ^ 2 + 1 ≥ k</span></span>
-<span id="cb75-4"><a href="#cb75-4" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Exercise_6_3_13b (k : Nat) : ∀ n ≥ 2 * k ^ 2,</span>
-<span id="cb75-5"><a href="#cb75-5" aria-hidden="true" tabindex="-1"></a>    fact n ≥ k ^ n := <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb75"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb75-1"><a href="#cb75-1" aria-hidden="true" tabindex="-1"></a><span class="co">--Hint:  Use the theorem fact_pos from the previous exercise</span></span>
+<span id="cb75-2"><a href="#cb75-2" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Exercise_6_3_13a (k : Nat) : ∀ (n : Nat),</span>
+<span id="cb75-3"><a href="#cb75-3" aria-hidden="true" tabindex="-1"></a>    fact (k ^ 2 + n) ≥ k ^ (2 * n) := <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>5. A sequence is defined recursively as follows:</p>
-<div class="sourceCode" id="cb76"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb76-1"><a href="#cb76-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> seq_6_3_15 (x : Nat) : Int :=</span>
-<span id="cb76-2"><a href="#cb76-2" aria-hidden="true" tabindex="-1"></a>  match x <span class="kw">with</span></span>
-<span id="cb76-3"><a href="#cb76-3" aria-hidden="true" tabindex="-1"></a>    | 0 =&gt; 0</span>
-<span id="cb76-4"><a href="#cb76-4" aria-hidden="true" tabindex="-1"></a>    | n + 1 =&gt; 2 * seq_6_3_15 n + n</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>Prove the following theorem about this sequence:</p>
-<div class="sourceCode" id="cb77"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb77-1"><a href="#cb77-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Exercise_6_3_15 : ∀ (n : Nat),</span>
-<span id="cb77-2"><a href="#cb77-2" aria-hidden="true" tabindex="-1"></a>    seq_6_3_15 n = 2 ^ n - n - 1 := <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="numex" data-arguments="5">
+<div class="sourceCode" id="cb76"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb76-1"><a href="#cb76-1" aria-hidden="true" tabindex="-1"></a><span class="co">--Hint:  Use the theorem in the previous exercise.</span></span>
+<span id="cb76-2"><a href="#cb76-2" aria-hidden="true" tabindex="-1"></a><span class="co">--You may find it useful to first prove a lemma:</span></span>
+<span id="cb76-3"><a href="#cb76-3" aria-hidden="true" tabindex="-1"></a><span class="co">--∀ (k : Nat), 2 * k ^ 2 + 1 ≥ k</span></span>
+<span id="cb76-4"><a href="#cb76-4" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Exercise_6_3_13b (k : Nat) : ∀ n ≥ 2 * k ^ 2,</span>
+<span id="cb76-5"><a href="#cb76-5" aria-hidden="true" tabindex="-1"></a>    fact n ≥ k ^ n := <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
 <p>6. A sequence is defined recursively as follows:</p>
-<div class="sourceCode" id="cb78"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb78-1"><a href="#cb78-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> seq_6_3_16 (x : Nat) : Nat :=</span>
-<span id="cb78-2"><a href="#cb78-2" aria-hidden="true" tabindex="-1"></a>  match x <span class="kw">with</span></span>
-<span id="cb78-3"><a href="#cb78-3" aria-hidden="true" tabindex="-1"></a>    | 0 =&gt; 2</span>
-<span id="cb78-4"><a href="#cb78-4" aria-hidden="true" tabindex="-1"></a>    | n + 1 =&gt; (seq_6_3_16 n) ^ 2</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb77"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb77-1"><a href="#cb77-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> seq_6_3_15 (x : Nat) : Int :=</span>
+<span id="cb77-2"><a href="#cb77-2" aria-hidden="true" tabindex="-1"></a>  match x <span class="kw">with</span></span>
+<span id="cb77-3"><a href="#cb77-3" aria-hidden="true" tabindex="-1"></a>    | 0 =&gt; 0</span>
+<span id="cb77-4"><a href="#cb77-4" aria-hidden="true" tabindex="-1"></a>    | n + 1 =&gt; 2 * seq_6_3_15 n + n</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Prove the following theorem about this sequence:</p>
+<div class="sourceCode" id="cb78"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb78-1"><a href="#cb78-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Exercise_6_3_15 : ∀ (n : Nat),</span>
+<span id="cb78-2"><a href="#cb78-2" aria-hidden="true" tabindex="-1"></a>    seq_6_3_15 n = 2 ^ n - n - 1 := <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>7. A sequence is defined recursively as follows:</p>
+<div class="sourceCode" id="cb79"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb79-1"><a href="#cb79-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> seq_6_3_16 (x : Nat) : Nat :=</span>
+<span id="cb79-2"><a href="#cb79-2" aria-hidden="true" tabindex="-1"></a>  match x <span class="kw">with</span></span>
+<span id="cb79-3"><a href="#cb79-3" aria-hidden="true" tabindex="-1"></a>    | 0 =&gt; 2</span>
+<span id="cb79-4"><a href="#cb79-4" aria-hidden="true" tabindex="-1"></a>    | n + 1 =&gt; (seq_6_3_16 n) ^ 2</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>Find a formula for <code>seq_6_3_16 n</code>. Fill in the blank in the theorem below with your formula and then prove the theorem.</p>
-<div class="sourceCode" id="cb79"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb79-1"><a href="#cb79-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Exercise_6_3_16 : ∀ (n : Nat),</span>
-<span id="cb79-2"><a href="#cb79-2" aria-hidden="true" tabindex="-1"></a>    seq_6_3_16 n = ___ := <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb80"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb80-1"><a href="#cb80-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Exercise_6_3_16 : ∀ (n : Nat),</span>
+<span id="cb80-2"><a href="#cb80-2" aria-hidden="true" tabindex="-1"></a>    seq_6_3_16 n = ___ := <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 
 
 </section>
