@@ -408,16 +408,24 @@ theorem Exercise_6_1_15 : ∀ n ≥ 10, 2 ^ n > n ^ 3 := sorry
 ```
 :::
 
-For the next exercise you will need the following definitions:
+For the next two exercises you will need the following definitions:
 
 ```lean
-def even_nat (n : Nat) : Prop := ∃ (k : Nat), n = 2 * k
-def odd_nat (n : Nat) : Prop := ∃ (k : Nat), n = 2 * k + 1
+def nat_even (n : Nat) : Prop := ∃ (k : Nat), n = 2 * k
+def nat_odd (n : Nat) : Prop := ∃ (k : Nat), n = 2 * k + 1
 ```
 
 ::: {.numex arguments="6"}
 ```lean
-theorem Exercise_6_1_16a : ∀ (n : Nat), even_nat n ∨ odd_nat n := sorry
+theorem Exercise_6_1_16a1 :
+    ∀ (n : Nat), nat_even n ∨ nat_odd n := sorry
+```
+:::
+
+::: {.numex arguments="7"}
+```lean
+theorem Exercise_6_1_16a2 :
+    ∀ (n : Nat), ¬(nat_even n ∧ nat_odd n) := sorry
 ```
 :::
 
