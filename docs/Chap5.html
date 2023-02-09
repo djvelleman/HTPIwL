@@ -281,11 +281,11 @@ $$
 <span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>  <span class="kw">define</span> <span class="kw">at</span> h2                   <span class="co">--h2: g x = f x</span></span>
 <span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>  <span class="kw">show</span> f x = g x <span class="kw">from</span> h2.symm</span>
 <span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>  <span class="kw">done</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>The axiom of extensionality for sets says that a set is completely determined by its elements. This is what justifies our usual method of defining a set: we specify what its elements are, using notation like <code>{0, 1, 2}</code> or <code>{ x : Nat | x &lt; 3 }</code>. Similarly, the axiom of extensionality for functions says that a function is completely determined by its values, and therefore we can define a function by specifying its values. For instance, we can define a function from <code>Nat</code> to <code>Nat</code> by specifying, for any <code>n : Nat</code>, the result of applying the function to <code>n</code>. As an example of this, we could define the “squaring function” from <code>Nat</code> to <code>Nat</code> to be the function that, when applied to any <code>n : Nat</code>, produces the result <code>n^2</code>. Here are two ways to define this function in Lean:</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> square1 (n : Nat) : Nat := n^2</span>
+<p>The axiom of extensionality for sets says that a set is completely determined by its elements. This is what justifies our usual method of defining a set: we specify what its elements are, using notation like <code>{0, 1, 2}</code> or <code>{ x : Nat | x &lt; 3 }</code>. Similarly, the axiom of extensionality for functions says that a function is completely determined by its values, and therefore we can define a function by specifying its values. For instance, we can define a function from <code>Nat</code> to <code>Nat</code> by specifying, for any <code>n : Nat</code>, the result of applying the function to <code>n</code>. As an example of this, we could define the “squaring function” from <code>Nat</code> to <code>Nat</code> to be the function that, when applied to any <code>n : Nat</code>, produces the result <code>n ^ 2</code>. Here are two ways to define this function in Lean:</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> square1 (n : Nat) : Nat := n ^ 2</span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> square2 : Nat → Nat := fun (n : Nat) =&gt; n^2</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>The first of these definitions uses notation we have used before; it says that if <code>n</code> has type <code>Nat</code>, then the expression <code>square1 n</code> also has type <code>Nat</code>, and it is definitionally equal to <code>n^2</code>. The second definition introduces new Lean notation. It says that <code>square2</code> has type <code>Nat → Nat</code>, and it defines it to be the function that, when applied to any <code>n</code> of type <code>Nat</code>, yields the result <code>n^2</code>. Of course, this also means that <code>square2 n</code> is definitionally equal to <code>n^2</code>. In general, the notation <code>fun (x : A) =&gt; ...</code> means “the function which, when applied to any <code>x</code> of type <code>A</code>, yields the result …” The two definitions above are equivalent. You can ask Lean to confirm this, and try out the squaring function, as follows (the <code>#eval</code> command asks Lean to evaluate an expression):</p>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> square2 : Nat → Nat := fun (n : Nat) =&gt; n ^ 2</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>The first of these definitions uses notation we have used before; it says that if <code>n</code> has type <code>Nat</code>, then the expression <code>square1 n</code> also has type <code>Nat</code>, and it is definitionally equal to <code>n ^ 2</code>. The second definition introduces new Lean notation. It says that <code>square2</code> has type <code>Nat → Nat</code>, and it defines it to be the function that, when applied to any <code>n</code> of type <code>Nat</code>, yields the result <code>n ^ 2</code>. Of course, this also means that <code>square2 n</code> is definitionally equal to <code>n ^ 2</code>. In general, the notation <code>fun (x : A) =&gt; ...</code> means “the function which, when applied to any <code>x</code> of type <code>A</code>, yields the result …” The two definitions above are equivalent. You can ask Lean to confirm this, and try out the squaring function, as follows (the <code>#eval</code> command asks Lean to evaluate an expression):</p>
 <div class="sourceCode" id="cb7"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="kw">example</span> : square1 = square2 := <span class="kw">by</span> <span class="kw">rfl</span></span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="sc">++</span><span class="kw">#eval</span><span class="sc">::</span> square1 7     <span class="co">--Answer: 49</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -812,48 +812,50 @@ f^{-1}(Y) = \{a \in A \mid f(a) \in Y\}.
 <span id="cb65-43"><a href="#cb65-43" aria-hidden="true" tabindex="-1"></a>    <span class="kw">done</span></span>
 <span id="cb65-44"><a href="#cb65-44" aria-hidden="true" tabindex="-1"></a>  <span class="kw">done</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>The rest of Section 5.5 of <em>HTPI</em> consists of statements for you to try to prove. Here are the statements, written as examples in Lean. Some are correct and some are not; some can be made correct by adding additional hypotheses or weakening the conclusion. Prove as much as you can.</p>
-<div class="sourceCode" id="cb66"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb66-1"><a href="#cb66-1" aria-hidden="true" tabindex="-1"></a><span class="kw">example</span> {A B : <span class="kw">Type</span>} (f : A → B) (W X : Set A) :</span>
-<span id="cb66-2"><a href="#cb66-2" aria-hidden="true" tabindex="-1"></a>    image f (W ∪ X) = image f W ∪ image f X := <span class="cn">sorry</span></span>
-<span id="cb66-3"><a href="#cb66-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb66-4"><a href="#cb66-4" aria-hidden="true" tabindex="-1"></a><span class="kw">example</span> {A B : <span class="kw">Type</span>} (f : A → B) (W X : Set A) :</span>
-<span id="cb66-5"><a href="#cb66-5" aria-hidden="true" tabindex="-1"></a>    image f (W \ X) = image f W \ image f X := <span class="cn">sorry</span></span>
-<span id="cb66-6"><a href="#cb66-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb66-7"><a href="#cb66-7" aria-hidden="true" tabindex="-1"></a><span class="kw">example</span> {A B : <span class="kw">Type</span>} (f : A → B) (W X : Set A) :</span>
-<span id="cb66-8"><a href="#cb66-8" aria-hidden="true" tabindex="-1"></a>    W ⊆ X ↔ image f W ⊆ image f X := <span class="cn">sorry</span></span>
-<span id="cb66-9"><a href="#cb66-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb66-10"><a href="#cb66-10" aria-hidden="true" tabindex="-1"></a><span class="kw">example</span> {A B : <span class="kw">Type</span>} (f : A → B) (Y Z : Set B) :</span>
-<span id="cb66-11"><a href="#cb66-11" aria-hidden="true" tabindex="-1"></a>    inverse_image f  (Y ∩ Z) =</span>
-<span id="cb66-12"><a href="#cb66-12" aria-hidden="true" tabindex="-1"></a>        inverse_image f Y ∩ inverse_image f Z := <span class="cn">sorry</span></span>
-<span id="cb66-13"><a href="#cb66-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb66-14"><a href="#cb66-14" aria-hidden="true" tabindex="-1"></a><span class="kw">example</span> {A B : <span class="kw">Type</span>} (f : A → B) (Y Z : Set B) :</span>
-<span id="cb66-15"><a href="#cb66-15" aria-hidden="true" tabindex="-1"></a>    inverse_image f  (Y ∪ Z) =</span>
-<span id="cb66-16"><a href="#cb66-16" aria-hidden="true" tabindex="-1"></a>        inverse_image f Y ∪ inverse_image f Z := <span class="cn">sorry</span></span>
-<span id="cb66-17"><a href="#cb66-17" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb66-18"><a href="#cb66-18" aria-hidden="true" tabindex="-1"></a><span class="kw">example</span> {A B : <span class="kw">Type</span>} (f : A → B) (Y Z : Set B) :</span>
-<span id="cb66-19"><a href="#cb66-19" aria-hidden="true" tabindex="-1"></a>    inverse_image f  (Y \ Z) =</span>
-<span id="cb66-20"><a href="#cb66-20" aria-hidden="true" tabindex="-1"></a>        inverse_image f Y \ inverse_image f Z := <span class="cn">sorry</span></span>
-<span id="cb66-21"><a href="#cb66-21" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb66-22"><a href="#cb66-22" aria-hidden="true" tabindex="-1"></a><span class="kw">example</span> {A B : <span class="kw">Type</span>} (f : A → B) (Y Z : Set B) :</span>
-<span id="cb66-23"><a href="#cb66-23" aria-hidden="true" tabindex="-1"></a>    Y ⊆ Z ↔ inverse_image f Y ⊆ inverse_image f Z := <span class="cn">sorry</span></span>
-<span id="cb66-24"><a href="#cb66-24" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb66-25"><a href="#cb66-25" aria-hidden="true" tabindex="-1"></a><span class="kw">example</span> {A B : <span class="kw">Type</span>} (f : A → B) (X : Set A) :</span>
-<span id="cb66-26"><a href="#cb66-26" aria-hidden="true" tabindex="-1"></a>    inverse_image f (image f X) = X := <span class="cn">sorry</span></span>
-<span id="cb66-27"><a href="#cb66-27" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb66-28"><a href="#cb66-28" aria-hidden="true" tabindex="-1"></a><span class="kw">example</span> {A B : <span class="kw">Type</span>} (f : A → B) (Y : Set B) :</span>
-<span id="cb66-29"><a href="#cb66-29" aria-hidden="true" tabindex="-1"></a>    image f (inverse_image f Y) = Y := <span class="cn">sorry</span></span>
-<span id="cb66-30"><a href="#cb66-30" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb66-31"><a href="#cb66-31" aria-hidden="true" tabindex="-1"></a><span class="kw">example</span> {A : <span class="kw">Type</span>} (f : A → A) (C : Set A) :</span>
-<span id="cb66-32"><a href="#cb66-32" aria-hidden="true" tabindex="-1"></a>    closed f C → image f C ⊆ C := <span class="cn">sorry</span></span>
-<span id="cb66-33"><a href="#cb66-33" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb66-34"><a href="#cb66-34" aria-hidden="true" tabindex="-1"></a><span class="kw">example</span> {A : <span class="kw">Type</span>} (f : A → A) (C : Set A) :</span>
-<span id="cb66-35"><a href="#cb66-35" aria-hidden="true" tabindex="-1"></a>    image f C ⊆ C → C ⊆ inverse_image f C := <span class="cn">sorry</span></span>
-<span id="cb66-36"><a href="#cb66-36" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb66-37"><a href="#cb66-37" aria-hidden="true" tabindex="-1"></a><span class="kw">example</span> {A : <span class="kw">Type</span>} (f : A → A) (C : Set A) :</span>
-<span id="cb66-38"><a href="#cb66-38" aria-hidden="true" tabindex="-1"></a>    C ⊆ inverse_image f C → closed f C := <span class="cn">sorry</span></span>
-<span id="cb66-39"><a href="#cb66-39" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb66-40"><a href="#cb66-40" aria-hidden="true" tabindex="-1"></a><span class="kw">example</span> {A B : <span class="kw">Type</span>} (f : A → B) (g : B → A) (Y : Set B)</span>
-<span id="cb66-41"><a href="#cb66-41" aria-hidden="true" tabindex="-1"></a>    (h1 : f ∘ g = id) (h2 : g ∘ f = id) :</span>
-<span id="cb66-42"><a href="#cb66-42" aria-hidden="true" tabindex="-1"></a>    inverse_image f Y = image g Y := <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb66"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb66-1"><a href="#cb66-1" aria-hidden="true" tabindex="-1"></a><span class="co">--Warning!  Not all of these examples are correct!</span></span>
+<span id="cb66-2"><a href="#cb66-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb66-3"><a href="#cb66-3" aria-hidden="true" tabindex="-1"></a><span class="kw">example</span> {A B : <span class="kw">Type</span>} (f : A → B) (W X : Set A) :</span>
+<span id="cb66-4"><a href="#cb66-4" aria-hidden="true" tabindex="-1"></a>    image f (W ∪ X) = image f W ∪ image f X := <span class="cn">sorry</span></span>
+<span id="cb66-5"><a href="#cb66-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb66-6"><a href="#cb66-6" aria-hidden="true" tabindex="-1"></a><span class="kw">example</span> {A B : <span class="kw">Type</span>} (f : A → B) (W X : Set A) :</span>
+<span id="cb66-7"><a href="#cb66-7" aria-hidden="true" tabindex="-1"></a>    image f (W \ X) = image f W \ image f X := <span class="cn">sorry</span></span>
+<span id="cb66-8"><a href="#cb66-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb66-9"><a href="#cb66-9" aria-hidden="true" tabindex="-1"></a><span class="kw">example</span> {A B : <span class="kw">Type</span>} (f : A → B) (W X : Set A) :</span>
+<span id="cb66-10"><a href="#cb66-10" aria-hidden="true" tabindex="-1"></a>    W ⊆ X ↔ image f W ⊆ image f X := <span class="cn">sorry</span></span>
+<span id="cb66-11"><a href="#cb66-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb66-12"><a href="#cb66-12" aria-hidden="true" tabindex="-1"></a><span class="kw">example</span> {A B : <span class="kw">Type</span>} (f : A → B) (Y Z : Set B) :</span>
+<span id="cb66-13"><a href="#cb66-13" aria-hidden="true" tabindex="-1"></a>    inverse_image f  (Y ∩ Z) =</span>
+<span id="cb66-14"><a href="#cb66-14" aria-hidden="true" tabindex="-1"></a>        inverse_image f Y ∩ inverse_image f Z := <span class="cn">sorry</span></span>
+<span id="cb66-15"><a href="#cb66-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb66-16"><a href="#cb66-16" aria-hidden="true" tabindex="-1"></a><span class="kw">example</span> {A B : <span class="kw">Type</span>} (f : A → B) (Y Z : Set B) :</span>
+<span id="cb66-17"><a href="#cb66-17" aria-hidden="true" tabindex="-1"></a>    inverse_image f  (Y ∪ Z) =</span>
+<span id="cb66-18"><a href="#cb66-18" aria-hidden="true" tabindex="-1"></a>        inverse_image f Y ∪ inverse_image f Z := <span class="cn">sorry</span></span>
+<span id="cb66-19"><a href="#cb66-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb66-20"><a href="#cb66-20" aria-hidden="true" tabindex="-1"></a><span class="kw">example</span> {A B : <span class="kw">Type</span>} (f : A → B) (Y Z : Set B) :</span>
+<span id="cb66-21"><a href="#cb66-21" aria-hidden="true" tabindex="-1"></a>    inverse_image f  (Y \ Z) =</span>
+<span id="cb66-22"><a href="#cb66-22" aria-hidden="true" tabindex="-1"></a>        inverse_image f Y \ inverse_image f Z := <span class="cn">sorry</span></span>
+<span id="cb66-23"><a href="#cb66-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb66-24"><a href="#cb66-24" aria-hidden="true" tabindex="-1"></a><span class="kw">example</span> {A B : <span class="kw">Type</span>} (f : A → B) (Y Z : Set B) :</span>
+<span id="cb66-25"><a href="#cb66-25" aria-hidden="true" tabindex="-1"></a>    Y ⊆ Z ↔ inverse_image f Y ⊆ inverse_image f Z := <span class="cn">sorry</span></span>
+<span id="cb66-26"><a href="#cb66-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb66-27"><a href="#cb66-27" aria-hidden="true" tabindex="-1"></a><span class="kw">example</span> {A B : <span class="kw">Type</span>} (f : A → B) (X : Set A) :</span>
+<span id="cb66-28"><a href="#cb66-28" aria-hidden="true" tabindex="-1"></a>    inverse_image f (image f X) = X := <span class="cn">sorry</span></span>
+<span id="cb66-29"><a href="#cb66-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb66-30"><a href="#cb66-30" aria-hidden="true" tabindex="-1"></a><span class="kw">example</span> {A B : <span class="kw">Type</span>} (f : A → B) (Y : Set B) :</span>
+<span id="cb66-31"><a href="#cb66-31" aria-hidden="true" tabindex="-1"></a>    image f (inverse_image f Y) = Y := <span class="cn">sorry</span></span>
+<span id="cb66-32"><a href="#cb66-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb66-33"><a href="#cb66-33" aria-hidden="true" tabindex="-1"></a><span class="kw">example</span> {A : <span class="kw">Type</span>} (f : A → A) (C : Set A) :</span>
+<span id="cb66-34"><a href="#cb66-34" aria-hidden="true" tabindex="-1"></a>    closed f C → image f C ⊆ C := <span class="cn">sorry</span></span>
+<span id="cb66-35"><a href="#cb66-35" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb66-36"><a href="#cb66-36" aria-hidden="true" tabindex="-1"></a><span class="kw">example</span> {A : <span class="kw">Type</span>} (f : A → A) (C : Set A) :</span>
+<span id="cb66-37"><a href="#cb66-37" aria-hidden="true" tabindex="-1"></a>    image f C ⊆ C → C ⊆ inverse_image f C := <span class="cn">sorry</span></span>
+<span id="cb66-38"><a href="#cb66-38" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb66-39"><a href="#cb66-39" aria-hidden="true" tabindex="-1"></a><span class="kw">example</span> {A : <span class="kw">Type</span>} (f : A → A) (C : Set A) :</span>
+<span id="cb66-40"><a href="#cb66-40" aria-hidden="true" tabindex="-1"></a>    C ⊆ inverse_image f C → closed f C := <span class="cn">sorry</span></span>
+<span id="cb66-41"><a href="#cb66-41" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb66-42"><a href="#cb66-42" aria-hidden="true" tabindex="-1"></a><span class="kw">example</span> {A B : <span class="kw">Type</span>} (f : A → B) (g : B → A) (Y : Set B)</span>
+<span id="cb66-43"><a href="#cb66-43" aria-hidden="true" tabindex="-1"></a>    (h1 : f ∘ g = id) (h2 : g ∘ f = id) :</span>
+<span id="cb66-44"><a href="#cb66-44" aria-hidden="true" tabindex="-1"></a>    inverse_image f Y = image g Y := <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 
 
 </section>

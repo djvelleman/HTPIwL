@@ -63,15 +63,15 @@ example {A B : Type} (f g : A → B) :
   done
 ```
 
-The axiom of extensionality for sets says that a set is completely determined by its elements.  This is what justifies our usual method of defining a set: we specify what its elements are, using notation like `{0, 1, 2}` or `{ x : Nat | x < 3 }`.  Similarly, the axiom of extensionality for functions says that a function is completely determined by its values, and therefore we can define a function by specifying its values.  For instance, we can define a function from `Nat` to `Nat` by specifying, for any `n : Nat`, the result of applying the function to `n`.  As an example of this, we could define the "squaring function" from `Nat` to `Nat` to be the function that, when applied to any `n : Nat`, produces the result `n^2`.  Here are two ways to define this function in Lean:
+The axiom of extensionality for sets says that a set is completely determined by its elements.  This is what justifies our usual method of defining a set: we specify what its elements are, using notation like `{0, 1, 2}` or `{ x : Nat | x < 3 }`.  Similarly, the axiom of extensionality for functions says that a function is completely determined by its values, and therefore we can define a function by specifying its values.  For instance, we can define a function from `Nat` to `Nat` by specifying, for any `n : Nat`, the result of applying the function to `n`.  As an example of this, we could define the "squaring function" from `Nat` to `Nat` to be the function that, when applied to any `n : Nat`, produces the result `n ^ 2`.  Here are two ways to define this function in Lean:
 
 ```lean
-def square1 (n : Nat) : Nat := n^2
+def square1 (n : Nat) : Nat := n ^ 2
 
-def square2 : Nat → Nat := fun (n : Nat) => n^2
+def square2 : Nat → Nat := fun (n : Nat) => n ^ 2
 ```
 
-The first of these definitions uses notation we have used before; it says that if `n` has type `Nat`, then the expression `square1 n` also has type `Nat`, and it is definitionally equal to `n^2`.  The second definition introduces new Lean notation.  It says that `square2` has type `Nat → Nat`, and it defines it to be the function that, when applied to any `n` of type `Nat`, yields the result `n^2`.  Of course, this also means that `square2 n` is definitionally equal to `n^2`.  In general, the notation `fun (x : A) => ...` means "the function which, when applied to any `x` of type `A`, yields the result ..."  The two definitions above are equivalent.  You can ask Lean to confirm this, and try out the squaring function, as follows (the `#eval` command asks Lean to evaluate an expression):
+The first of these definitions uses notation we have used before; it says that if `n` has type `Nat`, then the expression `square1 n` also has type `Nat`, and it is definitionally equal to `n ^ 2`.  The second definition introduces new Lean notation.  It says that `square2` has type `Nat → Nat`, and it defines it to be the function that, when applied to any `n` of type `Nat`, yields the result `n ^ 2`.  Of course, this also means that `square2 n` is definitionally equal to `n ^ 2`.  In general, the notation `fun (x : A) => ...` means "the function which, when applied to any `x` of type `A`, yields the result ..."  The two definitions above are equivalent.  You can ask Lean to confirm this, and try out the squaring function, as follows (the `#eval` command asks Lean to evaluate an expression):
 
 ```lean
 example : square1 = square2 := by rfl
@@ -819,6 +819,8 @@ theorem Theorem_5_5_2_2 {A B : Type} (f : A → B) (W X : Set A)
 The rest of Section 5.5 of *HTPI* consists of statements for you to try to prove.  Here are the statements, written as examples in Lean.  Some are correct and some are not; some can be made correct by adding additional hypotheses or weakening the conclusion.  Prove as much as you can.
 
 ```lean
+--Warning!  Not all of these examples are correct!
+
 example {A B : Type} (f : A → B) (W X : Set A) :
     image f (W ∪ X) = image f W ∪ image f X := sorry
 
