@@ -43,10 +43,13 @@ We can write corresponding definitions in Lean as follows:
 ```lean
 def Dom {A B : Type} (R : Set (A × B)) : Set A :=
     { a : A | ∃ (b : B), (a, b) ∈ R }
+
 def Ran {A B : Type} (R : Set (A × B)) : Set B :=
     { b : B | ∃ (a : A), (a, b) ∈ R }
+
 def inv {A B : Type} (R : Set (A × B)) : Set (B × A) :=
     { (b, a) : B × A | (a, b) ∈ R }
+
 def comp {A B C : Type} (S : Set (B × C)) (R : Set (A × B)) :
     Set (A × C) := { (a, c) : A × C | ∃ (x : B), (a, x) ∈ R ∧ (x, c) ∈ S }
 ```
@@ -300,8 +303,10 @@ The rest of Chapter 4 of *HTPI* focuses on relations from a set to itself; in Le
 ```lean
 def reflexive {A : Type} (R : BinRel A) : Prop :=
     ∀ (x : A), R x x
+
 def symmetric {A : Type} (R : BinRel A) : Prop :=
     ∀ (x y : A), R x y → R y x
+
 def transitive {A : Type} (R : BinRel A) : Prop :=
     ∀ (x y z : A), R x y → R y z → R x z
 ``` 

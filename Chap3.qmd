@@ -3541,6 +3541,7 @@ We have now proven the two statements that were said to be "clearly" true in the
 ::: {.ind}
 ```
 @empty_union : ∀ {U : Type} (B : Set U), ∅ ∪ B = B
+
 @union_comm : ∀ {U : Type} (X Y : Set U), X ∪ Y = Y ∪ X
 ```
 :::
@@ -4043,7 +4044,6 @@ theorem Exercise_3_5_9 (U : Type) (A B : Set U)
     (h1 : 𝒫 (A ∪ B) = 𝒫 A ∪ 𝒫 B) : A ⊆ B ∨ B ⊆ A := by
   --Hint:  Start like this:
   have h2 : A ∪ B ∈ 𝒫 (A ∪ B) := sorry
-  
   **done::
 ```
 :::
@@ -4921,6 +4921,7 @@ For the next exercise you will need the following definitions:
 
 ```lean
 def even (n : Int) : Prop := ∃ (k : Int), n = 2 * k
+
 def odd (n : Int) : Prop := ∃ (k : Int), n = 2 * k + 1
 ```
 

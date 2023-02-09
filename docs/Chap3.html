@@ -3014,6 +3014,7 @@ x \in A \cap (B \setmin C) &amp;\text{ iff } x \in A \wedge x \in B \setmin C\\
 <p>We have now proven the two statements that were said to be “clearly” true in the proof in Example 3.6.2 of <em>HTPI</em>, and we have given them names. And that means that we can now use these theorems, in the file containing these proofs, to prove other theorems. As with any theorem in Lean’s library, you can use the <code>#check</code> command to confirm what these theorems say. If you type <code>#check @empty_union</code> and <code>#check @union_comm</code>, you will get these results:</p>
 <div class="ind">
 <pre><code>@empty_union : ∀ {U : Type} (B : Set U), ∅ ∪ B = B
+
 @union_comm : ∀ {U : Type} (X Y : Set U), X ∪ Y = Y ∪ X</code></pre>
 </div>
 <p>Notice that in both theorems we used curly braces when we introduced the type <code>U</code>, so it is an implicit argument and will not need to be specified when we apply the theorems. (Why did we decide to make <code>U</code> an implicit argument? Well, when we apply the theorem <code>empty_union</code> we will be specifying the set <code>B</code>, and when we apply <code>union_comm</code> we will be specifying the sets <code>X</code> and <code>Y</code>. Lean can figure out what <code>U</code> is by examining the types of these sets, so there is no need to specify it separately.)</p>
@@ -3404,8 +3405,7 @@ x \in A \cap (B \setmin C) &amp;\text{ iff } x \in A \wedge x \in B \setmin C\\
 <span id="cb256-2"><a href="#cb256-2" aria-hidden="true" tabindex="-1"></a>    (h1 : 𝒫 (A ∪ B) = 𝒫 A ∪ 𝒫 B) : A ⊆ B ∨ B ⊆ A := <span class="kw">by</span></span>
 <span id="cb256-3"><a href="#cb256-3" aria-hidden="true" tabindex="-1"></a>  <span class="co">--Hint:  Start like this:</span></span>
 <span id="cb256-4"><a href="#cb256-4" aria-hidden="true" tabindex="-1"></a>  <span class="kw">have</span> h2 : A ∪ B ∈ 𝒫 (A ∪ B) := <span class="cn">sorry</span></span>
-<span id="cb256-5"><a href="#cb256-5" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb256-6"><a href="#cb256-6" aria-hidden="true" tabindex="-1"></a>  <span class="sc">**</span><span class="wa">done</span><span class="sc">::</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb256-5"><a href="#cb256-5" aria-hidden="true" tabindex="-1"></a>  <span class="sc">**</span><span class="wa">done</span><span class="sc">::</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="numex" data-arguments="3">
 <div class="sourceCode" id="cb257"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb257-1"><a href="#cb257-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Exercise_3_6_6b (U : <span class="kw">Type</span>) :</span>
@@ -4084,7 +4084,8 @@ x \in A \cap (B \setmin C) &amp;\text{ iff } x \in A \wedge x \in B \setmin C\\
 </div>
 <p>For the next exercise you will need the following definitions:</p>
 <div class="sourceCode" id="cb309"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb309-1"><a href="#cb309-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> even (n : Int) : <span class="kw">Prop</span> := ∃ (k : Int), n = 2 * k</span>
-<span id="cb309-2"><a href="#cb309-2" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> odd (n : Int) : <span class="kw">Prop</span> := ∃ (k : Int), n = 2 * k + 1</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb309-2"><a href="#cb309-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb309-3"><a href="#cb309-3" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> odd (n : Int) : <span class="kw">Prop</span> := ∃ (k : Int), n = 2 * k + 1</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="numex" data-arguments="3">
 <div class="sourceCode" id="cb310"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb310-1"><a href="#cb310-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Exercise_3_4_10 (x y : Int)</span>
 <span id="cb310-2"><a href="#cb310-2" aria-hidden="true" tabindex="-1"></a>    (h1 : odd x) (h2 : odd y) : even (x - y) := <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
