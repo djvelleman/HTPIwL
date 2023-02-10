@@ -1340,20 +1340,21 @@ theorem Example_6_4_1 : ∀ m > 0, ∀ (n : Nat),
     done
   · -- Case 2. h2: ¬n < m
     have h3 : m ≤ n := by linarith
-    have h4 : n - m < n := Nat.sub_lt_of_pos_le m n h1 h3
-    have h5 : ∃ (q r : Nat), n - m = q * m + r ∧ r < m := ih (n - m) h4
+    let k : Nat := n - m
+    have h4 : k < n := Nat.sub_lt_of_pos_le m n h1 h3
+    have h5 : ∃ (q r : Nat), k = q * m + r ∧ r < m := ih k h4
     obtain (q' : Nat)
-      (h6 : ∃ (r : Nat), n - m = q' * m + r ∧ r < m) from h5
-    obtain (r' : Nat) (h7 : n - m = q' * m + r' ∧ r' < m) from h6
+      (h6 : ∃ (r : Nat), k = q' * m + r ∧ r < m) from h5
+    obtain (r' : Nat) (h7 : k = q' * m + r' ∧ r' < m) from h6
     apply Exists.intro (q' + 1)
     apply Exists.intro r'     --Goal: n = (q' + 1) * m + r' ∧ r' < m
     apply And.intro _ h7.right
     show n = (q' + 1) * m + r' from
       calc n
-          = n - m + m := (Nat.sub_add_cancel h3).symm
+          = k + m := (Nat.sub_add_cancel h3).symm
         _ = q' * m + r' + m := by rw [h7.left]
         _ = (q' + 1) * m + r' := by ring
-    done 
+    done
   done
 ```
 
@@ -1379,27 +1380,109 @@ def Fib (x : Nat) : Nat :=
     | n + 2 => Fib n + Fib (n + 1)
 ```
 
-Notice that the formula for `Fib (n + 2)` involves the *two* previous values of `Fib`, not just the immediately preceding value.  That is the sense in which the recursion is *strong*.  Not surprisingly, theorems about the Fibonacci numbers are often proven by induction---either ordinary or strong.  Ordinary induction turns out to be sufficient to prove the following theorem.
+Notice that the formula for `Fib (n + 2)` involves the *two* previous values of `Fib`, not just the immediately preceding value.  That is the sense in which the recursion is *strong*.  Not surprisingly, theorems about the Fibonacci numbers are often proven by induction---either ordinary or strong.  We'll illustrate this with a proof that `∀ (n : Nat), Fib n < 2 ^ n`.  This time we'll need to treat the cases `n = 0` and `n = 1` separately, since these values are treated separately in the definition of `Fib n`.  We'll also use the theorems `add_lt_add_left` and `add_lt_add_right`; these are similar to the theorem `add_le_add_left`, which we used in `Example_6_3_4`.
 
 ```lean
-theorem Exercise_6_4_7a : ∀ (n : Nat),
-    (Sum i from 0 to n, Fib i) + 1 = Fib (n + 2) := by
-  by_induc
-  · -- Base Case
-    rewrite [sum_base]
-    rfl
+??example:: : ∀ (n : Nat), Fib n < 2 ^ n := by
+  by_strong_induc
+  fix n : Nat
+  assume ih : ∀ (k : Nat), k < n → Fib k < 2 ^ k
+  by_cases h1 : n = 0
+  · -- Case 1. h1: n = 0
+    rewrite [h1]          --Goal: Fib 0 < 2 ^ 0
+    norm_num
     done
-  · -- Induction Step
-    fix n : Nat
-    assume ih : (Sum i from 0 to n, Fib i) + 1 = Fib (n + 2)
-    show (Sum i from 0 to n + 1, Fib i) + 1 = Fib (n + 1 + 2) from
-      calc (Sum i from 0 to n + 1, Fib i) + 1
-          = (Sum i from 0 to n, Fib i) + Fib (n + 1) + 1 :=
-            by rw [sum_from_zero_step]
-        _ = (Sum i from 0 to n, Fib i) + 1 + Fib (n + 1) := by ring
-        _ = Fib (n + 2) + Fib (n + 1) := by rw [ih]
-        _ = Fib (n + 1) + Fib (n + 1 + 1) := by ring
-        _ = Fib (n + 1 + 2) := by rfl
+  · -- Case 2. h1: n ≠ 0
+    by_cases h2 : n = 1
+    · -- Case 2.1. h2: n = 1
+      rewrite [h2]        --Goal: Fib 1 < 2 ^ 1
+      norm_num
+      done
+    · -- Case 2.2. h2: n ≠ 1
+      have h3 : 2 ≤ n := sorry
+      let k : Nat := n - 2
+      have h4 : k + 2 = n := Nat.sub_add_cancel h3
+      have h5 : k < n := by linarith
+      have h6 : Fib k < 2 ^ k := ih k h5
+      have h7 : k + 1 < n := by linarith
+      have h8 : Fib (k + 1) < 2 ^ (k + 1) := ih (k + 1) h7
+      show Fib n < 2 ^ n from
+        calc Fib n
+            = Fib (k + 2) := by rw [h4]
+          _ = Fib k + Fib (k + 1) := by rfl
+          _ < 2 ^ k + Fib (k + 1) := add_lt_add_right h6 _
+          _ < 2 ^ k + 2 ^ (k + 1) := add_lt_add_left h8 _
+          _ = 2 ^ k * 3 := by ring
+          _ ≤ 2 ^ k * 4 := sorry
+          _ = 2 ^ (k + 2) := by ring
+          _ = 2 ^ n := by rw [h4]
+      done
+    done
+  done
+```
+
+There are two steps that require further justification.  The statement `2 ≤ n` should follow from `h1 : n ≠ 0` and `h2 : n ≠ 1`.  To prove it, we'll use two theorems:
+
+::: {.ind}
+```
+@Nat.pos_of_ne_zero : ∀ {n : ℕ}, n ≠ 0 → 0 < n
+
+@lt_of_le_of_ne' : ∀ {α : Type u_1} [inst : PartialOrder α] {a b : α},
+                    a ≤ b → b ≠ a → a < b
+```
+:::
+
+Using the first of these theorems, `Nat.pos_of_ne_zero h1` is a proof of `0 < n`.  But for natural numbers `a` and `b`, Lean treats `a < b` as meaning the same thing as `a + 1 ≤ b`, so this is also a proof of `1 ≤ n`.  Applying the theorem `lt_of_le_of_ne'` to this conclusion and `h2` proves `1 < n`, which is definitionally equal to `2 ≤ n`.
+
+To eliminate the second `sorry` we'll use the theorem:
+
+::: {.ind}
+```
+@Nat.mul_le_mul_left : ∀ {n m : ℕ} (k : ℕ), n ≤ m → k * n ≤ k * m
+```
+:::
+
+To apply the theorem, we'll need to know `3 ≤ 4`, which can be proven by `linarith`.  Here's the complete proof:
+
+```lean
+example : ∀ (n : Nat), Fib n < 2 ^ n := by
+  by_strong_induc
+  fix n : Nat
+  assume ih : ∀ (k : Nat), k < n → Fib k < 2 ^ k
+  by_cases h1 : n = 0
+  · -- Case 1. h1: n = 0
+    rewrite [h1]          --Goal: Fib 0 < 2 ^ 0
+    norm_num
+    done
+  · -- Case 2. h1: n ≠ 0
+    by_cases h2 : n = 1
+    · -- Case 2.1. h2: n = 1
+      rewrite [h2]        --Goal: Fib 1 < 2 ^ 1
+      norm_num
+      done
+    · -- Case 2.2. h2: n ≠ 1
+      have h3 : 2 ≤ n := by
+        have h4 : 1 ≤ n := Nat.pos_of_ne_zero h1
+        show 2 ≤ n from lt_of_le_of_ne' h4 h2
+        done
+      let k : Nat := n - 2
+      have h4 : k + 2 = n := Nat.sub_add_cancel h3
+      have h5 : k < n := by linarith
+      have h6 : Fib k < 2 ^ k := ih k h5
+      have h7 : k + 1 < n := by linarith
+      have h8 : Fib (k + 1) < 2 ^ (k + 1) := ih (k + 1) h7
+      have h9 : 3 ≤ 4 := by linarith
+      show Fib n < 2 ^ n from
+        calc Fib n
+            = Fib (k + 2) := by rw [h4]
+          _ = Fib k + Fib (k + 1) := by rfl
+          _ < 2 ^ k + Fib (k + 1) := add_lt_add_right h6 _
+          _ < 2 ^ k + 2 ^ (k + 1) := add_lt_add_left h8 _
+          _ = 2 ^ k * 3 := by ring
+          _ ≤ 2 ^ k * 4 := Nat.mul_le_mul_left _ h9
+          _ = 2 ^ (k + 2) := by ring
+          _ = 2 ^ n := by rw [h4]
+      done
     done
   done
 ```
@@ -1444,12 +1527,23 @@ theorem Exercise_6_1_16a2 :
     ∀ (n : Nat), ¬(nat_even n ∧ nat_odd n)
 ```
 
-And we will also use a lemma, whose proof we leave as an exercise for you:
+We will also use a lemma, whose proof we leave as an exercise for you:
 
 ```lean
 --Hint: Use Exercise_6_1_16a1 and Exercise_6_1_16a2
 lemma sq_even_iff_even (n : Nat) : nat_even (n * n) ↔ nat_even n := sorry
 ```
+
+And we'll need another theorem that we haven't seen before:
+
+::: {.ind}
+```
+@mul_left_cancel_iff_of_pos : ∀ {α : Type u_1} {a b c : α}
+                    [inst : MulZeroClass α] [inst_1 : PartialOrder α]
+                    [inst_2 : PosMulMonoRev α],
+                    0 < a → (a * b = a * c ↔ b = c)
+```
+:::
 
 To show that $\sqrt{2}$ is irrational, we will prove the statement
 
@@ -1508,7 +1602,7 @@ theorem sqrt_2_irrat :
     done
   have h14 : q' ∈ S := Exists.intro p' (And.intro h12 h13)
   have h15 : q ≤ q' := h4.right q' h14
-  rewrite [h11] at h15
+  rewrite [h11] at h15        --h15: 2 * q' ≤ q'
   contradict h13
   linarith
   done
@@ -1541,26 +1635,33 @@ theorem Exercise_6_4_5 :
 
 ::: {.numex arguments="4"}
 ```lean
+theorem Exercise_6_4_7a : ∀ (n : Nat),
+    (Sum i from 0 to n, Fib i) + 1 = Fib (n + 2) := sorry
+```
+:::
+
+::: {.numex arguments="5"}
+```lean
 theorem Exercise_6_4_7c : ∀ (n : Nat),
     Sum i from 0 to n, Fib (2 * i + 1) = Fib (2 * n + 2) := sorry
 ```
 :::
 
-::: {.numex arguments="5"}
+::: {.numex arguments="6"}
 ```lean
 theorem Exercise_6_4_8a : ∀ (m n : Nat) ,
     Fib (m + n + 1) = Fib m * Fib n + Fib (m + 1) * Fib (n + 1) := sorry
 ```
 :::
 
-::: {.numex arguments="6"}
+::: {.numex arguments="7"}
 ```lean
 theorem Exercise_6_4_8d : ∀ (m k : Nat), Fib m ∣ Fib (m * k) := sorry
 ```
-Hint for \#6:  Let `m` be an arbitrary natural number, and then use induction on `k`.  For the induction step, you must prove `Fib m ∣ Fib (m * (k + 1))`.  If `m = 0 ∨ k = 0`, then this is easy.  If not, then show that you can rewrite `m * (k + 1)` as `(m * k - 1) + m + 1`, and then apply Exercise_6_4_8a.
+Hint for \#7:  Let `m` be an arbitrary natural number, and then use induction on `k`.  For the induction step, you must prove `Fib m ∣ Fib (m * (k + 1))`.  If `m = 0 ∨ k = 0`, then this is easy.  If not, then show that you can rewrite `m * (k + 1)` as `(m * k - 1) + m + 1`, and then apply Exercise_6_4_8a.
 :::
 
-::: {.numex arguments="7"}
+::: {.numex arguments="8"}
 ```lean
 def Fib_like (x : Nat) : Nat :=
   match x with
@@ -1572,7 +1673,7 @@ theorem Fib_like_formula : ∀ (n : Nat), Fib_like n = 2 ^ n := sorry
 ```
 :::
 
-::: {.numex arguments="8"}
+::: {.numex arguments="9"}
 ```lean
 def triple_rec (x : Nat) : Nat :=
   match x with
@@ -1587,7 +1688,7 @@ theorem triple_rec_formula :
 ```
 :::
 
-9\. In this exercise you will prove that the numbers `q` and `r` in `Example_6_4_1` are unique.  It is helpful to prove a lemma first.
+10\. In this exercise you will prove that the numbers `q` and `r` in `Example_6_4_1` are unique.  It is helpful to prove a lemma first.
 ```lean
 lemma quot_rem_unique_lemma {m q r q' r' : Nat}
     (h1 : q * m + r = q' * m + r') (h2 : r' < m) : q ≤ q' := sorry

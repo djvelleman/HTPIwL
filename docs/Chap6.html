@@ -1216,21 +1216,22 @@ $$
 <span id="cb87-14"><a href="#cb87-14" aria-hidden="true" tabindex="-1"></a>    <span class="kw">done</span></span>
 <span id="cb87-15"><a href="#cb87-15" aria-hidden="true" tabindex="-1"></a>  · <span class="co">-- Case 2. h2: ¬n &lt; m</span></span>
 <span id="cb87-16"><a href="#cb87-16" aria-hidden="true" tabindex="-1"></a>    <span class="kw">have</span> h3 : m ≤ n := <span class="kw">by</span> <span class="kw">linarith</span></span>
-<span id="cb87-17"><a href="#cb87-17" aria-hidden="true" tabindex="-1"></a>    <span class="kw">have</span> h4 : n - m &lt; n := Nat.sub_lt_of_pos_le m n h1 h3</span>
-<span id="cb87-18"><a href="#cb87-18" aria-hidden="true" tabindex="-1"></a>    <span class="kw">have</span> h5 : ∃ (q r : Nat), n - m = q * m + r ∧ r &lt; m := ih (n - m) h4</span>
-<span id="cb87-19"><a href="#cb87-19" aria-hidden="true" tabindex="-1"></a>    <span class="kw">obtain</span> (q' : Nat)</span>
-<span id="cb87-20"><a href="#cb87-20" aria-hidden="true" tabindex="-1"></a>      (h6 : ∃ (r : Nat), n - m = q' * m + r ∧ r &lt; m) <span class="kw">from</span> h5</span>
-<span id="cb87-21"><a href="#cb87-21" aria-hidden="true" tabindex="-1"></a>    <span class="kw">obtain</span> (r' : Nat) (h7 : n - m = q' * m + r' ∧ r' &lt; m) <span class="kw">from</span> h6</span>
-<span id="cb87-22"><a href="#cb87-22" aria-hidden="true" tabindex="-1"></a>    <span class="kw">apply</span> Exists.intro (q' + 1)</span>
-<span id="cb87-23"><a href="#cb87-23" aria-hidden="true" tabindex="-1"></a>    <span class="kw">apply</span> Exists.intro r'     <span class="co">--Goal: n = (q' + 1) * m + r' ∧ r' &lt; m</span></span>
-<span id="cb87-24"><a href="#cb87-24" aria-hidden="true" tabindex="-1"></a>    <span class="kw">apply</span> And.intro _ h7.right</span>
-<span id="cb87-25"><a href="#cb87-25" aria-hidden="true" tabindex="-1"></a>    <span class="kw">show</span> n = (q' + 1) * m + r' <span class="kw">from</span></span>
-<span id="cb87-26"><a href="#cb87-26" aria-hidden="true" tabindex="-1"></a>      <span class="kw">calc</span> n</span>
-<span id="cb87-27"><a href="#cb87-27" aria-hidden="true" tabindex="-1"></a>          = n - m + m := (Nat.sub_add_cancel h3).symm</span>
-<span id="cb87-28"><a href="#cb87-28" aria-hidden="true" tabindex="-1"></a>        _ = q' * m + r' + m := <span class="kw">by</span> <span class="kw">rw</span> [h7.left]</span>
-<span id="cb87-29"><a href="#cb87-29" aria-hidden="true" tabindex="-1"></a>        _ = (q' + 1) * m + r' := <span class="kw">by</span> <span class="kw">ring</span></span>
-<span id="cb87-30"><a href="#cb87-30" aria-hidden="true" tabindex="-1"></a>    <span class="kw">done</span> </span>
-<span id="cb87-31"><a href="#cb87-31" aria-hidden="true" tabindex="-1"></a>  <span class="kw">done</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb87-17"><a href="#cb87-17" aria-hidden="true" tabindex="-1"></a>    <span class="kw">let</span> k : Nat := n - m</span>
+<span id="cb87-18"><a href="#cb87-18" aria-hidden="true" tabindex="-1"></a>    <span class="kw">have</span> h4 : k &lt; n := Nat.sub_lt_of_pos_le m n h1 h3</span>
+<span id="cb87-19"><a href="#cb87-19" aria-hidden="true" tabindex="-1"></a>    <span class="kw">have</span> h5 : ∃ (q r : Nat), k = q * m + r ∧ r &lt; m := ih k h4</span>
+<span id="cb87-20"><a href="#cb87-20" aria-hidden="true" tabindex="-1"></a>    <span class="kw">obtain</span> (q' : Nat)</span>
+<span id="cb87-21"><a href="#cb87-21" aria-hidden="true" tabindex="-1"></a>      (h6 : ∃ (r : Nat), k = q' * m + r ∧ r &lt; m) <span class="kw">from</span> h5</span>
+<span id="cb87-22"><a href="#cb87-22" aria-hidden="true" tabindex="-1"></a>    <span class="kw">obtain</span> (r' : Nat) (h7 : k = q' * m + r' ∧ r' &lt; m) <span class="kw">from</span> h6</span>
+<span id="cb87-23"><a href="#cb87-23" aria-hidden="true" tabindex="-1"></a>    <span class="kw">apply</span> Exists.intro (q' + 1)</span>
+<span id="cb87-24"><a href="#cb87-24" aria-hidden="true" tabindex="-1"></a>    <span class="kw">apply</span> Exists.intro r'     <span class="co">--Goal: n = (q' + 1) * m + r' ∧ r' &lt; m</span></span>
+<span id="cb87-25"><a href="#cb87-25" aria-hidden="true" tabindex="-1"></a>    <span class="kw">apply</span> And.intro _ h7.right</span>
+<span id="cb87-26"><a href="#cb87-26" aria-hidden="true" tabindex="-1"></a>    <span class="kw">show</span> n = (q' + 1) * m + r' <span class="kw">from</span></span>
+<span id="cb87-27"><a href="#cb87-27" aria-hidden="true" tabindex="-1"></a>      <span class="kw">calc</span> n</span>
+<span id="cb87-28"><a href="#cb87-28" aria-hidden="true" tabindex="-1"></a>          = k + m := (Nat.sub_add_cancel h3).symm</span>
+<span id="cb87-29"><a href="#cb87-29" aria-hidden="true" tabindex="-1"></a>        _ = q' * m + r' + m := <span class="kw">by</span> <span class="kw">rw</span> [h7.left]</span>
+<span id="cb87-30"><a href="#cb87-30" aria-hidden="true" tabindex="-1"></a>        _ = (q' + 1) * m + r' := <span class="kw">by</span> <span class="kw">ring</span></span>
+<span id="cb87-31"><a href="#cb87-31" aria-hidden="true" tabindex="-1"></a>    <span class="kw">done</span></span>
+<span id="cb87-32"><a href="#cb87-32" aria-hidden="true" tabindex="-1"></a>  <span class="kw">done</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>The numbers <code>q</code> and <code>r</code> in <code>Example_6_4_1</code> are called the <em>quotient</em> and <em>remainder</em> when <code>n</code> is divided by <code>m</code>. Lean knows how to compute these numbers: if <code>n</code> and <code>m</code> are natural numbers, then in Lean, <code>n / m</code> denotes the quotient when <code>n</code> is divided by <code>m</code>, and <code>n % m</code> denotes the remainder. (The number <code>n % m</code> is also sometimes called <code>n</code> <em>modulo</em> <code>m</code>.) And Lean knows theorems stating that these numbers have the properties specified in <code>Example_6_4_1</code>:</p>
 <div class="ind">
 <pre><code>@Nat.div_add_mod : ∀ (m n : ℕ), n * (m / n) + m % n = m
@@ -1244,61 +1245,137 @@ $$
 <span id="cb89-3"><a href="#cb89-3" aria-hidden="true" tabindex="-1"></a>    | 0 =&gt; 0</span>
 <span id="cb89-4"><a href="#cb89-4" aria-hidden="true" tabindex="-1"></a>    | 1 =&gt; 1</span>
 <span id="cb89-5"><a href="#cb89-5" aria-hidden="true" tabindex="-1"></a>    | n + 2 =&gt; Fib n + Fib (n + 1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>Notice that the formula for <code>Fib (n + 2)</code> involves the <em>two</em> previous values of <code>Fib</code>, not just the immediately preceding value. That is the sense in which the recursion is <em>strong</em>. Not surprisingly, theorems about the Fibonacci numbers are often proven by induction—either ordinary or strong. Ordinary induction turns out to be sufficient to prove the following theorem.</p>
-<div class="sourceCode" id="cb90"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb90-1"><a href="#cb90-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Exercise_6_4_7a : ∀ (n : Nat),</span>
-<span id="cb90-2"><a href="#cb90-2" aria-hidden="true" tabindex="-1"></a>    (<span class="kw">Sum</span> i <span class="kw">from</span> 0 <span class="kw">to</span> n, Fib i) + 1 = Fib (n + 2) := <span class="kw">by</span></span>
-<span id="cb90-3"><a href="#cb90-3" aria-hidden="true" tabindex="-1"></a>  <span class="kw">by_induc</span></span>
-<span id="cb90-4"><a href="#cb90-4" aria-hidden="true" tabindex="-1"></a>  · <span class="co">-- Base Case</span></span>
-<span id="cb90-5"><a href="#cb90-5" aria-hidden="true" tabindex="-1"></a>    <span class="kw">rewrite</span> [sum_base]</span>
-<span id="cb90-6"><a href="#cb90-6" aria-hidden="true" tabindex="-1"></a>    <span class="kw">rfl</span></span>
-<span id="cb90-7"><a href="#cb90-7" aria-hidden="true" tabindex="-1"></a>    <span class="kw">done</span></span>
-<span id="cb90-8"><a href="#cb90-8" aria-hidden="true" tabindex="-1"></a>  · <span class="co">-- Induction Step</span></span>
-<span id="cb90-9"><a href="#cb90-9" aria-hidden="true" tabindex="-1"></a>    <span class="kw">fix</span> n : Nat</span>
-<span id="cb90-10"><a href="#cb90-10" aria-hidden="true" tabindex="-1"></a>    <span class="kw">assume</span> ih : (<span class="kw">Sum</span> i <span class="kw">from</span> 0 <span class="kw">to</span> n, Fib i) + 1 = Fib (n + 2)</span>
-<span id="cb90-11"><a href="#cb90-11" aria-hidden="true" tabindex="-1"></a>    <span class="kw">show</span> (<span class="kw">Sum</span> i <span class="kw">from</span> 0 <span class="kw">to</span> n + 1, Fib i) + 1 = Fib (n + 1 + 2) <span class="kw">from</span></span>
-<span id="cb90-12"><a href="#cb90-12" aria-hidden="true" tabindex="-1"></a>      <span class="kw">calc</span> (<span class="kw">Sum</span> i <span class="kw">from</span> 0 <span class="kw">to</span> n + 1, Fib i) + 1</span>
-<span id="cb90-13"><a href="#cb90-13" aria-hidden="true" tabindex="-1"></a>          = (<span class="kw">Sum</span> i <span class="kw">from</span> 0 <span class="kw">to</span> n, Fib i) + Fib (n + 1) + 1 :=</span>
-<span id="cb90-14"><a href="#cb90-14" aria-hidden="true" tabindex="-1"></a>            <span class="kw">by</span> <span class="kw">rw</span> [sum_from_zero_step]</span>
-<span id="cb90-15"><a href="#cb90-15" aria-hidden="true" tabindex="-1"></a>        _ = (<span class="kw">Sum</span> i <span class="kw">from</span> 0 <span class="kw">to</span> n, Fib i) + 1 + Fib (n + 1) := <span class="kw">by</span> <span class="kw">ring</span></span>
-<span id="cb90-16"><a href="#cb90-16" aria-hidden="true" tabindex="-1"></a>        _ = Fib (n + 2) + Fib (n + 1) := <span class="kw">by</span> <span class="kw">rw</span> [ih]</span>
-<span id="cb90-17"><a href="#cb90-17" aria-hidden="true" tabindex="-1"></a>        _ = Fib (n + 1) + Fib (n + 1 + 1) := <span class="kw">by</span> <span class="kw">ring</span></span>
-<span id="cb90-18"><a href="#cb90-18" aria-hidden="true" tabindex="-1"></a>        _ = Fib (n + 1 + 2) := <span class="kw">by</span> <span class="kw">rfl</span></span>
-<span id="cb90-19"><a href="#cb90-19" aria-hidden="true" tabindex="-1"></a>    <span class="kw">done</span></span>
-<span id="cb90-20"><a href="#cb90-20" aria-hidden="true" tabindex="-1"></a>  <span class="kw">done</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Notice that the formula for <code>Fib (n + 2)</code> involves the <em>two</em> previous values of <code>Fib</code>, not just the immediately preceding value. That is the sense in which the recursion is <em>strong</em>. Not surprisingly, theorems about the Fibonacci numbers are often proven by induction—either ordinary or strong. We’ll illustrate this with a proof that <code>∀ (n : Nat), Fib n &lt; 2 ^ n</code>. This time we’ll need to treat the cases <code>n = 0</code> and <code>n = 1</code> separately, since these values are treated separately in the definition of <code>Fib n</code>. We’ll also use the theorems <code>add_lt_add_left</code> and <code>add_lt_add_right</code>; these are similar to the theorem <code>add_le_add_left</code>, which we used in <code>Example_6_3_4</code>.</p>
+<div class="sourceCode" id="cb90"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb90-1"><a href="#cb90-1" aria-hidden="true" tabindex="-1"></a><span class="sc">??</span><span class="al">example</span><span class="sc">::</span> : ∀ (n : Nat), Fib n &lt; 2 ^ n := <span class="kw">by</span></span>
+<span id="cb90-2"><a href="#cb90-2" aria-hidden="true" tabindex="-1"></a>  <span class="kw">by_strong_induc</span></span>
+<span id="cb90-3"><a href="#cb90-3" aria-hidden="true" tabindex="-1"></a>  <span class="kw">fix</span> n : Nat</span>
+<span id="cb90-4"><a href="#cb90-4" aria-hidden="true" tabindex="-1"></a>  <span class="kw">assume</span> ih : ∀ (k : Nat), k &lt; n → Fib k &lt; 2 ^ k</span>
+<span id="cb90-5"><a href="#cb90-5" aria-hidden="true" tabindex="-1"></a>  <span class="kw">by_cases</span> h1 : n = 0</span>
+<span id="cb90-6"><a href="#cb90-6" aria-hidden="true" tabindex="-1"></a>  · <span class="co">-- Case 1. h1: n = 0</span></span>
+<span id="cb90-7"><a href="#cb90-7" aria-hidden="true" tabindex="-1"></a>    <span class="kw">rewrite</span> [h1]          <span class="co">--Goal: Fib 0 &lt; 2 ^ 0</span></span>
+<span id="cb90-8"><a href="#cb90-8" aria-hidden="true" tabindex="-1"></a>    <span class="kw">norm_num</span></span>
+<span id="cb90-9"><a href="#cb90-9" aria-hidden="true" tabindex="-1"></a>    <span class="kw">done</span></span>
+<span id="cb90-10"><a href="#cb90-10" aria-hidden="true" tabindex="-1"></a>  · <span class="co">-- Case 2. h1: n ≠ 0</span></span>
+<span id="cb90-11"><a href="#cb90-11" aria-hidden="true" tabindex="-1"></a>    <span class="kw">by_cases</span> h2 : n = 1</span>
+<span id="cb90-12"><a href="#cb90-12" aria-hidden="true" tabindex="-1"></a>    · <span class="co">-- Case 2.1. h2: n = 1</span></span>
+<span id="cb90-13"><a href="#cb90-13" aria-hidden="true" tabindex="-1"></a>      <span class="kw">rewrite</span> [h2]        <span class="co">--Goal: Fib 1 &lt; 2 ^ 1</span></span>
+<span id="cb90-14"><a href="#cb90-14" aria-hidden="true" tabindex="-1"></a>      <span class="kw">norm_num</span></span>
+<span id="cb90-15"><a href="#cb90-15" aria-hidden="true" tabindex="-1"></a>      <span class="kw">done</span></span>
+<span id="cb90-16"><a href="#cb90-16" aria-hidden="true" tabindex="-1"></a>    · <span class="co">-- Case 2.2. h2: n ≠ 1</span></span>
+<span id="cb90-17"><a href="#cb90-17" aria-hidden="true" tabindex="-1"></a>      <span class="kw">have</span> h3 : 2 ≤ n := <span class="cn">sorry</span></span>
+<span id="cb90-18"><a href="#cb90-18" aria-hidden="true" tabindex="-1"></a>      <span class="kw">let</span> k : Nat := n - 2</span>
+<span id="cb90-19"><a href="#cb90-19" aria-hidden="true" tabindex="-1"></a>      <span class="kw">have</span> h4 : k + 2 = n := Nat.sub_add_cancel h3</span>
+<span id="cb90-20"><a href="#cb90-20" aria-hidden="true" tabindex="-1"></a>      <span class="kw">have</span> h5 : k &lt; n := <span class="kw">by</span> <span class="kw">linarith</span></span>
+<span id="cb90-21"><a href="#cb90-21" aria-hidden="true" tabindex="-1"></a>      <span class="kw">have</span> h6 : Fib k &lt; 2 ^ k := ih k h5</span>
+<span id="cb90-22"><a href="#cb90-22" aria-hidden="true" tabindex="-1"></a>      <span class="kw">have</span> h7 : k + 1 &lt; n := <span class="kw">by</span> <span class="kw">linarith</span></span>
+<span id="cb90-23"><a href="#cb90-23" aria-hidden="true" tabindex="-1"></a>      <span class="kw">have</span> h8 : Fib (k + 1) &lt; 2 ^ (k + 1) := ih (k + 1) h7</span>
+<span id="cb90-24"><a href="#cb90-24" aria-hidden="true" tabindex="-1"></a>      <span class="kw">show</span> Fib n &lt; 2 ^ n <span class="kw">from</span></span>
+<span id="cb90-25"><a href="#cb90-25" aria-hidden="true" tabindex="-1"></a>        <span class="kw">calc</span> Fib n</span>
+<span id="cb90-26"><a href="#cb90-26" aria-hidden="true" tabindex="-1"></a>            = Fib (k + 2) := <span class="kw">by</span> <span class="kw">rw</span> [h4]</span>
+<span id="cb90-27"><a href="#cb90-27" aria-hidden="true" tabindex="-1"></a>          _ = Fib k + Fib (k + 1) := <span class="kw">by</span> <span class="kw">rfl</span></span>
+<span id="cb90-28"><a href="#cb90-28" aria-hidden="true" tabindex="-1"></a>          _ &lt; 2 ^ k + Fib (k + 1) := add_lt_add_right h6 _</span>
+<span id="cb90-29"><a href="#cb90-29" aria-hidden="true" tabindex="-1"></a>          _ &lt; 2 ^ k + 2 ^ (k + 1) := add_lt_add_left h8 _</span>
+<span id="cb90-30"><a href="#cb90-30" aria-hidden="true" tabindex="-1"></a>          _ = 2 ^ k * 3 := <span class="kw">by</span> <span class="kw">ring</span></span>
+<span id="cb90-31"><a href="#cb90-31" aria-hidden="true" tabindex="-1"></a>          _ ≤ 2 ^ k * 4 := <span class="cn">sorry</span></span>
+<span id="cb90-32"><a href="#cb90-32" aria-hidden="true" tabindex="-1"></a>          _ = 2 ^ (k + 2) := <span class="kw">by</span> <span class="kw">ring</span></span>
+<span id="cb90-33"><a href="#cb90-33" aria-hidden="true" tabindex="-1"></a>          _ = 2 ^ n := <span class="kw">by</span> <span class="kw">rw</span> [h4]</span>
+<span id="cb90-34"><a href="#cb90-34" aria-hidden="true" tabindex="-1"></a>      <span class="kw">done</span></span>
+<span id="cb90-35"><a href="#cb90-35" aria-hidden="true" tabindex="-1"></a>    <span class="kw">done</span></span>
+<span id="cb90-36"><a href="#cb90-36" aria-hidden="true" tabindex="-1"></a>  <span class="kw">done</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>There are two steps that require further justification. The statement <code>2 ≤ n</code> should follow from <code>h1 : n ≠ 0</code> and <code>h2 : n ≠ 1</code>. To prove it, we’ll use two theorems:</p>
+<div class="ind">
+<pre><code>@Nat.pos_of_ne_zero : ∀ {n : ℕ}, n ≠ 0 → 0 &lt; n
+
+@lt_of_le_of_ne' : ∀ {α : Type u_1} [inst : PartialOrder α] {a b : α},
+                    a ≤ b → b ≠ a → a &lt; b</code></pre>
+</div>
+<p>Using the first of these theorems, <code>Nat.pos_of_ne_zero h1</code> is a proof of <code>0 &lt; n</code>. But for natural numbers <code>a</code> and <code>b</code>, Lean treats <code>a &lt; b</code> as meaning the same thing as <code>a + 1 ≤ b</code>, so this is also a proof of <code>1 ≤ n</code>. Applying the theorem <code>lt_of_le_of_ne'</code> to this conclusion and <code>h2</code> proves <code>1 &lt; n</code>, which is definitionally equal to <code>2 ≤ n</code>.</p>
+<p>To eliminate the second <code>sorry</code> we’ll use the theorem:</p>
+<div class="ind">
+<pre><code>@Nat.mul_le_mul_left : ∀ {n m : ℕ} (k : ℕ), n ≤ m → k * n ≤ k * m</code></pre>
+</div>
+<p>To apply the theorem, we’ll need to know <code>3 ≤ 4</code>, which can be proven by <code>linarith</code>. Here’s the complete proof:</p>
+<div class="sourceCode" id="cb93"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb93-1"><a href="#cb93-1" aria-hidden="true" tabindex="-1"></a><span class="kw">example</span> : ∀ (n : Nat), Fib n &lt; 2 ^ n := <span class="kw">by</span></span>
+<span id="cb93-2"><a href="#cb93-2" aria-hidden="true" tabindex="-1"></a>  <span class="kw">by_strong_induc</span></span>
+<span id="cb93-3"><a href="#cb93-3" aria-hidden="true" tabindex="-1"></a>  <span class="kw">fix</span> n : Nat</span>
+<span id="cb93-4"><a href="#cb93-4" aria-hidden="true" tabindex="-1"></a>  <span class="kw">assume</span> ih : ∀ (k : Nat), k &lt; n → Fib k &lt; 2 ^ k</span>
+<span id="cb93-5"><a href="#cb93-5" aria-hidden="true" tabindex="-1"></a>  <span class="kw">by_cases</span> h1 : n = 0</span>
+<span id="cb93-6"><a href="#cb93-6" aria-hidden="true" tabindex="-1"></a>  · <span class="co">-- Case 1. h1: n = 0</span></span>
+<span id="cb93-7"><a href="#cb93-7" aria-hidden="true" tabindex="-1"></a>    <span class="kw">rewrite</span> [h1]          <span class="co">--Goal: Fib 0 &lt; 2 ^ 0</span></span>
+<span id="cb93-8"><a href="#cb93-8" aria-hidden="true" tabindex="-1"></a>    <span class="kw">norm_num</span></span>
+<span id="cb93-9"><a href="#cb93-9" aria-hidden="true" tabindex="-1"></a>    <span class="kw">done</span></span>
+<span id="cb93-10"><a href="#cb93-10" aria-hidden="true" tabindex="-1"></a>  · <span class="co">-- Case 2. h1: n ≠ 0</span></span>
+<span id="cb93-11"><a href="#cb93-11" aria-hidden="true" tabindex="-1"></a>    <span class="kw">by_cases</span> h2 : n = 1</span>
+<span id="cb93-12"><a href="#cb93-12" aria-hidden="true" tabindex="-1"></a>    · <span class="co">-- Case 2.1. h2: n = 1</span></span>
+<span id="cb93-13"><a href="#cb93-13" aria-hidden="true" tabindex="-1"></a>      <span class="kw">rewrite</span> [h2]        <span class="co">--Goal: Fib 1 &lt; 2 ^ 1</span></span>
+<span id="cb93-14"><a href="#cb93-14" aria-hidden="true" tabindex="-1"></a>      <span class="kw">norm_num</span></span>
+<span id="cb93-15"><a href="#cb93-15" aria-hidden="true" tabindex="-1"></a>      <span class="kw">done</span></span>
+<span id="cb93-16"><a href="#cb93-16" aria-hidden="true" tabindex="-1"></a>    · <span class="co">-- Case 2.2. h2: n ≠ 1</span></span>
+<span id="cb93-17"><a href="#cb93-17" aria-hidden="true" tabindex="-1"></a>      <span class="kw">have</span> h3 : 2 ≤ n := <span class="kw">by</span></span>
+<span id="cb93-18"><a href="#cb93-18" aria-hidden="true" tabindex="-1"></a>        <span class="kw">have</span> h4 : 1 ≤ n := Nat.pos_of_ne_zero h1</span>
+<span id="cb93-19"><a href="#cb93-19" aria-hidden="true" tabindex="-1"></a>        <span class="kw">show</span> 2 ≤ n <span class="kw">from</span> lt_of_le_of_ne' h4 h2</span>
+<span id="cb93-20"><a href="#cb93-20" aria-hidden="true" tabindex="-1"></a>        <span class="kw">done</span></span>
+<span id="cb93-21"><a href="#cb93-21" aria-hidden="true" tabindex="-1"></a>      <span class="kw">let</span> k : Nat := n - 2</span>
+<span id="cb93-22"><a href="#cb93-22" aria-hidden="true" tabindex="-1"></a>      <span class="kw">have</span> h4 : k + 2 = n := Nat.sub_add_cancel h3</span>
+<span id="cb93-23"><a href="#cb93-23" aria-hidden="true" tabindex="-1"></a>      <span class="kw">have</span> h5 : k &lt; n := <span class="kw">by</span> <span class="kw">linarith</span></span>
+<span id="cb93-24"><a href="#cb93-24" aria-hidden="true" tabindex="-1"></a>      <span class="kw">have</span> h6 : Fib k &lt; 2 ^ k := ih k h5</span>
+<span id="cb93-25"><a href="#cb93-25" aria-hidden="true" tabindex="-1"></a>      <span class="kw">have</span> h7 : k + 1 &lt; n := <span class="kw">by</span> <span class="kw">linarith</span></span>
+<span id="cb93-26"><a href="#cb93-26" aria-hidden="true" tabindex="-1"></a>      <span class="kw">have</span> h8 : Fib (k + 1) &lt; 2 ^ (k + 1) := ih (k + 1) h7</span>
+<span id="cb93-27"><a href="#cb93-27" aria-hidden="true" tabindex="-1"></a>      <span class="kw">have</span> h9 : 3 ≤ 4 := <span class="kw">by</span> <span class="kw">linarith</span></span>
+<span id="cb93-28"><a href="#cb93-28" aria-hidden="true" tabindex="-1"></a>      <span class="kw">show</span> Fib n &lt; 2 ^ n <span class="kw">from</span></span>
+<span id="cb93-29"><a href="#cb93-29" aria-hidden="true" tabindex="-1"></a>        <span class="kw">calc</span> Fib n</span>
+<span id="cb93-30"><a href="#cb93-30" aria-hidden="true" tabindex="-1"></a>            = Fib (k + 2) := <span class="kw">by</span> <span class="kw">rw</span> [h4]</span>
+<span id="cb93-31"><a href="#cb93-31" aria-hidden="true" tabindex="-1"></a>          _ = Fib k + Fib (k + 1) := <span class="kw">by</span> <span class="kw">rfl</span></span>
+<span id="cb93-32"><a href="#cb93-32" aria-hidden="true" tabindex="-1"></a>          _ &lt; 2 ^ k + Fib (k + 1) := add_lt_add_right h6 _</span>
+<span id="cb93-33"><a href="#cb93-33" aria-hidden="true" tabindex="-1"></a>          _ &lt; 2 ^ k + 2 ^ (k + 1) := add_lt_add_left h8 _</span>
+<span id="cb93-34"><a href="#cb93-34" aria-hidden="true" tabindex="-1"></a>          _ = 2 ^ k * 3 := <span class="kw">by</span> <span class="kw">ring</span></span>
+<span id="cb93-35"><a href="#cb93-35" aria-hidden="true" tabindex="-1"></a>          _ ≤ 2 ^ k * 4 := Nat.mul_le_mul_left _ h9</span>
+<span id="cb93-36"><a href="#cb93-36" aria-hidden="true" tabindex="-1"></a>          _ = 2 ^ (k + 2) := <span class="kw">by</span> <span class="kw">ring</span></span>
+<span id="cb93-37"><a href="#cb93-37" aria-hidden="true" tabindex="-1"></a>          _ = 2 ^ n := <span class="kw">by</span> <span class="kw">rw</span> [h4]</span>
+<span id="cb93-38"><a href="#cb93-38" aria-hidden="true" tabindex="-1"></a>      <span class="kw">done</span></span>
+<span id="cb93-39"><a href="#cb93-39" aria-hidden="true" tabindex="-1"></a>    <span class="kw">done</span></span>
+<span id="cb93-40"><a href="#cb93-40" aria-hidden="true" tabindex="-1"></a>  <span class="kw">done</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>As with ordinary induction, strong induction can be useful for proving statements that do not at first seem to have the form <code>∀ (n : Nat), ...</code>. To illustrate this, we’ll prove the <em>well-ordering principle</em>, which says that if a set <code>S : Set Nat</code> is nonempty, then it has a smallest element. We’ll prove the contrapositive: if <code>S</code> has no smallest element, then it is empty. To say that <code>S</code> is empty means <code>∀ (n : Nat), n ∉ S</code>, and that’s the statement to which we will apply strong induction.</p>
-<div class="sourceCode" id="cb91"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb91-1"><a href="#cb91-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> well_ord_princ (S : Set Nat) (h1 : ∃ (x : Nat), x ∈ S) :</span>
-<span id="cb91-2"><a href="#cb91-2" aria-hidden="true" tabindex="-1"></a>    ∃ (x : Nat), x ∈ S ∧ ∀ (y : Nat), y ∈ S → x ≤ y := <span class="kw">by</span></span>
-<span id="cb91-3"><a href="#cb91-3" aria-hidden="true" tabindex="-1"></a>  <span class="kw">contradict</span> h1 <span class="kw">with</span> h2</span>
-<span id="cb91-4"><a href="#cb91-4" aria-hidden="true" tabindex="-1"></a>    <span class="co">--h2: ¬∃ (x : Nat), x ∈ S ∧ ∀ (y : Nat), y ∈ S → x ≤ y</span></span>
-<span id="cb91-5"><a href="#cb91-5" aria-hidden="true" tabindex="-1"></a>  <span class="kw">quant_neg</span>                   <span class="co">--Goal: ∀ (x : Nat), ¬x ∈ S</span></span>
-<span id="cb91-6"><a href="#cb91-6" aria-hidden="true" tabindex="-1"></a>  <span class="kw">by_strong_induc</span></span>
-<span id="cb91-7"><a href="#cb91-7" aria-hidden="true" tabindex="-1"></a>  <span class="kw">fix</span> n : Nat</span>
-<span id="cb91-8"><a href="#cb91-8" aria-hidden="true" tabindex="-1"></a>  <span class="kw">assume</span> ih : ∀ k &lt; n, k ∉ S  <span class="co">--Goal: ¬n ∈ S</span></span>
-<span id="cb91-9"><a href="#cb91-9" aria-hidden="true" tabindex="-1"></a>  <span class="kw">contradict</span> h2 <span class="kw">with</span> h3       <span class="co">--h3: n ∈ S</span></span>
-<span id="cb91-10"><a href="#cb91-10" aria-hidden="true" tabindex="-1"></a>    <span class="co">--Goal: ∃ (x : Nat), x ∈ S ∧ ∀ (y : Nat), y ∈ S → x ≤ y</span></span>
-<span id="cb91-11"><a href="#cb91-11" aria-hidden="true" tabindex="-1"></a>  <span class="kw">apply</span> Exists.intro n</span>
-<span id="cb91-12"><a href="#cb91-12" aria-hidden="true" tabindex="-1"></a>  <span class="kw">apply</span> And.intro h3          <span class="co">--Goal: ∀ (y : Nat), y ∈ S → n ≤ y</span></span>
-<span id="cb91-13"><a href="#cb91-13" aria-hidden="true" tabindex="-1"></a>  <span class="kw">fix</span> y : Nat</span>
-<span id="cb91-14"><a href="#cb91-14" aria-hidden="true" tabindex="-1"></a>  <span class="kw">assume</span> h4 : y ∈ S</span>
-<span id="cb91-15"><a href="#cb91-15" aria-hidden="true" tabindex="-1"></a>  <span class="kw">have</span> h5 : y &lt; n → ¬y ∈ S := ih y</span>
-<span id="cb91-16"><a href="#cb91-16" aria-hidden="true" tabindex="-1"></a>  <span class="kw">contrapos</span> <span class="kw">at</span> h5             <span class="co">--h5: y ∈ S → ¬y &lt; n</span></span>
-<span id="cb91-17"><a href="#cb91-17" aria-hidden="true" tabindex="-1"></a>  <span class="kw">have</span> h6 : ¬y &lt; n := h5 h4</span>
-<span id="cb91-18"><a href="#cb91-18" aria-hidden="true" tabindex="-1"></a>  <span class="kw">linarith</span></span>
-<span id="cb91-19"><a href="#cb91-19" aria-hidden="true" tabindex="-1"></a>  <span class="kw">done</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb94"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb94-1"><a href="#cb94-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> well_ord_princ (S : Set Nat) (h1 : ∃ (x : Nat), x ∈ S) :</span>
+<span id="cb94-2"><a href="#cb94-2" aria-hidden="true" tabindex="-1"></a>    ∃ (x : Nat), x ∈ S ∧ ∀ (y : Nat), y ∈ S → x ≤ y := <span class="kw">by</span></span>
+<span id="cb94-3"><a href="#cb94-3" aria-hidden="true" tabindex="-1"></a>  <span class="kw">contradict</span> h1 <span class="kw">with</span> h2</span>
+<span id="cb94-4"><a href="#cb94-4" aria-hidden="true" tabindex="-1"></a>    <span class="co">--h2: ¬∃ (x : Nat), x ∈ S ∧ ∀ (y : Nat), y ∈ S → x ≤ y</span></span>
+<span id="cb94-5"><a href="#cb94-5" aria-hidden="true" tabindex="-1"></a>  <span class="kw">quant_neg</span>                   <span class="co">--Goal: ∀ (x : Nat), ¬x ∈ S</span></span>
+<span id="cb94-6"><a href="#cb94-6" aria-hidden="true" tabindex="-1"></a>  <span class="kw">by_strong_induc</span></span>
+<span id="cb94-7"><a href="#cb94-7" aria-hidden="true" tabindex="-1"></a>  <span class="kw">fix</span> n : Nat</span>
+<span id="cb94-8"><a href="#cb94-8" aria-hidden="true" tabindex="-1"></a>  <span class="kw">assume</span> ih : ∀ k &lt; n, k ∉ S  <span class="co">--Goal: ¬n ∈ S</span></span>
+<span id="cb94-9"><a href="#cb94-9" aria-hidden="true" tabindex="-1"></a>  <span class="kw">contradict</span> h2 <span class="kw">with</span> h3       <span class="co">--h3: n ∈ S</span></span>
+<span id="cb94-10"><a href="#cb94-10" aria-hidden="true" tabindex="-1"></a>    <span class="co">--Goal: ∃ (x : Nat), x ∈ S ∧ ∀ (y : Nat), y ∈ S → x ≤ y</span></span>
+<span id="cb94-11"><a href="#cb94-11" aria-hidden="true" tabindex="-1"></a>  <span class="kw">apply</span> Exists.intro n</span>
+<span id="cb94-12"><a href="#cb94-12" aria-hidden="true" tabindex="-1"></a>  <span class="kw">apply</span> And.intro h3          <span class="co">--Goal: ∀ (y : Nat), y ∈ S → n ≤ y</span></span>
+<span id="cb94-13"><a href="#cb94-13" aria-hidden="true" tabindex="-1"></a>  <span class="kw">fix</span> y : Nat</span>
+<span id="cb94-14"><a href="#cb94-14" aria-hidden="true" tabindex="-1"></a>  <span class="kw">assume</span> h4 : y ∈ S</span>
+<span id="cb94-15"><a href="#cb94-15" aria-hidden="true" tabindex="-1"></a>  <span class="kw">have</span> h5 : y &lt; n → ¬y ∈ S := ih y</span>
+<span id="cb94-16"><a href="#cb94-16" aria-hidden="true" tabindex="-1"></a>  <span class="kw">contrapos</span> <span class="kw">at</span> h5             <span class="co">--h5: y ∈ S → ¬y &lt; n</span></span>
+<span id="cb94-17"><a href="#cb94-17" aria-hidden="true" tabindex="-1"></a>  <span class="kw">have</span> h6 : ¬y &lt; n := h5 h4</span>
+<span id="cb94-18"><a href="#cb94-18" aria-hidden="true" tabindex="-1"></a>  <span class="kw">linarith</span></span>
+<span id="cb94-19"><a href="#cb94-19" aria-hidden="true" tabindex="-1"></a>  <span class="kw">done</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>Section 6.4 of <em>HTPI</em> ends with an example of an application of the well ordering principle. The example gives a proof that <span class="math inline">\(\sqrt{2}\)</span> is irrational. If <span class="math inline">\(\sqrt{2}\)</span> were rational, then there would be natural numbers <span class="math inline">\(p\)</span> and <span class="math inline">\(q\)</span> such that <span class="math inline">\(q \ne 0\)</span> and <span class="math inline">\(p/q = \sqrt{2}\)</span>, and therefore <span class="math inline">\(p^2 = 2q^2\)</span>. So we can prove that <span class="math inline">\(\sqrt{2}\)</span> is irrational by showing that there do not exist natural numbers <span class="math inline">\(p\)</span> and <span class="math inline">\(q\)</span> such that <span class="math inline">\(q \ne 0\)</span> and <span class="math inline">\(p^2 = 2q^2\)</span>.</p>
 <p>The proof uses some definitions and theorems from the exercises of Section 6.1:</p>
-<div class="sourceCode" id="cb92"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb92-1"><a href="#cb92-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> nat_even (n : Nat) : <span class="kw">Prop</span> := ∃ (k : Nat), n = 2 * k</span>
-<span id="cb92-2"><a href="#cb92-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb92-3"><a href="#cb92-3" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> nat_odd (n : Nat) : <span class="kw">Prop</span> := ∃ (k : Nat), n = 2 * k + 1</span>
-<span id="cb92-4"><a href="#cb92-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb92-5"><a href="#cb92-5" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Exercise_6_1_16a1 :</span>
-<span id="cb92-6"><a href="#cb92-6" aria-hidden="true" tabindex="-1"></a>    ∀ (n : Nat), nat_even n ∨ nat_odd n</span>
-<span id="cb92-7"><a href="#cb92-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb92-8"><a href="#cb92-8" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Exercise_6_1_16a2 :</span>
-<span id="cb92-9"><a href="#cb92-9" aria-hidden="true" tabindex="-1"></a>    ∀ (n : Nat), ¬(nat_even n ∧ nat_odd n)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>And we will also use a lemma, whose proof we leave as an exercise for you:</p>
-<div class="sourceCode" id="cb93"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb93-1"><a href="#cb93-1" aria-hidden="true" tabindex="-1"></a><span class="co">--Hint: Use Exercise_6_1_16a1 and Exercise_6_1_16a2</span></span>
-<span id="cb93-2"><a href="#cb93-2" aria-hidden="true" tabindex="-1"></a><span class="kw">lemma</span> sq_even_iff_even (n : Nat) : nat_even (n * n) ↔ nat_even n := <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb95"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb95-1"><a href="#cb95-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> nat_even (n : Nat) : <span class="kw">Prop</span> := ∃ (k : Nat), n = 2 * k</span>
+<span id="cb95-2"><a href="#cb95-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb95-3"><a href="#cb95-3" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> nat_odd (n : Nat) : <span class="kw">Prop</span> := ∃ (k : Nat), n = 2 * k + 1</span>
+<span id="cb95-4"><a href="#cb95-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb95-5"><a href="#cb95-5" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Exercise_6_1_16a1 :</span>
+<span id="cb95-6"><a href="#cb95-6" aria-hidden="true" tabindex="-1"></a>    ∀ (n : Nat), nat_even n ∨ nat_odd n</span>
+<span id="cb95-7"><a href="#cb95-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb95-8"><a href="#cb95-8" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Exercise_6_1_16a2 :</span>
+<span id="cb95-9"><a href="#cb95-9" aria-hidden="true" tabindex="-1"></a>    ∀ (n : Nat), ¬(nat_even n ∧ nat_odd n)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>We will also use a lemma, whose proof we leave as an exercise for you:</p>
+<div class="sourceCode" id="cb96"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb96-1"><a href="#cb96-1" aria-hidden="true" tabindex="-1"></a><span class="co">--Hint: Use Exercise_6_1_16a1 and Exercise_6_1_16a2</span></span>
+<span id="cb96-2"><a href="#cb96-2" aria-hidden="true" tabindex="-1"></a><span class="kw">lemma</span> sq_even_iff_even (n : Nat) : nat_even (n * n) ↔ nat_even n := <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>And we’ll need another theorem that we haven’t seen before:</p>
+<div class="ind">
+<pre><code>@mul_left_cancel_iff_of_pos : ∀ {α : Type u_1} {a b c : α}
+                    [inst : MulZeroClass α] [inst_1 : PartialOrder α]
+                    [inst_2 : PosMulMonoRev α],
+                    0 &lt; a → (a * b = a * c ↔ b = c)</code></pre>
+</div>
 <p>To show that <span class="math inline">\(\sqrt{2}\)</span> is irrational, we will prove the statement</p>
 <div class="quote">
 <pre><code>¬∃ (q p : Nat), p * p = 2 * (q * q) ∧ q ≠ 0</code></pre>
@@ -1308,106 +1385,110 @@ $$
 <pre><code>S = { q : Nat | ∃ (p : Nat), p * p = 2 * (q * q) ∧ q ≠ 0 }</code></pre>
 </div>
 <p>would be nonempty, and therefore, by the well ordering principle, it would have a smallest element. We then show that this leads to a contradiction. Here is the proof.</p>
-<div class="sourceCode" id="cb96"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb96-1"><a href="#cb96-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> sqrt_2_irrat :</span>
-<span id="cb96-2"><a href="#cb96-2" aria-hidden="true" tabindex="-1"></a>    ¬∃ (q p : Nat), p * p = 2 * (q * q) ∧ q ≠ 0 := <span class="kw">by</span></span>
-<span id="cb96-3"><a href="#cb96-3" aria-hidden="true" tabindex="-1"></a>  <span class="kw">let</span> S : Set Nat :=</span>
-<span id="cb96-4"><a href="#cb96-4" aria-hidden="true" tabindex="-1"></a>    { q : Nat | ∃ (p : Nat), p * p = 2 * (q * q) ∧ q ≠ 0 }</span>
-<span id="cb96-5"><a href="#cb96-5" aria-hidden="true" tabindex="-1"></a>  <span class="kw">by_contra</span> h1</span>
-<span id="cb96-6"><a href="#cb96-6" aria-hidden="true" tabindex="-1"></a>  <span class="kw">have</span> h2 : ∃ (q : Nat), q ∈ S := h1</span>
-<span id="cb96-7"><a href="#cb96-7" aria-hidden="true" tabindex="-1"></a>  <span class="kw">have</span> h3 : ∃ (x : ℕ), x ∈ S ∧ ∀ (y : ℕ), y ∈ S → x ≤ y :=</span>
-<span id="cb96-8"><a href="#cb96-8" aria-hidden="true" tabindex="-1"></a>    well_ord_princ S h2</span>
-<span id="cb96-9"><a href="#cb96-9" aria-hidden="true" tabindex="-1"></a>  <span class="kw">obtain</span> (q : Nat) (h4 : q ∈ S ∧ ∀ (y : ℕ), y ∈ S → q ≤ y) <span class="kw">from</span> h3</span>
-<span id="cb96-10"><a href="#cb96-10" aria-hidden="true" tabindex="-1"></a>  <span class="kw">have</span> h4l : q ∈ S := h4.left</span>
-<span id="cb96-11"><a href="#cb96-11" aria-hidden="true" tabindex="-1"></a>  <span class="kw">define</span> <span class="kw">at</span> h4l     <span class="co">--h4l: ∃ (p : ℕ), p * p = 2 * (q * q) ∧ q ≠ 0</span></span>
-<span id="cb96-12"><a href="#cb96-12" aria-hidden="true" tabindex="-1"></a>  <span class="kw">obtain</span> (p : Nat) (h5 : p * p = 2 * (q * q) ∧ q ≠ 0) <span class="kw">from</span> h4l</span>
-<span id="cb96-13"><a href="#cb96-13" aria-hidden="true" tabindex="-1"></a>  <span class="kw">have</span> h5l : p * p = 2 * (q * q) := h5.left</span>
-<span id="cb96-14"><a href="#cb96-14" aria-hidden="true" tabindex="-1"></a>  <span class="kw">have</span> h6 : nat_even (p * p) := Exists.intro (q * q) h5l</span>
-<span id="cb96-15"><a href="#cb96-15" aria-hidden="true" tabindex="-1"></a>  <span class="kw">rewrite</span> [sq_even_iff_even p] <span class="kw">at</span> h6    <span class="co">--h6: nat_even p</span></span>
-<span id="cb96-16"><a href="#cb96-16" aria-hidden="true" tabindex="-1"></a>  <span class="kw">obtain</span> (p' : Nat) (h7 : p = 2 * p') <span class="kw">from</span> h6</span>
-<span id="cb96-17"><a href="#cb96-17" aria-hidden="true" tabindex="-1"></a>  <span class="kw">have</span> h8 : 2 * (2 * (p' * p')) = 2 * (q * q) := <span class="kw">by</span></span>
-<span id="cb96-18"><a href="#cb96-18" aria-hidden="true" tabindex="-1"></a>    <span class="kw">rewrite</span> [←h5l, h7]</span>
-<span id="cb96-19"><a href="#cb96-19" aria-hidden="true" tabindex="-1"></a>    <span class="kw">ring</span></span>
-<span id="cb96-20"><a href="#cb96-20" aria-hidden="true" tabindex="-1"></a>    <span class="kw">done</span></span>
-<span id="cb96-21"><a href="#cb96-21" aria-hidden="true" tabindex="-1"></a>  <span class="kw">have</span> h9 : 2 &gt; 0 := <span class="kw">by</span> <span class="kw">norm_num</span></span>
-<span id="cb96-22"><a href="#cb96-22" aria-hidden="true" tabindex="-1"></a>  <span class="kw">rewrite</span> [mul_left_cancel_iff_of_pos h9] <span class="kw">at</span> h8</span>
-<span id="cb96-23"><a href="#cb96-23" aria-hidden="true" tabindex="-1"></a>    <span class="co">--h8: 2 * (p' * p') = q * q</span></span>
-<span id="cb96-24"><a href="#cb96-24" aria-hidden="true" tabindex="-1"></a>  <span class="kw">have</span> h10 : nat_even (q * q) := Exists.intro (p' * p') h8.symm</span>
-<span id="cb96-25"><a href="#cb96-25" aria-hidden="true" tabindex="-1"></a>  <span class="kw">rewrite</span> [sq_even_iff_even q] <span class="kw">at</span> h10   <span class="co">--h10: nat_even q</span></span>
-<span id="cb96-26"><a href="#cb96-26" aria-hidden="true" tabindex="-1"></a>  <span class="kw">obtain</span> (q' : Nat) (h11 : q = 2 * q') <span class="kw">from</span> h10</span>
-<span id="cb96-27"><a href="#cb96-27" aria-hidden="true" tabindex="-1"></a>  <span class="kw">have</span> h12 : 2 * (p' * p') = 2 * (2 * (q' * q')) := <span class="kw">by</span></span>
-<span id="cb96-28"><a href="#cb96-28" aria-hidden="true" tabindex="-1"></a>    <span class="kw">rewrite</span> [h8, h11]</span>
-<span id="cb96-29"><a href="#cb96-29" aria-hidden="true" tabindex="-1"></a>    <span class="kw">ring</span></span>
-<span id="cb96-30"><a href="#cb96-30" aria-hidden="true" tabindex="-1"></a>    <span class="kw">done</span></span>
-<span id="cb96-31"><a href="#cb96-31" aria-hidden="true" tabindex="-1"></a>  <span class="kw">rewrite</span> [mul_left_cancel_iff_of_pos h9] <span class="kw">at</span> h12</span>
-<span id="cb96-32"><a href="#cb96-32" aria-hidden="true" tabindex="-1"></a>    <span class="co">--h12: p' * p' = 2 * (q' * q')</span></span>
-<span id="cb96-33"><a href="#cb96-33" aria-hidden="true" tabindex="-1"></a>  <span class="kw">have</span> h13 : q' ≠ 0 := <span class="kw">by</span></span>
-<span id="cb96-34"><a href="#cb96-34" aria-hidden="true" tabindex="-1"></a>    <span class="kw">contradict</span> h5.right <span class="kw">with</span> h14</span>
-<span id="cb96-35"><a href="#cb96-35" aria-hidden="true" tabindex="-1"></a>    <span class="kw">rewrite</span> [h11, h14]</span>
-<span id="cb96-36"><a href="#cb96-36" aria-hidden="true" tabindex="-1"></a>    <span class="kw">rfl</span></span>
-<span id="cb96-37"><a href="#cb96-37" aria-hidden="true" tabindex="-1"></a>    <span class="kw">done</span></span>
-<span id="cb96-38"><a href="#cb96-38" aria-hidden="true" tabindex="-1"></a>  <span class="kw">have</span> h14 : q' ∈ S := Exists.intro p' (And.intro h12 h13)</span>
-<span id="cb96-39"><a href="#cb96-39" aria-hidden="true" tabindex="-1"></a>  <span class="kw">have</span> h15 : q ≤ q' := h4.right q' h14</span>
-<span id="cb96-40"><a href="#cb96-40" aria-hidden="true" tabindex="-1"></a>  <span class="kw">rewrite</span> [h11] <span class="kw">at</span> h15</span>
-<span id="cb96-41"><a href="#cb96-41" aria-hidden="true" tabindex="-1"></a>  <span class="kw">contradict</span> h13</span>
-<span id="cb96-42"><a href="#cb96-42" aria-hidden="true" tabindex="-1"></a>  <span class="kw">linarith</span></span>
-<span id="cb96-43"><a href="#cb96-43" aria-hidden="true" tabindex="-1"></a>  <span class="kw">done</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb100"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb100-1"><a href="#cb100-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> sqrt_2_irrat :</span>
+<span id="cb100-2"><a href="#cb100-2" aria-hidden="true" tabindex="-1"></a>    ¬∃ (q p : Nat), p * p = 2 * (q * q) ∧ q ≠ 0 := <span class="kw">by</span></span>
+<span id="cb100-3"><a href="#cb100-3" aria-hidden="true" tabindex="-1"></a>  <span class="kw">let</span> S : Set Nat :=</span>
+<span id="cb100-4"><a href="#cb100-4" aria-hidden="true" tabindex="-1"></a>    { q : Nat | ∃ (p : Nat), p * p = 2 * (q * q) ∧ q ≠ 0 }</span>
+<span id="cb100-5"><a href="#cb100-5" aria-hidden="true" tabindex="-1"></a>  <span class="kw">by_contra</span> h1</span>
+<span id="cb100-6"><a href="#cb100-6" aria-hidden="true" tabindex="-1"></a>  <span class="kw">have</span> h2 : ∃ (q : Nat), q ∈ S := h1</span>
+<span id="cb100-7"><a href="#cb100-7" aria-hidden="true" tabindex="-1"></a>  <span class="kw">have</span> h3 : ∃ (x : ℕ), x ∈ S ∧ ∀ (y : ℕ), y ∈ S → x ≤ y :=</span>
+<span id="cb100-8"><a href="#cb100-8" aria-hidden="true" tabindex="-1"></a>    well_ord_princ S h2</span>
+<span id="cb100-9"><a href="#cb100-9" aria-hidden="true" tabindex="-1"></a>  <span class="kw">obtain</span> (q : Nat) (h4 : q ∈ S ∧ ∀ (y : ℕ), y ∈ S → q ≤ y) <span class="kw">from</span> h3</span>
+<span id="cb100-10"><a href="#cb100-10" aria-hidden="true" tabindex="-1"></a>  <span class="kw">have</span> h4l : q ∈ S := h4.left</span>
+<span id="cb100-11"><a href="#cb100-11" aria-hidden="true" tabindex="-1"></a>  <span class="kw">define</span> <span class="kw">at</span> h4l     <span class="co">--h4l: ∃ (p : ℕ), p * p = 2 * (q * q) ∧ q ≠ 0</span></span>
+<span id="cb100-12"><a href="#cb100-12" aria-hidden="true" tabindex="-1"></a>  <span class="kw">obtain</span> (p : Nat) (h5 : p * p = 2 * (q * q) ∧ q ≠ 0) <span class="kw">from</span> h4l</span>
+<span id="cb100-13"><a href="#cb100-13" aria-hidden="true" tabindex="-1"></a>  <span class="kw">have</span> h5l : p * p = 2 * (q * q) := h5.left</span>
+<span id="cb100-14"><a href="#cb100-14" aria-hidden="true" tabindex="-1"></a>  <span class="kw">have</span> h6 : nat_even (p * p) := Exists.intro (q * q) h5l</span>
+<span id="cb100-15"><a href="#cb100-15" aria-hidden="true" tabindex="-1"></a>  <span class="kw">rewrite</span> [sq_even_iff_even p] <span class="kw">at</span> h6    <span class="co">--h6: nat_even p</span></span>
+<span id="cb100-16"><a href="#cb100-16" aria-hidden="true" tabindex="-1"></a>  <span class="kw">obtain</span> (p' : Nat) (h7 : p = 2 * p') <span class="kw">from</span> h6</span>
+<span id="cb100-17"><a href="#cb100-17" aria-hidden="true" tabindex="-1"></a>  <span class="kw">have</span> h8 : 2 * (2 * (p' * p')) = 2 * (q * q) := <span class="kw">by</span></span>
+<span id="cb100-18"><a href="#cb100-18" aria-hidden="true" tabindex="-1"></a>    <span class="kw">rewrite</span> [←h5l, h7]</span>
+<span id="cb100-19"><a href="#cb100-19" aria-hidden="true" tabindex="-1"></a>    <span class="kw">ring</span></span>
+<span id="cb100-20"><a href="#cb100-20" aria-hidden="true" tabindex="-1"></a>    <span class="kw">done</span></span>
+<span id="cb100-21"><a href="#cb100-21" aria-hidden="true" tabindex="-1"></a>  <span class="kw">have</span> h9 : 2 &gt; 0 := <span class="kw">by</span> <span class="kw">norm_num</span></span>
+<span id="cb100-22"><a href="#cb100-22" aria-hidden="true" tabindex="-1"></a>  <span class="kw">rewrite</span> [mul_left_cancel_iff_of_pos h9] <span class="kw">at</span> h8</span>
+<span id="cb100-23"><a href="#cb100-23" aria-hidden="true" tabindex="-1"></a>    <span class="co">--h8: 2 * (p' * p') = q * q</span></span>
+<span id="cb100-24"><a href="#cb100-24" aria-hidden="true" tabindex="-1"></a>  <span class="kw">have</span> h10 : nat_even (q * q) := Exists.intro (p' * p') h8.symm</span>
+<span id="cb100-25"><a href="#cb100-25" aria-hidden="true" tabindex="-1"></a>  <span class="kw">rewrite</span> [sq_even_iff_even q] <span class="kw">at</span> h10   <span class="co">--h10: nat_even q</span></span>
+<span id="cb100-26"><a href="#cb100-26" aria-hidden="true" tabindex="-1"></a>  <span class="kw">obtain</span> (q' : Nat) (h11 : q = 2 * q') <span class="kw">from</span> h10</span>
+<span id="cb100-27"><a href="#cb100-27" aria-hidden="true" tabindex="-1"></a>  <span class="kw">have</span> h12 : 2 * (p' * p') = 2 * (2 * (q' * q')) := <span class="kw">by</span></span>
+<span id="cb100-28"><a href="#cb100-28" aria-hidden="true" tabindex="-1"></a>    <span class="kw">rewrite</span> [h8, h11]</span>
+<span id="cb100-29"><a href="#cb100-29" aria-hidden="true" tabindex="-1"></a>    <span class="kw">ring</span></span>
+<span id="cb100-30"><a href="#cb100-30" aria-hidden="true" tabindex="-1"></a>    <span class="kw">done</span></span>
+<span id="cb100-31"><a href="#cb100-31" aria-hidden="true" tabindex="-1"></a>  <span class="kw">rewrite</span> [mul_left_cancel_iff_of_pos h9] <span class="kw">at</span> h12</span>
+<span id="cb100-32"><a href="#cb100-32" aria-hidden="true" tabindex="-1"></a>    <span class="co">--h12: p' * p' = 2 * (q' * q')</span></span>
+<span id="cb100-33"><a href="#cb100-33" aria-hidden="true" tabindex="-1"></a>  <span class="kw">have</span> h13 : q' ≠ 0 := <span class="kw">by</span></span>
+<span id="cb100-34"><a href="#cb100-34" aria-hidden="true" tabindex="-1"></a>    <span class="kw">contradict</span> h5.right <span class="kw">with</span> h14</span>
+<span id="cb100-35"><a href="#cb100-35" aria-hidden="true" tabindex="-1"></a>    <span class="kw">rewrite</span> [h11, h14]</span>
+<span id="cb100-36"><a href="#cb100-36" aria-hidden="true" tabindex="-1"></a>    <span class="kw">rfl</span></span>
+<span id="cb100-37"><a href="#cb100-37" aria-hidden="true" tabindex="-1"></a>    <span class="kw">done</span></span>
+<span id="cb100-38"><a href="#cb100-38" aria-hidden="true" tabindex="-1"></a>  <span class="kw">have</span> h14 : q' ∈ S := Exists.intro p' (And.intro h12 h13)</span>
+<span id="cb100-39"><a href="#cb100-39" aria-hidden="true" tabindex="-1"></a>  <span class="kw">have</span> h15 : q ≤ q' := h4.right q' h14</span>
+<span id="cb100-40"><a href="#cb100-40" aria-hidden="true" tabindex="-1"></a>  <span class="kw">rewrite</span> [h11] <span class="kw">at</span> h15        <span class="co">--h15: 2 * q' ≤ q'</span></span>
+<span id="cb100-41"><a href="#cb100-41" aria-hidden="true" tabindex="-1"></a>  <span class="kw">contradict</span> h13</span>
+<span id="cb100-42"><a href="#cb100-42" aria-hidden="true" tabindex="-1"></a>  <span class="kw">linarith</span></span>
+<span id="cb100-43"><a href="#cb100-43" aria-hidden="true" tabindex="-1"></a>  <span class="kw">done</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
 <section id="exercises-3" class="level3">
 <h3 class="anchored" data-anchor-id="exercises-3">Exercises</h3>
 <div class="numex" data-arguments="1">
-<div class="sourceCode" id="cb97"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb97-1"><a href="#cb97-1" aria-hidden="true" tabindex="-1"></a><span class="co">--Hint: Use Exercise_6_1_16a1 and Exercise_6_1_16a2</span></span>
-<span id="cb97-2"><a href="#cb97-2" aria-hidden="true" tabindex="-1"></a><span class="kw">lemma</span> sq_even_iff_even (n : Nat) :</span>
-<span id="cb97-3"><a href="#cb97-3" aria-hidden="true" tabindex="-1"></a>    nat_even (n * n) ↔ nat_even n := <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb101"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb101-1"><a href="#cb101-1" aria-hidden="true" tabindex="-1"></a><span class="co">--Hint: Use Exercise_6_1_16a1 and Exercise_6_1_16a2</span></span>
+<span id="cb101-2"><a href="#cb101-2" aria-hidden="true" tabindex="-1"></a><span class="kw">lemma</span> sq_even_iff_even (n : Nat) :</span>
+<span id="cb101-3"><a href="#cb101-3" aria-hidden="true" tabindex="-1"></a>    nat_even (n * n) ↔ nat_even n := <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="numex" data-arguments="2">
-<div class="sourceCode" id="cb98"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb98-1"><a href="#cb98-1" aria-hidden="true" tabindex="-1"></a><span class="co">--This theorem proves that the square root of 6 is irrational</span></span>
-<span id="cb98-2"><a href="#cb98-2" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Exercise_6_4_4a :</span>
-<span id="cb98-3"><a href="#cb98-3" aria-hidden="true" tabindex="-1"></a>    ¬∃ (q p : Nat), p * p = 6 * (q * q) ∧ q ≠ 0 := <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb102"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb102-1"><a href="#cb102-1" aria-hidden="true" tabindex="-1"></a><span class="co">--This theorem proves that the square root of 6 is irrational</span></span>
+<span id="cb102-2"><a href="#cb102-2" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Exercise_6_4_4a :</span>
+<span id="cb102-3"><a href="#cb102-3" aria-hidden="true" tabindex="-1"></a>    ¬∃ (q p : Nat), p * p = 6 * (q * q) ∧ q ≠ 0 := <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="numex" data-arguments="3">
-<div class="sourceCode" id="cb99"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb99-1"><a href="#cb99-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Exercise_6_4_5 :</span>
-<span id="cb99-2"><a href="#cb99-2" aria-hidden="true" tabindex="-1"></a>    ∀ n ≥ 12, ∃ (a b : Nat), 3 * a + 7 * b = n := <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb103"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb103-1"><a href="#cb103-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Exercise_6_4_5 :</span>
+<span id="cb103-2"><a href="#cb103-2" aria-hidden="true" tabindex="-1"></a>    ∀ n ≥ 12, ∃ (a b : Nat), 3 * a + 7 * b = n := <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="numex" data-arguments="4">
-<div class="sourceCode" id="cb100"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb100-1"><a href="#cb100-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Exercise_6_4_7c : ∀ (n : Nat),</span>
-<span id="cb100-2"><a href="#cb100-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">Sum</span> i <span class="kw">from</span> 0 <span class="kw">to</span> n, Fib (2 * i + 1) = Fib (2 * n + 2) := <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb104"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb104-1"><a href="#cb104-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Exercise_6_4_7a : ∀ (n : Nat),</span>
+<span id="cb104-2"><a href="#cb104-2" aria-hidden="true" tabindex="-1"></a>    (<span class="kw">Sum</span> i <span class="kw">from</span> 0 <span class="kw">to</span> n, Fib i) + 1 = Fib (n + 2) := <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="numex" data-arguments="5">
-<div class="sourceCode" id="cb101"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb101-1"><a href="#cb101-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Exercise_6_4_8a : ∀ (m n : Nat) ,</span>
-<span id="cb101-2"><a href="#cb101-2" aria-hidden="true" tabindex="-1"></a>    Fib (m + n + 1) = Fib m * Fib n + Fib (m + 1) * Fib (n + 1) := <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb105"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb105-1"><a href="#cb105-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Exercise_6_4_7c : ∀ (n : Nat),</span>
+<span id="cb105-2"><a href="#cb105-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">Sum</span> i <span class="kw">from</span> 0 <span class="kw">to</span> n, Fib (2 * i + 1) = Fib (2 * n + 2) := <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="numex" data-arguments="6">
-<div class="sourceCode" id="cb102"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb102-1"><a href="#cb102-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Exercise_6_4_8d : ∀ (m k : Nat), Fib m ∣ Fib (m * k) := <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>Hint for #6: Let <code>m</code> be an arbitrary natural number, and then use induction on <code>k</code>. For the induction step, you must prove <code>Fib m ∣ Fib (m * (k + 1))</code>. If <code>m = 0 ∨ k = 0</code>, then this is easy. If not, then show that you can rewrite <code>m * (k + 1)</code> as <code>(m * k - 1) + m + 1</code>, and then apply Exercise_6_4_8a.</p>
+<div class="sourceCode" id="cb106"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb106-1"><a href="#cb106-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Exercise_6_4_8a : ∀ (m n : Nat) ,</span>
+<span id="cb106-2"><a href="#cb106-2" aria-hidden="true" tabindex="-1"></a>    Fib (m + n + 1) = Fib m * Fib n + Fib (m + 1) * Fib (n + 1) := <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="numex" data-arguments="7">
-<div class="sourceCode" id="cb103"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb103-1"><a href="#cb103-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> Fib_like (x : Nat) : Nat :=</span>
-<span id="cb103-2"><a href="#cb103-2" aria-hidden="true" tabindex="-1"></a>  match x <span class="kw">with</span></span>
-<span id="cb103-3"><a href="#cb103-3" aria-hidden="true" tabindex="-1"></a>    | 0 =&gt; 1</span>
-<span id="cb103-4"><a href="#cb103-4" aria-hidden="true" tabindex="-1"></a>    | 1 =&gt; 2</span>
-<span id="cb103-5"><a href="#cb103-5" aria-hidden="true" tabindex="-1"></a>    | n + 2 =&gt; 2 * (Fib_like n) + Fib_like (n + 1)</span>
-<span id="cb103-6"><a href="#cb103-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb103-7"><a href="#cb103-7" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Fib_like_formula : ∀ (n : Nat), Fib_like n = 2 ^ n := <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb107"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb107-1"><a href="#cb107-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Exercise_6_4_8d : ∀ (m k : Nat), Fib m ∣ Fib (m * k) := <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Hint for #7: Let <code>m</code> be an arbitrary natural number, and then use induction on <code>k</code>. For the induction step, you must prove <code>Fib m ∣ Fib (m * (k + 1))</code>. If <code>m = 0 ∨ k = 0</code>, then this is easy. If not, then show that you can rewrite <code>m * (k + 1)</code> as <code>(m * k - 1) + m + 1</code>, and then apply Exercise_6_4_8a.</p>
 </div>
 <div class="numex" data-arguments="8">
-<div class="sourceCode" id="cb104"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb104-1"><a href="#cb104-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> triple_rec (x : Nat) : Nat :=</span>
-<span id="cb104-2"><a href="#cb104-2" aria-hidden="true" tabindex="-1"></a>  match x <span class="kw">with</span></span>
-<span id="cb104-3"><a href="#cb104-3" aria-hidden="true" tabindex="-1"></a>    | 0 =&gt; 0</span>
-<span id="cb104-4"><a href="#cb104-4" aria-hidden="true" tabindex="-1"></a>    | 1 =&gt; 2</span>
-<span id="cb104-5"><a href="#cb104-5" aria-hidden="true" tabindex="-1"></a>    | 2 =&gt; 4</span>
-<span id="cb104-6"><a href="#cb104-6" aria-hidden="true" tabindex="-1"></a>    | n + 3 =&gt; 4 * triple_rec n +</span>
-<span id="cb104-7"><a href="#cb104-7" aria-hidden="true" tabindex="-1"></a>                6 * triple_rec (n + 1) + triple_rec (n + 2)</span>
-<span id="cb104-8"><a href="#cb104-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb104-9"><a href="#cb104-9" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> triple_rec_formula :</span>
-<span id="cb104-10"><a href="#cb104-10" aria-hidden="true" tabindex="-1"></a>    ∀ (n : Nat), triple_rec n = 2 ^ n * Fib n := <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb108"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb108-1"><a href="#cb108-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> Fib_like (x : Nat) : Nat :=</span>
+<span id="cb108-2"><a href="#cb108-2" aria-hidden="true" tabindex="-1"></a>  match x <span class="kw">with</span></span>
+<span id="cb108-3"><a href="#cb108-3" aria-hidden="true" tabindex="-1"></a>    | 0 =&gt; 1</span>
+<span id="cb108-4"><a href="#cb108-4" aria-hidden="true" tabindex="-1"></a>    | 1 =&gt; 2</span>
+<span id="cb108-5"><a href="#cb108-5" aria-hidden="true" tabindex="-1"></a>    | n + 2 =&gt; 2 * (Fib_like n) + Fib_like (n + 1)</span>
+<span id="cb108-6"><a href="#cb108-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb108-7"><a href="#cb108-7" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Fib_like_formula : ∀ (n : Nat), Fib_like n = 2 ^ n := <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>9. In this exercise you will prove that the numbers <code>q</code> and <code>r</code> in <code>Example_6_4_1</code> are unique. It is helpful to prove a lemma first.</p>
-<div class="sourceCode" id="cb105"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb105-1"><a href="#cb105-1" aria-hidden="true" tabindex="-1"></a><span class="kw">lemma</span> quot_rem_unique_lemma {m q r q' r' : Nat}</span>
-<span id="cb105-2"><a href="#cb105-2" aria-hidden="true" tabindex="-1"></a>    (h1 : q * m + r = q' * m + r') (h2 : r' &lt; m) : q ≤ q' := <span class="cn">sorry</span></span>
-<span id="cb105-3"><a href="#cb105-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb105-4"><a href="#cb105-4" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> quot_rem_unique (m q r q' r' : Nat)</span>
-<span id="cb105-5"><a href="#cb105-5" aria-hidden="true" tabindex="-1"></a>    (h1 : q * m + r = q' * m + r') (h2 : r &lt; m) (h3 : r' &lt; m) :</span>
-<span id="cb105-6"><a href="#cb105-6" aria-hidden="true" tabindex="-1"></a>    q = q' ∧ r = r' := <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="numex" data-arguments="9">
+<div class="sourceCode" id="cb109"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb109-1"><a href="#cb109-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> triple_rec (x : Nat) : Nat :=</span>
+<span id="cb109-2"><a href="#cb109-2" aria-hidden="true" tabindex="-1"></a>  match x <span class="kw">with</span></span>
+<span id="cb109-3"><a href="#cb109-3" aria-hidden="true" tabindex="-1"></a>    | 0 =&gt; 0</span>
+<span id="cb109-4"><a href="#cb109-4" aria-hidden="true" tabindex="-1"></a>    | 1 =&gt; 2</span>
+<span id="cb109-5"><a href="#cb109-5" aria-hidden="true" tabindex="-1"></a>    | 2 =&gt; 4</span>
+<span id="cb109-6"><a href="#cb109-6" aria-hidden="true" tabindex="-1"></a>    | n + 3 =&gt; 4 * triple_rec n +</span>
+<span id="cb109-7"><a href="#cb109-7" aria-hidden="true" tabindex="-1"></a>                6 * triple_rec (n + 1) + triple_rec (n + 2)</span>
+<span id="cb109-8"><a href="#cb109-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb109-9"><a href="#cb109-9" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> triple_rec_formula :</span>
+<span id="cb109-10"><a href="#cb109-10" aria-hidden="true" tabindex="-1"></a>    ∀ (n : Nat), triple_rec n = 2 ^ n * Fib n := <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>10. In this exercise you will prove that the numbers <code>q</code> and <code>r</code> in <code>Example_6_4_1</code> are unique. It is helpful to prove a lemma first.</p>
+<div class="sourceCode" id="cb110"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb110-1"><a href="#cb110-1" aria-hidden="true" tabindex="-1"></a><span class="kw">lemma</span> quot_rem_unique_lemma {m q r q' r' : Nat}</span>
+<span id="cb110-2"><a href="#cb110-2" aria-hidden="true" tabindex="-1"></a>    (h1 : q * m + r = q' * m + r') (h2 : r' &lt; m) : q ≤ q' := <span class="cn">sorry</span></span>
+<span id="cb110-3"><a href="#cb110-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb110-4"><a href="#cb110-4" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> quot_rem_unique (m q r q' r' : Nat)</span>
+<span id="cb110-5"><a href="#cb110-5" aria-hidden="true" tabindex="-1"></a>    (h1 : q * m + r = q' * m + r') (h2 : r &lt; m) (h3 : r' &lt; m) :</span>
+<span id="cb110-6"><a href="#cb110-6" aria-hidden="true" tabindex="-1"></a>    q = q' ∧ r = r' := <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 
 
 </section>
