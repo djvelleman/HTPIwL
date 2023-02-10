@@ -1165,7 +1165,7 @@ $$
 <section id="to-prove-a-goal-of-the-form-n-nat-p-n-1" class="level4">
 <h4 class="anchored" data-anchor-id="to-prove-a-goal-of-the-form-n-nat-p-n-1">To prove a goal of the form <code>∀ (n : Nat), P n</code>:</h4>
 <div class="ind">
-<p>Prove that <code>∀ (n : Nat), (∀ k &lt; n, P k) → P n</code>.</p>
+<p>Prove that <code>∀ (n : Nat), (∀ n_1 &lt; n, P n_1) → P n</code>.</p>
 </div>
 <p>To write a proof by strong induction in Lean, we use the tactic <code>by_strong_induc</code>, whose effect on the tactic state can be illustrated as follows.</p>
 <div class="lftrt">
@@ -1176,21 +1176,20 @@ $$
 <div class="aft">
 <div class="sourceCode" id="cb83"><pre class="sourceCode state code-with-copy"><code class="sourceCode state"><span id="cb83-1"><a href="#cb83-1" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;&gt;</span> ⋮</span>
 <span id="cb83-2"><a href="#cb83-2" aria-hidden="true" tabindex="-1"></a>⊢  ∀ (n : Nat),</span>
-<span id="cb83-3"><a href="#cb83-3" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;&gt;</span>  (∀ (n_1 : Nat), n_1 &lt; n → P n_1)</span>
-<span id="cb83-4"><a href="#cb83-4" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;&gt;</span>    → P n</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb83-3"><a href="#cb83-3" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;&gt;</span>  (∀ n_1 &lt; n, P n_1) → P n</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </div>
 <p>To illustrate this, we begin with Example 6.4.1 of <em>HTPI</em>.</p>
 <div class="sourceCode" id="cb84"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb84-1"><a href="#cb84-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Example_6_4_1 : ∀ m &gt; 0, ∀ (n : Nat),</span>
 <span id="cb84-2"><a href="#cb84-2" aria-hidden="true" tabindex="-1"></a>    ∃ (q r : Nat), n = q * m + r ∧ r &lt; m</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>Imitating the strategy of the proof in <em>HTPI</em>, we let <code>m</code> be an arbitrary natural number, assume <code>m &gt; 0</code>, and then prove the statement <code>∀ (n : Nat), ∃ (q r : Nat), n = q * m + r ∧ r &lt; m</code> by strong induction. That means that after introducing an arbitrary natural number <code>n</code>, we assume the inductive hypothesis, which says that <code>∀ k &lt; n, ∃ (q r : Nat), k = q * m + r ∧ r &lt; m</code>.</p>
+<p>Imitating the strategy of the proof in <em>HTPI</em>, we let <code>m</code> be an arbitrary natural number, assume <code>m &gt; 0</code>, and then prove the statement <code>∀ (n : Nat), ∃ (q r : Nat), n = q * m + r ∧ r &lt; m</code> by strong induction. That means that after introducing an arbitrary natural number <code>n</code>, we assume the inductive hypothesis, which says <code>∀ n_1 &lt; n, ∃ (q r : Nat), n_1 = q * m + r ∧ r &lt; m</code>.</p>
 <div class="sourceCode" id="cb85"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb85-1"><a href="#cb85-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Example_6_4_1 : ∀ m &gt; 0, ∀ (n : Nat),</span>
 <span id="cb85-2"><a href="#cb85-2" aria-hidden="true" tabindex="-1"></a>    ∃ (q r : Nat), n = q * m + r ∧ r &lt; m := <span class="kw">by</span></span>
 <span id="cb85-3"><a href="#cb85-3" aria-hidden="true" tabindex="-1"></a>  <span class="kw">fix</span> m : Nat</span>
 <span id="cb85-4"><a href="#cb85-4" aria-hidden="true" tabindex="-1"></a>  <span class="kw">assume</span> h1 : m &gt; 0</span>
 <span id="cb85-5"><a href="#cb85-5" aria-hidden="true" tabindex="-1"></a>  <span class="kw">by_strong_induc</span></span>
 <span id="cb85-6"><a href="#cb85-6" aria-hidden="true" tabindex="-1"></a>  <span class="kw">fix</span> n : Nat</span>
-<span id="cb85-7"><a href="#cb85-7" aria-hidden="true" tabindex="-1"></a>  <span class="kw">assume</span> ih : ∀ k &lt; n, ∃ (q r : Nat), k = q * m + r ∧ r &lt; m</span>
+<span id="cb85-7"><a href="#cb85-7" aria-hidden="true" tabindex="-1"></a>  <span class="kw">assume</span> ih : ∀ n_1 &lt; n, ∃ (q r : Nat), n_1 = q * m + r ∧ r &lt; m</span>
 <span id="cb85-8"><a href="#cb85-8" aria-hidden="true" tabindex="-1"></a>  <span class="sc">**</span><span class="wa">done</span><span class="sc">::</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>Our goal now is to prove that <code>∃ (q r : Nat), n = q * m + r ∧ r &lt; m</code>. Although strong induction does not require a base case, it is not uncommon for proofs by strong induction to involve reasoning by cases. The proof in <em>HTPI</em> uses the cases <code>n &lt; m</code> and <code>m ≤ n</code>. If <code>n &lt; m</code>, then the proof is easy: the numbers <code>q = 0</code> and <code>r​ = n</code> clearly have the required properties. In the case <code>m ≤ n</code>, the proof in <em>HTPI</em> proceeds by applying the inductive hypothesis to the number <code>k = n - m</code>. Since <code>m &gt; 0</code>, we have <code>k &lt; n</code>, so the inductive hypothesis can be applied. Notice that if <code>m &gt; 1</code>, then <code>n - m</code> is not the number immediately preceding <code>n</code>; that’s why this proof uses strong induction rather than ordinary induction.</p>
 <p>Since <code>n</code> and <code>m</code> have type <code>Nat</code>, the subtraction in the formula <code>n - m</code> is natural number subtraction, which, as we’ve seen, can be difficult to work with. But in this proof we use this formula only in the case when <code>m ≤ n</code>, and in that case the subtraction is unproblematic. Indeed, there are theorems in Lean that tell us that if <code>m ≤ n</code>, then <code>n - m</code> has the properties we expect. We will use two such theorems:</p>
@@ -1206,7 +1205,7 @@ $$
 <span id="cb87-4"><a href="#cb87-4" aria-hidden="true" tabindex="-1"></a>  <span class="kw">assume</span> h1 : m &gt; 0</span>
 <span id="cb87-5"><a href="#cb87-5" aria-hidden="true" tabindex="-1"></a>  <span class="kw">by_strong_induc</span></span>
 <span id="cb87-6"><a href="#cb87-6" aria-hidden="true" tabindex="-1"></a>  <span class="kw">fix</span> n : Nat</span>
-<span id="cb87-7"><a href="#cb87-7" aria-hidden="true" tabindex="-1"></a>  <span class="kw">assume</span> ih : ∀ k &lt; n, ∃ (q r : Nat), k = q * m + r ∧ r &lt; m</span>
+<span id="cb87-7"><a href="#cb87-7" aria-hidden="true" tabindex="-1"></a>  <span class="kw">assume</span> ih : ∀ n_1 &lt; n, ∃ (q r : Nat), n_1 = q * m + r ∧ r &lt; m</span>
 <span id="cb87-8"><a href="#cb87-8" aria-hidden="true" tabindex="-1"></a>  <span class="kw">by_cases</span> h2 : n &lt; m</span>
 <span id="cb87-9"><a href="#cb87-9" aria-hidden="true" tabindex="-1"></a>  · <span class="co">-- Case 1. h2: n &lt; m</span></span>
 <span id="cb87-10"><a href="#cb87-10" aria-hidden="true" tabindex="-1"></a>    <span class="kw">apply</span> Exists.intro 0</span>
@@ -1249,7 +1248,7 @@ $$
 <div class="sourceCode" id="cb90"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb90-1"><a href="#cb90-1" aria-hidden="true" tabindex="-1"></a><span class="sc">??</span><span class="al">example</span><span class="sc">::</span> : ∀ (n : Nat), Fib n &lt; 2 ^ n := <span class="kw">by</span></span>
 <span id="cb90-2"><a href="#cb90-2" aria-hidden="true" tabindex="-1"></a>  <span class="kw">by_strong_induc</span></span>
 <span id="cb90-3"><a href="#cb90-3" aria-hidden="true" tabindex="-1"></a>  <span class="kw">fix</span> n : Nat</span>
-<span id="cb90-4"><a href="#cb90-4" aria-hidden="true" tabindex="-1"></a>  <span class="kw">assume</span> ih : ∀ (k : Nat), k &lt; n → Fib k &lt; 2 ^ k</span>
+<span id="cb90-4"><a href="#cb90-4" aria-hidden="true" tabindex="-1"></a>  <span class="kw">assume</span> ih : ∀ n_1 &lt; n, Fib n_1 &lt; 2 ^ n_1</span>
 <span id="cb90-5"><a href="#cb90-5" aria-hidden="true" tabindex="-1"></a>  <span class="kw">by_cases</span> h1 : n = 0</span>
 <span id="cb90-6"><a href="#cb90-6" aria-hidden="true" tabindex="-1"></a>  · <span class="co">-- Case 1. h1: n = 0</span></span>
 <span id="cb90-7"><a href="#cb90-7" aria-hidden="true" tabindex="-1"></a>    <span class="kw">rewrite</span> [h1]          <span class="co">--Goal: Fib 0 &lt; 2 ^ 0</span></span>
@@ -1298,7 +1297,7 @@ $$
 <div class="sourceCode" id="cb93"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb93-1"><a href="#cb93-1" aria-hidden="true" tabindex="-1"></a><span class="kw">example</span> : ∀ (n : Nat), Fib n &lt; 2 ^ n := <span class="kw">by</span></span>
 <span id="cb93-2"><a href="#cb93-2" aria-hidden="true" tabindex="-1"></a>  <span class="kw">by_strong_induc</span></span>
 <span id="cb93-3"><a href="#cb93-3" aria-hidden="true" tabindex="-1"></a>  <span class="kw">fix</span> n : Nat</span>
-<span id="cb93-4"><a href="#cb93-4" aria-hidden="true" tabindex="-1"></a>  <span class="kw">assume</span> ih : ∀ (k : Nat), k &lt; n → Fib k &lt; 2 ^ k</span>
+<span id="cb93-4"><a href="#cb93-4" aria-hidden="true" tabindex="-1"></a>  <span class="kw">assume</span> ih : ∀ n_1 &lt; n, Fib n_1 &lt; 2 ^ n_1</span>
 <span id="cb93-5"><a href="#cb93-5" aria-hidden="true" tabindex="-1"></a>  <span class="kw">by_cases</span> h1 : n = 0</span>
 <span id="cb93-6"><a href="#cb93-6" aria-hidden="true" tabindex="-1"></a>  · <span class="co">-- Case 1. h1: n = 0</span></span>
 <span id="cb93-7"><a href="#cb93-7" aria-hidden="true" tabindex="-1"></a>    <span class="kw">rewrite</span> [h1]          <span class="co">--Goal: Fib 0 &lt; 2 ^ 0</span></span>
@@ -1343,7 +1342,7 @@ $$
 <span id="cb94-5"><a href="#cb94-5" aria-hidden="true" tabindex="-1"></a>  <span class="kw">quant_neg</span>                   <span class="co">--Goal: ∀ (x : Nat), ¬x ∈ S</span></span>
 <span id="cb94-6"><a href="#cb94-6" aria-hidden="true" tabindex="-1"></a>  <span class="kw">by_strong_induc</span></span>
 <span id="cb94-7"><a href="#cb94-7" aria-hidden="true" tabindex="-1"></a>  <span class="kw">fix</span> n : Nat</span>
-<span id="cb94-8"><a href="#cb94-8" aria-hidden="true" tabindex="-1"></a>  <span class="kw">assume</span> ih : ∀ k &lt; n, k ∉ S  <span class="co">--Goal: ¬n ∈ S</span></span>
+<span id="cb94-8"><a href="#cb94-8" aria-hidden="true" tabindex="-1"></a>  <span class="kw">assume</span> ih : ∀ n_1 &lt; n, n_1 ∉ S  <span class="co">--Goal: ¬n ∈ S</span></span>
 <span id="cb94-9"><a href="#cb94-9" aria-hidden="true" tabindex="-1"></a>  <span class="kw">contradict</span> h2 <span class="kw">with</span> h3       <span class="co">--h3: n ∈ S</span></span>
 <span id="cb94-10"><a href="#cb94-10" aria-hidden="true" tabindex="-1"></a>    <span class="co">--Goal: ∃ (x : Nat), x ∈ S ∧ ∀ (y : Nat), y ∈ S → x ≤ y</span></span>
 <span id="cb94-11"><a href="#cb94-11" aria-hidden="true" tabindex="-1"></a>  <span class="kw">apply</span> Exists.intro n</span>
@@ -1459,7 +1458,7 @@ $$
 </div>
 <div class="numex" data-arguments="7">
 <div class="sourceCode" id="cb107"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb107-1"><a href="#cb107-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Exercise_6_4_8d : ∀ (m k : Nat), Fib m ∣ Fib (m * k) := <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>Hint for #7: Let <code>m</code> be an arbitrary natural number, and then use induction on <code>k</code>. For the induction step, you must prove <code>Fib m ∣ Fib (m * (k + 1))</code>. If <code>m = 0 ∨ k = 0</code>, then this is easy. If not, then show that you can rewrite <code>m * (k + 1)</code> as <code>(m * k - 1) + m + 1</code>, and then apply Exercise_6_4_8a.</p>
+<p>Hint for #7: Let <code>m</code> be an arbitrary natural number, and then use induction on <code>k</code>. For the induction step, you must prove <code>Fib m ∣ Fib (m * (k + 1))</code>. If <code>m = 0 ∨ k = 0</code>, then this is easy. If not, then show that you can rewrite <code>m * (k + 1)</code> as <code>(m * k - 1) + m + 1</code>, and then apply <code>Exercise_6_4_8a</code>.</p>
 </div>
 <div class="numex" data-arguments="8">
 <div class="sourceCode" id="cb108"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb108-1"><a href="#cb108-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> Fib_like (x : Nat) : Nat :=</span>

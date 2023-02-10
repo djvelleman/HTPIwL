@@ -1266,7 +1266,7 @@ In the induction step of a proof by mathematical induction, we prove that a natu
 #### To prove a goal of the form `∀ (n : Nat), P n`:
 
 ::: {.ind}
-Prove that `∀ (n : Nat), (∀ k < n, P k) → P n`.
+Prove that `∀ (n : Nat), (∀ n_1 < n, P n_1) → P n`.
 :::
 
 To write a proof by strong induction in Lean, we use the tactic `by_strong_induc`, whose effect on the tactic state can be illustrated as follows.
@@ -1283,8 +1283,7 @@ To write a proof by strong induction in Lean, we use the tactic `by_strong_induc
 ```state
 >> ⋮
 ⊢  ∀ (n : Nat),
->>  (∀ (n_1 : Nat), n_1 < n → P n_1)
->>    → P n
+>>  (∀ n_1 < n, P n_1) → P n
 ```
 :::
 :::
@@ -1296,7 +1295,7 @@ theorem Example_6_4_1 : ∀ m > 0, ∀ (n : Nat),
     ∃ (q r : Nat), n = q * m + r ∧ r < m
 ```
 
-Imitating the strategy of the proof in *HTPI*, we let `m` be an arbitrary natural number, assume `m > 0`, and then prove the statement `∀ (n : Nat), ∃ (q r : Nat), n = q * m + r ∧ r < m` by strong induction.  That means that after introducing an arbitrary natural number `n`, we assume the inductive hypothesis, which says that `∀ k < n, ∃ (q r : Nat), k = q * m + r ∧ r < m`.
+Imitating the strategy of the proof in *HTPI*, we let `m` be an arbitrary natural number, assume `m > 0`, and then prove the statement `∀ (n : Nat), ∃ (q r : Nat), n = q * m + r ∧ r < m` by strong induction.  That means that after introducing an arbitrary natural number `n`, we assume the inductive hypothesis, which says `∀ n_1 < n, ∃ (q r : Nat), n_1 = q * m + r ∧ r < m`.
 
 ```lean
 theorem Example_6_4_1 : ∀ m > 0, ∀ (n : Nat),
@@ -1305,7 +1304,7 @@ theorem Example_6_4_1 : ∀ m > 0, ∀ (n : Nat),
   assume h1 : m > 0
   by_strong_induc
   fix n : Nat
-  assume ih : ∀ k < n, ∃ (q r : Nat), k = q * m + r ∧ r < m
+  assume ih : ∀ n_1 < n, ∃ (q r : Nat), n_1 = q * m + r ∧ r < m
   **done::
 ```
 
@@ -1330,7 +1329,7 @@ theorem Example_6_4_1 : ∀ m > 0, ∀ (n : Nat),
   assume h1 : m > 0
   by_strong_induc
   fix n : Nat
-  assume ih : ∀ k < n, ∃ (q r : Nat), k = q * m + r ∧ r < m
+  assume ih : ∀ n_1 < n, ∃ (q r : Nat), n_1 = q * m + r ∧ r < m
   by_cases h2 : n < m
   · -- Case 1. h2: n < m
     apply Exists.intro 0
@@ -1386,7 +1385,7 @@ Notice that the formula for `Fib (n + 2)` involves the *two* previous values of 
 ??example:: : ∀ (n : Nat), Fib n < 2 ^ n := by
   by_strong_induc
   fix n : Nat
-  assume ih : ∀ (k : Nat), k < n → Fib k < 2 ^ k
+  assume ih : ∀ n_1 < n, Fib n_1 < 2 ^ n_1
   by_cases h1 : n = 0
   · -- Case 1. h1: n = 0
     rewrite [h1]          --Goal: Fib 0 < 2 ^ 0
@@ -1448,7 +1447,7 @@ To apply the theorem, we'll need to know `3 ≤ 4`, which can be proven by `lina
 example : ∀ (n : Nat), Fib n < 2 ^ n := by
   by_strong_induc
   fix n : Nat
-  assume ih : ∀ (k : Nat), k < n → Fib k < 2 ^ k
+  assume ih : ∀ n_1 < n, Fib n_1 < 2 ^ n_1
   by_cases h1 : n = 0
   · -- Case 1. h1: n = 0
     rewrite [h1]          --Goal: Fib 0 < 2 ^ 0
@@ -1497,7 +1496,7 @@ theorem well_ord_princ (S : Set Nat) (h1 : ∃ (x : Nat), x ∈ S) :
   quant_neg                   --Goal: ∀ (x : Nat), ¬x ∈ S
   by_strong_induc
   fix n : Nat
-  assume ih : ∀ k < n, k ∉ S  --Goal: ¬n ∈ S
+  assume ih : ∀ n_1 < n, n_1 ∉ S  --Goal: ¬n ∈ S
   contradict h2 with h3       --h3: n ∈ S
     --Goal: ∃ (x : Nat), x ∈ S ∧ ∀ (y : Nat), y ∈ S → x ≤ y
   apply Exists.intro n
@@ -1658,7 +1657,7 @@ theorem Exercise_6_4_8a : ∀ (m n : Nat) ,
 ```lean
 theorem Exercise_6_4_8d : ∀ (m k : Nat), Fib m ∣ Fib (m * k) := sorry
 ```
-Hint for \#7:  Let `m` be an arbitrary natural number, and then use induction on `k`.  For the induction step, you must prove `Fib m ∣ Fib (m * (k + 1))`.  If `m = 0 ∨ k = 0`, then this is easy.  If not, then show that you can rewrite `m * (k + 1)` as `(m * k - 1) + m + 1`, and then apply Exercise_6_4_8a.
+Hint for \#7:  Let `m` be an arbitrary natural number, and then use induction on `k`.  For the induction step, you must prove `Fib m ∣ Fib (m * (k + 1))`.  If `m = 0 ∨ k = 0`, then this is easy.  If not, then show that you can rewrite `m * (k + 1)` as `(m * k - 1) + m + 1`, and then apply `Exercise_6_4_8a`.
 :::
 
 ::: {.numex arguments="8"}
