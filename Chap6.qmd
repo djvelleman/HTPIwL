@@ -119,16 +119,16 @@ theorem Like_Example_6_1_2 :
     ∀ (n : Nat), 3 ∣ n ^ 3 + 2 * n := by
   by_induc
   · -- Base Case
-    define         --Goal: ∃ (c : ℕ), 0 ^ 3 + 2 * 0 = 3 * c
+    define         --Goal: ∃ (c : Nat), 0 ^ 3 + 2 * 0 = 3 * c
     apply Exists.intro 0
     rfl
     done
   · -- Induction Step
     fix n : Nat
     assume ih : 3 ∣ n ^ 3 + 2 * n
-    define at ih   --ih: ∃ (c : ℕ), n ^ 3 + 2 * n = 3 * c
+    define at ih   --ih: ∃ (c : Nat), n ^ 3 + 2 * n = 3 * c
     obtain (k : Nat) (h1 : n ^ 3 + 2 * n = 3 * k) from ih
-    define         --Goal: ∃ (c : ℕ), (n + 1) ^ 3 + 2 * (n + 1) = 3 * c
+    define         --Goal: ∃ (c : Nat), (n + 1) ^ 3 + 2 * (n + 1) = 3 * c
     apply Exists.intro (k + n ^ 2 + n + 1)
     show (n + 1) ^ 3 + 2 * (n + 1) = 3 * (k + n ^ 2 + n + 1) from
       calc (n + 1) ^ 3 + 2 * (n + 1)
@@ -1489,23 +1489,23 @@ example : ∀ (n : Nat), Fib n < 2 ^ n := by
 As with ordinary induction, strong induction can be useful for proving statements that do not at first seem to have the form `∀ (n : Nat), ...`.  To illustrate this, we'll prove the *well-ordering principle*, which says that if a set `S : Set Nat` is nonempty, then it has a smallest element.  We'll prove the contrapositive: if `S` has no smallest element, then it is empty.  To say that `S` is empty means `∀ (n : Nat), n ∉ S`, and that's the statement to which we will apply strong induction.
 
 ```lean
-theorem well_ord_princ (S : Set Nat) (h1 : ∃ (x : Nat), x ∈ S) :
-    ∃ (x : Nat), x ∈ S ∧ ∀ (y : Nat), y ∈ S → x ≤ y := by
+theorem well_ord_princ (S : Set Nat) (h1 : ∃ (n : Nat), n ∈ S) :
+    ∃ (n : Nat), n ∈ S ∧ ∀ (m : Nat), m ∈ S → n ≤ m := by
   contradict h1 with h2
-    --h2: ¬∃ (x : Nat), x ∈ S ∧ ∀ (y : Nat), y ∈ S → x ≤ y
-  quant_neg                   --Goal: ∀ (x : Nat), ¬x ∈ S
+    --h2: ¬∃ (n : Nat), n ∈ S ∧ ∀ (m : Nat), m ∈ S → n ≤ m
+  quant_neg                   --Goal: ∀ (n : Nat), ¬n ∈ S
   by_strong_induc
   fix n : Nat
   assume ih : ∀ n_1 < n, n_1 ∉ S  --Goal: ¬n ∈ S
   contradict h2 with h3       --h3: n ∈ S
-    --Goal: ∃ (x : Nat), x ∈ S ∧ ∀ (y : Nat), y ∈ S → x ≤ y
+    --Goal: ∃ (n : Nat), n ∈ S ∧ ∀ (m : Nat), m ∈ S → n ≤ m
   apply Exists.intro n
-  apply And.intro h3          --Goal: ∀ (y : Nat), y ∈ S → n ≤ y
-  fix y : Nat
-  assume h4 : y ∈ S
-  have h5 : y < n → ¬y ∈ S := ih y
-  contrapos at h5             --h5: y ∈ S → ¬y < n
-  have h6 : ¬y < n := h5 h4
+  apply And.intro h3          --Goal: ∀ (m : Nat), m ∈ S → m ≤ y
+  fix m : Nat
+  assume h4 : m ∈ S
+  have h5 : m < n → ¬m ∈ S := ih m
+  contrapos at h5             --h5: m ∈ S → ¬m < n
+  have h6 : ¬m < n := h5 h4
   linarith
   done
 ```
@@ -1568,11 +1568,11 @@ theorem sqrt_2_irrat :
     { q : Nat | ∃ (p : Nat), p * p = 2 * (q * q) ∧ q ≠ 0 }
   by_contra h1
   have h2 : ∃ (q : Nat), q ∈ S := h1
-  have h3 : ∃ (x : ℕ), x ∈ S ∧ ∀ (y : ℕ), y ∈ S → x ≤ y :=
+  have h3 : ∃ (q : Nat), q ∈ S ∧ ∀ (r : Nat), r ∈ S → q ≤ r :=
     well_ord_princ S h2
-  obtain (q : Nat) (h4 : q ∈ S ∧ ∀ (y : ℕ), y ∈ S → q ≤ y) from h3
+  obtain (q : Nat) (h4 : q ∈ S ∧ ∀ (r : Nat), r ∈ S → q ≤ r) from h3
   have h4l : q ∈ S := h4.left
-  define at h4l     --h4l: ∃ (p : ℕ), p * p = 2 * (q * q) ∧ q ≠ 0
+  define at h4l     --h4l: ∃ (p : Nat), p * p = 2 * (q * q) ∧ q ≠ 0
   obtain (p : Nat) (h5 : p * p = 2 * (q * q) ∧ q ≠ 0) from h4l
   have h5l : p * p = 2 * (q * q) := h5.left
   have h6 : nat_even (p * p) := Exists.intro (q * q) h5l

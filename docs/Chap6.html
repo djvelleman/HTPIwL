@@ -327,16 +327,16 @@ $$
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>    ∀ (n : Nat), 3 ∣ n ^ 3 + 2 * n := <span class="kw">by</span></span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>  <span class="kw">by_induc</span></span>
 <span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>  · <span class="co">-- Base Case</span></span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>    <span class="kw">define</span>         <span class="co">--Goal: ∃ (c : ℕ), 0 ^ 3 + 2 * 0 = 3 * c</span></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>    <span class="kw">define</span>         <span class="co">--Goal: ∃ (c : Nat), 0 ^ 3 + 2 * 0 = 3 * c</span></span>
 <span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>    <span class="kw">apply</span> Exists.intro 0</span>
 <span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>    <span class="kw">rfl</span></span>
 <span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>    <span class="kw">done</span></span>
 <span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>  · <span class="co">-- Induction Step</span></span>
 <span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>    <span class="kw">fix</span> n : Nat</span>
 <span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>    <span class="kw">assume</span> ih : 3 ∣ n ^ 3 + 2 * n</span>
-<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>    <span class="kw">define</span> <span class="kw">at</span> ih   <span class="co">--ih: ∃ (c : ℕ), n ^ 3 + 2 * n = 3 * c</span></span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>    <span class="kw">define</span> <span class="kw">at</span> ih   <span class="co">--ih: ∃ (c : Nat), n ^ 3 + 2 * n = 3 * c</span></span>
 <span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>    <span class="kw">obtain</span> (k : Nat) (h1 : n ^ 3 + 2 * n = 3 * k) <span class="kw">from</span> ih</span>
-<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>    <span class="kw">define</span>         <span class="co">--Goal: ∃ (c : ℕ), (n + 1) ^ 3 + 2 * (n + 1) = 3 * c</span></span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>    <span class="kw">define</span>         <span class="co">--Goal: ∃ (c : Nat), (n + 1) ^ 3 + 2 * (n + 1) = 3 * c</span></span>
 <span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a>    <span class="kw">apply</span> Exists.intro (k + n ^ 2 + n + 1)</span>
 <span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a>    <span class="kw">show</span> (n + 1) ^ 3 + 2 * (n + 1) = 3 * (k + n ^ 2 + n + 1) <span class="kw">from</span></span>
 <span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a>      <span class="kw">calc</span> (n + 1) ^ 3 + 2 * (n + 1)</span>
@@ -1335,23 +1335,23 @@ $$
 <span id="cb93-39"><a href="#cb93-39" aria-hidden="true" tabindex="-1"></a>    <span class="kw">done</span></span>
 <span id="cb93-40"><a href="#cb93-40" aria-hidden="true" tabindex="-1"></a>  <span class="kw">done</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>As with ordinary induction, strong induction can be useful for proving statements that do not at first seem to have the form <code>∀ (n : Nat), ...</code>. To illustrate this, we’ll prove the <em>well-ordering principle</em>, which says that if a set <code>S : Set Nat</code> is nonempty, then it has a smallest element. We’ll prove the contrapositive: if <code>S</code> has no smallest element, then it is empty. To say that <code>S</code> is empty means <code>∀ (n : Nat), n ∉ S</code>, and that’s the statement to which we will apply strong induction.</p>
-<div class="sourceCode" id="cb94"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb94-1"><a href="#cb94-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> well_ord_princ (S : Set Nat) (h1 : ∃ (x : Nat), x ∈ S) :</span>
-<span id="cb94-2"><a href="#cb94-2" aria-hidden="true" tabindex="-1"></a>    ∃ (x : Nat), x ∈ S ∧ ∀ (y : Nat), y ∈ S → x ≤ y := <span class="kw">by</span></span>
+<div class="sourceCode" id="cb94"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb94-1"><a href="#cb94-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> well_ord_princ (S : Set Nat) (h1 : ∃ (n : Nat), n ∈ S) :</span>
+<span id="cb94-2"><a href="#cb94-2" aria-hidden="true" tabindex="-1"></a>    ∃ (n : Nat), n ∈ S ∧ ∀ (m : Nat), m ∈ S → n ≤ m := <span class="kw">by</span></span>
 <span id="cb94-3"><a href="#cb94-3" aria-hidden="true" tabindex="-1"></a>  <span class="kw">contradict</span> h1 <span class="kw">with</span> h2</span>
-<span id="cb94-4"><a href="#cb94-4" aria-hidden="true" tabindex="-1"></a>    <span class="co">--h2: ¬∃ (x : Nat), x ∈ S ∧ ∀ (y : Nat), y ∈ S → x ≤ y</span></span>
-<span id="cb94-5"><a href="#cb94-5" aria-hidden="true" tabindex="-1"></a>  <span class="kw">quant_neg</span>                   <span class="co">--Goal: ∀ (x : Nat), ¬x ∈ S</span></span>
+<span id="cb94-4"><a href="#cb94-4" aria-hidden="true" tabindex="-1"></a>    <span class="co">--h2: ¬∃ (n : Nat), n ∈ S ∧ ∀ (m : Nat), m ∈ S → n ≤ m</span></span>
+<span id="cb94-5"><a href="#cb94-5" aria-hidden="true" tabindex="-1"></a>  <span class="kw">quant_neg</span>                   <span class="co">--Goal: ∀ (n : Nat), ¬n ∈ S</span></span>
 <span id="cb94-6"><a href="#cb94-6" aria-hidden="true" tabindex="-1"></a>  <span class="kw">by_strong_induc</span></span>
 <span id="cb94-7"><a href="#cb94-7" aria-hidden="true" tabindex="-1"></a>  <span class="kw">fix</span> n : Nat</span>
 <span id="cb94-8"><a href="#cb94-8" aria-hidden="true" tabindex="-1"></a>  <span class="kw">assume</span> ih : ∀ n_1 &lt; n, n_1 ∉ S  <span class="co">--Goal: ¬n ∈ S</span></span>
 <span id="cb94-9"><a href="#cb94-9" aria-hidden="true" tabindex="-1"></a>  <span class="kw">contradict</span> h2 <span class="kw">with</span> h3       <span class="co">--h3: n ∈ S</span></span>
-<span id="cb94-10"><a href="#cb94-10" aria-hidden="true" tabindex="-1"></a>    <span class="co">--Goal: ∃ (x : Nat), x ∈ S ∧ ∀ (y : Nat), y ∈ S → x ≤ y</span></span>
+<span id="cb94-10"><a href="#cb94-10" aria-hidden="true" tabindex="-1"></a>    <span class="co">--Goal: ∃ (n : Nat), n ∈ S ∧ ∀ (m : Nat), m ∈ S → n ≤ m</span></span>
 <span id="cb94-11"><a href="#cb94-11" aria-hidden="true" tabindex="-1"></a>  <span class="kw">apply</span> Exists.intro n</span>
-<span id="cb94-12"><a href="#cb94-12" aria-hidden="true" tabindex="-1"></a>  <span class="kw">apply</span> And.intro h3          <span class="co">--Goal: ∀ (y : Nat), y ∈ S → n ≤ y</span></span>
-<span id="cb94-13"><a href="#cb94-13" aria-hidden="true" tabindex="-1"></a>  <span class="kw">fix</span> y : Nat</span>
-<span id="cb94-14"><a href="#cb94-14" aria-hidden="true" tabindex="-1"></a>  <span class="kw">assume</span> h4 : y ∈ S</span>
-<span id="cb94-15"><a href="#cb94-15" aria-hidden="true" tabindex="-1"></a>  <span class="kw">have</span> h5 : y &lt; n → ¬y ∈ S := ih y</span>
-<span id="cb94-16"><a href="#cb94-16" aria-hidden="true" tabindex="-1"></a>  <span class="kw">contrapos</span> <span class="kw">at</span> h5             <span class="co">--h5: y ∈ S → ¬y &lt; n</span></span>
-<span id="cb94-17"><a href="#cb94-17" aria-hidden="true" tabindex="-1"></a>  <span class="kw">have</span> h6 : ¬y &lt; n := h5 h4</span>
+<span id="cb94-12"><a href="#cb94-12" aria-hidden="true" tabindex="-1"></a>  <span class="kw">apply</span> And.intro h3          <span class="co">--Goal: ∀ (m : Nat), m ∈ S → m ≤ y</span></span>
+<span id="cb94-13"><a href="#cb94-13" aria-hidden="true" tabindex="-1"></a>  <span class="kw">fix</span> m : Nat</span>
+<span id="cb94-14"><a href="#cb94-14" aria-hidden="true" tabindex="-1"></a>  <span class="kw">assume</span> h4 : m ∈ S</span>
+<span id="cb94-15"><a href="#cb94-15" aria-hidden="true" tabindex="-1"></a>  <span class="kw">have</span> h5 : m &lt; n → ¬m ∈ S := ih m</span>
+<span id="cb94-16"><a href="#cb94-16" aria-hidden="true" tabindex="-1"></a>  <span class="kw">contrapos</span> <span class="kw">at</span> h5             <span class="co">--h5: m ∈ S → ¬m &lt; n</span></span>
+<span id="cb94-17"><a href="#cb94-17" aria-hidden="true" tabindex="-1"></a>  <span class="kw">have</span> h6 : ¬m &lt; n := h5 h4</span>
 <span id="cb94-18"><a href="#cb94-18" aria-hidden="true" tabindex="-1"></a>  <span class="kw">linarith</span></span>
 <span id="cb94-19"><a href="#cb94-19" aria-hidden="true" tabindex="-1"></a>  <span class="kw">done</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>Section 6.4 of <em>HTPI</em> ends with an example of an application of the well ordering principle. The example gives a proof that <span class="math inline">\(\sqrt{2}\)</span> is irrational. If <span class="math inline">\(\sqrt{2}\)</span> were rational, then there would be natural numbers <span class="math inline">\(p\)</span> and <span class="math inline">\(q\)</span> such that <span class="math inline">\(q \ne 0\)</span> and <span class="math inline">\(p/q = \sqrt{2}\)</span>, and therefore <span class="math inline">\(p^2 = 2q^2\)</span>. So we can prove that <span class="math inline">\(\sqrt{2}\)</span> is irrational by showing that there do not exist natural numbers <span class="math inline">\(p\)</span> and <span class="math inline">\(q\)</span> such that <span class="math inline">\(q \ne 0\)</span> and <span class="math inline">\(p^2 = 2q^2\)</span>.</p>
@@ -1390,11 +1390,11 @@ $$
 <span id="cb100-4"><a href="#cb100-4" aria-hidden="true" tabindex="-1"></a>    { q : Nat | ∃ (p : Nat), p * p = 2 * (q * q) ∧ q ≠ 0 }</span>
 <span id="cb100-5"><a href="#cb100-5" aria-hidden="true" tabindex="-1"></a>  <span class="kw">by_contra</span> h1</span>
 <span id="cb100-6"><a href="#cb100-6" aria-hidden="true" tabindex="-1"></a>  <span class="kw">have</span> h2 : ∃ (q : Nat), q ∈ S := h1</span>
-<span id="cb100-7"><a href="#cb100-7" aria-hidden="true" tabindex="-1"></a>  <span class="kw">have</span> h3 : ∃ (x : ℕ), x ∈ S ∧ ∀ (y : ℕ), y ∈ S → x ≤ y :=</span>
+<span id="cb100-7"><a href="#cb100-7" aria-hidden="true" tabindex="-1"></a>  <span class="kw">have</span> h3 : ∃ (q : Nat), q ∈ S ∧ ∀ (r : Nat), r ∈ S → q ≤ r :=</span>
 <span id="cb100-8"><a href="#cb100-8" aria-hidden="true" tabindex="-1"></a>    well_ord_princ S h2</span>
-<span id="cb100-9"><a href="#cb100-9" aria-hidden="true" tabindex="-1"></a>  <span class="kw">obtain</span> (q : Nat) (h4 : q ∈ S ∧ ∀ (y : ℕ), y ∈ S → q ≤ y) <span class="kw">from</span> h3</span>
+<span id="cb100-9"><a href="#cb100-9" aria-hidden="true" tabindex="-1"></a>  <span class="kw">obtain</span> (q : Nat) (h4 : q ∈ S ∧ ∀ (r : Nat), r ∈ S → q ≤ r) <span class="kw">from</span> h3</span>
 <span id="cb100-10"><a href="#cb100-10" aria-hidden="true" tabindex="-1"></a>  <span class="kw">have</span> h4l : q ∈ S := h4.left</span>
-<span id="cb100-11"><a href="#cb100-11" aria-hidden="true" tabindex="-1"></a>  <span class="kw">define</span> <span class="kw">at</span> h4l     <span class="co">--h4l: ∃ (p : ℕ), p * p = 2 * (q * q) ∧ q ≠ 0</span></span>
+<span id="cb100-11"><a href="#cb100-11" aria-hidden="true" tabindex="-1"></a>  <span class="kw">define</span> <span class="kw">at</span> h4l     <span class="co">--h4l: ∃ (p : Nat), p * p = 2 * (q * q) ∧ q ≠ 0</span></span>
 <span id="cb100-12"><a href="#cb100-12" aria-hidden="true" tabindex="-1"></a>  <span class="kw">obtain</span> (p : Nat) (h5 : p * p = 2 * (q * q) ∧ q ≠ 0) <span class="kw">from</span> h4l</span>
 <span id="cb100-13"><a href="#cb100-13" aria-hidden="true" tabindex="-1"></a>  <span class="kw">have</span> h5l : p * p = 2 * (q * q) := h5.left</span>
 <span id="cb100-14"><a href="#cb100-14" aria-hidden="true" tabindex="-1"></a>  <span class="kw">have</span> h6 : nat_even (p * p) := Exists.intro (q * q) h5l</span>
