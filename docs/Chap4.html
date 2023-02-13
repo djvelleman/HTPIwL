@@ -687,7 +687,7 @@ $$
 <span id="cb35-3"><a href="#cb35-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb35-4"><a href="#cb35-4" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> lub {A : <span class="kw">Type</span>} (R : BinRel A) (a : A) (B : Set A) : <span class="kw">Prop</span> :=</span>
 <span id="cb35-5"><a href="#cb35-5" aria-hidden="true" tabindex="-1"></a>    smallestElt R a { c : A | upperBd R c B }</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>As usual, we will let you consult <em>HTPI</em> for examples of these concepts. But we will mention one example: If <code>A</code> is a type and <code>F</code> has type <code>Set (Set A)</code>—that is, <code>F</code> is a set whose elements are sets of objects of type <code>A</code>—then the least upper bound of <code>F</code>, with respect to the partial order <code>sub A</code>, is <code>⋃₀F</code>. We leave the proof of this fact as an exercise.</p>
+<p>As usual, we will let you consult <em>HTPI</em> for examples of these concepts. But we will mention one example: If <code>A</code> is a type and <code>F</code> has type <code>Set (Set A)</code>—that is, <code>F</code> is a set whose elements are sets of objects of type <code>A</code>—then the least upper bound of <code>F</code>, with respect to the partial order <code>sub A</code>, is <code>⋃₀ F</code>. We leave the proof of this fact as an exercise.</p>
 <section id="exercises-2" class="level3">
 <h3 class="anchored" data-anchor-id="exercises-2">Exercises</h3>
 <div class="numex" data-arguments="1">
@@ -699,9 +699,9 @@ $$
 <span id="cb37-3"><a href="#cb37-3" aria-hidden="true" tabindex="-1"></a>    ∀ (c : A), smallestElt R c B → b = c := <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="numex" data-arguments="3">
-<div class="sourceCode" id="cb38"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="co">--If F is a set of sets, then ⋃₀F is the lub of F in the subset ordering</span></span>
+<div class="sourceCode" id="cb38"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="co">--If F is a set of sets, then ⋃₀ F is the lub of F in the subset ordering</span></span>
 <span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Theorem_4_4_11 {A : <span class="kw">Type</span>} (F : Set (Set A)) :</span>
-<span id="cb38-3"><a href="#cb38-3" aria-hidden="true" tabindex="-1"></a>    lub (sub A) (⋃₀F) F := <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb38-3"><a href="#cb38-3" aria-hidden="true" tabindex="-1"></a>    lub (sub A) (⋃₀ F) F := <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="numex" data-arguments="4">
 <div class="sourceCode" id="cb39"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Exercise_4_4_8 {A B : <span class="kw">Type</span>} (R : BinRel A) (S : BinRel B)</span>
@@ -775,7 +775,7 @@ A/R = \{[x]_R \mid x \in A\}.
 <span id="cb47-4"><a href="#cb47-4" aria-hidden="true" tabindex="-1"></a>    ∀ X ∈ F, ∀ Y ∈ F, X ≠ Y → empty (X ∩ Y)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>To say that a set <code>X</code> is empty, we could write <code>X = ∅</code>, but it is more convenient to have a statement that says more explicitly what it means for a set to be empty. Thus, we have defined <code>empty X</code> to be the proposition saying that <code>X</code> has no elements. If <code>F</code> has type <code>Set (Set A)</code>, then <code>pairwise_disjoint F</code> is the proposition that no two distinct elements of <code>F</code> have any element in common—in other words, the elements of <code>F</code> do not overlap. We can now give the precise definition of a partition:</p>
 <div class="sourceCode" id="cb48"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> partition {A : <span class="kw">Type</span>} (F : Set (Set A)) : <span class="kw">Prop</span> :=</span>
-<span id="cb48-2"><a href="#cb48-2" aria-hidden="true" tabindex="-1"></a>    (∀ (x : A), x ∈ ⋃₀F) ∧ pairwise_disjoint F ∧ ∀ X ∈ F, ¬empty X</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb48-2"><a href="#cb48-2" aria-hidden="true" tabindex="-1"></a>    (∀ (x : A), x ∈ ⋃₀ F) ∧ pairwise_disjoint F ∧ ∀ X ∈ F, ¬empty X</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>The main theorem about equivalence relations in <em>HTPI</em> is Theorem 4.5.4, which says that <code>mod A R</code> is a partition of <code>A</code>. The proof of this theorem is hard enough that <em>HTPI</em> proves two facts about equivalence classes first. A fact that is proven just for the purpose of using it to prove something else is often called a <em>lemma</em>. We can use this term in Lean as well. Here is the first part of Lemma 4.5.5 from <em>HTPI</em></p>
 <div class="sourceCode" id="cb49"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb49-1"><a href="#cb49-1" aria-hidden="true" tabindex="-1"></a><span class="kw">lemma</span> Lemma_4_5_5_1 {A : <span class="kw">Type</span>} (R : BinRel A) (h : equiv_rel R) :</span>
 <span id="cb49-2"><a href="#cb49-2" aria-hidden="true" tabindex="-1"></a>    ∀ (x : A), x ∈ equivClass R x := <span class="kw">by</span></span>
@@ -826,7 +826,7 @@ A/R = \{[x]_R \mid x \in A\}.
 <span id="cb51-33"><a href="#cb51-33" aria-hidden="true" tabindex="-1"></a>  <span class="kw">done</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>The definition of “partition” has three parts, so to prove Theorem 4.5.4 we will have to prove three statements. It will make the proof easier to read if we prove the three statements separately.</p>
 <div class="sourceCode" id="cb52"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb52-1"><a href="#cb52-1" aria-hidden="true" tabindex="-1"></a><span class="kw">lemma</span> Theorem_4_5_4_part_1 {A : <span class="kw">Type</span>} (R : BinRel A) (h : equiv_rel R) :</span>
-<span id="cb52-2"><a href="#cb52-2" aria-hidden="true" tabindex="-1"></a>    ∀ (x : A), x ∈ ⋃₀(mod A R) := <span class="kw">by</span></span>
+<span id="cb52-2"><a href="#cb52-2" aria-hidden="true" tabindex="-1"></a>    ∀ (x : A), x ∈ ⋃₀ (mod A R) := <span class="kw">by</span></span>
 <span id="cb52-3"><a href="#cb52-3" aria-hidden="true" tabindex="-1"></a>  <span class="kw">fix</span> x : A</span>
 <span id="cb52-4"><a href="#cb52-4" aria-hidden="true" tabindex="-1"></a>  <span class="kw">define</span>        <span class="co">--Goal: ∃ (t : Set A), t ∈ mod A R ∧ x ∈ t</span></span>
 <span id="cb52-5"><a href="#cb52-5" aria-hidden="true" tabindex="-1"></a>  <span class="kw">apply</span> Exists.intro (equivClass R x)</span>
@@ -918,7 +918,7 @@ A/R = \{[x]_R \mid x \in A\}.
 <span id="cb59-10"><a href="#cb59-10" aria-hidden="true" tabindex="-1"></a>    <span class="kw">assume</span> h2 : X ∈ mod A R           <span class="co">--Goal: X ∈ F</span></span>
 <span id="cb59-11"><a href="#cb59-11" aria-hidden="true" tabindex="-1"></a>    <span class="kw">define</span> <span class="kw">at</span> h2                      <span class="co">--h2: ∃ (x : A), equivClass R x = X</span></span>
 <span id="cb59-12"><a href="#cb59-12" aria-hidden="true" tabindex="-1"></a>    <span class="kw">obtain</span> (x : A) (h3 : equivClass R x = X) <span class="kw">from</span> h2</span>
-<span id="cb59-13"><a href="#cb59-13" aria-hidden="true" tabindex="-1"></a>    <span class="kw">have</span> h4 : x ∈ ⋃₀F := h.left x</span>
+<span id="cb59-13"><a href="#cb59-13" aria-hidden="true" tabindex="-1"></a>    <span class="kw">have</span> h4 : x ∈ ⋃₀ F := h.left x</span>
 <span id="cb59-14"><a href="#cb59-14" aria-hidden="true" tabindex="-1"></a>    <span class="kw">define</span> <span class="kw">at</span> h4</span>
 <span id="cb59-15"><a href="#cb59-15" aria-hidden="true" tabindex="-1"></a>    <span class="kw">obtain</span> (Y : Set A) (h5 : Y ∈ F ∧ x ∈ Y) <span class="kw">from</span> h4</span>
 <span id="cb59-16"><a href="#cb59-16" aria-hidden="true" tabindex="-1"></a>    <span class="kw">have</span> h6 : equivClass R x = Y :=</span>

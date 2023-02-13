@@ -573,13 +573,13 @@ def closure {A : Type} (f : A → A) (B C : Set A) : Prop :=
     smallestElt (sub A) C { D : Set A | B ⊆ D ∧ closed f D }
 ```
 
-We know that smallest elements, when they exist, are unique, so it makes sense to talk about *the* closure of `B` under `f`.  But not every set has a smallest element.  Does every set have a closure?  Theorem 5.4.5 in *HTPI* says that the answer is yes.  The idea behind the proof is that, for any family of sets `F`, if `F` has a smallest element under the subset partial order, then that smallest element is equal to `⋂₀F`.  (We'll ask you to prove this in the exercises.)
+We know that smallest elements, when they exist, are unique, so it makes sense to talk about *the* closure of `B` under `f`.  But not every set has a smallest element.  Does every set have a closure?  Theorem 5.4.5 in *HTPI* says that the answer is yes.  The idea behind the proof is that, for any family of sets `F`, if `F` has a smallest element under the subset partial order, then that smallest element is equal to `⋂₀ F`.  (We'll ask you to prove this in the exercises.)
 
 ```lean
 theorem Theorem_5_4_5 {A : Type} (f : A → A) (B : Set A) :
     ∃ (C : Set A), closure f B C := by
   let F : Set (Set A) := { D : Set A | B ⊆ D ∧ closed f D }
-  let C : Set A := ⋂₀F
+  let C : Set A := ⋂₀ F
   apply Exists.intro C    --Goal: closure f B C
   define                  --Goal: C ∈ F ∧ ∀ x ∈ F, C ⊆ x
   apply And.intro
@@ -672,7 +672,7 @@ theorem Theorem_5_4_9 {A : Type} (f : A → A → A) (B : Set A) :
 ::: {.numex arguments="1"}
 ```lean
 example {A : Type} (F : Set (Set A)) (B : Set A) :
-    smallestElt (sub A) B F → B = ⋂₀F := sorry
+    smallestElt (sub A) B F → B = ⋂₀ F := sorry
 ```
 :::
 

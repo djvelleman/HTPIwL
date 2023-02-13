@@ -605,7 +605,7 @@ def lub {A : Type} (R : BinRel A) (a : A) (B : Set A) : Prop :=
     smallestElt R a { c : A | upperBd R c B }
 ```
 
-As usual, we will let you consult *HTPI* for examples of these concepts.  But we will mention one example:  If `A` is a type and `F` has type `Set (Set A)`---that is, `F` is a set whose elements are sets of objects of type `A`---then the least upper bound of `F`, with respect to the partial order `sub A`, is `⋃₀F`.  We leave the proof of this fact as an exercise.
+As usual, we will let you consult *HTPI* for examples of these concepts.  But we will mention one example:  If `A` is a type and `F` has type `Set (Set A)`---that is, `F` is a set whose elements are sets of objects of type `A`---then the least upper bound of `F`, with respect to the partial order `sub A`, is `⋃₀ F`.  We leave the proof of this fact as an exercise.
 
 ### Exercises
 
@@ -625,9 +625,9 @@ theorem Theorem_4_4_6_1 {A : Type} (R : BinRel A) (B : Set A) (b : A)
 
 ::: {.numex arguments="3"}
 ```lean
---If F is a set of sets, then ⋃₀F is the lub of F in the subset ordering
+--If F is a set of sets, then ⋃₀ F is the lub of F in the subset ordering
 theorem Theorem_4_4_11 {A : Type} (F : Set (Set A)) :
-    lub (sub A) (⋃₀F) F := sorry
+    lub (sub A) (⋃₀ F) F := sorry
 ```
 :::
 
@@ -738,7 +738,7 @@ To say that a set `X` is empty, we could write `X = ∅`, but it is more conveni
 
 ```lean
 def partition {A : Type} (F : Set (Set A)) : Prop :=
-    (∀ (x : A), x ∈ ⋃₀F) ∧ pairwise_disjoint F ∧ ∀ X ∈ F, ¬empty X
+    (∀ (x : A), x ∈ ⋃₀ F) ∧ pairwise_disjoint F ∧ ∀ X ∈ F, ¬empty X
 ```
 
 The main theorem about equivalence relations in *HTPI* is Theorem 4.5.4, which says that `mod A R` is a partition of `A`.  The proof of this theorem is hard enough that *HTPI* proves two facts about equivalence classes first.  A fact that is proven just for the purpose of using it to prove something else is often called a *lemma*.  We can use this term in Lean as well.  Here is the first part of Lemma 4.5.5 from *HTPI*
@@ -805,7 +805,7 @@ The definition of "partition" has three parts, so to prove Theorem 4.5.4 we will
 
 ```lean
 lemma Theorem_4_5_4_part_1 {A : Type} (R : BinRel A) (h : equiv_rel R) :
-    ∀ (x : A), x ∈ ⋃₀(mod A R) := by
+    ∀ (x : A), x ∈ ⋃₀ (mod A R) := by
   fix x : A
   define        --Goal: ∃ (t : Set A), t ∈ mod A R ∧ x ∈ t
   apply Exists.intro (equivClass R x)
@@ -926,7 +926,7 @@ theorem Theorem_4_5_6 {A : Type} (F : Set (Set A)) (h: partition F) :
     assume h2 : X ∈ mod A R           --Goal: X ∈ F
     define at h2                      --h2: ∃ (x : A), equivClass R x = X
     obtain (x : A) (h3 : equivClass R x = X) from h2
-    have h4 : x ∈ ⋃₀F := h.left x
+    have h4 : x ∈ ⋃₀ F := h.left x
     define at h4
     obtain (Y : Set A) (h5 : Y ∈ F ∧ x ∈ Y) from h4
     have h6 : equivClass R x = Y :=

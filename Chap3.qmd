@@ -1223,7 +1223,7 @@ We conclude this section with the theorem from Example 3.3.5 in *HTPI*.  That th
 ::: {.inpt}
 ```lean
 theorem Example_3_3_5 (U : Type) (B : Set U)
-    (F : Set (Set U)) : ⋃₀F ⊆ B → F ⊆ 𝒫 B := by
+    (F : Set (Set U)) : ⋃₀ F ⊆ B → F ⊆ 𝒫 B := by
   
   **done::
 ```
@@ -1234,7 +1234,7 @@ theorem Example_3_3_5 (U : Type) (B : Set U)
 U : Type
 B : Set U
 F : Set (Set U)
-⊢ ⋃₀F ⊆ B → F ⊆ 𝒫 B
+⊢ ⋃₀ F ⊆ B → F ⊆ 𝒫 B
 ```
 :::
 :::
@@ -1245,8 +1245,8 @@ Note that `F` has type `Set (Set U)`, which means that it is a set whose element
 ::: {.inpt}
 ```lean
 theorem Example_3_3_5 (U : Type) (B : Set U)
-    (F : Set (Set U)) : ⋃₀F ⊆ B → F ⊆ 𝒫 B := by
-  assume h1 : ⋃₀F ⊆ B
+    (F : Set (Set U)) : ⋃₀ F ⊆ B → F ⊆ 𝒫 B := by
+  assume h1 : ⋃₀ F ⊆ B
   define
   **done::
 ```
@@ -1257,7 +1257,7 @@ theorem Example_3_3_5 (U : Type) (B : Set U)
 U : Type
 B : Set U
 F : Set (Set U)
-h1 : ⋃₀F ⊆ B
+h1 : ⋃₀ F ⊆ B
 ⊢ ∀ ⦃a : Set U⦄,
 >>  a ∈ F → a ∈ 𝒫 B
 ```
@@ -1270,8 +1270,8 @@ Based on the form of the goal, we introduce an arbitrary object `x` of type `Set
 ::: {.inpt}
 ```lean
 theorem Example_3_3_5 (U : Type) (B : Set U)
-    (F : Set (Set U)) : ⋃₀F ⊆ B → F ⊆ 𝒫 B := by
-  assume h1 : ⋃₀F ⊆ B
+    (F : Set (Set U)) : ⋃₀ F ⊆ B → F ⊆ 𝒫 B := by
+  assume h1 : ⋃₀ F ⊆ B
   define
   fix x : Set U
   assume h2 : x ∈ F
@@ -1285,7 +1285,7 @@ theorem Example_3_3_5 (U : Type) (B : Set U)
 U : Type
 B : Set U
 F : Set (Set U)
-h1 : ⋃₀F ⊆ B
+h1 : ⋃₀ F ⊆ B
 x : Set U
 h2 : x ∈ F
 ⊢ ∀ ⦃a : U⦄,
@@ -1300,8 +1300,8 @@ Once again the form of the goal dictates our next steps: introduce an arbitrary 
 ::: {.inpt}
 ```lean
 theorem Example_3_3_5 (U : Type) (B : Set U)
-    (F : Set (Set U)) : ⋃₀F ⊆ B → F ⊆ 𝒫 B := by
-  assume h1 : ⋃₀F ⊆ B
+    (F : Set (Set U)) : ⋃₀ F ⊆ B → F ⊆ 𝒫 B := by
+  assume h1 : ⋃₀ F ⊆ B
   define
   fix x : Set U
   assume h2 : x ∈ F
@@ -1317,7 +1317,7 @@ theorem Example_3_3_5 (U : Type) (B : Set U)
 U : Type
 B : Set U
 F : Set (Set U)
-h1 : ⋃₀F ⊆ B
+h1 : ⋃₀ F ⊆ B
 x : Set U
 h2 : x ∈ F
 y : U
@@ -1333,8 +1333,8 @@ The goal can be analyzed no further, so we turn to the givens.  We haven't used 
 ::: {.inpt}
 ```lean
 theorem Example_3_3_5 (U : Type) (B : Set U)
-    (F : Set (Set U)) : ⋃₀F ⊆ B → F ⊆ 𝒫 B := by
-  assume h1 : ⋃₀F ⊆ B
+    (F : Set (Set U)) : ⋃₀ F ⊆ B → F ⊆ 𝒫 B := by
+  assume h1 : ⋃₀ F ⊆ B
   define
   fix x : Set U
   assume h2 : x ∈ F
@@ -1352,7 +1352,7 @@ U : Type
 B : Set U
 F : Set (Set U)
 h1 : ∀ ⦃a : U⦄,
->>  a ∈ ⋃₀F → a ∈ B
+>>  a ∈ ⋃₀ F → a ∈ B
 x : Set U
 h2 : x ∈ F
 y : U
@@ -1368,8 +1368,8 @@ Now we see that we can try to use `h1` to reach our goal.  Indeed, `h1 _` would 
 ::: {.inpt}
 ```lean
 theorem Example_3_3_5 (U : Type) (B : Set U)
-    (F : Set (Set U)) : ⋃₀F ⊆ B → F ⊆ 𝒫 B := by
-  assume h1 : ⋃₀F ⊆ B
+    (F : Set (Set U)) : ⋃₀ F ⊆ B → F ⊆ 𝒫 B := by
+  assume h1 : ⋃₀ F ⊆ B
   define
   fix x : Set U
   assume h2 : x ∈ F
@@ -1388,12 +1388,12 @@ U : Type
 B : Set U
 F : Set (Set U)
 h1 : ∀ ⦃a : U⦄,
->>  a ∈ ⋃₀F → a ∈ B
+>>  a ∈ ⋃₀ F → a ∈ B
 x : Set U
 h2 : x ∈ F
 y : U
 h3 : y ∈ x
-⊢ y ∈ ⋃₀F
+⊢ y ∈ ⋃₀ F
 ```
 :::
 :::
@@ -1404,8 +1404,8 @@ Once again we have a goal that can be analyzed by using the `define` tactic.
 ::: {.inpt}
 ```lean
 theorem Example_3_3_5 (U : Type) (B : Set U)
-    (F : Set (Set U)) : ⋃₀F ⊆ B → F ⊆ 𝒫 B := by
-  assume h1 : ⋃₀F ⊆ B
+    (F : Set (Set U)) : ⋃₀ F ⊆ B → F ⊆ 𝒫 B := by
+  assume h1 : ⋃₀ F ⊆ B
   define
   fix x : Set U
   assume h2 : x ∈ F
@@ -1425,7 +1425,7 @@ U : Type
 B : Set U
 F : Set (Set U)
 h1 : ∀ ⦃a : U⦄,
->>  a ∈ ⋃₀F → a ∈ B
+>>  a ∈ ⋃₀ F → a ∈ B
 x : Set U
 h2 : x ∈ F
 y : U
@@ -1442,8 +1442,8 @@ Our goal is now an existential statement, so we look for a value of `t` that wil
 ::: {.inpt}
 ```lean
 theorem Example_3_3_5 (U : Type) (B : Set U)
-    (F : Set (Set U)) : ⋃₀F ⊆ B → F ⊆ 𝒫 B := by
-  assume h1 : ⋃₀F ⊆ B
+    (F : Set (Set U)) : ⋃₀ F ⊆ B → F ⊆ 𝒫 B := by
+  assume h1 : ⋃₀ F ⊆ B
   define
   fix x : Set U
   assume h2 : x ∈ F
@@ -1464,7 +1464,7 @@ U : Type
 B : Set U
 F : Set (Set U)
 h1 : ∀ ⦃a : U⦄,
->>  a ∈ ⋃₀F → a ∈ B
+>>  a ∈ ⋃₀ F → a ∈ B
 x : Set U
 h2 : x ∈ F
 y : U
@@ -1480,8 +1480,8 @@ Clearly the goal now follows from `h2` and `h3`, but how do we write the proof i
 ::: {.inpt}
 ```lean
 theorem Example_3_3_5 (U : Type) (B : Set U)
-    (F : Set (Set U)) : ⋃₀F ⊆ B → F ⊆ 𝒫 B := by
-  assume h1 : ⋃₀F ⊆ B
+    (F : Set (Set U)) : ⋃₀ F ⊆ B → F ⊆ 𝒫 B := by
+  assume h1 : ⋃₀ F ⊆ B
   define
   fix x : Set U
   assume h2 : x ∈ F
@@ -1528,7 +1528,7 @@ theorem Exercise_3_3_1
 ::: {.numex arguments="2"}
 ```lean
 theorem Exercise_3_3_8 (U : Type) (F : Set (Set U)) (A : Set U)
-    (h1 : A ∈ F) : A ⊆ ⋃₀F := by
+    (h1 : A ∈ F) : A ⊆ ⋃₀ F := by
   
   **done::
 ```
@@ -1537,7 +1537,7 @@ theorem Exercise_3_3_8 (U : Type) (F : Set (Set U)) (A : Set U)
 ::: {.numex arguments="3"}
 ```lean
 theorem Exercise_3_3_9 (U : Type) (F : Set (Set U)) (A : Set U)
-    (h1 : A ∈ F) : ⋂₀F ⊆ A := by
+    (h1 : A ∈ F) : ⋂₀ F ⊆ A := by
   
   **done::
 ```
@@ -1546,7 +1546,7 @@ theorem Exercise_3_3_9 (U : Type) (F : Set (Set U)) (A : Set U)
 ::: {.numex arguments="4"}
 ```lean
 theorem Exercise_3_3_10 (U : Type) (B : Set U) (F : Set (Set U))
-    (h1 : ∀ (A : Set U), A ∈ F → B ⊆ A) : B ⊆ ⋂₀F := by
+    (h1 : ∀ (A : Set U), A ∈ F → B ⊆ A) : B ⊆ ⋂₀ F := by
   
   **done::
 ```
@@ -1555,7 +1555,7 @@ theorem Exercise_3_3_10 (U : Type) (B : Set U) (F : Set (Set U))
 ::: {.numex arguments="5"}
 ```lean
 theorem Exercise_3_3_13 (U : Type)
-    (F G : Set (Set U)) : F ⊆ G → ⋂₀G ⊆ ⋂₀F := by
+    (F G : Set (Set U)) : F ⊆ G → ⋂₀ G ⊆ ⋂₀ F := by
   
   **done::
 ```
@@ -2326,7 +2326,7 @@ theorem Exercise_3_4_4 (U : Type) (A B C : Set U)
 ::: {.numex arguments="3"}
 ```lean
 theorem Exercise_3_3_16 (U : Type) (B : Set U)
-    (F : Set (Set U)) : F ⊆ 𝒫 B → ⋃₀F ⊆ B := by
+    (F : Set (Set U)) : F ⊆ 𝒫 B → ⋃₀ F ⊆ B := by
   
   **done::
 ```
@@ -2336,7 +2336,7 @@ theorem Exercise_3_3_16 (U : Type) (B : Set U)
 ```lean
 theorem Exercise_3_3_17 (U : Type) (F G : Set (Set U))
     (h1 : ∀ (A : Set U), A ∈ F → ∀ (B : Set U), B ∈ G → A ⊆ B) :
-    ⋃₀F ⊆ ⋂₀G := by
+    ⋃₀ F ⊆ ⋂₀ G := by
   
   **done::
 ```
@@ -2353,7 +2353,7 @@ theorem Exercise_3_4_7 (U : Type) (A B : Set U) :
 
 ::: {.numex arguments="6"}
 ```lean
-theorem Exercise_3_4_17 (U : Type) (A : Set U) : A = ⋃₀(𝒫 A) := by
+theorem Exercise_3_4_17 (U : Type) (A : Set U) : A = ⋃₀ (𝒫 A) := by
 
   **done::
 ```
@@ -2362,7 +2362,7 @@ theorem Exercise_3_4_17 (U : Type) (A : Set U) : A = ⋃₀(𝒫 A) := by
 ::: {.numex arguments="7"}
 ```lean
 theorem Exercise_3_4_18a (U : Type) (F G : Set (Set U)) :
-    ⋃₀(F ∩ G) ⊆ (⋃₀F) ∩ (⋃₀G) := by
+    ⋃₀ (F ∩ G) ⊆ (⋃₀ F) ∩ (⋃₀ G) := by
   
   **done::
 ```
@@ -2371,8 +2371,8 @@ theorem Exercise_3_4_18a (U : Type) (F G : Set (Set U)) :
 ::: {.numex arguments="8"}
 ```lean
 theorem Exercise_3_4_19 (U : Type) (F G : Set (Set U)) :
-    (⋃₀F) ∩ (⋃₀G) ⊆ ⋃₀(F ∩ G) ↔
-      ∀ (A B : Set U), A ∈ F → B ∈ G → A ∩ B ⊆ ⋃₀(F ∩ G) := by
+    (⋃₀ F) ∩ (⋃₀ G) ⊆ ⋃₀ (F ∩ G) ↔
+      ∀ (A B : Set U), A ∈ F → B ∈ G → A ∩ B ⊆ ⋃₀ (F ∩ G) := by
   
   **done::
 ```
@@ -3127,7 +3127,7 @@ theorem Exercise_3_5_17b (U : Type) (F : Set (Set U)) (B : Set U) :
 ```lean
 theorem Exercise_3_5_18 (U : Type) (F G H : Set (Set U))
     (h1 : ∀ (A : Set U), A ∈ F → ∀ (B : Set U), B ∈ G → A ∪ B ∈ H) :
-    ⋂₀H ⊆ (⋂₀F) ∪ (⋂₀G) := sorry
+    ⋂₀ H ⊆ (⋂₀ F) ∪ (⋂₀ G) := sorry
 ```
 :::
 
@@ -4033,8 +4033,8 @@ The `library_search` tactic is somewhat unpredictable; sometimes it is able to f
 ::: {.numex arguments="1"}
 ```lean
 theorem Exercise_3_4_15 (U : Type) (B : Set U) (F : Set (Set U)) :
-    ⋃₀{X : Set U | ∃ (A : Set U), A ∈ F ∧ X = A \ B}
-      ⊆ ⋃₀(F \ 𝒫 B) := sorry
+    ⋃₀ {X : Set U | ∃ (A : Set U), A ∈ F ∧ X = A \ B}
+      ⊆ ⋃₀ (F \ 𝒫 B) := sorry
 ```
 :::
 
@@ -4072,12 +4072,12 @@ theorem Exercise_3_6_8a (U : Type) : ∀ (A : Set U),
 ::: {.numex arguments="6"}
 ```lean
 theorem Exercise_3_6_10 (U : Type) (A : Set U)
-    (h1 : ∀ (F : Set (Set U)), ⋃₀F = A → A ∈ F) :
+    (h1 : ∀ (F : Set (Set U)), ⋃₀ F = A → A ∈ F) :
     ∃! (x : U), x ∈ A := by
   --Hint:  Start like this:
   let F0 := {X : Set U | X ⊆ A ∧ ∃! (x : U), x ∈ X}
   --Now F0 is in the tactic state, with the definition above
-  have h2 : ⋃₀F0 = A := sorry
+  have h2 : ⋃₀ F0 = A := sorry
   
   **done::
 ```
