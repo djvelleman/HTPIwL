@@ -533,7 +533,7 @@ $$
 <div class="numex" data-arguments="3">
 <div class="sourceCode" id="cb22"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Theorem_4_3_4_3 {A : <span class="kw">Type</span>} (R : BinRel A) :</span>
 <span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>    transitive R ↔</span>
-<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>        comp (extension R) (extension R) ⊆ extension R := <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>      comp (extension R) (extension R) ⊆ extension R := <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="numex" data-arguments="4">
 <div class="sourceCode" id="cb23"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Exercise_4_3_12a {A : <span class="kw">Type</span>} (R : BinRel A) (h1 : reflexive R) :</span>
@@ -547,7 +547,7 @@ $$
 <div class="sourceCode" id="cb25"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Exercise_4_3_18 {A : <span class="kw">Type</span>}</span>
 <span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>    (R S : BinRel A) (h1 : transitive R) (h2 : transitive S)</span>
 <span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>    (h3 : comp (extension S) (extension R) ⊆</span>
-<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a>        comp (extension R) (extension S)) :</span>
+<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a>      comp (extension R) (extension S)) :</span>
 <span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a>    transitive (relFromExt (comp (extension R) (extension S))) := <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="mdsk">
@@ -707,16 +707,16 @@ $$
 <div class="sourceCode" id="cb39"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Exercise_4_4_8 {A B : <span class="kw">Type</span>} (R : BinRel A) (S : BinRel B)</span>
 <span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a>    (T : BinRel (A × B)) (h1 : partial_order R) (h2 : partial_order S)</span>
 <span id="cb39-3"><a href="#cb39-3" aria-hidden="true" tabindex="-1"></a>    (h3 : ∀ (a a' : A) (b b' : B),</span>
-<span id="cb39-4"><a href="#cb39-4" aria-hidden="true" tabindex="-1"></a>        T (a, b) (a', b') ↔ R a a' ∧ S b b') :</span>
+<span id="cb39-4"><a href="#cb39-4" aria-hidden="true" tabindex="-1"></a>      T (a, b) (a', b') ↔ R a a' ∧ S b b') :</span>
 <span id="cb39-5"><a href="#cb39-5" aria-hidden="true" tabindex="-1"></a>    partial_order T := <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="numex" data-arguments="5">
 <div class="sourceCode" id="cb40"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Exercise_4_4_9_part {A B : <span class="kw">Type</span>} (R : BinRel A) (S : BinRel B)</span>
 <span id="cb40-2"><a href="#cb40-2" aria-hidden="true" tabindex="-1"></a>    (L : BinRel (A × B)) (h1 : total_order R) (h2 : total_order S)</span>
 <span id="cb40-3"><a href="#cb40-3" aria-hidden="true" tabindex="-1"></a>    (h3 : ∀ (a a' : A) (b b' : B),</span>
-<span id="cb40-4"><a href="#cb40-4" aria-hidden="true" tabindex="-1"></a>        L (a, b) (a', b') ↔ R a a' ∧ (a = a' → S b b')) :</span>
+<span id="cb40-4"><a href="#cb40-4" aria-hidden="true" tabindex="-1"></a>      L (a, b) (a', b') ↔ R a a' ∧ (a = a' → S b b')) :</span>
 <span id="cb40-5"><a href="#cb40-5" aria-hidden="true" tabindex="-1"></a>    ∀ (a a' : A) (b b' : B),</span>
-<span id="cb40-6"><a href="#cb40-6" aria-hidden="true" tabindex="-1"></a>        L (a, b) (a', b') ∨ L (a', b') (a, b) := <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb40-6"><a href="#cb40-6" aria-hidden="true" tabindex="-1"></a>      L (a, b) (a', b') ∨ L (a', b') (a, b) := <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="numex" data-arguments="6">
 <div class="sourceCode" id="cb41"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Exercise_4_4_15a {A : <span class="kw">Type</span>}</span>
@@ -939,24 +939,24 @@ A/R = \{[x]_R \mid x \in A\}.
 <section id="exercises-3" class="level3">
 <h3 class="anchored" data-anchor-id="exercises-3">Exercises</h3>
 <div class="numex" data-arguments="1">
-<div class="sourceCode" id="cb60"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb60-1"><a href="#cb60-1" aria-hidden="true" tabindex="-1"></a><span class="kw">lemma</span> overlap_implies_equal {A : <span class="kw">Type</span>}</span>
+<div class="sourceCode" id="cb60"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb60-1"><a href="#cb60-1" aria-hidden="true" tabindex="-1"></a><span class="kw">lemma</span> overlap_implies_equal_ex {A : <span class="kw">Type</span>}</span>
 <span id="cb60-2"><a href="#cb60-2" aria-hidden="true" tabindex="-1"></a>    (F : Set (Set A)) (h : partition F) :</span>
 <span id="cb60-3"><a href="#cb60-3" aria-hidden="true" tabindex="-1"></a>    ∀ X ∈ F, ∀ Y ∈ F, ∀ (x : A), x ∈ X → x ∈ Y → X = Y := <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="numex" data-arguments="2">
-<div class="sourceCode" id="cb61"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb61-1"><a href="#cb61-1" aria-hidden="true" tabindex="-1"></a><span class="kw">lemma</span> Lemma_4_5_7_ref {A : <span class="kw">Type</span>} (F : Set (Set A)) (h : partition F):</span>
+<div class="sourceCode" id="cb61"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb61-1"><a href="#cb61-1" aria-hidden="true" tabindex="-1"></a><span class="kw">lemma</span> Lemma_4_5_7_ref_ex {A : <span class="kw">Type</span>} (F : Set (Set A)) (h : partition F):</span>
 <span id="cb61-2"><a href="#cb61-2" aria-hidden="true" tabindex="-1"></a>    reflexive (EqRelFromPart F) := <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="numex" data-arguments="3">
-<div class="sourceCode" id="cb62"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb62-1"><a href="#cb62-1" aria-hidden="true" tabindex="-1"></a><span class="kw">lemma</span> Lemma_4_5_7_symm {A : <span class="kw">Type</span>} (F : Set (Set A)) (h : partition F):</span>
+<div class="sourceCode" id="cb62"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb62-1"><a href="#cb62-1" aria-hidden="true" tabindex="-1"></a><span class="kw">lemma</span> Lemma_4_5_7_symm_ex {A : <span class="kw">Type</span>} (F : Set (Set A)) (h : partition F):</span>
 <span id="cb62-2"><a href="#cb62-2" aria-hidden="true" tabindex="-1"></a>    symmetric (EqRelFromPart F) := <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="numex" data-arguments="4">
-<div class="sourceCode" id="cb63"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb63-1"><a href="#cb63-1" aria-hidden="true" tabindex="-1"></a><span class="kw">lemma</span> Lemma_4_5_7_trans {A : <span class="kw">Type</span>} (F : Set (Set A)) (h : partition F):</span>
+<div class="sourceCode" id="cb63"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb63-1"><a href="#cb63-1" aria-hidden="true" tabindex="-1"></a><span class="kw">lemma</span> Lemma_4_5_7_trans_ex {A : <span class="kw">Type</span>} (F : Set (Set A)) (h : partition F):</span>
 <span id="cb63-2"><a href="#cb63-2" aria-hidden="true" tabindex="-1"></a>    transitive (EqRelFromPart F) := <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="numex" data-arguments="5">
-<div class="sourceCode" id="cb64"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb64-1"><a href="#cb64-1" aria-hidden="true" tabindex="-1"></a><span class="kw">lemma</span> Lemma_4_5_8 {A : <span class="kw">Type</span>} (F : Set (Set A)) (h : partition F) :</span>
+<div class="sourceCode" id="cb64"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb64-1"><a href="#cb64-1" aria-hidden="true" tabindex="-1"></a><span class="kw">lemma</span> Lemma_4_5_8_ex {A : <span class="kw">Type</span>} (F : Set (Set A)) (h : partition F) :</span>
 <span id="cb64-2"><a href="#cb64-2" aria-hidden="true" tabindex="-1"></a>    ∀ X ∈ F, ∀ x ∈ X, equivClass (EqRelFromPart F) x = X := <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="numex" data-arguments="6">

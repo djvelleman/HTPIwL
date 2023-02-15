@@ -727,7 +727,7 @@ theorem Exercise_6_2_2 {A : Type} (R : BinRel A) (h : partial_order R) :
 
 ::: {.numex arguments="1"}
 ```lean
-lemma Lemma_6_2_1_2 {A : Type} {R : BinRel A} {B : Set A} {b c : A}
+lemma Lemma_6_2_1_2_ex {A : Type} {R : BinRel A} {B : Set A} {b c : A}
     (h1 : partial_order R) (h2 : b ∈ B) (h3 : minimalElt R c (B \ {b}))
     (h4 : ¬R b c) : minimalElt R c B := sorry
 ```
@@ -735,21 +735,21 @@ lemma Lemma_6_2_1_2 {A : Type} {R : BinRel A} {B : Set A} {b c : A}
 
 ::: {.numex arguments="2"}
 ```lean
-lemma extendPO_is_ref {A : Type} (R : BinRel A) (b : A)
+lemma extendPO_is_ref_ex {A : Type} (R : BinRel A) (b : A)
     (h : partial_order R) : reflexive (extendPO R b) := sorry
 ```
 :::
 
 ::: {.numex arguments="3"}
 ```lean
-lemma extendPO_is_trans {A : Type} (R : BinRel A) (b : A)
+lemma extendPO_is_trans_ex {A : Type} (R : BinRel A) (b : A)
     (h : partial_order R) : transitive (extendPO R b) := sorry
 ```
 :::
 
 ::: {.numex arguments="4"}
 ```lean
-lemma extendPO_is_antisymm {A : Type} (R : BinRel A) (b : A)
+lemma extendPO_is_antisymm_ex {A : Type} (R : BinRel A) (b : A)
     (h : partial_order R) : antisymmetric (extendPO R b) := sorry
 ```
 :::
@@ -764,10 +764,10 @@ theorem Exercise_6_2_3 (A : Type) (R : BinRel A)
 
 ::: {.numex arguments="6"}
 ```lean
+--Hint:  First prove that R is reflexive
 theorem Exercise_6_2_4a {A : Type} (R : BinRel A)
     (h : ∀ (x y : A), R x y ∨ R y x) : ∀ n ≥ 1, ∀ (B : Set A),
     numElts B n → ∃ x ∈ B, ∀ y ∈ B, ∃ (z : A), R x z ∧ R z y := sorry
---Hint:  First prove that R is reflexive
 ```
 :::
 
@@ -776,6 +776,16 @@ theorem Exercise_6_2_4a {A : Type} (R : BinRel A)
 theorem Like_Exercise_6_2_16 (f : Nat → Nat) (h : one_to_one f) :
     ∀ (n : Nat) (A : Set Nat), numElts A n →
     closed f A → ∀ y ∈ A, ∃ x ∈ A, f x = y := sorry
+```
+:::
+
+::: {.numex arguments="8"}
+```lean
+--Hint:  Use Exercise_6_2_2
+theorem Example_6_2_2 {A : Type} (R : BinRel A)
+    (h1 : ∃ (n : Nat), numElts { x : A | x = x } n)
+    (h2 : partial_order R) : ∃ (T : BinRel A),
+      total_order T ∧ ∀ (x y : A), R x y → T x y := sorry
 ```
 :::
 
@@ -1529,7 +1539,6 @@ theorem Exercise_6_1_16a2 :
 We will also use a lemma, whose proof we leave as an exercise for you:
 
 ```lean
---Hint: Use Exercise_6_1_16a1 and Exercise_6_1_16a2
 lemma sq_even_iff_even (n : Nat) : nat_even (n * n) ↔ nat_even n := sorry
 ```
 
@@ -1612,7 +1621,7 @@ theorem sqrt_2_irrat :
 ::: {.numex arguments="1"}
 ```lean
 --Hint: Use Exercise_6_1_16a1 and Exercise_6_1_16a2
-lemma sq_even_iff_even (n : Nat) :
+lemma sq_even_iff_even_ex (n : Nat) :
     nat_even (n * n) ↔ nat_even n := sorry
 ```
 :::

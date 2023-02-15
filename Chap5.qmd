@@ -493,14 +493,14 @@ theorem Theorem_5_3_5 {A B : Type} (f : A → B) (g : B → A)
 
 ::: {.numex arguments="1"}
 ```lean
-theorem Theorem_5_3_2_2 {A B : Type} (f : A → B) (g : B → A)
+theorem Theorem_5_3_2_2_ex {A B : Type} (f : A → B) (g : B → A)
     (h1 : graph g = inv (graph f)) : f ∘ g = id := sorry
 ```
 :::
 
 ::: {.numex arguments="2"}
 ```lean
-theorem Theorem_5_3_3_2 {A B : Type} (f : A → B) :
+theorem Theorem_5_3_3_2_ex {A B : Type} (f : A → B) :
     (∃ (g : B → A), f ∘ g = id) → onto f := sorry
 ```
 :::
@@ -717,7 +717,7 @@ theorem Exercise_5_4_10b {A : Type} (f : A → A) (B1 B2 C1 C2 : Set A)
 
 ::: {.numex arguments="6"}
 ```lean
-theorem Theorem_5_4_9 {A : Type} (f : A → A → A) (B : Set A) :
+theorem Theorem_5_4_9_ex {A : Type} (f : A → A → A) (B : Set A) :
     ∃ (C : Set A), closure2 f B C := sorry
 ```
 :::

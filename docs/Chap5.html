@@ -586,11 +586,11 @@ $$
 <section id="exercises-2" class="level3">
 <h3 class="anchored" data-anchor-id="exercises-2">Exercises</h3>
 <div class="numex" data-arguments="1">
-<div class="sourceCode" id="cb39"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Theorem_5_3_2_2 {A B : <span class="kw">Type</span>} (f : A → B) (g : B → A)</span>
+<div class="sourceCode" id="cb39"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Theorem_5_3_2_2_ex {A B : <span class="kw">Type</span>} (f : A → B) (g : B → A)</span>
 <span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a>    (h1 : graph g = inv (graph f)) : f ∘ g = id := <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="numex" data-arguments="2">
-<div class="sourceCode" id="cb40"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Theorem_5_3_3_2 {A B : <span class="kw">Type</span>} (f : A → B) :</span>
+<div class="sourceCode" id="cb40"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Theorem_5_3_3_2_ex {A B : <span class="kw">Type</span>} (f : A → B) :</span>
 <span id="cb40-2"><a href="#cb40-2" aria-hidden="true" tabindex="-1"></a>    (∃ (g : B → A), f ∘ g = id) → onto f := <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="numex" data-arguments="3">
@@ -732,7 +732,7 @@ $$
 <span id="cb60-3"><a href="#cb60-3" aria-hidden="true" tabindex="-1"></a>    closure f (B1 ∪ B2) (C1 ∪ C2) := <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="numex" data-arguments="6">
-<div class="sourceCode" id="cb61"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb61-1"><a href="#cb61-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Theorem_5_4_9 {A : <span class="kw">Type</span>} (f : A → A → A) (B : Set A) :</span>
+<div class="sourceCode" id="cb61"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb61-1"><a href="#cb61-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Theorem_5_4_9_ex {A : <span class="kw">Type</span>} (f : A → A → A) (B : Set A) :</span>
 <span id="cb61-2"><a href="#cb61-2" aria-hidden="true" tabindex="-1"></a>    ∃ (C : Set A), closure2 f B C := <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>7. Suppose we define a set to be closed under a family of functions if it is closed under all of the functions in the family. Of course, the closure of a set <code>B</code> under a family of functions is the smallest set containing <code>B</code> that is closed under the family.</p>
