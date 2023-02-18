@@ -1700,7 +1700,7 @@ $$
 <span id="cb126-5"><a href="#cb126-5" aria-hidden="true" tabindex="-1"></a>      | 0 =&gt; idExt A</span>
 <span id="cb126-6"><a href="#cb126-6" aria-hidden="true" tabindex="-1"></a>      | n + 1 =&gt; comp (rep_comp R n) R</span>
 <span id="cb126-7"><a href="#cb126-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb126-8"><a href="#cb126-8" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> cumul_rep_comp {A : <span class="kw">Type</span>} (R : Set (A × A)) : Set (A × A) :=</span>
+<span id="cb126-8"><a href="#cb126-8" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> cumul_comp {A : <span class="kw">Type</span>} (R : Set (A × A)) : Set (A × A) :=</span>
 <span id="cb126-9"><a href="#cb126-9" aria-hidden="true" tabindex="-1"></a>    { (x, y) : A × A | ∃ n ≥ 1, (x, y) ∈ rep_comp R n }</span>
 <span id="cb126-10"><a href="#cb126-10" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb126-11"><a href="#cb126-11" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> transExt {A : <span class="kw">Type</span>} (R : Set (A × A)) : <span class="kw">Prop</span> :=</span>
@@ -1720,7 +1720,7 @@ $$
 </div>
 <div class="numex" data-arguments="7">
 <div class="sourceCode" id="cb130"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb130-1"><a href="#cb130-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Exercise_6_5_14 {A : <span class="kw">Type</span>} (R : Set (A × A)) :</span>
-<span id="cb130-2"><a href="#cb130-2" aria-hidden="true" tabindex="-1"></a>    smallestElt (sub (A × A)) (cumul_rep_comp R)</span>
+<span id="cb130-2"><a href="#cb130-2" aria-hidden="true" tabindex="-1"></a>    smallestElt (sub (A × A)) (cumul_comp R)</span>
 <span id="cb130-3"><a href="#cb130-3" aria-hidden="true" tabindex="-1"></a>    { S : Set (A × A) | R ⊆ S ∧ transExt S } := <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 

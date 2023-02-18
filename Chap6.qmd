@@ -1971,7 +1971,7 @@ def rep_comp {A : Type} (R : Set (A × A)) (x : Nat) : Set (A × A) :=
       | 0 => idExt A
       | n + 1 => comp (rep_comp R n) R
 
-def cumul_rep_comp {A : Type} (R : Set (A × A)) : Set (A × A) :=
+def cumul_comp {A : Type} (R : Set (A × A)) : Set (A × A) :=
     { (x, y) : A × A | ∃ n ≥ 1, (x, y) ∈ rep_comp R n }
 
 def transExt {A : Type} (R : Set (A × A)) : Prop :=
@@ -2003,7 +2003,7 @@ lemma rep_comp_sub_trans {A : Type} {R S : Set (A × A)}
 ::: {.numex arguments="7"}
 ```lean
 theorem Exercise_6_5_14 {A : Type} (R : Set (A × A)) :
-    smallestElt (sub (A × A)) (cumul_rep_comp R)
+    smallestElt (sub (A × A)) (cumul_comp R)
     { S : Set (A × A) | R ⊆ S ∧ transExt S } := sorry
 ```
 :::
