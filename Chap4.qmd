@@ -361,21 +361,21 @@ def elementhood (A : Type) (a : A) (X : Set A) : Prop := a ∈ X
 
 This definition says that if `A` is a type, `a` has type `A`, and `X` has type `Set A`, then `elementhood A a X` is the proposition `a ∈ X`.  Thus, if `elementhood A` is followed by objects of type `A` and `Set A`, the result is a proposition, so `elementhood A` is functioning as a relation from `A` to `Set A`.  For example, `elementhood Int` is a relation from integers to sets of integers, and `elementhood Int 6 { n : Int | ∃ (k : Int), n = 2 * k }` is the (true) statement that `6` is an element of the set of even integers.  (You are asked to prove it in the exercises.)
 
-We can also use this method to define an operation that reverses the process of forming the extension of a relation.  If `R` has type `Set (A × B)`, then we define `relFromExt R` to be the relation whose extension is `R`.  A few simple theorems, which follow directly from the definition, clarify the meaning of `relFromExt R`.
+We can also use this method to define an operation that reverses the process of forming the extension of a relation.  If `R` has type `Set (A × B)`, then we define `RelFromExt R` to be the relation whose extension is `R`.  A few simple theorems, which follow directly from the definition, clarify the meaning of `RelFromExt R`.
 
 ```lean
-def relFromExt {A B : Type}
+def RelFromExt {A B : Type}
     (R : Set (A × B)) (a : A) (b : B) : Prop := (a, b) ∈ R
 
-theorem simp_relFromExt {A B : Type}
+theorem simp_RelFromExt {A B : Type}
     (R : Set (A × B)) (a : A) (b : B) :
-    relFromExt R a b ↔ (a, b) ∈ R := by rfl
+    RelFromExt R a b ↔ (a, b) ∈ R := by rfl
 
 example {A B : Type} (R : Rel A B) :
-    relFromExt (extension R) = R := by rfl
+    RelFromExt (extension R) = R := by rfl
 
 example {A B : Type} (R : Set (A × B)) :
-    extension (relFromExt R) = R := by rfl
+    extension (RelFromExt R) = R := by rfl
 ```
 
 ### Exercises
@@ -405,14 +405,14 @@ theorem Theorem_4_3_4_3 {A : Type} (R : BinRel A) :
 ::: {.numex arguments="4"}
 ```lean
 theorem Exercise_4_3_12a {A : Type} (R : BinRel A) (h1 : reflexive R) :
-    reflexive (relFromExt (inv (extension R))) := sorry
+    reflexive (RelFromExt (inv (extension R))) := sorry
 ```
 :::
 
 ::: {.numex arguments="5"}
 ```lean
 theorem Exercise_4_3_12c {A : Type} (R : BinRel A) (h1 : transitive R) :
-    transitive (relFromExt (inv (extension R))) := sorry
+    transitive (RelFromExt (inv (extension R))) := sorry
 ```
 :::
 
@@ -422,7 +422,7 @@ theorem Exercise_4_3_18 {A : Type}
     (R S : BinRel A) (h1 : transitive R) (h2 : transitive S)
     (h3 : comp (extension S) (extension R) ⊆
       comp (extension R) (extension S)) :
-    transitive (relFromExt (comp (extension R) (extension S))) := sorry
+    transitive (RelFromExt (comp (extension R) (extension S))) := sorry
 ```
 :::
 
@@ -436,7 +436,7 @@ In the next two exercises, determine whether or not the theorem is correct.
 --You might not be able to complete this proof
 theorem Exercise_4_3_13b {A : Type}
     (R1 R2 : BinRel A) (h1 : symmetric R1) (h2 : symmetric R2) :
-    symmetric (relFromExt ((extension R1) ∪ (extension R2))) := sorry
+    symmetric (RelFromExt ((extension R1) ∪ (extension R2))) := sorry
 ```
 :::
 
@@ -445,7 +445,7 @@ theorem Exercise_4_3_13b {A : Type}
 --You might not be able to complete this proof
 theorem Exercise_4_3_13c {A : Type}
     (R1 R2 : BinRel A) (h1 : transitive R1) (h2 : transitive R2) :
-    transitive (relFromExt ((extension R1) ∪ (extension R2))) := sorry
+    transitive (RelFromExt ((extension R1) ∪ (extension R2))) := sorry
 ```
 :::
 
@@ -694,7 +694,7 @@ theorem Exercise_4_4_22 {A : Type}
 ```lean
 theorem Exercise_4_4_24 (A : Type) (R : Set (A × A)) :
     smallestElt (sub (A × A)) (R ∪ (inv R))
-    { T : Set (A × A) | R ⊆ T ∧ symmetric (relFromExt T) } := sorry
+    { T : Set (A × A) | R ⊆ T ∧ symmetric (RelFromExt T) } := sorry
 ```
 :::
 

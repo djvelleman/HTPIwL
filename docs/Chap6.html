@@ -1701,10 +1701,7 @@ $$
 <span id="cb126-6"><a href="#cb126-6" aria-hidden="true" tabindex="-1"></a>      | n + 1 =&gt; comp (rep_comp R n) R</span>
 <span id="cb126-7"><a href="#cb126-7" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb126-8"><a href="#cb126-8" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> cumul_comp {A : <span class="kw">Type</span>} (R : Set (A × A)) : Set (A × A) :=</span>
-<span id="cb126-9"><a href="#cb126-9" aria-hidden="true" tabindex="-1"></a>    { (x, y) : A × A | ∃ n ≥ 1, (x, y) ∈ rep_comp R n }</span>
-<span id="cb126-10"><a href="#cb126-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb126-11"><a href="#cb126-11" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> transExt {A : <span class="kw">Type</span>} (R : Set (A × A)) : <span class="kw">Prop</span> :=</span>
-<span id="cb126-12"><a href="#cb126-12" aria-hidden="true" tabindex="-1"></a>    ∀ (x y z : A), (x, y) ∈ R → (y, z) ∈ R → (x, z) ∈ R</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb126-9"><a href="#cb126-9" aria-hidden="true" tabindex="-1"></a>    { (x, y) : A × A | ∃ n ≥ 1, (x, y) ∈ rep_comp R n }</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="numex" data-arguments="4">
 <div class="sourceCode" id="cb127"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb127-1"><a href="#cb127-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> rep_comp_one {A : <span class="kw">Type</span>} (R : Set (A × A)) :</span>
 <span id="cb127-2"><a href="#cb127-2" aria-hidden="true" tabindex="-1"></a>    rep_comp R 1 = R := <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -1716,12 +1713,13 @@ $$
 </div>
 <div class="numex" data-arguments="6">
 <div class="sourceCode" id="cb129"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb129-1"><a href="#cb129-1" aria-hidden="true" tabindex="-1"></a><span class="kw">lemma</span> rep_comp_sub_trans {A : <span class="kw">Type</span>} {R S : Set (A × A)}</span>
-<span id="cb129-2"><a href="#cb129-2" aria-hidden="true" tabindex="-1"></a>    (h1 : R ⊆ S) (h2 : transExt S): ∀ n ≥ 1, rep_comp R n ⊆ S := <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb129-2"><a href="#cb129-2" aria-hidden="true" tabindex="-1"></a>    (h1 : R ⊆ S) (h2 : transitive (RelFromExt S)) :</span>
+<span id="cb129-3"><a href="#cb129-3" aria-hidden="true" tabindex="-1"></a>    ∀ n ≥ 1, rep_comp R n ⊆ S := <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="numex" data-arguments="7">
 <div class="sourceCode" id="cb130"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb130-1"><a href="#cb130-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Exercise_6_5_14 {A : <span class="kw">Type</span>} (R : Set (A × A)) :</span>
 <span id="cb130-2"><a href="#cb130-2" aria-hidden="true" tabindex="-1"></a>    smallestElt (sub (A × A)) (cumul_comp R)</span>
-<span id="cb130-3"><a href="#cb130-3" aria-hidden="true" tabindex="-1"></a>    { S : Set (A × A) | R ⊆ S ∧ transExt S } := <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb130-3"><a href="#cb130-3" aria-hidden="true" tabindex="-1"></a>    { S : Set (A × A) | R ⊆ S ∧ transitive (RelFromExt S) } := <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 
 
