@@ -42,16 +42,17 @@ We can write corresponding definitions in Lean as follows:
 
 ```lean
 def Dom {A B : Type} (R : Set (A × B)) : Set A :=
-    { a : A | ∃ (b : B), (a, b) ∈ R }
+  { a : A | ∃ (b : B), (a, b) ∈ R }
 
 def Ran {A B : Type} (R : Set (A × B)) : Set B :=
-    { b : B | ∃ (a : A), (a, b) ∈ R }
+  { b : B | ∃ (a : A), (a, b) ∈ R }
 
 def inv {A B : Type} (R : Set (A × B)) : Set (B × A) :=
-    { (b, a) : B × A | (a, b) ∈ R }
+  { (b, a) : B × A | (a, b) ∈ R }
 
-def comp {A B C : Type} (S : Set (B × C)) (R : Set (A × B)) :
-    Set (A × C) := { (a, c) : A × C | ∃ (x : B), (a, x) ∈ R ∧ (x, c) ∈ S }
+def comp {A B C : Type}
+    (S : Set (B × C)) (R : Set (A × B)) : Set (A × C) :=
+  { (a, c) : A × C | ∃ (x : B), (a, x) ∈ R ∧ (x, c) ∈ S }
 ```
 
 Definitions in Lean are introduced with the keyword `def`.  In the definition of `Dom`, we have declared that `A` and `B` are implicit arguments and `R` is an explicit argument.  That means that, in a Lean file containing these definitions, if we have `R : Set (A × B)`, then we can just write `Dom R` for the domain of `R`, and Lean will figure out for itself what `A` and `B` are.  After the list of arguments there is a colon and then the type of `Dom R`, which is `Set A`.  This is followed by `:=` and then the definition of `Dom R`.  The definition says that `Dom R` is the set of all objects `a` of type `A` such that there is some `b` of type `B` with `(a, b) ∈ R`.  This is a direct translation, into Lean's type-theory language, of the first part of Definition 4.2.3.  The other three definitions are similar; they define `Ran R` to be the range of `R`, `inv R` to be the inverse of `R`, and `comp S R` to be the composition of `S` and `R`.
@@ -292,7 +293,7 @@ We can define the extension of a relation, and state the correspondence between 
 
 ```lean
 def extension {A B : Type} (R : Rel A B) : Set (A × B) :=
-    { (a, b) : A × B | R a b }
+  { (a, b) : A × B | R a b }
 
 theorem simp_ext {A B : Type} (R : Rel A B) (a : A) (b : B) :
     (a, b) ∈ extension R ↔ R a b := by rfl
@@ -302,13 +303,13 @@ The rest of Chapter 4 of *HTPI* focuses on relations from a set to itself; in Le
 
 ```lean
 def reflexive {A : Type} (R : BinRel A) : Prop :=
-    ∀ (x : A), R x x
+  ∀ (x : A), R x x
 
 def symmetric {A : Type} (R : BinRel A) : Prop :=
-    ∀ (x y : A), R x y → R y x
+  ∀ (x y : A), R x y → R y x
 
 def transitive {A : Type} (R : BinRel A) : Prop :=
-    ∀ (x y z : A), R x y → R y z → R x z
+  ∀ (x y z : A), R x y → R y z → R x z
 ``` 
 
 Once again, we refer you to *HTPI* to see examples of these concepts, and we focus here on proving theorems about these concepts in Lean.  The main theorem about these concepts in Section 4.3 of *HTPI* is Theorem 4.3.4.  Here is what it says:
@@ -455,13 +456,13 @@ Section 4.4 of *HTPI* begins by defining several new concepts about binary relat
 
 ```lean
 def antisymmetric {A : Type} (R : BinRel A) : Prop :=
-    ∀ (x y : A), R x y → R y x → x = y
+  ∀ (x y : A), R x y → R y x → x = y
 
 def partial_order {A : Type} (R : BinRel A) : Prop :=
-    reflexive R ∧ transitive R ∧ antisymmetric R
+  reflexive R ∧ transitive R ∧ antisymmetric R
 
 def total_order {A : Type} (R : BinRel A) : Prop :=
-    partial_order R ∧ ∀ (x y : A), R x y ∨ R y x
+  partial_order R ∧ ∀ (x y : A), R x y ∨ R y x
 ```
 
 These definitions say that if `R` is a binary relation on `A`, then `R` is *antisymmetric* if `R x y` and `R y x` cannot both be true unless `x = y`.  `R` is a *partial order on `A`*---or just a *partial order*, if `A` is clear from context---if it is reflexive, transitive, and antisymmetric.  And `R` is a *total order on `A`* if it is a partial order and also, for any `x` and `y` of type `A`, either `R x y` or `R y x`.  Note that, since Lean groups the connective `∧` to the right, `partial_order R` means `reflexive R ∧ (transitive R ∧ antisymmetric R)`, and therefore if `h` is a proof of `partial_order R`, then `h.left` is a proof of `reflexive R`, `h.right.left` is a proof of `transitive R`, and `h.right.right` is a proof of `antisymmetric R`. 
@@ -480,10 +481,10 @@ For example, if `R` is a partial order on `A`, `B` has type `Set A`, and `b` has
 
 ```lean
 def smallestElt {A : Type} (R : BinRel A) (b : A) (B : Set A) : Prop :=
-    b ∈ B ∧ ∀ x ∈ B, R b x
+  b ∈ B ∧ ∀ x ∈ B, R b x
 
 def minimalElt {A : Type} (R : BinRel A) (b : A) (B : Set A) : Prop :=
-    b ∈ B ∧ ¬∃ x ∈ B, R x b ∧ x ≠ b
+  b ∈ B ∧ ¬∃ x ∈ B, R x b ∧ x ≠ b
 ```
 
 Notice that, as in *HTPI*, in Lean we can write `∀ x ∈ B, P x` as an abbreviation for `∀ (x : A), x ∈ B → P x`, and `∃ x ∈ B, P x` as an abbreviation for `∃ (x : A), x ∈ B ∧ P x`.  According to these definitions, `smallestElt R b B` is the proposition that `b` is an `R`-smallest element of `B`, and `minimalElt R b B` means that `b` is an `R`-minimal element of `B`.
@@ -599,10 +600,10 @@ If `R` is a partial order on `A`, `B` has type `Set A`, and `a` has type `A`, th
 
 ```lean
 def upperBd {A : Type} (R : BinRel A) (a : A) (B : Set A) : Prop :=
-    ∀ x ∈ B, R x a
+  ∀ x ∈ B, R x a
 
 def lub {A : Type} (R : BinRel A) (a : A) (B : Set A) : Prop :=
-    smallestElt R a { c : A | upperBd R c B }
+  smallestElt R a { c : A | upperBd R c B }
 ```
 
 As usual, we will let you consult *HTPI* for examples of these concepts.  But we will mention one example:  If `A` is a type and `F` has type `Set (Set A)`---that is, `F` is a set whose elements are sets of objects of type `A`---then the least upper bound of `F`, with respect to the partial order `sub A`, is `⋃₀ F`.  We leave the proof of this fact as an exercise.
@@ -714,13 +715,13 @@ To define these concepts in Lean, we write:
 
 ```lean
 def equiv_rel {A : Type} (R : BinRel A) : Prop :=
-    reflexive R ∧ symmetric R ∧ transitive R
+  reflexive R ∧ symmetric R ∧ transitive R
 
 def equivClass {A : Type} (R : BinRel A) (x : A) : Set A :=
-    { y : A | R y x }
+  { y : A | R y x }
 
 def mod (A : Type) (R : BinRel A) : Set (Set A) :=
-    { equivClass R x | x : A }
+  { equivClass R x | x : A }
 ```
 
 Thus, `equiv_rel R` is the proposition that `R` is an equivalence relation, `equivClass R x` is the equivalence class of `x` with respect to `R`, and `mod A R` is `A` mod `R`.  Note that `equivClass R x` has type `Set A`, while `mod A R` has type `Set (Set A)`.  The definition of `mod A R` is shorthand for `{ X : Set A | ∃ (x : A), equivClass R x = X }`.
@@ -731,14 +732,14 @@ Thus, `equiv_rel R` is the proposition that `R` is an equivalence relation, `equ
 def empty {A : Type} (X : Set A) : Prop := ¬∃ (x : A), x ∈ X 
 
 def pairwise_disjoint {A : Type} (F : Set (Set A)) : Prop :=
-    ∀ X ∈ F, ∀ Y ∈ F, X ≠ Y → empty (X ∩ Y)
+  ∀ X ∈ F, ∀ Y ∈ F, X ≠ Y → empty (X ∩ Y)
 ```
 
 To say that a set `X` is empty, we could write `X = ∅`, but it is more convenient to have a statement that says more explicitly what it means for a set to be empty.  Thus, we have defined `empty X` to be the proposition saying that `X` has no elements.  If `F` has type `Set (Set A)`, then `pairwise_disjoint F` is the proposition that no two distinct elements of `F` have any element in common---in other words, the elements of `F` do not overlap.  We can now give the precise definition of a partition:
 
 ```lean
 def partition {A : Type} (F : Set (Set A)) : Prop :=
-    (∀ (x : A), x ∈ ⋃₀ F) ∧ pairwise_disjoint F ∧ ∀ X ∈ F, ¬empty X
+  (∀ (x : A), x ∈ ⋃₀ F) ∧ pairwise_disjoint F ∧ ∀ X ∈ F, ¬empty X
 ```
 
 The main theorem about equivalence relations in *HTPI* is Theorem 4.5.4, which says that `mod A R` is a partition of `A`.  The proof of this theorem is hard enough that *HTPI* proves two facts about equivalence classes first.  A fact that is proven just for the purpose of using it to prove something else is often called a *lemma*.  We can use this term in Lean as well.  Here is the first part of Lemma 4.5.5 from *HTPI*
@@ -867,7 +868,7 @@ Theorem 4.5.4 shows that an equivalence relation on `A` determines a partition o
 
 ```lean
 def EqRelFromPart {A : Type} (F : Set (Set A)) (x y : A) : Prop :=
-    ∃ X ∈ F, x ∈ X ∧ y ∈ X
+  ∃ X ∈ F, x ∈ X ∧ y ∈ X
 ```
 
 In other words, `EqRelFromPart F` is the binary relation on `A` that is true of any two objects `x` and `y` of type `A` if and only if `x` and `y` belong to the same set in `F`.  Our plan now is to show that if `F` is a partition of `A`, then `EqRelFromPart F` is an equivalence relation on `A`, and `mod A (EqRelFromPart F) = F`.
@@ -999,10 +1000,10 @@ The next three exercises use the following definitions:
 
 ```lean
 def dot {A : Type} (F G : Set (Set A)) : Set (Set A) :=
-    { Z : Set A | ¬empty Z ∧ ∃ X ∈ F, ∃ Y ∈ G, Z = X ∩ Y }
+  { Z : Set A | ¬empty Z ∧ ∃ X ∈ F, ∃ Y ∈ G, Z = X ∩ Y }
 
 def conj {A : Type} (R S : BinRel A) (x y : A) : Prop :=
-    R x y ∧ S x y
+  R x y ∧ S x y
 ```
 
 ::: {.numex arguments="7"}

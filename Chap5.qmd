@@ -10,7 +10,7 @@ We will take a similar approach to functions in this chapter.  For any types `A`
 
 ```lean
 def graph {A B : Type} (f : A → B) : Set (A × B) :=
-    { (a, b) : A × B | f a = b }
+  { (a, b) : A × B | f a = b }
 
 theorem simp_graph {A B : Type} (f : A → B) (a : A) (b : B) :
     (a, b) ∈ graph f ↔ f a = b := by rfl
@@ -20,7 +20,7 @@ Every set of type `Set (A × B)` is the extension of some relation from `A` to `
 
 ```lean
 def is_func_graph {A B : Type} (F : Set (A × B)) : Prop :=
-    ∀ (x : A), ∃! (y : B), (x, y) ∈ F
+  ∀ (x : A), ∃! (y : B), (x, y) ∈ F
 ```
 
 And now we can say that the sets of type `Set (A × B)` that are graphs of functions from `A` to `B` are precisely the ones that have the property `is_func_graph`:
@@ -237,14 +237,14 @@ Section 5.2 of *HTPI* introduces two important properties that a function might 
 
 ```lean
 def onto {A B : Type} (f : A → B) : Prop :=
-    ∀ (y : B), ∃ (x : A), f x = y
+  ∀ (y : B), ∃ (x : A), f x = y
 ```
 
 It is called *one-to-one* if there do *not* exist distinct `a1` and `a2` of type `A` such that `f a1 = f a2`.  This phrasing of the definition makes it clear what is at issue: Are there distinct objects in the domain to which the function assigns the same value?  But it is a negative statement, and that would make it difficult to work with it in proofs.  Fortunately, it is not hard to rephrase the definition as an equivalent positive statement, using quantifier negation, De Morgan, and conditional laws.  The resulting equivalent positive statement is given in Theorem 5.2.3 of *HTPI*, and we take it as our official definition of `one_to_one` in Lean:
 
 ```lean
 def one_to_one {A B : Type} (f : A → B) : Prop :=
-    ∀ (x1 x2 : A), f x1 = f x2 → x1 = x2
+  ∀ (x1 x2 : A), f x1 = f x2 → x1 = x2
 ```
 
 There is only one more theorem about these properties in Section 5.2 of *HTPI*.  It says that a composition of one-to-one functions is one-to-one, and a composition of onto functions is onto.  It is straightforward to carry out these proofs in Lean by simplying applying the definitions of the relevant concepts.
@@ -541,7 +541,7 @@ The next two exercises will use the following definition:
 
 ```lean
 def conj (A : Type) (f1 f2 : A → A) : Prop :=
-    ∃ (g g' : A → A), (f1 = g' ∘ f2 ∘ g) ∧ (g ∘ g' = id) ∧ (g' ∘ g = id)
+  ∃ (g g' : A → A), (f1 = g' ∘ f2 ∘ g) ∧ (g ∘ g' = id) ∧ (g' ∘ g = id)
 ```
 
 ::: {.numex arguments="7"}
@@ -570,7 +570,7 @@ According to this definition, `closed f C` means that `C` is closed under `f`.  
 
 ```lean
 def closure {A : Type} (f : A → A) (B C : Set A) : Prop :=
-    smallestElt (sub A) C { D : Set A | B ⊆ D ∧ closed f D }
+  smallestElt (sub A) C { D : Set A | B ⊆ D ∧ closed f D }
 ```
 
 We know that smallest elements, when they exist, are unique, so it makes sense to talk about *the* closure of `B` under `f`.  But not every set has a smallest element.  Does every set have a closure?  Theorem 5.4.5 in *HTPI* says that the answer is yes.  The idea behind the proof is that, for any family of sets `F`, if `F` has a smallest element under the subset partial order, then that smallest element is equal to `⋂₀ F`.  (We'll ask you to prove this in the exercises.)
@@ -654,10 +654,10 @@ Returning to the subject of closures, here's how we can extend the idea of closu
 
 ```lean
 def closed2 {A : Type} (f : A → A → A) (C : Set A) : Prop :=
-    ∀ x ∈ C, ∀ y ∈ C, f x y ∈ C
+  ∀ x ∈ C, ∀ y ∈ C, f x y ∈ C
 
 def closure2 {A : Type} (f : A → A → A) (B C : Set A) : Prop := 
-    smallestElt (sub A) C { D : Set A | B ⊆ D ∧ closed2 f D }
+  smallestElt (sub A) C { D : Set A | B ⊆ D ∧ closed2 f D }
 ```
 
 We will leave it as an exercise for you to prove that closures under functions of two variables also exist.
@@ -726,10 +726,10 @@ theorem Theorem_5_4_9_ex {A : Type} (f : A → A → A) (B : Set A) :
 
 ```lean
 def closed_family {A : Type} (F : Set (A → A)) (C : Set A) : Prop :=
-    ∀ f ∈ F, closed f C
+  ∀ f ∈ F, closed f C
 
 def closure_family {A : Type} (F : Set (A → A)) (B C : Set A) : Prop :=
-    smallestElt (sub A) C { D : Set A | B ⊆ D ∧ closed_family F D }
+  smallestElt (sub A) C { D : Set A | B ⊆ D ∧ closed_family F D }
 ```
 
 Prove that the closure of a set under a family of functions always exists:
@@ -754,10 +754,10 @@ Here are definitions of these concepts in Lean:
 
 ```lean
 def image {A B : Type} (f : A → B) (X : Set A) : Set B :=
-    { f x | x ∈ X }
+  { f x | x ∈ X }
 
 def inverse_image {A B : Type} (f : A → B) (Y : Set B) : Set A :=
-    { a : A | f a ∈ Y }
+  { a : A | f a ∈ Y }
 
 -- The following theorems illustrate the meaning of these definitions:
 theorem simp_image {A B : Type} (f : A → B) (X : Set A) (b : B) :

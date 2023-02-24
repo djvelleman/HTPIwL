@@ -4925,6 +4925,8 @@ def even (n : Int) : Prop := ∃ (k : Int), n = 2 * k
 def odd (n : Int) : Prop := ∃ (k : Int), n = 2 * k + 1
 ```
 
+These definitions tell Lean that if `n` has type `Int`, then `even n` means `∃ (k : Int), n = 2 * k` and `odd n` means `∃ (k : Int), n = 2 * k + 1`.
+
 ::: {.numex arguments="3"}
 ```lean
 theorem Exercise_3_4_10 (x y : Int)

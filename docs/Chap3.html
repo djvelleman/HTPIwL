@@ -4086,6 +4086,7 @@ x \in A \cap (B \setmin C) &amp;\text{ iff } x \in A \wedge x \in B \setmin C\\
 <div class="sourceCode" id="cb309"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb309-1"><a href="#cb309-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> even (n : Int) : <span class="kw">Prop</span> := ∃ (k : Int), n = 2 * k</span>
 <span id="cb309-2"><a href="#cb309-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb309-3"><a href="#cb309-3" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> odd (n : Int) : <span class="kw">Prop</span> := ∃ (k : Int), n = 2 * k + 1</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>These definitions tell Lean that if <code>n</code> has type <code>Int</code>, then <code>even n</code> means <code>∃ (k : Int), n = 2 * k</code> and <code>odd n</code> means <code>∃ (k : Int), n = 2 * k + 1</code>.</p>
 <div class="numex" data-arguments="3">
 <div class="sourceCode" id="cb310"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb310-1"><a href="#cb310-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Exercise_3_4_10 (x y : Int)</span>
 <span id="cb310-2"><a href="#cb310-2" aria-hidden="true" tabindex="-1"></a>    (h1 : odd x) (h2 : odd y) : even (x - y) := <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
