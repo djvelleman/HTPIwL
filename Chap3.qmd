@@ -521,10 +521,6 @@ h2 : ∀ (x : U), Q x
 :::
 :::
 
-<!-- With pp.funBinderTypes, don't need this comment anymore
-(In the tactic state, why doesn't Lean show the type of the variable `x` after the existential quantifier in the goal?  I don't know.  Sometimes you can leave out the type of a quantified variable and Lean is able to figure it out on its own.  But sometimes Lean is unable to figure out the type if it is not supplied, and you will get an error message if you leave it out.  To avoid confusion, we will always include the type of the quantified variable when we enter a quantified statement into Lean, but you will notice that Lean generally leaves out the type when it displays existentially quantified statements in the tactic state.)
--->
-
 To use the givens `h1` and `h2`, we will probably want to use universal instantiation.  But to do that we would need an object of type `U` to plug in for `x` in `h1` and `h2`, and there is no object of type `U` in the tactic state.  So at this point, we can't apply universal instantiation to `h1` and `h2`.  We should watch for an object of type `U` to come up in the course of the proof, and consider applying universal instantiation if one does.  Until then, we turn our attention to the goal.
 
 The goal is a negative statement, so we begin by reexpressing it as an equivalent positive statement, using a quantifier negation law.  The tactic `quant_neg` applies a quantifier negation law to rewrite the goal.  As with the other tactics for applying logical equivalences, you can write `quant_neg at h` if you want to apply a quantifier negation law to a given `h`.  The effect of the tactic can be summarized as follows:
@@ -697,7 +693,7 @@ We begin by using the `define` tactic to write out the definition of the goal.
 ```lean
 example (U : Type) (A B C : Set U) (h1 : A ⊆ B ∪ C)
     (h2 : ∀ (x : U), x ∈ A → x ∉ B) : A ⊆ C := by
-  define  --Goal: ∀ ⦃a : U⦄, a ∈ A → a ∈ C
+  define  --Goal : ∀ ⦃a : U⦄, a ∈ A → a ∈ C
   **done::
 ```
 :::
@@ -722,7 +718,7 @@ Notice that Lean's definition of the goal starts with `∀ ⦃a : U⦄`, not `�
 ```lean
 example (U : Type) (A B C : Set U) (h1 : A ⊆ B ∪ C)
     (h2 : ∀ (x : U), x ∈ A → x ∉ B) : A ⊆ C := by
-  define  --Goal: ∀ ⦃a : U⦄, a ∈ A → a ∈ C
+  define  --Goal : ∀ ⦃a : U⦄, a ∈ A → a ∈ C
   fix y : U
   assume h3 : y ∈ A
   **done::
@@ -750,7 +746,7 @@ Now we can combine `h2` and `h3` to conclude that `¬y ∈ B`.  Since we have `y
 ```lean
 example (U : Type) (A B C : Set U) (h1 : A ⊆ B ∪ C)
     (h2 : ∀ (x : U), x ∈ A → x ∉ B) : A ⊆ C := by
-  define  --Goal: ∀ ⦃a : U⦄, a ∈ A → a ∈ C
+  define  --Goal : ∀ ⦃a : U⦄, a ∈ A → a ∈ C
   fix y : U
   assume h3 : y ∈ A
   have h4 : y ∉ B := h2 y h3
@@ -780,11 +776,11 @@ We should be able to use similar reasoning to combine `h1` and `h3`, if we first
 ```lean
 example (U : Type) (A B C : Set U) (h1 : A ⊆ B ∪ C)
     (h2 : ∀ (x : U), x ∈ A → x ∉ B) : A ⊆ C := by
-  define  --Goal: ∀ ⦃a : U⦄, a ∈ A → a ∈ C
+  define  --Goal : ∀ ⦃a : U⦄, a ∈ A → a ∈ C
   fix y : U
   assume h3 : y ∈ A
   have h4 : y ∉ B := h2 y h3
-  define at h1  --h1: ∀ ⦃a : U⦄, a ∈ A → a ∈ B ∪ C
+  define at h1  --h1 : ∀ ⦃a : U⦄, a ∈ A → a ∈ B ∪ C
   **done::
 ```
 :::
@@ -814,11 +810,11 @@ In this situation, the `a` in `h1` is called an *implicit argument*.  What this 
 ```lean
 example (U : Type) (A B C : Set U) (h1 : A ⊆ B ∪ C)
     (h2 : ∀ (x : U), x ∈ A → x ∉ B) : A ⊆ C := by
-  define  --Goal: ∀ ⦃a : U⦄, a ∈ A → a ∈ C
+  define  --Goal : ∀ ⦃a : U⦄, a ∈ A → a ∈ C
   fix y : U
   assume h3 : y ∈ A
   have h4 : y ∉ B := h2 y h3
-  define at h1  --h1: ∀ ⦃a : U⦄, a ∈ A → a ∈ B ∪ C
+  define at h1  --h1 : ∀ ⦃a : U⦄, a ∈ A → a ∈ B ∪ C
   have h5 : y ∈ B ∪ C := h1 h3
   **done::
 ```
@@ -853,13 +849,13 @@ Continuing with the proof, we see that we're almost done, because we can combine
 ```lean
 example (U : Type) (A B C : Set U) (h1 : A ⊆ B ∪ C)
     (h2 : ∀ (x : U), x ∈ A → x ∉ B) : A ⊆ C := by
-  define  --Goal: ∀ ⦃a : U⦄, a ∈ A → a ∈ C
+  define  --Goal : ∀ ⦃a : U⦄, a ∈ A → a ∈ C
   fix y : U
   assume h3 : y ∈ A
   have h4 : y ∉ B := h2 y h3
-  define at h1  --h1: ∀ ⦃a : U⦄, a ∈ A → a ∈ B ∪ C
+  define at h1  --h1 : ∀ ⦃a : U⦄, a ∈ A → a ∈ B ∪ C
   have h5 : y ∈ B ∪ C := h1 h3
-  define at h5  --h5: y ∈ B ∨ y ∈ C
+  define at h5  --h5 : y ∈ B ∨ y ∈ C
   **done::
 ```
 :::
@@ -888,14 +884,14 @@ A conditional law will convert `h5` to `¬y ∈ B → y ∈ C`, and then modus p
 ```lean
 example (U : Type) (A B C : Set U) (h1 : A ⊆ B ∪ C)
     (h2 : ∀ (x : U), x ∈ A → x ∉ B) : A ⊆ C := by
-  define  --Goal: ∀ ⦃a : U⦄, a ∈ A → a ∈ C
+  define  --Goal : ∀ ⦃a : U⦄, a ∈ A → a ∈ C
   fix y : U
   assume h3 : y ∈ A
   have h4 : y ∉ B := h2 y h3
-  define at h1  --h1: ∀ ⦃a : U⦄, a ∈ A → a ∈ B ∪ C
+  define at h1  --h1 : ∀ ⦃a : U⦄, a ∈ A → a ∈ B ∪ C
   have h5 : y ∈ B ∪ C := h1 h3
-  define at h5  --h5: y ∈ B ∨ y ∈ C
-  conditional at h5  --h5: ¬y ∈ B → y ∈ C
+  define at h5  --h5 : y ∈ B ∨ y ∈ C
+  conditional at h5  --h5 : ¬y ∈ B → y ∈ C
   show y ∈ C from h5 h4
   done
 ```
@@ -1709,7 +1705,7 @@ h3 : x ∈ A ∧ x ∈ C
 :::
 :::
 
-Look carefully at the tactic state.  Lean has listed *two* goals, one after the other, and it has helpfully labeled them "case left" and "case right," indicating that the first goal is to prove the left side of the conjunction and the second is to prove the right.  The given information in both cases is the same, but in the first case the goal is `x ∈ B`, and in the second it is `¬x ∈ D`.  At this point, if we simply continue with the proof, Lean will interpret out tactics as applying to the first goal, until we achieve that goal.  Once we achieve it, Lean will move on to the second goal.
+Look carefully at the tactic state.  Lean has listed *two* goals, one after the other, and it has helpfully labeled them "case left" and "case right," indicating that the first goal is to prove the left side of the conjunction and the second is to prove the right.  The given information in both cases is the same, but in the first case the goal is `x ∈ B`, and in the second it is `¬x ∈ D`.  At this point, if we simply continue with the proof, Lean will interpret our tactics as applying to the first goal, until we achieve that goal.  Once we achieve it, Lean will move on to the second goal.
 
 However, we can make our proof more readable by separating and labeling the proofs of the two goals.  To do this, we type a bullet (which looks like this: `·`) and then a comment describing the first goal.  (To type a bullet, type `\.`---that is, backslash--period.)  The proof of the first goal will appear below this line, indented further and ending with `done`.  To prepare for this, we leave a blank line, type tab to increase the indenting, and then type `done`.  Then we do the same for the second goal:  On the next line, we return to the previous level of indenting and type a bullet and a comment describing the second goal.  We follow this with a blank line and then an indented `done` to indicate the end of the proof of the second goal.  We're going to work on the first goal first, so we click on the first blank line to position the cursor there.  The screen now looks like this:
 
@@ -2234,7 +2230,7 @@ theorem Example_3_4_5 (U : Type)
   fix x : U
   show x ∈ A ∩ (B \ C) ↔ x ∈ (A ∩ B) \ C from
     calc x ∈ A ∩ (B \ C)
-        ↔ x ∈ A ∧ (x ∈ B ∧ x ∉ C) := Iff.refl _
+      _ ↔ x ∈ A ∧ (x ∈ B ∧ x ∉ C) := Iff.refl _
       _ ↔ (x ∈ A ∧ x ∈ B) ∧ x ∉ C := and_assoc.symm
       _ ↔ x ∈ (A ∩ B) \ C := Iff.refl _
   done
@@ -2242,7 +2238,7 @@ theorem Example_3_4_5 (U : Type)
 
 The name of the axiom of extensionality in Lean is `Set.ext`, and it is applied in the first step of the Lean proof.  As usual, the `apply` tactic works backwards from the goal.  In other words, after the first line of the proof, the goal is `∀ (x : U), x ∈ A ∩ (B \ C) ↔ x ∈ (A ∩ B) \ C`, because by `Set.ext`, the conclusion of the theorem would follow from this statement.  The rest of the proof then proves this goal by introducing an arbitrary `x` of type `U` and then proving the biconditional by stringing together several equivalences, exactly as in the *HTPI* proof.
 
-The proof of the biconditional is called a *calculational proof*, and it is introduced by the keyword `calc`.  The calculational proof consists of a string of biconditional statements, each of which is provided with a proof.  You can think of the underscore on the left side of each biconditional after the first as standing for the right side of the previous biconditional.
+The proof of the biconditional is called a *calculational proof*, and it is introduced by the keyword `calc`.  The calculational proof consists of a string of biconditional statements, each of which is provided with a proof.  You can think of the underscore on the left side of each biconditional as standing for the right side of the previous biconditional (or, in the case of the first biconditional, the statement after `calc`).
 
 The proofs of the individual biconditionals in the calculational proof require some explanation.  Lean has a large library of theorems that it knows, and you can use those theorems in your proofs.  In particular, `Iff.refl` and `and_assoc` are names of theorems in Lean's library.  You can find out what any theorem says by using the Lean command `#check`.  (Commands that ask Lean for a response generally start with the character `#`.)  If you type `#check Iff.refl` in a Lean file, you will see Lean's response in the Infoview pane:  `Iff.refl (a : Prop) : a ↔ a`.  What this tells us is that Lean already knows the theorem
 
@@ -2488,7 +2484,7 @@ theorem Example_3_5_2
   define; define at h1
   have h2 : ¬x ∈ B \ C := h1.right
   define at h2; demorgan at h2
-            --h2: ¬x ∈ B ∨ x ∈ C
+            --h2 : ¬x ∈ B ∨ x ∈ C
   **done::
 ```
 :::
@@ -2518,7 +2514,7 @@ theorem Example_3_5_2
   define; define at h1
   have h2 : ¬x ∈ B \ C := h1.right
   define at h2; demorgan at h2
-            --h2: ¬x ∈ B ∨ x ∈ C
+            --h2 : ¬x ∈ B ∨ x ∈ C
   by_cases on h2
   **done::
 ```
@@ -2557,12 +2553,12 @@ A \ (B \ C) ⊆ (A \ B) ∪ C := by
   define; define at h1
   have h2 : ¬x ∈ B \ C := h1.right
   define at h2; demorgan at h2
-            --h2: ¬x ∈ B ∨ x ∈ C
+            --h2 : ¬x ∈ B ∨ x ∈ C
   by_cases on h2
-  · -- Case 1. h2: ¬x ∈ B
+  · -- Case 1. h2 : ¬x ∈ B
     apply Or.inl
     **done::
-  · -- Case 2. h2: x ∈ C
+  · -- Case 2. h2 : x ∈ C
 
     **done::
   done
@@ -2596,13 +2592,13 @@ A \ (B \ C) ⊆ (A \ B) ∪ C := by
   define; define at h1
   have h2 : ¬x ∈ B \ C := h1.right
   define at h2; demorgan at h2
-            --h2: ¬x ∈ B ∨ x ∈ C
+            --h2 : ¬x ∈ B ∨ x ∈ C
   by_cases on h2
-  · -- Case 1. h2: ¬x ∈ B
+  · -- Case 1. h2 : ¬x ∈ B
     apply Or.inl
     show x ∈ A \ B from And.intro h1.left h2
     done
-  · -- Case 2. h2: x ∈ C
+  · -- Case 2. h2 : x ∈ C
 
     **done::
   done
@@ -2636,13 +2632,13 @@ A \ (B \ C) ⊆ (A \ B) ∪ C := by
   define; define at h1
   have h2 : ¬x ∈ B \ C := h1.right
   define at h2; demorgan at h2
-            --h2: ¬x ∈ B ∨ x ∈ C
+            --h2 : ¬x ∈ B ∨ x ∈ C
   by_cases on h2
-  · -- Case 1. h2: ¬x ∈ B
+  · -- Case 1. h2 : ¬x ∈ B
     apply Or.inl
     show x ∈ A \ B from And.intro h1.left h2
     done
-  · -- Case 2. h2: x ∈ C
+  · -- Case 2. h2 : x ∈ C
     apply Or.inr
     show x ∈ C from h2
     done
@@ -2899,8 +2895,8 @@ example
   have h5 : a ∉ A ∩ B := h2 a
   define at h4
   define at h5; demorgan at h5
-  disj_syll h5 h3  --h5: ¬a ∈ B
-  disj_syll h4 h5  --h4: a ∈ C
+  disj_syll h5 h3  --h5 : ¬a ∈ B
+  disj_syll h4 h5  --h4 : a ∈ C
   show a ∈ C from h4
   done
 ```
@@ -2957,7 +2953,7 @@ At this point, you might see a possible route to the goal:  from `h2` and `h3` w
   have h4 : a ∈ B ∪ C := h1 h3
   define at h4
   have h5 : a ∉ B := sorry
-  disj_syll h4 h5  --h4: a ∈ C
+  disj_syll h4 h5  --h4 : a ∈ C
   show a ∈ C from h4
   done
 ```
@@ -2989,7 +2985,7 @@ example
   have h5 : a ∉ B := by
 
     **done::
-  disj_syll h4 h5  --h4: a ∈ C
+  disj_syll h4 h5  --h4 : a ∈ C
   show a ∈ C from h4
   done
 ```
@@ -3025,7 +3021,7 @@ example
   have h5 : a ∉ B := by
     contradict h2 with h6
     **done::
-  disj_syll h4 h5  --h4: a ∈ C
+  disj_syll h4 h5  --h4 : a ∈ C
   show a ∈ C from h4
   done
 ```
@@ -3064,7 +3060,7 @@ example
     show ∃ (x : U), x ∈ A ∩ B from
       Exists.intro a (And.intro h3 h6)
     done
-  disj_syll h4 h5  --h4: a ∈ C
+  disj_syll h4 h5  --h4 : a ∈ C
   show a ∈ C from h4
   done
 ```
@@ -3119,7 +3115,7 @@ theorem Exercise_3_5_8 (U : Type) (A B : Set U) :
 ```lean
 theorem Exercise_3_5_17b (U : Type) (F : Set (Set U)) (B : Set U) :
     B ∪ (⋂₀ F) =
-      ⋂₀ { X : Set U | ∃ (A : Set U), A ∈ F ∧ X = B ∪ A} := sorry
+      ⋂₀ { X : Set U | ∃ (A : Set U), A ∈ F ∧ X = B ∪ A } := sorry
 ```
 :::
 
@@ -3338,7 +3334,7 @@ theorem empty_union {U : Type} (B : Set U) :
     define at h1
     have h2 : x ∉ ∅ := by
       by_contra h3
-      define at h3  --h3: False
+      define at h3  --h3 : False
       show False from h3
       done
     **done::
@@ -3377,10 +3373,10 @@ theorem empty_union {U : Type} (B : Set U) :
     define at h1
     have h2 : x ∉ ∅ := by
       by_contra h3
-      define at h3  --h3: False
+      define at h3  --h3 : False
       show False from h3
       done
-    disj_syll h1 h2  --h1: x ∈ B
+    disj_syll h1 h2  --h1 : x ∈ B
     show x ∈ B from h1
     done
   · -- (←)
@@ -3416,10 +3412,10 @@ theorem empty_union {U : Type} (B : Set U) :
     define at h1
     have h2 : x ∉ ∅ := by
       by_contra h3
-      define at h3  --h3: False
+      define at h3  --h3 : False
       show False from h3
       done
-    disj_syll h1 h2  --h1: x ∈ B
+    disj_syll h1 h2  --h1 : x ∈ B
     show x ∈ B from h1
     done
   · -- (←)
@@ -3762,7 +3758,7 @@ theorem Example_3_6_2 (U : Type) :
     have h4 : D ∪ C = C := h2 C 
     show C = D from
       calc C
-          = D ∪ C := h4.symm
+        _ = D ∪ C := h4.symm
         _ = C ∪ D := union_comm D C
         _ = D     := h3
     done
@@ -4033,7 +4029,7 @@ The `library_search` tactic is somewhat unpredictable; sometimes it is able to f
 ::: {.numex arguments="1"}
 ```lean
 theorem Exercise_3_4_15 (U : Type) (B : Set U) (F : Set (Set U)) :
-    ⋃₀ {X : Set U | ∃ (A : Set U), A ∈ F ∧ X = A \ B}
+    ⋃₀ { X : Set U | ∃ (A : Set U), A ∈ F ∧ X = A \ B }
       ⊆ ⋃₀ (F \ 𝒫 B) := sorry
 ```
 :::
@@ -4075,7 +4071,7 @@ theorem Exercise_3_6_10 (U : Type) (A : Set U)
     (h1 : ∀ (F : Set (Set U)), ⋃₀ F = A → A ∈ F) :
     ∃! (x : U), x ∈ A := by
   --Hint:  Start like this:
-  let F0 := {X : Set U | X ⊆ A ∧ ∃! (x : U), x ∈ X}
+  let F0 : Set (Set U) := { X : Set U | X ⊆ A ∧ ∃! (x : U), x ∈ X }
   --Now F0 is in the tactic state, with the definition above
   have h2 : ⋃₀ F0 = A := sorry
   
@@ -4179,7 +4175,7 @@ theorem Theorem_3_3_7 :
   define at h1; define at h2; define
   obtain (m : Int) (h3 : b = a * m) from h1
   obtain (n : Int) (h4 : c = b * n) from h2
-  rewrite [h3] at h4   --h4: c = a * m * n
+  rewrite [h3] at h4   --h4 : c = a * m * n
   **done::
 ```
 :::
@@ -4213,7 +4209,7 @@ theorem Theorem_3_3_7 :
   define at h1; define at h2; define
   obtain (m : Int) (h3 : b = a * m) from h1
   obtain (n : Int) (h4 : c = b * n) from h2
-  rewrite [h3] at h4   --h4: c = a * m * n
+  rewrite [h3] at h4   --h4 : c = a * m * n
   apply Exists.intro (m * n)
   **done::
 ```
@@ -4260,7 +4256,7 @@ theorem Theorem_3_3_7 :
   define at h1; define at h2; define
   obtain (m : Int) (h3 : b = a * m) from h1
   obtain (n : Int) (h4 : c = b * n) from h2
-  rewrite [h3] at h4   --h4: c = a * m * n
+  rewrite [h3] at h4   --h4 : c = a * m * n
   apply Exists.intro (m * n)
   rewrite [mul_assoc a m n] at h4
   **done::
@@ -4295,7 +4291,7 @@ theorem Theorem_3_3_7 :
   define at h1; define at h2; define
   obtain (m : Int) (h3 : b = a * m) from h1
   obtain (n : Int) (h4 : c = b * n) from h2
-  rewrite [h3] at h4   --h4: c = a * m * n
+  rewrite [h3] at h4   --h4 : c = a * m * n
   apply Exists.intro (m * n)
   rewrite [mul_assoc a m n] at h4
   show c = a * (m * n) from h4
@@ -4645,7 +4641,7 @@ theorem ??Theorem_3_4_7:: :
     obtain (k : Int) (h5 : n = 3 * k) from h3
     have h6 : 6 * (j - k) = n :=
       calc 6 * (j - k)
-          = 6 * j - 6 * k := sorry
+        _ = 6 * j - 6 * k := sorry
         _ = 3 * (2 * j) - 2 * (3 * k) := sorry
         _ = 3 * n - 2 * n := sorry
         _ = (3 - 2) * n := sorry
@@ -4684,12 +4680,11 @@ It looks like we'll have to use the associativity of multiplication again to pro
 ```lean
 have h6 : 6 * (j - k) = n :=
   calc 6 * (j - k)
-      = 6 * j - 6 * k :=
+    _ = 6 * j - 6 * k :=
         mul_sub_left_distrib 6 j k
-    _ = 3 * (2 * j) - 2 * (3 * k) :=
-        by
+    _ = 3 * (2 * j) - 2 * (3 * k) := by
 
-          **done::
+        **done::
     _ = 3 * n - 2 * n := sorry
     _ = (3 - 2) * n := sorry
     _ = n := sorry
@@ -4722,13 +4717,12 @@ To justify the second equation, we'll have to use associativity to rewrite both 
 ```lean
 have h6 : 6 * (j - k) = n :=
   calc 6 * (j - k)
-      = 6 * j - 6 * k :=
+    _ = 6 * j - 6 * k :=
         mul_sub_left_distrib 6 j k
-    _ = 3 * (2 * j) - 2 * (3 * k) :=
-        by
-          rewrite [←mul_assoc 3 2 j]
-          rewrite [←mul_assoc 2 3 k]
-          **done::
+    _ = 3 * (2 * j) - 2 * (3 * k) := by
+        rewrite [←mul_assoc 3 2 j]
+        rewrite [←mul_assoc 2 3 k]
+        **done::
     _ = 3 * n - 2 * n := sorry
     _ = (3 - 2) * n := sorry
     _ = n := sorry
@@ -4761,18 +4755,16 @@ To finish off the justification of the second equation, we'll use the theorem `E
 ```lean
 have h6 : 6 * (j - k) = n :=
   calc 6 * (j - k)
-      = 6 * j - 6 * k :=
+    _ = 6 * j - 6 * k :=
         mul_sub_left_distrib 6 j k
-    _ = 3 * (2 * j) - 2 * (3 * k) :=
-        by
-          rewrite [←mul_assoc 3 2 j]
-          rewrite [←mul_assoc 2 3 k]
-          rfl
-          done
-    _ = 3 * n - 2 * n :=
-        by
+    _ = 3 * (2 * j) - 2 * (3 * k) := by
+        rewrite [←mul_assoc 3 2 j]
+        rewrite [←mul_assoc 2 3 k]
+        rfl
+        done
+    _ = 3 * n - 2 * n := by
 
-          **done::
+        **done::
     _ = (3 - 2) * n := sorry
     _ = n := sorry
 ```
@@ -4803,18 +4795,16 @@ To justify the third equation we have to substitute `n` for both `2 * j` and `3 
 ```lean
 have h6 : 6 * (j - k) = n :=
   calc 6 * (j - k)
-      = 6 * j - 6 * k :=
+    _ = 6 * j - 6 * k :=
         mul_sub_left_distrib 6 j k
-    _ = 3 * (2 * j) - 2 * (3 * k) :=
-        by
-          rewrite [←mul_assoc 3 2 j]
-          rewrite [←mul_assoc 2 3 k]
-          rfl
-          done
-    _ = 3 * n - 2 * n :=
-        by
-          rewrite [←h4, ←h5]
-          **done::
+    _ = 3 * (2 * j) - 2 * (3 * k) := by
+        rewrite [←mul_assoc 3 2 j]
+        rewrite [←mul_assoc 2 3 k]
+        rfl
+        done
+    _ = 3 * n - 2 * n := by
+        rewrite [←h4, ←h5]
+        **done::
     _ = (3 - 2) * n := sorry
     _ = n := sorry
 ```
@@ -4870,10 +4860,10 @@ So `one_mul n` should justify the last equation.  Here's the complete calculatio
 ```lean
 have h6 : 6 * (j - k) = n :=
   calc 6 * (j - k)
-      = 6 * j - 6 * k :=
+    _ = 6 * j - 6 * k :=
         mul_sub_left_distrib 6 j k
-    _ = 3 * (2 * j) - 2 * (3 * k) :=
-        by rewrite [←mul_assoc 3 2 j, ←mul_assoc 2 3 k]; rfl
+    _ = 3 * (2 * j) - 2 * (3 * k) := by
+        rewrite [←mul_assoc 3 2 j, ←mul_assoc 2 3 k]; rfl
     _ = 3 * n - 2 * n := by rewrite [←h4, ←h5]; rfl
     _ = (3 - 2) * n := (mul_sub_right_distrib 3 2 n).symm
     _ = n := one_mul n
@@ -4884,7 +4874,7 @@ Whew!  This example illustrates why algebraic reasoning in Lean can be difficult
 ```lean
 have h6 : 6 * (j - k) = n :=
   calc 6 * (j - k)
-      = 3 * (2 * j) - 2 * (3 * k) := by ring
+    _ = 3 * (2 * j) - 2 * (3 * k) := by ring
     _ = 3 * n - 2 * n := by rw [←h4, ←h5]
     _ = n := by ring
 ```
@@ -4907,7 +4897,7 @@ theorem Exercise_3_4_6 (U : Type) (A B C : Set U) :
   fix x : U
   show x ∈ A \ (B ∩ C) ↔ x ∈ A \ B ∪ A \ C from
     calc x ∈ A \ (B ∩ C)
-        ↔ x ∈ A ∧ ¬(x ∈ B ∧ x ∈ C) := sorry
+      _ ↔ x ∈ A ∧ ¬(x ∈ B ∧ x ∈ C) := sorry
       _ ↔ x ∈ A ∧ (¬x ∈ B ∨ ¬x ∈ C) := sorry  
       _ ↔ (x ∈ A ∧ ¬x ∈ B) ∨ (x ∈ A ∧ ¬x ∈ C) := sorry
       _ ↔ x ∈ (A \ B) ∪ (A \ C) := sorry

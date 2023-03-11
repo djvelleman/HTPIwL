@@ -325,16 +325,16 @@ $$
 <span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>  <span class="kw">apply</span> Iff.intro</span>
 <span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>  · <span class="co">-- (→)</span></span>
 <span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>    <span class="kw">assume</span> h1 : (a, d) ∈ comp T (comp S R)</span>
-<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>                     <span class="co">--Goal: (a, d) ∈ comp (comp T S) R</span></span>
-<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>    <span class="kw">define</span>           <span class="co">--Goal: ∃ (x : B), (a, x) ∈ R ∧ (x, d) ∈ comp T S</span></span>
-<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>    <span class="kw">define</span> <span class="kw">at</span> h1     <span class="co">--h1: ∃ (x : C), (a, x) ∈ comp S R ∧ (x, d) ∈ T</span></span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>                     <span class="co">--Goal : (a, d) ∈ comp (comp T S) R</span></span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>    <span class="kw">define</span>           <span class="co">--Goal : ∃ (x : B), (a, x) ∈ R ∧ (x, d) ∈ comp T S</span></span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>    <span class="kw">define</span> <span class="kw">at</span> h1     <span class="co">--h1 : ∃ (x : C), (a, x) ∈ comp S R ∧ (x, d) ∈ T</span></span>
 <span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>    <span class="kw">obtain</span> (c : C) (h2 : (a, c) ∈ comp S R ∧ (c, d) ∈ T) <span class="kw">from</span> h1</span>
 <span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>    <span class="kw">have</span> h3 : (a, c) ∈ comp S R := h2.left</span>
-<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>    <span class="kw">define</span> <span class="kw">at</span> h3     <span class="co">--h3: ∃ (x : B), (a, x) ∈ R ∧ (x, c) ∈ S</span></span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>    <span class="kw">define</span> <span class="kw">at</span> h3     <span class="co">--h3 : ∃ (x : B), (a, x) ∈ R ∧ (x, c) ∈ S</span></span>
 <span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>    <span class="kw">obtain</span> (b : B) (h4 : (a, b) ∈ R ∧ (b, c) ∈ S) <span class="kw">from</span> h3</span>
-<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>    <span class="kw">apply</span> Exists.intro b    <span class="co">--Goal: (a, b) ∈ R ∧ (b, d) ∈ comp T S</span></span>
-<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>    <span class="kw">apply</span> And.intro h4.left <span class="co">--Goal: (b, d) ∈ comp T S</span></span>
-<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a>    <span class="kw">define</span>                  <span class="co">--Goal: ∃ (x : C), (b, x) ∈ S ∧ (x, d) ∈ T</span></span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>    <span class="kw">apply</span> Exists.intro b    <span class="co">--Goal : (a, b) ∈ R ∧ (b, d) ∈ comp T S</span></span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>    <span class="kw">apply</span> And.intro h4.left <span class="co">--Goal : (b, d) ∈ comp T S</span></span>
+<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a>    <span class="kw">define</span>                  <span class="co">--Goal : ∃ (x : C), (b, x) ∈ S ∧ (x, d) ∈ T</span></span>
 <span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a>    <span class="kw">show</span> ∃ (x : C), (b, x) ∈ S ∧ (x, d) ∈ T <span class="kw">from</span></span>
 <span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a>      Exists.intro c (And.intro h4.right h2.right)</span>
 <span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a>    <span class="kw">done</span></span>
@@ -362,11 +362,11 @@ $$
 <span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>  <span class="kw">apply</span> Iff.intro</span>
 <span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>  · <span class="co">-- (→)</span></span>
 <span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>    <span class="kw">assume</span> h1 : (c, a) ∈ inv (comp S R)</span>
-<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>                         <span class="co">--Goal: (c, a) ∈ comp (inv R) (inv S)</span></span>
-<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>    <span class="kw">define</span> <span class="kw">at</span> h1         <span class="co">--h1: ∃ (x : B), (a, x) ∈ R ∧ (x, c) ∈ S</span></span>
-<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>    <span class="kw">define</span>               <span class="co">--Goal: ∃ (x : B), (c, x) ∈ inv S ∧ (x, a) ∈ inv R</span></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>                      <span class="co">--Goal : (c, a) ∈ comp (inv R) (inv S)</span></span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>    <span class="kw">define</span> <span class="kw">at</span> h1      <span class="co">--h1 : ∃ (x : B), (a, x) ∈ R ∧ (x, c) ∈ S</span></span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>    <span class="kw">define</span>            <span class="co">--Goal : ∃ (x : B), (c, x) ∈ inv S ∧ (x, a) ∈ inv R</span></span>
 <span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>    <span class="kw">obtain</span> (b : B) (h2 : (a, b) ∈ R ∧ (b, c) ∈ S) <span class="kw">from</span> h1</span>
-<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>    <span class="kw">apply</span> Exists.intro b         <span class="co">--Goal: (c, b) ∈ inv S ∧ (b, a) ∈ inv R</span></span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>    <span class="kw">apply</span> Exists.intro b         <span class="co">--Goal : (c, b) ∈ inv S ∧ (b, a) ∈ inv R</span></span>
 <span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>    <span class="sc">**</span><span class="wa">done</span><span class="sc">::</span></span>
 <span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a>  · <span class="co">-- (←)</span></span>
 <span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a></span>
@@ -374,10 +374,10 @@ $$
 <span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a>  <span class="kw">done</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>After the tactics <code>apply Set.ext</code> and <code>fix (c, a) : C × A</code>, the goal is <code>(c, a) ∈ inv (comp S R) ↔︎ (c, a) ∈ comp (inv R) (inv S)</code>. For the proof of the left-to-right direction, we assume <code>h1 : (c, a) ∈ inv (comp S R)</code>, and we must prove <code>(c, a) ∈ comp (inv R) (inv S)</code>. The definition of <code>h1</code> is an existential statement, so we apply existential instantiation to obtain <code>b : B</code> and <code>h2 : (a, b) ∈ R ∧ (b, c) ∈ S</code>. The definition of the goal is also an existential statement, and after the tactic <code>apply Exists.intro b</code>, the goal is <code>(c, b) ∈ inv S ∧ (b, a) ∈ inv R</code>. It looks like this goal will follow easily from <code>h2</code>, using the definitions of the inverses of <code>S</code> and <code>R</code>.</p>
 <p>One way to write out these definitions would be to use the tactics <code>define : (c, b) ∈ inv S</code> and <code>define : (b, a) ∈ inv R</code>. But we’re going to use this example to illustrate another way to proceed. To use this alternative method, we’ll need to prove a preliminary theorem before proving part 5 of Theorem 4.2.5:</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> simp_inv {A B : <span class="kw">Type</span>} (R : Set (A × B)) (a : A) (b : B) :</span>
+<div class="sourceCode" id="cb6"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> inv_def {A B : <span class="kw">Type</span>} (R : Set (A × B)) (a : A) (b : B) :</span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>    (b, a) ∈ inv R ↔ (a, b) ∈ R := <span class="kw">by</span> <span class="kw">rfl</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>Now, any time we have a relation <code>R : Set (A × B)</code> and objects <code>a : A</code> and <code>b : B</code>, the expression <code>simp_inv R a b</code> will be a proof of the statement <code>(b, a) ∈ inv R ↔︎ (a, b) ∈ R</code>. (Note that <code>A</code> and <code>B</code> are implicit arguments and don’t need to be specified.) And that means that the tactic <code>rewrite [simp_inv R a b]</code> will change <code>(b, a) ∈ inv R</code> to <code>(a, b) ∈ R</code>. In fact, as we’ve seen before, you can just write <code>rewrite [simp_inv]</code>, and Lean will figure out how to apply the theorem <code>simp_inv</code> to rewrite some part of the goal.</p>
-<p>Returning to our proof of part 5 of Theorem 4.2.5, recall that after the step <code>apply Exists.intro b</code>, the goal is <code>(c, b) ∈ inv S ∧ (b, a) ∈ inv R</code>. Rather than using the <code>define</code> tactic to write out the definitions of the inverses, we’ll use the tactic <code>rewrite [simp_inv, simp_inv]</code>. Why do we list <code>simp_inv</code> twice in the <code>rewrite</code> tactic? When we ask Lean to use the theorem <code>simp_inv</code> as a rewriting rule, it figures out that <code>simp_inv S b c</code> is a proof of the statement <code>(c, b) ∈ inv S ↔︎ (b, c) ∈ S</code>, which can be used to rewrite the left half of the goal. To rewrite the right half, we need a different application of the <code>simp_inv</code> theorem, <code>simp_inv R a b</code>. So we have to ask Lean to apply the theorem a second time. After the <code>rewrite</code> tactic, the goal is <code>(b, c) ∈ S ∧ (a, b) ∈ R</code>, which will follow easily from <code>h2</code>.</p>
+<p>Now, any time we have a relation <code>R : Set (A × B)</code> and objects <code>a : A</code> and <code>b : B</code>, the expression <code>inv_def R a b</code> will be a proof of the statement <code>(b, a) ∈ inv R ↔︎ (a, b) ∈ R</code>. (Note that <code>A</code> and <code>B</code> are implicit arguments and don’t need to be specified.) And that means that the tactic <code>rewrite [inv_def R a b]</code> will change <code>(b, a) ∈ inv R</code> to <code>(a, b) ∈ R</code>. In fact, as we’ve seen before, you can just write <code>rewrite [inv_def]</code>, and Lean will figure out how to apply the theorem <code>inv_def</code> to rewrite some part of the goal.</p>
+<p>Returning to our proof of part 5 of Theorem 4.2.5, recall that after the step <code>apply Exists.intro b</code>, the goal is <code>(c, b) ∈ inv S ∧ (b, a) ∈ inv R</code>. Rather than using the <code>define</code> tactic to write out the definitions of the inverses, we’ll use the tactic <code>rewrite [inv_def, inv_def]</code>. Why do we list <code>inv_def</code> twice in the <code>rewrite</code> tactic? When we ask Lean to use the theorem <code>inv_def</code> as a rewriting rule, it figures out that <code>inv_def S b c</code> is a proof of the statement <code>(c, b) ∈ inv S ↔︎ (b, c) ∈ S</code>, which can be used to rewrite the left half of the goal. To rewrite the right half, we need a different application of the <code>inv_def</code> theorem, <code>inv_def R a b</code>. So we have to ask Lean to apply the theorem a second time. After the <code>rewrite</code> tactic, the goal is <code>(b, c) ∈ S ∧ (a, b) ∈ R</code>, which will follow easily from <code>h2</code>.</p>
 <p>The rest of the proof of straightforward. Here is the complete proof.</p>
 <div class="sourceCode" id="cb7"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Theorem_4_2_5_5 {A B C : <span class="kw">Type</span>}</span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>    (R : Set (A × B)) (S : Set (B × C)) :</span>
@@ -387,12 +387,12 @@ $$
 <span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>  <span class="kw">apply</span> Iff.intro</span>
 <span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>  · <span class="co">-- (→)</span></span>
 <span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>    <span class="kw">assume</span> h1 : (c, a) ∈ inv (comp S R)</span>
-<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>                         <span class="co">--Goal: (c, a) ∈ comp (inv R) (inv S)</span></span>
-<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>    <span class="kw">define</span> <span class="kw">at</span> h1         <span class="co">--h1: ∃ (x : B), (a, x) ∈ R ∧ (x, c) ∈ S</span></span>
-<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>    <span class="kw">define</span>               <span class="co">--Goal: ∃ (x : B), (c, x) ∈ inv S ∧ (x, a) ∈ inv R</span></span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>                      <span class="co">--Goal : (c, a) ∈ comp (inv R) (inv S)</span></span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>    <span class="kw">define</span> <span class="kw">at</span> h1      <span class="co">--h1 : ∃ (x : B), (a, x) ∈ R ∧ (x, c) ∈ S</span></span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>    <span class="kw">define</span>            <span class="co">--Goal : ∃ (x : B), (c, x) ∈ inv S ∧ (x, a) ∈ inv R</span></span>
 <span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>    <span class="kw">obtain</span> (b : B) (h2 : (a, b) ∈ R ∧ (b, c) ∈ S) <span class="kw">from</span> h1</span>
-<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>    <span class="kw">apply</span> Exists.intro b         <span class="co">--Goal: (c, b) ∈ inv S ∧ (b, a) ∈ inv R</span></span>
-<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>    <span class="kw">rewrite</span> [simp_inv, simp_inv] <span class="co">--Goal: (b, c) ∈ S ∧ (a, b) ∈ R</span></span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>    <span class="kw">apply</span> Exists.intro b         <span class="co">--Goal : (c, b) ∈ inv S ∧ (b, a) ∈ inv R</span></span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>    <span class="kw">rewrite</span> [inv_def, inv_def] <span class="co">--Goal : (b, c) ∈ S ∧ (a, b) ∈ R</span></span>
 <span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a>    <span class="kw">show</span> (b, c) ∈ S ∧ (a, b) ∈ R <span class="kw">from</span> And.intro h2.right h2.left</span>
 <span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a>    <span class="kw">done</span></span>
 <span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a>  · <span class="co">-- (←)</span></span>
@@ -401,7 +401,7 @@ $$
 <span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a>    <span class="kw">define</span></span>
 <span id="cb7-21"><a href="#cb7-21" aria-hidden="true" tabindex="-1"></a>    <span class="kw">obtain</span> (b : B) (h2 : (c, b) ∈ inv S ∧ (b, a) ∈ inv R) <span class="kw">from</span> h1</span>
 <span id="cb7-22"><a href="#cb7-22" aria-hidden="true" tabindex="-1"></a>    <span class="kw">apply</span> Exists.intro b</span>
-<span id="cb7-23"><a href="#cb7-23" aria-hidden="true" tabindex="-1"></a>    <span class="kw">rewrite</span> [simp_inv, simp_inv] <span class="kw">at</span> h2</span>
+<span id="cb7-23"><a href="#cb7-23" aria-hidden="true" tabindex="-1"></a>    <span class="kw">rewrite</span> [inv_def, inv_def] <span class="kw">at</span> h2</span>
 <span id="cb7-24"><a href="#cb7-24" aria-hidden="true" tabindex="-1"></a>    <span class="kw">show</span> (a, b) ∈ R ∧ (b, c) ∈ S <span class="kw">from</span> And.intro h2.right h2.left</span>
 <span id="cb7-25"><a href="#cb7-25" aria-hidden="true" tabindex="-1"></a>    <span class="kw">done</span></span>
 <span id="cb7-26"><a href="#cb7-26" aria-hidden="true" tabindex="-1"></a>  <span class="kw">done</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -459,7 +459,7 @@ $$
 <div class="sourceCode" id="cb15"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> extension {A B : <span class="kw">Type</span>} (R : Rel A B) : Set (A × B) :=</span>
 <span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>  { (a, b) : A × B | R a b }</span>
 <span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> simp_ext {A B : <span class="kw">Type</span>} (R : Rel A B) (a : A) (b : B) :</span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> ext_def {A B : <span class="kw">Type</span>} (R : Rel A B) (a : A) (b : B) :</span>
 <span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>    (a, b) ∈ extension R ↔ R a b := <span class="kw">by</span> <span class="kw">rfl</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>The rest of Chapter 4 of <em>HTPI</em> focuses on relations from a set to itself; in Lean, the corresponding idea is a relation from a type to itself. If <code>A</code> is any type and <code>R</code> has type <code>Rel A A</code>, then we will say that <code>R</code> is a <em>binary relation on <code>A</code></em>. The notation <code>BinRel A</code> denotes the type of binary relations on <code>A</code>. In other words, <code>BinRel A</code> is just an abbreviation for <code>Rel A A</code>. If <code>R</code> is a binary relation on <code>A</code>, then we say that <code>R</code> is <em>reflexive</em> if for every <code>x</code> of type <code>A</code>, <code>R x x</code> holds. It is <em>symmetric</em> if for all <code>x</code> and <code>y</code> of type <code>A</code>, if <code>R x y</code> then <code>R y x</code>. And it is <em>transitive</em> if for all <code>x</code>, <code>y</code>, and <code>z</code> of type <code>A</code>, if <code>R x y</code> and <code>R y z</code> then <code>R x z</code>. Of course, we can tell Lean about these definitions, which correspond to Definition 4.3.2 in <em>HTPI</em>:</p>
 <div class="sourceCode" id="cb16"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> reflexive {A : <span class="kw">Type</span>} (R : BinRel A) : <span class="kw">Prop</span> :=</span>
@@ -485,25 +485,25 @@ $$
 <span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>  <span class="kw">apply</span> Iff.intro</span>
 <span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>  · <span class="co">-- (→)</span></span>
 <span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>    <span class="kw">assume</span> h1 : symmetric R</span>
-<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>    <span class="kw">define</span> <span class="kw">at</span> h1             <span class="co">--h1: ∀ (x y : A), R x y → R y x</span></span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>    <span class="kw">define</span> <span class="kw">at</span> h1             <span class="co">--h1 : ∀ (x y : A), R x y → R y x</span></span>
 <span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a>    <span class="kw">apply</span> Set.ext</span>
 <span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a>    <span class="kw">fix</span> (a, b) : A × A</span>
 <span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a>    <span class="kw">show</span> (a, b) ∈ extension R ↔ (a, b) ∈ inv (extension R) <span class="kw">from</span></span>
 <span id="cb17-10"><a href="#cb17-10" aria-hidden="true" tabindex="-1"></a>      <span class="kw">calc</span> (a, b) ∈ extension R</span>
-<span id="cb17-11"><a href="#cb17-11" aria-hidden="true" tabindex="-1"></a>          ↔ R a b := <span class="kw">by</span> <span class="kw">rfl</span></span>
+<span id="cb17-11"><a href="#cb17-11" aria-hidden="true" tabindex="-1"></a>        _ ↔ R a b := <span class="kw">by</span> <span class="kw">rfl</span></span>
 <span id="cb17-12"><a href="#cb17-12" aria-hidden="true" tabindex="-1"></a>        _ ↔ R b a := Iff.intro (h1 a b) (h1 b a)</span>
 <span id="cb17-13"><a href="#cb17-13" aria-hidden="true" tabindex="-1"></a>        _ ↔ (a, b) ∈ inv (extension R) := <span class="kw">by</span> <span class="kw">rfl</span></span>
 <span id="cb17-14"><a href="#cb17-14" aria-hidden="true" tabindex="-1"></a>    <span class="kw">done</span></span>
 <span id="cb17-15"><a href="#cb17-15" aria-hidden="true" tabindex="-1"></a>  · <span class="co">-- (←)</span></span>
 <span id="cb17-16"><a href="#cb17-16" aria-hidden="true" tabindex="-1"></a>    <span class="kw">assume</span> h1 : extension R = inv (extension R)</span>
-<span id="cb17-17"><a href="#cb17-17" aria-hidden="true" tabindex="-1"></a>    <span class="kw">define</span>                   <span class="co">--Goal: ∀ (x y : A), R x y → R y x</span></span>
+<span id="cb17-17"><a href="#cb17-17" aria-hidden="true" tabindex="-1"></a>    <span class="kw">define</span>                   <span class="co">--Goal : ∀ (x y : A), R x y → R y x</span></span>
 <span id="cb17-18"><a href="#cb17-18" aria-hidden="true" tabindex="-1"></a>    <span class="kw">fix</span> a : A; <span class="kw">fix</span> b : A</span>
-<span id="cb17-19"><a href="#cb17-19" aria-hidden="true" tabindex="-1"></a>    <span class="kw">assume</span> h2 : R a b        <span class="co">--Goal: R b a</span></span>
-<span id="cb17-20"><a href="#cb17-20" aria-hidden="true" tabindex="-1"></a>    <span class="kw">rewrite</span> [←simp_ext R, h1, simp_inv, simp_ext] <span class="kw">at</span> h2</span>
+<span id="cb17-19"><a href="#cb17-19" aria-hidden="true" tabindex="-1"></a>    <span class="kw">assume</span> h2 : R a b        <span class="co">--Goal : R b a</span></span>
+<span id="cb17-20"><a href="#cb17-20" aria-hidden="true" tabindex="-1"></a>    <span class="kw">rewrite</span> [←ext_def R, h1, inv_def, ext_def] <span class="kw">at</span> h2</span>
 <span id="cb17-21"><a href="#cb17-21" aria-hidden="true" tabindex="-1"></a>    <span class="kw">show</span> R b a <span class="kw">from</span> h2</span>
 <span id="cb17-22"><a href="#cb17-22" aria-hidden="true" tabindex="-1"></a>    <span class="kw">done</span></span>
 <span id="cb17-23"><a href="#cb17-23" aria-hidden="true" tabindex="-1"></a>  <span class="kw">done</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>Note that near the end of the proof, we assume <code>h2 : R a b</code>, and our goal is <code>R b a</code>. We convert <code>R a b</code> to <code>R b a</code> by a sequence of rewrites. Applying the right-to-left direction of the theorem <code>simp_ext R a b</code> converts <code>R a b</code> to <code>(a, b) ∈ extension R</code>. Then rewriting with <code>h1</code> converts this to <code>(a, b) ∈ inv (extension R)</code>, using <code>simp_inv (extension R) b a</code> converts this to <code>(b, a) ∈ extension R</code>, and finally <code>simp_ext R b a</code> produces <code>R b a</code>. Usually we can leave out the arguments when we use a theorem as a rewriting rule, and Lean will figure them out for itself. But in this case, if you try using <code>←simp_ext</code> as the first rewriting rule, you will see that Lean is unable to figure out that it should use the right-to-left direction of <code>simp_ext R a b</code>. Supplying the first argument turns out to be enough of a hint for Lean to figure out the rest. That’s why our first rewriting rule is <code>←simp_ext R</code>.</p>
+<p>Note that near the end of the proof, we assume <code>h2 : R a b</code>, and our goal is <code>R b a</code>. We convert <code>R a b</code> to <code>R b a</code> by a sequence of rewrites. Applying the right-to-left direction of the theorem <code>ext_def R a b</code> converts <code>R a b</code> to <code>(a, b) ∈ extension R</code>. Then rewriting with <code>h1</code> converts this to <code>(a, b) ∈ inv (extension R)</code>, using <code>inv_def (extension R) b a</code> converts this to <code>(b, a) ∈ extension R</code>, and finally <code>ext_def R b a</code> produces <code>R b a</code>. Usually we can leave out the arguments when we use a theorem as a rewriting rule, and Lean will figure them out for itself. But in this case, if you try using <code>←ext_def</code> as the first rewriting rule, you will see that Lean is unable to figure out that it should use the right-to-left direction of <code>ext_def R a b</code>. Supplying the first argument turns out to be enough of a hint for Lean to figure out the rest. That’s why our first rewriting rule is <code>←ext_def R</code>.</p>
 <p>We’ll leave the proofs of the other two statements in Theorem 4.3.4 as exercises for you.</p>
 <p>For any types <code>A</code> and <code>B</code>, if we want to define a particular relation <code>R</code> from <code>A</code> to <code>B</code>, we can do it by specifying, for any <code>a : A</code> and <code>b : B</code>, what proposition is represented by <code>R a b</code>. For example, for any type <code>A</code>, we can define a relation <code>elementhood A</code> from <code>A</code> to <code>Set A</code> as follows:</p>
 <div class="sourceCode" id="cb18"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> elementhood (A : <span class="kw">Type</span>) (a : A) (X : Set A) : <span class="kw">Prop</span> := a ∈ X</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -512,7 +512,7 @@ $$
 <div class="sourceCode" id="cb19"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> RelFromExt {A B : <span class="kw">Type</span>}</span>
 <span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>    (R : Set (A × B)) (a : A) (b : B) : <span class="kw">Prop</span> := (a, b) ∈ R</span>
 <span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> simp_RelFromExt {A B : <span class="kw">Type</span>}</span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> RelFromExt_def {A B : <span class="kw">Type</span>}</span>
 <span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a>    (R : Set (A × B)) (a : A) (b : B) :</span>
 <span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a>    RelFromExt R a b ↔ (a, b) ∈ R := <span class="kw">by</span> <span class="kw">rfl</span></span>
 <span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a></span>
@@ -596,13 +596,13 @@ $$
 <div class="sourceCode" id="cb31"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Theorem_4_4_6_2 {A : <span class="kw">Type</span>} (R : BinRel A) (B : Set A) (b : A)</span>
 <span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a>    (h1 : partial_order R) (h2 : smallestElt R b B) :</span>
 <span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a>    minimalElt R b B ∧ ∀ (c : A), minimalElt R c B → b = c := <span class="kw">by</span></span>
-<span id="cb31-4"><a href="#cb31-4" aria-hidden="true" tabindex="-1"></a>  <span class="kw">define</span> <span class="kw">at</span> h1     <span class="co">--h1: reflexive R ∧ transitive R ∧ antisymmetric R</span></span>
-<span id="cb31-5"><a href="#cb31-5" aria-hidden="true" tabindex="-1"></a>  <span class="kw">define</span> <span class="kw">at</span> h2     <span class="co">--h2: b ∈ B ∧ ∀ (x : A), x ∈ B → R b x</span></span>
+<span id="cb31-4"><a href="#cb31-4" aria-hidden="true" tabindex="-1"></a>  <span class="kw">define</span> <span class="kw">at</span> h1     <span class="co">--h1 : reflexive R ∧ transitive R ∧ antisymmetric R</span></span>
+<span id="cb31-5"><a href="#cb31-5" aria-hidden="true" tabindex="-1"></a>  <span class="kw">define</span> <span class="kw">at</span> h2     <span class="co">--h2 : b ∈ B ∧ ∀ (x : A), x ∈ B → R b x</span></span>
 <span id="cb31-6"><a href="#cb31-6" aria-hidden="true" tabindex="-1"></a>  <span class="kw">apply</span> And.intro</span>
 <span id="cb31-7"><a href="#cb31-7" aria-hidden="true" tabindex="-1"></a>  · <span class="co">-- Proof that b is minimal</span></span>
-<span id="cb31-8"><a href="#cb31-8" aria-hidden="true" tabindex="-1"></a>    <span class="kw">define</span>           <span class="co">--Goal: b ∈ B ∧ ¬∃ (x : A), x ∈ B ∧ R x b ∧ x ≠ b</span></span>
+<span id="cb31-8"><a href="#cb31-8" aria-hidden="true" tabindex="-1"></a>    <span class="kw">define</span>           <span class="co">--Goal : b ∈ B ∧ ¬∃ (x : A), x ∈ B ∧ R x b ∧ x ≠ b</span></span>
 <span id="cb31-9"><a href="#cb31-9" aria-hidden="true" tabindex="-1"></a>    <span class="kw">apply</span> And.intro h2.left</span>
-<span id="cb31-10"><a href="#cb31-10" aria-hidden="true" tabindex="-1"></a>    <span class="kw">quant_neg</span>        <span class="co">--Goal: ∀ (x : A), ¬(x ∈ B ∧ R x b ∧ x ≠ b)</span></span>
+<span id="cb31-10"><a href="#cb31-10" aria-hidden="true" tabindex="-1"></a>    <span class="kw">quant_neg</span>        <span class="co">--Goal : ∀ (x : A), ¬(x ∈ B ∧ R x b ∧ x ≠ b)</span></span>
 <span id="cb31-11"><a href="#cb31-11" aria-hidden="true" tabindex="-1"></a>    <span class="sc">**</span><span class="wa">demorgan</span><span class="er"> : ¬(x ∈ B ∧ R x b ∧ x ≠ b)</span><span class="sc">::</span></span>
 <span id="cb31-12"><a href="#cb31-12" aria-hidden="true" tabindex="-1"></a>    <span class="kw">done</span></span>
 <span id="cb31-13"><a href="#cb31-13" aria-hidden="true" tabindex="-1"></a>  · <span class="co">-- Proof that b is only minimal element</span></span>
@@ -613,29 +613,29 @@ $$
 <div class="sourceCode" id="cb32"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Theorem_4_4_6_2 {A : <span class="kw">Type</span>} (R : BinRel A) (B : Set A) (b : A)</span>
 <span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a>    (h1 : partial_order R) (h2 : smallestElt R b B) :</span>
 <span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a>    minimalElt R b B ∧ ∀ (c : A), minimalElt R c B → b = c := <span class="kw">by</span></span>
-<span id="cb32-4"><a href="#cb32-4" aria-hidden="true" tabindex="-1"></a>  <span class="kw">define</span> <span class="kw">at</span> h1     <span class="co">--h1: reflexive R ∧ transitive R ∧ antisymmetric R</span></span>
-<span id="cb32-5"><a href="#cb32-5" aria-hidden="true" tabindex="-1"></a>  <span class="kw">define</span> <span class="kw">at</span> h2     <span class="co">--h2: b ∈ B ∧ ∀ (x : A), x ∈ B → R b x</span></span>
+<span id="cb32-4"><a href="#cb32-4" aria-hidden="true" tabindex="-1"></a>  <span class="kw">define</span> <span class="kw">at</span> h1     <span class="co">--h1 : reflexive R ∧ transitive R ∧ antisymmetric R</span></span>
+<span id="cb32-5"><a href="#cb32-5" aria-hidden="true" tabindex="-1"></a>  <span class="kw">define</span> <span class="kw">at</span> h2     <span class="co">--h2 : b ∈ B ∧ ∀ (x : A), x ∈ B → R b x</span></span>
 <span id="cb32-6"><a href="#cb32-6" aria-hidden="true" tabindex="-1"></a>  <span class="kw">apply</span> And.intro</span>
 <span id="cb32-7"><a href="#cb32-7" aria-hidden="true" tabindex="-1"></a>  · <span class="co">-- Proof that b is minimal</span></span>
-<span id="cb32-8"><a href="#cb32-8" aria-hidden="true" tabindex="-1"></a>    <span class="kw">define</span>           <span class="co">--Goal: b ∈ B ∧ ¬∃ (x : A), x ∈ B ∧ R x b ∧ x ≠ b</span></span>
+<span id="cb32-8"><a href="#cb32-8" aria-hidden="true" tabindex="-1"></a>    <span class="kw">define</span>           <span class="co">--Goal : b ∈ B ∧ ¬∃ (x : A), x ∈ B ∧ R x b ∧ x ≠ b</span></span>
 <span id="cb32-9"><a href="#cb32-9" aria-hidden="true" tabindex="-1"></a>    <span class="kw">apply</span> And.intro h2.left</span>
-<span id="cb32-10"><a href="#cb32-10" aria-hidden="true" tabindex="-1"></a>    <span class="kw">quant_neg</span>        <span class="co">--Goal: ∀ (x : A), ¬(x ∈ B ∧ R x b ∧ x ≠ b)</span></span>
+<span id="cb32-10"><a href="#cb32-10" aria-hidden="true" tabindex="-1"></a>    <span class="kw">quant_neg</span>        <span class="co">--Goal : ∀ (x : A), ¬(x ∈ B ∧ R x b ∧ x ≠ b)</span></span>
 <span id="cb32-11"><a href="#cb32-11" aria-hidden="true" tabindex="-1"></a>    <span class="kw">fix</span> x : A</span>
-<span id="cb32-12"><a href="#cb32-12" aria-hidden="true" tabindex="-1"></a>    <span class="kw">demorgan</span>         <span class="co">--Goal: ¬x ∈ B ∨ ¬(R x b ∧ x ≠ b)</span></span>
-<span id="cb32-13"><a href="#cb32-13" aria-hidden="true" tabindex="-1"></a>    <span class="kw">or_right</span> <span class="kw">with</span> h3 <span class="co">--h3: x ∈ B; Goal: ¬(R x b ∧ x ≠ b)</span></span>
-<span id="cb32-14"><a href="#cb32-14" aria-hidden="true" tabindex="-1"></a>    <span class="kw">demorgan</span>         <span class="co">--Goal: ¬R x b ∨ x = b</span></span>
-<span id="cb32-15"><a href="#cb32-15" aria-hidden="true" tabindex="-1"></a>    <span class="kw">or_right</span> <span class="kw">with</span> h4 <span class="co">--h4: R x b; Goal: x = b</span></span>
+<span id="cb32-12"><a href="#cb32-12" aria-hidden="true" tabindex="-1"></a>    <span class="kw">demorgan</span>         <span class="co">--Goal : ¬x ∈ B ∨ ¬(R x b ∧ x ≠ b)</span></span>
+<span id="cb32-13"><a href="#cb32-13" aria-hidden="true" tabindex="-1"></a>    <span class="kw">or_right</span> <span class="kw">with</span> h3 <span class="co">--h3 : x ∈ B; Goal : ¬(R x b ∧ x ≠ b)</span></span>
+<span id="cb32-14"><a href="#cb32-14" aria-hidden="true" tabindex="-1"></a>    <span class="kw">demorgan</span>         <span class="co">--Goal : ¬R x b ∨ x = b</span></span>
+<span id="cb32-15"><a href="#cb32-15" aria-hidden="true" tabindex="-1"></a>    <span class="kw">or_right</span> <span class="kw">with</span> h4 <span class="co">--h4 : R x b; Goal : x = b</span></span>
 <span id="cb32-16"><a href="#cb32-16" aria-hidden="true" tabindex="-1"></a>    <span class="kw">have</span> h5 : R b x := h2.right x h3</span>
 <span id="cb32-17"><a href="#cb32-17" aria-hidden="true" tabindex="-1"></a>    <span class="kw">have</span> h6 : antisymmetric R := h1.right.right</span>
-<span id="cb32-18"><a href="#cb32-18" aria-hidden="true" tabindex="-1"></a>    <span class="kw">define</span> <span class="kw">at</span> h6     <span class="co">--h6: ∀ (x y : A), R x y → R y x → x = y</span></span>
+<span id="cb32-18"><a href="#cb32-18" aria-hidden="true" tabindex="-1"></a>    <span class="kw">define</span> <span class="kw">at</span> h6     <span class="co">--h6 : ∀ (x y : A), R x y → R y x → x = y</span></span>
 <span id="cb32-19"><a href="#cb32-19" aria-hidden="true" tabindex="-1"></a>    <span class="kw">show</span> x = b <span class="kw">from</span> h6 x b h4 h5</span>
 <span id="cb32-20"><a href="#cb32-20" aria-hidden="true" tabindex="-1"></a>    <span class="kw">done</span></span>
 <span id="cb32-21"><a href="#cb32-21" aria-hidden="true" tabindex="-1"></a>  · <span class="co">-- Proof that b is only minimal element</span></span>
 <span id="cb32-22"><a href="#cb32-22" aria-hidden="true" tabindex="-1"></a>    <span class="kw">fix</span> c : A</span>
 <span id="cb32-23"><a href="#cb32-23" aria-hidden="true" tabindex="-1"></a>    <span class="kw">assume</span> h3 : minimalElt R c B</span>
-<span id="cb32-24"><a href="#cb32-24" aria-hidden="true" tabindex="-1"></a>    <span class="kw">define</span> <span class="kw">at</span> h3    <span class="co">--h3: c ∈ B ∧ ¬∃ (x : A), x ∈ B ∧ R x c ∧ x ≠ c</span></span>
+<span id="cb32-24"><a href="#cb32-24" aria-hidden="true" tabindex="-1"></a>    <span class="kw">define</span> <span class="kw">at</span> h3    <span class="co">--h3 : c ∈ B ∧ ¬∃ (x : A), x ∈ B ∧ R x c ∧ x ≠ c</span></span>
 <span id="cb32-25"><a href="#cb32-25" aria-hidden="true" tabindex="-1"></a>    <span class="kw">contradict</span> h3.right <span class="kw">with</span> h4</span>
-<span id="cb32-26"><a href="#cb32-26" aria-hidden="true" tabindex="-1"></a>                  <span class="co">--h4: ¬b = c; Goal: ∃ (x : A), x ∈ B ∧ R x c ∧ x ≠ c</span></span>
+<span id="cb32-26"><a href="#cb32-26" aria-hidden="true" tabindex="-1"></a>                  <span class="co">--h4 : ¬b = c; Goal : ∃ (x : A), x ∈ B ∧ R x c ∧ x ≠ c</span></span>
 <span id="cb32-27"><a href="#cb32-27" aria-hidden="true" tabindex="-1"></a>    <span class="kw">have</span> h5 : R b c := h2.right c h3.left</span>
 <span id="cb32-28"><a href="#cb32-28" aria-hidden="true" tabindex="-1"></a>    <span class="kw">show</span> ∃ (x : A), x ∈ B ∧ R x c ∧ x ≠ c <span class="kw">from</span></span>
 <span id="cb32-29"><a href="#cb32-29" aria-hidden="true" tabindex="-1"></a>      Exists.intro b (And.intro h2.left (And.intro h5 h4))</span>
@@ -644,32 +644,32 @@ $$
 <p>Finally, the third statement in Theorem 4.4.6 says that if <code>R</code> is a total order, then any <code>R</code>-minimal element of a set <code>B</code> must be the <code>R</code>-smallest element of <code>B</code>. The beginning of the proof is straightforward:</p>
 <div class="sourceCode" id="cb33"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Theorem_4_4_6_3 {A : <span class="kw">Type</span>} (R : BinRel A) (B : Set A) (b : A)</span>
 <span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a>    (h1 : total_order R) (h2 : minimalElt R b B) : smallestElt R b B := <span class="kw">by</span></span>
-<span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a>  <span class="kw">define</span> <span class="kw">at</span> h1         <span class="co">--h1: partial_order R ∧ ∀ (x y : A), R x y ∨ R y x</span></span>
-<span id="cb33-4"><a href="#cb33-4" aria-hidden="true" tabindex="-1"></a>  <span class="kw">define</span> <span class="kw">at</span> h2         <span class="co">--h2: b ∈ B ∧ ¬∃ (x : A), x ∈ B ∧ R x b ∧ x ≠ b</span></span>
-<span id="cb33-5"><a href="#cb33-5" aria-hidden="true" tabindex="-1"></a>  <span class="kw">define</span>               <span class="co">--Goal: b ∈ B ∧ ∀ (x : A), x ∈ B → R b x</span></span>
-<span id="cb33-6"><a href="#cb33-6" aria-hidden="true" tabindex="-1"></a>  <span class="kw">apply</span> And.intro h2.left  <span class="co">--Goal: ∀ (x : A), x ∈ B → R b x</span></span>
+<span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a>  <span class="kw">define</span> <span class="kw">at</span> h1         <span class="co">--h1 : partial_order R ∧ ∀ (x y : A), R x y ∨ R y x</span></span>
+<span id="cb33-4"><a href="#cb33-4" aria-hidden="true" tabindex="-1"></a>  <span class="kw">define</span> <span class="kw">at</span> h2         <span class="co">--h2 : b ∈ B ∧ ¬∃ (x : A), x ∈ B ∧ R x b ∧ x ≠ b</span></span>
+<span id="cb33-5"><a href="#cb33-5" aria-hidden="true" tabindex="-1"></a>  <span class="kw">define</span>               <span class="co">--Goal : b ∈ B ∧ ∀ (x : A), x ∈ B → R b x</span></span>
+<span id="cb33-6"><a href="#cb33-6" aria-hidden="true" tabindex="-1"></a>  <span class="kw">apply</span> And.intro h2.left  <span class="co">--Goal : ∀ (x : A), x ∈ B → R b x</span></span>
 <span id="cb33-7"><a href="#cb33-7" aria-hidden="true" tabindex="-1"></a>  <span class="kw">fix</span> x : A</span>
-<span id="cb33-8"><a href="#cb33-8" aria-hidden="true" tabindex="-1"></a>  <span class="kw">assume</span> h3 : x ∈ B        <span class="co">--Goal: R b x</span></span>
+<span id="cb33-8"><a href="#cb33-8" aria-hidden="true" tabindex="-1"></a>  <span class="kw">assume</span> h3 : x ∈ B        <span class="co">--Goal : R b x</span></span>
 <span id="cb33-9"><a href="#cb33-9" aria-hidden="true" tabindex="-1"></a>  <span class="sc">**</span><span class="wa">done</span><span class="sc">::</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>Surprisingly, at this point it is difficult to find a way to reach the goal <code>R b x</code>. See <em>HTPI</em> for an explanation of why it turns out to be helpful to split the proof into two cases, depending on whether or not <code>x = b</code>. Of course, we use the <code>by_cases</code> tactic for this.</p>
 <div class="sourceCode" id="cb34"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Theorem_4_4_6_3 {A : <span class="kw">Type</span>} (R : BinRel A) (B : Set A) (b : A)</span>
 <span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a>    (h1 : total_order R) (h2 : minimalElt R b B) : smallestElt R b B := <span class="kw">by</span></span>
-<span id="cb34-3"><a href="#cb34-3" aria-hidden="true" tabindex="-1"></a>  <span class="kw">define</span> <span class="kw">at</span> h1         <span class="co">--h1: partial_order R ∧ ∀ (x y : A), R x y ∨ R y x</span></span>
-<span id="cb34-4"><a href="#cb34-4" aria-hidden="true" tabindex="-1"></a>  <span class="kw">define</span> <span class="kw">at</span> h2         <span class="co">--h2: b ∈ B ∧ ¬∃ (x : A), x ∈ B ∧ R x b ∧ x ≠ b</span></span>
-<span id="cb34-5"><a href="#cb34-5" aria-hidden="true" tabindex="-1"></a>  <span class="kw">define</span>               <span class="co">--Goal: b ∈ B ∧ ∀ (x : A), x ∈ B → R b x</span></span>
-<span id="cb34-6"><a href="#cb34-6" aria-hidden="true" tabindex="-1"></a>  <span class="kw">apply</span> And.intro h2.left  <span class="co">--Goal: ∀ (x : A), x ∈ B → R b x</span></span>
+<span id="cb34-3"><a href="#cb34-3" aria-hidden="true" tabindex="-1"></a>  <span class="kw">define</span> <span class="kw">at</span> h1         <span class="co">--h1 : partial_order R ∧ ∀ (x y : A), R x y ∨ R y x</span></span>
+<span id="cb34-4"><a href="#cb34-4" aria-hidden="true" tabindex="-1"></a>  <span class="kw">define</span> <span class="kw">at</span> h2         <span class="co">--h2 : b ∈ B ∧ ¬∃ (x : A), x ∈ B ∧ R x b ∧ x ≠ b</span></span>
+<span id="cb34-5"><a href="#cb34-5" aria-hidden="true" tabindex="-1"></a>  <span class="kw">define</span>               <span class="co">--Goal : b ∈ B ∧ ∀ (x : A), x ∈ B → R b x</span></span>
+<span id="cb34-6"><a href="#cb34-6" aria-hidden="true" tabindex="-1"></a>  <span class="kw">apply</span> And.intro h2.left  <span class="co">--Goal : ∀ (x : A), x ∈ B → R b x</span></span>
 <span id="cb34-7"><a href="#cb34-7" aria-hidden="true" tabindex="-1"></a>  <span class="kw">fix</span> x : A</span>
-<span id="cb34-8"><a href="#cb34-8" aria-hidden="true" tabindex="-1"></a>  <span class="kw">assume</span> h3 : x ∈ B        <span class="co">--Goal: R b x</span></span>
+<span id="cb34-8"><a href="#cb34-8" aria-hidden="true" tabindex="-1"></a>  <span class="kw">assume</span> h3 : x ∈ B        <span class="co">--Goal : R b x</span></span>
 <span id="cb34-9"><a href="#cb34-9" aria-hidden="true" tabindex="-1"></a>  <span class="kw">by_cases</span> h4 : x = b</span>
-<span id="cb34-10"><a href="#cb34-10" aria-hidden="true" tabindex="-1"></a>  · <span class="co">-- Case 1. h4: x = b</span></span>
-<span id="cb34-11"><a href="#cb34-11" aria-hidden="true" tabindex="-1"></a>    <span class="kw">rewrite</span> [h4]             <span class="co">--Goal: R b b</span></span>
+<span id="cb34-10"><a href="#cb34-10" aria-hidden="true" tabindex="-1"></a>  · <span class="co">-- Case 1. h4 : x = b</span></span>
+<span id="cb34-11"><a href="#cb34-11" aria-hidden="true" tabindex="-1"></a>    <span class="kw">rewrite</span> [h4]             <span class="co">--Goal : R b b</span></span>
 <span id="cb34-12"><a href="#cb34-12" aria-hidden="true" tabindex="-1"></a>    <span class="kw">have</span> h5 : partial_order R := h1.left</span>
 <span id="cb34-13"><a href="#cb34-13" aria-hidden="true" tabindex="-1"></a>    <span class="kw">define</span> <span class="kw">at</span> h5</span>
 <span id="cb34-14"><a href="#cb34-14" aria-hidden="true" tabindex="-1"></a>    <span class="kw">have</span> h6 : reflexive R := h5.left</span>
 <span id="cb34-15"><a href="#cb34-15" aria-hidden="true" tabindex="-1"></a>    <span class="kw">define</span> <span class="kw">at</span> h6</span>
 <span id="cb34-16"><a href="#cb34-16" aria-hidden="true" tabindex="-1"></a>    <span class="kw">show</span> R b b <span class="kw">from</span> h6 b</span>
 <span id="cb34-17"><a href="#cb34-17" aria-hidden="true" tabindex="-1"></a>    <span class="kw">done</span></span>
-<span id="cb34-18"><a href="#cb34-18" aria-hidden="true" tabindex="-1"></a>  · <span class="co">-- Case 2. h4: x ≠ b</span></span>
+<span id="cb34-18"><a href="#cb34-18" aria-hidden="true" tabindex="-1"></a>  · <span class="co">-- Case 2. h4 : x ≠ b</span></span>
 <span id="cb34-19"><a href="#cb34-19" aria-hidden="true" tabindex="-1"></a>    <span class="kw">have</span> h5 : ∀ (x y : A), R x y ∨ R y x := h1.right</span>
 <span id="cb34-20"><a href="#cb34-20" aria-hidden="true" tabindex="-1"></a>    <span class="kw">have</span> h6 : R x b ∨ R b x := h5 x b</span>
 <span id="cb34-21"><a href="#cb34-21" aria-hidden="true" tabindex="-1"></a>    <span class="kw">have</span> h7 : ¬R x b := <span class="kw">by</span></span>
@@ -781,10 +781,10 @@ A/R = \{[x]_R \mid x \in A\}.
 <div class="sourceCode" id="cb49"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb49-1"><a href="#cb49-1" aria-hidden="true" tabindex="-1"></a><span class="kw">lemma</span> Lemma_4_5_5_1 {A : <span class="kw">Type</span>} (R : BinRel A) (h : equiv_rel R) :</span>
 <span id="cb49-2"><a href="#cb49-2" aria-hidden="true" tabindex="-1"></a>    ∀ (x : A), x ∈ equivClass R x := <span class="kw">by</span></span>
 <span id="cb49-3"><a href="#cb49-3" aria-hidden="true" tabindex="-1"></a>  <span class="kw">fix</span> x : A</span>
-<span id="cb49-4"><a href="#cb49-4" aria-hidden="true" tabindex="-1"></a>  <span class="kw">define</span>           <span class="co">--Goal: R x x</span></span>
-<span id="cb49-5"><a href="#cb49-5" aria-hidden="true" tabindex="-1"></a>  <span class="kw">define</span> <span class="kw">at</span> h      <span class="co">--h: reflexive R ∧ symmetric R ∧ transitive R</span></span>
-<span id="cb49-6"><a href="#cb49-6" aria-hidden="true" tabindex="-1"></a>  <span class="kw">have</span> href : reflexive R := h.left</span>
-<span id="cb49-7"><a href="#cb49-7" aria-hidden="true" tabindex="-1"></a>  <span class="kw">show</span> R x x <span class="kw">from</span> href x</span>
+<span id="cb49-4"><a href="#cb49-4" aria-hidden="true" tabindex="-1"></a>  <span class="kw">define</span>           <span class="co">--Goal : R x x</span></span>
+<span id="cb49-5"><a href="#cb49-5" aria-hidden="true" tabindex="-1"></a>  <span class="kw">define</span> <span class="kw">at</span> h      <span class="co">--h : reflexive R ∧ symmetric R ∧ transitive R</span></span>
+<span id="cb49-6"><a href="#cb49-6" aria-hidden="true" tabindex="-1"></a>  <span class="kw">have</span> Rref : reflexive R := h.left</span>
+<span id="cb49-7"><a href="#cb49-7" aria-hidden="true" tabindex="-1"></a>  <span class="kw">show</span> R x x <span class="kw">from</span> Rref x</span>
 <span id="cb49-8"><a href="#cb49-8" aria-hidden="true" tabindex="-1"></a>  <span class="kw">done</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>The command <code>#check @Lemma_4_5_5_1</code> produces the result</p>
 <div class="ind">
@@ -795,87 +795,90 @@ A/R = \{[x]_R \mid x \in A\}.
 <div class="sourceCode" id="cb51"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb51-1"><a href="#cb51-1" aria-hidden="true" tabindex="-1"></a><span class="kw">lemma</span> Lemma_4_5_5_2 {A : <span class="kw">Type</span>} (R : BinRel A) (h : equiv_rel R) :</span>
 <span id="cb51-2"><a href="#cb51-2" aria-hidden="true" tabindex="-1"></a>    ∀ (x y : A), y ∈ equivClass R x ↔</span>
 <span id="cb51-3"><a href="#cb51-3" aria-hidden="true" tabindex="-1"></a>      equivClass R y = equivClass R x := <span class="kw">by</span></span>
-<span id="cb51-4"><a href="#cb51-4" aria-hidden="true" tabindex="-1"></a>  <span class="kw">have</span> hsymm : symmetric R := h.right.left</span>
-<span id="cb51-5"><a href="#cb51-5" aria-hidden="true" tabindex="-1"></a>  <span class="kw">have</span> htrans : transitive R := h.right.right</span>
+<span id="cb51-4"><a href="#cb51-4" aria-hidden="true" tabindex="-1"></a>  <span class="kw">have</span> Rsymm : symmetric R := h.right.left</span>
+<span id="cb51-5"><a href="#cb51-5" aria-hidden="true" tabindex="-1"></a>  <span class="kw">have</span> Rtrans : transitive R := h.right.right</span>
 <span id="cb51-6"><a href="#cb51-6" aria-hidden="true" tabindex="-1"></a>  <span class="kw">fix</span> x : A; <span class="kw">fix</span> y : A</span>
 <span id="cb51-7"><a href="#cb51-7" aria-hidden="true" tabindex="-1"></a>  <span class="kw">apply</span> Iff.intro</span>
 <span id="cb51-8"><a href="#cb51-8" aria-hidden="true" tabindex="-1"></a>  · <span class="co">-- (→)</span></span>
-<span id="cb51-9"><a href="#cb51-9" aria-hidden="true" tabindex="-1"></a>    <span class="kw">assume</span> h2 : y ∈ equivClass R x <span class="co">--Goal: equivClass R y = equivClass R x</span></span>
-<span id="cb51-10"><a href="#cb51-10" aria-hidden="true" tabindex="-1"></a>    <span class="kw">define</span> <span class="kw">at</span> h2                   <span class="co">--h2: R y x</span></span>
-<span id="cb51-11"><a href="#cb51-11" aria-hidden="true" tabindex="-1"></a>    <span class="kw">apply</span> Set.ext</span>
-<span id="cb51-12"><a href="#cb51-12" aria-hidden="true" tabindex="-1"></a>    <span class="kw">fix</span> z : A</span>
-<span id="cb51-13"><a href="#cb51-13" aria-hidden="true" tabindex="-1"></a>    <span class="kw">apply</span> Iff.intro</span>
-<span id="cb51-14"><a href="#cb51-14" aria-hidden="true" tabindex="-1"></a>    · <span class="co">-- Proof that z ∈ equivClass R y → z ∈ equivClass R x</span></span>
-<span id="cb51-15"><a href="#cb51-15" aria-hidden="true" tabindex="-1"></a>      <span class="kw">assume</span> h3 : z ∈ equivClass R y</span>
-<span id="cb51-16"><a href="#cb51-16" aria-hidden="true" tabindex="-1"></a>      <span class="kw">define</span>                         <span class="co">--Goal: R z x</span></span>
-<span id="cb51-17"><a href="#cb51-17" aria-hidden="true" tabindex="-1"></a>      <span class="kw">define</span> <span class="kw">at</span> h3                   <span class="co">--h3: R z y</span></span>
-<span id="cb51-18"><a href="#cb51-18" aria-hidden="true" tabindex="-1"></a>      <span class="kw">show</span> R z x <span class="kw">from</span> htrans z y x h3 h2</span>
-<span id="cb51-19"><a href="#cb51-19" aria-hidden="true" tabindex="-1"></a>      <span class="kw">done</span></span>
-<span id="cb51-20"><a href="#cb51-20" aria-hidden="true" tabindex="-1"></a>    · <span class="co">-- Proof that z ∈ equivClass R x → z ∈ equivClass R y</span></span>
-<span id="cb51-21"><a href="#cb51-21" aria-hidden="true" tabindex="-1"></a>      <span class="kw">assume</span> h3 : z ∈ equivClass R x</span>
-<span id="cb51-22"><a href="#cb51-22" aria-hidden="true" tabindex="-1"></a>      <span class="kw">define</span>                         <span class="co">--Goal: R z y</span></span>
-<span id="cb51-23"><a href="#cb51-23" aria-hidden="true" tabindex="-1"></a>      <span class="kw">define</span> <span class="kw">at</span> h3                   <span class="co">--h3: R z x</span></span>
-<span id="cb51-24"><a href="#cb51-24" aria-hidden="true" tabindex="-1"></a>      <span class="kw">have</span> h4 : R x y := hsymm y x h2</span>
-<span id="cb51-25"><a href="#cb51-25" aria-hidden="true" tabindex="-1"></a>      <span class="kw">show</span> R z y <span class="kw">from</span> htrans z x y h3 h4</span>
-<span id="cb51-26"><a href="#cb51-26" aria-hidden="true" tabindex="-1"></a>      <span class="kw">done</span></span>
-<span id="cb51-27"><a href="#cb51-27" aria-hidden="true" tabindex="-1"></a>    <span class="kw">done</span></span>
-<span id="cb51-28"><a href="#cb51-28" aria-hidden="true" tabindex="-1"></a>  · <span class="co">-- (←)</span></span>
-<span id="cb51-29"><a href="#cb51-29" aria-hidden="true" tabindex="-1"></a>    <span class="kw">assume</span> h2 : equivClass R y = equivClass R x <span class="co">--Goal: y ∈ equivClass R x</span></span>
-<span id="cb51-30"><a href="#cb51-30" aria-hidden="true" tabindex="-1"></a>    <span class="kw">rewrite</span> [←h2]                  <span class="co">--Goal: y ∈ equivClass R y</span></span>
-<span id="cb51-31"><a href="#cb51-31" aria-hidden="true" tabindex="-1"></a>    <span class="kw">show</span> y ∈ equivClass R y <span class="kw">from</span> Lemma_4_5_5_1 R h y</span>
-<span id="cb51-32"><a href="#cb51-32" aria-hidden="true" tabindex="-1"></a>    <span class="kw">done</span></span>
-<span id="cb51-33"><a href="#cb51-33" aria-hidden="true" tabindex="-1"></a>  <span class="kw">done</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb51-9"><a href="#cb51-9" aria-hidden="true" tabindex="-1"></a>    <span class="kw">assume</span> h2 :</span>
+<span id="cb51-10"><a href="#cb51-10" aria-hidden="true" tabindex="-1"></a>      y ∈ equivClass R x    <span class="co">--Goal : equivClass R y = equivClass R x</span></span>
+<span id="cb51-11"><a href="#cb51-11" aria-hidden="true" tabindex="-1"></a>    <span class="kw">define</span> <span class="kw">at</span> h2                        <span class="co">--h2 : R y x</span></span>
+<span id="cb51-12"><a href="#cb51-12" aria-hidden="true" tabindex="-1"></a>    <span class="kw">apply</span> Set.ext</span>
+<span id="cb51-13"><a href="#cb51-13" aria-hidden="true" tabindex="-1"></a>    <span class="kw">fix</span> z : A</span>
+<span id="cb51-14"><a href="#cb51-14" aria-hidden="true" tabindex="-1"></a>    <span class="kw">apply</span> Iff.intro</span>
+<span id="cb51-15"><a href="#cb51-15" aria-hidden="true" tabindex="-1"></a>    · <span class="co">-- Proof that z ∈ equivClass R y → z ∈ equivClass R x</span></span>
+<span id="cb51-16"><a href="#cb51-16" aria-hidden="true" tabindex="-1"></a>      <span class="kw">assume</span> h3 : z ∈ equivClass R y</span>
+<span id="cb51-17"><a href="#cb51-17" aria-hidden="true" tabindex="-1"></a>      <span class="kw">define</span>                            <span class="co">--Goal : R z x</span></span>
+<span id="cb51-18"><a href="#cb51-18" aria-hidden="true" tabindex="-1"></a>      <span class="kw">define</span> <span class="kw">at</span> h3                      <span class="co">--h3 : R z y</span></span>
+<span id="cb51-19"><a href="#cb51-19" aria-hidden="true" tabindex="-1"></a>      <span class="kw">show</span> R z x <span class="kw">from</span> Rtrans z y x h3 h2</span>
+<span id="cb51-20"><a href="#cb51-20" aria-hidden="true" tabindex="-1"></a>      <span class="kw">done</span></span>
+<span id="cb51-21"><a href="#cb51-21" aria-hidden="true" tabindex="-1"></a>    · <span class="co">-- Proof that z ∈ equivClass R x → z ∈ equivClass R y</span></span>
+<span id="cb51-22"><a href="#cb51-22" aria-hidden="true" tabindex="-1"></a>      <span class="kw">assume</span> h3 : z ∈ equivClass R x</span>
+<span id="cb51-23"><a href="#cb51-23" aria-hidden="true" tabindex="-1"></a>      <span class="kw">define</span>                            <span class="co">--Goal : R z y</span></span>
+<span id="cb51-24"><a href="#cb51-24" aria-hidden="true" tabindex="-1"></a>      <span class="kw">define</span> <span class="kw">at</span> h3                      <span class="co">--h3 : R z x</span></span>
+<span id="cb51-25"><a href="#cb51-25" aria-hidden="true" tabindex="-1"></a>      <span class="kw">have</span> h4 : R x y := Rsymm y x h2</span>
+<span id="cb51-26"><a href="#cb51-26" aria-hidden="true" tabindex="-1"></a>      <span class="kw">show</span> R z y <span class="kw">from</span> Rtrans z x y h3 h4</span>
+<span id="cb51-27"><a href="#cb51-27" aria-hidden="true" tabindex="-1"></a>      <span class="kw">done</span></span>
+<span id="cb51-28"><a href="#cb51-28" aria-hidden="true" tabindex="-1"></a>    <span class="kw">done</span></span>
+<span id="cb51-29"><a href="#cb51-29" aria-hidden="true" tabindex="-1"></a>  · <span class="co">-- (←)</span></span>
+<span id="cb51-30"><a href="#cb51-30" aria-hidden="true" tabindex="-1"></a>    <span class="kw">assume</span> h2 :</span>
+<span id="cb51-31"><a href="#cb51-31" aria-hidden="true" tabindex="-1"></a>      equivClass R y = equivClass R x   <span class="co">--Goal : y ∈ equivClass R x</span></span>
+<span id="cb51-32"><a href="#cb51-32" aria-hidden="true" tabindex="-1"></a>    <span class="kw">rewrite</span> [←h2]                       <span class="co">--Goal : y ∈ equivClass R y</span></span>
+<span id="cb51-33"><a href="#cb51-33" aria-hidden="true" tabindex="-1"></a>    <span class="kw">show</span> y ∈ equivClass R y <span class="kw">from</span> Lemma_4_5_5_1 R h y</span>
+<span id="cb51-34"><a href="#cb51-34" aria-hidden="true" tabindex="-1"></a>    <span class="kw">done</span></span>
+<span id="cb51-35"><a href="#cb51-35" aria-hidden="true" tabindex="-1"></a>  <span class="kw">done</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>The definition of “partition” has three parts, so to prove Theorem 4.5.4 we will have to prove three statements. It will make the proof easier to read if we prove the three statements separately.</p>
 <div class="sourceCode" id="cb52"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb52-1"><a href="#cb52-1" aria-hidden="true" tabindex="-1"></a><span class="kw">lemma</span> Theorem_4_5_4_part_1 {A : <span class="kw">Type</span>} (R : BinRel A) (h : equiv_rel R) :</span>
 <span id="cb52-2"><a href="#cb52-2" aria-hidden="true" tabindex="-1"></a>    ∀ (x : A), x ∈ ⋃₀ (mod A R) := <span class="kw">by</span></span>
 <span id="cb52-3"><a href="#cb52-3" aria-hidden="true" tabindex="-1"></a>  <span class="kw">fix</span> x : A</span>
-<span id="cb52-4"><a href="#cb52-4" aria-hidden="true" tabindex="-1"></a>  <span class="kw">define</span>        <span class="co">--Goal: ∃ (t : Set A), t ∈ mod A R ∧ x ∈ t</span></span>
+<span id="cb52-4"><a href="#cb52-4" aria-hidden="true" tabindex="-1"></a>  <span class="kw">define</span>        <span class="co">--Goal : ∃ (t : Set A), t ∈ mod A R ∧ x ∈ t</span></span>
 <span id="cb52-5"><a href="#cb52-5" aria-hidden="true" tabindex="-1"></a>  <span class="kw">apply</span> Exists.intro (equivClass R x)</span>
 <span id="cb52-6"><a href="#cb52-6" aria-hidden="true" tabindex="-1"></a>  <span class="kw">apply</span> And.intro _ (Lemma_4_5_5_1 R h x)</span>
-<span id="cb52-7"><a href="#cb52-7" aria-hidden="true" tabindex="-1"></a>                <span class="co">--Goal: equivClass R x ∈ mod A R</span></span>
-<span id="cb52-8"><a href="#cb52-8" aria-hidden="true" tabindex="-1"></a>  <span class="kw">define</span>        <span class="co">--Goal: ∃ (x_1 : A), equivClass R x_1 = equivClass R x</span></span>
+<span id="cb52-7"><a href="#cb52-7" aria-hidden="true" tabindex="-1"></a>                <span class="co">--Goal : equivClass R x ∈ mod A R</span></span>
+<span id="cb52-8"><a href="#cb52-8" aria-hidden="true" tabindex="-1"></a>  <span class="kw">define</span>        <span class="co">--Goal : ∃ (x_1 : A), equivClass R x_1 = equivClass R x</span></span>
 <span id="cb52-9"><a href="#cb52-9" aria-hidden="true" tabindex="-1"></a>  <span class="kw">apply</span> Exists.intro x</span>
 <span id="cb52-10"><a href="#cb52-10" aria-hidden="true" tabindex="-1"></a>  <span class="kw">rfl</span></span>
-<span id="cb52-11"><a href="#cb52-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb52-12"><a href="#cb52-12" aria-hidden="true" tabindex="-1"></a><span class="kw">lemma</span> Theorem_4_5_4_part_2 {A : <span class="kw">Type</span>} (R : BinRel A) (h : equiv_rel R) :</span>
-<span id="cb52-13"><a href="#cb52-13" aria-hidden="true" tabindex="-1"></a>    pairwise_disjoint (mod A R) := <span class="kw">by</span></span>
-<span id="cb52-14"><a href="#cb52-14" aria-hidden="true" tabindex="-1"></a>  <span class="kw">define</span></span>
-<span id="cb52-15"><a href="#cb52-15" aria-hidden="true" tabindex="-1"></a>  <span class="kw">fix</span> X : Set A</span>
-<span id="cb52-16"><a href="#cb52-16" aria-hidden="true" tabindex="-1"></a>  <span class="kw">assume</span> h2 : X ∈ mod A R</span>
-<span id="cb52-17"><a href="#cb52-17" aria-hidden="true" tabindex="-1"></a>  <span class="kw">fix</span> Y : Set A</span>
-<span id="cb52-18"><a href="#cb52-18" aria-hidden="true" tabindex="-1"></a>  <span class="kw">assume</span> h3 : Y ∈ mod A R           <span class="co">--Goal: X ≠ Y → empty (X ∩ Y)</span></span>
-<span id="cb52-19"><a href="#cb52-19" aria-hidden="true" tabindex="-1"></a>  <span class="kw">define</span> <span class="kw">at</span> h2; <span class="kw">define</span> <span class="kw">at</span> h3</span>
-<span id="cb52-20"><a href="#cb52-20" aria-hidden="true" tabindex="-1"></a>  <span class="kw">obtain</span> (x : A) (h4 : equivClass R x = X) <span class="kw">from</span> h2</span>
-<span id="cb52-21"><a href="#cb52-21" aria-hidden="true" tabindex="-1"></a>  <span class="kw">obtain</span> (y : A) (h5 : equivClass R y = Y) <span class="kw">from</span> h3</span>
-<span id="cb52-22"><a href="#cb52-22" aria-hidden="true" tabindex="-1"></a>  <span class="kw">contrapos</span></span>
-<span id="cb52-23"><a href="#cb52-23" aria-hidden="true" tabindex="-1"></a>  <span class="kw">assume</span> h6 : ∃ (x : A), x ∈ X ∩ Y  <span class="co">--Goal: X = Y</span></span>
-<span id="cb52-24"><a href="#cb52-24" aria-hidden="true" tabindex="-1"></a>  <span class="kw">obtain</span> (z : A) (h7 : z ∈ X ∩ Y) <span class="kw">from</span> h6</span>
-<span id="cb52-25"><a href="#cb52-25" aria-hidden="true" tabindex="-1"></a>  <span class="kw">define</span> <span class="kw">at</span> h7</span>
-<span id="cb52-26"><a href="#cb52-26" aria-hidden="true" tabindex="-1"></a>  <span class="kw">rewrite</span> [←h4, ←h5] <span class="kw">at</span> h7 <span class="co">--h7: z ∈ equivClass R x ∧ z ∈ equivClass R y</span></span>
-<span id="cb52-27"><a href="#cb52-27" aria-hidden="true" tabindex="-1"></a>  <span class="kw">have</span> h8 : equivClass R z = equivClass R x :=</span>
-<span id="cb52-28"><a href="#cb52-28" aria-hidden="true" tabindex="-1"></a>    (Lemma_4_5_5_2 R h x z).ltr h7.left</span>
-<span id="cb52-29"><a href="#cb52-29" aria-hidden="true" tabindex="-1"></a>  <span class="kw">have</span> h9 : equivClass R z = equivClass R y :=</span>
-<span id="cb52-30"><a href="#cb52-30" aria-hidden="true" tabindex="-1"></a>    (Lemma_4_5_5_2 R h y z).ltr h7.right</span>
-<span id="cb52-31"><a href="#cb52-31" aria-hidden="true" tabindex="-1"></a>  <span class="kw">show</span> X = Y <span class="kw">from</span></span>
-<span id="cb52-32"><a href="#cb52-32" aria-hidden="true" tabindex="-1"></a>    <span class="kw">calc</span> X</span>
-<span id="cb52-33"><a href="#cb52-33" aria-hidden="true" tabindex="-1"></a>        = equivClass R x := h4.symm</span>
-<span id="cb52-34"><a href="#cb52-34" aria-hidden="true" tabindex="-1"></a>      _ = equivClass R z := h8.symm</span>
-<span id="cb52-35"><a href="#cb52-35" aria-hidden="true" tabindex="-1"></a>      _ = equivClass R y := h9</span>
-<span id="cb52-36"><a href="#cb52-36" aria-hidden="true" tabindex="-1"></a>      _ = Y              := h5</span>
-<span id="cb52-37"><a href="#cb52-37" aria-hidden="true" tabindex="-1"></a>  <span class="kw">done</span></span>
-<span id="cb52-38"><a href="#cb52-38" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb52-39"><a href="#cb52-39" aria-hidden="true" tabindex="-1"></a><span class="kw">lemma</span> Theorem_4_5_4_part_3 {A : <span class="kw">Type</span>} (R : BinRel A) (h : equiv_rel R) :</span>
-<span id="cb52-40"><a href="#cb52-40" aria-hidden="true" tabindex="-1"></a>    ∀ X ∈ mod A R, ¬empty X := <span class="kw">by</span></span>
-<span id="cb52-41"><a href="#cb52-41" aria-hidden="true" tabindex="-1"></a>  <span class="kw">fix</span> X : Set A</span>
-<span id="cb52-42"><a href="#cb52-42" aria-hidden="true" tabindex="-1"></a>  <span class="kw">assume</span> h2 : X ∈ mod A R  <span class="co">--Goal: ¬empty X</span></span>
-<span id="cb52-43"><a href="#cb52-43" aria-hidden="true" tabindex="-1"></a>  <span class="kw">define</span>; <span class="kw">double_neg</span>       <span class="co">--Goal: ∃ (x : A), x ∈ X</span></span>
-<span id="cb52-44"><a href="#cb52-44" aria-hidden="true" tabindex="-1"></a>  <span class="kw">define</span> <span class="kw">at</span> h2             <span class="co">--h2: ∃ (x : A), equivClass R x = X</span></span>
-<span id="cb52-45"><a href="#cb52-45" aria-hidden="true" tabindex="-1"></a>  <span class="kw">obtain</span> (x : A) (h3 : equivClass R x = X) <span class="kw">from</span> h2</span>
-<span id="cb52-46"><a href="#cb52-46" aria-hidden="true" tabindex="-1"></a>  <span class="kw">rewrite</span> [←h3]</span>
-<span id="cb52-47"><a href="#cb52-47" aria-hidden="true" tabindex="-1"></a>  <span class="kw">show</span> ∃ (x_1 : A), x_1 ∈ equivClass R x <span class="kw">from</span></span>
-<span id="cb52-48"><a href="#cb52-48" aria-hidden="true" tabindex="-1"></a>    Exists.intro x (Lemma_4_5_5_1 R h x)</span>
-<span id="cb52-49"><a href="#cb52-49" aria-hidden="true" tabindex="-1"></a>  <span class="kw">done</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>Its easy now to put everything together to prove Theorem 4.5.4.</p>
+<span id="cb52-11"><a href="#cb52-11" aria-hidden="true" tabindex="-1"></a>  <span class="kw">done</span></span>
+<span id="cb52-12"><a href="#cb52-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb52-13"><a href="#cb52-13" aria-hidden="true" tabindex="-1"></a><span class="kw">lemma</span> Theorem_4_5_4_part_2 {A : <span class="kw">Type</span>} (R : BinRel A) (h : equiv_rel R) :</span>
+<span id="cb52-14"><a href="#cb52-14" aria-hidden="true" tabindex="-1"></a>    pairwise_disjoint (mod A R) := <span class="kw">by</span></span>
+<span id="cb52-15"><a href="#cb52-15" aria-hidden="true" tabindex="-1"></a>  <span class="kw">define</span></span>
+<span id="cb52-16"><a href="#cb52-16" aria-hidden="true" tabindex="-1"></a>  <span class="kw">fix</span> X : Set A</span>
+<span id="cb52-17"><a href="#cb52-17" aria-hidden="true" tabindex="-1"></a>  <span class="kw">assume</span> h2 : X ∈ mod A R</span>
+<span id="cb52-18"><a href="#cb52-18" aria-hidden="true" tabindex="-1"></a>  <span class="kw">fix</span> Y : Set A</span>
+<span id="cb52-19"><a href="#cb52-19" aria-hidden="true" tabindex="-1"></a>  <span class="kw">assume</span> h3 : Y ∈ mod A R           <span class="co">--Goal : X ≠ Y → empty (X ∩ Y)</span></span>
+<span id="cb52-20"><a href="#cb52-20" aria-hidden="true" tabindex="-1"></a>  <span class="kw">define</span> <span class="kw">at</span> h2; <span class="kw">define</span> <span class="kw">at</span> h3</span>
+<span id="cb52-21"><a href="#cb52-21" aria-hidden="true" tabindex="-1"></a>  <span class="kw">obtain</span> (x : A) (h4 : equivClass R x = X) <span class="kw">from</span> h2</span>
+<span id="cb52-22"><a href="#cb52-22" aria-hidden="true" tabindex="-1"></a>  <span class="kw">obtain</span> (y : A) (h5 : equivClass R y = Y) <span class="kw">from</span> h3</span>
+<span id="cb52-23"><a href="#cb52-23" aria-hidden="true" tabindex="-1"></a>  <span class="kw">contrapos</span></span>
+<span id="cb52-24"><a href="#cb52-24" aria-hidden="true" tabindex="-1"></a>  <span class="kw">assume</span> h6 : ∃ (x : A), x ∈ X ∩ Y  <span class="co">--Goal : X = Y</span></span>
+<span id="cb52-25"><a href="#cb52-25" aria-hidden="true" tabindex="-1"></a>  <span class="kw">obtain</span> (z : A) (h7 : z ∈ X ∩ Y) <span class="kw">from</span> h6</span>
+<span id="cb52-26"><a href="#cb52-26" aria-hidden="true" tabindex="-1"></a>  <span class="kw">define</span> <span class="kw">at</span> h7</span>
+<span id="cb52-27"><a href="#cb52-27" aria-hidden="true" tabindex="-1"></a>  <span class="kw">rewrite</span> [←h4, ←h5] <span class="kw">at</span> h7 <span class="co">--h7 : z ∈ equivClass R x ∧ z ∈ equivClass R y</span></span>
+<span id="cb52-28"><a href="#cb52-28" aria-hidden="true" tabindex="-1"></a>  <span class="kw">have</span> h8 : equivClass R z = equivClass R x :=</span>
+<span id="cb52-29"><a href="#cb52-29" aria-hidden="true" tabindex="-1"></a>    (Lemma_4_5_5_2 R h x z).ltr h7.left</span>
+<span id="cb52-30"><a href="#cb52-30" aria-hidden="true" tabindex="-1"></a>  <span class="kw">have</span> h9 : equivClass R z = equivClass R y :=</span>
+<span id="cb52-31"><a href="#cb52-31" aria-hidden="true" tabindex="-1"></a>    (Lemma_4_5_5_2 R h y z).ltr h7.right</span>
+<span id="cb52-32"><a href="#cb52-32" aria-hidden="true" tabindex="-1"></a>  <span class="kw">show</span> X = Y <span class="kw">from</span></span>
+<span id="cb52-33"><a href="#cb52-33" aria-hidden="true" tabindex="-1"></a>    <span class="kw">calc</span> X</span>
+<span id="cb52-34"><a href="#cb52-34" aria-hidden="true" tabindex="-1"></a>      _ = equivClass R x := h4.symm</span>
+<span id="cb52-35"><a href="#cb52-35" aria-hidden="true" tabindex="-1"></a>      _ = equivClass R z := h8.symm</span>
+<span id="cb52-36"><a href="#cb52-36" aria-hidden="true" tabindex="-1"></a>      _ = equivClass R y := h9</span>
+<span id="cb52-37"><a href="#cb52-37" aria-hidden="true" tabindex="-1"></a>      _ = Y              := h5</span>
+<span id="cb52-38"><a href="#cb52-38" aria-hidden="true" tabindex="-1"></a>  <span class="kw">done</span></span>
+<span id="cb52-39"><a href="#cb52-39" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb52-40"><a href="#cb52-40" aria-hidden="true" tabindex="-1"></a><span class="kw">lemma</span> Theorem_4_5_4_part_3 {A : <span class="kw">Type</span>} (R : BinRel A) (h : equiv_rel R) :</span>
+<span id="cb52-41"><a href="#cb52-41" aria-hidden="true" tabindex="-1"></a>    ∀ X ∈ mod A R, ¬empty X := <span class="kw">by</span></span>
+<span id="cb52-42"><a href="#cb52-42" aria-hidden="true" tabindex="-1"></a>  <span class="kw">fix</span> X : Set A</span>
+<span id="cb52-43"><a href="#cb52-43" aria-hidden="true" tabindex="-1"></a>  <span class="kw">assume</span> h2 : X ∈ mod A R  <span class="co">--Goal : ¬empty X</span></span>
+<span id="cb52-44"><a href="#cb52-44" aria-hidden="true" tabindex="-1"></a>  <span class="kw">define</span>; <span class="kw">double_neg</span>       <span class="co">--Goal : ∃ (x : A), x ∈ X</span></span>
+<span id="cb52-45"><a href="#cb52-45" aria-hidden="true" tabindex="-1"></a>  <span class="kw">define</span> <span class="kw">at</span> h2             <span class="co">--h2 : ∃ (x : A), equivClass R x = X</span></span>
+<span id="cb52-46"><a href="#cb52-46" aria-hidden="true" tabindex="-1"></a>  <span class="kw">obtain</span> (x : A) (h3 : equivClass R x = X) <span class="kw">from</span> h2</span>
+<span id="cb52-47"><a href="#cb52-47" aria-hidden="true" tabindex="-1"></a>  <span class="kw">rewrite</span> [←h3]</span>
+<span id="cb52-48"><a href="#cb52-48" aria-hidden="true" tabindex="-1"></a>  <span class="kw">show</span> ∃ (x_1 : A), x_1 ∈ equivClass R x <span class="kw">from</span></span>
+<span id="cb52-49"><a href="#cb52-49" aria-hidden="true" tabindex="-1"></a>    Exists.intro x (Lemma_4_5_5_1 R h x)</span>
+<span id="cb52-50"><a href="#cb52-50" aria-hidden="true" tabindex="-1"></a>  <span class="kw">done</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>It’s easy now to put everything together to prove Theorem 4.5.4.</p>
 <div class="sourceCode" id="cb53"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb53-1"><a href="#cb53-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Theorem_4_5_4 {A : <span class="kw">Type</span>} (R : BinRel A) (h : equiv_rel R) :</span>
 <span id="cb53-2"><a href="#cb53-2" aria-hidden="true" tabindex="-1"></a>    partition (mod A R) := And.intro (Theorem_4_5_4_part_1 R h)</span>
 <span id="cb53-3"><a href="#cb53-3" aria-hidden="true" tabindex="-1"></a>      (And.intro (Theorem_4_5_4_part_2 R h) (Theorem_4_5_4_part_3 R h))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -896,7 +899,7 @@ A/R = \{[x]_R \mid x \in A\}.
 <span id="cb55-10"><a href="#cb55-10" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb55-11"><a href="#cb55-11" aria-hidden="true" tabindex="-1"></a><span class="kw">lemma</span> Lemma_4_5_7_trans {A : <span class="kw">Type</span>} (F : Set (Set A)) (h : partition F):</span>
 <span id="cb55-12"><a href="#cb55-12" aria-hidden="true" tabindex="-1"></a>    transitive (EqRelFromPart F) := <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>It is now easy to put these pieces together to prove Lemma 4.5.7 in <em>HTPI</em>:</p>
+<p>We can now put these pieces together to prove Lemma 4.5.7 in <em>HTPI</em>:</p>
 <div class="sourceCode" id="cb56"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb56-1"><a href="#cb56-1" aria-hidden="true" tabindex="-1"></a><span class="kw">lemma</span> Lemma_4_5_7 {A : <span class="kw">Type</span>} (F : Set (Set A)) (h : partition F) :</span>
 <span id="cb56-2"><a href="#cb56-2" aria-hidden="true" tabindex="-1"></a>    equiv_rel (EqRelFromPart F) := And.intro (Lemma_4_5_7_ref F h)</span>
 <span id="cb56-3"><a href="#cb56-3" aria-hidden="true" tabindex="-1"></a>      (And.intro (Lemma_4_5_7_symm F h) (Lemma_4_5_7_trans F h))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -910,14 +913,14 @@ A/R = \{[x]_R \mid x \in A\}.
 <div class="sourceCode" id="cb59"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb59-1"><a href="#cb59-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Theorem_4_5_6 {A : <span class="kw">Type</span>} (F : Set (Set A)) (h: partition F) :</span>
 <span id="cb59-2"><a href="#cb59-2" aria-hidden="true" tabindex="-1"></a>    ∃ (R : BinRel A), equiv_rel R ∧ mod A R = F := <span class="kw">by</span></span>
 <span id="cb59-3"><a href="#cb59-3" aria-hidden="true" tabindex="-1"></a>  <span class="kw">let</span> R : BinRel A := EqRelFromPart F</span>
-<span id="cb59-4"><a href="#cb59-4" aria-hidden="true" tabindex="-1"></a>  <span class="kw">apply</span> Exists.intro R              <span class="co">--Goal: equiv_rel R ∧ mod A R = F</span></span>
-<span id="cb59-5"><a href="#cb59-5" aria-hidden="true" tabindex="-1"></a>  <span class="kw">apply</span> And.intro (Lemma_4_5_7 F h) <span class="co">--Goal: mod A R = F</span></span>
+<span id="cb59-4"><a href="#cb59-4" aria-hidden="true" tabindex="-1"></a>  <span class="kw">apply</span> Exists.intro R               <span class="co">--Goal : equiv_rel R ∧ mod A R = F</span></span>
+<span id="cb59-5"><a href="#cb59-5" aria-hidden="true" tabindex="-1"></a>  <span class="kw">apply</span> And.intro (Lemma_4_5_7 F h)  <span class="co">--Goal : mod A R = F</span></span>
 <span id="cb59-6"><a href="#cb59-6" aria-hidden="true" tabindex="-1"></a>  <span class="kw">apply</span> Set.ext</span>
-<span id="cb59-7"><a href="#cb59-7" aria-hidden="true" tabindex="-1"></a>  <span class="kw">fix</span> X : Set A                     <span class="co">--Goal:  X ∈ mod A R ↔ X ∈ F</span></span>
+<span id="cb59-7"><a href="#cb59-7" aria-hidden="true" tabindex="-1"></a>  <span class="kw">fix</span> X : Set A                      <span class="co">--Goal :  X ∈ mod A R ↔ X ∈ F</span></span>
 <span id="cb59-8"><a href="#cb59-8" aria-hidden="true" tabindex="-1"></a>  <span class="kw">apply</span> Iff.intro</span>
 <span id="cb59-9"><a href="#cb59-9" aria-hidden="true" tabindex="-1"></a>  · <span class="co">-- (→)</span></span>
-<span id="cb59-10"><a href="#cb59-10" aria-hidden="true" tabindex="-1"></a>    <span class="kw">assume</span> h2 : X ∈ mod A R           <span class="co">--Goal: X ∈ F</span></span>
-<span id="cb59-11"><a href="#cb59-11" aria-hidden="true" tabindex="-1"></a>    <span class="kw">define</span> <span class="kw">at</span> h2                      <span class="co">--h2: ∃ (x : A), equivClass R x = X</span></span>
+<span id="cb59-10"><a href="#cb59-10" aria-hidden="true" tabindex="-1"></a>    <span class="kw">assume</span> h2 : X ∈ mod A R          <span class="co">--Goal : X ∈ F</span></span>
+<span id="cb59-11"><a href="#cb59-11" aria-hidden="true" tabindex="-1"></a>    <span class="kw">define</span> <span class="kw">at</span> h2                     <span class="co">--h2 : ∃ (x : A), equivClass R x = X</span></span>
 <span id="cb59-12"><a href="#cb59-12" aria-hidden="true" tabindex="-1"></a>    <span class="kw">obtain</span> (x : A) (h3 : equivClass R x = X) <span class="kw">from</span> h2</span>
 <span id="cb59-13"><a href="#cb59-13" aria-hidden="true" tabindex="-1"></a>    <span class="kw">have</span> h4 : x ∈ ⋃₀ F := h.left x</span>
 <span id="cb59-14"><a href="#cb59-14" aria-hidden="true" tabindex="-1"></a>    <span class="kw">define</span> <span class="kw">at</span> h4</span>
@@ -928,11 +931,11 @@ A/R = \{[x]_R \mid x \in A\}.
 <span id="cb59-19"><a href="#cb59-19" aria-hidden="true" tabindex="-1"></a>    <span class="kw">show</span> Y ∈ F <span class="kw">from</span> h5.left</span>
 <span id="cb59-20"><a href="#cb59-20" aria-hidden="true" tabindex="-1"></a>    <span class="kw">done</span></span>
 <span id="cb59-21"><a href="#cb59-21" aria-hidden="true" tabindex="-1"></a>  · <span class="co">-- (←)</span></span>
-<span id="cb59-22"><a href="#cb59-22" aria-hidden="true" tabindex="-1"></a>    <span class="kw">assume</span> h2 : X ∈ F                 <span class="co">--Goal: X ∈ mod A R</span></span>
+<span id="cb59-22"><a href="#cb59-22" aria-hidden="true" tabindex="-1"></a>    <span class="kw">assume</span> h2 : X ∈ F                <span class="co">--Goal : X ∈ mod A R</span></span>
 <span id="cb59-23"><a href="#cb59-23" aria-hidden="true" tabindex="-1"></a>    <span class="kw">have</span> h3 : ¬empty X := h.right.right X h2</span>
-<span id="cb59-24"><a href="#cb59-24" aria-hidden="true" tabindex="-1"></a>    <span class="kw">define</span> <span class="kw">at</span> h3; <span class="kw">double_neg</span> <span class="kw">at</span> h3    <span class="co">--h3: ∃ (x : A), x ∈ X</span></span>
+<span id="cb59-24"><a href="#cb59-24" aria-hidden="true" tabindex="-1"></a>    <span class="kw">define</span> <span class="kw">at</span> h3; <span class="kw">double_neg</span> <span class="kw">at</span> h3   <span class="co">--h3 : ∃ (x : A), x ∈ X</span></span>
 <span id="cb59-25"><a href="#cb59-25" aria-hidden="true" tabindex="-1"></a>    <span class="kw">obtain</span> (x : A) (h4 : x ∈ X) <span class="kw">from</span> h3</span>
-<span id="cb59-26"><a href="#cb59-26" aria-hidden="true" tabindex="-1"></a>    <span class="kw">define</span>                       <span class="co">--Goal: ∃ (x : A), equivClass R x = X</span></span>
+<span id="cb59-26"><a href="#cb59-26" aria-hidden="true" tabindex="-1"></a>    <span class="kw">define</span>                       <span class="co">--Goal : ∃ (x : A), equivClass R x = X</span></span>
 <span id="cb59-27"><a href="#cb59-27" aria-hidden="true" tabindex="-1"></a>    <span class="kw">show</span> ∃ (x : A), equivClass R x = X <span class="kw">from</span></span>
 <span id="cb59-28"><a href="#cb59-28" aria-hidden="true" tabindex="-1"></a>      Exists.intro x (Lemma_4_5_8 F h X h2 x h4)</span>
 <span id="cb59-29"><a href="#cb59-29" aria-hidden="true" tabindex="-1"></a>    <span class="kw">done</span></span>

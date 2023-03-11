@@ -646,9 +646,6 @@ $$
 <span id="cb36-5"><a href="#cb36-5" aria-hidden="true" tabindex="-1"></a>⊢ ¬∃ (x : U), P x</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </div>
-<!-- With pp.funBinderTypes, don't need this comment anymore
-(In the tactic state, why doesn't Lean show the type of the variable `x` after the existential quantifier in the goal?  I don't know.  Sometimes you can leave out the type of a quantified variable and Lean is able to figure it out on its own.  But sometimes Lean is unable to figure out the type if it is not supplied, and you will get an error message if you leave it out.  To avoid confusion, we will always include the type of the quantified variable when we enter a quantified statement into Lean, but you will notice that Lean generally leaves out the type when it displays existentially quantified statements in the tactic state.)
--->
 <p>To use the givens <code>h1</code> and <code>h2</code>, we will probably want to use universal instantiation. But to do that we would need an object of type <code>U</code> to plug in for <code>x</code> in <code>h1</code> and <code>h2</code>, and there is no object of type <code>U</code> in the tactic state. So at this point, we can’t apply universal instantiation to <code>h1</code> and <code>h2</code>. We should watch for an object of type <code>U</code> to come up in the course of the proof, and consider applying universal instantiation if one does. Until then, we turn our attention to the goal.</p>
 <p>The goal is a negative statement, so we begin by reexpressing it as an equivalent positive statement, using a quantifier negation law. The tactic <code>quant_neg</code> applies a quantifier negation law to rewrite the goal. As with the other tactics for applying logical equivalences, you can write <code>quant_neg at h</code> if you want to apply a quantifier negation law to a given <code>h</code>. The effect of the tactic can be summarized as follows:</p>
 <div style="margin: 0% 10%">
@@ -848,7 +845,7 @@ $$
 <div class="inpt">
 <div class="sourceCode" id="cb47"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a><span class="kw">example</span> (U : <span class="kw">Type</span>) (A B C : Set U) (h1 : A ⊆ B ∪ C)</span>
 <span id="cb47-2"><a href="#cb47-2" aria-hidden="true" tabindex="-1"></a>    (h2 : ∀ (x : U), x ∈ A → x ∉ B) : A ⊆ C := <span class="kw">by</span></span>
-<span id="cb47-3"><a href="#cb47-3" aria-hidden="true" tabindex="-1"></a>  <span class="kw">define</span>  <span class="co">--Goal: ∀ ⦃a : U⦄, a ∈ A → a ∈ C</span></span>
+<span id="cb47-3"><a href="#cb47-3" aria-hidden="true" tabindex="-1"></a>  <span class="kw">define</span>  <span class="co">--Goal : ∀ ⦃a : U⦄, a ∈ A → a ∈ C</span></span>
 <span id="cb47-4"><a href="#cb47-4" aria-hidden="true" tabindex="-1"></a>  <span class="sc">**</span><span class="wa">done</span><span class="sc">::</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="outpt">
@@ -866,7 +863,7 @@ $$
 <div class="inpt">
 <div class="sourceCode" id="cb49"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb49-1"><a href="#cb49-1" aria-hidden="true" tabindex="-1"></a><span class="kw">example</span> (U : <span class="kw">Type</span>) (A B C : Set U) (h1 : A ⊆ B ∪ C)</span>
 <span id="cb49-2"><a href="#cb49-2" aria-hidden="true" tabindex="-1"></a>    (h2 : ∀ (x : U), x ∈ A → x ∉ B) : A ⊆ C := <span class="kw">by</span></span>
-<span id="cb49-3"><a href="#cb49-3" aria-hidden="true" tabindex="-1"></a>  <span class="kw">define</span>  <span class="co">--Goal: ∀ ⦃a : U⦄, a ∈ A → a ∈ C</span></span>
+<span id="cb49-3"><a href="#cb49-3" aria-hidden="true" tabindex="-1"></a>  <span class="kw">define</span>  <span class="co">--Goal : ∀ ⦃a : U⦄, a ∈ A → a ∈ C</span></span>
 <span id="cb49-4"><a href="#cb49-4" aria-hidden="true" tabindex="-1"></a>  <span class="kw">fix</span> y : U</span>
 <span id="cb49-5"><a href="#cb49-5" aria-hidden="true" tabindex="-1"></a>  <span class="kw">assume</span> h3 : y ∈ A</span>
 <span id="cb49-6"><a href="#cb49-6" aria-hidden="true" tabindex="-1"></a>  <span class="sc">**</span><span class="wa">done</span><span class="sc">::</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -887,7 +884,7 @@ $$
 <div class="inpt">
 <div class="sourceCode" id="cb51"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb51-1"><a href="#cb51-1" aria-hidden="true" tabindex="-1"></a><span class="kw">example</span> (U : <span class="kw">Type</span>) (A B C : Set U) (h1 : A ⊆ B ∪ C)</span>
 <span id="cb51-2"><a href="#cb51-2" aria-hidden="true" tabindex="-1"></a>    (h2 : ∀ (x : U), x ∈ A → x ∉ B) : A ⊆ C := <span class="kw">by</span></span>
-<span id="cb51-3"><a href="#cb51-3" aria-hidden="true" tabindex="-1"></a>  <span class="kw">define</span>  <span class="co">--Goal: ∀ ⦃a : U⦄, a ∈ A → a ∈ C</span></span>
+<span id="cb51-3"><a href="#cb51-3" aria-hidden="true" tabindex="-1"></a>  <span class="kw">define</span>  <span class="co">--Goal : ∀ ⦃a : U⦄, a ∈ A → a ∈ C</span></span>
 <span id="cb51-4"><a href="#cb51-4" aria-hidden="true" tabindex="-1"></a>  <span class="kw">fix</span> y : U</span>
 <span id="cb51-5"><a href="#cb51-5" aria-hidden="true" tabindex="-1"></a>  <span class="kw">assume</span> h3 : y ∈ A</span>
 <span id="cb51-6"><a href="#cb51-6" aria-hidden="true" tabindex="-1"></a>  <span class="kw">have</span> h4 : y ∉ B := h2 y h3</span>
@@ -910,11 +907,11 @@ $$
 <div class="inpt">
 <div class="sourceCode" id="cb53"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb53-1"><a href="#cb53-1" aria-hidden="true" tabindex="-1"></a><span class="kw">example</span> (U : <span class="kw">Type</span>) (A B C : Set U) (h1 : A ⊆ B ∪ C)</span>
 <span id="cb53-2"><a href="#cb53-2" aria-hidden="true" tabindex="-1"></a>    (h2 : ∀ (x : U), x ∈ A → x ∉ B) : A ⊆ C := <span class="kw">by</span></span>
-<span id="cb53-3"><a href="#cb53-3" aria-hidden="true" tabindex="-1"></a>  <span class="kw">define</span>  <span class="co">--Goal: ∀ ⦃a : U⦄, a ∈ A → a ∈ C</span></span>
+<span id="cb53-3"><a href="#cb53-3" aria-hidden="true" tabindex="-1"></a>  <span class="kw">define</span>  <span class="co">--Goal : ∀ ⦃a : U⦄, a ∈ A → a ∈ C</span></span>
 <span id="cb53-4"><a href="#cb53-4" aria-hidden="true" tabindex="-1"></a>  <span class="kw">fix</span> y : U</span>
 <span id="cb53-5"><a href="#cb53-5" aria-hidden="true" tabindex="-1"></a>  <span class="kw">assume</span> h3 : y ∈ A</span>
 <span id="cb53-6"><a href="#cb53-6" aria-hidden="true" tabindex="-1"></a>  <span class="kw">have</span> h4 : y ∉ B := h2 y h3</span>
-<span id="cb53-7"><a href="#cb53-7" aria-hidden="true" tabindex="-1"></a>  <span class="kw">define</span> <span class="kw">at</span> h1  <span class="co">--h1: ∀ ⦃a : U⦄, a ∈ A → a ∈ B ∪ C</span></span>
+<span id="cb53-7"><a href="#cb53-7" aria-hidden="true" tabindex="-1"></a>  <span class="kw">define</span> <span class="kw">at</span> h1  <span class="co">--h1 : ∀ ⦃a : U⦄, a ∈ A → a ∈ B ∪ C</span></span>
 <span id="cb53-8"><a href="#cb53-8" aria-hidden="true" tabindex="-1"></a>  <span class="sc">**</span><span class="wa">done</span><span class="sc">::</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="outpt">
@@ -936,11 +933,11 @@ $$
 <div class="inpt">
 <div class="sourceCode" id="cb55"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb55-1"><a href="#cb55-1" aria-hidden="true" tabindex="-1"></a><span class="kw">example</span> (U : <span class="kw">Type</span>) (A B C : Set U) (h1 : A ⊆ B ∪ C)</span>
 <span id="cb55-2"><a href="#cb55-2" aria-hidden="true" tabindex="-1"></a>    (h2 : ∀ (x : U), x ∈ A → x ∉ B) : A ⊆ C := <span class="kw">by</span></span>
-<span id="cb55-3"><a href="#cb55-3" aria-hidden="true" tabindex="-1"></a>  <span class="kw">define</span>  <span class="co">--Goal: ∀ ⦃a : U⦄, a ∈ A → a ∈ C</span></span>
+<span id="cb55-3"><a href="#cb55-3" aria-hidden="true" tabindex="-1"></a>  <span class="kw">define</span>  <span class="co">--Goal : ∀ ⦃a : U⦄, a ∈ A → a ∈ C</span></span>
 <span id="cb55-4"><a href="#cb55-4" aria-hidden="true" tabindex="-1"></a>  <span class="kw">fix</span> y : U</span>
 <span id="cb55-5"><a href="#cb55-5" aria-hidden="true" tabindex="-1"></a>  <span class="kw">assume</span> h3 : y ∈ A</span>
 <span id="cb55-6"><a href="#cb55-6" aria-hidden="true" tabindex="-1"></a>  <span class="kw">have</span> h4 : y ∉ B := h2 y h3</span>
-<span id="cb55-7"><a href="#cb55-7" aria-hidden="true" tabindex="-1"></a>  <span class="kw">define</span> <span class="kw">at</span> h1  <span class="co">--h1: ∀ ⦃a : U⦄, a ∈ A → a ∈ B ∪ C</span></span>
+<span id="cb55-7"><a href="#cb55-7" aria-hidden="true" tabindex="-1"></a>  <span class="kw">define</span> <span class="kw">at</span> h1  <span class="co">--h1 : ∀ ⦃a : U⦄, a ∈ A → a ∈ B ∪ C</span></span>
 <span id="cb55-8"><a href="#cb55-8" aria-hidden="true" tabindex="-1"></a>  <span class="kw">have</span> h5 : y ∈ B ∪ C := h1 h3</span>
 <span id="cb55-9"><a href="#cb55-9" aria-hidden="true" tabindex="-1"></a>  <span class="sc">**</span><span class="wa">done</span><span class="sc">::</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
@@ -965,13 +962,13 @@ $$
 <div class="inpt">
 <div class="sourceCode" id="cb57"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb57-1"><a href="#cb57-1" aria-hidden="true" tabindex="-1"></a><span class="kw">example</span> (U : <span class="kw">Type</span>) (A B C : Set U) (h1 : A ⊆ B ∪ C)</span>
 <span id="cb57-2"><a href="#cb57-2" aria-hidden="true" tabindex="-1"></a>    (h2 : ∀ (x : U), x ∈ A → x ∉ B) : A ⊆ C := <span class="kw">by</span></span>
-<span id="cb57-3"><a href="#cb57-3" aria-hidden="true" tabindex="-1"></a>  <span class="kw">define</span>  <span class="co">--Goal: ∀ ⦃a : U⦄, a ∈ A → a ∈ C</span></span>
+<span id="cb57-3"><a href="#cb57-3" aria-hidden="true" tabindex="-1"></a>  <span class="kw">define</span>  <span class="co">--Goal : ∀ ⦃a : U⦄, a ∈ A → a ∈ C</span></span>
 <span id="cb57-4"><a href="#cb57-4" aria-hidden="true" tabindex="-1"></a>  <span class="kw">fix</span> y : U</span>
 <span id="cb57-5"><a href="#cb57-5" aria-hidden="true" tabindex="-1"></a>  <span class="kw">assume</span> h3 : y ∈ A</span>
 <span id="cb57-6"><a href="#cb57-6" aria-hidden="true" tabindex="-1"></a>  <span class="kw">have</span> h4 : y ∉ B := h2 y h3</span>
-<span id="cb57-7"><a href="#cb57-7" aria-hidden="true" tabindex="-1"></a>  <span class="kw">define</span> <span class="kw">at</span> h1  <span class="co">--h1: ∀ ⦃a : U⦄, a ∈ A → a ∈ B ∪ C</span></span>
+<span id="cb57-7"><a href="#cb57-7" aria-hidden="true" tabindex="-1"></a>  <span class="kw">define</span> <span class="kw">at</span> h1  <span class="co">--h1 : ∀ ⦃a : U⦄, a ∈ A → a ∈ B ∪ C</span></span>
 <span id="cb57-8"><a href="#cb57-8" aria-hidden="true" tabindex="-1"></a>  <span class="kw">have</span> h5 : y ∈ B ∪ C := h1 h3</span>
-<span id="cb57-9"><a href="#cb57-9" aria-hidden="true" tabindex="-1"></a>  <span class="kw">define</span> <span class="kw">at</span> h5  <span class="co">--h5: y ∈ B ∨ y ∈ C</span></span>
+<span id="cb57-9"><a href="#cb57-9" aria-hidden="true" tabindex="-1"></a>  <span class="kw">define</span> <span class="kw">at</span> h5  <span class="co">--h5 : y ∈ B ∨ y ∈ C</span></span>
 <span id="cb57-10"><a href="#cb57-10" aria-hidden="true" tabindex="-1"></a>  <span class="sc">**</span><span class="wa">done</span><span class="sc">::</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="outpt">
@@ -993,14 +990,14 @@ $$
 <div class="inpt">
 <div class="sourceCode" id="cb59"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb59-1"><a href="#cb59-1" aria-hidden="true" tabindex="-1"></a><span class="kw">example</span> (U : <span class="kw">Type</span>) (A B C : Set U) (h1 : A ⊆ B ∪ C)</span>
 <span id="cb59-2"><a href="#cb59-2" aria-hidden="true" tabindex="-1"></a>    (h2 : ∀ (x : U), x ∈ A → x ∉ B) : A ⊆ C := <span class="kw">by</span></span>
-<span id="cb59-3"><a href="#cb59-3" aria-hidden="true" tabindex="-1"></a>  <span class="kw">define</span>  <span class="co">--Goal: ∀ ⦃a : U⦄, a ∈ A → a ∈ C</span></span>
+<span id="cb59-3"><a href="#cb59-3" aria-hidden="true" tabindex="-1"></a>  <span class="kw">define</span>  <span class="co">--Goal : ∀ ⦃a : U⦄, a ∈ A → a ∈ C</span></span>
 <span id="cb59-4"><a href="#cb59-4" aria-hidden="true" tabindex="-1"></a>  <span class="kw">fix</span> y : U</span>
 <span id="cb59-5"><a href="#cb59-5" aria-hidden="true" tabindex="-1"></a>  <span class="kw">assume</span> h3 : y ∈ A</span>
 <span id="cb59-6"><a href="#cb59-6" aria-hidden="true" tabindex="-1"></a>  <span class="kw">have</span> h4 : y ∉ B := h2 y h3</span>
-<span id="cb59-7"><a href="#cb59-7" aria-hidden="true" tabindex="-1"></a>  <span class="kw">define</span> <span class="kw">at</span> h1  <span class="co">--h1: ∀ ⦃a : U⦄, a ∈ A → a ∈ B ∪ C</span></span>
+<span id="cb59-7"><a href="#cb59-7" aria-hidden="true" tabindex="-1"></a>  <span class="kw">define</span> <span class="kw">at</span> h1  <span class="co">--h1 : ∀ ⦃a : U⦄, a ∈ A → a ∈ B ∪ C</span></span>
 <span id="cb59-8"><a href="#cb59-8" aria-hidden="true" tabindex="-1"></a>  <span class="kw">have</span> h5 : y ∈ B ∪ C := h1 h3</span>
-<span id="cb59-9"><a href="#cb59-9" aria-hidden="true" tabindex="-1"></a>  <span class="kw">define</span> <span class="kw">at</span> h5  <span class="co">--h5: y ∈ B ∨ y ∈ C</span></span>
-<span id="cb59-10"><a href="#cb59-10" aria-hidden="true" tabindex="-1"></a>  <span class="kw">conditional</span> <span class="kw">at</span> h5  <span class="co">--h5: ¬y ∈ B → y ∈ C</span></span>
+<span id="cb59-9"><a href="#cb59-9" aria-hidden="true" tabindex="-1"></a>  <span class="kw">define</span> <span class="kw">at</span> h5  <span class="co">--h5 : y ∈ B ∨ y ∈ C</span></span>
+<span id="cb59-10"><a href="#cb59-10" aria-hidden="true" tabindex="-1"></a>  <span class="kw">conditional</span> <span class="kw">at</span> h5  <span class="co">--h5 : ¬y ∈ B → y ∈ C</span></span>
 <span id="cb59-11"><a href="#cb59-11" aria-hidden="true" tabindex="-1"></a>  <span class="kw">show</span> y ∈ C <span class="kw">from</span> h5 h4</span>
 <span id="cb59-12"><a href="#cb59-12" aria-hidden="true" tabindex="-1"></a>  <span class="kw">done</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
@@ -1630,7 +1627,7 @@ $$
 <span id="cb109-16"><a href="#cb109-16" aria-hidden="true" tabindex="-1"></a>⊢ ¬x ∈ D</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </div>
-<p>Look carefully at the tactic state. Lean has listed <em>two</em> goals, one after the other, and it has helpfully labeled them “case left” and “case right,” indicating that the first goal is to prove the left side of the conjunction and the second is to prove the right. The given information in both cases is the same, but in the first case the goal is <code>x ∈ B</code>, and in the second it is <code>¬x ∈ D</code>. At this point, if we simply continue with the proof, Lean will interpret out tactics as applying to the first goal, until we achieve that goal. Once we achieve it, Lean will move on to the second goal.</p>
+<p>Look carefully at the tactic state. Lean has listed <em>two</em> goals, one after the other, and it has helpfully labeled them “case left” and “case right,” indicating that the first goal is to prove the left side of the conjunction and the second is to prove the right. The given information in both cases is the same, but in the first case the goal is <code>x ∈ B</code>, and in the second it is <code>¬x ∈ D</code>. At this point, if we simply continue with the proof, Lean will interpret our tactics as applying to the first goal, until we achieve that goal. Once we achieve it, Lean will move on to the second goal.</p>
 <p>However, we can make our proof more readable by separating and labeling the proofs of the two goals. To do this, we type a bullet (which looks like this: <code>·</code>) and then a comment describing the first goal. (To type a bullet, type <code>\.</code>—that is, backslash–period.) The proof of the first goal will appear below this line, indented further and ending with <code>done</code>. To prepare for this, we leave a blank line, type tab to increase the indenting, and then type <code>done</code>. Then we do the same for the second goal: On the next line, we return to the previous level of indenting and type a bullet and a comment describing the second goal. We follow this with a blank line and then an indented <code>done</code> to indicate the end of the proof of the second goal. We’re going to work on the first goal first, so we click on the first blank line to position the cursor there. The screen now looks like this:</p>
 <div class="inout">
 <div class="inpt">
@@ -2048,12 +2045,12 @@ x \in A \cap (B \setmin C) &amp;\text{ iff } x \in A \wedge x \in B \setmin C\\
 <span id="cb137-4"><a href="#cb137-4" aria-hidden="true" tabindex="-1"></a>  <span class="kw">fix</span> x : U</span>
 <span id="cb137-5"><a href="#cb137-5" aria-hidden="true" tabindex="-1"></a>  <span class="kw">show</span> x ∈ A ∩ (B \ C) ↔ x ∈ (A ∩ B) \ C <span class="kw">from</span></span>
 <span id="cb137-6"><a href="#cb137-6" aria-hidden="true" tabindex="-1"></a>    <span class="kw">calc</span> x ∈ A ∩ (B \ C)</span>
-<span id="cb137-7"><a href="#cb137-7" aria-hidden="true" tabindex="-1"></a>        ↔ x ∈ A ∧ (x ∈ B ∧ x ∉ C) := Iff.refl _</span>
+<span id="cb137-7"><a href="#cb137-7" aria-hidden="true" tabindex="-1"></a>      _ ↔ x ∈ A ∧ (x ∈ B ∧ x ∉ C) := Iff.refl _</span>
 <span id="cb137-8"><a href="#cb137-8" aria-hidden="true" tabindex="-1"></a>      _ ↔ (x ∈ A ∧ x ∈ B) ∧ x ∉ C := and_assoc.symm</span>
 <span id="cb137-9"><a href="#cb137-9" aria-hidden="true" tabindex="-1"></a>      _ ↔ x ∈ (A ∩ B) \ C := Iff.refl _</span>
 <span id="cb137-10"><a href="#cb137-10" aria-hidden="true" tabindex="-1"></a>  <span class="kw">done</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>The name of the axiom of extensionality in Lean is <code>Set.ext</code>, and it is applied in the first step of the Lean proof. As usual, the <code>apply</code> tactic works backwards from the goal. In other words, after the first line of the proof, the goal is <code>∀ (x : U), x ∈ A ∩ (B \ C) ↔︎ x ∈ (A ∩ B) \ C</code>, because by <code>Set.ext</code>, the conclusion of the theorem would follow from this statement. The rest of the proof then proves this goal by introducing an arbitrary <code>x</code> of type <code>U</code> and then proving the biconditional by stringing together several equivalences, exactly as in the <em>HTPI</em> proof.</p>
-<p>The proof of the biconditional is called a <em>calculational proof</em>, and it is introduced by the keyword <code>calc</code>. The calculational proof consists of a string of biconditional statements, each of which is provided with a proof. You can think of the underscore on the left side of each biconditional after the first as standing for the right side of the previous biconditional.</p>
+<p>The proof of the biconditional is called a <em>calculational proof</em>, and it is introduced by the keyword <code>calc</code>. The calculational proof consists of a string of biconditional statements, each of which is provided with a proof. You can think of the underscore on the left side of each biconditional as standing for the right side of the previous biconditional (or, in the case of the first biconditional, the statement after <code>calc</code>).</p>
 <p>The proofs of the individual biconditionals in the calculational proof require some explanation. Lean has a large library of theorems that it knows, and you can use those theorems in your proofs. In particular, <code>Iff.refl</code> and <code>and_assoc</code> are names of theorems in Lean’s library. You can find out what any theorem says by using the Lean command <code>#check</code>. (Commands that ask Lean for a response generally start with the character <code>#</code>.) If you type <code>#check Iff.refl</code> in a Lean file, you will see Lean’s response in the Infoview pane: <code>Iff.refl (a : Prop) : a ↔︎ a</code>. What this tells us is that Lean already knows the theorem</p>
 <div class="sourceCode" id="cb138"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb138-1"><a href="#cb138-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Iff.refl (a : <span class="kw">Prop</span>) : a ↔ a</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>(This theorem says that “iff” has a property called <em>reflexivity</em>; we’ll discuss reflexivity in Chapter 4.) When variables are declared in the statement of a theorem, it is understood that they can stand for anything of the appropriate type (see Section 3.1 of <em>HTPI</em>). Thus, the theorem <code>Iff.refl</code> can be thought of as establishing the truth of the statement <code>∀ (a : Prop), a ↔︎ a</code>. In fact, you can get Lean to report the meaning of the theorem in this form with the command <code>#check @Iff.refl</code>. What this means is that, in any proof, Lean let’s you treat <code>Iff.refl</code> as a proof of the statement <code>∀ (a : Prop), a ↔︎ a</code>. Thus, by universal instantiation, for any proposition <code>a</code>, Lean will recognize <code>Iff.refl a</code> as a proof of <code>a ↔︎ a</code>. This is used to justify the first biconditional in the calculational proof.</p>
@@ -2219,7 +2216,7 @@ x \in A \cap (B \setmin C) &amp;\text{ iff } x \in A \wedge x \in B \setmin C\\
 <span id="cb158-6"><a href="#cb158-6" aria-hidden="true" tabindex="-1"></a>  <span class="kw">define</span>; <span class="kw">define</span> <span class="kw">at</span> h1</span>
 <span id="cb158-7"><a href="#cb158-7" aria-hidden="true" tabindex="-1"></a>  <span class="kw">have</span> h2 : ¬x ∈ B \ C := h1.right</span>
 <span id="cb158-8"><a href="#cb158-8" aria-hidden="true" tabindex="-1"></a>  <span class="kw">define</span> <span class="kw">at</span> h2; <span class="kw">demorgan</span> <span class="kw">at</span> h2</span>
-<span id="cb158-9"><a href="#cb158-9" aria-hidden="true" tabindex="-1"></a>            <span class="co">--h2: ¬x ∈ B ∨ x ∈ C</span></span>
+<span id="cb158-9"><a href="#cb158-9" aria-hidden="true" tabindex="-1"></a>            <span class="co">--h2 : ¬x ∈ B ∨ x ∈ C</span></span>
 <span id="cb158-10"><a href="#cb158-10" aria-hidden="true" tabindex="-1"></a>  <span class="sc">**</span><span class="wa">done</span><span class="sc">::</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="outpt">
@@ -2242,7 +2239,7 @@ x \in A \cap (B \setmin C) &amp;\text{ iff } x \in A \wedge x \in B \setmin C\\
 <span id="cb160-6"><a href="#cb160-6" aria-hidden="true" tabindex="-1"></a>  <span class="kw">define</span>; <span class="kw">define</span> <span class="kw">at</span> h1</span>
 <span id="cb160-7"><a href="#cb160-7" aria-hidden="true" tabindex="-1"></a>  <span class="kw">have</span> h2 : ¬x ∈ B \ C := h1.right</span>
 <span id="cb160-8"><a href="#cb160-8" aria-hidden="true" tabindex="-1"></a>  <span class="kw">define</span> <span class="kw">at</span> h2; <span class="kw">demorgan</span> <span class="kw">at</span> h2</span>
-<span id="cb160-9"><a href="#cb160-9" aria-hidden="true" tabindex="-1"></a>            <span class="co">--h2: ¬x ∈ B ∨ x ∈ C</span></span>
+<span id="cb160-9"><a href="#cb160-9" aria-hidden="true" tabindex="-1"></a>            <span class="co">--h2 : ¬x ∈ B ∨ x ∈ C</span></span>
 <span id="cb160-10"><a href="#cb160-10" aria-hidden="true" tabindex="-1"></a>  <span class="kw">by_cases</span> <span class="kw">on</span> h2</span>
 <span id="cb160-11"><a href="#cb160-11" aria-hidden="true" tabindex="-1"></a>  <span class="sc">**</span><span class="wa">done</span><span class="sc">::</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
@@ -2274,12 +2271,12 @@ x \in A \cap (B \setmin C) &amp;\text{ iff } x \in A \wedge x \in B \setmin C\\
 <span id="cb162-6"><a href="#cb162-6" aria-hidden="true" tabindex="-1"></a>  <span class="kw">define</span>; <span class="kw">define</span> <span class="kw">at</span> h1</span>
 <span id="cb162-7"><a href="#cb162-7" aria-hidden="true" tabindex="-1"></a>  <span class="kw">have</span> h2 : ¬x ∈ B \ C := h1.right</span>
 <span id="cb162-8"><a href="#cb162-8" aria-hidden="true" tabindex="-1"></a>  <span class="kw">define</span> <span class="kw">at</span> h2; <span class="kw">demorgan</span> <span class="kw">at</span> h2</span>
-<span id="cb162-9"><a href="#cb162-9" aria-hidden="true" tabindex="-1"></a>            <span class="co">--h2: ¬x ∈ B ∨ x ∈ C</span></span>
+<span id="cb162-9"><a href="#cb162-9" aria-hidden="true" tabindex="-1"></a>            <span class="co">--h2 : ¬x ∈ B ∨ x ∈ C</span></span>
 <span id="cb162-10"><a href="#cb162-10" aria-hidden="true" tabindex="-1"></a>  <span class="kw">by_cases</span> <span class="kw">on</span> h2</span>
-<span id="cb162-11"><a href="#cb162-11" aria-hidden="true" tabindex="-1"></a>  · <span class="co">-- Case 1. h2: ¬x ∈ B</span></span>
+<span id="cb162-11"><a href="#cb162-11" aria-hidden="true" tabindex="-1"></a>  · <span class="co">-- Case 1. h2 : ¬x ∈ B</span></span>
 <span id="cb162-12"><a href="#cb162-12" aria-hidden="true" tabindex="-1"></a>    <span class="kw">apply</span> Or.inl</span>
 <span id="cb162-13"><a href="#cb162-13" aria-hidden="true" tabindex="-1"></a>    <span class="sc">**</span><span class="wa">done</span><span class="sc">::</span></span>
-<span id="cb162-14"><a href="#cb162-14" aria-hidden="true" tabindex="-1"></a>  · <span class="co">-- Case 2. h2: x ∈ C</span></span>
+<span id="cb162-14"><a href="#cb162-14" aria-hidden="true" tabindex="-1"></a>  · <span class="co">-- Case 2. h2 : x ∈ C</span></span>
 <span id="cb162-15"><a href="#cb162-15" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb162-16"><a href="#cb162-16" aria-hidden="true" tabindex="-1"></a>    <span class="sc">**</span><span class="wa">done</span><span class="sc">::</span></span>
 <span id="cb162-17"><a href="#cb162-17" aria-hidden="true" tabindex="-1"></a>  <span class="kw">done</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -2305,13 +2302,13 @@ x \in A \cap (B \setmin C) &amp;\text{ iff } x \in A \wedge x \in B \setmin C\\
 <span id="cb164-6"><a href="#cb164-6" aria-hidden="true" tabindex="-1"></a>  <span class="kw">define</span>; <span class="kw">define</span> <span class="kw">at</span> h1</span>
 <span id="cb164-7"><a href="#cb164-7" aria-hidden="true" tabindex="-1"></a>  <span class="kw">have</span> h2 : ¬x ∈ B \ C := h1.right</span>
 <span id="cb164-8"><a href="#cb164-8" aria-hidden="true" tabindex="-1"></a>  <span class="kw">define</span> <span class="kw">at</span> h2; <span class="kw">demorgan</span> <span class="kw">at</span> h2</span>
-<span id="cb164-9"><a href="#cb164-9" aria-hidden="true" tabindex="-1"></a>            <span class="co">--h2: ¬x ∈ B ∨ x ∈ C</span></span>
+<span id="cb164-9"><a href="#cb164-9" aria-hidden="true" tabindex="-1"></a>            <span class="co">--h2 : ¬x ∈ B ∨ x ∈ C</span></span>
 <span id="cb164-10"><a href="#cb164-10" aria-hidden="true" tabindex="-1"></a>  <span class="kw">by_cases</span> <span class="kw">on</span> h2</span>
-<span id="cb164-11"><a href="#cb164-11" aria-hidden="true" tabindex="-1"></a>  · <span class="co">-- Case 1. h2: ¬x ∈ B</span></span>
+<span id="cb164-11"><a href="#cb164-11" aria-hidden="true" tabindex="-1"></a>  · <span class="co">-- Case 1. h2 : ¬x ∈ B</span></span>
 <span id="cb164-12"><a href="#cb164-12" aria-hidden="true" tabindex="-1"></a>    <span class="kw">apply</span> Or.inl</span>
 <span id="cb164-13"><a href="#cb164-13" aria-hidden="true" tabindex="-1"></a>    <span class="kw">show</span> x ∈ A \ B <span class="kw">from</span> And.intro h1.left h2</span>
 <span id="cb164-14"><a href="#cb164-14" aria-hidden="true" tabindex="-1"></a>    <span class="kw">done</span></span>
-<span id="cb164-15"><a href="#cb164-15" aria-hidden="true" tabindex="-1"></a>  · <span class="co">-- Case 2. h2: x ∈ C</span></span>
+<span id="cb164-15"><a href="#cb164-15" aria-hidden="true" tabindex="-1"></a>  · <span class="co">-- Case 2. h2 : x ∈ C</span></span>
 <span id="cb164-16"><a href="#cb164-16" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb164-17"><a href="#cb164-17" aria-hidden="true" tabindex="-1"></a>    <span class="sc">**</span><span class="wa">done</span><span class="sc">::</span></span>
 <span id="cb164-18"><a href="#cb164-18" aria-hidden="true" tabindex="-1"></a>  <span class="kw">done</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -2337,13 +2334,13 @@ x \in A \cap (B \setmin C) &amp;\text{ iff } x \in A \wedge x \in B \setmin C\\
 <span id="cb166-6"><a href="#cb166-6" aria-hidden="true" tabindex="-1"></a>  <span class="kw">define</span>; <span class="kw">define</span> <span class="kw">at</span> h1</span>
 <span id="cb166-7"><a href="#cb166-7" aria-hidden="true" tabindex="-1"></a>  <span class="kw">have</span> h2 : ¬x ∈ B \ C := h1.right</span>
 <span id="cb166-8"><a href="#cb166-8" aria-hidden="true" tabindex="-1"></a>  <span class="kw">define</span> <span class="kw">at</span> h2; <span class="kw">demorgan</span> <span class="kw">at</span> h2</span>
-<span id="cb166-9"><a href="#cb166-9" aria-hidden="true" tabindex="-1"></a>            <span class="co">--h2: ¬x ∈ B ∨ x ∈ C</span></span>
+<span id="cb166-9"><a href="#cb166-9" aria-hidden="true" tabindex="-1"></a>            <span class="co">--h2 : ¬x ∈ B ∨ x ∈ C</span></span>
 <span id="cb166-10"><a href="#cb166-10" aria-hidden="true" tabindex="-1"></a>  <span class="kw">by_cases</span> <span class="kw">on</span> h2</span>
-<span id="cb166-11"><a href="#cb166-11" aria-hidden="true" tabindex="-1"></a>  · <span class="co">-- Case 1. h2: ¬x ∈ B</span></span>
+<span id="cb166-11"><a href="#cb166-11" aria-hidden="true" tabindex="-1"></a>  · <span class="co">-- Case 1. h2 : ¬x ∈ B</span></span>
 <span id="cb166-12"><a href="#cb166-12" aria-hidden="true" tabindex="-1"></a>    <span class="kw">apply</span> Or.inl</span>
 <span id="cb166-13"><a href="#cb166-13" aria-hidden="true" tabindex="-1"></a>    <span class="kw">show</span> x ∈ A \ B <span class="kw">from</span> And.intro h1.left h2</span>
 <span id="cb166-14"><a href="#cb166-14" aria-hidden="true" tabindex="-1"></a>    <span class="kw">done</span></span>
-<span id="cb166-15"><a href="#cb166-15" aria-hidden="true" tabindex="-1"></a>  · <span class="co">-- Case 2. h2: x ∈ C</span></span>
+<span id="cb166-15"><a href="#cb166-15" aria-hidden="true" tabindex="-1"></a>  · <span class="co">-- Case 2. h2 : x ∈ C</span></span>
 <span id="cb166-16"><a href="#cb166-16" aria-hidden="true" tabindex="-1"></a>    <span class="kw">apply</span> Or.inr</span>
 <span id="cb166-17"><a href="#cb166-17" aria-hidden="true" tabindex="-1"></a>    <span class="kw">show</span> x ∈ C <span class="kw">from</span> h2</span>
 <span id="cb166-18"><a href="#cb166-18" aria-hidden="true" tabindex="-1"></a>    <span class="kw">done</span></span>
@@ -2532,8 +2529,8 @@ x \in A \cap (B \setmin C) &amp;\text{ iff } x \in A \wedge x \in B \setmin C\\
 <span id="cb184-8"><a href="#cb184-8" aria-hidden="true" tabindex="-1"></a>  <span class="kw">have</span> h5 : a ∉ A ∩ B := h2 a</span>
 <span id="cb184-9"><a href="#cb184-9" aria-hidden="true" tabindex="-1"></a>  <span class="kw">define</span> <span class="kw">at</span> h4</span>
 <span id="cb184-10"><a href="#cb184-10" aria-hidden="true" tabindex="-1"></a>  <span class="kw">define</span> <span class="kw">at</span> h5; <span class="kw">demorgan</span> <span class="kw">at</span> h5</span>
-<span id="cb184-11"><a href="#cb184-11" aria-hidden="true" tabindex="-1"></a>  <span class="kw">disj_syll</span> h5 h3  <span class="co">--h5: ¬a ∈ B</span></span>
-<span id="cb184-12"><a href="#cb184-12" aria-hidden="true" tabindex="-1"></a>  <span class="kw">disj_syll</span> h4 h5  <span class="co">--h4: a ∈ C</span></span>
+<span id="cb184-11"><a href="#cb184-11" aria-hidden="true" tabindex="-1"></a>  <span class="kw">disj_syll</span> h5 h3  <span class="co">--h5 : ¬a ∈ B</span></span>
+<span id="cb184-12"><a href="#cb184-12" aria-hidden="true" tabindex="-1"></a>  <span class="kw">disj_syll</span> h4 h5  <span class="co">--h4 : a ∈ C</span></span>
 <span id="cb184-13"><a href="#cb184-13" aria-hidden="true" tabindex="-1"></a>  <span class="kw">show</span> a ∈ C <span class="kw">from</span> h4</span>
 <span id="cb184-14"><a href="#cb184-14" aria-hidden="true" tabindex="-1"></a>  <span class="kw">done</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
@@ -2576,7 +2573,7 @@ x \in A \cap (B \setmin C) &amp;\text{ iff } x \in A \wedge x \in B \setmin C\\
 <span id="cb188-6"><a href="#cb188-6" aria-hidden="true" tabindex="-1"></a>  <span class="kw">have</span> h4 : a ∈ B ∪ C := h1 h3</span>
 <span id="cb188-7"><a href="#cb188-7" aria-hidden="true" tabindex="-1"></a>  <span class="kw">define</span> <span class="kw">at</span> h4</span>
 <span id="cb188-8"><a href="#cb188-8" aria-hidden="true" tabindex="-1"></a>  <span class="kw">have</span> h5 : a ∉ B := <span class="cn">sorry</span></span>
-<span id="cb188-9"><a href="#cb188-9" aria-hidden="true" tabindex="-1"></a>  <span class="kw">disj_syll</span> h4 h5  <span class="co">--h4: a ∈ C</span></span>
+<span id="cb188-9"><a href="#cb188-9" aria-hidden="true" tabindex="-1"></a>  <span class="kw">disj_syll</span> h4 h5  <span class="co">--h4 : a ∈ C</span></span>
 <span id="cb188-10"><a href="#cb188-10" aria-hidden="true" tabindex="-1"></a>  <span class="kw">show</span> a ∈ C <span class="kw">from</span> h4</span>
 <span id="cb188-11"><a href="#cb188-11" aria-hidden="true" tabindex="-1"></a>  <span class="kw">done</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
@@ -2599,7 +2596,7 @@ x \in A \cap (B \setmin C) &amp;\text{ iff } x \in A \wedge x \in B \setmin C\\
 <span id="cb190-8"><a href="#cb190-8" aria-hidden="true" tabindex="-1"></a>  <span class="kw">have</span> h5 : a ∉ B := <span class="kw">by</span></span>
 <span id="cb190-9"><a href="#cb190-9" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb190-10"><a href="#cb190-10" aria-hidden="true" tabindex="-1"></a>    <span class="sc">**</span><span class="wa">done</span><span class="sc">::</span></span>
-<span id="cb190-11"><a href="#cb190-11" aria-hidden="true" tabindex="-1"></a>  <span class="kw">disj_syll</span> h4 h5  <span class="co">--h4: a ∈ C</span></span>
+<span id="cb190-11"><a href="#cb190-11" aria-hidden="true" tabindex="-1"></a>  <span class="kw">disj_syll</span> h4 h5  <span class="co">--h4 : a ∈ C</span></span>
 <span id="cb190-12"><a href="#cb190-12" aria-hidden="true" tabindex="-1"></a>  <span class="kw">show</span> a ∈ C <span class="kw">from</span> h4</span>
 <span id="cb190-13"><a href="#cb190-13" aria-hidden="true" tabindex="-1"></a>  <span class="kw">done</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
@@ -2628,7 +2625,7 @@ x \in A \cap (B \setmin C) &amp;\text{ iff } x \in A \wedge x \in B \setmin C\\
 <span id="cb192-8"><a href="#cb192-8" aria-hidden="true" tabindex="-1"></a>  <span class="kw">have</span> h5 : a ∉ B := <span class="kw">by</span></span>
 <span id="cb192-9"><a href="#cb192-9" aria-hidden="true" tabindex="-1"></a>    <span class="kw">contradict</span> h2 <span class="kw">with</span> h6</span>
 <span id="cb192-10"><a href="#cb192-10" aria-hidden="true" tabindex="-1"></a>    <span class="sc">**</span><span class="wa">done</span><span class="sc">::</span></span>
-<span id="cb192-11"><a href="#cb192-11" aria-hidden="true" tabindex="-1"></a>  <span class="kw">disj_syll</span> h4 h5  <span class="co">--h4: a ∈ C</span></span>
+<span id="cb192-11"><a href="#cb192-11" aria-hidden="true" tabindex="-1"></a>  <span class="kw">disj_syll</span> h4 h5  <span class="co">--h4 : a ∈ C</span></span>
 <span id="cb192-12"><a href="#cb192-12" aria-hidden="true" tabindex="-1"></a>  <span class="kw">show</span> a ∈ C <span class="kw">from</span> h4</span>
 <span id="cb192-13"><a href="#cb192-13" aria-hidden="true" tabindex="-1"></a>  <span class="kw">done</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
@@ -2660,7 +2657,7 @@ x \in A \cap (B \setmin C) &amp;\text{ iff } x \in A \wedge x \in B \setmin C\\
 <span id="cb194-10"><a href="#cb194-10" aria-hidden="true" tabindex="-1"></a>    <span class="kw">show</span> ∃ (x : U), x ∈ A ∩ B <span class="kw">from</span></span>
 <span id="cb194-11"><a href="#cb194-11" aria-hidden="true" tabindex="-1"></a>      Exists.intro a (And.intro h3 h6)</span>
 <span id="cb194-12"><a href="#cb194-12" aria-hidden="true" tabindex="-1"></a>    <span class="kw">done</span></span>
-<span id="cb194-13"><a href="#cb194-13" aria-hidden="true" tabindex="-1"></a>  <span class="kw">disj_syll</span> h4 h5  <span class="co">--h4: a ∈ C</span></span>
+<span id="cb194-13"><a href="#cb194-13" aria-hidden="true" tabindex="-1"></a>  <span class="kw">disj_syll</span> h4 h5  <span class="co">--h4 : a ∈ C</span></span>
 <span id="cb194-14"><a href="#cb194-14" aria-hidden="true" tabindex="-1"></a>  <span class="kw">show</span> a ∈ C <span class="kw">from</span> h4</span>
 <span id="cb194-15"><a href="#cb194-15" aria-hidden="true" tabindex="-1"></a>  <span class="kw">done</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
@@ -2694,7 +2691,7 @@ x \in A \cap (B \setmin C) &amp;\text{ iff } x \in A \wedge x \in B \setmin C\\
 <div class="numex" data-arguments="5">
 <div class="sourceCode" id="cb200"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb200-1"><a href="#cb200-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Exercise_3_5_17b (U : <span class="kw">Type</span>) (F : Set (Set U)) (B : Set U) :</span>
 <span id="cb200-2"><a href="#cb200-2" aria-hidden="true" tabindex="-1"></a>    B ∪ (⋂₀ F) =</span>
-<span id="cb200-3"><a href="#cb200-3" aria-hidden="true" tabindex="-1"></a>      ⋂₀ { X : Set U | ∃ (A : Set U), A ∈ F ∧ X = B ∪ A} := <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb200-3"><a href="#cb200-3" aria-hidden="true" tabindex="-1"></a>      ⋂₀ { X : Set U | ∃ (A : Set U), A ∈ F ∧ X = B ∪ A } := <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="numex" data-arguments="6">
 <div class="sourceCode" id="cb201"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb201-1"><a href="#cb201-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Exercise_3_5_18 (U : <span class="kw">Type</span>) (F G H : Set (Set U))</span>
@@ -2862,7 +2859,7 @@ x \in A \cap (B \setmin C) &amp;\text{ iff } x \in A \wedge x \in B \setmin C\\
 <span id="cb213-8"><a href="#cb213-8" aria-hidden="true" tabindex="-1"></a>    <span class="kw">define</span> <span class="kw">at</span> h1</span>
 <span id="cb213-9"><a href="#cb213-9" aria-hidden="true" tabindex="-1"></a>    <span class="kw">have</span> h2 : x ∉ ∅ := <span class="kw">by</span></span>
 <span id="cb213-10"><a href="#cb213-10" aria-hidden="true" tabindex="-1"></a>      <span class="kw">by_contra</span> h3</span>
-<span id="cb213-11"><a href="#cb213-11" aria-hidden="true" tabindex="-1"></a>      <span class="kw">define</span> <span class="kw">at</span> h3  <span class="co">--h3: False</span></span>
+<span id="cb213-11"><a href="#cb213-11" aria-hidden="true" tabindex="-1"></a>      <span class="kw">define</span> <span class="kw">at</span> h3  <span class="co">--h3 : False</span></span>
 <span id="cb213-12"><a href="#cb213-12" aria-hidden="true" tabindex="-1"></a>      <span class="kw">show</span> False <span class="kw">from</span> h3</span>
 <span id="cb213-13"><a href="#cb213-13" aria-hidden="true" tabindex="-1"></a>      <span class="kw">done</span></span>
 <span id="cb213-14"><a href="#cb213-14" aria-hidden="true" tabindex="-1"></a>    <span class="sc">**</span><span class="wa">done</span><span class="sc">::</span></span>
@@ -2894,10 +2891,10 @@ x \in A \cap (B \setmin C) &amp;\text{ iff } x \in A \wedge x \in B \setmin C\\
 <span id="cb215-8"><a href="#cb215-8" aria-hidden="true" tabindex="-1"></a>    <span class="kw">define</span> <span class="kw">at</span> h1</span>
 <span id="cb215-9"><a href="#cb215-9" aria-hidden="true" tabindex="-1"></a>    <span class="kw">have</span> h2 : x ∉ ∅ := <span class="kw">by</span></span>
 <span id="cb215-10"><a href="#cb215-10" aria-hidden="true" tabindex="-1"></a>      <span class="kw">by_contra</span> h3</span>
-<span id="cb215-11"><a href="#cb215-11" aria-hidden="true" tabindex="-1"></a>      <span class="kw">define</span> <span class="kw">at</span> h3  <span class="co">--h3: False</span></span>
+<span id="cb215-11"><a href="#cb215-11" aria-hidden="true" tabindex="-1"></a>      <span class="kw">define</span> <span class="kw">at</span> h3  <span class="co">--h3 : False</span></span>
 <span id="cb215-12"><a href="#cb215-12" aria-hidden="true" tabindex="-1"></a>      <span class="kw">show</span> False <span class="kw">from</span> h3</span>
 <span id="cb215-13"><a href="#cb215-13" aria-hidden="true" tabindex="-1"></a>      <span class="kw">done</span></span>
-<span id="cb215-14"><a href="#cb215-14" aria-hidden="true" tabindex="-1"></a>    <span class="kw">disj_syll</span> h1 h2  <span class="co">--h1: x ∈ B</span></span>
+<span id="cb215-14"><a href="#cb215-14" aria-hidden="true" tabindex="-1"></a>    <span class="kw">disj_syll</span> h1 h2  <span class="co">--h1 : x ∈ B</span></span>
 <span id="cb215-15"><a href="#cb215-15" aria-hidden="true" tabindex="-1"></a>    <span class="kw">show</span> x ∈ B <span class="kw">from</span> h1</span>
 <span id="cb215-16"><a href="#cb215-16" aria-hidden="true" tabindex="-1"></a>    <span class="kw">done</span></span>
 <span id="cb215-17"><a href="#cb215-17" aria-hidden="true" tabindex="-1"></a>  · <span class="co">-- (←)</span></span>
@@ -2926,10 +2923,10 @@ x \in A \cap (B \setmin C) &amp;\text{ iff } x \in A \wedge x \in B \setmin C\\
 <span id="cb217-8"><a href="#cb217-8" aria-hidden="true" tabindex="-1"></a>    <span class="kw">define</span> <span class="kw">at</span> h1</span>
 <span id="cb217-9"><a href="#cb217-9" aria-hidden="true" tabindex="-1"></a>    <span class="kw">have</span> h2 : x ∉ ∅ := <span class="kw">by</span></span>
 <span id="cb217-10"><a href="#cb217-10" aria-hidden="true" tabindex="-1"></a>      <span class="kw">by_contra</span> h3</span>
-<span id="cb217-11"><a href="#cb217-11" aria-hidden="true" tabindex="-1"></a>      <span class="kw">define</span> <span class="kw">at</span> h3  <span class="co">--h3: False</span></span>
+<span id="cb217-11"><a href="#cb217-11" aria-hidden="true" tabindex="-1"></a>      <span class="kw">define</span> <span class="kw">at</span> h3  <span class="co">--h3 : False</span></span>
 <span id="cb217-12"><a href="#cb217-12" aria-hidden="true" tabindex="-1"></a>      <span class="kw">show</span> False <span class="kw">from</span> h3</span>
 <span id="cb217-13"><a href="#cb217-13" aria-hidden="true" tabindex="-1"></a>      <span class="kw">done</span></span>
-<span id="cb217-14"><a href="#cb217-14" aria-hidden="true" tabindex="-1"></a>    <span class="kw">disj_syll</span> h1 h2  <span class="co">--h1: x ∈ B</span></span>
+<span id="cb217-14"><a href="#cb217-14" aria-hidden="true" tabindex="-1"></a>    <span class="kw">disj_syll</span> h1 h2  <span class="co">--h1 : x ∈ B</span></span>
 <span id="cb217-15"><a href="#cb217-15" aria-hidden="true" tabindex="-1"></a>    <span class="kw">show</span> x ∈ B <span class="kw">from</span> h1</span>
 <span id="cb217-16"><a href="#cb217-16" aria-hidden="true" tabindex="-1"></a>    <span class="kw">done</span></span>
 <span id="cb217-17"><a href="#cb217-17" aria-hidden="true" tabindex="-1"></a>  · <span class="co">-- (←)</span></span>
@@ -3187,7 +3184,7 @@ x \in A \cap (B \setmin C) &amp;\text{ iff } x \in A \wedge x \in B \setmin C\\
 <span id="cb240-14"><a href="#cb240-14" aria-hidden="true" tabindex="-1"></a>    <span class="kw">have</span> h4 : D ∪ C = C := h2 C </span>
 <span id="cb240-15"><a href="#cb240-15" aria-hidden="true" tabindex="-1"></a>    <span class="kw">show</span> C = D <span class="kw">from</span></span>
 <span id="cb240-16"><a href="#cb240-16" aria-hidden="true" tabindex="-1"></a>      <span class="kw">calc</span> C</span>
-<span id="cb240-17"><a href="#cb240-17" aria-hidden="true" tabindex="-1"></a>          = D ∪ C := h4.symm</span>
+<span id="cb240-17"><a href="#cb240-17" aria-hidden="true" tabindex="-1"></a>        _ = D ∪ C := h4.symm</span>
 <span id="cb240-18"><a href="#cb240-18" aria-hidden="true" tabindex="-1"></a>        _ = C ∪ D := union_comm D C</span>
 <span id="cb240-19"><a href="#cb240-19" aria-hidden="true" tabindex="-1"></a>        _ = D     := h3</span>
 <span id="cb240-20"><a href="#cb240-20" aria-hidden="true" tabindex="-1"></a>    <span class="kw">done</span></span>
@@ -3397,7 +3394,7 @@ x \in A \cap (B \setmin C) &amp;\text{ iff } x \in A \wedge x \in B \setmin C\\
 <h3 class="anchored" data-anchor-id="exercises-4">Exercises</h3>
 <div class="numex" data-arguments="1">
 <div class="sourceCode" id="cb255"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb255-1"><a href="#cb255-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Exercise_3_4_15 (U : <span class="kw">Type</span>) (B : Set U) (F : Set (Set U)) :</span>
-<span id="cb255-2"><a href="#cb255-2" aria-hidden="true" tabindex="-1"></a>    ⋃₀ {X : Set U | ∃ (A : Set U), A ∈ F ∧ X = A \ B}</span>
+<span id="cb255-2"><a href="#cb255-2" aria-hidden="true" tabindex="-1"></a>    ⋃₀ { X : Set U | ∃ (A : Set U), A ∈ F ∧ X = A \ B }</span>
 <span id="cb255-3"><a href="#cb255-3" aria-hidden="true" tabindex="-1"></a>      ⊆ ⋃₀ (F \ 𝒫 B) := <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="numex" data-arguments="2">
@@ -3424,7 +3421,7 @@ x \in A \cap (B \setmin C) &amp;\text{ iff } x \in A \wedge x \in B \setmin C\\
 <span id="cb260-2"><a href="#cb260-2" aria-hidden="true" tabindex="-1"></a>    (h1 : ∀ (F : Set (Set U)), ⋃₀ F = A → A ∈ F) :</span>
 <span id="cb260-3"><a href="#cb260-3" aria-hidden="true" tabindex="-1"></a>    ∃! (x : U), x ∈ A := <span class="kw">by</span></span>
 <span id="cb260-4"><a href="#cb260-4" aria-hidden="true" tabindex="-1"></a>  <span class="co">--Hint:  Start like this:</span></span>
-<span id="cb260-5"><a href="#cb260-5" aria-hidden="true" tabindex="-1"></a>  <span class="kw">let</span> F0 := {X : Set U | X ⊆ A ∧ ∃! (x : U), x ∈ X}</span>
+<span id="cb260-5"><a href="#cb260-5" aria-hidden="true" tabindex="-1"></a>  <span class="kw">let</span> F0 : Set (Set U) := { X : Set U | X ⊆ A ∧ ∃! (x : U), x ∈ X }</span>
 <span id="cb260-6"><a href="#cb260-6" aria-hidden="true" tabindex="-1"></a>  <span class="co">--Now F0 is in the tactic state, with the definition above</span></span>
 <span id="cb260-7"><a href="#cb260-7" aria-hidden="true" tabindex="-1"></a>  <span class="kw">have</span> h2 : ⋃₀ F0 = A := <span class="cn">sorry</span></span>
 <span id="cb260-8"><a href="#cb260-8" aria-hidden="true" tabindex="-1"></a>  </span>
@@ -3504,7 +3501,7 @@ x \in A \cap (B \setmin C) &amp;\text{ iff } x \in A \wedge x \in B \setmin C\\
 <span id="cb267-5"><a href="#cb267-5" aria-hidden="true" tabindex="-1"></a>  <span class="kw">define</span> <span class="kw">at</span> h1; <span class="kw">define</span> <span class="kw">at</span> h2; <span class="kw">define</span></span>
 <span id="cb267-6"><a href="#cb267-6" aria-hidden="true" tabindex="-1"></a>  <span class="kw">obtain</span> (m : Int) (h3 : b = a * m) <span class="kw">from</span> h1</span>
 <span id="cb267-7"><a href="#cb267-7" aria-hidden="true" tabindex="-1"></a>  <span class="kw">obtain</span> (n : Int) (h4 : c = b * n) <span class="kw">from</span> h2</span>
-<span id="cb267-8"><a href="#cb267-8" aria-hidden="true" tabindex="-1"></a>  <span class="kw">rewrite</span> [h3] <span class="kw">at</span> h4   <span class="co">--h4: c = a * m * n</span></span>
+<span id="cb267-8"><a href="#cb267-8" aria-hidden="true" tabindex="-1"></a>  <span class="kw">rewrite</span> [h3] <span class="kw">at</span> h4   <span class="co">--h4 : c = a * m * n</span></span>
 <span id="cb267-9"><a href="#cb267-9" aria-hidden="true" tabindex="-1"></a>  <span class="sc">**</span><span class="wa">done</span><span class="sc">::</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="outpt">
@@ -3531,7 +3528,7 @@ x \in A \cap (B \setmin C) &amp;\text{ iff } x \in A \wedge x \in B \setmin C\\
 <span id="cb269-5"><a href="#cb269-5" aria-hidden="true" tabindex="-1"></a>  <span class="kw">define</span> <span class="kw">at</span> h1; <span class="kw">define</span> <span class="kw">at</span> h2; <span class="kw">define</span></span>
 <span id="cb269-6"><a href="#cb269-6" aria-hidden="true" tabindex="-1"></a>  <span class="kw">obtain</span> (m : Int) (h3 : b = a * m) <span class="kw">from</span> h1</span>
 <span id="cb269-7"><a href="#cb269-7" aria-hidden="true" tabindex="-1"></a>  <span class="kw">obtain</span> (n : Int) (h4 : c = b * n) <span class="kw">from</span> h2</span>
-<span id="cb269-8"><a href="#cb269-8" aria-hidden="true" tabindex="-1"></a>  <span class="kw">rewrite</span> [h3] <span class="kw">at</span> h4   <span class="co">--h4: c = a * m * n</span></span>
+<span id="cb269-8"><a href="#cb269-8" aria-hidden="true" tabindex="-1"></a>  <span class="kw">rewrite</span> [h3] <span class="kw">at</span> h4   <span class="co">--h4 : c = a * m * n</span></span>
 <span id="cb269-9"><a href="#cb269-9" aria-hidden="true" tabindex="-1"></a>  <span class="kw">apply</span> Exists.intro (m * n)</span>
 <span id="cb269-10"><a href="#cb269-10" aria-hidden="true" tabindex="-1"></a>  <span class="sc">**</span><span class="wa">done</span><span class="sc">::</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
@@ -3565,7 +3562,7 @@ x \in A \cap (B \setmin C) &amp;\text{ iff } x \in A \wedge x \in B \setmin C\\
 <span id="cb272-5"><a href="#cb272-5" aria-hidden="true" tabindex="-1"></a>  <span class="kw">define</span> <span class="kw">at</span> h1; <span class="kw">define</span> <span class="kw">at</span> h2; <span class="kw">define</span></span>
 <span id="cb272-6"><a href="#cb272-6" aria-hidden="true" tabindex="-1"></a>  <span class="kw">obtain</span> (m : Int) (h3 : b = a * m) <span class="kw">from</span> h1</span>
 <span id="cb272-7"><a href="#cb272-7" aria-hidden="true" tabindex="-1"></a>  <span class="kw">obtain</span> (n : Int) (h4 : c = b * n) <span class="kw">from</span> h2</span>
-<span id="cb272-8"><a href="#cb272-8" aria-hidden="true" tabindex="-1"></a>  <span class="kw">rewrite</span> [h3] <span class="kw">at</span> h4   <span class="co">--h4: c = a * m * n</span></span>
+<span id="cb272-8"><a href="#cb272-8" aria-hidden="true" tabindex="-1"></a>  <span class="kw">rewrite</span> [h3] <span class="kw">at</span> h4   <span class="co">--h4 : c = a * m * n</span></span>
 <span id="cb272-9"><a href="#cb272-9" aria-hidden="true" tabindex="-1"></a>  <span class="kw">apply</span> Exists.intro (m * n)</span>
 <span id="cb272-10"><a href="#cb272-10" aria-hidden="true" tabindex="-1"></a>  <span class="kw">rewrite</span> [mul_assoc a m n] <span class="kw">at</span> h4</span>
 <span id="cb272-11"><a href="#cb272-11" aria-hidden="true" tabindex="-1"></a>  <span class="sc">**</span><span class="wa">done</span><span class="sc">::</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -3592,7 +3589,7 @@ x \in A \cap (B \setmin C) &amp;\text{ iff } x \in A \wedge x \in B \setmin C\\
 <span id="cb274-5"><a href="#cb274-5" aria-hidden="true" tabindex="-1"></a>  <span class="kw">define</span> <span class="kw">at</span> h1; <span class="kw">define</span> <span class="kw">at</span> h2; <span class="kw">define</span></span>
 <span id="cb274-6"><a href="#cb274-6" aria-hidden="true" tabindex="-1"></a>  <span class="kw">obtain</span> (m : Int) (h3 : b = a * m) <span class="kw">from</span> h1</span>
 <span id="cb274-7"><a href="#cb274-7" aria-hidden="true" tabindex="-1"></a>  <span class="kw">obtain</span> (n : Int) (h4 : c = b * n) <span class="kw">from</span> h2</span>
-<span id="cb274-8"><a href="#cb274-8" aria-hidden="true" tabindex="-1"></a>  <span class="kw">rewrite</span> [h3] <span class="kw">at</span> h4   <span class="co">--h4: c = a * m * n</span></span>
+<span id="cb274-8"><a href="#cb274-8" aria-hidden="true" tabindex="-1"></a>  <span class="kw">rewrite</span> [h3] <span class="kw">at</span> h4   <span class="co">--h4 : c = a * m * n</span></span>
 <span id="cb274-9"><a href="#cb274-9" aria-hidden="true" tabindex="-1"></a>  <span class="kw">apply</span> Exists.intro (m * n)</span>
 <span id="cb274-10"><a href="#cb274-10" aria-hidden="true" tabindex="-1"></a>  <span class="kw">rewrite</span> [mul_assoc a m n] <span class="kw">at</span> h4</span>
 <span id="cb274-11"><a href="#cb274-11" aria-hidden="true" tabindex="-1"></a>  <span class="kw">show</span> c = a * (m * n) <span class="kw">from</span> h4</span>
@@ -3877,7 +3874,7 @@ x \in A \cap (B \setmin C) &amp;\text{ iff } x \in A \wedge x \in B \setmin C\\
 <span id="cb291-13"><a href="#cb291-13" aria-hidden="true" tabindex="-1"></a>    <span class="kw">obtain</span> (k : Int) (h5 : n = 3 * k) <span class="kw">from</span> h3</span>
 <span id="cb291-14"><a href="#cb291-14" aria-hidden="true" tabindex="-1"></a>    <span class="kw">have</span> h6 : 6 * (j - k) = n :=</span>
 <span id="cb291-15"><a href="#cb291-15" aria-hidden="true" tabindex="-1"></a>      <span class="kw">calc</span> 6 * (j - k)</span>
-<span id="cb291-16"><a href="#cb291-16" aria-hidden="true" tabindex="-1"></a>          = 6 * j - 6 * k := <span class="cn">sorry</span></span>
+<span id="cb291-16"><a href="#cb291-16" aria-hidden="true" tabindex="-1"></a>        _ = 6 * j - 6 * k := <span class="cn">sorry</span></span>
 <span id="cb291-17"><a href="#cb291-17" aria-hidden="true" tabindex="-1"></a>        _ = 3 * (2 * j) - 2 * (3 * k) := <span class="cn">sorry</span></span>
 <span id="cb291-18"><a href="#cb291-18" aria-hidden="true" tabindex="-1"></a>        _ = 3 * n - 2 * n := <span class="cn">sorry</span></span>
 <span id="cb291-19"><a href="#cb291-19" aria-hidden="true" tabindex="-1"></a>        _ = (3 - 2) * n := <span class="cn">sorry</span></span>
@@ -3903,15 +3900,14 @@ x \in A \cap (B \setmin C) &amp;\text{ iff } x \in A \wedge x \in B \setmin C\\
 <div class="inpt">
 <div class="sourceCode" id="cb294"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb294-1"><a href="#cb294-1" aria-hidden="true" tabindex="-1"></a><span class="kw">have</span> h6 : 6 * (j - k) = n :=</span>
 <span id="cb294-2"><a href="#cb294-2" aria-hidden="true" tabindex="-1"></a>  <span class="kw">calc</span> 6 * (j - k)</span>
-<span id="cb294-3"><a href="#cb294-3" aria-hidden="true" tabindex="-1"></a>      = 6 * j - 6 * k :=</span>
+<span id="cb294-3"><a href="#cb294-3" aria-hidden="true" tabindex="-1"></a>    _ = 6 * j - 6 * k :=</span>
 <span id="cb294-4"><a href="#cb294-4" aria-hidden="true" tabindex="-1"></a>        mul_sub_left_distrib 6 j k</span>
-<span id="cb294-5"><a href="#cb294-5" aria-hidden="true" tabindex="-1"></a>    _ = 3 * (2 * j) - 2 * (3 * k) :=</span>
-<span id="cb294-6"><a href="#cb294-6" aria-hidden="true" tabindex="-1"></a>        <span class="kw">by</span></span>
-<span id="cb294-7"><a href="#cb294-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb294-8"><a href="#cb294-8" aria-hidden="true" tabindex="-1"></a>          <span class="sc">**</span><span class="wa">done</span><span class="sc">::</span></span>
-<span id="cb294-9"><a href="#cb294-9" aria-hidden="true" tabindex="-1"></a>    _ = 3 * n - 2 * n := <span class="cn">sorry</span></span>
-<span id="cb294-10"><a href="#cb294-10" aria-hidden="true" tabindex="-1"></a>    _ = (3 - 2) * n := <span class="cn">sorry</span></span>
-<span id="cb294-11"><a href="#cb294-11" aria-hidden="true" tabindex="-1"></a>    _ = n := <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb294-5"><a href="#cb294-5" aria-hidden="true" tabindex="-1"></a>    _ = 3 * (2 * j) - 2 * (3 * k) := <span class="kw">by</span></span>
+<span id="cb294-6"><a href="#cb294-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb294-7"><a href="#cb294-7" aria-hidden="true" tabindex="-1"></a>        <span class="sc">**</span><span class="wa">done</span><span class="sc">::</span></span>
+<span id="cb294-8"><a href="#cb294-8" aria-hidden="true" tabindex="-1"></a>    _ = 3 * n - 2 * n := <span class="cn">sorry</span></span>
+<span id="cb294-9"><a href="#cb294-9" aria-hidden="true" tabindex="-1"></a>    _ = (3 - 2) * n := <span class="cn">sorry</span></span>
+<span id="cb294-10"><a href="#cb294-10" aria-hidden="true" tabindex="-1"></a>    _ = n := <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="outpt">
 <div class="sourceCode" id="cb295"><pre class="sourceCode state code-with-copy"><code class="sourceCode state"><span id="cb295-1"><a href="#cb295-1" aria-hidden="true" tabindex="-1"></a><span class="in">n </span>: ℤ</span>
@@ -3934,16 +3930,15 @@ x \in A \cap (B \setmin C) &amp;\text{ iff } x \in A \wedge x \in B \setmin C\\
 <div class="inpt">
 <div class="sourceCode" id="cb296"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb296-1"><a href="#cb296-1" aria-hidden="true" tabindex="-1"></a><span class="kw">have</span> h6 : 6 * (j - k) = n :=</span>
 <span id="cb296-2"><a href="#cb296-2" aria-hidden="true" tabindex="-1"></a>  <span class="kw">calc</span> 6 * (j - k)</span>
-<span id="cb296-3"><a href="#cb296-3" aria-hidden="true" tabindex="-1"></a>      = 6 * j - 6 * k :=</span>
+<span id="cb296-3"><a href="#cb296-3" aria-hidden="true" tabindex="-1"></a>    _ = 6 * j - 6 * k :=</span>
 <span id="cb296-4"><a href="#cb296-4" aria-hidden="true" tabindex="-1"></a>        mul_sub_left_distrib 6 j k</span>
-<span id="cb296-5"><a href="#cb296-5" aria-hidden="true" tabindex="-1"></a>    _ = 3 * (2 * j) - 2 * (3 * k) :=</span>
-<span id="cb296-6"><a href="#cb296-6" aria-hidden="true" tabindex="-1"></a>        <span class="kw">by</span></span>
-<span id="cb296-7"><a href="#cb296-7" aria-hidden="true" tabindex="-1"></a>          <span class="kw">rewrite</span> [←mul_assoc 3 2 j]</span>
-<span id="cb296-8"><a href="#cb296-8" aria-hidden="true" tabindex="-1"></a>          <span class="kw">rewrite</span> [←mul_assoc 2 3 k]</span>
-<span id="cb296-9"><a href="#cb296-9" aria-hidden="true" tabindex="-1"></a>          <span class="sc">**</span><span class="wa">done</span><span class="sc">::</span></span>
-<span id="cb296-10"><a href="#cb296-10" aria-hidden="true" tabindex="-1"></a>    _ = 3 * n - 2 * n := <span class="cn">sorry</span></span>
-<span id="cb296-11"><a href="#cb296-11" aria-hidden="true" tabindex="-1"></a>    _ = (3 - 2) * n := <span class="cn">sorry</span></span>
-<span id="cb296-12"><a href="#cb296-12" aria-hidden="true" tabindex="-1"></a>    _ = n := <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb296-5"><a href="#cb296-5" aria-hidden="true" tabindex="-1"></a>    _ = 3 * (2 * j) - 2 * (3 * k) := <span class="kw">by</span></span>
+<span id="cb296-6"><a href="#cb296-6" aria-hidden="true" tabindex="-1"></a>        <span class="kw">rewrite</span> [←mul_assoc 3 2 j]</span>
+<span id="cb296-7"><a href="#cb296-7" aria-hidden="true" tabindex="-1"></a>        <span class="kw">rewrite</span> [←mul_assoc 2 3 k]</span>
+<span id="cb296-8"><a href="#cb296-8" aria-hidden="true" tabindex="-1"></a>        <span class="sc">**</span><span class="wa">done</span><span class="sc">::</span></span>
+<span id="cb296-9"><a href="#cb296-9" aria-hidden="true" tabindex="-1"></a>    _ = 3 * n - 2 * n := <span class="cn">sorry</span></span>
+<span id="cb296-10"><a href="#cb296-10" aria-hidden="true" tabindex="-1"></a>    _ = (3 - 2) * n := <span class="cn">sorry</span></span>
+<span id="cb296-11"><a href="#cb296-11" aria-hidden="true" tabindex="-1"></a>    _ = n := <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="outpt">
 <div class="sourceCode" id="cb297"><pre class="sourceCode state code-with-copy"><code class="sourceCode state"><span id="cb297-1"><a href="#cb297-1" aria-hidden="true" tabindex="-1"></a><span class="in">n </span>: ℤ</span>
@@ -3966,20 +3961,18 @@ x \in A \cap (B \setmin C) &amp;\text{ iff } x \in A \wedge x \in B \setmin C\\
 <div class="inpt">
 <div class="sourceCode" id="cb298"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb298-1"><a href="#cb298-1" aria-hidden="true" tabindex="-1"></a><span class="kw">have</span> h6 : 6 * (j - k) = n :=</span>
 <span id="cb298-2"><a href="#cb298-2" aria-hidden="true" tabindex="-1"></a>  <span class="kw">calc</span> 6 * (j - k)</span>
-<span id="cb298-3"><a href="#cb298-3" aria-hidden="true" tabindex="-1"></a>      = 6 * j - 6 * k :=</span>
+<span id="cb298-3"><a href="#cb298-3" aria-hidden="true" tabindex="-1"></a>    _ = 6 * j - 6 * k :=</span>
 <span id="cb298-4"><a href="#cb298-4" aria-hidden="true" tabindex="-1"></a>        mul_sub_left_distrib 6 j k</span>
-<span id="cb298-5"><a href="#cb298-5" aria-hidden="true" tabindex="-1"></a>    _ = 3 * (2 * j) - 2 * (3 * k) :=</span>
-<span id="cb298-6"><a href="#cb298-6" aria-hidden="true" tabindex="-1"></a>        <span class="kw">by</span></span>
-<span id="cb298-7"><a href="#cb298-7" aria-hidden="true" tabindex="-1"></a>          <span class="kw">rewrite</span> [←mul_assoc 3 2 j]</span>
-<span id="cb298-8"><a href="#cb298-8" aria-hidden="true" tabindex="-1"></a>          <span class="kw">rewrite</span> [←mul_assoc 2 3 k]</span>
-<span id="cb298-9"><a href="#cb298-9" aria-hidden="true" tabindex="-1"></a>          <span class="kw">rfl</span></span>
-<span id="cb298-10"><a href="#cb298-10" aria-hidden="true" tabindex="-1"></a>          <span class="kw">done</span></span>
-<span id="cb298-11"><a href="#cb298-11" aria-hidden="true" tabindex="-1"></a>    _ = 3 * n - 2 * n :=</span>
-<span id="cb298-12"><a href="#cb298-12" aria-hidden="true" tabindex="-1"></a>        <span class="kw">by</span></span>
-<span id="cb298-13"><a href="#cb298-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb298-14"><a href="#cb298-14" aria-hidden="true" tabindex="-1"></a>          <span class="sc">**</span><span class="wa">done</span><span class="sc">::</span></span>
-<span id="cb298-15"><a href="#cb298-15" aria-hidden="true" tabindex="-1"></a>    _ = (3 - 2) * n := <span class="cn">sorry</span></span>
-<span id="cb298-16"><a href="#cb298-16" aria-hidden="true" tabindex="-1"></a>    _ = n := <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb298-5"><a href="#cb298-5" aria-hidden="true" tabindex="-1"></a>    _ = 3 * (2 * j) - 2 * (3 * k) := <span class="kw">by</span></span>
+<span id="cb298-6"><a href="#cb298-6" aria-hidden="true" tabindex="-1"></a>        <span class="kw">rewrite</span> [←mul_assoc 3 2 j]</span>
+<span id="cb298-7"><a href="#cb298-7" aria-hidden="true" tabindex="-1"></a>        <span class="kw">rewrite</span> [←mul_assoc 2 3 k]</span>
+<span id="cb298-8"><a href="#cb298-8" aria-hidden="true" tabindex="-1"></a>        <span class="kw">rfl</span></span>
+<span id="cb298-9"><a href="#cb298-9" aria-hidden="true" tabindex="-1"></a>        <span class="kw">done</span></span>
+<span id="cb298-10"><a href="#cb298-10" aria-hidden="true" tabindex="-1"></a>    _ = 3 * n - 2 * n := <span class="kw">by</span></span>
+<span id="cb298-11"><a href="#cb298-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb298-12"><a href="#cb298-12" aria-hidden="true" tabindex="-1"></a>        <span class="sc">**</span><span class="wa">done</span><span class="sc">::</span></span>
+<span id="cb298-13"><a href="#cb298-13" aria-hidden="true" tabindex="-1"></a>    _ = (3 - 2) * n := <span class="cn">sorry</span></span>
+<span id="cb298-14"><a href="#cb298-14" aria-hidden="true" tabindex="-1"></a>    _ = n := <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="outpt">
 <div class="sourceCode" id="cb299"><pre class="sourceCode state code-with-copy"><code class="sourceCode state"><span id="cb299-1"><a href="#cb299-1" aria-hidden="true" tabindex="-1"></a><span class="in">n </span>: ℤ</span>
@@ -4002,20 +3995,18 @@ x \in A \cap (B \setmin C) &amp;\text{ iff } x \in A \wedge x \in B \setmin C\\
 <div class="inpt">
 <div class="sourceCode" id="cb300"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb300-1"><a href="#cb300-1" aria-hidden="true" tabindex="-1"></a><span class="kw">have</span> h6 : 6 * (j - k) = n :=</span>
 <span id="cb300-2"><a href="#cb300-2" aria-hidden="true" tabindex="-1"></a>  <span class="kw">calc</span> 6 * (j - k)</span>
-<span id="cb300-3"><a href="#cb300-3" aria-hidden="true" tabindex="-1"></a>      = 6 * j - 6 * k :=</span>
+<span id="cb300-3"><a href="#cb300-3" aria-hidden="true" tabindex="-1"></a>    _ = 6 * j - 6 * k :=</span>
 <span id="cb300-4"><a href="#cb300-4" aria-hidden="true" tabindex="-1"></a>        mul_sub_left_distrib 6 j k</span>
-<span id="cb300-5"><a href="#cb300-5" aria-hidden="true" tabindex="-1"></a>    _ = 3 * (2 * j) - 2 * (3 * k) :=</span>
-<span id="cb300-6"><a href="#cb300-6" aria-hidden="true" tabindex="-1"></a>        <span class="kw">by</span></span>
-<span id="cb300-7"><a href="#cb300-7" aria-hidden="true" tabindex="-1"></a>          <span class="kw">rewrite</span> [←mul_assoc 3 2 j]</span>
-<span id="cb300-8"><a href="#cb300-8" aria-hidden="true" tabindex="-1"></a>          <span class="kw">rewrite</span> [←mul_assoc 2 3 k]</span>
-<span id="cb300-9"><a href="#cb300-9" aria-hidden="true" tabindex="-1"></a>          <span class="kw">rfl</span></span>
-<span id="cb300-10"><a href="#cb300-10" aria-hidden="true" tabindex="-1"></a>          <span class="kw">done</span></span>
-<span id="cb300-11"><a href="#cb300-11" aria-hidden="true" tabindex="-1"></a>    _ = 3 * n - 2 * n :=</span>
-<span id="cb300-12"><a href="#cb300-12" aria-hidden="true" tabindex="-1"></a>        <span class="kw">by</span></span>
-<span id="cb300-13"><a href="#cb300-13" aria-hidden="true" tabindex="-1"></a>          <span class="kw">rewrite</span> [←h4, ←h5]</span>
-<span id="cb300-14"><a href="#cb300-14" aria-hidden="true" tabindex="-1"></a>          <span class="sc">**</span><span class="wa">done</span><span class="sc">::</span></span>
-<span id="cb300-15"><a href="#cb300-15" aria-hidden="true" tabindex="-1"></a>    _ = (3 - 2) * n := <span class="cn">sorry</span></span>
-<span id="cb300-16"><a href="#cb300-16" aria-hidden="true" tabindex="-1"></a>    _ = n := <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb300-5"><a href="#cb300-5" aria-hidden="true" tabindex="-1"></a>    _ = 3 * (2 * j) - 2 * (3 * k) := <span class="kw">by</span></span>
+<span id="cb300-6"><a href="#cb300-6" aria-hidden="true" tabindex="-1"></a>        <span class="kw">rewrite</span> [←mul_assoc 3 2 j]</span>
+<span id="cb300-7"><a href="#cb300-7" aria-hidden="true" tabindex="-1"></a>        <span class="kw">rewrite</span> [←mul_assoc 2 3 k]</span>
+<span id="cb300-8"><a href="#cb300-8" aria-hidden="true" tabindex="-1"></a>        <span class="kw">rfl</span></span>
+<span id="cb300-9"><a href="#cb300-9" aria-hidden="true" tabindex="-1"></a>        <span class="kw">done</span></span>
+<span id="cb300-10"><a href="#cb300-10" aria-hidden="true" tabindex="-1"></a>    _ = 3 * n - 2 * n := <span class="kw">by</span></span>
+<span id="cb300-11"><a href="#cb300-11" aria-hidden="true" tabindex="-1"></a>        <span class="kw">rewrite</span> [←h4, ←h5]</span>
+<span id="cb300-12"><a href="#cb300-12" aria-hidden="true" tabindex="-1"></a>        <span class="sc">**</span><span class="wa">done</span><span class="sc">::</span></span>
+<span id="cb300-13"><a href="#cb300-13" aria-hidden="true" tabindex="-1"></a>    _ = (3 - 2) * n := <span class="cn">sorry</span></span>
+<span id="cb300-14"><a href="#cb300-14" aria-hidden="true" tabindex="-1"></a>    _ = n := <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="outpt">
 <div class="sourceCode" id="cb301"><pre class="sourceCode state code-with-copy"><code class="sourceCode state"><span id="cb301-1"><a href="#cb301-1" aria-hidden="true" tabindex="-1"></a><span class="in">n </span>: ℤ</span>
@@ -4048,17 +4039,17 @@ x \in A \cap (B \setmin C) &amp;\text{ iff } x \in A \wedge x \in B \setmin C\\
 <p>So <code>one_mul n</code> should justify the last equation. Here’s the complete calculational proof, where we have shortened the second step a bit by doing both <code>rewrite</code>s in one step. When a tactic proof is short enough that it can be written on one line, we generally leave off <code>done</code>.</p>
 <div class="sourceCode" id="cb305"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb305-1"><a href="#cb305-1" aria-hidden="true" tabindex="-1"></a><span class="kw">have</span> h6 : 6 * (j - k) = n :=</span>
 <span id="cb305-2"><a href="#cb305-2" aria-hidden="true" tabindex="-1"></a>  <span class="kw">calc</span> 6 * (j - k)</span>
-<span id="cb305-3"><a href="#cb305-3" aria-hidden="true" tabindex="-1"></a>      = 6 * j - 6 * k :=</span>
+<span id="cb305-3"><a href="#cb305-3" aria-hidden="true" tabindex="-1"></a>    _ = 6 * j - 6 * k :=</span>
 <span id="cb305-4"><a href="#cb305-4" aria-hidden="true" tabindex="-1"></a>        mul_sub_left_distrib 6 j k</span>
-<span id="cb305-5"><a href="#cb305-5" aria-hidden="true" tabindex="-1"></a>    _ = 3 * (2 * j) - 2 * (3 * k) :=</span>
-<span id="cb305-6"><a href="#cb305-6" aria-hidden="true" tabindex="-1"></a>        <span class="kw">by</span> <span class="kw">rewrite</span> [←mul_assoc 3 2 j, ←mul_assoc 2 3 k]; <span class="kw">rfl</span></span>
+<span id="cb305-5"><a href="#cb305-5" aria-hidden="true" tabindex="-1"></a>    _ = 3 * (2 * j) - 2 * (3 * k) := <span class="kw">by</span></span>
+<span id="cb305-6"><a href="#cb305-6" aria-hidden="true" tabindex="-1"></a>        <span class="kw">rewrite</span> [←mul_assoc 3 2 j, ←mul_assoc 2 3 k]; <span class="kw">rfl</span></span>
 <span id="cb305-7"><a href="#cb305-7" aria-hidden="true" tabindex="-1"></a>    _ = 3 * n - 2 * n := <span class="kw">by</span> <span class="kw">rewrite</span> [←h4, ←h5]; <span class="kw">rfl</span></span>
 <span id="cb305-8"><a href="#cb305-8" aria-hidden="true" tabindex="-1"></a>    _ = (3 - 2) * n := (mul_sub_right_distrib 3 2 n).symm</span>
 <span id="cb305-9"><a href="#cb305-9" aria-hidden="true" tabindex="-1"></a>    _ = n := one_mul n</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>Whew! This example illustrates why algebraic reasoning in Lean can be difficult. But one reason why this proof was challenging is that we justified all of our steps from basic algebraic principles. Fortunately, there are more powerful tactics that can automate some algebraic reasoning. For example, the tactic <code>ring</code> can combine algebraic laws involving addition, subtraction, multiplication, and exponentiation with natural number exponents to prove many equations in one step. Also, the tactic <code>rw</code> is a variant of <code>rewrite</code> that automatically applies <code>rfl</code> after the rewriting if it can be used to finish the proof. Here’s a shortened version of our calculational proof that uses these tactics.</p>
 <div class="sourceCode" id="cb306"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb306-1"><a href="#cb306-1" aria-hidden="true" tabindex="-1"></a><span class="kw">have</span> h6 : 6 * (j - k) = n :=</span>
 <span id="cb306-2"><a href="#cb306-2" aria-hidden="true" tabindex="-1"></a>  <span class="kw">calc</span> 6 * (j - k)</span>
-<span id="cb306-3"><a href="#cb306-3" aria-hidden="true" tabindex="-1"></a>      = 3 * (2 * j) - 2 * (3 * k) := <span class="kw">by</span> <span class="kw">ring</span></span>
+<span id="cb306-3"><a href="#cb306-3" aria-hidden="true" tabindex="-1"></a>    _ = 3 * (2 * j) - 2 * (3 * k) := <span class="kw">by</span> <span class="kw">ring</span></span>
 <span id="cb306-4"><a href="#cb306-4" aria-hidden="true" tabindex="-1"></a>    _ = 3 * n - 2 * n := <span class="kw">by</span> <span class="kw">rw</span> [←h4, ←h5]</span>
 <span id="cb306-5"><a href="#cb306-5" aria-hidden="true" tabindex="-1"></a>    _ = n := <span class="kw">by</span> <span class="kw">ring</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <section id="exercises-5" class="level3">
@@ -4074,7 +4065,7 @@ x \in A \cap (B \setmin C) &amp;\text{ iff } x \in A \wedge x \in B \setmin C\\
 <span id="cb308-4"><a href="#cb308-4" aria-hidden="true" tabindex="-1"></a>  <span class="kw">fix</span> x : U</span>
 <span id="cb308-5"><a href="#cb308-5" aria-hidden="true" tabindex="-1"></a>  <span class="kw">show</span> x ∈ A \ (B ∩ C) ↔ x ∈ A \ B ∪ A \ C <span class="kw">from</span></span>
 <span id="cb308-6"><a href="#cb308-6" aria-hidden="true" tabindex="-1"></a>    <span class="kw">calc</span> x ∈ A \ (B ∩ C)</span>
-<span id="cb308-7"><a href="#cb308-7" aria-hidden="true" tabindex="-1"></a>        ↔ x ∈ A ∧ ¬(x ∈ B ∧ x ∈ C) := <span class="cn">sorry</span></span>
+<span id="cb308-7"><a href="#cb308-7" aria-hidden="true" tabindex="-1"></a>      _ ↔ x ∈ A ∧ ¬(x ∈ B ∧ x ∈ C) := <span class="cn">sorry</span></span>
 <span id="cb308-8"><a href="#cb308-8" aria-hidden="true" tabindex="-1"></a>      _ ↔ x ∈ A ∧ (¬x ∈ B ∨ ¬x ∈ C) := <span class="cn">sorry</span>  </span>
 <span id="cb308-9"><a href="#cb308-9" aria-hidden="true" tabindex="-1"></a>      _ ↔ (x ∈ A ∧ ¬x ∈ B) ∨ (x ∈ A ∧ ¬x ∈ C) := <span class="cn">sorry</span></span>
 <span id="cb308-10"><a href="#cb308-10" aria-hidden="true" tabindex="-1"></a>      _ ↔ x ∈ (A \ B) ∪ (A \ C) := <span class="cn">sorry</span></span>
