@@ -207,7 +207,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
         <nav id="TOC" role="doc-toc" class="toc-active">
-    <h2 id="toc-title">Table of contents</h2>
+    <h2 id="toc-title">In This Chapter</h2>
    
   <ul class="collapse">
   <li><a href="#proofs-involving-negations-and-conditionals" id="toc-proofs-involving-negations-and-conditionals" class="nav-link active" data-scroll-target="#proofs-involving-negations-and-conditionals">3.1 &amp; 3.2. Proofs Involving Negations and Conditionals</a></li>
@@ -2690,8 +2690,7 @@ x \in A \cap (B \setmin C) &amp;\text{ iff } x \in A \wedge x \in B \setmin C\\
 </div>
 <div class="numex" data-arguments="5">
 <div class="sourceCode" id="cb200"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb200-1"><a href="#cb200-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Exercise_3_5_17b (U : <span class="kw">Type</span>) (F : Set (Set U)) (B : Set U) :</span>
-<span id="cb200-2"><a href="#cb200-2" aria-hidden="true" tabindex="-1"></a>    B ∪ (⋂₀ F) =</span>
-<span id="cb200-3"><a href="#cb200-3" aria-hidden="true" tabindex="-1"></a>      ⋂₀ { X : Set U | ∃ (A : Set U), A ∈ F ∧ X = B ∪ A } := <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb200-2"><a href="#cb200-2" aria-hidden="true" tabindex="-1"></a>    B ∪ (⋂₀ F) = { x : U | ∀ (A : Set U), A ∈ F → x ∈ B ∪ A } := <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="numex" data-arguments="6">
 <div class="sourceCode" id="cb201"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb201-1"><a href="#cb201-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Exercise_3_5_18 (U : <span class="kw">Type</span>) (F G H : Set (Set U))</span>
