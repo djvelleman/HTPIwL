@@ -494,7 +494,7 @@ To use a given of the form `∀ (x : U), P x`, we usually apply a rule of infere
 You may plug in any value of type `U`, say `a`, for `x` and use this given to conclude that `P a` is true.
 :::
 
-This strategy says that if you have `h : ∀ (x : U), P x` and `a : U`, then you can infer `P a`.  Indeed, in this situation Lean will recognize `h a` as a proof of `P a`.  For example, you can write `have h' : P a := h a` in a Lean tactic-mode proof, and Lean will add `h' : P a` to the tactic state.
+This strategy says that if you have `h : ∀ (x : U), P x` and `a : U`, then you can infer `P a`.  Indeed, in this situation Lean will recognize `h a` as a proof of `P a`.  For example, you can write `have h' : P a := h a` in a Lean tactic-mode proof, and Lean will add `h' : P a` to the tactic state.  Note that `a` here need not be simply a variable; it can be any expression denoting an object of type `U`.
 
 Let's try these strategies out in a Lean proof.  In Lean, if you don't want to give a theorem a name, you can simply call it an `example` rather than a `theorem`, and then there is no need to give it a name.  In the following theorem, you can enter the symbol `∀` by typing `\forall` or `\all`, and you can enter `∃` by typing `\exists` or `\ex`.
 
@@ -914,7 +914,9 @@ Find a value of `x`, say `a`, for which you think `P a` is true, and prove `P a`
 
 This strategy is based on the fact that if you have `a : U` and `h : P a`, then you can infer `∃ (x : U), P x`.  Indeed, in this situation the expression `Exists.intro a h` is a Lean term-mode proof of `∃ (x : U), P x`.  The name `Exists.intro` indicates that this is a rule for introducing an existential quantifier.
 
-As suggested by the strategy above, we will often want to use this rule in situations in which our goal is `∃ (x : U), P x` and we have an object `a` of type `U` that we think makes `P a` true, but we don't yet have a proof of `P a`.  In that situation we can use the tactic `apply Exists.intro a _`.  Recall that the `apply` tactic asks Lean to figure out what to put in the blank to turn `Exists.intro a _` into a proof of the goal.  Lean will figure out that what needs to go in the blank is a proof of `P a`, so it sets `P a` to be the goal.  In other words, the tactic `apply Exists.intro a _` has the following effect on the tactic state:
+Note that, as with the universal instantiation rule, `a` here can be any expression denoting an object of type `U`; it need not be simply a variable.  For example, if `A` and `B` have type `Set U`, `F` has type `Set (Set U)`, and you have a given `h : A ∪ B ∈ F`, then `Exists.intro (A ∪ B) h` is a proof of `∃ (x : Set U), x ∈ F`.
+
+As suggested by the strategy above, we will often want to use the `Exists.intro` rule in situations in which our goal is `∃ (x : U), P x` and we have an object `a` of type `U` that we think makes `P a` true, but we don't yet have a proof of `P a`.  In that situation we can use the tactic `apply Exists.intro a _`.  Recall that the `apply` tactic asks Lean to figure out what to put in the blank to turn `Exists.intro a _` into a proof of the goal.  Lean will figure out that what needs to go in the blank is a proof of `P a`, so it sets `P a` to be the goal.  In other words, the tactic `apply Exists.intro a _` has the following effect on the tactic state:
 
 ::: {.lftrt}
 ::: {.bef}
@@ -939,10 +941,10 @@ Our strategy for using an existential given is a rule that is called *existentia
 #### To use a given of the form `∃ (x : U), P x`:
 
 ::: {.ind}
-Introduce a new variable, say `a`, into the proof to stand for an object of type `U` for which `P a` is true.
+Introduce a new variable, say `u`, into the proof to stand for an object of type `U` for which `P u` is true.
 :::
 
-Suppose that, in a Lean proof, you have `h : ∃ (x : U), P x`.  To apply the existential instantiation rule, you would use the tactic `obtain (a : U) (h' : P a) from h`.  This tactic introduces into the tactic state both a new variable `a` of type `U` and also the identifier `h'` for the new given `P a`.  Note that `h` can be any proof of a statement of the form `∃ (x : U), P x`; it need not be just a single identifier.
+Suppose that, in a Lean proof, you have `h : ∃ (x : U), P x`.  To apply the existential instantiation rule, you would use the tactic `obtain (u : U) (h' : P u) from h`.  This tactic introduces into the tactic state both a new variable `u` of type `U` and also the identifier `h'` for the new given `P u`.  Note that `h` can be any proof of a statement of the form `∃ (x : U), P x`; it need not be just a single identifier.
 
 Often, if your goal is an existential statement `∃ (x : U), P x`, you won't be able to use the strategy above for existential goals right away, because you won't know what object `a` to use in the tactic `apply Exists.intro a _`.  You may have to wait until a likely candidate for `a` pops up in the course of the proof.  On the other hand, it is usually best to use the `obtain` tactic right away if you have an existential given.  This is illustrated in our next example.
 
@@ -2246,7 +2248,7 @@ The proofs of the individual biconditionals in the calculational proof require s
 theorem Iff.refl (a : Prop) : a ↔ a
 ```
 
-(This theorem says that "iff" has a property called *reflexivity*; we'll discuss reflexivity in Chapter 4.)  When variables are declared in the statement of a theorem, it is understood that they can stand for anything of the appropriate type (see Section 3.1 of *HTPI*).  Thus, the theorem `Iff.refl` can be thought of as establishing the truth of the statement `∀ (a : Prop), a ↔ a`.  In fact, you can get Lean to report the meaning of the theorem in this form with the command `#check @Iff.refl`.  What this means is that, in any proof, Lean let's you treat `Iff.refl` as a proof of the statement `∀ (a : Prop), a ↔ a`.  Thus, by universal instantiation, for any proposition `a`, Lean will recognize `Iff.refl a` as a proof of `a ↔ a`.  This is used to justify the first biconditional in the calculational proof.
+(This theorem says that "iff" has a property called *reflexivity*; we'll discuss reflexivity in Chapter 4.)  When variables are declared in the statement of a theorem, it is understood that they can stand for anything of the appropriate type (see Section 3.1 of *HTPI*).  Thus, the theorem `Iff.refl` can be thought of as establishing the truth of the statement `∀ (a : Prop), a ↔ a`.  In fact, you can get Lean to report the meaning of the theorem in this form with the command `#check @Iff.refl`.  What this means is that, in any proof, Lean lets you treat `Iff.refl` as a proof of the statement `∀ (a : Prop), a ↔ a`.  Thus, by universal instantiation, for any proposition `a`, Lean will recognize `Iff.refl a` as a proof of `a ↔ a`.  This is used to justify the first biconditional in the calculational proof.
 
 But wait!  The first biconditional in the calculational proof is `x ∈ A ∩ (B \ C) ↔ x ∈ A ∧ (x ∈ B ∧ x ∉ C)`, which does not have the form `a ↔ a`.  How can it be justified by the theorem `Iff.refl`?  Recall that Lean doesn't need to be told to write out definitions of mathematical notation; it does that automatically.  When the definitions of the set theory notation are written out, the first biconditional in the calculational proof becomes `x ∈ A ∧ (x ∈ B ∧ x ∉ C) ↔ x ∈ A ∧ (x ∈ B ∧ x ∉ C)`, which *does* have the form `a ↔ a`, so it can be proven with the term-mode proof `Iff.refl _`.  Note that we are using an underscore here to ask Lean to figure out what to plug in for `a`.  This saves us the trouble of writing out the full term-mode proof, which would be `Iff.refl (x ∈ A ∧ (x ∈ B ∧ x ∉ C))`.  The lesson of this example is that the theorem `Iff.refl` is more powerful than it looks.  Not only can we use `Iff.refl _` to prove statements of the form `a ↔ a`, we can also use it to prove statements of the form `a ↔ a'`, if `a` and `a'` reduce to the same thing when definitions are filled in.  We say in this case that `a` and `a'` are *definitionally equal*.  This explains the third line of the calculational proof, which is also justified by the proof `Iff.refl _`.
 
