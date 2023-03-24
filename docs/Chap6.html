@@ -93,6 +93,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <script src="site_libs/quarto-search/fuse.min.js"></script>
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
+<link href="./Chap7.html" rel="next">
 <link href="./Chap5.html" rel="prev">
 <script src="site_libs/quarto-html/quarto.js"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
@@ -198,6 +199,11 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./Chap6.html" class="sidebar-item-text sidebar-link active"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Mathematical Induction</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Chap7.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Number Theory</span></a>
   </div>
 </li>
     </ul>
@@ -479,7 +485,7 @@ $$
 <span id="cb18-16"><a href="#cb18-16" aria-hidden="true" tabindex="-1"></a>    <span class="kw">done</span></span>
 <span id="cb18-17"><a href="#cb18-17" aria-hidden="true" tabindex="-1"></a>  <span class="kw">done</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>Finally, we turn to the question of why we made small changes in two of the examples from <em>HTPI</em>. Perhaps you have guessed by now that we were trying to avoid the use of subtraction. All of the numbers in the examples in this section were natural numbers, and subtraction of natural numbers is problematic. In the natural numbers, <code>3 - 2</code> is equal to <code>1</code>, but what is <code>2 - 3</code>? Lean’s answer is <code>0</code>.</p>
-<div class="sourceCode" id="cb19"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="sc">++</span><span class="kw">#eval</span><span class="sc">::</span> 2 - 3     <span class="co">--Answer: 0</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb19"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="sc">++</span><span class="do">#eval</span><span class="sc">::</span> 2 - 3     <span class="co">--Answer: 0</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>In Lean, if <code>a</code> and <code>b</code> are natural numbers and <code>a &lt; b</code>, then <code>a - b</code> is defined to be <code>0</code>. As a result, the algebraic laws of natural number subtraction are complicated. For example, <code>2 - 3 + 1 = 0 + 1 = 1</code>, but <code>2 + 1 - 3 = 3 - 3 = 0</code>, so it is not true that for all natural numbers <code>a</code>, <code>b</code>, and <code>c</code>, <code>a - b + c = a + c - b</code>.</p>
 <p>If you thought that the answer to the subtraction problem <code>2 - 3</code> was <code>-1</code>, then you automatically switched from the natural numbers to the integers. (Recall that the natural numbers are the numbers 0, 1, 2, …, while the integers are the numbers …, –3, –2, –1, 0, 1, 2, 3, ….) To a human mathematician, this is a perfectly natural thing to do: the natural numbers are a subset of the integers, so <code>2</code> and <code>3</code> are not only natural numbers but also integers, and we can compute <code>2 - 3</code> in the integers.</p>
 <p>However, that’s not how things work in Lean. In Lean, different types are completely separate. In particular, <code>Nat</code> and <code>Int</code> are separate types, and therefore the natural numbers are not a subset of the integers. Of course, there is an integer 2, but it is different from the natural number 2. By default, Lean assumes that <code>2</code> denotes the natural number 2, but you can specify that you want the integer 2 by writing <code>(2 : Int)</code>. Subtraction of integers in Lean is the subtraction you are familiar with, and it has all the algebraic properties you would expect. If we want to use subtraction in the theorems in this section, we are better off using familiar integer subtraction rather than funky natural number subtraction.</p>
@@ -833,7 +839,7 @@ $$
 </div>
 <p>Here is the same definition written in Lean. (For reasons that will become clear shortly, we have given the function the name <code>fact</code>.)</p>
 <div class="sourceCode" id="cb50"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb50-1"><a href="#cb50-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> fact (k : Nat) : Nat :=</span>
-<span id="cb50-2"><a href="#cb50-2" aria-hidden="true" tabindex="-1"></a>  match k <span class="kw">with</span></span>
+<span id="cb50-2"><a href="#cb50-2" aria-hidden="true" tabindex="-1"></a>  <span class="kw">match</span> k <span class="kw">with</span></span>
 <span id="cb50-3"><a href="#cb50-3" aria-hidden="true" tabindex="-1"></a>    | 0 =&gt; 1</span>
 <span id="cb50-4"><a href="#cb50-4" aria-hidden="true" tabindex="-1"></a>    | n + 1 =&gt; (n + 1) * fact n</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>Lean can use this definition to compute <code>fact k</code> for any natural number <code>k</code>. The <code>match</code> statement tells Lean to try to match the input <code>k</code> with one of the two patterns <code>0</code> and <code>n + 1</code>, and then to use the corresponding formula after <code>=&gt;</code> to compute <code>fact k</code>. For example, if we ask Lean for <code>fact 4</code>, it first checks if <code>4</code> matches <code>0</code>. Since it doesn’t, it goes on to the next line and determines that <code>4</code> matches the pattern <code>n + 1</code>, with <code>n = 3</code>, so it uses the formula <code>fact 4 = 4 * fact 3</code>. Of course, now it must compute <code>fact 3</code>, which it does in the same way: <code>3</code> matches <code>n + 1</code> with <code>n = 2</code>, so <code>fact 3 = 3 * fact 2</code>. Continuing in this way, Lean determines that</p>
@@ -842,7 +848,7 @@ $$
        = 4 * (3 * (2 * (1 * fact 0))) = 4 * (3 * (2 * (1 * 1))) = 24</code></pre>
 </div>
 <p>You can confirm this with the <code>#eval</code> command:</p>
-<div class="sourceCode" id="cb52"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb52-1"><a href="#cb52-1" aria-hidden="true" tabindex="-1"></a>#eval fact 4   <span class="co">--Answer: 24</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb52"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb52-1"><a href="#cb52-1" aria-hidden="true" tabindex="-1"></a><span class="kw">#eval</span> fact 4   <span class="co">--Answer: 24</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>Of course, by now you have probably guessed why we used the name <code>fact</code> for his function: <code>fact k</code> is <code>k</code> factorial—the product of all the numbers from 1 to <code>k</code>.</p>
 <p>This style of definition is called a <em>recursive</em> definition. If a function is defined by a recursive definition, then theorems about that function are often most easily proven by induction. For example, here is a theorem about the factorial function. It is Example 6.3.1 in <em>HTPI</em>, and we begin the Lean proof by imitating the proof in <em>HTPI</em>.</p>
 <div class="sourceCode" id="cb53"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb53-1"><a href="#cb53-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> <span class="sc">??</span><span class="an">Example_6_3_1</span><span class="sc">::</span> : ∀ n ≥ 4, fact n &gt; 2 ^ n := <span class="kw">by</span></span>
@@ -872,7 +878,7 @@ $$
 <p>The second <code>sorry</code> is similar: <code>(n + 1) * 2 ^ n &gt; 2 * 2 ^ n</code> should follow from <code>n + 1 &gt; 2</code> and <code>2 ^ n &gt; 0</code>, and you can verify that the theorem that will justify this inference is <code>Nat.mul_lt_mul_of_pos_right</code>.</p>
 <p>So we have three inequalities that we need to prove before we can justify the steps of the calculational proof: <code>n + 1 &gt; 0</code>, <code>n + 1 &gt; 2</code>, and <code>2 ^ n &gt; 0</code>. We’ll insert <code>have</code> steps before the calculational proof to assert these three inequalities. If you try it, you’ll find that <code>linarith</code> can prove the first two, but not the third.</p>
 <p>How can we prove <code>2 ^ n &gt; 0</code>? It is often helpful to think about whether there is a general principle that is behind a statement we are trying to prove. In our case, the inequality <code>2 ^ n &gt; 0</code> is an instance of the general fact that if <code>m</code> and <code>n</code> are any natural numbers with <code>m &gt; 0</code>, then <code>m ^ n &gt; 0</code>. Maybe that fact is in Lean’s library:</p>
-<div class="sourceCode" id="cb55"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb55-1"><a href="#cb55-1" aria-hidden="true" tabindex="-1"></a><span class="kw">example</span> (m n : Nat) (h : m &gt; 0) : m ^ n &gt; 0 := <span class="kw">by</span> <span class="kw">library_search</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb55"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb55-1"><a href="#cb55-1" aria-hidden="true" tabindex="-1"></a><span class="kw">example</span> (m n : Nat) (h : m &gt; 0) : m ^ n &gt; 0 := <span class="kw">by</span> <span class="sc">++</span><span class="do">library_search</span><span class="sc">::</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>The <code>library_search</code> tactic comes up with <code>exact pow_pos h n</code>, and <code>#check @pow_pos</code> gives the result</p>
 <div class="ind">
 <pre><code>@pow_pos : ∀ {α : Type u_1} [inst : StrictOrderedSemiring α] {a : α},
@@ -903,13 +909,13 @@ $$
 <p>The next example in <em>HTPI</em> is a proof of one of the laws of exponents: <code>a ^ (m + n) = a ^ m * a ^ n</code>. Lean’s definition of exponentiation with natural number exponents is recursive. For some reason, the definitions are slightly different for different kinds of bases. The definitions Lean uses are essentially as follows:</p>
 <div class="sourceCode" id="cb58"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb58-1"><a href="#cb58-1" aria-hidden="true" tabindex="-1"></a><span class="co">--For natural numbers b and k, b ^ k = nat_pow b k:</span></span>
 <span id="cb58-2"><a href="#cb58-2" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> nat_pow (b k : Nat) : Nat :=</span>
-<span id="cb58-3"><a href="#cb58-3" aria-hidden="true" tabindex="-1"></a>  match k <span class="kw">with</span></span>
+<span id="cb58-3"><a href="#cb58-3" aria-hidden="true" tabindex="-1"></a>  <span class="kw">match</span> k <span class="kw">with</span></span>
 <span id="cb58-4"><a href="#cb58-4" aria-hidden="true" tabindex="-1"></a>    | 0 =&gt; 1</span>
 <span id="cb58-5"><a href="#cb58-5" aria-hidden="true" tabindex="-1"></a>    | n + 1 =&gt; (nat_pow b n) * b</span>
 <span id="cb58-6"><a href="#cb58-6" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb58-7"><a href="#cb58-7" aria-hidden="true" tabindex="-1"></a><span class="co">--For a real number b and a natural number k, b ^ k = real_pow b k:</span></span>
 <span id="cb58-8"><a href="#cb58-8" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> real_pow (b : Real) (k : Nat) : Real :=</span>
-<span id="cb58-9"><a href="#cb58-9" aria-hidden="true" tabindex="-1"></a>  match k <span class="kw">with</span></span>
+<span id="cb58-9"><a href="#cb58-9" aria-hidden="true" tabindex="-1"></a>  <span class="kw">match</span> k <span class="kw">with</span></span>
 <span id="cb58-10"><a href="#cb58-10" aria-hidden="true" tabindex="-1"></a>    | 0 =&gt; 1</span>
 <span id="cb58-11"><a href="#cb58-11" aria-hidden="true" tabindex="-1"></a>    | n + 1 =&gt; b * (real_pow b n)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>Let’s prove the addition law for exponents:</p>
@@ -1116,7 +1122,7 @@ $$
 <span id="cb71-32"><a href="#cb71-32" aria-hidden="true" tabindex="-1"></a>  <span class="kw">done</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>Before ending this section, we’ll return to a topic left unexplained before. We can now describe how <code>Sum i from k to n, f i</code> is defined. The key is a function <code>sum_less</code>, which is defined by recursion:</p>
 <div class="sourceCode" id="cb72"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb72-1"><a href="#cb72-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> sum_less {A : <span class="kw">Type</span>} [AddZeroClass A] (m : Nat) (f : Nat → A) : A :=</span>
-<span id="cb72-2"><a href="#cb72-2" aria-hidden="true" tabindex="-1"></a>  match m <span class="kw">with</span></span>
+<span id="cb72-2"><a href="#cb72-2" aria-hidden="true" tabindex="-1"></a>  <span class="kw">match</span> m <span class="kw">with</span></span>
 <span id="cb72-3"><a href="#cb72-3" aria-hidden="true" tabindex="-1"></a>    | 0 =&gt; 0</span>
 <span id="cb72-4"><a href="#cb72-4" aria-hidden="true" tabindex="-1"></a>    | n + 1 =&gt; sum_less n f + f n</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>To get an idea of what this definition means, let’s try evaluating <code>sum_less 3 f</code>:</p>
@@ -1155,7 +1161,7 @@ $$
 </div>
 <p>6. A sequence is defined recursively as follows:</p>
 <div class="sourceCode" id="cb79"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb79-1"><a href="#cb79-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> seq_6_3_15 (k : Nat) : Int :=</span>
-<span id="cb79-2"><a href="#cb79-2" aria-hidden="true" tabindex="-1"></a>  match k <span class="kw">with</span></span>
+<span id="cb79-2"><a href="#cb79-2" aria-hidden="true" tabindex="-1"></a>  <span class="kw">match</span> k <span class="kw">with</span></span>
 <span id="cb79-3"><a href="#cb79-3" aria-hidden="true" tabindex="-1"></a>    | 0 =&gt; 0</span>
 <span id="cb79-4"><a href="#cb79-4" aria-hidden="true" tabindex="-1"></a>    | n + 1 =&gt; 2 * seq_6_3_15 n + n</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>Prove the following theorem about this sequence:</p>
@@ -1163,7 +1169,7 @@ $$
 <span id="cb80-2"><a href="#cb80-2" aria-hidden="true" tabindex="-1"></a>    seq_6_3_15 n = 2 ^ n - n - 1 := <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>7. A sequence is defined recursively as follows:</p>
 <div class="sourceCode" id="cb81"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb81-1"><a href="#cb81-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> seq_6_3_16 (k : Nat) : Nat :=</span>
-<span id="cb81-2"><a href="#cb81-2" aria-hidden="true" tabindex="-1"></a>  match k <span class="kw">with</span></span>
+<span id="cb81-2"><a href="#cb81-2" aria-hidden="true" tabindex="-1"></a>  <span class="kw">match</span> k <span class="kw">with</span></span>
 <span id="cb81-3"><a href="#cb81-3" aria-hidden="true" tabindex="-1"></a>    | 0 =&gt; 2</span>
 <span id="cb81-4"><a href="#cb81-4" aria-hidden="true" tabindex="-1"></a>    | n + 1 =&gt; (seq_6_3_16 n) ^ 2</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>Find a formula for <code>seq_6_3_16 n</code>. Fill in the blank in the theorem below with your formula and then prove the theorem.</p>
@@ -1243,7 +1249,7 @@ $$
 <span id="cb88-30"><a href="#cb88-30" aria-hidden="true" tabindex="-1"></a>        _ = (q' + 1) * m + r' := <span class="kw">by</span> <span class="kw">ring</span></span>
 <span id="cb88-31"><a href="#cb88-31" aria-hidden="true" tabindex="-1"></a>    <span class="kw">done</span></span>
 <span id="cb88-32"><a href="#cb88-32" aria-hidden="true" tabindex="-1"></a>  <span class="kw">done</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>The numbers <code>q</code> and <code>r</code> in <code>Example_6_4_1</code> are called the <em>quotient</em> and <em>remainder</em> when <code>n</code> is divided by <code>m</code>. Lean knows how to compute these numbers: if <code>n</code> and <code>m</code> are natural numbers, then in Lean, <code>n / m</code> denotes the quotient when <code>n</code> is divided by <code>m</code>, and <code>n % m</code> denotes the remainder. (The number <code>n % m</code> is also sometimes called <code>n</code> <em>modulo</em> <code>m</code>.) And Lean knows theorems stating that these numbers have the properties specified in <code>Example_6_4_1</code>:</p>
+<p>The numbers <code>q</code> and <code>r</code> in <code>Example_6_4_1</code> are called the <em>quotient</em> and <em>remainder</em> when <code>n</code> is divided by <code>m</code>. Lean knows how to compute these numbers: if <code>n</code> and <code>m</code> are natural numbers, then in Lean, <code>n / m</code> denotes the quotient when <code>n</code> is divided by <code>m</code>, and <code>n % m</code> denotes the remainder. (The number <code>n % m</code> is also sometimes called <code>n</code> <em>modulo</em> <code>m</code>, or <code>n</code> <em>mod</em> <code>m</code>.) And Lean knows theorems stating that these numbers have the properties specified in <code>Example_6_4_1</code>:</p>
 <div class="ind">
 <pre><code>@Nat.div_add_mod : ∀ (m n : ℕ), n * (m / n) + m % n = m
 
@@ -1252,7 +1258,7 @@ $$
 <p>By the way, although we are unlikely to want to use the notation <code>n / 0</code> or <code>n % 0</code>, Lean uses the definitions <code>n / 0 = 0</code> and <code>n % 0 = n</code>. As a result, the equation <code>n * (m / n) + m % n = m</code> is true even if <code>n = 0</code>. That’s why the theorem <code>Nat.div_add_mod</code> doesn’t include a requirement that <code>n &gt; 0</code>.</p>
 <p>There is also a strong form of recursion. As an example of this, here is a recursive definition of a sequence of numbers called the <em>Fibonacci numbers</em>:</p>
 <div class="sourceCode" id="cb90"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb90-1"><a href="#cb90-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> Fib (n : Nat) : Nat :=</span>
-<span id="cb90-2"><a href="#cb90-2" aria-hidden="true" tabindex="-1"></a>  match n <span class="kw">with</span></span>
+<span id="cb90-2"><a href="#cb90-2" aria-hidden="true" tabindex="-1"></a>  <span class="kw">match</span> n <span class="kw">with</span></span>
 <span id="cb90-3"><a href="#cb90-3" aria-hidden="true" tabindex="-1"></a>    | 0 =&gt; 0</span>
 <span id="cb90-4"><a href="#cb90-4" aria-hidden="true" tabindex="-1"></a>    | 1 =&gt; 1</span>
 <span id="cb90-5"><a href="#cb90-5" aria-hidden="true" tabindex="-1"></a>    | k + 2 =&gt; Fib k + Fib (k + 1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -1481,7 +1487,7 @@ $$
 </div>
 <div class="numex" data-arguments="8">
 <div class="sourceCode" id="cb111"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb111-1"><a href="#cb111-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> Fib_like (n : Nat) : Nat :=</span>
-<span id="cb111-2"><a href="#cb111-2" aria-hidden="true" tabindex="-1"></a>  match n <span class="kw">with</span></span>
+<span id="cb111-2"><a href="#cb111-2" aria-hidden="true" tabindex="-1"></a>  <span class="kw">match</span> n <span class="kw">with</span></span>
 <span id="cb111-3"><a href="#cb111-3" aria-hidden="true" tabindex="-1"></a>    | 0 =&gt; 1</span>
 <span id="cb111-4"><a href="#cb111-4" aria-hidden="true" tabindex="-1"></a>    | 1 =&gt; 2</span>
 <span id="cb111-5"><a href="#cb111-5" aria-hidden="true" tabindex="-1"></a>    | k + 2 =&gt; 2 * (Fib_like k) + Fib_like (k + 1)</span>
@@ -1490,7 +1496,7 @@ $$
 </div>
 <div class="numex" data-arguments="9">
 <div class="sourceCode" id="cb112"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb112-1"><a href="#cb112-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> triple_rec (n : Nat) : Nat :=</span>
-<span id="cb112-2"><a href="#cb112-2" aria-hidden="true" tabindex="-1"></a>  match n <span class="kw">with</span></span>
+<span id="cb112-2"><a href="#cb112-2" aria-hidden="true" tabindex="-1"></a>  <span class="kw">match</span> n <span class="kw">with</span></span>
 <span id="cb112-3"><a href="#cb112-3" aria-hidden="true" tabindex="-1"></a>    | 0 =&gt; 0</span>
 <span id="cb112-4"><a href="#cb112-4" aria-hidden="true" tabindex="-1"></a>    | 1 =&gt; 2</span>
 <span id="cb112-5"><a href="#cb112-5" aria-hidden="true" tabindex="-1"></a>    | 2 =&gt; 4</span>
@@ -1514,7 +1520,7 @@ $$
 <p>Section 6.5 of <em>HTPI</em> gives one more application of recursion and induction: another proof of the existence of closures of sets under functions. Recall from Section 5.4 that if <code>f : A → A</code> and <code>B : Set A</code>, then the <em>closure</em> of <code>B</code> under <code>f</code> is the smallest set containing <code>B</code> that is closed under <code>f</code>. In Section 5.4, we constructed the closure of <code>B</code> under <code>f</code> by taking the intersection of all sets containing <code>B</code> that are closed under <code>f</code>. In this section, we construct the closure by starting with the set <code>B</code> and repeatedly taking the image under <code>f</code>. For the motivation for this strategy, see <em>HTPI</em>; here we focus on how to carry out this strategy in Lean.</p>
 <p>To talk about repeatedly taking the image of a set under a function, we will need a recursive definition:</p>
 <div class="sourceCode" id="cb114"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb114-1"><a href="#cb114-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> rep_image {A : <span class="kw">Type</span>} (f : A → A) (n : Nat) (B : Set A) : Set A :=</span>
-<span id="cb114-2"><a href="#cb114-2" aria-hidden="true" tabindex="-1"></a>  match n <span class="kw">with</span></span>
+<span id="cb114-2"><a href="#cb114-2" aria-hidden="true" tabindex="-1"></a>  <span class="kw">match</span> n <span class="kw">with</span></span>
 <span id="cb114-3"><a href="#cb114-3" aria-hidden="true" tabindex="-1"></a>    | 0 =&gt; B</span>
 <span id="cb114-4"><a href="#cb114-4" aria-hidden="true" tabindex="-1"></a>    | k + 1 =&gt; image f (rep_image f k B)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>According to this definition, <code>rep_image f 0 B = B</code>, <code>rep_image f 1 B = image f B</code>, <code>rep_image f 2 B = image f (image f B)</code>, and so on. In other words, <code>rep_image f n B</code> is the result of starting with <code>B</code> and then taking the image under <code>f</code> <code>n</code> times. To make it easier to work with this definition, we state two simple theorems, both of which follow immediately from the definition.</p>
@@ -1606,7 +1612,7 @@ $$
 <p>In this exercise we will use the following additional definitions:</p>
 <div class="sourceCode" id="cb120"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb120-1"><a href="#cb120-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> rep_image_family {A : <span class="kw">Type</span>}</span>
 <span id="cb120-2"><a href="#cb120-2" aria-hidden="true" tabindex="-1"></a>    (F : Set (A → A)) (n : Nat) (B : Set A) : Set A :=</span>
-<span id="cb120-3"><a href="#cb120-3" aria-hidden="true" tabindex="-1"></a>  match n <span class="kw">with</span></span>
+<span id="cb120-3"><a href="#cb120-3" aria-hidden="true" tabindex="-1"></a>  <span class="kw">match</span> n <span class="kw">with</span></span>
 <span id="cb120-4"><a href="#cb120-4" aria-hidden="true" tabindex="-1"></a>    | 0 =&gt; B</span>
 <span id="cb120-5"><a href="#cb120-5" aria-hidden="true" tabindex="-1"></a>    | k + 1 =&gt; { x : A | ∃ f ∈ F, x ∈ image f (rep_image_family F k B) }</span>
 <span id="cb120-6"><a href="#cb120-6" aria-hidden="true" tabindex="-1"></a></span>
@@ -1644,7 +1650,7 @@ $$
 <p>2. A natural way to try to find the closure of a set under a function of two variables would be to use the following definitions and theorems:</p>
 <div class="sourceCode" id="cb124"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb124-1"><a href="#cb124-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> rep_image2 {A : <span class="kw">Type</span>}</span>
 <span id="cb124-2"><a href="#cb124-2" aria-hidden="true" tabindex="-1"></a>    (f : A → A → A) (n : Nat) (B : Set A) : Set A :=</span>
-<span id="cb124-3"><a href="#cb124-3" aria-hidden="true" tabindex="-1"></a>  match n <span class="kw">with</span></span>
+<span id="cb124-3"><a href="#cb124-3" aria-hidden="true" tabindex="-1"></a>  <span class="kw">match</span> n <span class="kw">with</span></span>
 <span id="cb124-4"><a href="#cb124-4" aria-hidden="true" tabindex="-1"></a>    | 0 =&gt; B</span>
 <span id="cb124-5"><a href="#cb124-5" aria-hidden="true" tabindex="-1"></a>    | k + 1 =&gt; image2 f (rep_image2 f k B)</span>
 <span id="cb124-6"><a href="#cb124-6" aria-hidden="true" tabindex="-1"></a></span>
@@ -1669,7 +1675,7 @@ $$
 <span id="cb126-3"><a href="#cb126-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb126-4"><a href="#cb126-4" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> rep_un_image2 {A : <span class="kw">Type</span>}</span>
 <span id="cb126-5"><a href="#cb126-5" aria-hidden="true" tabindex="-1"></a>    (f : A → A → A) (n : Nat) (B : Set A) : Set A :=</span>
-<span id="cb126-6"><a href="#cb126-6" aria-hidden="true" tabindex="-1"></a>  match n <span class="kw">with</span></span>
+<span id="cb126-6"><a href="#cb126-6" aria-hidden="true" tabindex="-1"></a>  <span class="kw">match</span> n <span class="kw">with</span></span>
 <span id="cb126-7"><a href="#cb126-7" aria-hidden="true" tabindex="-1"></a>    | 0 =&gt; B</span>
 <span id="cb126-8"><a href="#cb126-8" aria-hidden="true" tabindex="-1"></a>    | k + 1 =&gt; un_image2 f (rep_un_image2 f k B)</span>
 <span id="cb126-9"><a href="#cb126-9" aria-hidden="true" tabindex="-1"></a></span>
@@ -1708,7 +1714,7 @@ $$
 <div class="sourceCode" id="cb128"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb128-1"><a href="#cb128-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> idExt (A : <span class="kw">Type</span>) : Set (A × A) := { (x, y) : A × A | x = y }</span>
 <span id="cb128-2"><a href="#cb128-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb128-3"><a href="#cb128-3" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> rep_comp {A : <span class="kw">Type</span>} (R : Set (A × A)) (n : Nat) : Set (A × A) :=</span>
-<span id="cb128-4"><a href="#cb128-4" aria-hidden="true" tabindex="-1"></a>  match n <span class="kw">with</span></span>
+<span id="cb128-4"><a href="#cb128-4" aria-hidden="true" tabindex="-1"></a>  <span class="kw">match</span> n <span class="kw">with</span></span>
 <span id="cb128-5"><a href="#cb128-5" aria-hidden="true" tabindex="-1"></a>    | 0 =&gt; idExt A</span>
 <span id="cb128-6"><a href="#cb128-6" aria-hidden="true" tabindex="-1"></a>    | k + 1 =&gt; comp (rep_comp R k) R</span>
 <span id="cb128-7"><a href="#cb128-7" aria-hidden="true" tabindex="-1"></a></span>
@@ -1844,6 +1850,9 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       </a>          
   </div>
   <div class="nav-page nav-page-next">
+      <a href="./Chap7.html" class="pagination-link">
+        <span class="nav-page-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Number Theory</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
   </div>
 </nav>
 </div> <!-- /content -->

@@ -871,7 +871,7 @@ So we have three inequalities that we need to prove before we can justify the st
 How can we prove `2 ^ n > 0`?  It is often helpful to think about whether there is a general principle that is behind a statement we are trying to prove.  In our case, the inequality `2 ^ n > 0` is an instance of the general fact that if `m` and `n` are any natural numbers with `m > 0`, then `m ^ n > 0`.  Maybe that fact is in Lean's library:
 
 ```lean
-example (m n : Nat) (h : m > 0) : m ^ n > 0 := by library_search
+example (m n : Nat) (h : m > 0) : m ^ n > 0 := by ++library_search::
 ```
 
 The `library_search` tactic comes up with `exact pow_pos h n`, and `#check @pow_pos` gives the result
@@ -1372,7 +1372,7 @@ theorem Example_6_4_1 : ∀ m > 0, ∀ (n : Nat),
   done
 ```
 
-The numbers `q` and `r` in `Example_6_4_1` are called the *quotient* and *remainder* when `n` is divided by `m`.  Lean knows how to compute these numbers: if `n` and `m` are natural numbers, then in Lean, `n / m` denotes the quotient when `n` is divided by `m`, and `n % m` denotes the remainder.  (The number `n % m` is also sometimes called `n` *modulo* `m`.)  And Lean knows theorems stating that these numbers have the properties specified in `Example_6_4_1`:
+The numbers `q` and `r` in `Example_6_4_1` are called the *quotient* and *remainder* when `n` is divided by `m`.  Lean knows how to compute these numbers: if `n` and `m` are natural numbers, then in Lean, `n / m` denotes the quotient when `n` is divided by `m`, and `n % m` denotes the remainder.  (The number `n % m` is also sometimes called `n` *modulo* `m`, or `n` *mod* `m`.)  And Lean knows theorems stating that these numbers have the properties specified in `Example_6_4_1`:
 
 ::: {.ind}
 ```

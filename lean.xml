@@ -15,6 +15,10 @@
 <item>to</item>
 <item>on</item>
 <item>done</item>
+<item>mutual</item>
+<item>match</item>
+<item>end</item>
+<item>termination_by</item>
 <item>assume</item>
 <item>fix</item>
 <item>have</item>
@@ -22,6 +26,7 @@
 <item>Prop</item>
 <item>Type</item>
 <item>Sum</item>
+<item>Prod</item>
 <item>exact</item>
 <item>apply</item>
 <item>contrapos</item>
@@ -54,6 +59,8 @@
 <item>ring</item>
 <item>linarith</item>
 <item>norm_num</item>
+<item>#eval</item>
+<item>#check</item>
 </list>
 <list name="sorry">
 <item>sorry</item>
@@ -67,8 +74,7 @@
 <Detect2Chars attribute="Comment" context="multicomment" char="/" char1="-" />
 <Detect2Chars attribute="Error Delim" context="normerr" char="*" char1="*" />
 <Detect2Chars attribute="Error Delim" context="normalert" char="?" char1="?" />
-<Detect2Chars attribute="Error Delim" context="normoutput" char="#" char1="#" />
-<Detect2Chars attribute="Error Delim" context="command" char="+" char1="+" />
+<Detect2Chars attribute="Error Delim" context="normoutput" char="+" char1="+" />
 </context>
 <context attribute="Normal Error" lineEndContext="#stay" name="normerr" >
 <keyword attribute="Keyword Error" context="#stay" String="keywords" />
@@ -89,9 +95,6 @@
 </context>
 <context attribute="Comment" lineEndContext="#stay" name="multicomment" >
 <Detect2Chars attribute="Comment" context="#pop" char="-" char1="/" />
-</context>
-<context attribute="Keyword" lineEndContext="#stay" name="command" >
-<Detect2Chars attribute="Error Delim" context="#pop" char=":" char1=":" />
 </context>
 </contexts>
 <itemDatas>
@@ -114,7 +117,6 @@
 <comment name="singleLine" start="--" />
 <comment name="multiLine" start="/-" end="-/" />
 </comments>
-<keywords weakDeliminator="!" additionalDeliminator="#" />
+<keywords weakDeliminator="!" />
 </general>
-
 </language>

@@ -3997,7 +3997,7 @@ theorem union_comm {U : Type} (X Y : Set U) :
   fix x : U
   define : x ∈ X ∪ Y
   define : x ∈ Y ∪ X
-  ##library_search::
+  ++library_search::
   done
 ```
 
@@ -4845,7 +4845,7 @@ so `mul_sub_right_distrib 3 2 n` is a proof of `(3 - 2) * n = 3 * n - 2 * n`.  B
 Finally, the fifth equation is `(3 - 2) * n = n`.  Why is this true?  Because it is definitionally equal to `1 * n = n`.  Is there a theorem to justify this last equation?  One way to find the answer is to type in this example:
 
 ```lean
-example (n : Int) : 1 * n = n := by ##library_search::
+example (n : Int) : 1 * n = n := by ++library_search::
 ```
 
 Lean responds with `exact one_mul n`, and `#check @one_mul` yields

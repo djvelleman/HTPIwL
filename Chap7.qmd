@@ -1,0 +1,421 @@
+# Number Theory
+
+## 7.1.  Greatest Common Divisors
+
+Section 7.1 of *HTPI* introduces the Euclidean algorithm for computing the greatest common divisor (gcd) of two positive integers $a$ and $b$.  The motivation for the algorithm is the fact that if $r$ is the remainder when $a$ is divided by $b$, then any natural number that divides both $a$ and $b$ also divides $r$, and any natural number that divides both $b$ and $r$ also divides $a$.
+
+Let's prove these statements in Lean.  Recall that in Lean, the remainder when `a` is divided by `b` is called `a` mod `b`, and it is denoted `a % b`.  We'll prove the first statement, and leave the second as an exercise for you.  It will be convenient for our work with greatest common divisors in Lean to let `a` and `b` be natural numbers rather than positive integers (thus allowing either of them to be zero).  
+
+```lean
+theorem dvd_mod_of_dvd_a_b {a b d : Nat}
+    (h1 : d ∣ a) (h2 : d ∣ b) : d ∣ (a % b) := by
+  let q : Nat := a / b
+  have h3 : b * q + a % b = a := Nat.div_add_mod a b
+  obtain (j : Nat) (h4 : a = d * j) from h1
+  obtain (k : Nat) (h5 : b = d * k) from h2
+  define    --Goal : ∃ (c : Nat), a % b = d * c
+  apply Exists.intro (j - k * q)
+  show a % b = d * (j - k * q) from
+    calc a % b
+      _ = b * q + a % b - b * q := (Nat.add_sub_cancel_left _ _).symm
+      _ = a - b * q := by rw [h3]
+      _ = d * j - d * (k * q) := by rw [h4, h5, mul_assoc]
+      _ = d * (j - k * q) := (Nat.mul_sub_left_distrib _ _ _).symm
+  done
+
+theorem dvd_a_of_dvd_b_mod {a b d : Nat}
+    (h1 : d ∣ b) (h2 : d ∣ (a % b)) : d ∣ a := sorry
+```
+
+These theorems tell us that the gcd of `a` and `b` is the same as the gcd of `b` and `a % b`, which suggests that the following recursive definition should compute the gcd of `a` and `b`:
+
+```lean
+def **gcd:: (a b : Nat) : Nat :=
+  match b with
+    | 0 => a
+    | n + 1 => gcd (n + 1) (a % (n + 1))
+```
+
+Unfortunately, Lean puts a red squiggle under `gcd`, and it displays in the Infoview a long error message that begins `fail to show termination`.  What is Lean complaining about?
+
+The problem is that recursive definitions are dangerous.  To understand the danger, consider the following recursive definition:
+
+```lean
+def loop (n : Nat) : Nat := loop (n + 1)
+```
+
+Suppose we try to use this definition to compute `loop 3`.  The definition would lead us to perform the following calculation:
+
+::: {.ind}
+`loop 3 = loop 4 = loop 5 = loop 6 = ...`
+:::
+
+Clearly this calculation will go on forever and will never produce an answer.  So the definition of `loop` does not actually succeed in defining a function from `Nat` to `Nat`.
+
+Lean insists that recursive definitions must avoid such non-terminating calculations.  Why did it accept all of our previous recursive definitions?  The reason is that in each case, the definition of the value of the function at a natural number `n` referred only to values of the function at numbers smaller than `n`.  Since a decreasing list of natural numbers cannot go on forever, such definitions lead to calculations that are guaranteed to terminate.
+
+What about our recusive definition of `gcd a b`?  This function has two arguments, `a` and `b`, and when `b = n + 1`, the definition asks us to compute `gcd (n + 1) (a % (n + 1))`.  The first argument here could actually be larger than the first argument in the value we are trying to compute, `gcd a b`.  But the second argument will always be smaller, and that will suffice to guarantee that the calculation terminates.  We can tell Lean to focus on the second argument by adding a `termination_by` clause to the end of our recursive definition:
+
+```lean
+def gcd (a b : Nat) : Nat :=
+  match b with
+    | 0 => a
+    | n + 1 => **gcd (n + 1) (a % (n + 1))::
+  termination_by gcd a b => b
+```
+
+Unfortunately, Lean still isn't satisfied, but the error message this time is more helpful.  The message says that Lean failed to prove termination, and at the end of the message it says that the goal it failed to prove is `a % (n + 1) < Nat.succ n`.  Here `Nat.succ n` denotes the successor of `n`---that is, `n + 1`---so Lean was trying to prove that `a % (n + 1) < n + 1`, which is precisely what is needed to show that the second argument of `gcd (n + 1) (a % (n + 1))` is smaller than the second argument of `gcd a b` when `b = n + 1`.  We'll need to provide a proof of this goal to convince Lean to accept our recursive definition.  Fortunately, it's not hard to prove:
+
+```lean
+lemma mod_succ_lt (a n : Nat) : a % (n + 1) < n + 1 := by
+  have h : n + 1 > 0 := Nat.succ_pos n
+  show a % (n + 1) < n + 1 from Nat.mod_lt a h
+  done
+```
+
+Lean's error message suggests several ways to fix the problem with our recursive definition.  We'll use the first suggestion:  ``Use `have` expressions to prove the remaining goals``.  Here, finally, is the definition of `gcd` that Lean is willing to accept:
+
+```lean
+def gcd (a b : Nat) : Nat :=
+  match b with
+    | 0 => a
+    | n + 1 =>
+      have : a % (n + 1) < n + 1 := mod_succ_lt a n
+      gcd (n + 1) (a % (n + 1))
+  termination_by gcd a b => b
+```
+
+Notice that in the `have` expression, we have not bothered to specify an identifier for the assertion being proven, since we never need to refer to it.  Let's try out our `gcd` function:
+
+```lean
+++#eval:: gcd 672 161    --Answer: 7.  Note 672 = 7 * 96 and 161 = 7 * 23.
+```
+
+To establish the main properties of `gcd a b` we'll need several lemmas.  We prove some of them and leave others as exercises.
+
+```lean
+lemma gcd_base (a : Nat) : gcd a 0 = a := by rfl
+
+lemma plus_one_of_ne {n : Nat} (h : n ≠ 0) :
+    ∃ (k : Nat), n = k + 1 := sorry
+
+lemma gcd_nonzero (a : Nat) {b : Nat} (h : b ≠ 0) :
+    gcd a b = gcd b (a % b) := by
+  obtain (n : Nat) (h2 : b = n + 1) from plus_one_of_ne h
+  rewrite [h2]   --Goal : gcd a (n + 1) = gcd (n + 1) (a % (n + 1))
+  rfl
+  done
+
+lemma mod_nonzero_lt (a : Nat) {b : Nat} (h : b ≠ 0) : a % b < b := sorry
+
+lemma dvd_self (n : Nat) : n ∣ n := sorry
+```
+
+One of the most important properties of `gcd a b` is that it divides both `a` and `b`.  We prove it by strong induction on `b`.
+
+```lean
+theorem gcd_dvd : ∀ (b a : Nat), (gcd a b) ∣ a ∧ (gcd a b) ∣ b := by
+  by_strong_induc
+  fix b : Nat
+  assume ih : ∀ (b_1 : Nat), b_1 < b →
+    ∀ (a : Nat), (gcd a b_1) ∣ a ∧ (gcd a b_1) ∣ b_1
+  fix a : Nat
+  by_cases h1 : b = 0
+  · -- Case 1. h1 : b = 0
+    rewrite [h1, gcd_base]   --Goal: a ∣ a ∧ a ∣ 0
+    apply And.intro (dvd_self a)
+    define
+    apply Exists.intro 0
+    rfl
+    done
+  · -- Case 2. h1 : b ≠ 0
+    rewrite [gcd_nonzero a h1]
+      --Goal : gcd b (a % b) ∣ a ∧ gcd b (a % b) ∣ b
+    have h2 : a % b < b := mod_nonzero_lt a h1
+    have h3 : (gcd b (a % b)) ∣ b ∧ (gcd b (a % b)) ∣ (a % b) :=
+      ih (a % b) h2 b
+    apply And.intro _ h3.left
+    show (gcd b (a % b)) ∣ a from dvd_a_of_dvd_b_mod h3.left h3.right
+  done
+```
+
+You may wonder why we didn't start the proof like this:
+
+```lean
+theorem gcd_dvd : ∀ (a b : Nat), (gcd a b) ∣ a ∧ (gcd a b) ∣ b := by
+  fix a : Nat
+  by_strong_induc
+  fix b : Nat
+  assume ih : ∀ (b_1 : ℕ), b_1 < b → (gcd a b_1) ∣ a ∧ (gcd a b_1) ∣ b_1
+```
+
+In fact, this approach wouldn't have worked.  It is an interesting exercise to try to complete this version of the proof and see why it fails.
+
+Another interesting question is why we asserted both `(gcd a b) ∣ a` and `(gcd a b) ∣ b` in the same theorem.  Wouldn't it have been easier to give separate proofs of the statements `∀ (b a : Nat), (gcd a b) ∣ a` and `∀ (b a : Nat), (gcd a b) ∣ b`?  Again, you might find it enlightening to see why that wouldn't have worked.  However, now that we have proven both divisibility statements, we can state them as separate theorems:
+
+```lean
+theorem gcd_dvd_left (a b : Nat) : (gcd a b) ∣ a := (gcd_dvd b a).left
+
+theorem gcd_dvd_right (a b : Nat) : (gcd a b) ∣ b := (gcd_dvd b a).right
+```
+
+Next we turn to Theorem 7.1.4 in *HTPI*, which says that there are integers $s$ and $t$ such that $\text{gcd}(a, b) = s a + t b$.  (We say that $\text{gcd}(a, b)$ can be written as a *linear combination* of $a$ and $b$.)  In *HTPI*, this is proven by using an extended version of the Euclidean algorithm to compute the coefficients $s$ and $t$.  Here we will use a different recursive procedure to compute $s$ and $t$.  If $b = 0$, then $\text{gcd}(a, b) = a = 1 \cdot a + 0 \cdot b$, so we can use the values $s = 1$ and $t = 0$.  Otherwise, let $q$ and $r$ be the quotient and remainder when $a$ is divided by $b$.  Then $a = bq + r$ and $\text{gcd}(a, b) = \text{gcd}(b, r)$.  Now suppose that we have already computed integers $s'$ and $t'$ such that
+$$
+\text{gcd}(b, r) = s' b + t' r.
+$$
+Then
+\begin{align*}
+\text{gcd}(a, b) &= \text{gcd}(b, r) = s' b + t' r\\
+&= s' b + t' (a - bq) = t' a + (s' - t'q)b.
+\end{align*}
+Thus, to write $\text{gcd}(a, b) = s a + t b$ we can use the values
+\begin{equation}\tag{$*$}
+s = t', \qquad t = s' - t'q.
+\end{equation}
+
+We will use these equations as the basis for recursive definitions of Lean functions `gcd_c1` and `gcd_c2` such that the required coefficients can be obtained from the formulas `s = gcd_c1 a b` and `t = gcd_c2 a b`.  Notice that `s` and `t` could be negative, so they must have type `Int`, not `Nat`.  As a result, in definitions and theorems involving `gcd_c1` and `gcd_c2` we will sometimes have to deal with coercion of natural numbers to integers.
+
+The functions `gcd_c1` and `gcd_c2` will be *mutually recursive*; in other words, each will be defined not only in terms of itself but also in terms of the other.  Fortunately, Lean allows for such mutual recursion.  Here are the definitions we will use.
+
+```lean
+mutual
+  def gcd_c1 (a b : Nat) : Int :=
+    match b with
+      | 0 => 1
+      | n + 1 => 
+        have : a % (n + 1) < n + 1 := mod_succ_lt a n
+        gcd_c2 (n + 1) (a % (n + 1))
+          --Corresponds to s = t' in (*)
+
+  def gcd_c2 (a b : Nat) : Int :=
+    match b with
+      | 0 => 0
+      | n + 1 =>
+        have : a % (n + 1) < n + 1 := mod_succ_lt a n
+        gcd_c1 (n + 1) (a % (n + 1)) -
+          (gcd_c2 (n + 1) (a % (n + 1))) * ↑(a / (n + 1))
+          --Corresponds to t = s' - t'q in (*)
+end
+  termination_by
+    gcd_c1 a b => b
+    gcd_c2 a b => b
+```
+
+Notice that in the definition of `gcd_c2`, the quotient `a / (n + 1)` is computed using natural-number division, but it is then coerced to be an integer so that it can be multiplied by the integer `gcd_c2 (n + 1) (a % (n + 1))`.
+
+Our main theorem about these functions is that they give the coefficients needed to write `gcd a b` as a linear combination of `a` and `b`.  As usual, stating a few lemmas first helps with the proof.  We leave the proofs of two of them as exercises for you (hint: imitate the proof of `gcd_nonzero` above).
+
+```lean
+lemma gcd_c1_base (a : Nat) : gcd_c1 a 0 = 1 := by rfl
+
+lemma gcd_c1_nonzero (a : Nat) {b : Nat} (h : b ≠ 0) :
+    gcd_c1 a b = gcd_c2 b (a % b) := sorry
+
+lemma gcd_c2_base (a : Nat) : gcd_c2 a 0 = 0 := by rfl
+
+lemma gcd_c2_nonzero (a : Nat) {b : Nat} (h : b ≠ 0) :
+    gcd_c2 a b = gcd_c1 b (a % b) - (gcd_c2 b (a % b)) * ↑(a / b) := sorry
+```
+
+With that preparation, we are ready to prove that `gcd_c1 a b` and `gcd_c2 a b` give coefficients for expressing `gcd a b` as a linear combination of `a` and `b`.  Of course, the theorem is proven by strong induction.  We'll make a few comments after the proof that may help you follow the details.
+
+```lean
+theorem gcd_lin_comb : ∀ (b a : Nat),
+    (gcd_c1 a b) * a + (gcd_c2 a b) * b = gcd a b := by
+  by_strong_induc
+  fix b : Nat
+  assume ih : ∀ (b_1 : Nat), b_1 < b → ∀ (a : Nat),
+    (gcd_c1 a b_1) * ↑a + (gcd_c2 a b_1) * ↑b_1 = ↑(gcd a b_1)
+  fix a : Nat
+  by_cases h1 : b = 0
+  · -- Case 1. h1 : b = 0
+    rewrite [h1, gcd_c1_base, gcd_c2_base, gcd_base]
+      --Goal : 1 * ↑a + 0 * ↑0 = ↑a
+    norm_num
+    done
+  · -- Case 2. h1 : b ≠ 0
+    rewrite [gcd_c1_nonzero a h1, gcd_c2_nonzero a h1, gcd_nonzero a h1]
+    let r : Nat := a % b
+    let q : Nat := a / b
+    let s : Int := gcd_c1 b r
+    let t : Int := gcd_c2 b r
+    have hr : a % b = r := by rfl
+    have hq : a / b = q := by rfl
+    have hs : gcd_c1 b r = s := by rfl
+    have ht : gcd_c2 b r = t := by rfl
+    have h2 : r < b := mod_nonzero_lt a h1
+    have h3 : (gcd_c1 b r) * ↑b + (gcd_c2 b r )* ↑r = ↑(gcd b r) :=
+      ih r h2 b
+    rewrite [hr, ←h3, hs, ht, hq]
+      --Goal : t * ↑a + (s - t * ↑q) * ↑b = s * ↑b + t * ↑r
+    have h4 : (↑a : Int) = ↑b * ↑q + ↑r := by
+      rewrite [←Nat.div_add_mod a b, Nat.cast_add, Nat.cast_mul]
+      rfl
+      done
+    rewrite [h4]
+      --Goal : t * (↑b * ↑q + ↑r) + (s - t * ↑q) * ↑b = s * ↑b + t * ↑r
+    ring
+    done
+  done
+```
+
+In the statement of the theorem, we have left it up to Lean to insert the required coercions.  You can see the coercions by looking at the tactic state at the beginning of the proof, where the equation to be proven is displayed as
+
+::: {.ind}
+`gcd_c1 a b * ↑a + gcd_c2 a b * ↑b = ↑(gcd a b)`
+:::
+
+For clarity, we have written the coercions explicitly in the statement of the inductive hypothesis.  In case 2, we have introduced the variables `r`, `q`, `s`, and `t` to simplify the notation.  In the statement `h4`, Lean wouldn't have known what type to coerce the variables to if we hadn't specified the type of `↑a` on the left side of the equation; with that hint, Lean figured out that for the equation to make sense, the variables on the right side also had to be coerced to type `Int`.  In the proof of `h4`, the rewrite rule `←Nat.div_add_mod a b` converts the left side of the goal to `↑(b * q + r)`.  You can use the `#check` command to see why `Nat.cast_add` and `Nat.cast_mul` then convert the left side to first `↑(b * q) + ↑r` and then `↑b * ↑q + ↑r`.
+
+We can try out the functions `gcd_c1` and `gcd_c2` as follows:
+
+```lean
+++#eval:: gcd_c1 672 161  --Answer: 6
+++#eval:: gcd_c2 672 161  --Answer: -25
+  --Note 6 * 672 - 25 * 161 = 4032 - 4025 = 7 = gcd 672 161
+```
+
+Finally, we turn to Theorem 7.1.6 in *HTPI*, which expresses one of the senses in which `gcd a b` is the *greatest* common divisor of `a` and `b`.  Our proof follows the strategy of the proof in *HTPI*, with one additional step: we begin by using the theorem `Int.coe_nat_dvd` to change the goal from `d ∣ gcd a b` to `↑d ∣ ↑(gcd a b)`, so that the rest of the proof can work with integer algebra rather than natural-number algebra.
+
+```lean
+theorem Theorem_7_1_6 {d a b : Nat} (h1 : d ∣ a) (h2 : d ∣ b) :
+    d ∣ gcd a b := by
+  rewrite [←Int.coe_nat_dvd]    --Goal : ↑d ∣ ↑(gcd a b)
+  let s : Int := gcd_c1 a b
+  let t : Int := gcd_c2 a b
+  have h3 : s * ↑a + t * ↑b = ↑(gcd a b) := gcd_lin_comb b a
+  rewrite [←h3]                 --Goal : ↑d ∣ s * ↑a + t * ↑b
+  obtain (j : Nat) (h4 : a = d * j) from h1
+  obtain (k : Nat) (h5 : b = d * k) from h2
+  rewrite [h4, h5, Nat.cast_mul, Nat.cast_mul]
+    --Goal : ↑d ∣ s * (↑d * ↑j) + t * (↑d * ↑k)
+  define
+  apply Exists.intro (s * ↑j + t * ↑k)
+  ring
+  done
+```
+
+## 7.2.  Prime Factorization
+
+A natural number $n$ is said to be *prime* if it is at least 2 and it cannot be written as a product of two smaller natural numbers.  Two natural numbers are *relatively prime* if their greatest common divisor is 1.  Of course, we can write these definitions in Lean.
+
+```lean
+def prime (n : Nat) : Prop :=
+  2 ≤ n ∧ ¬∃ (a b : Nat), a * b = n ∧ a < n ∧ b < n
+
+def rel_prime (a b : Nat) : Prop := gcd a b = 1
+```
+
+The main goal of Section 7.2 of *HTPI* is to prove that every positive integer can be written in a unique way as a product of prime numbers.  In preparation for that goal, *HTPI* proves two theorems, 7.2.2 and 7.2.3.  Here are proofs of those theorems in Lean, with the proof of one lemma left as an exercise.  In the proof of Theorem 7.2.2, we begin, as we did in the proof of Theorem 7.1.6, by converting the goal from natural numbers to integers so that we can use integer algebra.
+
+```lean
+theorem Theorem_7_2_2 {a b c : Nat}
+    (h1 : c ∣ a * b) (h2 : rel_prime a c) : c ∣ b := by
+  rewrite [←Int.coe_nat_dvd]  --Goal : ↑c ∣ ↑b
+  define at h1; define at h2; define
+  obtain (j : Nat) (h3 : a * b = c * j) from h1
+  let s : Int := gcd_c1 a c
+  let t : Int := gcd_c2 a c
+  have h4 : s * ↑a + t * ↑c = ↑(gcd a c) := gcd_lin_comb c a
+  rewrite [h2, Nat.cast_one] at h4  --h4 : s * ↑a + t * ↑c = (1 : Int)
+  apply Exists.intro (s * ↑j + t * ↑b)
+  show ↑b = ↑c * (s * ↑j + t * ↑b) from
+    calc ↑b
+      _ = (1 : Int) * ↑b := (one_mul _).symm
+      _ = (s * ↑a + t * ↑c) * ↑b := by rw [h4]
+      _ = s * (↑a * ↑b) + t * ↑c * ↑b := by ring
+      _ = s * (↑c * ↑j) + t * ↑c * ↑b := by
+          rw [←Nat.cast_mul a b, h3, Nat.cast_mul c j]
+      _ = ↑c * (s * ↑j + t * ↑b) := by ring
+  done
+
+lemma dvd_prime {a p : Nat}
+    (h1 : prime p) (h2 : a ∣ p) : a = 1 ∨ a = p := sorry
+
+lemma rel_prime_of_prime_not_dvd {a p : Nat}
+    (h1 : prime p) (h2 : ¬p ∣ a) : rel_prime a p := by
+  have h3 : gcd a p ∣ a := gcd_dvd_left a p
+  have h4 : gcd a p ∣ p := gcd_dvd_right a p
+  have h5 : gcd a p = 1 ∨ gcd a p = p := dvd_prime h1 h4
+  have h6 : gcd a p ≠ p := by
+    contradict h2 with h6
+    rewrite [h6] at h3
+    show p ∣ a from h3
+    done
+  disj_syll h5 h6
+  show rel_prime a p from h5
+  done
+
+theorem Theorem_7_2_3 {a b p : Nat}
+    (h1 : prime p) (h2 : p ∣ a * b) : p ∣ a ∨ p ∣ b := by
+  or_right with h3
+  have h4 : rel_prime a p := rel_prime_of_prime_not_dvd h1 h3
+  show p ∣ b from Theorem_7_2_2 h2 h4
+  done
+```
+
+Defining the prime factorization of a natural number `n` in Lean will take several steps.  For `n ≥ 2`, we begin by searching for the smallest prime factor of `n`.  A natural approach is to test whether `n` is divisible by 2, then 3, then 4, and so on, until we find a divisor of `n`.  However, we have to be careful how we describe this calculation to Lean: since we are testing larger and larger potential divisors, Lean may fear that the calculation may not terminate.  To avoid this problem, we will ask Lean to test whether or not `(n - k) ∣ n` for various values of `k`.  By performing this test for smaller and smaller values of `k`, we will test larger and larger potential divisors of `n`.  Since `k` is decreasing, the search is guaranteed to terminate.  If `k` reaches 0, then we will test whether or not `n ∣ n`, and of course the answer will be yes.
+
+We begin by defining a function `first_div_ge` such that for any `n` and `k`, `first_div_ge n k` is the smallest divisor of `n` that is greater than or equal to `n - k`.
+
+```lean
+def first_div_ge (n k : Nat) : Nat :=
+  match k with
+    | 0 => n
+    | j + 1 => if n - (j + 1) ∣ n then n - (j+ 1) else first_div_ge n j
+```
+
+This is the first time we have used an `if ... then ... else` expression in a Lean definition.  To prove theorems about such expressions, we will need two theorems from Lean's library, `if_pos` and `if_neg`.  The `#check` command tells us what they say:
+
+::: {.ind}
+```
+@if_pos : ∀ {c : Prop} {h : Decidable c},
+          c → ∀ {α : Sort u_1} {t e : α}, (if c then t else e) = t
+@if_neg : ∀ {c : Prop} {h : Decidable c},
+          ¬c → ∀ {α : Sort u_1} {t e : α}, (if c then t else e) = e
+```
+:::
+
+Ignoring the implicit arguments, this tells us that if `h` is a proof of a proposition `c`, then `if_pos h` is a proof of `(if c then t else e) = t`, and if `h` is a proof of `¬c`, then `if_neg h` is a proof of `(if c then t else e) = e`.  (Technically, the implicit arguments say that `c` must be a "decidable" proposition, but we won't worry about that detail.)
+
+The important properties of `first_div_ge` are that `first_div_ge n k` divides `n`, it is greater than or equal to `n - k`, and it is the smallest number with those two properties.  All three can be proven by induction on `k`.  We prove the first, and leave the other two as exercises.
+
+```lean
+lemma fdge_base (n : Nat) : first_div_ge n 0 = n := by rfl
+
+lemma fdge_step (n j : Nat) :
+    first_div_ge n (j + 1) =
+      if n - (j + 1) ∣ n then n - (j + 1) else first_div_ge n j := by rfl
+
+lemma fdge_dvd (n : Nat) : ∀ (k : Nat), first_div_ge n k ∣ n := by
+  by_induc
+  · -- Base Case
+    rewrite [fdge_base]  --Goal : n ∣ n
+    show n ∣ n from dvd_self n
+    done
+  · -- Induction Step
+    fix k : Nat
+    assume ih : first_div_ge n k ∣ n
+    rewrite [fdge_step]  --Goal :
+      -- (if n - (k + 1) ∣ n then n - (k + 1) else first_div_ge n k) ∣ n
+    by_cases h1 : n - (k + 1) ∣ n
+    · -- Case 1. h1: n - (k + 1) ∣ n
+      rewrite [if_pos h1]  --Goal : n - (k + 1) ∣ n
+      show n - (k + 1) ∣ n from h1
+      done
+    · -- Case 2. h1: ¬n - (k + 1) ∣ n
+      rewrite [if_neg h1]  --Goal : first_div_ge n k ∣ n
+      show first_div_ge n k ∣ n from ih
+      done
+    done
+  done
+
+lemma fdge_ge (n : Nat) : ∀ (k : Nat), n - k ≤ first_div_ge n k := sorry
+--Hint:  You may find the theorem Nat.sub_le_sub_left useful
+
+lemma fdge_least (d n : Nat) : ∀ (k : Nat),
+    d ∣ n → n - k ≤ d → first_div_ge n k ≤ d := sorry
+--Hints:
+--1. n - (k + 1) is definitionally equal to n - k - 1
+--2. You may find the theorems le_tsub_add and lt_of_le_of_ne' useful
+```

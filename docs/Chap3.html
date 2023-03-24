@@ -201,6 +201,11 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   <a href="./Chap6.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Mathematical Induction</span></a>
   </div>
 </li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Chap7.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Number Theory</span></a>
+  </div>
+</li>
     </ul>
     </div>
 </nav>
@@ -3375,7 +3380,7 @@ x \in A \cap (B \setmin C) &amp;\text{ iff } x \in A \wedge x \in B \setmin C\\
 <span id="cb252-4"><a href="#cb252-4" aria-hidden="true" tabindex="-1"></a>  <span class="kw">fix</span> x : U</span>
 <span id="cb252-5"><a href="#cb252-5" aria-hidden="true" tabindex="-1"></a>  <span class="kw">define</span> : x ∈ X ∪ Y</span>
 <span id="cb252-6"><a href="#cb252-6" aria-hidden="true" tabindex="-1"></a>  <span class="kw">define</span> : x ∈ Y ∪ X</span>
-<span id="cb252-7"><a href="#cb252-7" aria-hidden="true" tabindex="-1"></a>  <span class="sc">##</span><span class="do">library_search</span><span class="sc">::</span></span>
+<span id="cb252-7"><a href="#cb252-7" aria-hidden="true" tabindex="-1"></a>  <span class="sc">++</span><span class="do">library_search</span><span class="sc">::</span></span>
 <span id="cb252-8"><a href="#cb252-8" aria-hidden="true" tabindex="-1"></a>  <span class="kw">done</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>It takes a few seconds for Lean to search its library of theorems, but eventually a blue squiggle appears under <code>library_search</code>, indicating that the tactic has produced an answer. You will find the answer in the Infoview pane: <code>exact or_comm' (x ∈ X) (x ∈ Y)</code>. The word <code>exact</code> is the name of a tactic that we have not discussed; it is a shorthand for <code>show _ from</code>, where the blank gets filled in with the goal. Thus, you can think of <code>library_search</code>’s answer as a shortened form of the tactic</p>
 <div class="ind">
@@ -4031,7 +4036,7 @@ x \in A \cap (B \setmin C) &amp;\text{ iff } x \in A \wedge x \in B \setmin C\\
 </div>
 <p>so <code>mul_sub_right_distrib 3 2 n</code> is a proof of <code>(3 - 2) * n = 3 * n - 2 * n</code>. But the fourth equation has the sides of this equation reversed, so to justify it we need <code>(mul_sub_right_distrib 3 2 n).symm</code>.</p>
 <p>Finally, the fifth equation is <code>(3 - 2) * n = n</code>. Why is this true? Because it is definitionally equal to <code>1 * n = n</code>. Is there a theorem to justify this last equation? One way to find the answer is to type in this example:</p>
-<div class="sourceCode" id="cb303"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb303-1"><a href="#cb303-1" aria-hidden="true" tabindex="-1"></a><span class="kw">example</span> (n : Int) : 1 * n = n := <span class="kw">by</span> <span class="sc">##</span><span class="do">library_search</span><span class="sc">::</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb303"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb303-1"><a href="#cb303-1" aria-hidden="true" tabindex="-1"></a><span class="kw">example</span> (n : Int) : 1 * n = n := <span class="kw">by</span> <span class="sc">++</span><span class="do">library_search</span><span class="sc">::</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>Lean responds with <code>exact one_mul n</code>, and <code>#check @one_mul</code> yields</p>
 <div class="ind">
 <pre><code>@one_mul : ∀ {M : Type u_1} [inst : MulOneClass M] (a : M), 1 * a = a</code></pre>
