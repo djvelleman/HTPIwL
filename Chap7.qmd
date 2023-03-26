@@ -146,7 +146,7 @@ theorem gcd_dvd : ∀ (a b : Nat), (gcd a b) ∣ a ∧ (gcd a b) ∣ b := by
   fix a : Nat
   by_strong_induc
   fix b : Nat
-  assume ih : ∀ (b_1 : ℕ), b_1 < b → (gcd a b_1) ∣ a ∧ (gcd a b_1) ∣ b_1
+  assume ih : ∀ (b_1 : Nat), b_1 < b → (gcd a b_1) ∣ a ∧ (gcd a b_1) ∣ b_1
 ```
 
 In fact, this approach wouldn't have worked.  It is an interesting exercise to try to complete this version of the proof and see why it fails.
@@ -306,7 +306,7 @@ def prime (n : Nat) : Prop :=
 def rel_prime (a b : Nat) : Prop := gcd a b = 1
 ```
 
-The main goal of Section 7.2 of *HTPI* is to prove that every positive integer can be written in a unique way as a product of prime numbers.  In preparation for that goal, *HTPI* proves two theorems, 7.2.2 and 7.2.3.  Here are proofs of those theorems in Lean, with the proof of one lemma left as an exercise.  In the proof of Theorem 7.2.2, we begin, as we did in the proof of Theorem 7.1.6, by converting the goal from natural numbers to integers so that we can use integer algebra.
+The main goal of Section 7.2 of *HTPI* is to prove that every positive integer can be written in a unique way as a product of prime numbers.  In preparation for that goal, *HTPI* proves two theorems, 7.2.2 and 7.2.3.  Here are similar proofs of those theorems in Lean, with the proof of one lemma left as an exercise.  In the proof of Theorem 7.2.2, we begin, as we did in the proof of Theorem 7.1.6, by converting the goal from natural numbers to integers so that we can use integer algebra.
 
 ```lean
 theorem Theorem_7_2_2 {a b c : Nat}
@@ -376,7 +376,7 @@ This is the first time we have used an `if ... then ... else` expression in a Le
 ```
 :::
 
-Ignoring the implicit arguments, this tells us that if `h` is a proof of a proposition `c`, then `if_pos h` is a proof of `(if c then t else e) = t`, and if `h` is a proof of `¬c`, then `if_neg h` is a proof of `(if c then t else e) = e`.  (Technically, the implicit arguments say that `c` must be a "decidable" proposition, but we won't worry about that detail.)
+Ignoring the implicit arguments, this tells us that if `h` is a proof of a proposition `c`, then `if_pos h` is a proof of `(if c then t else e) = t`, and if `h` is a proof of `¬c`, then `if_neg h` is a proof of `(if c then t else e) = e`.  (Technically, the implicit arguments say that `c` must be a "decidable" proposition, but we won't worry about that detail.)  We often use these theorems with the `rewrite` tactic to rewrite an expression of the form `if c then t else e` as either `t` or `e`, depending on whether `c` is true or false.
 
 The important properties of `first_div_ge` are that `first_div_ge n k` divides `n`, it is greater than or equal to `n - k`, and it is the smallest number with those two properties.  All three can be proven by induction on `k`.  We prove the first, and leave the other two as exercises.
 
@@ -399,11 +399,11 @@ lemma fdge_dvd (n : Nat) : ∀ (k : Nat), first_div_ge n k ∣ n := by
     rewrite [fdge_step]  --Goal :
       -- (if n - (k + 1) ∣ n then n - (k + 1) else first_div_ge n k) ∣ n
     by_cases h1 : n - (k + 1) ∣ n
-    · -- Case 1. h1: n - (k + 1) ∣ n
+    · -- Case 1. h1 : n - (k + 1) ∣ n
       rewrite [if_pos h1]  --Goal : n - (k + 1) ∣ n
       show n - (k + 1) ∣ n from h1
       done
-    · -- Case 2. h1: ¬n - (k + 1) ∣ n
+    · -- Case 2. h1 : ¬n - (k + 1) ∣ n
       rewrite [if_neg h1]  --Goal : first_div_ge n k ∣ n
       show first_div_ge n k ∣ n from ih
       done
@@ -418,4 +418,543 @@ lemma fdge_least (d n : Nat) : ∀ (k : Nat),
 --Hints:
 --1. n - (k + 1) is definitionally equal to n - k - 1
 --2. You may find the theorems le_tsub_add and lt_of_le_of_ne' useful
+```
+
+Now we can define a Lean function that finds the smallest nontrivial divisor of `n`.  We will call it the *first divisor* of `n`.
+
+```lean
+def first_div (n : Nat) : Nat :=
+  match n with
+    | 0 => 0
+    | 1 => 1
+    | j + 2 => first_div_ge (j + 2) j
+```
+
+In the case `n = j + 2`, this function finds the smallest divisor of `n` that is greater than or equal to `(j + 2) - j = 2`.  The most important properties of `first_div` follow from the properties of `first_div_ge` that we proved earlier:
+
+```lean
+lemma fd_zero : first_div 0 = 0 := by rfl
+
+lemma fd_one : first_div 1 = 1 := by rfl
+
+lemma fd_plus_two (j : Nat) :
+    first_div (j + 2) = first_div_ge (j + 2) j := by rfl
+
+theorem fd_dvd (n : Nat) : first_div n ∣ n := by
+  by_cases h1 : n = 0
+  · -- Case 1. h1 : n = 0
+    rewrite [h1, fd_zero]
+    show 0 ∣ 0 from dvd_self 0
+    done
+  · -- Case 2. h1 : n ≠ 0
+    by_cases h2 : n = 1
+    · -- Case 2.1. h2 : n = 1
+      rewrite [h2, fd_one]
+      show 1 ∣ 1 from dvd_self 1
+      done
+    · -- Case 2.2. h2 : n ≠ 1
+      obtain (j : Nat) (h3 : n = j + 2) from plus_two_of_ne h1 h2
+      rewrite [h3, fd_plus_two j]
+      show first_div_ge (j + 2) j ∣ (j + 2) from fdge_dvd (j + 2) j
+      done
+    done
+  done
+
+theorem fd_nontriv (n : Nat) : first_div (n + 2) ≥ 2 := sorry
+
+theorem fd_least {n d : Nat} (h1 : d ∣ (n + 2)) (h2 : d ≥ 2) :
+    first_div (n + 2) ≤ d := sorry
+```
+
+Since `first_div n` divides `n`, there is some number `c` such that `c * (first_div n) = n`.  It will be useful to give this number a name.  We will call it the *first codivisor* of `n`:
+
+```lean
+def first_codiv (n : Nat) : Nat := n / (first_div n)
+ 
+lemma fc_mul_fd (n : Nat) : (first_codiv n) * (first_div n) = n :=
+    Nat.div_mul_cancel (fd_dvd n)
+
+lemma fd_mul_fc (n : Nat) : (first_div n) * (first_codiv n) = n := sorry
+
+lemma fc_dvd (n : Nat) : first_codiv n ∣ n := sorry
+```
+
+With this preparation, we can prove one more crucial property of `first_div`, namely, that when it is applied to a number that is at least 2, the result is prime:
+
+```lean
+theorem fd_prime (n : Nat) : prime (first_div (n + 2)) := by
+  define
+  apply And.intro (fd_nontriv n)
+  by_contra h1
+  obtain (a : Nat) (h2 : ∃ (b : Nat), a * b = first_div (n + 2) ∧
+    a < first_div (n + 2) ∧ b < first_div (n + 2)) from h1
+  obtain (b : Nat) (h3 : a * b = first_div (n + 2) ∧
+    a < first_div (n + 2) ∧ b < first_div (n + 2)) from h2
+  have h4 : a * b = first_div (n + 2) := h3.left
+  have h5 : a ≠ 0 := by
+    by_contra h5
+    rewrite [h5] at h4
+    have h6 : first_div (n + 2) ≥ 2 := fd_nontriv n
+    linarith   --h4 contradicts h6
+    done
+  have h6 : a ≠ 1 := by
+    by_contra h6
+    rewrite [h6] at h4
+    linarith   --h4 contradicts h3.right.right
+    done
+  have h7 : a ≥ 2 := ge_two_of_ne h5 h6
+  have h8 : a ∣ (n + 2) := by
+    define
+    apply Exists.intro (b * (first_codiv (n + 2)))
+    rewrite [←mul_assoc, h4]
+    show n + 2 = first_div (n + 2) * first_codiv (n + 2) from
+      (fd_mul_fc (n + 2)).symm
+    done
+  have h9 : first_div (n + 2) ≤ a := fd_least h8 h7
+  linarith   --h9 contradicts h3.right.left
+  done
+```
+
+To define the prime factorization of a positive integer, we will need a new type.  If `U` is any type, then `List U` is the type of lists of objects of type `U`.  Such a list is written in square brackets, with the entries separated by commas.  For example, `[3, 7, 1]` has type `List Nat`.  The notation `[]` denotes the empty list, and if `a` has type `U` and `l` has type `List U`, then `a :: l` denotes the list consisting of `a` followed by the entries of `l`.  The empty list is sometimes called the `nil` list, and the operation of constructing a list `a :: l` from `a` and `l` is called `cons` (short for *construct*).  Every list can be constructed by applying the `cons` operation repeatedly, starting with the `nil` list.  For example,
+
+::: {.ind}
+```
+[3, 7, 1] = 3 :: [7, 1] = 3 :: (7 :: [1]) = 3 :: (7 :: (1 :: []))
+```
+:::
+
+We can now define the prime factorization of a natural number `n`.  We use the lemma `fc_dec` to help Lean see that the calculation terminates.
+
+```lean
+lemma fc_dec (n : Nat) : first_codiv (n + 2) < n + 2 := sorry
+
+def prime_fac (n : Nat) : List Nat :=
+  match n with
+    | 0 => []
+    | 1 => []
+    | j + 2 => 
+      have : first_codiv (j + 2) < j + 2 := fc_dec j
+      first_div (j + 2) :: (prime_fac (first_codiv (j + 2)))
+```
+
+For example, here is how this definition computes the prime factorization of 276:
+
+::: {.ind}
+```
+prime_fac 276 = (first_div 276) :: (prime_fac (first_codiv 276))
+              = 2 :: (prime_fac 138)
+              = 2 :: ((first_div 138) :: (prime_fac (first_codiv 138)))
+              = 2 :: (2 :: (prime_fac 69))
+              = 2 :: (2 :: (3 :: (prime_fac 23)))
+              = 2 :: (2 :: (3 :: (23 :: (prime_fac 1))))
+              = 2 :: (2 :: (3 :: (23 :: []))) = [2, 2, 3, 23]
+```
+:::
+
+Notice that `2`, `3`, and `23` are all prime, and `2 * 2 * 3 * 23 = 276`.
+
+If `l` has type `List U` and `a` has type `U`, then `a ∈ l` means that `a` is one of the entries in the list `l`.  Lean knows several theorems about this notation:
+
+::: {.ind}
+```
+@List.not_mem_nil : ∀ {α : Type u_1} (a : α),
+                        ¬a ∈ []
+@List.mem_cons : ∀ {α : Type u_1} {a b : α} {l : List α},
+                        a ∈ b :: l ↔ a = b ∨ a ∈ l
+@List.mem_cons_self : ∀ {α : Type u_1} (a : α) (l : List α),
+                        a ∈ a :: l
+@List.mem_cons_of_mem : ∀ {α : Type u_1} (y : α) {a : α} {l : List α},
+                        a ∈ l → a ∈ y :: l
+```
+:::
+
+The first two theorems give the conditions under which something is a member of the `nil` list or a list constructed by `cons`, and the last two are easy consequences of the second.
+
+The most important properties of `prime_fac n`, for `n ≥ 1`, are that it is a nondecreasing list of prime numbers whose product is `n`.  Let's start by proving that all members of the list `prime_fac n` are prime.
+
+```lean
+lemma prime_fac_zero : prime_fac 0 = [] := by rfl
+
+lemma prime_fac_one : prime_fac 1 = [] := by rfl
+
+lemma prime_fac_step (j : Nat) : prime_fac (j + 2) =
+    (first_div (j + 2)) :: prime_fac (first_codiv (j + 2)) := by rfl
+
+def all_prime (l : List Nat) : Prop := ∀ (p : Nat), p ∈ l → prime p
+
+lemma all_prime_nil : all_prime [] := by
+  define     --Goal : ∀ (p : Nat), p ∈ [] → prime p
+  fix p : Nat
+  contrapos  --Goal : ¬prime p → ¬p ∈ []
+  assume h1 : ¬prime p
+  show ¬p ∈ [] from List.not_mem_nil p
+  done
+
+lemma all_prime_cons (n : Nat) (l : List Nat) :
+    all_prime (n :: l) ↔ prime n ∧ all_prime l := by
+  apply Iff.intro
+  · -- (→)
+    assume h1 : all_prime (n :: l)  --Goal : prime n ∧ all_prime l
+    define at h1  --h1 : ∀ (p : Nat), p ∈ n :: l → prime p
+    apply And.intro (h1 n (List.mem_cons_self n l))
+    define        --Goal : ∀ (p : Nat), p ∈ l → prime p
+    fix p : Nat
+    assume h2 : p ∈ l
+    show prime p from h1 p (List.mem_cons_of_mem n h2)
+    done
+  · -- (←)
+    assume h1 : prime n ∧ all_prime l  --Goal : all_prime (n :: l)
+    define : all_prime l at h1
+    define
+    fix p : Nat
+    assume h2 : p ∈ n :: l
+    rewrite [List.mem_cons] at h2   --h2 : p = n ∨ p ∈ l
+    by_cases on h2
+    · -- Case 1. h2 : p = n
+      rewrite [h2]
+      show prime n from h1.left
+      done
+    · -- Case 2. h2 : p ∈ l
+      show prime p from h1.right p h2
+      done
+    done
+  done
+
+theorem prime_fac_all_prime : ∀ (n : Nat), all_prime (prime_fac n) := by
+  by_strong_induc
+  fix n : Nat
+  assume ih : ∀ (n_1 : Nat), n_1 < n → all_prime (prime_fac n_1)
+  by_cases h1 : n = 0
+  · -- Case 1. h1 : n = 0
+    rewrite [h1, prime_fac_zero]
+    show all_prime [] from all_prime_nil
+    done
+  · -- Case 2. h1 : n ≠ 0
+    by_cases h2 : n = 1
+    · -- Case 2.1. h2 : n = 1
+      rewrite [h2, prime_fac_one]
+      show all_prime [] from all_prime_nil
+      done
+    · -- Case 2.2. h2 : n ≠ 1
+      obtain (j : Nat) (h3 : n = j + 2) from plus_two_of_ne h1 h2
+      rewrite [h3, prime_fac_step, all_prime_cons]
+      apply And.intro (fd_prime j)
+      rewrite [h3] at ih
+      show all_prime (prime_fac (first_codiv (j + 2))) from
+        ih (first_codiv (j + 2)) (fc_dec j)
+      done
+    done
+  done
+```
+
+Next we define `prod l` to be the product of the entries in the list `l`, and we show that for `n ≥ 1`, the product of the numbers in the prime factorization of `n` is `n`.
+
+```lean
+def prod (l : List Nat) : Nat :=
+  match l with
+    | [] => 1
+    | n :: L => n * (prod L)
+
+lemma prod_nil : prod [] = 1 := by rfl
+
+lemma prod_cons : prod (n :: l) = n * (prod l) := by rfl
+
+lemma fc_ge_one (n : Nat) : first_codiv (n + 2) ≥ 1 := sorry
+
+theorem prime_fac_prod : ∀ n ≥ 1, prod (prime_fac n) = n := by
+  by_strong_induc
+  fix n : Nat
+  assume ih : ∀ (n_1 : Nat), n_1 < n →
+    n_1 ≥ 1 → prod (prime_fac n_1) = n_1
+  assume h1 : n ≥ 1
+  by_cases h2 : n = 1
+  · -- Case 1. h2 : n = 1
+    rewrite [h2, prime_fac_one, prod_nil]
+    rfl
+    done
+  · -- Case 2. h2 : n ≠ 1
+    have h3 : n ≥ 2 := lt_of_le_of_ne' h1 h2
+    obtain (j : Nat) (h4 : n = j + 2) from plus_two_of_ge h3
+    rewrite [h4, prime_fac_step, prod_cons]
+    rewrite [h4] at ih
+    have h5 : prod (prime_fac (first_codiv (j + 2))) =
+      first_codiv (j + 2) :=
+      ih (first_codiv (j + 2)) (fc_dec j) (fc_ge_one j)
+    rewrite [h5]
+    show first_div (j + 2) * first_codiv (j + 2) = j + 2 from
+      fd_mul_fc (j + 2)
+  done
+```
+
+The third important property of `prime_fac n` is that it is a nondecreasing list.  Once again, we first define this property and then prove that `prime_fac n` has the property, leaving the proof of one lemma as an exercise.
+
+```lean
+def le_list (n : Nat) (l : List Nat) : Prop :=
+  ∀ (m : Nat), m ∈ l → n ≤ m
+
+def nondec (l : List Nat) : Prop :=
+  match l with
+    | [] => True
+    | n :: L => le_list n L ∧ nondec L
+
+lemma nondec_nil : nondec [] := by
+  define  --Goal : True
+  trivial --trivial proves some obviously true statements, such as True
+  done
+
+lemma nondec_cons (n : Nat) (l : List Nat) :
+    nondec (n :: l) ↔ le_list n l ∧ nondec l := by rfl
+
+lemma fd_le_prime_fac (n : Nat) : ∀ (k : Nat),
+    k ∣ (n + 2) → le_list (first_div (n + 2)) (prime_fac k) := sorry
+--Hint:  Use strong induction
+
+theorem prime_fac_nondec : ∀ (n : Nat), nondec (prime_fac n) := by
+  by_strong_induc
+  fix n : Nat
+  assume ih : ∀ (n_1 : Nat), n_1 < n → nondec (prime_fac n_1)
+  by_cases h1 : n = 0
+  · -- Case 1. h1 : n = 0
+    rewrite [h1, prime_fac_zero]
+    show nondec [] from nondec_nil
+    done
+  · -- Case 2. h1 : n ≠ 0
+    by_cases h2 : n = 1
+    · -- Case 2.1. h2 : n = 1
+      rewrite [h2, prime_fac_one]
+      show nondec [] from nondec_nil
+      done
+    · -- Case 2.2. h2 : n ≠ 1
+      obtain (j : Nat) (h3 : n = j + 2) from plus_two_of_ne h1 h2
+      rewrite [h3, prime_fac_step, nondec_cons]
+      apply And.intro
+      · -- Proof that first_div n ≤ rest of list
+        have h4 : first_codiv (j + 2) ∣ j + 2 := fc_dvd (j + 2)
+        show le_list (first_div (j + 2))
+          (prime_fac (first_codiv (j + 2))) from
+          fd_le_prime_fac j (first_codiv (j + 2)) h4
+        done
+      · -- Proof that rest of list is nondecreasing
+        have h4 : first_codiv (j + 2) < j + 2 := fc_dec j
+        rewrite [h3] at ih
+        show nondec (prime_fac (first_codiv (j + 2))) from
+          ih (first_codiv (j + 2)) h4
+      done
+    done
+  done
+```
+
+Finally, we turn to the proof of the uniqueness of prime factorizations.  One key ingredient in this proof is Theorem 7.2.4 of *HTPI*, which says that if a prime number divides a product of a list of numbers, then it divides one of the numbers in the list.  The proof is by induction on the length of the list, so we will need to know how to work with lengths of lists in Lean.  If `l` is a list, then the length of `l` is `List.length l`, which can also be written more briefly as `l.length`.  We'll need a few more theorems about lists:
+
+::: {.ind}
+```
+@List.length_eq_zero : ∀ {α : Type u_1} {l : List α},
+                      List.length l = 0 ↔ l = []
+@List.length_cons : ∀ {α : Type u_1} (a : α) (as : List α),
+                      List.length (a :: as) = Nat.succ (List.length as)
+@List.exists_cons_of_ne_nil : ∀ {α : Type u_1} {l : List α},
+                      l ≠ [] → ∃ (b : α), ∃ (L : List α), l = b :: L
+```
+:::
+
+And we'll leave a few lemmas as exercises for you:
+
+```lean
+lemma exists_cons_of_length_eq_succ
+    {l : List Nat} {n : Nat} (h : l.length = n + 1) :
+    ∃ (a : Nat) (L : List Nat), l = a :: L ∧ L.length = n := sorry
+
+lemma eq_one_of_dvd_one {n : Nat} (h : n ∣ 1) : n = 1 := sorry
+
+lemma prime_not_one {p : Nat} (h : prime p) : p ≠ 1 := sorry
+```
+
+We now have everything we need to prove Theorem 7.2.4.
+
+```lean
+theorem Theorem_7_2_4_by_length {p : Nat} (h1 : prime p) :
+    ∀ (k : Nat) (l : List Nat), l.length = k →
+    p ∣ prod l → ∃ (a : Nat), a ∈ l ∧ p ∣ a := by
+  by_induc
+  · -- Base Case
+    fix l : List Nat
+    assume h2 : l.length = 0
+    rewrite [List.length_eq_zero] at h2
+    rewrite [h2, prod_nil]
+    assume h3 : p ∣ 1
+    show ∃ (a : Nat), a ∈ [] ∧ p ∣ a from
+      absurd (eq_one_of_dvd_one h3) (prime_not_one h1)
+    done
+  · -- Induction Step
+    fix k : Nat
+    assume ih : ∀ (l : List Nat), l.length = k →
+      p ∣ prod l → ∃ (a : Nat), a ∈ l ∧ p ∣ a
+    fix l : List Nat
+    assume h2 : l.length = k + 1
+    obtain (a : Nat) (h3 : ∃ (L : List Nat),
+      l = a :: L ∧ L.length = k) from exists_cons_of_length_eq_succ h2
+    obtain (L : List Nat) (h4 : l = a :: L ∧ L.length = k) from h3
+    rewrite [h4.left, prod_cons]
+    assume h5 : p ∣ (a * prod L)
+    have h6 : p ∣ a ∨ p ∣ prod L := Theorem_7_2_3 h1 h5
+    by_cases on h6
+    · -- Case 1. h6 : p ∣ a
+      apply Exists.intro a
+      show a ∈ a :: L ∧ p ∣ a from
+        And.intro (List.mem_cons_self a L) h6
+      done
+    · -- Case 2. h6 : p ∣ prod L
+      have h7 : ∃ (a : Nat), a ∈ L ∧ p ∣ a := ih L h4.right h6
+      obtain (b : Nat) (h8 : b ∈ L ∧ p ∣ b) from h7
+      apply Exists.intro b
+      show b ∈ a :: L ∧ p ∣ b from
+        And.intro (List.mem_cons_of_mem a h8.left) h8.right
+      done
+    done
+  done
+
+theorem Theorem_7_2_4 {p : Nat} {l : List Nat}
+    (h1 : prime p) (h2 : p ∣ prod l) : ∃ (a : Nat), a ∈ l ∧ p ∣ a :=
+  Theorem_7_2_4_by_length h1 l.length l (Eq.refl l.length) h2
+```
+
+In Theorem 7.2.4, if all terms in the list `l` are prime, then we can conclude not merely that `p` divides some term, but that `p` is one of the terms of `l`.
+
+```lean
+lemma prime_in_list {p : Nat} {l : List Nat}
+    (h1 : prime p) (h2 : all_prime l) (h3 : p ∣ prod l) : p ∈ l := by
+  obtain (a : Nat) (h4 : a ∈ l ∧ p ∣ a) from Theorem_7_2_4 h1 h3
+  define at h2
+  have h5 : prime a := h2 a h4.left
+  have h6 : p = 1 ∨ p = a := dvd_prime h5 h4.right
+  disj_syll h6 (prime_not_one h1)
+  rewrite [h6]
+  show a ∈ l from h4.left
+  done
+```
+
+Next we'll need some facts about nondecreasing lists of prime numbers.
+
+```lean
+def nondec_prime_list (l : List Nat) : Prop := all_prime l ∧ nondec l
+
+lemma nondec_prime_list_tail {p : Nat} {l : List Nat}
+    (h : nondec_prime_list (p :: l)) : nondec_prime_list l := sorry
+
+lemma cons_prod_not_one {p : Nat} {l : List Nat}
+    (h : nondec_prime_list (p :: l)) : prod (p :: l) ≠ 1 := sorry
+
+lemma list_nil_iff_prod_one {l : List Nat} (h : nondec_prime_list l) :
+    l = [] ↔ prod l = 1 := sorry
+```
+
+In *HTPI*, a key step in the proof of the uniqueness of prime factorizations is to show that if two nondecreasing lists of prime numbers have the same product, then the last entry of one list is less than or equal to the last entry of the other.  In Lean, because of the way the `cons` operation works, it is easier to work with the first entries of the lists.
+
+```lean
+lemma first_le_first {p q : Nat} {l m : List Nat}
+    (h1 : nondec_prime_list (p :: l)) (h2 : nondec_prime_list (q :: m))
+    (h3 : prod (p :: l) = prod (q :: m)) : p ≤ q := by
+  define at h1; define at h2
+  have h4 : q ∣ prod (p :: l) := by
+    define
+    apply Exists.intro (prod m)
+    rewrite [←prod_cons]
+    show prod (p :: l) = prod (q :: m) from h3
+    done
+  have h5 : all_prime (q :: m) := h2.left
+  rewrite [all_prime_cons] at h5
+  have h6 : q ∈ p :: l := prime_in_list h5.left h1.left h4
+  have h7 : nondec (p :: l) := h1.right
+  rewrite [nondec_cons] at h7
+  rewrite [List.mem_cons] at h6
+  by_cases on h6
+  · -- Case 1. h6 : q = p
+    show p ≤ q from Nat.le_of_eq h6.symm
+    done
+  · -- Case 2.  h6 : q ∈ l
+    have h8 : le_list p l := h7.left
+    define at h8
+    show p ≤ q from h8 q h6
+    done
+  done
+```
+
+The uniqueness of prime factorizations follows from Theorem 7.2.5 of *HTPI*, which says that if two nondecreasing lists of prime numbers have the same product, then the two lists must be the same.  The proof in *HTPI* is by induction on the length of the first list, and we could use that method to prove the theorem in Lean.  But look back at our proof of `Theorem_7_2_4`, which also used induction on the length of a list.  In the base case, we ended up proving that the `nil` list has the property stated in the theorem, and in the induction step we proved that if a list `l` has the property, then so does any list of the form `a :: l`.  We could think of this as a kind of "induction on lists."  As we observed earlier, every list can be constructed by starting with the `nil` list and applying `cons` finitely many times.  If follows that if the `nil` list has some property, and applying the `cons` operation to a list with the property produces another list with the property, then all lists have the property.  (In fact, a similar principle was at work in our recursive definitions of `prod l` and `nondec l`.)
+
+Lean has a theorem called `List.rec` that can be used to justify induction on lists.  We'll use it to prove Theorem 7.2.5.
+
+```lean
+lemma prime_pos {p : Nat} (h : prime p) : p > 0 := sorry
+
+theorem Theorem_7_2_5 :
+    ∀ (l1 l2 : List Nat), nondec_prime_list l1 → nondec_prime_list l2 →
+    prod l1 = prod l2 → l1 = l2 := by
+  apply List.rec
+  · -- Base Case.  Goal : ∀ (l2 : List Nat), nondec_prime_list [] →
+    -- nondec_prime_list l2 → prod [] = prod l2 → [] = l2
+    fix l2 : List Nat
+    assume h1 : nondec_prime_list []
+    assume h2 : nondec_prime_list l2
+    assume h3 : prod [] = prod l2
+    rewrite [prod_nil, eq_comm, ←list_nil_iff_prod_one h2] at h3
+    show [] = l2 from h3.symm
+    done
+  · -- Induction Step
+    fix p : Nat
+    fix L1 : List Nat
+    assume ih : ∀ (L2 : List Nat), nondec_prime_list L1 →
+      nondec_prime_list L2 → prod L1 = prod L2 → L1 = L2
+    -- Goal : ∀ (l2 : List Nat), nondec_prime_list (p :: L1) →
+    -- nondec_prime_list l2 → prod (p :: L1) = prod l2 → p :: L1 = l2
+    fix l2 : List Nat
+    assume h1 : nondec_prime_list (p :: L1)
+    assume h2 : nondec_prime_list l2
+    assume h3 : prod (p :: L1) = prod l2
+    have h4 : ¬prod (p :: L1) = 1 := cons_prod_not_one h1
+    rewrite [h3, ←list_nil_iff_prod_one h2] at h4
+    obtain (q : Nat) (h5 : ∃ (L : List Nat), l2 = q :: L) from
+      List.exists_cons_of_ne_nil h4
+    obtain (L2 : List Nat) (h6 : l2 = q :: L2) from h5
+    rewrite [h6] at h2    --h2 : nondec_prime_list (q :: L2)
+    rewrite [h6] at h3    --h3 : prod (p :: L1) = prod (q :: L2)
+    have h7 : p ≤ q := first_le_first h1 h2 h3
+    have h8 : q ≤ p := first_le_first h2 h1 h3.symm
+    have h9 : p = q := Nat.le_antisymm h7 h8
+    rewrite [h9, prod_cons, prod_cons] at h3
+    have h10 : nondec_prime_list L1 := nondec_prime_list_tail h1
+    have h11 : nondec_prime_list L2 := nondec_prime_list_tail h2
+    define at h2
+    have h12 : all_prime (q :: L2) := h2.left
+    rewrite [all_prime_cons] at h12
+    have h13 : q > 0 := prime_pos h12.left
+    have h14 : prod L1 = prod L2 := Nat.eq_of_mul_eq_mul_left h13 h3
+    have h15 : L1 = L2 := ih L2 h10 h11 h14
+    rewrite [h6, h9, h15]
+    rfl
+    done
+  done
+```
+
+Putting it all together, we can finally prove the Fundamental Theorem of Arithmetic, which is stated as Theorem 7.2.6 in *HTPI*:
+
+```lean
+theorem Theorem_7_2_6_Fund_Thm_Arith (n : Nat) (h : n ≥ 1) :
+    ∃! (l : List Nat), nondec_prime_list l ∧ prod l = n := by
+  exists_unique
+  · -- Existence
+    apply Exists.intro (prime_fac n)
+    have h1 : nondec_prime_list (prime_fac n) :=
+      And.intro (prime_fac_all_prime n) (prime_fac_nondec n)
+    show nondec_prime_list (prime_fac n) ∧ prod (prime_fac n) = n from
+      And.intro h1 (prime_fac_prod n h)
+    done
+  · -- Uniqueness
+    fix l1 : List Nat; fix l2 : List Nat
+    assume h1 : nondec_prime_list l1 ∧ prod l1 = n
+    assume h2 : nondec_prime_list l2 ∧ prod l2 = n
+    have h3 : prod l1 = n := h1.right
+    rewrite [←h2.right] at h3
+    show l1 = l2 from Theorem_7_2_5 l1 l2 h1.left h2.left h3
+    done
+  done 
 ```
