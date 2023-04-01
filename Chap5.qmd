@@ -45,7 +45,7 @@ theorem Theorem_5_1_4 {A B : Type} (f g : A → B) :
     (∀ (a : A), f a = g a) → f = g := funext
 ```
 
-We saw previously that if we are trying to prove `X = Y`, where `X` and `Y` both have type `Set U`, then often the best first step is the tactic `apply Set.ext`, which converts the goal to `∀ (x : U), x ∈ X ↔ x ∈ Y`.  Similary, if we are trying to prove `f = g`, where `f` and `g` both have type `A → B`, then we will usually start with the tactic `apply funext`, which will convert the goal to `∀ (x : A), f x = g x`.  By Theorem_5_1_4, this implies the original goal `f = g`.  For example, here is a proof that if two functions have the same graph, then they are equal:
+We saw previously that if we are trying to prove `X = Y`, where `X` and `Y` both have type `Set U`, then often the best first step is the tactic `apply Set.ext`, which converts the goal to `∀ (x : U), x ∈ X ↔ x ∈ Y`.  Similarly, if we are trying to prove `f = g`, where `f` and `g` both have type `A → B`, then we will usually start with the tactic `apply funext`, which will convert the goal to `∀ (x : A), f x = g x`.  By Theorem_5_1_4, this implies the original goal `f = g`.  For example, here is a proof that if two functions have the same graph, then they are equal:
 
 ```lean
 example {A B : Type} (f g : A → B) :

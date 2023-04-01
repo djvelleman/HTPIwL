@@ -54,7 +54,7 @@ Clearly this calculation will go on forever and will never produce an answer.  S
 
 Lean insists that recursive definitions must avoid such non-terminating calculations.  Why did it accept all of our previous recursive definitions?  The reason is that in each case, the definition of the value of the function at a natural number `n` referred only to values of the function at numbers smaller than `n`.  Since a decreasing list of natural numbers cannot go on forever, such definitions lead to calculations that are guaranteed to terminate.
 
-What about our recusive definition of `gcd a b`?  This function has two arguments, `a` and `b`, and when `b = n + 1`, the definition asks us to compute `gcd (n + 1) (a % (n + 1))`.  The first argument here could actually be larger than the first argument in the value we are trying to compute, `gcd a b`.  But the second argument will always be smaller, and that will suffice to guarantee that the calculation terminates.  We can tell Lean to focus on the second argument by adding a `termination_by` clause to the end of our recursive definition:
+What about our recursive definition of `gcd a b`?  This function has two arguments, `a` and `b`, and when `b = n + 1`, the definition asks us to compute `gcd (n + 1) (a % (n + 1))`.  The first argument here could actually be larger than the first argument in the value we are trying to compute, `gcd a b`.  But the second argument will always be smaller, and that will suffice to guarantee that the calculation terminates.  We can tell Lean to focus on the second argument by adding a `termination_by` clause to the end of our recursive definition:
 
 ```lean
 def gcd (a b : Nat) : Nat :=
@@ -958,3 +958,49 @@ theorem Theorem_7_2_6_Fund_Thm_Arith (n : Nat) (h : n ≥ 1) :
     done
   done 
 ```
+
+## 7.3. Modular Arithmetic
+
+The study of modular arithmetic begins with the definition of congruence modulo $m$, where $m$ is a positive integer, and the verification that it is an equivalence relation on the integers.  To study this in Lean, we will declare `m` to have type `Nat`, which allows for the possibility that `m = 0`, but we will soon focus on the case `m > 0`.  Notice that in the definition of the congruence relation in Lean, we must coerce `m` to be an integer so that we can use it in the divisibility relation on the integers.  As usual, we leave some details as exercises.
+
+```lean
+def congr_mod (m : Nat) (a b : Int) : Prop := (↑m : Int) ∣ (a - b)
+
+theorem congr_refl (m : Nat) : ∀ (a : Int), congr_mod m a a := sorry
+
+theorem congr_symm {m : Nat} : ∀ {a b : Int},
+    congr_mod m a b → congr_mod m b a := by
+  fix a : Int; fix b : Int
+  assume h1 : congr_mod m a b
+  define at h1                 --h1 : ∃ (c : Int), a - b = ↑m * c
+  define                       --Goal : ∃ (c : Int), b - a = ↑m * c
+  obtain (c : Int) (h2 : a - b = m * c) from h1
+  apply Exists.intro (-c)
+  show b - a = m * (-c) from
+    calc b - a
+      _ = -(a - b) := by ring
+      _ = -(↑m * c) := by rw [h2]
+      _ = ↑m * (-c) := by ring
+  done
+
+theorem congr_trans {m : Nat} : ∀ {a b c : Int},
+    congr_mod m a b → congr_mod m b c → congr_mod m a c := sorry
+```
+
+The first proof in Section 7.3 of *HTPI* makes us of the quotient and remainder when an integer is divided by another integer.  In Section 6.4, we learned about the Lean theorems `Nat.div_add_mod` and `Nat.mod_lt`, but those theorems concerned quotients and remainders when dividing *natural numbers*.  Fortunately, Lean has similar theorems for dealing with division of integers:
+
+::: {.ind}
+```
+Int.ediv_add_emod : ∀ (a b : ℤ), b * (a / b) + a % b = a
+Int.emod_lt_of_pos : ∀ (a : ℤ) {b : ℤ}, 0 < b → a % b < b
+Int.emod_nonneg : ∀ (a : ℤ) {b : ℤ}, b ≠ 0 → 0 ≤ a % b
+```
+:::
+
+We saw in Section 6.4 that Lean has theorems for dealing with quotients and remainders when dividing *natural numbers*, but now we need 
+
+The first theorem in Section 7.3 of *HTPI*, Theorem 7.3.1, says that if `m > 0`, then every integer `a` is congruent modulo `m` to exactly one integer `r` satisfying `0 ≤ r < m`.  The proof makes us of the quotient and remainder when `a` is divided by `m`.  Recall 
+
+
+In order to focus on the case `m > 0`, from now on we will replace `m` with `n + 1`.  Thus, from now on we study congruence modulo `n + 1`, for an arbitrary natural number `n`.
+

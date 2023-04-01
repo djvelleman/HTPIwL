@@ -216,6 +216,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   <ul class="collapse">
   <li><a href="#greatest-common-divisors" id="toc-greatest-common-divisors" class="nav-link active" data-scroll-target="#greatest-common-divisors">7.1. Greatest Common Divisors</a></li>
   <li><a href="#prime-factorization" id="toc-prime-factorization" class="nav-link" data-scroll-target="#prime-factorization">7.2. Prime Factorization</a></li>
+  <li><a href="#modular-arithmetic" id="toc-modular-arithmetic" class="nav-link" data-scroll-target="#modular-arithmetic">7.3. Modular Arithmetic</a></li>
   </ul>
 </nav>
     </div>
@@ -280,7 +281,7 @@ $$
 </div>
 <p>Clearly this calculation will go on forever and will never produce an answer. So the definition of <code>loop</code> does not actually succeed in defining a function from <code>Nat</code> to <code>Nat</code>.</p>
 <p>Lean insists that recursive definitions must avoid such non-terminating calculations. Why did it accept all of our previous recursive definitions? The reason is that in each case, the definition of the value of the function at a natural number <code>n</code> referred only to values of the function at numbers smaller than <code>n</code>. Since a decreasing list of natural numbers cannot go on forever, such definitions lead to calculations that are guaranteed to terminate.</p>
-<p>What about our recusive definition of <code>gcd a b</code>? This function has two arguments, <code>a</code> and <code>b</code>, and when <code>b = n + 1</code>, the definition asks us to compute <code>gcd (n + 1) (a % (n + 1))</code>. The first argument here could actually be larger than the first argument in the value we are trying to compute, <code>gcd a b</code>. But the second argument will always be smaller, and that will suffice to guarantee that the calculation terminates. We can tell Lean to focus on the second argument by adding a <code>termination_by</code> clause to the end of our recursive definition:</p>
+<p>What about our recursive definition of <code>gcd a b</code>? This function has two arguments, <code>a</code> and <code>b</code>, and when <code>b = n + 1</code>, the definition asks us to compute <code>gcd (n + 1) (a % (n + 1))</code>. The first argument here could actually be larger than the first argument in the value we are trying to compute, <code>gcd a b</code>. But the second argument will always be smaller, and that will suffice to guarantee that the calculation terminates. We can tell Lean to focus on the second argument by adding a <code>termination_by</code> clause to the end of our recursive definition:</p>
 <div class="sourceCode" id="cb4"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> gcd (a b : Nat) : Nat :=</span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="kw">match</span> b <span class="kw">with</span></span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>    | 0 =&gt; a</span>
@@ -1021,6 +1022,40 @@ s = t', \qquad t = s' - t'q.
 <span id="cb40-17"><a href="#cb40-17" aria-hidden="true" tabindex="-1"></a>    <span class="kw">show</span> l1 = l2 <span class="kw">from</span> Theorem_7_2_5 l1 l2 h1.left h2.left h3</span>
 <span id="cb40-18"><a href="#cb40-18" aria-hidden="true" tabindex="-1"></a>    <span class="kw">done</span></span>
 <span id="cb40-19"><a href="#cb40-19" aria-hidden="true" tabindex="-1"></a>  <span class="kw">done</span> </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="modular-arithmetic" class="level2">
+<h2 class="anchored" data-anchor-id="modular-arithmetic">7.3. Modular Arithmetic</h2>
+<p>The study of modular arithmetic begins with the definition of congruence modulo <span class="math inline">\(m\)</span>, where <span class="math inline">\(m\)</span> is a positive integer, and the verification that it is an equivalence relation on the integers. To study this in Lean, we will declare <code>m</code> to have type <code>Nat</code>, which allows for the possibility that <code>m = 0</code>, but we will soon focus on the case <code>m &gt; 0</code>. Notice that in the definition of the congruence relation in Lean, we must coerce <code>m</code> to be an integer so that we can use it in the divisibility relation on the integers. As usual, we leave some details as exercises.</p>
+<div class="sourceCode" id="cb41"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> congr_mod (m : Nat) (a b : Int) : <span class="kw">Prop</span> := (↑m : Int) ∣ (a - b)</span>
+<span id="cb41-2"><a href="#cb41-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-3"><a href="#cb41-3" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> congr_refl (m : Nat) : ∀ (a : Int), congr_mod m a a := <span class="cn">sorry</span></span>
+<span id="cb41-4"><a href="#cb41-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-5"><a href="#cb41-5" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> congr_symm {m : Nat} : ∀ {a b : Int},</span>
+<span id="cb41-6"><a href="#cb41-6" aria-hidden="true" tabindex="-1"></a>    congr_mod m a b → congr_mod m b a := <span class="kw">by</span></span>
+<span id="cb41-7"><a href="#cb41-7" aria-hidden="true" tabindex="-1"></a>  <span class="kw">fix</span> a : Int; <span class="kw">fix</span> b : Int</span>
+<span id="cb41-8"><a href="#cb41-8" aria-hidden="true" tabindex="-1"></a>  <span class="kw">assume</span> h1 : congr_mod m a b</span>
+<span id="cb41-9"><a href="#cb41-9" aria-hidden="true" tabindex="-1"></a>  <span class="kw">define</span> <span class="kw">at</span> h1                 <span class="co">--h1 : ∃ (c : Int), a - b = ↑m * c</span></span>
+<span id="cb41-10"><a href="#cb41-10" aria-hidden="true" tabindex="-1"></a>  <span class="kw">define</span>                       <span class="co">--Goal : ∃ (c : Int), b - a = ↑m * c</span></span>
+<span id="cb41-11"><a href="#cb41-11" aria-hidden="true" tabindex="-1"></a>  <span class="kw">obtain</span> (c : Int) (h2 : a - b = m * c) <span class="kw">from</span> h1</span>
+<span id="cb41-12"><a href="#cb41-12" aria-hidden="true" tabindex="-1"></a>  <span class="kw">apply</span> Exists.intro (-c)</span>
+<span id="cb41-13"><a href="#cb41-13" aria-hidden="true" tabindex="-1"></a>  <span class="kw">show</span> b - a = m * (-c) <span class="kw">from</span></span>
+<span id="cb41-14"><a href="#cb41-14" aria-hidden="true" tabindex="-1"></a>    <span class="kw">calc</span> b - a</span>
+<span id="cb41-15"><a href="#cb41-15" aria-hidden="true" tabindex="-1"></a>      _ = -(a - b) := <span class="kw">by</span> <span class="kw">ring</span></span>
+<span id="cb41-16"><a href="#cb41-16" aria-hidden="true" tabindex="-1"></a>      _ = -(↑m * c) := <span class="kw">by</span> <span class="kw">rw</span> [h2]</span>
+<span id="cb41-17"><a href="#cb41-17" aria-hidden="true" tabindex="-1"></a>      _ = ↑m * (-c) := <span class="kw">by</span> <span class="kw">ring</span></span>
+<span id="cb41-18"><a href="#cb41-18" aria-hidden="true" tabindex="-1"></a>  <span class="kw">done</span></span>
+<span id="cb41-19"><a href="#cb41-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-20"><a href="#cb41-20" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> congr_trans {m : Nat} : ∀ {a b c : Int},</span>
+<span id="cb41-21"><a href="#cb41-21" aria-hidden="true" tabindex="-1"></a>    congr_mod m a b → congr_mod m b c → congr_mod m a c := <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>The first proof in Section 7.3 of <em>HTPI</em> makes us of the quotient and remainder when an integer is divided by another integer. In Section 6.4, we learned about the Lean theorems <code>Nat.div_add_mod</code> and <code>Nat.mod_lt</code>, but those theorems concerned quotients and remainders when dividing <em>natural numbers</em>. Fortunately, Lean has similar theorems for dealing with division of integers:</p>
+<div class="ind">
+<pre><code>Int.ediv_add_emod : ∀ (a b : ℤ), b * (a / b) + a % b = a
+Int.emod_lt_of_pos : ∀ (a : ℤ) {b : ℤ}, 0 &lt; b → a % b &lt; b
+Int.emod_nonneg : ∀ (a : ℤ) {b : ℤ}, b ≠ 0 → 0 ≤ a % b</code></pre>
+</div>
+<p>We saw in Section 6.4 that Lean has theorems for dealing with quotients and remainders when dividing <em>natural numbers</em>, but now we need</p>
+<p>The first theorem in Section 7.3 of <em>HTPI</em>, Theorem 7.3.1, says that if <code>m &gt; 0</code>, then every integer <code>a</code> is congruent modulo <code>m</code> to exactly one integer <code>r</code> satisfying <code>0 ≤ r &lt; m</code>. The proof makes us of the quotient and remainder when <code>a</code> is divided by <code>m</code>. Recall</p>
+<p>In order to focus on the case <code>m &gt; 0</code>, from now on we will replace <code>m</code> with <code>n + 1</code>. Thus, from now on we study congruence modulo <code>n + 1</code>, for an arbitrary natural number <code>n</code>.</p>
 
 
 </section>

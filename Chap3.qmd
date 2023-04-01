@@ -11,7 +11,7 @@ Section 3.1 gives two strategies for proving a goal of the form `P → Q`:
 1.  Assume `P` is true and prove `Q`.
 2.  Assume `Q` is false and prove that `P` is false.
 
-We've already seen how to carry out both of these strategies in Lean.  For the first strategy, use the `assume` tactic to introduce the assumption `P` and assign an identifier to it; Lean will automaticall set `Q` as the goal.  We can summarize the effect of using this strategy by showing how the tactic state changes if you use the tactic `assume h : P`:
+We've already seen how to carry out both of these strategies in Lean.  For the first strategy, use the `assume` tactic to introduce the assumption `P` and assign an identifier to it; Lean will automatically set `Q` as the goal.  We can summarize the effect of using this strategy by showing how the tactic state changes if you use the tactic `assume h : P`:
 
 ::: {.lftrt}
 ::: {.bef}
@@ -1667,7 +1667,7 @@ h3 : x ∈ A ∧ x ∈ C
 :::
 :::
 
-Since the goal is now a conjuction, we apply the strategy above by using the tactic `apply And.intro`.
+Since the goal is now a conjunction, we apply the strategy above by using the tactic `apply And.intro`.
 
 ::: {.inout}
 ::: {.inpt}

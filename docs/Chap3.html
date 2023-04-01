@@ -259,7 +259,7 @@ $$
 <li>Assume <code>P</code> is true and prove <code>Q</code>.</li>
 <li>Assume <code>Q</code> is false and prove that <code>P</code> is false.</li>
 </ol>
-<p>We’ve already seen how to carry out both of these strategies in Lean. For the first strategy, use the <code>assume</code> tactic to introduce the assumption <code>P</code> and assign an identifier to it; Lean will automaticall set <code>Q</code> as the goal. We can summarize the effect of using this strategy by showing how the tactic state changes if you use the tactic <code>assume h : P</code>:</p>
+<p>We’ve already seen how to carry out both of these strategies in Lean. For the first strategy, use the <code>assume</code> tactic to introduce the assumption <code>P</code> and assign an identifier to it; Lean will automatically set <code>Q</code> as the goal. We can summarize the effect of using this strategy by showing how the tactic state changes if you use the tactic <code>assume h : P</code>:</p>
 <div class="lftrt">
 <div class="bef">
 <div class="sourceCode" id="cb1"><pre class="sourceCode state code-with-copy"><code class="sourceCode state"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;&gt;</span> ⋮</span>
@@ -1600,7 +1600,7 @@ $$
 <span id="cb107-7"><a href="#cb107-7" aria-hidden="true" tabindex="-1"></a>⊢ x ∈ B ∧ ¬x ∈ D</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </div>
-<p>Since the goal is now a conjuction, we apply the strategy above by using the tactic <code>apply And.intro</code>.</p>
+<p>Since the goal is now a conjunction, we apply the strategy above by using the tactic <code>apply And.intro</code>.</p>
 <div class="inout">
 <div class="inpt">
 <div class="sourceCode" id="cb108"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb108-1"><a href="#cb108-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Like_Example_3_4_1 (U : <span class="kw">Type</span>)</span>

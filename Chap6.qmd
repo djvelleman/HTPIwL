@@ -585,7 +585,7 @@ theorem Exercise_6_2_2 {A : Type} (R : BinRel A) (h : partial_order R) :
 
 In the exercises, we will ask you to show that this implies the theorem in Example 6.2.2.
 
-It will be helpful to begin with a warm-up exercise.  We'll show that a partial order can always be extended to make a single object comparable to everthing.  In other words, we'll show that if `R` is a partial order on `A` and `b` has type `A`, then we can define a partial order `T` extending `R` such that `b` is `T`-comparable to everything.  To define `T`, we will need to make sure that for every `x` of type `A`, either `T b x` or `T x b`.  If `R x b`, then since `T` must extend `R`, we must have `T x b`.  If `¬R x b`, then we will define `T` so that `T b x`.  But notice that if we follow this plan, then for any `x` and `y`, if we have `R x b` and `¬R y b`, then we will have `T x b` and `T b y`, and since `T` must be transitive, we must then have `T x y`.  Summing up, if we have `R x y` then we must have `T x y`, and if we have `R x b` and `¬R y b` then we will also need to have `T x y`.  So let's try defining `T x y` to mean `R x y ∨ (R x b ∧ ¬R y b)`.
+It will be helpful to begin with a warm-up exercise.  We'll show that a partial order can always be extended to make a single object comparable to everything.  In other words, we'll show that if `R` is a partial order on `A` and `b` has type `A`, then we can define a partial order `T` extending `R` such that `b` is `T`-comparable to everything.  To define `T`, we will need to make sure that for every `x` of type `A`, either `T b x` or `T x b`.  If `R x b`, then since `T` must extend `R`, we must have `T x b`.  If `¬R x b`, then we will define `T` so that `T b x`.  But notice that if we follow this plan, then for any `x` and `y`, if we have `R x b` and `¬R y b`, then we will have `T x b` and `T b y`, and since `T` must be transitive, we must then have `T x y`.  Summing up, if we have `R x y` then we must have `T x y`, and if we have `R x b` and `¬R y b` then we will also need to have `T x y`.  So let's try defining `T x y` to mean `R x y ∨ (R x b ∧ ¬R y b)`.
 
 It will be useful to have a name for this relation `T`.  Since it is an extension of `R` determined by the element `b`, we will give it the name `extendPO R b`.  Here is the definition of this relation:
 
@@ -1179,27 +1179,29 @@ theorem Example_6_3_4 : ∀ (x : Real), x > -1 →
   done
 ```
 
-Before ending this section, we'll return to a topic left unexplained before.  We can now describe how `Sum i from k to n, f i` is defined.  The key is a function `sum_less`, which is defined by recursion:
+Before ending this section, we'll return to a topic left unexplained before.  We can now describe how `Sum i from k to n, f i` is defined.  The key is a function `sum_val_from`, which is defined by recursion:
 
 ```lean
-def sum_less {A : Type} [AddZeroClass A] (m : Nat) (f : Nat → A) : A :=
+def sum_val_from {A : Type} [AddZeroClass A]
+    (m k : Nat) (f : Nat → A) : A :=
   match m with
     | 0 => 0
-    | n + 1 => sum_less n f + f n
+    | n + 1 => sum_val_from n k f + f (k + n)
 ```
 
-To get an idea of what this definition means, let's try evaluating `sum_less 3 f`:
+To get an idea of what this definition means, let's try evaluating `sum_val_from 3 k f`:
 
 ::: {.ind}
 ```
-sum_less 3 f = sum_less 2 f + f 2
-             = sum_less 1 f + f 1 + f 2
-             = sum_less 0 f + f 0 + f 1 + f 2
-             = 0 + f 0 + f 1 + f 2
+sum_val_from 3 k f = sum_val_from 2 k f + f (k + 2)
+             = sum_val_from 1 k f + f (k + 1) + f (k + 2)
+             = sum_val_from 0 k f + f (k + 0) + f (k + 1) + f (k + 2)
+             = 0 + f (k + 0) + f (k + 1) + f (k + 2)
+             = f k + f (k + 1) + f (k + 2)
 ```
 :::
 
-So `sum_less 3 f` adds up all values of `f i`, for `i < 3`.  More generally, `sum_less m f` gives the sum of all values `f i` for `i < m`.  (The implicit arguments say that the type of `f i` can be any type for which `0` and `+` make sense.)  The notation `Sum i from k to n, f i` is now defined to be a shorthand for `sum_less (n + 1 - k) (fun (j : Nat) => f (k + j))`.  We'll leave it to you to puzzle out why that gives the desired result.
+So `sum_val_from 3 k f` adds up three consecutive values of `f`, starting with `f k`.  More generally, `sum_val_from n k f` adds up `n` consecutive values of `f`, starting with `f k`.  (The implicit arguments say that the type of the values of `f` can be any type for which `0` and `+` make sense.)  The notation `Sum i from k to n, f i` is now defined to be a shorthand for `sum_val_from (n + 1 - k) k f`.  We'll leave it to you to puzzle out why that gives the desired result.
 
 ### Exercises
 
