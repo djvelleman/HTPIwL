@@ -52,7 +52,7 @@ Suppose we try to use this definition to compute `loop 3`.  The definition would
 
 Clearly this calculation will go on forever and will never produce an answer.  So the definition of `loop` does not actually succeed in defining a function from `Nat` to `Nat`.
 
-Lean insists that recursive definitions must avoid such non-terminating calculations.  Why did it accept all of our previous recursive definitions?  The reason is that in each case, the definition of the value of the function at a natural number `n` referred only to values of the function at numbers smaller than `n`.  Since a decreasing list of natural numbers cannot go on forever, such definitions lead to calculations that are guaranteed to terminate.
+Lean insists that recursive definitions must avoid such nonterminating calculations.  Why did it accept all of our previous recursive definitions?  The reason is that in each case, the definition of the value of the function at a natural number `n` referred only to values of the function at numbers smaller than `n`.  Since a decreasing list of natural numbers cannot go on forever, such definitions lead to calculations that are guaranteed to terminate.
 
 What about our recursive definition of `gcd a b`?  This function has two arguments, `a` and `b`, and when `b = n + 1`, the definition asks us to compute `gcd (n + 1) (a % (n + 1))`.  The first argument here could actually be larger than the first argument in the value we are trying to compute, `gcd a b`.  But the second argument will always be smaller, and that will suffice to guarantee that the calculation terminates.  We can tell Lean to focus on the second argument by adding a `termination_by` clause to the end of our recursive definition:
 
@@ -243,16 +243,13 @@ theorem gcd_lin_comb : ∀ (b a : Nat),
     have hq : a / b = q := by rfl
     have hs : gcd_c1 b r = s := by rfl
     have ht : gcd_c2 b r = t := by rfl
+    rewrite [hr, hq, hs, ht]
+      --Goal : t * ↑a + (s - t * ↑q) * ↑b = ↑(gcd b r)
     have h2 : r < b := mod_nonzero_lt a h1
-    have h3 : (gcd_c1 b r) * ↑b + (gcd_c2 b r )* ↑r = ↑(gcd b r) :=
-      ih r h2 b
-    rewrite [hr, ←h3, hs, ht, hq]
-      --Goal : t * ↑a + (s - t * ↑q) * ↑b = s * ↑b + t * ↑r
-    have h4 : (↑a : Int) = ↑b * ↑q + ↑r := by
-      rewrite [←Nat.div_add_mod a b, Nat.cast_add, Nat.cast_mul]
-      rfl
-      done
-    rewrite [h4]
+    have h3 : s * ↑b + t * ↑r = ↑(gcd b r) := ih r h2 b
+    have h4 : b * q + r = a := Nat.div_add_mod a b
+    rewrite [←h3, ←h4]
+    rewrite [Nat.cast_add, Nat.cast_mul]
       --Goal : t * (↑b * ↑q + ↑r) + (s - t * ↑q) * ↑b = s * ↑b + t * ↑r
     ring
     done
@@ -265,7 +262,7 @@ In the statement of the theorem, we have left it up to Lean to insert the requir
 `gcd_c1 a b * ↑a + gcd_c2 a b * ↑b = ↑(gcd a b)`
 :::
 
-For clarity, we have written the coercions explicitly in the statement of the inductive hypothesis.  In case 2, we have introduced the variables `r`, `q`, `s`, and `t` to simplify the notation.  In the statement `h4`, Lean wouldn't have known what type to coerce the variables to if we hadn't specified the type of `↑a` on the left side of the equation; with that hint, Lean figured out that for the equation to make sense, the variables on the right side also had to be coerced to type `Int`.  In the proof of `h4`, the rewrite rule `←Nat.div_add_mod a b` converts the left side of the goal to `↑(b * q + r)`.  You can use the `#check` command to see why `Nat.cast_add` and `Nat.cast_mul` then convert the left side to first `↑(b * q) + ↑r` and then `↑b * ↑q + ↑r`.
+For clarity, we have written the coercions explicitly in the statement of the inductive hypothesis.  In case 2, we have introduced the variables `r`, `q`, `s`, and `t` to simplify the notation.  After the step `rewrite [←h3, ←h4]`, the goal contains the expression `↑(b * q + r)`.  You can use the `#check` command to see why `Nat.cast_add` and `Nat.cast_mul` convert this expression to first `↑(b * q) + ↑r` and then `↑b * ↑q + ↑r`.
 
 We can try out the functions `gcd_c1` and `gcd_c2` as follows:
 
@@ -294,6 +291,50 @@ theorem Theorem_7_1_6 {d a b : Nat} (h1 : d ∣ a) (h2 : d ∣ b) :
   ring
   done
 ```
+
+### Exercises
+
+::: {.numex arguments="1"}
+```lean
+theorem dvd_a_of_dvd_b_mod_ex {a b d : Nat}
+    (h1 : d ∣ b) (h2 : d ∣ (a % b)) : d ∣ a := sorry
+```
+:::
+
+::: {.numex arguments="2"}
+```lean
+lemma gcd_comm_lt {a b : Nat} (h : a < b) : gcd a b = gcd b a := sorry
+
+theorem gcd_comm (a b : Nat) : gcd a b = gcd b a := sorry
+```
+:::
+
+::: {.numex arguments="3"}
+```lean
+theorem Exercise_7_1_5 (a b d : Nat) (n : Int) (h1 : gcd a b = d) :
+    (∃ (s t : Int), s * a + t * b = n) ↔ (↑d : Int) ∣ n := sorry
+```
+:::
+
+::: {.numex arguments="4"}
+```lean
+theorem Exercise_7_1_6 (a b c : Nat) :
+    gcd a b = gcd (a + b * c) b := sorry
+```
+:::
+
+::: {.numex arguments="5"}
+```lean
+lemma Lemma_7_1_10a {a b : Nat} (n : Nat) (h : a ∣ b) :
+    (n * a) ∣ (n * b) := sorry
+
+lemma Lemma_7_1_10b {a b : Nat} (h1 : a ∣ b) (h2 : b ∣ a) :
+    a = b := sorry
+
+theorem Exercise_7_1_10 (a b n : Nat) :
+    gcd (n * a) (n * b) = n * gcd a b := sorry
+```
+:::
 
 ## 7.2.  Prime Factorization
 
@@ -678,7 +719,7 @@ theorem prime_fac_prod : ∀ n ≥ 1, prod (prime_fac n) = n := by
     rewrite [h4, prime_fac_step, prod_cons]
     rewrite [h4] at ih
     have h5 : prod (prime_fac (first_codiv (j + 2))) =
-      first_codiv (j + 2) :=
+        first_codiv (j + 2) :=
       ih (first_codiv (j + 2)) (fc_dec j) (fc_ge_one j)
     rewrite [h5]
     show first_div (j + 2) * first_codiv (j + 2) = j + 2 from
@@ -694,7 +735,7 @@ def le_list (n : Nat) (l : List Nat) : Prop :=
 
 def nondec (l : List Nat) : Prop :=
   match l with
-    | [] => True
+    | [] => True   --Of course, True is a proposition that is always true
     | n :: L => le_list n L ∧ nondec L
 
 lemma nondec_nil : nondec [] := by
@@ -961,7 +1002,17 @@ theorem Theorem_7_2_6_Fund_Thm_Arith (n : Nat) (h : n ≥ 1) :
 
 ## 7.3. Modular Arithmetic
 
-The study of modular arithmetic begins with the definition of congruence modulo $m$, where $m$ is a positive integer, and the verification that it is an equivalence relation on the integers.  To study this in Lean, we will declare `m` to have type `Nat`, which allows for the possibility that `m = 0`, but we will soon focus on the case `m > 0`.  Notice that in the definition of the congruence relation in Lean, we must coerce `m` to be an integer so that we can use it in the divisibility relation on the integers.  As usual, we leave some details as exercises.
+If $m$ is a positive integer and $a$ and $b$ are integers, then *HTPI* uses the notation $a \equiv_m b$ to indicate that $a$ is congruent to $b$ modulo $m$, which is defined to mean $m \mid (a - b)$.  Congruence modulo $m$ is an equivalence relation on the integers, and therefore it induces a partition $\mathbb{Z}/{\equiv_m}$ of the integers, as shown in Section 4.5 of *HTPI*.  The elements of this partition are the equivalence classes $[a]_m$ for $a \in \mathbb{Z}$; we will call these *congruence classes modulo $m$*.  Section 7.3 of *HTPI* defines operations of addition and multiplication of congruence classes and proves algebraic properties of those operations.
+
+For the purpose of working out the rules of modular arithmetic, the only important properties of congruence classes are the following:
+
+1.  For every integer $a$, there is a corresponding congruence class $[a]_m \in \mathbb{Z}/{\equiv_m}$.
+2.  For every congruence class $X \in \mathbb{Z}/{\equiv_m}$, there is some integer $a$ such that $X = [a]_m$.
+3.  For all integers $a$ and $b$, $[a]_m = [b]_m$ if and only if $a \equiv_m b$.
+4.  For all integers $a$ and $b$, $[a]_m + [b]_m = [a + b]_m$.
+5.  For all integers $a$ and $b$, $[a]_m \cdot [b]_m = [ab]_m$.
+
+To study congruence modulo `m` in Lean, we will declare `m` to have type `Nat`, which allows for the possibility that `m = 0`, but we will soon focus on the case `m > 0`.  For `a` and `b` of type `Int`, we define `congr_mod m a b` to mean that `a` is congruent to `b` modulo `m`.  Notice that to define this relation in Lean, we must coerce `m` to be an integer so that we can use it in the divisibility relation on the integers.  We then prove that `congr_mod m` is reflexive, symmetric, and transitive.  As usual, we leave some details as exercises.
 
 ```lean
 def congr_mod (m : Nat) (a b : Int) : Prop := (↑m : Int) ∣ (a - b)
@@ -987,20 +1038,134 @@ theorem congr_trans {m : Nat} : ∀ {a b c : Int},
     congr_mod m a b → congr_mod m b c → congr_mod m a c := sorry
 ```
 
-The first proof in Section 7.3 of *HTPI* makes us of the quotient and remainder when an integer is divided by another integer.  In Section 6.4, we learned about the Lean theorems `Nat.div_add_mod` and `Nat.mod_lt`, but those theorems concerned quotients and remainders when dividing *natural numbers*.  Fortunately, Lean has similar theorems for dealing with division of integers:
+We could now repeat the entire development of $\mathbb{Z}/{\equiv_m}$ in Lean, but there is no need to do so; such a development is already included in Lean's library of definitions and theorems.  For each natural number `m`, Lean has a type `ZMod m`, and the objects of that type are Lean's version of the congruence classes modulo `m`.  We should warn you that Lean's way of defining `ZMod m` differs in some ways from *HTPI*'s definition of $\mathbb{Z}/{\equiv_m}$.  In particular, objects of type `ZMod m` are not sets of integers.  Thus, if `X` has type `ZMod m` and `a` has type `Int`, then Lean will not understand what you mean if you write `a ∈ X`.  However, Lean's congruence classes have the properties 1--5 listed above, and that's all that will matter to us.
+
+Property 1 says that if `a` has type `Int`, then there should be a corresponding congruence class in `ZMod m`.  In fact, you can find the corresponding congruence class by simply coercing `a` to have type `ZMod m`.  But for the sake of clarity, we will introduce notation for the congruence class modulo `m` of `a`:
+
+```lean
+def cc (m : Nat) (a : Int) : ZMod m := (↑a : ZMod m)
+```
+
+Thus, `cc m a` will denote the congruence class modulo `m` of `a`; it corresponds to the notation $[a]_m$ in *HTPI*.  Properties 2--5 of congruence classes are established by the following theorems:
+
+```lean
+theorem cc_rep {m : Nat} (X : ZMod m) : ∃ (a : Int), X = cc m a
+
+theorem cc_eq_iff_congr (m : Nat) (a b : Int) :
+    cc m a = cc m b ↔ congr_mod m a b
+
+theorem add_class (m : Nat) (a b : Int) :
+    (cc m a) + (cc m b) = cc m (a + b)
+
+theorem mul_class (m : Nat) (a b : Int) :
+    (cc m a) * (cc m b) = cc m (a * b)
+```
+
+We won't discuss the proofs of these theorems, since they depend on details of Lean's representation of objects of type `ZMod m` that are beyond the scope of this book.  But these theorems are all we will need to use to develop the theory of modular arithmetic.
+
+In many of our theorems about `ZMod m`, we will need to include a hypothesis that `m ≠ 0`.  We will usually state this hypothesis in the form `[NeZero m]`.  The use of square brackets here indicates that `NeZero m` is what is called a *type class*.  We won't explain in detail what this means; there are just two facts we will need.  First, when proving a theorem that includes this hypothesis, Lean will recognize the expression `NeZero.ne m` as a proof that `m ≠ 0`.  And second, the hypothesis `[NeZero m]` is a kind of implicit argument, which means that when applying a theorem that includes this hypothesis, there is no need to supply a proof that `m ≠ 0`; Lean will come up with that proof on its own.
+
+The first theorem in Section 7.3 of *HTPI*, Theorem 7.3.1, says that if `m ≠ 0`, then every integer `a` is congruent modulo `m` to exactly one integer `r` satisfying `0 ≤ r < m`.  As explained in *HTPI*, we say that `{0, 1, ..., m - 1}` is a *complete residue system modulo `m`*.  This implies that the objects of type `ZMod m` are precisely the congruence classes `cc m 0`, `cc m 1`, ..., `cc m (m - 1)`.  
+
+The proof of Theorem 7.3.1 makes use of the quotient and remainder when `a` is divided by `m`.  In Section 6.4, we learned about the Lean theorems `Nat.div_add_mod` and `Nat.mod_lt`, but those theorems concerned quotients and remainders when dividing *natural numbers*.  Fortunately, Lean has similar theorems for dealing with division of integers:
 
 ::: {.ind}
 ```
 Int.ediv_add_emod : ∀ (a b : ℤ), b * (a / b) + a % b = a
+
 Int.emod_lt_of_pos : ∀ (a : ℤ) {b : ℤ}, 0 < b → a % b < b
+
 Int.emod_nonneg : ∀ (a : ℤ) {b : ℤ}, b ≠ 0 → 0 ≤ a % b
 ```
 :::
 
-We saw in Section 6.4 that Lean has theorems for dealing with quotients and remainders when dividing *natural numbers*, but now we need 
+We now have all the background we need to prove Theorem 7.3.1 in Lean.  We begin with a few lemmas, some of which require the hypothesis `[NeZero m]`.  The proof of the theorem closely follows the proof in *HTPI*.
 
-The first theorem in Section 7.3 of *HTPI*, Theorem 7.3.1, says that if `m > 0`, then every integer `a` is congruent modulo `m` to exactly one integer `r` satisfying `0 ≤ r < m`.  The proof makes us of the quotient and remainder when `a` is divided by `m`.  Recall 
+```lean
+lemma mod_nonneg (m : Nat) [NeZero m] (a : Int) : 0 ≤ a % m := by
+  have h1 : (↑m : Int) ≠ 0 := (Nat.cast_ne_zero).rtl (NeZero.ne m)
+  show 0 ≤ a % m from Int.emod_nonneg a h1
+  done
 
+lemma mod_lt (m : Nat) [NeZero m] (a : Int) : a % m < m := sorry
 
-In order to focus on the case `m > 0`, from now on we will replace `m` with `n + 1`.  Thus, from now on we study congruence modulo `n + 1`, for an arbitrary natural number `n`.
+lemma congr_mod_mod (m : Nat) (a : Int) : congr_mod m a (a % m) := by
+  define
+  have h1 : m * (a / m) + a % m = a := Int.ediv_add_emod a m
+  apply Exists.intro (a / m)
+  show a - a % m = m * (a / m) from
+    calc a - (a % m)
+      _ = m * (a / m) + a % m - a % m := by rw [h1]
+      _ = m * (a / m) := by ring
+  done
 
+lemma mod_cmpl_res (m : Nat) [NeZero m] (a : Int) :
+    0 ≤ a % m ∧ a % m < m ∧ congr_mod m a (a % m) :=
+  And.intro (mod_nonneg m a) (And.intro (mod_lt m a) (congr_mod_mod m a))
+
+theorem Theorem_7_3_1 (m : Nat) [NeZero m] (a : Int) :
+    ∃! (r : Int), 0 ≤ r ∧ r < m ∧ congr_mod m a r := by
+  exists_unique
+  · -- Existence
+    apply Exists.intro (a % m)
+    show 0 ≤ a % m ∧ a % m < m ∧ congr_mod m a (a % m) from
+      mod_cmpl_res m a
+    done
+  · -- Uniqueness
+    fix r1 : Int; fix r2 : Int
+    assume h1 : 0 ≤ r1 ∧ r1 < m ∧ congr_mod m a r1
+    assume h2 : 0 ≤ r2 ∧ r2 < m ∧ congr_mod m a r2
+    have h3 : congr_mod m r1 r2 :=
+      congr_trans (congr_symm h1.right.right) h2.right.right
+    obtain (d : Int) (h4 : r1 - r2 = m * d) from h3
+    have h5 : r1 - r2 < m * 1 := by linarith
+    have h6 : m * (-1) < r1 - r2 := by linarith
+    rewrite [h4] at h5   --h5 : m * d < m * 1
+    rewrite [h4] at h6   --h6 : m * -1 < m * d
+    have h7 : (↑m : Int) ≥ 0 := Nat.cast_nonneg m
+    have h8 : d < 1 := lt_of_mul_lt_mul_of_nonneg_left h5 h7
+    have h9 : -1 < d := lt_of_mul_lt_mul_of_nonneg_left h6 h7
+    have h10 : d = 0 := by linarith
+    show r1 = r2 from
+      calc r1
+        _ = r1 - r2 + r2 := by ring
+        _ = m * 0 + r2 := by rw [h4, h10]
+        _ = r2 := by ring
+    done
+  done
+```
+
+The lemma `mod_cmpl_res` above says that `a % m` is the unique element of the complete residue system `{0, 1, ..., m - 1}` that is congruent to `a` modulo `m`.  The lemma requires the hypothesis `[NeZero m]`, because its proof appeals to two previous lemmas, `mod_nonneg` and `mod_lt`, that require that hypothesis.  But when the proof invokes those previous lemmas, this hypothesis is not mentioned, because it is an implicit argument.
+
+Theorem 7.3.6 in *HTPI* states a number of algebraic properties of modular arithmetic.  These properties all follow easily from the theorems we have already stated.  To illustrate this, we prove two parts of the theorem.
+
+```lean
+theorem Theorem_7_3_6_1 {m : Nat} (X Y : ZMod m) : X + Y = Y + X := by
+  obtain (a : Int) (h1 : X = cc m a) from cc_rep X
+  obtain (b : Int) (h2 : Y = cc m b) from cc_rep Y
+  rewrite [h1, h2]
+  have h3 : a + b = b + a := by ring
+  show cc m a + cc m b = cc m b + cc m a from
+    calc cc m a + cc m b
+      _ = cc m (a + b) := add_class m a b
+      _ = cc m (b + a) := by rw [h3]
+      _ = cc m b + cc m a := (add_class m b a).symm
+  done
+
+theorem Theorem_7_3_6_7 {m : Nat} (X : ZMod m) : X * cc m 1 = X := by
+  obtain (a : Int) (h1 : X = cc m a) from cc_rep X
+  rewrite [h1]
+  have h2 : a * 1 = a := by ring
+  show cc m a * cc m 1 = cc m a from
+    calc cc m a * cc m 1
+      _ = cc m (a * 1) := mul_class m a 1
+      _ = cc m a := by rw [h2]
+  done
+```
+
+`Theorem_7_3_6_7` shows that `cc m 1` is the multiplicative identity element for `ZMod m`.  We say that a congruence class `Y` is a *multiplicative inverse* of another class `X` if `X * Y = cc m 1`, and a congruence class is *invertible* if it has a multiplicative inverse:
+
+```lean
+def invertible {m : Nat} (X : ZMod m) : Prop :=
+  ∃ (Y : ZMod m), X * Y = cc m 1
+```

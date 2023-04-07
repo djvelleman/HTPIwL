@@ -3393,7 +3393,7 @@ x \in A \cap (B \setmin C) &amp;\text{ iff } x \in A \wedge x \in B \setmin C\\
 <pre><code>or_comm' : ∀ (a b : Prop), a ∨ b ↔ b ∨ a</code></pre>
 </div>
 <p>So <code>or_comm'</code> is the same as <code>or_comm</code>, except that the arguments <code>a</code> and <code>b</code> are not implicit; that’s why <code>library_search</code> had to specify values for those arguments in its answer. The <code>#check</code> command also produces a suggestion that we should use <code>or_comm</code> instead.</p>
-<p>The <code>library_search</code> tactic is somewhat unpredictable; sometimes it is able to find the right theorem in the library, and sometimes it isn’t. But it is always worth a try. Other tactics that may be helpful are <code>suggest</code> and <code>hint</code>.</p>
+<p>The <code>library_search</code> tactic is somewhat unpredictable; sometimes it is able to find the right theorem in the library, and sometimes it isn’t. But it is always worth a try.</p>
 </section>
 <section id="exercises-4" class="level3">
 <h3 class="anchored" data-anchor-id="exercises-4">Exercises</h3>
