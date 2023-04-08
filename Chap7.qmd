@@ -292,6 +292,8 @@ theorem Theorem_7_1_6 {d a b : Nat} (h1 : d ∣ a) (h2 : d ∣ b) :
   done
 ```
 
+We will ask you in the exercises to prove that, among the common divisors of `a` and `b`, `gcd a b` is the greatest with respect to the usual ordering of the natural numbers (as long as `gcd a b ≠ 0`).
+
 ### Exercises
 
 ::: {.numex arguments="1"}
@@ -324,6 +326,20 @@ theorem Exercise_7_1_6 (a b c : Nat) :
 :::
 
 ::: {.numex arguments="5"}
+```lean
+theorem gcd_nonzero {a b : Nat} (h : a ≠ 0 ∨ b ≠ 0) :
+    gcd a b ≠ 0 := sorry
+```
+:::
+
+::: {.numex arguments="6"}
+```lean
+theorem gcd_greatest {a b d : Nat} (h1 : gcd a b ≠ 0)
+    (h2 : d ∣ a) (h3 : d ∣ b) : d ≤ gcd a b := sorry
+```
+:::
+
+::: {.numex arguments="7"}
 ```lean
 lemma Lemma_7_1_10a {a b : Nat} (n : Nat) (h : a ∣ b) :
     (n * a) ∣ (n * b) := sorry
@@ -999,6 +1015,68 @@ theorem Theorem_7_2_6_Fund_Thm_Arith (n : Nat) (h : n ≥ 1) :
     done
   done 
 ```
+
+### Exercises
+
+::: {.numex arguments="1"}
+```lean
+lemma dvd_prime_ex {a p : Nat}
+    (h1 : prime p) (h2 : a ∣ p) : a = 1 ∨ a = p := sorry
+```
+:::
+
+::: {.numex arguments="2"}
+```lean
+lemma fd_le_prime_fac_ex (n : Nat) : ∀ (k : Nat),
+    k ∣ (n + 2) → le_list (first_div (n + 2)) (prime_fac k) := sorry
+```
+:::
+
+::: {.numex arguments="3"}
+```lean
+theorem list_elt_dvd_prod (n : Nat) :
+    ∀ (l : List Nat), n ∈ l → n ∣ (prod l) := sorry
+-- Hint:  Start with apply List.rec
+```
+:::
+
+::: {.numex arguments="4"}
+```lean
+theorem Exercise_7_2_5 {a b : Nat} (h1 : a ≥ 1) (h2 : b ≥ 1) :
+    rel_prime a b ↔ (¬∃ (p : Nat), prime p ∧
+      p ∈ prime_fac a ∧ p ∈ prime_fac b) := sorry
+```
+:::
+
+::: {.numex arguments="5"}
+```lean
+theorem Exercise_7_2_6_ex (a b : Nat) :
+    rel_prime a b ↔ ∃ (s t : Int), s * a + t * b = 1 := sorry
+```
+:::
+
+::: {.numex arguments="6"}
+```lean
+theorem Exercise_7_2_7 {a b a' b' : Nat}
+    (h1 : rel_prime a b) (h2 : a' ∣ a) (h3 : b' ∣ b) :
+    rel_prime a' b' := sorry
+```
+:::
+
+::: {.numex arguments="7"}
+```lean
+theorem Exercise_7_2_9
+    {a b d j k : Nat} (h1 : d ≠ 0) (h2 : d = gcd a b)
+    (h3 : a = j * d) (h4 : b = k * d) : rel_prime j k := sorry
+```
+:::
+
+::: {.numex arguments="8"}
+```lean
+theorem Exercise_7_2_17a (a b c : Nat) :
+    gcd a (b * c) ∣ gcd a b * gcd a c := sorry
+```
+:::
 
 ## 7.3. Modular Arithmetic
 
