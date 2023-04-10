@@ -1247,3 +1247,55 @@ theorem Theorem_7_3_6_7 {m : Nat} (X : ZMod m) : X * cc m 1 = X := by
 def invertible {m : Nat} (X : ZMod m) : Prop :=
   ∃ (Y : ZMod m), X * Y = cc m 1
 ```
+
+Which congruence classes are invertible?  The answer is given by Theorem 7.3.7 in *HTPI*, which says that a congruence class $[a]_m$ is invertible if and only if $m$ and $a$ are relatively prime.  The proof uses an exercise from the last section.  Here is the Lean version of the proof.
+
+```lean
+theorem Exercise_7_2_6 (a b : Nat) :
+    rel_prime a b ↔ ∃ (s t : Int), s * a + t * b = 1 := sorry
+
+lemma gcd_c2_inv {m a : Nat} (h1 : rel_prime m a) :
+    (cc m a) * (cc m (gcd_c2 m a)) = cc m 1 := by
+  let s : Int := gcd_c1 m a
+  have h2 : s * ↑m + (gcd_c2 m a) * ↑a = ↑(gcd m a) := gcd_lin_comb a m
+  define at h1
+  rewrite [h1, Nat.cast_one] at h2
+  rewrite [mul_class, cc_eq_iff_congr]
+  define     --Goal : ∃ (c : ℤ), ↑a * gcd_c2 m a - 1 = ↑m * c
+  apply Exists.intro (-s)
+  show ↑a * gcd_c2 m a - 1 = ↑m * (-s) from
+    calc ↑a * (gcd_c2 m a) - 1
+      _ = s * ↑m + (gcd_c2 m a) * ↑a + ↑m * (-s) - 1 := by ring
+      _ = 1 + ↑m * (-s) - 1 := by rw [h2]
+      _ = ↑m * (-s) := by ring
+  done
+
+theorem Theorem_7_3_7 (m a : Nat) :
+    invertible (cc m a) ↔ rel_prime m a := by
+  apply Iff.intro
+  · -- (→)
+    assume h1 : invertible (cc m ↑a)
+    define at h1
+    obtain (Y : ZMod m) (h2 : cc m ↑a * Y = cc m 1) from h1
+    obtain (b : Int) (h3 : Y = cc m b) from cc_rep Y
+    rewrite [h3, mul_class, cc_eq_iff_congr] at h2
+    define at h2
+    obtain (c : Int) (h4 : ↑a * b - 1 = ↑m * c) from h2
+    rewrite [Exercise_7_2_6]
+      --Goal : ∃ (s t : Int), s * ↑m + t * ↑a = 1
+    apply Exists.intro (-c)
+    apply Exists.intro b
+    show -c * ↑m + b * ↑a = 1 from
+      calc (-c) * ↑m + b * ↑a
+        _ = (-c) * ↑m + (↑a * b - 1) + 1 := by ring
+        _ = (-c) * ↑m + ↑m * c + 1 := by rw [h4]
+        _ = 1 := by ring
+    done
+  · -- (←)
+    assume h1 : rel_prime m a
+    define
+    show ∃ (Y : ZMod m), cc m ↑a * Y = cc m 1 from
+      Exists.intro (cc m (gcd_c2 m a)) (gcd_c2_inv h1)
+    done
+  done
+```

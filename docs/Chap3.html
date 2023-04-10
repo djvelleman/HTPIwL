@@ -3436,8 +3436,8 @@ x \in A \cap (B \setmin C) &amp;\text{ iff } x \in A \wedge x \in B \setmin C\\
 </section>
 <section id="more-examples-of-proofs" class="level2">
 <h2 class="anchored" data-anchor-id="more-examples-of-proofs">3.7. More Examples of Proofs</h2>
-<p>It is finally time to discuss proofs involving algebraic reasoning. Lean has types for several different kinds of numbers. <code>Nat</code> is the type of natural numbers—that is, the numbers 0, 1, 2, …. <code>Int</code> is the type of integers, <code>Rat</code> is the type of rational numbers, <code>Real</code> is the type of real numbers, and <code>Complex</code> is the type of complex numbers. Lean also uses the notation <code>ℕ</code>, <code>ℤ</code>, <code>ℚ</code>, <code>ℝ</code>, and <code>ℂ</code> for these types. To write formulas involving arithmetic operations, you should use the symbols <code>+</code> for addition, <code>-</code> for subtraction, <code>*</code> for multiplication, <code>/</code> for division, and <code>^</code> for exponentiation. To see what’s involved in proving theorems about numbers in Lean, we’ll turn to a few examples from earlier in Chapter 3 of <em>HTPI</em>.</p>
-<p>We begin with Theorem 3.3.7, which concerns divisibility of integers. As in <em>HTPI</em>, for integers <code>x</code> and <code>y</code>, we will write <code>x ∣ y</code> to mean that <code>x</code> divides <code>y</code>, or <code>y</code> is divisible by <code>x</code>. The formal definition is that <code>x ∣ y</code> means that there is an integer <code>k</code> such that <code>y = x * k</code>. For example, <code>3 ∣ 12</code>, since <code>12 = 3 * 4</code>. Lean knows this notation, but there is an important warning: to type the vertical line that means “divides,” you must type <code>\|</code>, not simply <code>|</code>. (There are two slightly different vertical line symbols, and you have to look closely to see that they are different: <code>|</code> and <code>∣</code>. It is the second one that means “divides” in Lean, and to enter it you must type <code>\|</code>.) Here is Theorem 3.3.7, written using our usual rephrasing of a statement of the form <code>A ∧ B → C</code> as <code>A → B → C</code>.</p>
+<p>It is finally time to discuss proofs involving algebraic reasoning. Lean has types for several different kinds of numbers. <code>Nat</code> is the type of natural numbers—that is, the numbers 0, 1, 2, …. <code>Int</code> is the type of integers, <code>Rat</code> is the type of rational numbers, <code>Real</code> is the type of real numbers, and <code>Complex</code> is the type of complex numbers. Lean also uses the notation <code>ℕ</code>, <code>ℤ</code>, <code>ℚ</code>, <code>ℝ</code>, and <code>ℂ</code> for these types. To write formulas involving arithmetic operations, you should use the symbols <code>+</code> for addition, <code>-</code> for subtraction, <code>*</code> for multiplication, <code>/</code> for division, and <code>^</code> for exponentiation. We will discuss some of the more subtle points of algebraic reasoning in Chapter 6. For the moment, you are best off avoiding subtraction and division when working with natural numbers and avoiding division when working with integers.</p>
+<p>To see what’s involved in proving theorems about numbers in Lean, we’ll turn to a few examples from earlier in Chapter 3 of <em>HTPI</em>. We begin with Theorem 3.3.7, which concerns divisibility of integers. As in <em>HTPI</em>, for integers <code>x</code> and <code>y</code>, we will write <code>x ∣ y</code> to mean that <code>x</code> divides <code>y</code>, or <code>y</code> is divisible by <code>x</code>. The formal definition is that <code>x ∣ y</code> means that there is an integer <code>k</code> such that <code>y = x * k</code>. For example, <code>3 ∣ 12</code>, since <code>12 = 3 * 4</code>. Lean knows this notation, but there is an important warning: to type the vertical line that means “divides,” you must type <code>\|</code>, not simply <code>|</code>. (There are two slightly different vertical line symbols, and you have to look closely to see that they are different: <code>|</code> and <code>∣</code>. It is the second one that means “divides” in Lean, and to enter it you must type <code>\|</code>.) Here is Theorem 3.3.7, written using our usual rephrasing of a statement of the form <code>A ∧ B → C</code> as <code>A → B → C</code>.</p>
 <div class="inout">
 <div class="inpt">
 <div class="sourceCode" id="cb261"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb261-1"><a href="#cb261-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Theorem_3_3_7 :</span>
@@ -4057,39 +4057,50 @@ x \in A \cap (B \setmin C) &amp;\text{ iff } x \in A \wedge x \in B \setmin C\\
 <span id="cb306-3"><a href="#cb306-3" aria-hidden="true" tabindex="-1"></a>    _ = 3 * (2 * j) - 2 * (3 * k) := <span class="kw">by</span> <span class="kw">ring</span></span>
 <span id="cb306-4"><a href="#cb306-4" aria-hidden="true" tabindex="-1"></a>    _ = 3 * n - 2 * n := <span class="kw">by</span> <span class="kw">rw</span> [←h4, ←h5]</span>
 <span id="cb306-5"><a href="#cb306-5" aria-hidden="true" tabindex="-1"></a>    _ = n := <span class="kw">by</span> <span class="kw">ring</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>We end this section with an example of algebraic reasoning involving real numbers. You can use the <code>#check</code> command to find the meanings of the theorems we use in this proof.</p>
+<div class="sourceCode" id="cb307"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb307-1"><a href="#cb307-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Example_3_5_4 (x : Real) (h1 : x ≤ x ^ 2) : x ≤ 0 ∨ 1 ≤ x := <span class="kw">by</span></span>
+<span id="cb307-2"><a href="#cb307-2" aria-hidden="true" tabindex="-1"></a>  <span class="kw">or_right</span> <span class="kw">with</span> h2     <span class="co">--h2 : ¬x ≤ 0;  Goal : 1 ≤ x</span></span>
+<span id="cb307-3"><a href="#cb307-3" aria-hidden="true" tabindex="-1"></a>  <span class="kw">have</span> h3 : 0 &lt; x := lt_of_not_le h2</span>
+<span id="cb307-4"><a href="#cb307-4" aria-hidden="true" tabindex="-1"></a>  <span class="kw">have</span> h4 : 1 * x ≤ x * x :=</span>
+<span id="cb307-5"><a href="#cb307-5" aria-hidden="true" tabindex="-1"></a>    <span class="kw">calc</span> 1 * x</span>
+<span id="cb307-6"><a href="#cb307-6" aria-hidden="true" tabindex="-1"></a>      _ = x := one_mul x</span>
+<span id="cb307-7"><a href="#cb307-7" aria-hidden="true" tabindex="-1"></a>      _ ≤ x ^ 2 := h1</span>
+<span id="cb307-8"><a href="#cb307-8" aria-hidden="true" tabindex="-1"></a>      _ = x * x := <span class="kw">by</span> <span class="kw">ring</span></span>
+<span id="cb307-9"><a href="#cb307-9" aria-hidden="true" tabindex="-1"></a>  <span class="kw">show</span> 1 ≤ x <span class="kw">from</span> le_of_mul_le_mul_right h4 h3</span>
+<span id="cb307-10"><a href="#cb307-10" aria-hidden="true" tabindex="-1"></a>  <span class="kw">done</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <section id="exercises-5" class="level3">
 <h3 class="anchored" data-anchor-id="exercises-5">Exercises</h3>
 <div class="numex" data-arguments="1">
-<div class="sourceCode" id="cb307"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb307-1"><a href="#cb307-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Exercise_3_3_18a (a b c : Int)</span>
-<span id="cb307-2"><a href="#cb307-2" aria-hidden="true" tabindex="-1"></a>    (h1 : a ∣ b) (h2 : a ∣ c) : a ∣ (b + c) := <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb308"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb308-1"><a href="#cb308-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Exercise_3_3_18a (a b c : Int)</span>
+<span id="cb308-2"><a href="#cb308-2" aria-hidden="true" tabindex="-1"></a>    (h1 : a ∣ b) (h2 : a ∣ c) : a ∣ (b + c) := <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>2. Complete the following proof by justifying the steps in the calculational proof. Remember that you can use the tactic <code>demorgan : ...</code> to apply one of De Morgan’s laws to just a part of the goal. You may also find the theorem <code>and_or_left</code> useful. (Use <code>#check</code> to see what the theorem says.)</p>
-<div class="sourceCode" id="cb308"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb308-1"><a href="#cb308-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Exercise_3_4_6 (U : <span class="kw">Type</span>) (A B C : Set U) :</span>
-<span id="cb308-2"><a href="#cb308-2" aria-hidden="true" tabindex="-1"></a>    A \ (B ∩ C) = (A \ B) ∪ (A \ C) := <span class="kw">by</span></span>
-<span id="cb308-3"><a href="#cb308-3" aria-hidden="true" tabindex="-1"></a>  <span class="kw">apply</span> Set.ext</span>
-<span id="cb308-4"><a href="#cb308-4" aria-hidden="true" tabindex="-1"></a>  <span class="kw">fix</span> x : U</span>
-<span id="cb308-5"><a href="#cb308-5" aria-hidden="true" tabindex="-1"></a>  <span class="kw">show</span> x ∈ A \ (B ∩ C) ↔ x ∈ A \ B ∪ A \ C <span class="kw">from</span></span>
-<span id="cb308-6"><a href="#cb308-6" aria-hidden="true" tabindex="-1"></a>    <span class="kw">calc</span> x ∈ A \ (B ∩ C)</span>
-<span id="cb308-7"><a href="#cb308-7" aria-hidden="true" tabindex="-1"></a>      _ ↔ x ∈ A ∧ ¬(x ∈ B ∧ x ∈ C) := <span class="cn">sorry</span></span>
-<span id="cb308-8"><a href="#cb308-8" aria-hidden="true" tabindex="-1"></a>      _ ↔ x ∈ A ∧ (¬x ∈ B ∨ ¬x ∈ C) := <span class="cn">sorry</span>  </span>
-<span id="cb308-9"><a href="#cb308-9" aria-hidden="true" tabindex="-1"></a>      _ ↔ (x ∈ A ∧ ¬x ∈ B) ∨ (x ∈ A ∧ ¬x ∈ C) := <span class="cn">sorry</span></span>
-<span id="cb308-10"><a href="#cb308-10" aria-hidden="true" tabindex="-1"></a>      _ ↔ x ∈ (A \ B) ∪ (A \ C) := <span class="cn">sorry</span></span>
-<span id="cb308-11"><a href="#cb308-11" aria-hidden="true" tabindex="-1"></a>  <span class="kw">done</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb309"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb309-1"><a href="#cb309-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Exercise_3_4_6 (U : <span class="kw">Type</span>) (A B C : Set U) :</span>
+<span id="cb309-2"><a href="#cb309-2" aria-hidden="true" tabindex="-1"></a>    A \ (B ∩ C) = (A \ B) ∪ (A \ C) := <span class="kw">by</span></span>
+<span id="cb309-3"><a href="#cb309-3" aria-hidden="true" tabindex="-1"></a>  <span class="kw">apply</span> Set.ext</span>
+<span id="cb309-4"><a href="#cb309-4" aria-hidden="true" tabindex="-1"></a>  <span class="kw">fix</span> x : U</span>
+<span id="cb309-5"><a href="#cb309-5" aria-hidden="true" tabindex="-1"></a>  <span class="kw">show</span> x ∈ A \ (B ∩ C) ↔ x ∈ A \ B ∪ A \ C <span class="kw">from</span></span>
+<span id="cb309-6"><a href="#cb309-6" aria-hidden="true" tabindex="-1"></a>    <span class="kw">calc</span> x ∈ A \ (B ∩ C)</span>
+<span id="cb309-7"><a href="#cb309-7" aria-hidden="true" tabindex="-1"></a>      _ ↔ x ∈ A ∧ ¬(x ∈ B ∧ x ∈ C) := <span class="cn">sorry</span></span>
+<span id="cb309-8"><a href="#cb309-8" aria-hidden="true" tabindex="-1"></a>      _ ↔ x ∈ A ∧ (¬x ∈ B ∨ ¬x ∈ C) := <span class="cn">sorry</span>  </span>
+<span id="cb309-9"><a href="#cb309-9" aria-hidden="true" tabindex="-1"></a>      _ ↔ (x ∈ A ∧ ¬x ∈ B) ∨ (x ∈ A ∧ ¬x ∈ C) := <span class="cn">sorry</span></span>
+<span id="cb309-10"><a href="#cb309-10" aria-hidden="true" tabindex="-1"></a>      _ ↔ x ∈ (A \ B) ∪ (A \ C) := <span class="cn">sorry</span></span>
+<span id="cb309-11"><a href="#cb309-11" aria-hidden="true" tabindex="-1"></a>  <span class="kw">done</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="mdsk">
 
 </div>
 <p>For the next exercise you will need the following definitions:</p>
-<div class="sourceCode" id="cb309"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb309-1"><a href="#cb309-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> even (n : Int) : <span class="kw">Prop</span> := ∃ (k : Int), n = 2 * k</span>
-<span id="cb309-2"><a href="#cb309-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb309-3"><a href="#cb309-3" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> odd (n : Int) : <span class="kw">Prop</span> := ∃ (k : Int), n = 2 * k + 1</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb310"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb310-1"><a href="#cb310-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> even (n : Int) : <span class="kw">Prop</span> := ∃ (k : Int), n = 2 * k</span>
+<span id="cb310-2"><a href="#cb310-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb310-3"><a href="#cb310-3" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> odd (n : Int) : <span class="kw">Prop</span> := ∃ (k : Int), n = 2 * k + 1</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>These definitions tell Lean that if <code>n</code> has type <code>Int</code>, then <code>even n</code> means <code>∃ (k : Int), n = 2 * k</code> and <code>odd n</code> means <code>∃ (k : Int), n = 2 * k + 1</code>.</p>
 <div class="numex" data-arguments="3">
-<div class="sourceCode" id="cb310"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb310-1"><a href="#cb310-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Exercise_3_4_10 (x y : Int)</span>
-<span id="cb310-2"><a href="#cb310-2" aria-hidden="true" tabindex="-1"></a>    (h1 : odd x) (h2 : odd y) : even (x - y) := <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb311"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb311-1"><a href="#cb311-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Exercise_3_4_10 (x y : Int)</span>
+<span id="cb311-2"><a href="#cb311-2" aria-hidden="true" tabindex="-1"></a>    (h1 : odd x) (h2 : odd y) : even (x - y) := <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="numex" data-arguments="4">
-<div class="sourceCode" id="cb311"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb311-1"><a href="#cb311-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Exercise_3_4_27a :</span>
-<span id="cb311-2"><a href="#cb311-2" aria-hidden="true" tabindex="-1"></a>    ∀ (n : Int), 15 ∣ n ↔ 3 ∣ n ∧ 5 ∣ n := <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb312"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb312-1"><a href="#cb312-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Exercise_3_4_27a :</span>
+<span id="cb312-2"><a href="#cb312-2" aria-hidden="true" tabindex="-1"></a>    ∀ (n : Int), 15 ∣ n ↔ 3 ∣ n ∧ 5 ∣ n := <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 
 

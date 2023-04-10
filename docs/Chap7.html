@@ -1234,6 +1234,54 @@ Int.emod_nonneg : ∀ (a : ℤ) {b : ℤ}, b ≠ 0 → 0 ≤ a % b</code></pre>
 <p><code>Theorem_7_3_6_7</code> shows that <code>cc m 1</code> is the multiplicative identity element for <code>ZMod m</code>. We say that a congruence class <code>Y</code> is a <em>multiplicative inverse</em> of another class <code>X</code> if <code>X * Y = cc m 1</code>, and a congruence class is <em>invertible</em> if it has a multiplicative inverse:</p>
 <div class="sourceCode" id="cb62"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb62-1"><a href="#cb62-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> invertible {m : Nat} (X : ZMod m) : <span class="kw">Prop</span> :=</span>
 <span id="cb62-2"><a href="#cb62-2" aria-hidden="true" tabindex="-1"></a>  ∃ (Y : ZMod m), X * Y = cc m 1</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Which congruence classes are invertible? The answer is given by Theorem 7.3.7 in <em>HTPI</em>, which says that a congruence class <span class="math inline">\([a]_m\)</span> is invertible if and only if <span class="math inline">\(m\)</span> and <span class="math inline">\(a\)</span> are relatively prime. The proof uses an exercise from the last section. Here is the Lean version of the proof.</p>
+<div class="sourceCode" id="cb63"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb63-1"><a href="#cb63-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Exercise_7_2_6 (a b : Nat) :</span>
+<span id="cb63-2"><a href="#cb63-2" aria-hidden="true" tabindex="-1"></a>    rel_prime a b ↔ ∃ (s t : Int), s * a + t * b = 1 := <span class="cn">sorry</span></span>
+<span id="cb63-3"><a href="#cb63-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb63-4"><a href="#cb63-4" aria-hidden="true" tabindex="-1"></a><span class="kw">lemma</span> gcd_c2_inv {m a : Nat} (h1 : rel_prime m a) :</span>
+<span id="cb63-5"><a href="#cb63-5" aria-hidden="true" tabindex="-1"></a>    (cc m a) * (cc m (gcd_c2 m a)) = cc m 1 := <span class="kw">by</span></span>
+<span id="cb63-6"><a href="#cb63-6" aria-hidden="true" tabindex="-1"></a>  <span class="kw">let</span> s : Int := gcd_c1 m a</span>
+<span id="cb63-7"><a href="#cb63-7" aria-hidden="true" tabindex="-1"></a>  <span class="kw">have</span> h2 : s * ↑m + (gcd_c2 m a) * ↑a = ↑(gcd m a) := gcd_lin_comb a m</span>
+<span id="cb63-8"><a href="#cb63-8" aria-hidden="true" tabindex="-1"></a>  <span class="kw">define</span> <span class="kw">at</span> h1</span>
+<span id="cb63-9"><a href="#cb63-9" aria-hidden="true" tabindex="-1"></a>  <span class="kw">rewrite</span> [h1, Nat.cast_one] <span class="kw">at</span> h2</span>
+<span id="cb63-10"><a href="#cb63-10" aria-hidden="true" tabindex="-1"></a>  <span class="kw">rewrite</span> [mul_class, cc_eq_iff_congr]</span>
+<span id="cb63-11"><a href="#cb63-11" aria-hidden="true" tabindex="-1"></a>  <span class="kw">define</span>     <span class="co">--Goal : ∃ (c : ℤ), ↑a * gcd_c2 m a - 1 = ↑m * c</span></span>
+<span id="cb63-12"><a href="#cb63-12" aria-hidden="true" tabindex="-1"></a>  <span class="kw">apply</span> Exists.intro (-s)</span>
+<span id="cb63-13"><a href="#cb63-13" aria-hidden="true" tabindex="-1"></a>  <span class="kw">show</span> ↑a * gcd_c2 m a - 1 = ↑m * (-s) <span class="kw">from</span></span>
+<span id="cb63-14"><a href="#cb63-14" aria-hidden="true" tabindex="-1"></a>    <span class="kw">calc</span> ↑a * (gcd_c2 m a) - 1</span>
+<span id="cb63-15"><a href="#cb63-15" aria-hidden="true" tabindex="-1"></a>      _ = s * ↑m + (gcd_c2 m a) * ↑a + ↑m * (-s) - 1 := <span class="kw">by</span> <span class="kw">ring</span></span>
+<span id="cb63-16"><a href="#cb63-16" aria-hidden="true" tabindex="-1"></a>      _ = 1 + ↑m * (-s) - 1 := <span class="kw">by</span> <span class="kw">rw</span> [h2]</span>
+<span id="cb63-17"><a href="#cb63-17" aria-hidden="true" tabindex="-1"></a>      _ = ↑m * (-s) := <span class="kw">by</span> <span class="kw">ring</span></span>
+<span id="cb63-18"><a href="#cb63-18" aria-hidden="true" tabindex="-1"></a>  <span class="kw">done</span></span>
+<span id="cb63-19"><a href="#cb63-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb63-20"><a href="#cb63-20" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Theorem_7_3_7 (m a : Nat) :</span>
+<span id="cb63-21"><a href="#cb63-21" aria-hidden="true" tabindex="-1"></a>    invertible (cc m a) ↔ rel_prime m a := <span class="kw">by</span></span>
+<span id="cb63-22"><a href="#cb63-22" aria-hidden="true" tabindex="-1"></a>  <span class="kw">apply</span> Iff.intro</span>
+<span id="cb63-23"><a href="#cb63-23" aria-hidden="true" tabindex="-1"></a>  · <span class="co">-- (→)</span></span>
+<span id="cb63-24"><a href="#cb63-24" aria-hidden="true" tabindex="-1"></a>    <span class="kw">assume</span> h1 : invertible (cc m ↑a)</span>
+<span id="cb63-25"><a href="#cb63-25" aria-hidden="true" tabindex="-1"></a>    <span class="kw">define</span> <span class="kw">at</span> h1</span>
+<span id="cb63-26"><a href="#cb63-26" aria-hidden="true" tabindex="-1"></a>    <span class="kw">obtain</span> (Y : ZMod m) (h2 : cc m ↑a * Y = cc m 1) <span class="kw">from</span> h1</span>
+<span id="cb63-27"><a href="#cb63-27" aria-hidden="true" tabindex="-1"></a>    <span class="kw">obtain</span> (b : Int) (h3 : Y = cc m b) <span class="kw">from</span> cc_rep Y</span>
+<span id="cb63-28"><a href="#cb63-28" aria-hidden="true" tabindex="-1"></a>    <span class="kw">rewrite</span> [h3, mul_class, cc_eq_iff_congr] <span class="kw">at</span> h2</span>
+<span id="cb63-29"><a href="#cb63-29" aria-hidden="true" tabindex="-1"></a>    <span class="kw">define</span> <span class="kw">at</span> h2</span>
+<span id="cb63-30"><a href="#cb63-30" aria-hidden="true" tabindex="-1"></a>    <span class="kw">obtain</span> (c : Int) (h4 : ↑a * b - 1 = ↑m * c) <span class="kw">from</span> h2</span>
+<span id="cb63-31"><a href="#cb63-31" aria-hidden="true" tabindex="-1"></a>    <span class="kw">rewrite</span> [Exercise_7_2_6]</span>
+<span id="cb63-32"><a href="#cb63-32" aria-hidden="true" tabindex="-1"></a>      <span class="co">--Goal : ∃ (s t : Int), s * ↑m + t * ↑a = 1</span></span>
+<span id="cb63-33"><a href="#cb63-33" aria-hidden="true" tabindex="-1"></a>    <span class="kw">apply</span> Exists.intro (-c)</span>
+<span id="cb63-34"><a href="#cb63-34" aria-hidden="true" tabindex="-1"></a>    <span class="kw">apply</span> Exists.intro b</span>
+<span id="cb63-35"><a href="#cb63-35" aria-hidden="true" tabindex="-1"></a>    <span class="kw">show</span> -c * ↑m + b * ↑a = 1 <span class="kw">from</span></span>
+<span id="cb63-36"><a href="#cb63-36" aria-hidden="true" tabindex="-1"></a>      <span class="kw">calc</span> (-c) * ↑m + b * ↑a</span>
+<span id="cb63-37"><a href="#cb63-37" aria-hidden="true" tabindex="-1"></a>        _ = (-c) * ↑m + (↑a * b - 1) + 1 := <span class="kw">by</span> <span class="kw">ring</span></span>
+<span id="cb63-38"><a href="#cb63-38" aria-hidden="true" tabindex="-1"></a>        _ = (-c) * ↑m + ↑m * c + 1 := <span class="kw">by</span> <span class="kw">rw</span> [h4]</span>
+<span id="cb63-39"><a href="#cb63-39" aria-hidden="true" tabindex="-1"></a>        _ = 1 := <span class="kw">by</span> <span class="kw">ring</span></span>
+<span id="cb63-40"><a href="#cb63-40" aria-hidden="true" tabindex="-1"></a>    <span class="kw">done</span></span>
+<span id="cb63-41"><a href="#cb63-41" aria-hidden="true" tabindex="-1"></a>  · <span class="co">-- (←)</span></span>
+<span id="cb63-42"><a href="#cb63-42" aria-hidden="true" tabindex="-1"></a>    <span class="kw">assume</span> h1 : rel_prime m a</span>
+<span id="cb63-43"><a href="#cb63-43" aria-hidden="true" tabindex="-1"></a>    <span class="kw">define</span></span>
+<span id="cb63-44"><a href="#cb63-44" aria-hidden="true" tabindex="-1"></a>    <span class="kw">show</span> ∃ (Y : ZMod m), cc m ↑a * Y = cc m 1 <span class="kw">from</span></span>
+<span id="cb63-45"><a href="#cb63-45" aria-hidden="true" tabindex="-1"></a>      Exists.intro (cc m (gcd_c2 m a)) (gcd_c2_inv h1)</span>
+<span id="cb63-46"><a href="#cb63-46" aria-hidden="true" tabindex="-1"></a>    <span class="kw">done</span></span>
+<span id="cb63-47"><a href="#cb63-47" aria-hidden="true" tabindex="-1"></a>  <span class="kw">done</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 
 
 </section>
