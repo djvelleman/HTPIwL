@@ -1179,29 +1179,29 @@ theorem Example_6_3_4 : ∀ (x : Real), x > -1 →
   done
 ```
 
-Before ending this section, we'll return to a topic left unexplained before.  We can now describe how `Sum i from k to n, f i` is defined.  The key is a function `sum_val_from`, which is defined by recursion:
+Before ending this section, we'll return to a topic left unexplained before.  We can now describe how `Sum i from k to n, f i` is defined.  The key is a function `sum_seq`, which is defined by recursion:
 
 ```lean
-def sum_val_from {A : Type} [AddZeroClass A]
+def sum_seq {A : Type} [AddZeroClass A]
     (m k : Nat) (f : Nat → A) : A :=
   match m with
     | 0 => 0
-    | n + 1 => sum_val_from n k f + f (k + n)
+    | n + 1 => sum_seq n k f + f (k + n)
 ```
 
-To get an idea of what this definition means, let's try evaluating `sum_val_from 3 k f`:
+To get an idea of what this definition means, let's try evaluating `sum_seq 3 k f`:
 
 ::: {.ind}
 ```
-sum_val_from 3 k f = sum_val_from 2 k f + f (k + 2)
-             = sum_val_from 1 k f + f (k + 1) + f (k + 2)
-             = sum_val_from 0 k f + f (k + 0) + f (k + 1) + f (k + 2)
+sum_seq 3 k f = sum_seq 2 k f + f (k + 2)
+             = sum_seq 1 k f + f (k + 1) + f (k + 2)
+             = sum_seq 0 k f + f (k + 0) + f (k + 1) + f (k + 2)
              = 0 + f (k + 0) + f (k + 1) + f (k + 2)
              = f k + f (k + 1) + f (k + 2)
 ```
 :::
 
-So `sum_val_from 3 k f` adds up three consecutive values of `f`, starting with `f k`.  More generally, `sum_val_from n k f` adds up `n` consecutive values of `f`, starting with `f k`.  (The implicit arguments say that the type of the values of `f` can be any type for which `0` and `+` make sense.)  The notation `Sum i from k to n, f i` is now defined to be a shorthand for `sum_val_from (n + 1 - k) k f`.  We'll leave it to you to puzzle out why that gives the desired result.
+So `sum_seq 3 k f` adds up three consecutive values of `f`, starting with `f k`.  More generally, `sum_seq n k f` adds up a sequence of `n` consecutive values of `f`, starting with `f k`.  (The implicit arguments say that the type of the values of `f` can be any type for which `+` and `0` make sense.)  The notation `Sum i from k to n, f i` is now defined to be a shorthand for `sum_seq (n + 1 - k) k f`.  We'll leave it to you to puzzle out why that gives the desired result.
 
 ### Exercises
 

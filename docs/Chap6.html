@@ -1120,21 +1120,21 @@ $$
 <span id="cb71-30"><a href="#cb71-30" aria-hidden="true" tabindex="-1"></a>        _ = 1 + (↑n + 1) * x := <span class="kw">by</span> <span class="kw">ring</span></span>
 <span id="cb71-31"><a href="#cb71-31" aria-hidden="true" tabindex="-1"></a>    <span class="kw">done</span></span>
 <span id="cb71-32"><a href="#cb71-32" aria-hidden="true" tabindex="-1"></a>  <span class="kw">done</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>Before ending this section, we’ll return to a topic left unexplained before. We can now describe how <code>Sum i from k to n, f i</code> is defined. The key is a function <code>sum_val_from</code>, which is defined by recursion:</p>
-<div class="sourceCode" id="cb72"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb72-1"><a href="#cb72-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> sum_val_from {A : <span class="kw">Type</span>} [AddZeroClass A]</span>
+<p>Before ending this section, we’ll return to a topic left unexplained before. We can now describe how <code>Sum i from k to n, f i</code> is defined. The key is a function <code>sum_seq</code>, which is defined by recursion:</p>
+<div class="sourceCode" id="cb72"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb72-1"><a href="#cb72-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> sum_seq {A : <span class="kw">Type</span>} [AddZeroClass A]</span>
 <span id="cb72-2"><a href="#cb72-2" aria-hidden="true" tabindex="-1"></a>    (m k : Nat) (f : Nat → A) : A :=</span>
 <span id="cb72-3"><a href="#cb72-3" aria-hidden="true" tabindex="-1"></a>  <span class="kw">match</span> m <span class="kw">with</span></span>
 <span id="cb72-4"><a href="#cb72-4" aria-hidden="true" tabindex="-1"></a>    | 0 =&gt; 0</span>
-<span id="cb72-5"><a href="#cb72-5" aria-hidden="true" tabindex="-1"></a>    | n + 1 =&gt; sum_val_from n k f + f (k + n)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>To get an idea of what this definition means, let’s try evaluating <code>sum_val_from 3 k f</code>:</p>
+<span id="cb72-5"><a href="#cb72-5" aria-hidden="true" tabindex="-1"></a>    | n + 1 =&gt; sum_seq n k f + f (k + n)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>To get an idea of what this definition means, let’s try evaluating <code>sum_seq 3 k f</code>:</p>
 <div class="ind">
-<pre><code>sum_val_from 3 k f = sum_val_from 2 k f + f (k + 2)
-             = sum_val_from 1 k f + f (k + 1) + f (k + 2)
-             = sum_val_from 0 k f + f (k + 0) + f (k + 1) + f (k + 2)
+<pre><code>sum_seq 3 k f = sum_seq 2 k f + f (k + 2)
+             = sum_seq 1 k f + f (k + 1) + f (k + 2)
+             = sum_seq 0 k f + f (k + 0) + f (k + 1) + f (k + 2)
              = 0 + f (k + 0) + f (k + 1) + f (k + 2)
              = f k + f (k + 1) + f (k + 2)</code></pre>
 </div>
-<p>So <code>sum_val_from 3 k f</code> adds up three consecutive values of <code>f</code>, starting with <code>f k</code>. More generally, <code>sum_val_from n k f</code> adds up <code>n</code> consecutive values of <code>f</code>, starting with <code>f k</code>. (The implicit arguments say that the type of the values of <code>f</code> can be any type for which <code>0</code> and <code>+</code> make sense.) The notation <code>Sum i from k to n, f i</code> is now defined to be a shorthand for <code>sum_val_from (n + 1 - k) k f</code>. We’ll leave it to you to puzzle out why that gives the desired result.</p>
+<p>So <code>sum_seq 3 k f</code> adds up three consecutive values of <code>f</code>, starting with <code>f k</code>. More generally, <code>sum_seq n k f</code> adds up a sequence of <code>n</code> consecutive values of <code>f</code>, starting with <code>f k</code>. (The implicit arguments say that the type of the values of <code>f</code> can be any type for which <code>+</code> and <code>0</code> make sense.) The notation <code>Sum i from k to n, f i</code> is now defined to be a shorthand for <code>sum_seq (n + 1 - k) k f</code>. We’ll leave it to you to puzzle out why that gives the desired result.</p>
 <section id="exercises-2" class="level3">
 <h3 class="anchored" data-anchor-id="exercises-2">Exercises</h3>
 <div class="numex" data-arguments="1">

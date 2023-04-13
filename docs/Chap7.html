@@ -217,6 +217,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   <li><a href="#greatest-common-divisors" id="toc-greatest-common-divisors" class="nav-link active" data-scroll-target="#greatest-common-divisors">7.1. Greatest Common Divisors</a></li>
   <li><a href="#prime-factorization" id="toc-prime-factorization" class="nav-link" data-scroll-target="#prime-factorization">7.2. Prime Factorization</a></li>
   <li><a href="#modular-arithmetic" id="toc-modular-arithmetic" class="nav-link" data-scroll-target="#modular-arithmetic">7.3. Modular Arithmetic</a></li>
+  <li><a href="#eulers-theorem" id="toc-eulers-theorem" class="nav-link" data-scroll-target="#eulers-theorem">7.4. Euler’s Theorem</a></li>
   </ul>
 </nav>
     </div>
@@ -1234,7 +1235,7 @@ Int.emod_nonneg : ∀ (a : ℤ) {b : ℤ}, b ≠ 0 → 0 ≤ a % b</code></pre>
 <p><code>Theorem_7_3_6_7</code> shows that <code>cc m 1</code> is the multiplicative identity element for <code>ZMod m</code>. We say that a congruence class <code>Y</code> is a <em>multiplicative inverse</em> of another class <code>X</code> if <code>X * Y = cc m 1</code>, and a congruence class is <em>invertible</em> if it has a multiplicative inverse:</p>
 <div class="sourceCode" id="cb62"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb62-1"><a href="#cb62-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> invertible {m : Nat} (X : ZMod m) : <span class="kw">Prop</span> :=</span>
 <span id="cb62-2"><a href="#cb62-2" aria-hidden="true" tabindex="-1"></a>  ∃ (Y : ZMod m), X * Y = cc m 1</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>Which congruence classes are invertible? The answer is given by Theorem 7.3.7 in <em>HTPI</em>, which says that a congruence class <span class="math inline">\([a]_m\)</span> is invertible if and only if <span class="math inline">\(m\)</span> and <span class="math inline">\(a\)</span> are relatively prime. The proof uses an exercise from the last section. Here is the Lean version of the proof.</p>
+<p>Which congruence classes are invertible? The answer is given by Theorem 7.3.7 in <em>HTPI</em>, which says that if <span class="math inline">\(a\)</span> is a positive integer, then a <span class="math inline">\([a]_m\)</span> is invertible if and only if <span class="math inline">\(m\)</span> and <span class="math inline">\(a\)</span> are relatively prime. The proof uses an exercise from the last section. Here is the Lean version of the proof.</p>
 <div class="sourceCode" id="cb63"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb63-1"><a href="#cb63-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Exercise_7_2_6 (a b : Nat) :</span>
 <span id="cb63-2"><a href="#cb63-2" aria-hidden="true" tabindex="-1"></a>    rel_prime a b ↔ ∃ (s t : Int), s * a + t * b = 1 := <span class="cn">sorry</span></span>
 <span id="cb63-3"><a href="#cb63-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -1282,6 +1283,280 @@ Int.emod_nonneg : ∀ (a : ℤ) {b : ℤ}, b ≠ 0 → 0 ≤ a % b</code></pre>
 <span id="cb63-45"><a href="#cb63-45" aria-hidden="true" tabindex="-1"></a>      Exists.intro (cc m (gcd_c2 m a)) (gcd_c2_inv h1)</span>
 <span id="cb63-46"><a href="#cb63-46" aria-hidden="true" tabindex="-1"></a>    <span class="kw">done</span></span>
 <span id="cb63-47"><a href="#cb63-47" aria-hidden="true" tabindex="-1"></a>  <span class="kw">done</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<section id="exercises-2" class="level3">
+<h3 class="anchored" data-anchor-id="exercises-2">Exercises</h3>
+<div class="numex" data-arguments="1">
+<div class="sourceCode" id="cb64"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb64-1"><a href="#cb64-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> congr_trans_ex {m : Nat} : ∀ {a b c : Int},</span>
+<span id="cb64-2"><a href="#cb64-2" aria-hidden="true" tabindex="-1"></a>    congr_mod m a b → congr_mod m b c → congr_mod m a c := <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="numex" data-arguments="2">
+<div class="sourceCode" id="cb65"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb65-1"><a href="#cb65-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Theorem_7_3_6_3 {m : Nat} (X : ZMod m) : X + cc m 0 = X := <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="numex" data-arguments="3">
+<div class="sourceCode" id="cb66"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb66-1"><a href="#cb66-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Theorem_7_3_6_4 {m : Nat} (X : ZMod m) :</span>
+<span id="cb66-2"><a href="#cb66-2" aria-hidden="true" tabindex="-1"></a>    ∃ (Y : ZMod m), X + Y = cc m 0 := <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="numex" data-arguments="4">
+<div class="sourceCode" id="cb67"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb67-1"><a href="#cb67-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Exercise_7_3_4a {m : Nat} (Z1 Z2 : ZMod m)</span>
+<span id="cb67-2"><a href="#cb67-2" aria-hidden="true" tabindex="-1"></a>    (h1 : ∀ (X : ZMod m), X + Z1 = X)</span>
+<span id="cb67-3"><a href="#cb67-3" aria-hidden="true" tabindex="-1"></a>    (h2 : ∀ (X : ZMod m), X + Z2 = X) : Z1 = Z2 := <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="numex" data-arguments="5">
+<div class="sourceCode" id="cb68"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb68-1"><a href="#cb68-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Exercise_7_3_4b {m : Nat} (X Y1 Y2 : ZMod m)</span>
+<span id="cb68-2"><a href="#cb68-2" aria-hidden="true" tabindex="-1"></a>    (h1 : X + Y1 = cc m 0) (h2 : X + Y2 = cc m 0) : Y1 = Y2 := <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="numex" data-arguments="6">
+<div class="sourceCode" id="cb69"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb69-1"><a href="#cb69-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Theorem_7_3_10 (m a d : Nat) (b : Int) (h1 : d = gcd m a) :</span>
+<span id="cb69-2"><a href="#cb69-2" aria-hidden="true" tabindex="-1"></a>    ¬ (↑d : Int) ∣ b → ¬∃ (x : Int), congr_mod m (a * x) b := <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="numex" data-arguments="7">
+<div class="sourceCode" id="cb70"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb70-1"><a href="#cb70-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Theorem_7_3_11 (m n : Nat) (a b : Int) (h1 : n ≠ 0) :</span>
+<span id="cb70-2"><a href="#cb70-2" aria-hidden="true" tabindex="-1"></a>    congr_mod (n * m) (n * a) (n * b) ↔  congr_mod m a b := <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="numex" data-arguments="8">
+<div class="sourceCode" id="cb71"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb71-1"><a href="#cb71-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Exercise_7_3_16 {m : Nat} {a b : Int} (h : congr_mod m a b) :</span>
+<span id="cb71-2"><a href="#cb71-2" aria-hidden="true" tabindex="-1"></a>    ∀ (n : Nat), congr_mod m (a ^ n) (b ^ n) := <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+</section>
+<section id="eulers-theorem" class="level2">
+<h2 class="anchored" data-anchor-id="eulers-theorem">7.4. Euler’s Theorem</h2>
+<p>The main result of Section 7.4 of <em>HTPI</em> is Euler’s Theorem. The statement of the theorem involves Euler’s totient function <span class="math inline">\(\varphi\)</span>. For any positive integer <span class="math inline">\(m\)</span>, <em>HTPI</em> defines <span class="math inline">\(\varphi(m)\)</span> to be the number of elements of <span class="math inline">\(\mathbb{Z}/{\equiv_m}\)</span> that have multiplicative inverses. In order to state and prove Euler’s theorem in Lean, our first task is to define a Lean function <code>phi : Nat → Nat</code> that computes the totient function.</p>
+<p>Since <code>{0, 1, ..., m - 1}</code> is a complete residue system modulo <code>m</code>, <code>phi m</code> can be described as the number of natural numbers <code>a &lt; m</code> such that <code>cc m a</code> is invertible. (Note that <code>cc m a</code> is really <code>cc m ↑a</code>, since <code>a</code> must be coerced to <code>Int</code> to be used in our congruence class notation, but we will usually let Lean figure out the coercions for us.) According to <code>Theorem_7_3_7</code>, <code>cc m a</code> is invertible if and only if <code>m</code> and <code>a</code> are relatively prime, so <code>phi m</code> is also equal to the number of natural numbers <code>a &lt; m</code> that are relatively prime to <code>m</code>. We define a function <code>num_rp_below m k</code> that counts the number of natural numbers less than <code>k</code> that are relatively prime to <code>m</code>, and then use it to define <code>phi</code>.</p>
+<div class="sourceCode" id="cb72"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb72-1"><a href="#cb72-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> num_rp_below (m k : Nat) : Nat :=</span>
+<span id="cb72-2"><a href="#cb72-2" aria-hidden="true" tabindex="-1"></a>  <span class="kw">match</span> k <span class="kw">with</span></span>
+<span id="cb72-3"><a href="#cb72-3" aria-hidden="true" tabindex="-1"></a>    | 0 =&gt; 0</span>
+<span id="cb72-4"><a href="#cb72-4" aria-hidden="true" tabindex="-1"></a>    | j + 1 =&gt; if gcd m j = 1 then (num_rp_below m j) + 1</span>
+<span id="cb72-5"><a href="#cb72-5" aria-hidden="true" tabindex="-1"></a>                else num_rp_below m j</span>
+<span id="cb72-6"><a href="#cb72-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb72-7"><a href="#cb72-7" aria-hidden="true" tabindex="-1"></a><span class="kw">lemma</span> num_rp_below_base {m : Nat} :</span>
+<span id="cb72-8"><a href="#cb72-8" aria-hidden="true" tabindex="-1"></a>    num_rp_below m 0 = 0 := <span class="kw">by</span> <span class="kw">rfl</span></span>
+<span id="cb72-9"><a href="#cb72-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb72-10"><a href="#cb72-10" aria-hidden="true" tabindex="-1"></a><span class="kw">lemma</span> num_rp_below_step_rp {m j : Nat} (h : rel_prime m j) :</span>
+<span id="cb72-11"><a href="#cb72-11" aria-hidden="true" tabindex="-1"></a>    num_rp_below m (j + 1) = (num_rp_below m j) + 1 := <span class="kw">by</span></span>
+<span id="cb72-12"><a href="#cb72-12" aria-hidden="true" tabindex="-1"></a>  <span class="kw">have</span> h1 : num_rp_below m (j + 1) =</span>
+<span id="cb72-13"><a href="#cb72-13" aria-hidden="true" tabindex="-1"></a>    if gcd m j = 1 then (num_rp_below m j) + 1</span>
+<span id="cb72-14"><a href="#cb72-14" aria-hidden="true" tabindex="-1"></a>    else num_rp_below m j := <span class="kw">by</span> <span class="kw">rfl</span></span>
+<span id="cb72-15"><a href="#cb72-15" aria-hidden="true" tabindex="-1"></a>  <span class="kw">define</span> <span class="kw">at</span> h        <span class="co">--h : gcd m j = 1</span></span>
+<span id="cb72-16"><a href="#cb72-16" aria-hidden="true" tabindex="-1"></a>  <span class="kw">rewrite</span> [h1, if_pos h]</span>
+<span id="cb72-17"><a href="#cb72-17" aria-hidden="true" tabindex="-1"></a>  <span class="kw">rfl</span></span>
+<span id="cb72-18"><a href="#cb72-18" aria-hidden="true" tabindex="-1"></a>  <span class="kw">done</span></span>
+<span id="cb72-19"><a href="#cb72-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb72-20"><a href="#cb72-20" aria-hidden="true" tabindex="-1"></a><span class="kw">lemma</span> num_rp_below_step_not_rp {m j : Nat} (h : ¬rel_prime m j) :</span>
+<span id="cb72-21"><a href="#cb72-21" aria-hidden="true" tabindex="-1"></a>    num_rp_below m (j + 1) = num_rp_below m j := <span class="cn">sorry</span></span>
+<span id="cb72-22"><a href="#cb72-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb72-23"><a href="#cb72-23" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> phi (m : Nat) := num_rp_below m m</span>
+<span id="cb72-24"><a href="#cb72-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb72-25"><a href="#cb72-25" aria-hidden="true" tabindex="-1"></a><span class="kw">lemma</span> phi_def (m : Nat) : phi m = num_rp_below m m := <span class="kw">by</span> <span class="kw">rfl</span></span>
+<span id="cb72-26"><a href="#cb72-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb72-27"><a href="#cb72-27" aria-hidden="true" tabindex="-1"></a><span class="kw">#eval</span> phi 600   <span class="co">--Answer: 160</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>With this preparation, we can now state the theorem:</p>
+<div class="sourceCode" id="cb73"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb73-1"><a href="#cb73-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Theorem_7_4_2 (m a : Nat) [NeZero m] (h1 : rel_prime m a) :</span>
+<span id="cb73-2"><a href="#cb73-2" aria-hidden="true" tabindex="-1"></a>    (cc m a) ^ (phi m) = cc m 1</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>One of the key ideas in the proof of Theorem 7.4.2 in <em>HTPI</em> involves computing the product of all invertible congruence classes. To compute this product in Lean, we begin by defining a function <code>F m : Nat → ZMod m</code> as follows:</p>
+<div class="sourceCode" id="cb74"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb74-1"><a href="#cb74-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> F (m i : Nat) : ZMod m := if gcd m i = 1 then cc m i else cc m 1</span>
+<span id="cb74-2"><a href="#cb74-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb74-3"><a href="#cb74-3" aria-hidden="true" tabindex="-1"></a><span class="kw">lemma</span> F_rp_def {m i : Nat} (h : rel_prime m i) :</span>
+<span id="cb74-4"><a href="#cb74-4" aria-hidden="true" tabindex="-1"></a>    F m i = cc m i := <span class="kw">by</span></span>
+<span id="cb74-5"><a href="#cb74-5" aria-hidden="true" tabindex="-1"></a>  <span class="kw">have</span> h1 : F m i = if gcd m i = 1 then cc m i else cc m 1 := <span class="kw">by</span> <span class="kw">rfl</span></span>
+<span id="cb74-6"><a href="#cb74-6" aria-hidden="true" tabindex="-1"></a>  <span class="kw">define</span> <span class="kw">at</span> h      <span class="co">--h : gcd m i = 1</span></span>
+<span id="cb74-7"><a href="#cb74-7" aria-hidden="true" tabindex="-1"></a>  <span class="kw">rewrite</span> [h1, if_pos h]</span>
+<span id="cb74-8"><a href="#cb74-8" aria-hidden="true" tabindex="-1"></a>  <span class="kw">rfl</span></span>
+<span id="cb74-9"><a href="#cb74-9" aria-hidden="true" tabindex="-1"></a>  <span class="kw">done</span></span>
+<span id="cb74-10"><a href="#cb74-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb74-11"><a href="#cb74-11" aria-hidden="true" tabindex="-1"></a><span class="kw">lemma</span> F_not_rp_def {m i : Nat} (h : ¬rel_prime m i) :</span>
+<span id="cb74-12"><a href="#cb74-12" aria-hidden="true" tabindex="-1"></a>    F m i = cc m 1 := <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Note that <code>F</code> is defined as a function of two natural numbers, <code>m</code> and <code>i</code>, but as we discussed in Section 5.4, it follows that the partial application <code>F m</code> is a function from <code>Nat</code> to <code>ZMod m</code>.</p>
+<p>Now consider the product <code>(F m 0) * (F m 1) * ... * (F m (m - 1))</code>; we will call this the <em><code>F</code>-product</em>. If <code>m</code> and <code>i</code> are not relatively prime, then <code>F m i = cc m 1</code>, and since <code>cc m 1</code> is the multiplicative identity element of <code>ZMod m</code>, the factor <code>F m i</code> contributes nothing to the product. Thus, the <code>F</code>-product is equal to the product of the factors <code>F m i</code> for which <code>m</code> and <code>i</code> are relatively prime. But for those values of <code>i</code>, <code>F m i = cc m i</code>, so the product is equal to the product of all congruence classes <code>cc m i</code> with <code>m</code> and <code>i</code> relatively prime. By <code>Theorem_7_3_7</code>, that is the product of all invertible congruence classes.</p>
+<p>To express the <code>F</code>-product in Lean, we imitate our approach to summations, as described in Chapter 6. We begin by defining <code>prod_seq m k f</code> to be the product of a sequence of <code>m</code> consecutive values of the function <code>f</code>, starting with <code>f k</code>:</p>
+<div class="sourceCode" id="cb75"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb75-1"><a href="#cb75-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> prod_seq {A : <span class="kw">Type</span>} [MulOneClass A]</span>
+<span id="cb75-2"><a href="#cb75-2" aria-hidden="true" tabindex="-1"></a>    (m k : Nat) (f : Nat → A) : A :=</span>
+<span id="cb75-3"><a href="#cb75-3" aria-hidden="true" tabindex="-1"></a>  <span class="kw">match</span> m <span class="kw">with</span></span>
+<span id="cb75-4"><a href="#cb75-4" aria-hidden="true" tabindex="-1"></a>    | 0 =&gt; 1</span>
+<span id="cb75-5"><a href="#cb75-5" aria-hidden="true" tabindex="-1"></a>    | n + 1 =&gt; prod_seq n k f * f (k + n)</span>
+<span id="cb75-6"><a href="#cb75-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb75-7"><a href="#cb75-7" aria-hidden="true" tabindex="-1"></a><span class="kw">lemma</span> prod_seq_base {A : <span class="kw">Type</span>} [MulOneClass A]</span>
+<span id="cb75-8"><a href="#cb75-8" aria-hidden="true" tabindex="-1"></a>    (k : Nat) (f : Nat → A) : prod_seq 0 k f = 1 := <span class="kw">by</span> <span class="kw">rfl</span></span>
+<span id="cb75-9"><a href="#cb75-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb75-10"><a href="#cb75-10" aria-hidden="true" tabindex="-1"></a><span class="kw">lemma</span> prod_seq_step {A : <span class="kw">Type</span>} [MulOneClass A]</span>
+<span id="cb75-11"><a href="#cb75-11" aria-hidden="true" tabindex="-1"></a>    (n k : Nat) (f : Nat → A) :</span>
+<span id="cb75-12"><a href="#cb75-12" aria-hidden="true" tabindex="-1"></a>    prod_seq (n + 1) k f = prod_seq n k f * f (k + n) := <span class="kw">by</span> <span class="kw">rfl</span></span>
+<span id="cb75-13"><a href="#cb75-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb75-14"><a href="#cb75-14" aria-hidden="true" tabindex="-1"></a><span class="kw">lemma</span> prod_seq_zero_step {A : <span class="kw">Type</span>} [MulOneClass A]</span>
+<span id="cb75-15"><a href="#cb75-15" aria-hidden="true" tabindex="-1"></a>    (n : Nat) (f : Nat → A) :</span>
+<span id="cb75-16"><a href="#cb75-16" aria-hidden="true" tabindex="-1"></a>    prod_seq (n + 1) 0 f = prod_seq n 0 f * f n := <span class="cn">sorry</span></span>
+<span id="cb75-17"><a href="#cb75-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb75-18"><a href="#cb75-18" aria-hidden="true" tabindex="-1"></a><span class="kw">lemma</span> prod_one {A : <span class="kw">Type</span>} [MulOneClass A]</span>
+<span id="cb75-19"><a href="#cb75-19" aria-hidden="true" tabindex="-1"></a>    (k : Nat) (f : Nat → A) : prod_seq 1 k f = f k := <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>(The type class <code>MulOneClass A</code> indicates that <code>A</code> must be a type for which <code>*</code> and <code>1</code> make sense.) Using this notation, the expression <code>prod_seq m 0 (F m)</code> denotes the <code>F</code>-product, which, as we saw earlier, is equal to the product of the invertible congruence classes.</p>
+<p>Now suppose <code>a</code> is a natural number that is relatively prime to <code>m</code>. The next step in the proof in <em>HTPI</em> is to multiply each factor in the product of the invertible congruence classes by <code>cc m a</code>. To do this, we define a function <code>G</code> as follows:</p>
+<div class="sourceCode" id="cb76"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb76-1"><a href="#cb76-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> G (m a i : Nat) : Nat := if gcd m i = 1 then (a * i) % m else i</span>
+<span id="cb76-2"><a href="#cb76-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb76-3"><a href="#cb76-3" aria-hidden="true" tabindex="-1"></a><span class="kw">lemma</span> G_rp_def {m a i : Nat} (h : rel_prime m i) :</span>
+<span id="cb76-4"><a href="#cb76-4" aria-hidden="true" tabindex="-1"></a>    G m a i = (a * i) % m := <span class="cn">sorry</span></span>
+<span id="cb76-5"><a href="#cb76-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb76-6"><a href="#cb76-6" aria-hidden="true" tabindex="-1"></a><span class="kw">lemma</span> G_not_rp_def {m a i : Nat} (h : ¬rel_prime m i) :</span>
+<span id="cb76-7"><a href="#cb76-7" aria-hidden="true" tabindex="-1"></a>    G m a i = i := <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Once again, we will be interested in the partial application <code>G m a</code>, which is a function from <code>Nat</code> to <code>Nat</code>. Consider the following product, which we will call the <em><code>FG</code>-product</em>:</p>
+<div class="ind">
+<p><code>(F m (G m a 0)) * (F m (G m a 1)) * ... * (F m (G m a (m - 1)))</code>.</p>
+</div>
+<p>We can express this in Lean as <code>prod_seq m 0 ((F m) ∘ (G m a))</code>.</p>
+<p>If <code>i</code> is not relatively prime to <code>m</code>, then <code>F m (G m a i) = F m i = cc m 1</code>, so as before these terms contribute nothing to the <code>FG</code>-product. To understand the contribution of the other terms, we will use two lemmas.</p>
+<div class="sourceCode" id="cb77"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb77-1"><a href="#cb77-1" aria-hidden="true" tabindex="-1"></a><span class="kw">lemma</span> G_rel_prime {m a i : Nat}</span>
+<span id="cb77-2"><a href="#cb77-2" aria-hidden="true" tabindex="-1"></a>    (h1 : rel_prime m a) (h2 : rel_prime m i) :</span>
+<span id="cb77-3"><a href="#cb77-3" aria-hidden="true" tabindex="-1"></a>    rel_prime m (G m a i) := <span class="cn">sorry</span></span>
+<span id="cb77-4"><a href="#cb77-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb77-5"><a href="#cb77-5" aria-hidden="true" tabindex="-1"></a><span class="kw">lemma</span> cc_eq_mod (m a : Nat) : cc m a = cc m (a % m) := <span class="kw">by</span></span>
+<span id="cb77-6"><a href="#cb77-6" aria-hidden="true" tabindex="-1"></a>  <span class="kw">rewrite</span> [cc_eq_iff_congr]</span>
+<span id="cb77-7"><a href="#cb77-7" aria-hidden="true" tabindex="-1"></a>  <span class="kw">show</span> congr_mod m a (a % m) <span class="kw">from</span> congr_mod_mod m a</span>
+<span id="cb77-8"><a href="#cb77-8" aria-hidden="true" tabindex="-1"></a>  <span class="kw">done</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>According to the lemma <code>G_rel_prime</code>, if <code>i</code> is relatively prime to <code>m</code> then <code>G m a i</code> is also relatively prime to <code>m</code>, so <code>F m (G m a i) = cc m (G m a i)</code>. Filling in the definition of <code>G m a i</code> and applying the lemma <code>cc_eq_mod</code>, this means</p>
+<div class="ind">
+<p><code>F m (G m a i) = cc m ((a * i) % m) = cc m (a * i) = (cc m a) * (cc m i)</code>.</p>
+</div>
+<p>Thus, <code>F m (G m a i) = (cc m a) * (F m i)</code>. This means that, in the <code>FG</code>-product, each factor contributed by a value of <code>i</code> that is relatively prime to <code>m</code> is <code>cc m a</code> times the corresponding factor in the <code>F</code>-product. Since the number of such factors is <code>phi m</code>, it follows that the <code>FG</code>-product is <code>(cc m a) ^ (phi m)</code> times the <code>F</code>-product.</p>
+<p>Let’s see if we can prove this in Lean.</p>
+<div class="sourceCode" id="cb78"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb78-1"><a href="#cb78-1" aria-hidden="true" tabindex="-1"></a><span class="kw">lemma</span> FG_rp {m a i : Nat}</span>
+<span id="cb78-2"><a href="#cb78-2" aria-hidden="true" tabindex="-1"></a>    (h1 : rel_prime m a) (h2 : rel_prime m i) :</span>
+<span id="cb78-3"><a href="#cb78-3" aria-hidden="true" tabindex="-1"></a>    F m (G m a i) = cc m a * F m i := <span class="kw">by</span></span>
+<span id="cb78-4"><a href="#cb78-4" aria-hidden="true" tabindex="-1"></a>  <span class="kw">have</span> h3 : rel_prime m (G m a i) := G_rel_prime h1 h2</span>
+<span id="cb78-5"><a href="#cb78-5" aria-hidden="true" tabindex="-1"></a>  <span class="kw">show</span> F m (G m a i) = cc m a * F m i <span class="kw">from</span></span>
+<span id="cb78-6"><a href="#cb78-6" aria-hidden="true" tabindex="-1"></a>    <span class="kw">calc</span> F m (G m a i)</span>
+<span id="cb78-7"><a href="#cb78-7" aria-hidden="true" tabindex="-1"></a>      _ = cc m (G m a i) := F_rp_def h3</span>
+<span id="cb78-8"><a href="#cb78-8" aria-hidden="true" tabindex="-1"></a>      _ = cc m ↑((a * i) % m) := <span class="kw">by</span> <span class="kw">rw</span> [G_rp_def h2]</span>
+<span id="cb78-9"><a href="#cb78-9" aria-hidden="true" tabindex="-1"></a>      _ = cc m (↑(a * i) % ↑m) := <span class="kw">by</span> <span class="kw">rw</span> [Int.ofNat_mod_ofNat]</span>
+<span id="cb78-10"><a href="#cb78-10" aria-hidden="true" tabindex="-1"></a>      _ = cc m ↑(a * i) := (cc_eq_mod m (a * i)).symm</span>
+<span id="cb78-11"><a href="#cb78-11" aria-hidden="true" tabindex="-1"></a>      _ = cc m (↑a * ↑i) := <span class="kw">by</span> <span class="kw">rw</span> [Nat.cast_mul]</span>
+<span id="cb78-12"><a href="#cb78-12" aria-hidden="true" tabindex="-1"></a>      _ = cc m a * cc m i := (mul_class m a i).symm</span>
+<span id="cb78-13"><a href="#cb78-13" aria-hidden="true" tabindex="-1"></a>      _ = cc m a * F m i := <span class="kw">by</span> <span class="kw">rw</span> [F_rp_def h2]</span>
+<span id="cb78-14"><a href="#cb78-14" aria-hidden="true" tabindex="-1"></a>  <span class="kw">done</span></span>
+<span id="cb78-15"><a href="#cb78-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb78-16"><a href="#cb78-16" aria-hidden="true" tabindex="-1"></a><span class="kw">lemma</span> FG_prod {m a : Nat} (h1 : rel_prime m a) :</span>
+<span id="cb78-17"><a href="#cb78-17" aria-hidden="true" tabindex="-1"></a>    ∀ (k : Nat), prod_seq k 0 ((F m) ∘ (G m a)) =</span>
+<span id="cb78-18"><a href="#cb78-18" aria-hidden="true" tabindex="-1"></a>      (cc m a) ^ (num_rp_below m k) * prod_seq k 0 (F m) := <span class="kw">by</span></span>
+<span id="cb78-19"><a href="#cb78-19" aria-hidden="true" tabindex="-1"></a>  <span class="kw">by_induc</span></span>
+<span id="cb78-20"><a href="#cb78-20" aria-hidden="true" tabindex="-1"></a>  · <span class="co">-- Base Case</span></span>
+<span id="cb78-21"><a href="#cb78-21" aria-hidden="true" tabindex="-1"></a>    <span class="kw">show</span> prod_seq 0 0 ((F m) ∘ (G m a)) =</span>
+<span id="cb78-22"><a href="#cb78-22" aria-hidden="true" tabindex="-1"></a>          (cc m a) ^ (num_rp_below m 0) * prod_seq 0 0 (F m) <span class="kw">from</span></span>
+<span id="cb78-23"><a href="#cb78-23" aria-hidden="true" tabindex="-1"></a>      <span class="kw">calc</span> prod_seq 0 0 ((F m) ∘ (G m a))</span>
+<span id="cb78-24"><a href="#cb78-24" aria-hidden="true" tabindex="-1"></a>        _ = 1 := prod_seq_base _ _</span>
+<span id="cb78-25"><a href="#cb78-25" aria-hidden="true" tabindex="-1"></a>        _ = (cc m a) ^ 0 * 1 := <span class="kw">by</span> <span class="kw">ring</span></span>
+<span id="cb78-26"><a href="#cb78-26" aria-hidden="true" tabindex="-1"></a>        _ = (cc m a) ^ (num_rp_below m 0) * prod_seq 0 0 (F m) := <span class="kw">by</span></span>
+<span id="cb78-27"><a href="#cb78-27" aria-hidden="true" tabindex="-1"></a>              <span class="kw">rw</span> [num_rp_below_base, prod_seq_base]</span>
+<span id="cb78-28"><a href="#cb78-28" aria-hidden="true" tabindex="-1"></a>    <span class="kw">done</span></span>
+<span id="cb78-29"><a href="#cb78-29" aria-hidden="true" tabindex="-1"></a>  · <span class="co">-- Induction Step</span></span>
+<span id="cb78-30"><a href="#cb78-30" aria-hidden="true" tabindex="-1"></a>    <span class="kw">fix</span> k : Nat</span>
+<span id="cb78-31"><a href="#cb78-31" aria-hidden="true" tabindex="-1"></a>    <span class="kw">assume</span> ih : prod_seq k 0 ((F m) ∘ (G m a)) =</span>
+<span id="cb78-32"><a href="#cb78-32" aria-hidden="true" tabindex="-1"></a>      (cc m a) ^ (num_rp_below m k) * prod_seq k 0 (F m)</span>
+<span id="cb78-33"><a href="#cb78-33" aria-hidden="true" tabindex="-1"></a>    <span class="kw">by_cases</span> h2 : rel_prime m k</span>
+<span id="cb78-34"><a href="#cb78-34" aria-hidden="true" tabindex="-1"></a>    · <span class="co">-- Case 1. h2 : rel_prime m k</span></span>
+<span id="cb78-35"><a href="#cb78-35" aria-hidden="true" tabindex="-1"></a>      <span class="kw">show</span> prod_seq (k + 1) 0 ((F m) ∘ (G m a)) =</span>
+<span id="cb78-36"><a href="#cb78-36" aria-hidden="true" tabindex="-1"></a>          (cc m a) ^ (num_rp_below m (k + 1)) *</span>
+<span id="cb78-37"><a href="#cb78-37" aria-hidden="true" tabindex="-1"></a>          prod_seq (k + 1) 0 (F m) <span class="kw">from</span></span>
+<span id="cb78-38"><a href="#cb78-38" aria-hidden="true" tabindex="-1"></a>        <span class="kw">calc</span> prod_seq (k + 1) 0 ((F m) ∘ (G m a))</span>
+<span id="cb78-39"><a href="#cb78-39" aria-hidden="true" tabindex="-1"></a>          _ = prod_seq k 0 ((F m) ∘ (G m a)) *</span>
+<span id="cb78-40"><a href="#cb78-40" aria-hidden="true" tabindex="-1"></a>              F m (G m a k) := prod_seq_zero_step _ _</span>
+<span id="cb78-41"><a href="#cb78-41" aria-hidden="true" tabindex="-1"></a>          _ = (cc m a) ^ (num_rp_below m k) * prod_seq k 0 (F m) *</span>
+<span id="cb78-42"><a href="#cb78-42" aria-hidden="true" tabindex="-1"></a>              F m (G m a k) := <span class="kw">by</span> <span class="kw">rw</span> [ih]</span>
+<span id="cb78-43"><a href="#cb78-43" aria-hidden="true" tabindex="-1"></a>          _ = (cc m a) ^ (num_rp_below m k) * prod_seq k 0 (F m) *</span>
+<span id="cb78-44"><a href="#cb78-44" aria-hidden="true" tabindex="-1"></a>              (cc m a * F m k) := <span class="kw">by</span> <span class="kw">rw</span> [FG_rp h1 h2]</span>
+<span id="cb78-45"><a href="#cb78-45" aria-hidden="true" tabindex="-1"></a>          _ = (cc m a) ^ ((num_rp_below m k) + 1) *</span>
+<span id="cb78-46"><a href="#cb78-46" aria-hidden="true" tabindex="-1"></a>              ((prod_seq k 0 (F m)) * F m k) := <span class="kw">by</span> <span class="kw">ring</span></span>
+<span id="cb78-47"><a href="#cb78-47" aria-hidden="true" tabindex="-1"></a>          _ = (cc m a) ^ (num_rp_below m (k + 1)) *</span>
+<span id="cb78-48"><a href="#cb78-48" aria-hidden="true" tabindex="-1"></a>              prod_seq (k + 1) 0 (F m) := <span class="kw">by</span></span>
+<span id="cb78-49"><a href="#cb78-49" aria-hidden="true" tabindex="-1"></a>                <span class="kw">rw</span> [num_rp_below_step_rp h2, prod_seq_zero_step]</span>
+<span id="cb78-50"><a href="#cb78-50" aria-hidden="true" tabindex="-1"></a>      <span class="kw">done</span></span>
+<span id="cb78-51"><a href="#cb78-51" aria-hidden="true" tabindex="-1"></a>    · <span class="co">-- Case 2. h2 : ¬rel_prime m k</span></span>
+<span id="cb78-52"><a href="#cb78-52" aria-hidden="true" tabindex="-1"></a>      <span class="kw">show</span> prod_seq (k + 1) 0 ((F m) ∘ (G m a)) =</span>
+<span id="cb78-53"><a href="#cb78-53" aria-hidden="true" tabindex="-1"></a>          (cc m a) ^ (num_rp_below m (k + 1)) *</span>
+<span id="cb78-54"><a href="#cb78-54" aria-hidden="true" tabindex="-1"></a>          prod_seq (k + 1) 0 (F m) <span class="kw">from</span></span>
+<span id="cb78-55"><a href="#cb78-55" aria-hidden="true" tabindex="-1"></a>        <span class="kw">calc</span> prod_seq (k + 1) 0 ((F m) ∘ (G m a))</span>
+<span id="cb78-56"><a href="#cb78-56" aria-hidden="true" tabindex="-1"></a>          _ = prod_seq k 0 ((F m) ∘ (G m a)) *</span>
+<span id="cb78-57"><a href="#cb78-57" aria-hidden="true" tabindex="-1"></a>              F m (G m a k) := prod_seq_zero_step _ _</span>
+<span id="cb78-58"><a href="#cb78-58" aria-hidden="true" tabindex="-1"></a>          _ = (cc m a) ^ (num_rp_below m k) * prod_seq k 0 (F m) *</span>
+<span id="cb78-59"><a href="#cb78-59" aria-hidden="true" tabindex="-1"></a>              F m (G m a k) := <span class="kw">by</span> <span class="kw">rw</span> [ih]</span>
+<span id="cb78-60"><a href="#cb78-60" aria-hidden="true" tabindex="-1"></a>          _ = (cc m a) ^ (num_rp_below m k) * prod_seq k 0 (F m) *</span>
+<span id="cb78-61"><a href="#cb78-61" aria-hidden="true" tabindex="-1"></a>              F m k := <span class="kw">by</span> <span class="kw">rw</span> [G_not_rp_def h2]</span>
+<span id="cb78-62"><a href="#cb78-62" aria-hidden="true" tabindex="-1"></a>          _ = (cc m a) ^ (num_rp_below m k) *</span>
+<span id="cb78-63"><a href="#cb78-63" aria-hidden="true" tabindex="-1"></a>              (prod_seq k 0 (F m) * F m k) := <span class="kw">by</span> <span class="kw">ring</span></span>
+<span id="cb78-64"><a href="#cb78-64" aria-hidden="true" tabindex="-1"></a>          _ = (cc m a) ^ (num_rp_below m (k + 1)) *</span>
+<span id="cb78-65"><a href="#cb78-65" aria-hidden="true" tabindex="-1"></a>              prod_seq (k + 1) 0 (F m) := <span class="kw">by</span></span>
+<span id="cb78-66"><a href="#cb78-66" aria-hidden="true" tabindex="-1"></a>                <span class="kw">rw</span> [num_rp_below_step_not_rp h2, prod_seq_zero_step]</span>
+<span id="cb78-67"><a href="#cb78-67" aria-hidden="true" tabindex="-1"></a>      <span class="kw">done</span></span>
+<span id="cb78-68"><a href="#cb78-68" aria-hidden="true" tabindex="-1"></a>    <span class="kw">done</span></span>
+<span id="cb78-69"><a href="#cb78-69" aria-hidden="true" tabindex="-1"></a>  <span class="kw">done</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>The lemma <code>FG_prod</code>, in the case <code>k = m</code>, tells us that</p>
+<div class="ind">
+<p><code>prod_seq m 0 ((F m) ∘ (G m a)) = (cc m a) ^ (phi m) * prod_seq m 0 (F m)</code>.</p>
+</div>
+<p>In other words, we have proven that the <code>FG</code>-product is <code>(cc m a) ^ (phi m)</code> times the <code>F</code>-product.</p>
+<p>And now we come to the central idea in the proof of <code>Theorem_7_4_2</code>: the congruence classes that are multiplied in the <code>FG</code>-product are exactly the same as the congruence classes multiplied in the <code>F</code>-product, but listed in a different order. The reason for this is that the function <code>G m a</code> permutes the natural numbers less than <code>m</code>. Since multiplication of congruence classes is commutative and associative, it follows that the <code>FG</code>-product and the <code>F</code>-product are equal.</p>
+<p>To prove these claims, we first define what it means for a function to permute the natural numbers less than <code>m</code>.</p>
+<div class="sourceCode" id="cb79"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb79-1"><a href="#cb79-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> maps_below (m : Nat) (g : Nat → Nat) : <span class="kw">Prop</span> := ∀ i &lt; m, g i &lt; m</span>
+<span id="cb79-2"><a href="#cb79-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb79-3"><a href="#cb79-3" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> one_one_below (m : Nat) (g : Nat → Nat) : <span class="kw">Prop</span> :=</span>
+<span id="cb79-4"><a href="#cb79-4" aria-hidden="true" tabindex="-1"></a>  ∀ i1 &lt; m, ∀ i2 &lt; m, g i1 = g i2 → i1 = i2</span>
+<span id="cb79-5"><a href="#cb79-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb79-6"><a href="#cb79-6" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> onto_below (m : Nat) (g : Nat → Nat) : <span class="kw">Prop</span> :=</span>
+<span id="cb79-7"><a href="#cb79-7" aria-hidden="true" tabindex="-1"></a>  ∀ k &lt; m, ∃ i &lt; m, g i = k</span>
+<span id="cb79-8"><a href="#cb79-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb79-9"><a href="#cb79-9" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> perm_below (m : Nat) (g : Nat → Nat) : <span class="kw">Prop</span> :=</span>
+<span id="cb79-10"><a href="#cb79-10" aria-hidden="true" tabindex="-1"></a>  maps_below m g ∧ one_one_below m g ∧ onto_below m g</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>The proofs of our next two lemmas are somewhat long. We state them now, but put off discussion of their proofs until the end of the section</p>
+<div class="sourceCode" id="cb80"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb80-1"><a href="#cb80-1" aria-hidden="true" tabindex="-1"></a><span class="kw">lemma</span> G_perm_below {m a : Nat} [NeZero m]</span>
+<span id="cb80-2"><a href="#cb80-2" aria-hidden="true" tabindex="-1"></a>    (h1 : rel_prime m a) : perm_below m (G m a)</span>
+<span id="cb80-3"><a href="#cb80-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb80-4"><a href="#cb80-4" aria-hidden="true" tabindex="-1"></a><span class="kw">lemma</span> perm_prod {R : <span class="kw">Type</span>} [CommRing R] (f : Nat → R) :</span>
+<span id="cb80-5"><a href="#cb80-5" aria-hidden="true" tabindex="-1"></a>    ∀ (m : Nat), ∀ (g : Nat → Nat), perm_below m g →</span>
+<span id="cb80-6"><a href="#cb80-6" aria-hidden="true" tabindex="-1"></a>      prod_seq m 0 f = prod_seq m 0 (f ∘ g)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>The type class <code>CommRing R</code> indicates that the type <code>R</code> must have operations of addition and multiplication that satisfy all of the algebraic laws in Theorem 7.3.6 of <em>HTPI</em>. Lean knows that <code>ZMod m</code> satisfies all of those laws, so it knows that the lemma <code>perm_prod</code> can be applied with <code>R = ZMod m</code>.</p>
+<p>There is just one more fact we need before we can prove <code>Theorem_7_4_2</code>: a product of invertible congruence classes is invertible, and therefore the <code>F</code>-product is invertible.</p>
+<div class="sourceCode" id="cb81"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb81-1"><a href="#cb81-1" aria-hidden="true" tabindex="-1"></a><span class="kw">lemma</span> prod_invertible {m : Nat} {X Y : ZMod m}</span>
+<span id="cb81-2"><a href="#cb81-2" aria-hidden="true" tabindex="-1"></a>    (h1 : invertible X) (h2 : invertible Y) : invertible (X * Y) := <span class="kw">by</span></span>
+<span id="cb81-3"><a href="#cb81-3" aria-hidden="true" tabindex="-1"></a>  <span class="kw">obtain</span> (Xi : ZMod m) (h3 : X * Xi = cc m 1) <span class="kw">from</span> h1</span>
+<span id="cb81-4"><a href="#cb81-4" aria-hidden="true" tabindex="-1"></a>  <span class="kw">obtain</span> (Yi : ZMod m) (h4 : Y * Yi = cc m 1) <span class="kw">from</span> h2</span>
+<span id="cb81-5"><a href="#cb81-5" aria-hidden="true" tabindex="-1"></a>  <span class="kw">apply</span> Exists.intro (Xi * Yi)</span>
+<span id="cb81-6"><a href="#cb81-6" aria-hidden="true" tabindex="-1"></a>  <span class="kw">show</span> (X * Y) * (Xi * Yi) = cc m 1 <span class="kw">from</span></span>
+<span id="cb81-7"><a href="#cb81-7" aria-hidden="true" tabindex="-1"></a>    <span class="kw">calc</span> X * Y * (Xi * Yi)</span>
+<span id="cb81-8"><a href="#cb81-8" aria-hidden="true" tabindex="-1"></a>      _ = (X * Xi) * (Y * Yi) := <span class="kw">by</span> <span class="kw">ring</span></span>
+<span id="cb81-9"><a href="#cb81-9" aria-hidden="true" tabindex="-1"></a>      _ = cc m 1 * cc m 1 := <span class="kw">by</span> <span class="kw">rw</span> [h3, h4]</span>
+<span id="cb81-10"><a href="#cb81-10" aria-hidden="true" tabindex="-1"></a>      _ = cc m 1 := Theorem_7_3_6_7 (cc m 1)</span>
+<span id="cb81-11"><a href="#cb81-11" aria-hidden="true" tabindex="-1"></a>  <span class="kw">done</span></span>
+<span id="cb81-12"><a href="#cb81-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb81-13"><a href="#cb81-13" aria-hidden="true" tabindex="-1"></a><span class="kw">lemma</span> F_invertible (m i : Nat) : invertible (F m i) := <span class="kw">by</span></span>
+<span id="cb81-14"><a href="#cb81-14" aria-hidden="true" tabindex="-1"></a>  <span class="kw">by_cases</span> h : rel_prime m i</span>
+<span id="cb81-15"><a href="#cb81-15" aria-hidden="true" tabindex="-1"></a>  · <span class="co">-- Case 1. h: rel_prime m i</span></span>
+<span id="cb81-16"><a href="#cb81-16" aria-hidden="true" tabindex="-1"></a>    <span class="kw">rewrite</span> [F_rp_def h]</span>
+<span id="cb81-17"><a href="#cb81-17" aria-hidden="true" tabindex="-1"></a>    <span class="kw">show</span> invertible (cc m i) <span class="kw">from</span> (Theorem_7_3_7 m i).rtl h</span>
+<span id="cb81-18"><a href="#cb81-18" aria-hidden="true" tabindex="-1"></a>    <span class="kw">done</span></span>
+<span id="cb81-19"><a href="#cb81-19" aria-hidden="true" tabindex="-1"></a>  · <span class="co">-- Case 2. h: ¬rel_prime m i</span></span>
+<span id="cb81-20"><a href="#cb81-20" aria-hidden="true" tabindex="-1"></a>    <span class="kw">rewrite</span> [F_not_rp_def h]</span>
+<span id="cb81-21"><a href="#cb81-21" aria-hidden="true" tabindex="-1"></a>    <span class="kw">apply</span> Exists.intro (cc m 1)</span>
+<span id="cb81-22"><a href="#cb81-22" aria-hidden="true" tabindex="-1"></a>    <span class="kw">show</span> cc m 1 * cc m 1 = cc m 1 <span class="kw">from</span> Theorem_7_3_6_7 (cc m 1)</span>
+<span id="cb81-23"><a href="#cb81-23" aria-hidden="true" tabindex="-1"></a>  <span class="kw">done</span></span>
+<span id="cb81-24"><a href="#cb81-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb81-25"><a href="#cb81-25" aria-hidden="true" tabindex="-1"></a><span class="kw">lemma</span> Fprod_invertible (m : Nat) :</span>
+<span id="cb81-26"><a href="#cb81-26" aria-hidden="true" tabindex="-1"></a>    ∀ (k : Nat), invertible (prod_seq k 0 (F m)) := <span class="kw">by</span></span>
+<span id="cb81-27"><a href="#cb81-27" aria-hidden="true" tabindex="-1"></a>  <span class="kw">by_induc</span></span>
+<span id="cb81-28"><a href="#cb81-28" aria-hidden="true" tabindex="-1"></a>  · <span class="co">-- Base Case</span></span>
+<span id="cb81-29"><a href="#cb81-29" aria-hidden="true" tabindex="-1"></a>    <span class="kw">have</span> h : prod_seq 0 0 (F m) = cc m 1 := <span class="kw">by</span></span>
+<span id="cb81-30"><a href="#cb81-30" aria-hidden="true" tabindex="-1"></a>      <span class="kw">rewrite</span> [prod_seq_base, ←Int.cast_one]</span>
+<span id="cb81-31"><a href="#cb81-31" aria-hidden="true" tabindex="-1"></a>      <span class="kw">rfl</span></span>
+<span id="cb81-32"><a href="#cb81-32" aria-hidden="true" tabindex="-1"></a>      <span class="kw">done</span></span>
+<span id="cb81-33"><a href="#cb81-33" aria-hidden="true" tabindex="-1"></a>    <span class="kw">apply</span> Exists.intro (cc m 1)</span>
+<span id="cb81-34"><a href="#cb81-34" aria-hidden="true" tabindex="-1"></a>    <span class="kw">show</span> prod_seq 0 0 (F m) * cc m 1 = cc m 1 <span class="kw">from</span></span>
+<span id="cb81-35"><a href="#cb81-35" aria-hidden="true" tabindex="-1"></a>      <span class="kw">calc</span> prod_seq 0 0 (F m) * cc m 1</span>
+<span id="cb81-36"><a href="#cb81-36" aria-hidden="true" tabindex="-1"></a>        _ = cc m 1 * cc m 1 := <span class="kw">by</span> <span class="kw">rw</span> [h]</span>
+<span id="cb81-37"><a href="#cb81-37" aria-hidden="true" tabindex="-1"></a>        _ = cc m 1 := Theorem_7_3_6_7 (cc m 1)</span>
+<span id="cb81-38"><a href="#cb81-38" aria-hidden="true" tabindex="-1"></a>    <span class="kw">done</span></span>
+<span id="cb81-39"><a href="#cb81-39" aria-hidden="true" tabindex="-1"></a>  · <span class="co">-- Induction Step</span></span>
+<span id="cb81-40"><a href="#cb81-40" aria-hidden="true" tabindex="-1"></a>    <span class="kw">fix</span> k : Nat</span>
+<span id="cb81-41"><a href="#cb81-41" aria-hidden="true" tabindex="-1"></a>    <span class="kw">assume</span> ih : invertible (prod_seq k 0 (F m))</span>
+<span id="cb81-42"><a href="#cb81-42" aria-hidden="true" tabindex="-1"></a>    <span class="kw">rewrite</span> [prod_seq_zero_step]</span>
+<span id="cb81-43"><a href="#cb81-43" aria-hidden="true" tabindex="-1"></a>    <span class="kw">show</span> invertible (prod_seq k 0 (F m) * (F m k)) <span class="kw">from</span></span>
+<span id="cb81-44"><a href="#cb81-44" aria-hidden="true" tabindex="-1"></a>      prod_invertible ih (F_invertible m k)</span>
+<span id="cb81-45"><a href="#cb81-45" aria-hidden="true" tabindex="-1"></a>  <span class="kw">done</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 
 
 </section>

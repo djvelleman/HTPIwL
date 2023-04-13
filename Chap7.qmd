@@ -1248,7 +1248,7 @@ def invertible {m : Nat} (X : ZMod m) : Prop :=
   ∃ (Y : ZMod m), X * Y = cc m 1
 ```
 
-Which congruence classes are invertible?  The answer is given by Theorem 7.3.7 in *HTPI*, which says that a congruence class $[a]_m$ is invertible if and only if $m$ and $a$ are relatively prime.  The proof uses an exercise from the last section.  Here is the Lean version of the proof.
+Which congruence classes are invertible?  The answer is given by Theorem 7.3.7 in *HTPI*, which says that if $a$ is a positive integer, then a $[a]_m$ is invertible if and only if $m$ and $a$ are relatively prime.  The proof uses an exercise from the last section.  Here is the Lean version of the proof.
 
 ```lean
 theorem Exercise_7_2_6 (a b : Nat) :
@@ -1297,5 +1297,356 @@ theorem Theorem_7_3_7 (m a : Nat) :
     show ∃ (Y : ZMod m), cc m ↑a * Y = cc m 1 from
       Exists.intro (cc m (gcd_c2 m a)) (gcd_c2_inv h1)
     done
+  done
+```
+
+### Exercises
+
+::: {.numex arguments="1"}
+```lean
+theorem congr_trans_ex {m : Nat} : ∀ {a b c : Int},
+    congr_mod m a b → congr_mod m b c → congr_mod m a c := sorry
+```
+:::
+
+::: {.numex arguments="2"}
+```lean
+theorem Theorem_7_3_6_3 {m : Nat} (X : ZMod m) : X + cc m 0 = X := sorry
+```
+:::
+
+::: {.numex arguments="3"}
+```lean
+theorem Theorem_7_3_6_4 {m : Nat} (X : ZMod m) :
+    ∃ (Y : ZMod m), X + Y = cc m 0 := sorry
+```
+:::
+
+::: {.numex arguments="4"}
+```lean
+theorem Exercise_7_3_4a {m : Nat} (Z1 Z2 : ZMod m)
+    (h1 : ∀ (X : ZMod m), X + Z1 = X)
+    (h2 : ∀ (X : ZMod m), X + Z2 = X) : Z1 = Z2 := sorry
+```
+:::
+
+::: {.numex arguments="5"}
+```lean
+theorem Exercise_7_3_4b {m : Nat} (X Y1 Y2 : ZMod m)
+    (h1 : X + Y1 = cc m 0) (h2 : X + Y2 = cc m 0) : Y1 = Y2 := sorry
+```
+:::
+
+::: {.numex arguments="6"}
+```lean
+theorem Theorem_7_3_10 (m a d : Nat) (b : Int) (h1 : d = gcd m a) :
+    ¬ (↑d : Int) ∣ b → ¬∃ (x : Int), congr_mod m (a * x) b := sorry
+```
+:::
+
+::: {.numex arguments="7"}
+```lean
+theorem Theorem_7_3_11 (m n : Nat) (a b : Int) (h1 : n ≠ 0) :
+    congr_mod (n * m) (n * a) (n * b) ↔  congr_mod m a b := sorry
+```
+:::
+
+::: {.numex arguments="8"}
+```lean
+theorem Exercise_7_3_16 {m : Nat} {a b : Int} (h : congr_mod m a b) :
+    ∀ (n : Nat), congr_mod m (a ^ n) (b ^ n) := sorry
+```
+:::
+
+## 7.4. Euler's Theorem
+
+The main result of Section 7.4 of *HTPI* is Euler's Theorem.  The statement of the theorem involves Euler's totient function $\varphi$.  For any positive integer $m$, *HTPI* defines $\varphi(m)$ to be the number of elements of $\mathbb{Z}/{\equiv_m}$ that have multiplicative inverses.  In order to state and prove Euler's theorem in Lean, our first task is to define a Lean function `phi : Nat → Nat` that computes the totient function.
+
+Since `{0, 1, ..., m - 1}` is a complete residue system modulo `m`, `phi m` can be described as the number of natural numbers `a < m` such that `cc m a` is invertible.  (Note that `cc m a` is really `cc m ↑a`, since `a` must be coerced to `Int` to be used in our congruence class notation, but we will usually let Lean figure out the coercions for us.)  According to `Theorem_7_3_7`, `cc m a` is invertible if and only if `m` and `a` are relatively prime, so `phi m` is also equal to the number of natural numbers `a < m` that are relatively prime to `m`.  We define a function `num_rp_below m k` that counts the number of natural numbers less than `k` that are relatively prime to `m`, and then use it to define `phi`.
+
+```lean
+def num_rp_below (m k : Nat) : Nat :=
+  match k with
+    | 0 => 0
+    | j + 1 => if gcd m j = 1 then (num_rp_below m j) + 1
+                else num_rp_below m j
+
+lemma num_rp_below_base {m : Nat} :
+    num_rp_below m 0 = 0 := by rfl
+
+lemma num_rp_below_step_rp {m j : Nat} (h : rel_prime m j) :
+    num_rp_below m (j + 1) = (num_rp_below m j) + 1 := by
+  have h1 : num_rp_below m (j + 1) =
+    if gcd m j = 1 then (num_rp_below m j) + 1
+    else num_rp_below m j := by rfl
+  define at h        --h : gcd m j = 1
+  rewrite [h1, if_pos h]
+  rfl
+  done
+
+lemma num_rp_below_step_not_rp {m j : Nat} (h : ¬rel_prime m j) :
+    num_rp_below m (j + 1) = num_rp_below m j := sorry
+
+def phi (m : Nat) := num_rp_below m m
+
+lemma phi_def (m : Nat) : phi m = num_rp_below m m := by rfl
+
+#eval phi 600   --Answer: 160
+```
+
+With this preparation, we can now state the theorem:
+
+```lean
+theorem Theorem_7_4_2 (m a : Nat) [NeZero m] (h1 : rel_prime m a) :
+    (cc m a) ^ (phi m) = cc m 1
+```
+
+One of the key ideas in the proof of Theorem 7.4.2 in *HTPI* involves computing the product of all invertible congruence classes.  To compute this product in Lean, we begin by defining a function `F m : Nat → ZMod m` as follows:
+
+```lean
+def F (m i : Nat) : ZMod m := if gcd m i = 1 then cc m i else cc m 1
+
+lemma F_rp_def {m i : Nat} (h : rel_prime m i) :
+    F m i = cc m i := by
+  have h1 : F m i = if gcd m i = 1 then cc m i else cc m 1 := by rfl
+  define at h      --h : gcd m i = 1
+  rewrite [h1, if_pos h]
+  rfl
+  done
+
+lemma F_not_rp_def {m i : Nat} (h : ¬rel_prime m i) :
+    F m i = cc m 1 := sorry
+```
+
+Note that `F` is defined as a function of two natural numbers, `m` and `i`, but as we discussed in Section 5.4, it follows that the partial application `F m` is a function from `Nat` to `ZMod m`.
+
+Now consider the product `(F m 0) * (F m 1) * ... * (F m (m - 1))`; we will call this the *`F`-product*.  If `m` and `i` are not relatively prime, then `F m i = cc m 1`, and since `cc m 1` is the multiplicative identity element of `ZMod m`, the factor `F m i` contributes nothing to the product.  Thus, the `F`-product is equal to the product of the factors `F m i` for which `m` and `i` are relatively prime.  But for those values of `i`, `F m i = cc m i`, so the product is equal to the product of all congruence classes `cc m i` with `m` and `i` relatively prime.  By `Theorem_7_3_7`, that is the product of all invertible congruence classes.
+
+To express the `F`-product in Lean, we imitate our approach to summations, as described in Chapter 6.  We begin by defining `prod_seq m k f` to be the product of a sequence of `m` consecutive values of the function `f`, starting with `f k`:
+
+```lean
+def prod_seq {A : Type} [MulOneClass A]
+    (m k : Nat) (f : Nat → A) : A :=
+  match m with
+    | 0 => 1
+    | n + 1 => prod_seq n k f * f (k + n)
+
+lemma prod_seq_base {A : Type} [MulOneClass A]
+    (k : Nat) (f : Nat → A) : prod_seq 0 k f = 1 := by rfl
+
+lemma prod_seq_step {A : Type} [MulOneClass A]
+    (n k : Nat) (f : Nat → A) :
+    prod_seq (n + 1) k f = prod_seq n k f * f (k + n) := by rfl
+
+lemma prod_seq_zero_step {A : Type} [MulOneClass A]
+    (n : Nat) (f : Nat → A) :
+    prod_seq (n + 1) 0 f = prod_seq n 0 f * f n := sorry
+
+lemma prod_one {A : Type} [MulOneClass A]
+    (k : Nat) (f : Nat → A) : prod_seq 1 k f = f k := sorry
+```
+
+(The type class `MulOneClass A` indicates that `A` must be a type for which `*` and `1` make sense.)  Using this notation, the expression `prod_seq m 0 (F m)` denotes the `F`-product, which, as we saw earlier, is equal to the product of the invertible congruence classes.
+
+Now suppose `a` is a natural number that is relatively prime to `m`.  The next step in the proof in *HTPI* is to multiply each factor in the product of the invertible congruence classes by `cc m a`.  To do this, we define a function `G` as follows:
+
+```lean
+def G (m a i : Nat) : Nat := if gcd m i = 1 then (a * i) % m else i
+
+lemma G_rp_def {m a i : Nat} (h : rel_prime m i) :
+    G m a i = (a * i) % m := sorry
+
+lemma G_not_rp_def {m a i : Nat} (h : ¬rel_prime m i) :
+    G m a i = i := sorry
+```
+
+Once again, we will be interested in the partial application `G m a`, which is a function from `Nat` to `Nat`.  Consider the following product, which we will call the *`FG`-product*:
+
+::: {.ind}
+`(F m (G m a 0)) * (F m (G m a 1)) * ... * (F m (G m a (m - 1)))`.
+:::
+
+We can express this in Lean as `prod_seq m 0 ((F m) ∘ (G m a))`.
+
+If `i` is not relatively prime to `m`, then `F m (G m a i) = F m i = cc m 1`, so as before these terms contribute nothing to the `FG`-product.  To understand the contribution of the other terms, we will use two lemmas.
+
+```lean
+lemma G_rel_prime {m a i : Nat}
+    (h1 : rel_prime m a) (h2 : rel_prime m i) :
+    rel_prime m (G m a i) := sorry
+
+lemma cc_eq_mod (m a : Nat) : cc m a = cc m (a % m) := by
+  rewrite [cc_eq_iff_congr]
+  show congr_mod m a (a % m) from congr_mod_mod m a
+  done
+```
+
+According to the lemma `G_rel_prime`, if `i` is relatively prime to `m` then `G m a i` is also relatively prime to `m`, so `F m (G m a i) = cc m (G m a i)`.  Filling in the definition of `G m a i` and applying the lemma `cc_eq_mod`, this means
+
+::: {.ind}
+`F m (G m a i) = cc m ((a * i) % m) = cc m (a * i) = (cc m a) * (cc m i)`.
+:::
+
+Thus, `F m (G m a i) = (cc m a) * (F m i)`.  This means that, in the `FG`-product, each factor contributed by a value of `i` that is relatively prime to `m` is `cc m a` times the corresponding factor in the `F`-product.  Since the number of such factors is `phi m`, it follows that the `FG`-product is `(cc m a) ^ (phi m)` times the `F`-product.
+
+Let's see if we can prove this in Lean.
+
+```lean
+lemma FG_rp {m a i : Nat}
+    (h1 : rel_prime m a) (h2 : rel_prime m i) :
+    F m (G m a i) = cc m a * F m i := by
+  have h3 : rel_prime m (G m a i) := G_rel_prime h1 h2
+  show F m (G m a i) = cc m a * F m i from
+    calc F m (G m a i)
+      _ = cc m (G m a i) := F_rp_def h3
+      _ = cc m ↑((a * i) % m) := by rw [G_rp_def h2]
+      _ = cc m (↑(a * i) % ↑m) := by rw [Int.ofNat_mod_ofNat]
+      _ = cc m ↑(a * i) := (cc_eq_mod m (a * i)).symm
+      _ = cc m (↑a * ↑i) := by rw [Nat.cast_mul]
+      _ = cc m a * cc m i := (mul_class m a i).symm
+      _ = cc m a * F m i := by rw [F_rp_def h2]
+  done
+
+lemma FG_prod {m a : Nat} (h1 : rel_prime m a) :
+    ∀ (k : Nat), prod_seq k 0 ((F m) ∘ (G m a)) =
+      (cc m a) ^ (num_rp_below m k) * prod_seq k 0 (F m) := by
+  by_induc
+  · -- Base Case
+    show prod_seq 0 0 ((F m) ∘ (G m a)) =
+          (cc m a) ^ (num_rp_below m 0) * prod_seq 0 0 (F m) from
+      calc prod_seq 0 0 ((F m) ∘ (G m a))
+        _ = 1 := prod_seq_base _ _
+        _ = (cc m a) ^ 0 * 1 := by ring
+        _ = (cc m a) ^ (num_rp_below m 0) * prod_seq 0 0 (F m) := by
+              rw [num_rp_below_base, prod_seq_base]
+    done
+  · -- Induction Step
+    fix k : Nat
+    assume ih : prod_seq k 0 ((F m) ∘ (G m a)) =
+      (cc m a) ^ (num_rp_below m k) * prod_seq k 0 (F m)
+    by_cases h2 : rel_prime m k
+    · -- Case 1. h2 : rel_prime m k
+      show prod_seq (k + 1) 0 ((F m) ∘ (G m a)) =
+          (cc m a) ^ (num_rp_below m (k + 1)) *
+          prod_seq (k + 1) 0 (F m) from
+        calc prod_seq (k + 1) 0 ((F m) ∘ (G m a))
+          _ = prod_seq k 0 ((F m) ∘ (G m a)) *
+              F m (G m a k) := prod_seq_zero_step _ _
+          _ = (cc m a) ^ (num_rp_below m k) * prod_seq k 0 (F m) *
+              F m (G m a k) := by rw [ih]
+          _ = (cc m a) ^ (num_rp_below m k) * prod_seq k 0 (F m) *
+              (cc m a * F m k) := by rw [FG_rp h1 h2]
+          _ = (cc m a) ^ ((num_rp_below m k) + 1) *
+              ((prod_seq k 0 (F m)) * F m k) := by ring
+          _ = (cc m a) ^ (num_rp_below m (k + 1)) *
+              prod_seq (k + 1) 0 (F m) := by
+                rw [num_rp_below_step_rp h2, prod_seq_zero_step]
+      done
+    · -- Case 2. h2 : ¬rel_prime m k
+      show prod_seq (k + 1) 0 ((F m) ∘ (G m a)) =
+          (cc m a) ^ (num_rp_below m (k + 1)) *
+          prod_seq (k + 1) 0 (F m) from
+        calc prod_seq (k + 1) 0 ((F m) ∘ (G m a))
+          _ = prod_seq k 0 ((F m) ∘ (G m a)) *
+              F m (G m a k) := prod_seq_zero_step _ _
+          _ = (cc m a) ^ (num_rp_below m k) * prod_seq k 0 (F m) *
+              F m (G m a k) := by rw [ih]
+          _ = (cc m a) ^ (num_rp_below m k) * prod_seq k 0 (F m) *
+              F m k := by rw [G_not_rp_def h2]
+          _ = (cc m a) ^ (num_rp_below m k) *
+              (prod_seq k 0 (F m) * F m k) := by ring
+          _ = (cc m a) ^ (num_rp_below m (k + 1)) *
+              prod_seq (k + 1) 0 (F m) := by
+                rw [num_rp_below_step_not_rp h2, prod_seq_zero_step]
+      done
+    done
+  done
+```
+
+The lemma `FG_prod`, in the case `k = m`, tells us that
+
+::: {.ind}
+`prod_seq m 0 ((F m) ∘ (G m a)) = (cc m a) ^ (phi m) * prod_seq m 0 (F m)`.
+:::
+
+In other words, we have proven that the `FG`-product is `(cc m a) ^ (phi m)` times the `F`-product.
+
+And now we come to the central idea in the proof of `Theorem_7_4_2`: the congruence classes that are multiplied in the `FG`-product are exactly the same as the congruence classes multiplied in the `F`-product, but listed in a different order.  The reason for this is that the function `G m a` permutes the natural numbers less than `m`.  Since multiplication of congruence classes is commutative and associative, it follows that the `FG`-product and the `F`-product are equal.
+
+To prove these claims, we first define what it means for a function to permute the natural numbers less than `m`.
+
+```lean
+def maps_below (m : Nat) (g : Nat → Nat) : Prop := ∀ i < m, g i < m
+
+def one_one_below (m : Nat) (g : Nat → Nat) : Prop :=
+  ∀ i1 < m, ∀ i2 < m, g i1 = g i2 → i1 = i2
+
+def onto_below (m : Nat) (g : Nat → Nat) : Prop :=
+  ∀ k < m, ∃ i < m, g i = k
+
+def perm_below (m : Nat) (g : Nat → Nat) : Prop :=
+  maps_below m g ∧ one_one_below m g ∧ onto_below m g
+```
+
+The proofs of our next two lemmas are somewhat long.  We state them now, but put off discussion of their proofs until the end of the section
+
+```lean
+lemma G_perm_below {m a : Nat} [NeZero m]
+    (h1 : rel_prime m a) : perm_below m (G m a)
+
+lemma perm_prod {R : Type} [CommRing R] (f : Nat → R) :
+    ∀ (m : Nat), ∀ (g : Nat → Nat), perm_below m g →
+      prod_seq m 0 f = prod_seq m 0 (f ∘ g)
+```
+
+The type class `CommRing R` indicates that the type `R` must have operations of addition and multiplication that satisfy all of the algebraic laws in Theorem 7.3.6 of *HTPI*.  Lean knows that `ZMod m` satisfies all of those laws, so it knows that the lemma `perm_prod` can be applied with `R = ZMod m`.
+
+There is just one more fact we need before we can prove `Theorem_7_4_2`: a product of invertible congruence classes is invertible, and therefore the `F`-product is invertible.
+
+```lean
+lemma prod_invertible {m : Nat} {X Y : ZMod m}
+    (h1 : invertible X) (h2 : invertible Y) : invertible (X * Y) := by
+  obtain (Xi : ZMod m) (h3 : X * Xi = cc m 1) from h1
+  obtain (Yi : ZMod m) (h4 : Y * Yi = cc m 1) from h2
+  apply Exists.intro (Xi * Yi)
+  show (X * Y) * (Xi * Yi) = cc m 1 from
+    calc X * Y * (Xi * Yi)
+      _ = (X * Xi) * (Y * Yi) := by ring
+      _ = cc m 1 * cc m 1 := by rw [h3, h4]
+      _ = cc m 1 := Theorem_7_3_6_7 (cc m 1)
+  done
+
+lemma F_invertible (m i : Nat) : invertible (F m i) := by
+  by_cases h : rel_prime m i
+  · -- Case 1. h: rel_prime m i
+    rewrite [F_rp_def h]
+    show invertible (cc m i) from (Theorem_7_3_7 m i).rtl h
+    done
+  · -- Case 2. h: ¬rel_prime m i
+    rewrite [F_not_rp_def h]
+    apply Exists.intro (cc m 1)
+    show cc m 1 * cc m 1 = cc m 1 from Theorem_7_3_6_7 (cc m 1)
+  done
+
+lemma Fprod_invertible (m : Nat) :
+    ∀ (k : Nat), invertible (prod_seq k 0 (F m)) := by
+  by_induc
+  · -- Base Case
+    have h : prod_seq 0 0 (F m) = cc m 1 := by
+      rewrite [prod_seq_base, ←Int.cast_one]
+      rfl
+      done
+    apply Exists.intro (cc m 1)
+    show prod_seq 0 0 (F m) * cc m 1 = cc m 1 from
+      calc prod_seq 0 0 (F m) * cc m 1
+        _ = cc m 1 * cc m 1 := by rw [h]
+        _ = cc m 1 := Theorem_7_3_6_7 (cc m 1)
+    done
+  · -- Induction Step
+    fix k : Nat
+    assume ih : invertible (prod_seq k 0 (F m))
+    rewrite [prod_seq_zero_step]
+    show invertible (prod_seq k 0 (F m) * (F m k)) from
+      prod_invertible ih (F_invertible m k)
   done
 ```
