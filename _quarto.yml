@@ -4,7 +4,12 @@ project:
 
 book:
   title: "How To Prove It With Lean"
-  author: "Daniel J. Velleman"
+  author:
+    - name: Daniel J. Velleman
+      orcid: 0000-0003-4632-1742
+      affiliations:
+        - name: Amherst College
+        - name: University of Vermont
   page-footer: "© 2023 Daniel J. Velleman.  Short excerpts from <a href='https://doi.org/10.1017/9781108539890'><i>How To Prove It</i></a>, published by Cambridge University Press, reproduced with permission."
   downloads: pdf
   chapters:
@@ -36,6 +41,7 @@ format:
     include-before-body: thmdefs.tex
     monofont: JuliaMono
     keep-tex: true
+    date: \small Amherst College and University of Vermont
 
 filters:
   - latex-environment
