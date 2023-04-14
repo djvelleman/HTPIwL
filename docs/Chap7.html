@@ -1557,6 +1557,21 @@ Int.emod_nonneg : ∀ (a : ℤ) {b : ℤ}, b ≠ 0 → 0 ≤ a % b</code></pre>
 <span id="cb81-43"><a href="#cb81-43" aria-hidden="true" tabindex="-1"></a>    <span class="kw">show</span> invertible (prod_seq k 0 (F m) * (F m k)) <span class="kw">from</span></span>
 <span id="cb81-44"><a href="#cb81-44" aria-hidden="true" tabindex="-1"></a>      prod_invertible ih (F_invertible m k)</span>
 <span id="cb81-45"><a href="#cb81-45" aria-hidden="true" tabindex="-1"></a>  <span class="kw">done</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>We now have everything we need to prove <code>Theorem_7_4_2</code>:</p>
+<div class="sourceCode" id="cb82"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb82-1"><a href="#cb82-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Theorem_7_4_2 (m a : Nat) [NeZero m] (h1 : rel_prime m a) :</span>
+<span id="cb82-2"><a href="#cb82-2" aria-hidden="true" tabindex="-1"></a>    (cc m a) ^ (phi m) = cc m 1 := <span class="kw">by</span></span>
+<span id="cb82-3"><a href="#cb82-3" aria-hidden="true" tabindex="-1"></a>  <span class="kw">have</span> h2 : invertible (prod_seq m 0 (F m)) := Fprod_invertible m m</span>
+<span id="cb82-4"><a href="#cb82-4" aria-hidden="true" tabindex="-1"></a>  <span class="kw">obtain</span> (Y : ZMod m) (h3 : prod_seq m 0 (F m) * Y = cc m 1) <span class="kw">from</span> h2</span>
+<span id="cb82-5"><a href="#cb82-5" aria-hidden="true" tabindex="-1"></a>  <span class="kw">show</span> (cc m a) ^ (phi m) = cc m 1 <span class="kw">from</span></span>
+<span id="cb82-6"><a href="#cb82-6" aria-hidden="true" tabindex="-1"></a>    <span class="kw">calc</span> (cc m a) ^ (phi m)</span>
+<span id="cb82-7"><a href="#cb82-7" aria-hidden="true" tabindex="-1"></a>      _ = (cc m a) ^ (phi m) * cc m 1 := (Theorem_7_3_6_7 _).symm</span>
+<span id="cb82-8"><a href="#cb82-8" aria-hidden="true" tabindex="-1"></a>      _ = (cc m a) ^ (phi m) * (prod_seq m 0 (F m) * Y) := <span class="kw">by</span> <span class="kw">rw</span> [h3]</span>
+<span id="cb82-9"><a href="#cb82-9" aria-hidden="true" tabindex="-1"></a>      _ = ((cc m a) ^ (phi m) * prod_seq m 0 (F m)) * Y := <span class="kw">by</span> <span class="kw">ring</span></span>
+<span id="cb82-10"><a href="#cb82-10" aria-hidden="true" tabindex="-1"></a>      _ = prod_seq m 0 (F m ∘ G m a) * Y := <span class="kw">by</span> <span class="kw">rw</span> [FG_prod h1 m, phi_def]</span>
+<span id="cb82-11"><a href="#cb82-11" aria-hidden="true" tabindex="-1"></a>      _ = prod_seq m 0 (F m) * Y := <span class="kw">by</span></span>
+<span id="cb82-12"><a href="#cb82-12" aria-hidden="true" tabindex="-1"></a>            <span class="kw">rw</span> [perm_prod (F m) m (G m a) (G_perm_below h1)]</span>
+<span id="cb82-13"><a href="#cb82-13" aria-hidden="true" tabindex="-1"></a>      _ = cc m 1 := <span class="kw">by</span> <span class="kw">rw</span> [h3]</span>
+<span id="cb82-14"><a href="#cb82-14" aria-hidden="true" tabindex="-1"></a>  <span class="kw">done</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 
 
 </section>

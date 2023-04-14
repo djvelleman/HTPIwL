@@ -1650,3 +1650,22 @@ lemma Fprod_invertible (m : Nat) :
       prod_invertible ih (F_invertible m k)
   done
 ```
+
+We now have everything we need to prove `Theorem_7_4_2`:
+
+```lean
+theorem Theorem_7_4_2 (m a : Nat) [NeZero m] (h1 : rel_prime m a) :
+    (cc m a) ^ (phi m) = cc m 1 := by
+  have h2 : invertible (prod_seq m 0 (F m)) := Fprod_invertible m m
+  obtain (Y : ZMod m) (h3 : prod_seq m 0 (F m) * Y = cc m 1) from h2
+  show (cc m a) ^ (phi m) = cc m 1 from
+    calc (cc m a) ^ (phi m)
+      _ = (cc m a) ^ (phi m) * cc m 1 := (Theorem_7_3_6_7 _).symm
+      _ = (cc m a) ^ (phi m) * (prod_seq m 0 (F m) * Y) := by rw [h3]
+      _ = ((cc m a) ^ (phi m) * prod_seq m 0 (F m)) * Y := by ring
+      _ = prod_seq m 0 (F m ∘ G m a) * Y := by rw [FG_prod h1 m, phi_def]
+      _ = prod_seq m 0 (F m) * Y := by
+            rw [perm_prod (F m) m (G m a) (G_perm_below h1)]
+      _ = cc m 1 := by rw [h3]
+  done
+```

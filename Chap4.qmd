@@ -99,7 +99,7 @@ After the `apply Set.ext` tactic, the goal is
 `∀ (x : A × D), x ∈ comp T (comp S R) ↔ x ∈ comp (comp T S) R`
 :::
 
-The next step should be to introduce an arbitrary object of type `A × D`.  We could just call this object `x`, but Lean let's us use a shortcut here.  An object of type `A × D` must have the form of an ordered pair, where the first coordinate has type `A` and the second has type `D`.  So Lean let's us write it as an ordered pair right away.  That's what we've done in the second step, `fix (a, d) : A × D`.  This tactic introduces two new variables into the proof, `a : A` and `d : D`.  (The proof in *HTPI* uses a similar shortcut.  And we used a similar shortcut in the definitions of `inv R` and `comp R`, where the elements of these sets were written as ordered pairs.)
+The next step should be to introduce an arbitrary object of type `A × D`.  We could just call this object `x`, but Lean lets us use a shortcut here.  An object of type `A × D` must have the form of an ordered pair, where the first coordinate has type `A` and the second has type `D`.  So Lean lets us write it as an ordered pair right away.  That's what we've done in the second step, `fix (a, d) : A × D`.  This tactic introduces two new variables into the proof, `a : A` and `d : D`.  (The proof in *HTPI* uses a similar shortcut.  And we used a similar shortcut in the definitions of `inv R` and `comp R`, where the elements of these sets were written as ordered pairs.)
 
 Here is the complete proof.
 
