@@ -4,7 +4,7 @@
 
 Sections 3.1 and 3.2 of *How To Prove It* present strategies for dealing with givens and goals involving negations and conditionals.  We restate those strategies here, and explain how to use them with Lean.
 
-Section 3.1 gives two strategies for proving a goal of the form `P → Q`:
+Section 3.1 gives two strategies for proving a goal of the form `P → Q` (*HTPI* pp. 95, 96):
 
 #### To prove a goal of the form `P → Q`:
 
@@ -49,7 +49,7 @@ h : ¬Q
 :::
 :::
 
-Section 3.2 gives two strategies for using givens of the form `P → Q`, with the second once again being a variation on the first based on the contrapositive law:
+Section 3.2 gives two strategies for using givens of the form `P → Q`, with the second once again being a variation on the first based on the contrapositive law (*HTPI* p. 108):
 
 #### To use a given of the form `P → Q`:
 
@@ -60,7 +60,7 @@ The first strategy is the modus ponens rule of inference, and we saw in the last
 
 All of the strategies listed above for working with conditional statements as givens or goals were illustrated in examples in the last chapter.
 
-Section 3.2 of *HTPI* offers two strategies for proving negative goals:
+Section 3.2 of *HTPI* offers two strategies for proving negative goals (*HTPI* pp. 101, 102):
 
 #### To prove a goal of the form `¬P`:
 
@@ -207,7 +207,7 @@ theorem Example_3_2_4_v2 (P Q R : Prop)
 :::
 :::
 
-Finally, we have two strategies for using a given that is a negative statement:
+Finally, we have two strategies for using a given that is a negative statement (*HTPI* pp. 105, 108):
 
 #### To use a given of the form `¬P`:
 
@@ -411,7 +411,7 @@ Sections 3.1 and 3.2 of *HTPI* contain several proofs that involve algebraic rea
 
 ### Exercises
 
-Fill in proofs of the following theorems.  All exercises are taken from *HTPI*.
+Fill in proofs of the following theorems.  All of them are based on exercises in *HTPI*.
 
 ::: {.numex arguments="1"}
 ```lean
@@ -459,7 +459,7 @@ There are a few differences between the way quantified statements are written in
 
 And there is one more important difference between the way quantified statements are written in *HTPI* and Lean.  In *HTPI*, a quantifier is interpreted as applying to as little as possible.  Thus, $\forall x\, P(x) \wedge Q(x)$ is interpreted as $(\forall x\, P(x)) \wedge Q(x)$; if you want the quantifier $\forall x$ to apply to the entire statement $P(x) \wedge Q(x)$ you must use parentheses and write $\forall x(P(x) \wedge Q(x))$.  The convention in Lean is exactly the opposite:  a quantifier applies to as much as possible.  Thus, Lean will interpret `∀ (x : U), P x ∧ Q x` as meaning `∀ (x : U), (P x ∧ Q x)`.  If you want the quantifier to apply to only `P x`, then you must use parentheses and write `(∀ (x : U), P x) ∧ Q x`.
 
-With this preparation, we are ready to consider how to write proofs involving quantifiers in Lean.  The most common way to prove a goal of the form `∀ (x : U), P x` is to use the following strategy:
+With this preparation, we are ready to consider how to write proofs involving quantifiers in Lean.  The most common way to prove a goal of the form `∀ (x : U), P x` is to use the following strategy (*HTPI* p. 114):
 
 #### To prove a goal of the form `∀ (x : U), P x`:
 
@@ -486,7 +486,7 @@ x : U
 :::
 :::
 
-To use a given of the form `∀ (x : U), P x`, we usually apply a rule of inference called *universal instantiation*, which is described by the following proof strategy:
+To use a given of the form `∀ (x : U), P x`, we usually apply a rule of inference called *universal instantiation*, which is described by the following proof strategy (*HTPI* p. 121):
 
 #### To use a given of the form `∀ (x : U), P x`:
 
@@ -904,7 +904,7 @@ example (U : Type) (A B C : Set U) (h1 : A ⊆ B ∪ C)
 :::
 :::
 
-Next we turn to strategies for working with existential quantifiers.
+Next we turn to strategies for working with existential quantifiers (*HTPI* p. 118).
 
 #### To prove a goal of the form `∃ (x : U), P x`:
 
@@ -936,7 +936,7 @@ a : U
 :::
 :::
 
-Our strategy for using an existential given is a rule that is called *existential instantiation* in *HTPI*:
+Our strategy for using an existential given is a rule that is called *existential instantiation* in *HTPI* (*HTPI* p. 120):
 
 #### To use a given of the form `∃ (x : U), P x`:
 
@@ -1502,7 +1502,7 @@ theorem Example_3_3_5 (U : Type) (B : Set U)
 :::
 :::
 
-You might want to compare the Lean proof above to the way the proof was written in *HTPI*.  Here are the theorem and proof from *HTPI*:
+You might want to compare the Lean proof above to the way the proof was written in *HTPI*.  Here are the theorem and proof from *HTPI* (*HTPI* p. 125):
 
 ::: {.thm}
 Suppose $B$ is a set and $\mathcal{F}$ is a family of sets.  If $\bigcup\mathcal{F} \subseteq B$ then $\mathcal{F} \subseteq \mathscr{P}(B)$.
@@ -1561,7 +1561,7 @@ theorem Exercise_3_3_13 (U : Type)
 
 ## 3.4. Proofs Involving Conjunctions and Biconditionals
 
-The strategies in *HTPI* for working with conjunctions are very simple.
+The strategies in *HTPI* for working with conjunctions are very simple (*HTPI* p. 130).
 
 #### To prove a goal of the form `P ∧ Q`:
 
@@ -1573,7 +1573,7 @@ We already saw an example, at the end of the last section, of the use of the rul
 
 If you already have a proof of either `P` or `Q`, then you can fill in one of the blanks in the `apply` tactic.  For example, if you have `h : P`, then you can write `apply And.intro h _`, and Lean will tell you that you just have to prove `Q` to complete the proof.  Similarly, if you have `h : Q`, then `apply And.intro _ h` will lead to just the single goal `P`.  There is also a shortcut you can use with the `apply` tactic: any blanks that come at the end of the tactic can be left out.  So instead of `apply And.intro _ _`, you can just write `apply And.intro`, and instead of `apply And.intro h _`, you can write `apply And.intro h`.  On the other hand, `apply And.intro _ h` can't be shortened; it is only blanks *at the end* that can be left out.
 
-The strategy for a given that is a conjunction is similar.
+The strategy for a given that is a conjunction is similar (*HTPI* p. 131).
 
 #### To use a given of the form `P ∧ Q`:
 
@@ -1709,7 +1709,7 @@ h3 : x ∈ A ∧ x ∈ C
 
 Look carefully at the tactic state.  Lean has listed *two* goals, one after the other, and it has helpfully labeled them "case left" and "case right," indicating that the first goal is to prove the left side of the conjunction and the second is to prove the right.  The given information in both cases is the same, but in the first case the goal is `x ∈ B`, and in the second it is `¬x ∈ D`.  At this point, if we simply continue with the proof, Lean will interpret our tactics as applying to the first goal, until we achieve that goal.  Once we achieve it, Lean will move on to the second goal.
 
-However, we can make our proof more readable by separating and labeling the proofs of the two goals.  To do this, we type a bullet (which looks like this: `·`) and then a comment describing the first goal.  (To type a bullet, type `\.`---that is, backslash--period.)  The proof of the first goal will appear below this line, indented further and ending with `done`.  To prepare for this, we leave a blank line, type tab to increase the indenting, and then type `done`.  Then we do the same for the second goal:  On the next line, we return to the previous level of indenting and type a bullet and a comment describing the second goal.  We follow this with a blank line and then an indented `done` to indicate the end of the proof of the second goal.  We're going to work on the first goal first, so we click on the first blank line to position the cursor there.  The screen now looks like this:
+However, we can make our proof more readable by separating and labeling the proofs of the two goals.  To do this, we type a bullet (which looks like this: `·`) and then a comment describing the first goal.  (To type a bullet, type `\.`---that is, backslash--period.)  The proof of the first goal will appear below this line, indented further and ending with `done`.  To prepare for this, we leave a blank line, type tab to increase the indenting, and then type `done`.  Then we do the same for the second goal: on the next line, we return to the previous level of indenting and type a bullet and a comment describing the second goal.  We follow this with a blank line and then an indented `done` to indicate the end of the proof of the second goal.  We're going to work on the first goal first, so we click on the first blank line to position the cursor there.  The screen now looks like this:
 
 ::: {.inout}
 ::: {.inpt}
@@ -1899,7 +1899,7 @@ theorem Like_Example_3_4_1 (U : Type)
 :::
 :::
 
-Since `P ↔ Q` is shorthand for `(P → Q) ∧ (Q → P)`, the strategies given above for conjunctions lead immediately to the following strategies for biconditionals:
+Since `P ↔ Q` is shorthand for `(P → Q) ∧ (Q → P)`, the strategies given above for conjunctions lead immediately to the following strategies for biconditionals (*HTPI* p. 132):
 
 #### To prove a goal of the form `P ↔ Q`:
 
@@ -2205,7 +2205,7 @@ example (U : Type) (P Q : Pred U)
 
 To understand the last step, start with the fact that `h1 u` is a proof of `P u ↔ Q u`.  Therefore `(h1 u).rtl` is a proof of `Q u → P u`, so by modus ponens, `(h1 u).rtl h3` is a proof of `P u`.  It follows that `Exists.intro u ((h1 u).rtl h3)` is a proof of `∃ (x : U), P x`, which was the goal.
 
-There is one more style of reasoning that is sometimes used in proofs of biconditional statements.  It is illustrated in Example 3.4.5 of *HTPI*.  Here is that theorem, as it is presented in *HTPI*.
+There is one more style of reasoning that is sometimes used in proofs of biconditional statements.  It is illustrated in Example 3.4.5 of *HTPI*.  Here is that theorem, as it is presented in *HTPI* (*HTPI* p. 137).
 
 ::: {.thm}
 Suppose $A$, $B$, and $C$ are sets.  Then $A \cap (B \setmin C) = (A \cap B) \setmin C$.
@@ -2378,7 +2378,7 @@ theorem Exercise_3_4_19 (U : Type) (F G : Set (Set U)) :
 
 ## 3.5.  Proofs Involving Disjunctions
 
-A common proof method for dealing with givens or goals that are disjunctions is *proof by cases*.  Here's how it works.
+A common proof method for dealing with givens or goals that are disjunctions is *proof by cases*.  Here's how it works (*HTPI* p. 143).
 
 #### To use a given of the form `P ∨ Q`:
 
@@ -2417,7 +2417,7 @@ You can follow `by_cases on` with any proof of a disjunction, even if that proof
 
 There are two introduction rules that you can use in Lean to prove a goal of the form `P ∨ Q`.  If you have `h : P`, then Lean will accept `Or.intro_left h` as a proof of `P ∨ Q`, and if you have `h : Q`, then `Or.intro_right h` is a proof of `P ∨ Q`.  There are shortened forms `Or.inl` and `Or.inr` for `Or.intro_left` and `Or.intro_right`, respectively.
 
-Often, when your goal has the form `P ∨ Q`, you will be unable to prove `P`, and also unable to prove `Q`.  Proof by cases can help in that situation as well.
+Often, when your goal has the form `P ∨ Q`, you will be unable to prove `P`, and also unable to prove `Q`.  Proof by cases can help in that situation as well (*HTPI* p. 145).
 
 #### To prove a goal of the form `P ∨ Q`:
 
@@ -2656,7 +2656,7 @@ A \ (B \ C) ⊆ (A \ B) ∪ C := by
 :::
 :::
 
-There is a second strategy that is often useful to prove a goal of the form `P ∨ Q`.  It is motivated by the fact that `P ∨ Q` is equivalent to both `¬P → Q` and `¬Q → P`.
+There is a second strategy that is often useful to prove a goal of the form `P ∨ Q`.  It is motivated by the fact that `P ∨ Q` is equivalent to both `¬P → Q` and `¬Q → P` (*HTPI* p. 147).
 
 #### To prove a goal of the form `P ∨ Q`:
 
@@ -2783,7 +2783,7 @@ example (U : Type) (A B C : Set U)
 :::
 :::
 
-The fact that `P ∨ Q` is equivalent to both `¬P → Q` and `¬Q → P` also suggests another strategy for using a given that is a disjunction.
+The fact that `P ∨ Q` is equivalent to both `¬P → Q` and `¬Q → P` also suggests another strategy for using a given that is a disjunction (*HTPI* p. 149).
 
 #### To use a given of the form `P ∨ Q`:
 
@@ -3139,7 +3139,7 @@ theorem Exercise_3_5_24a (U : Type) (A B C : Set U) :
 
 Recall that `∃! (x : U), P x` means that there is exactly one `x` of type `U` such that `P x` is true.  One way to deal with a given or goal of this form is to use the `define` tactic to rewrite it as the equivalent statement `∃ (x : U), P x ∧ ∀ (x_1 : U), P x_1 → x_1 = x`.  You can then apply techniques discussed previously in this chapter.  However, there are also proof techniques, and corresponding Lean tactics, for working directly with givens and goals of this form.
 
-Often a goal of the form `∃! (x : U), P x` is proven by using the following strategy.  This is a slight rephrasing of the strategy presented in *HTPI*.  The rephrasing is based on the fact that for any propositions `A`, `B`, and `C`, `A ∧ B → C` is equivalent to `A → B → C` (you can check this equivalence by making a truth table).  The second of these statements is usually easier to work with in Lean than the first one, so we will often rephrase statements that have the form `A ∧ B → C` as `A → B → C`.  That's what we have done here, as you will see if you compare the strategy stated below to the one in *HTPI*.
+Often a goal of the form `∃! (x : U), P x` is proven by using the following strategy.  This is a slight rephrasing of the strategy presented in *HTPI*.  The rephrasing is based on the fact that for any propositions `A`, `B`, and `C`, `A ∧ B → C` is equivalent to `A → B → C` (you can check this equivalence by making a truth table).  The second of these statements is usually easier to work with in Lean than the first one, so we will often rephrase statements that have the form `A ∧ B → C` as `A → B → C`.  That's what we have done here, as you will see if you compare the strategy stated below to the one in *HTPI* (*HTPI* pp. 156--157).
 
 #### To prove a goal of the form `∃! (x : U), P x`:
 
@@ -3147,7 +3147,7 @@ Often a goal of the form `∃! (x : U), P x` is proven by using the following st
 Prove `∃ (x : U), P x` and `∀ (x_1 x_2 : U), P x_1 → P x_2 → x_1 = x_2`.  The first of these goals says that there exists an `x` such that `P x` is true, and the second says that it is unique.  The two parts of the proof are therefore sometimes labeled *existence* and *uniqueness*.
 :::
 
-To apply this strategy in a Lean proof, we use the tactic `exists_unique`.  We'll illustrate this with the theorem from Example 3.6.2 in *HTPI*.  Here's how that theorem and its proof are presented in *HTPI*:
+To apply this strategy in a Lean proof, we use the tactic `exists_unique`.  We'll illustrate this with the theorem from Example 3.6.2 in *HTPI*.  Here's how that theorem and its proof are presented in *HTPI* (*HTPI* pp. 157--158):
 
 ::: {.thm}
 There is a unique set $A$ such that for every set $B$, $A \cup B = B$.
@@ -3766,7 +3766,7 @@ theorem Example_3_6_2 (U : Type) :
   done
 ```
 
-Since the statement `∃! (x : U), P x` asserts both the existence and the uniqueness of an object satisfying the predicate `P`, we have the following strategy for using a given of this form:
+Since the statement `∃! (x : U), P x` asserts both the existence and the uniqueness of an object satisfying the predicate `P`, we have the following strategy for using a given of this form (*HTPI* p. 159):
 
 #### To use a given of the form `∃! (x : U), P x`:
 
@@ -3952,7 +3952,7 @@ theorem Example_3_6_4 (U : Type) (A B C : Set U)
   done
 ```
 
-You might want to compare the Lean proof above to the proof of this theorem as it appears in *HTPI*:
+You might want to compare the Lean proof above to the proof of this theorem as it appears in *HTPI* (*HTPI* p. 160):
 
 ::: {.thm}
 Suppose $A$, $B$, and $C$ are sets, $A$ and $B$ are not disjoint, $A$ and $C$ are not disjoint, and $A$ has exactly one element.  Then $B$ and $C$ are not disjoint
@@ -4082,7 +4082,7 @@ theorem Exercise_3_6_10 (U : Type) (A : Set U)
 
 ## 3.7. More Examples of Proofs
 
-It is finally time to discuss proofs involving algebraic reasoning.  Lean has types for several different kinds of numbers.  `Nat` is the type of natural numbers---that is, the numbers 0, 1, 2, ....  `Int` is the type of integers, `Rat` is the type of rational numbers, `Real` is the type of real numbers, and `Complex` is the type of complex numbers.  Lean also uses the notation `ℕ`, `ℤ`, `ℚ`, `ℝ`, and `ℂ` for these types.  To write formulas involving arithmetic operations, you should use the symbols `+` for addition, `-` for subtraction, `*` for multiplication, `/` for division, and `^` for exponentiation.  We will discuss some of the more subtle points of algebraic reasoning in Chapter 6.  For the moment, you are best off avoiding subtraction and division when working with natural numbers and avoiding division when working with integers.
+It is finally time to discuss proofs involving algebraic reasoning.  Lean has types for several different kinds of numbers.  `Nat` is the type of natural numbers---that is, the numbers 0, 1, 2, ....  `Int` is the type of integers, `Rat` is the type of rational numbers, `Real` is the type of real numbers, and `Complex` is the type of complex numbers.  Lean also uses the notation `ℕ`, `ℤ`, `ℚ`, `ℝ`, and `ℂ` for these types.  (If you want to use those names for the number types, you can enter them by typing `\N`, `\Z`, `\Q`, `\R`, and `\C`.)  To write formulas involving arithmetic operations, you should use the symbols `+` for addition, `-` for subtraction, `*` for multiplication, `/` for division, and `^` for exponentiation.  We will discuss some of the more subtle points of algebraic reasoning in Chapter 6.  For the moment, you are best off avoiding subtraction and division when working with natural numbers and avoiding division when working with integers.
 
 To see what's involved in proving theorems about numbers in Lean, we'll turn to a few examples from earlier in Chapter 3 of *HTPI*.  We begin with Theorem 3.3.7, which concerns divisibility of integers.  As in *HTPI*, for integers `x` and `y`, we will write `x ∣ y` to mean that `x` divides `y`, or `y` is divisible by `x`.  The formal definition is that `x ∣ y` means that there is an integer `k` such that `y = x * k`.  For example, `3 ∣ 12`, since `12 = 3 * 4`.  Lean knows this notation, but there is an important warning: to type the vertical line that means "divides," you must type `\|`, not simply `|`.  (There are two slightly different vertical line symbols, and you have to look closely to see that they are different: `|` and `∣`.  It is the second one that means "divides" in Lean, and to enter it you must type `\|`.)  Here is Theorem 3.3.7, written using our usual rephrasing of a statement of the form `A ∧ B → C` as `A → B → C`.
 
@@ -4301,7 +4301,7 @@ theorem Theorem_3_3_7 :
 
 As usual, you might find it instructive to compare the Lean proof above to the proof of this theorem in *HTPI*.
 
-For our next example, we'll do a somewhat more complex proof concerning divisibility.  Here is the proof from *HTPI*.
+For our next example, we'll do a somewhat more complex proof concerning divisibility.  Here is the proof from *HTPI* (*HTPI* p. 139).
 
 ::: {.nthm arguments="Theorem 3.4.7"}
 For every integer $n$, $6 \mid n$ iff $2 \mid n$ and $3 \mid n$.
@@ -4749,7 +4749,13 @@ h5 : n = 3 * k
 :::
 :::
 
-To finish off the justification of the second equation, we'll use the theorem `Eq.refl`.  The command `#check @Eq.refl` gives the result `@Eq.refl : ∀ {α : Sort u_1} (a : α), a = a`.  Ignoring the implicit argument `α`, this should remind you of the theorem `Iff.refl : ∀ (a : Prop), a ↔ a`.  Recall that we were able to use `Iff.refl _` to prove not only any statement of the form `a ↔ a`, but also statements of the form `a ↔ a'`, where `a` and `a'` are definitionally equal.  Similarly, `Eq.refl _` will prove any equation of the form `a = a'`, where `a` and `a'` are definitionally equal.  Since Lean knows that, by definition, `3 * 2 = 6` and `2 * 3 = 6`, the goal has this form.  Thus we can complete the proof with the tactic `show 6 * j - 6 * k = 3 * 2 * j - 2 * 3 * k from Eq.refl _`.  As we saw earlier, a shorter version of this would be `exact Eq.refl _`.  But this situation comes up often enough that there is an even shorter version: the tactic `rfl` can be used as a shorthand for either `exact Eq.refl _` or `exact Iff.refl _`.  In other words, in a tactic-mode proof, if the goal has one of the forms `a = a'` or `a ↔ a'`, where `a` and `a'` are definitionally equal, then the tactic `rfl` will prove the goal.  So `rfl` will finish off the justification of the second equation, and we can move on to the third.
+To finish off the justification of the second equation, we'll use the theorem `Eq.refl`.  The command `#check @Eq.refl` gives the result
+
+::: {.ind}
+`@Eq.refl : ∀ {α : Sort u_1} (a : α), a = a`
+:::
+
+Ignoring the implicit argument `α`, this should remind you of the theorem `Iff.refl : ∀ (a : Prop), a ↔ a`.  Recall that we were able to use `Iff.refl _` to prove not only any statement of the form `a ↔ a`, but also statements of the form `a ↔ a'`, where `a` and `a'` are definitionally equal.  Similarly, `Eq.refl _` will prove any equation of the form `a = a'`, where `a` and `a'` are definitionally equal.  Since Lean knows that, by definition, `3 * 2 = 6` and `2 * 3 = 6`, the goal has this form.  Thus we can complete the proof with the tactic `show 6 * j - 6 * k = 3 * 2 * j - 2 * 3 * k from Eq.refl _`.  As we saw earlier, a shorter version of this would be `exact Eq.refl _`.  But this situation comes up often enough that there is an even shorter version: the tactic `rfl` can be used as a shorthand for either `exact Eq.refl _` or `exact Iff.refl _`.  In other words, in a tactic-mode proof, if the goal has one of the forms `a = a'` or `a ↔ a'`, where `a` and `a'` are definitionally equal, then the tactic `rfl` will prove the goal.  So `rfl` will finish off the justification of the second equation, and we can move on to the third.
 
 ::: {.inout}
 ::: {.inpt}

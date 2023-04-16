@@ -8,7 +8,7 @@ Section 4.1 of *How To Prove It* defines the *Cartesian product* $A \times B$ of
 
 Section 4.2 of *HTPI* defines a *relation from $A$ to $B$* to be a subset of $A \times B$.  In other words, if $R$ is a relation from $A$ to $B$, then $R$ is a set whose element are ordered pairs $(a, b)$, where $a \in A$ and $b \in B$.  We will see in the next section that in Lean, it is convenient to use a somewhat different definition of relations.  Nevertheless, we will take some time in this section to study sets of ordered pairs.  If `A` and `B` are types, and `R` has type `Set (A × B)`, then `R` is a set whose elements are ordered pairs `(a, b)`, where `a` has type `A` and `b` has type `B`.
 
-Section 4.2 of *HTPI* discusses several concepts concerning relations.  Here is how these concepts are defined in *HTPI*:
+Section 4.2 of *HTPI* discusses several concepts concerning relations.  Here is how these concepts are defined in *HTPI* (*HTPI* p. 183):
 
 ::: {.ndfn arguments="Definition 4.2.3"}
 Suppose $R$ is a relation from $A$ to $B$.  Then the *domain* of $R$ is the set
@@ -57,7 +57,7 @@ def comp {A B C : Type}
 
 Definitions in Lean are introduced with the keyword `def`.  In the definition of `Dom`, we have declared that `A` and `B` are implicit arguments and `R` is an explicit argument.  That means that, in a Lean file containing these definitions, if we have `R : Set (A × B)`, then we can just write `Dom R` for the domain of `R`, and Lean will figure out for itself what `A` and `B` are.  After the list of arguments there is a colon and then the type of `Dom R`, which is `Set A`.  This is followed by `:=` and then the definition of `Dom R`.  The definition says that `Dom R` is the set of all objects `a` of type `A` such that there is some `b` of type `B` with `(a, b) ∈ R`.  This is a direct translation, into Lean's type-theory language, of the first part of Definition 4.2.3.  The other three definitions are similar; they define `Ran R` to be the range of `R`, `inv R` to be the inverse of `R`, and `comp S R` to be the composition of `S` and `R`.
 
-Here is the main theorem about these concepts, as stated in *HTPI*:
+Here is the main theorem about these concepts, as stated in *HTPI* (*HTPI* p. 187):
 
 ::: {.nthm arguments="Theorem 4.2.5"}
 Suppose $R$ is a relation from $A$ to $B$, $S$ is a relation from $B$ to $C$, and $T$ is a relation from $C$ to $D$.  Then:
@@ -250,7 +250,7 @@ theorem Exercise_4_2_12a {A B C : Type}
 Suppose $R$ is a relation from $A$ to $B$ and $S$ and $T$ are relations from $B$ to $C$.  Then $(S \setmin T) \circ R \subseteq (S \circ R) \setmin (T \circ R)$.
 :::
 
-::: {.npf arguments="Incorrect Proof"}
+::: {.npf arguments="Incorrect Proof (HTPI p. 190)"}
 Suppose $(a, c) \in (S \setmin T) \circ R$. Then we can choose some $b \in B$ such that $(a, b) \in R$ and $(b, c) \in S \setmin T$, so $(b, c) \in S$ and $(b, c) \notin T$.  Since $(a, b) \in R$ and $(b, c) \in S$, $(a, c) \in S \circ R$.  Similarly, since $(a, b) \in R$ and $(b, c) \notin T$, $(a, c) \notin T \circ R$.  Therefore $(a, c) \in (S \circ R) \setmin (T \circ R)$.  Since $(a, c)$ was arbitrary, this shows that $(S \setmin T) \circ R \subseteq (S \circ R) \setmin (T \circ R)$.  [&nbsp;□]{.excl}\qedhere
 :::
 
@@ -312,7 +312,7 @@ def transitive {A : Type} (R : BinRel A) : Prop :=
   ∀ (x y z : A), R x y → R y z → R x z
 ``` 
 
-Once again, we refer you to *HTPI* to see examples of these concepts, and we focus here on proving theorems about these concepts in Lean.  The main theorem about these concepts in Section 4.3 of *HTPI* is Theorem 4.3.4.  Here is what it says:
+Once again, we refer you to *HTPI* to see examples of these concepts, and we focus here on proving theorems about these concepts in Lean.  The main theorem about these concepts in Section 4.3 of *HTPI* is Theorem 4.3.4.  Here is what it says (*HTPI* p. 196):
 
 ::: {.nthm arguments="Theorem 4.3.4"}
 Suppose $R$ is a relation on a set $A$.

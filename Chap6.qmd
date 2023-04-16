@@ -2,7 +2,7 @@
 
 ## 6.1.  Proof by Mathematical Induction
 
-Section 6.1 of *HTPI* introduces a new proof technique called *mathematical induction*.  It is used for proving statements of the form `∀ (n : Nat), P n`.  Here is how it works:
+Section 6.1 of *HTPI* introduces a new proof technique called *mathematical induction*.  It is used for proving statements of the form `∀ (n : Nat), P n`.  Here is how it works (*HTPI* p. 273):
 
 #### To prove a goal of the form `∀ (n : Nat), P n`:
 
@@ -34,7 +34,7 @@ case Induction_Step
 :::
 :::
 
-To illustrate proof by mathematical induction in Lean, we turn first to Example 6.1.2 in *HTPI*, which gives a proof of the statement $\forall n \in \mathbb{N} (3 \mid (n^3 - n))$.  For reasons that we will explain a little later, we will prove a slightly different theorem:  $\forall n \in \mathbb{N} (3 \mid (n^3 + 2n))$.  Here is a proof of the theorem, modeled on the proof in Example 6.1.2 of *HTPI*.
+To illustrate proof by mathematical induction in Lean, we turn first to Example 6.1.2 in *HTPI*, which gives a proof of the statement $\forall n \in \mathbb{N} (3 \mid (n^3 - n))$.  For reasons that we will explain a little later, we will prove a slightly different theorem:  $\forall n \in \mathbb{N} (3 \mid (n^3 + 2n))$.  Here is a proof of the theorem, modeled on the proof in Example 6.1.2 of *HTPI* (*HTPI* pp. 276--277).
 
 ::: {.thm}
 For every natural number $n$, $3 \mid (n^3 + 2n)$.
@@ -249,7 +249,7 @@ theorem Like_Example_6_1_1 :
   done
 ```
 
-The last example in Section 6.1 of *HTPI* gives a proof of the statement $\forall n \ge 5 (2^n > n^2)$.  The proof is by mathematical induction, but since we are only interested in natural numbers greater than or equal to 5, it uses 5 in the base case instead of 0.  Here are the theorem and proof from *HTPI*:
+The last example in Section 6.1 of *HTPI* gives a proof of the statement $\forall n \ge 5 (2^n > n^2)$.  The proof is by mathematical induction, but since we are only interested in natural numbers greater than or equal to 5, it uses 5 in the base case instead of 0.  Here are the theorem and proof from *HTPI* (*HTPI* p. 278):
 
 ::: {.thm}
 For every natural number $n \ge 5$, $2^n > n^2$.
@@ -1278,7 +1278,7 @@ theorem Exercise_6_3_16 : ∀ (n : Nat),
 
 ## 6.4. Strong Induction
 
-In the induction step of a proof by mathematical induction, we prove that a natural number has some property from the assumption that the previous number has the property.  Section 6.4 of *HTPI* introduces a version of mathematical induction in which we get to assume that *all* smaller numbers have the property.  Since this is a stronger assumption, this version of induction is called *strong induction*.  Here is how strong induction works:
+In the induction step of a proof by mathematical induction, we prove that a natural number has some property from the assumption that the previous number has the property.  Section 6.4 of *HTPI* introduces a version of mathematical induction in which we get to assume that *all* smaller numbers have the property.  Since this is a stronger assumption, this version of induction is called *strong induction*.  Here is how strong induction works (*HTPI* p. 304):
 
 #### To prove a goal of the form `∀ (n : Nat), P n`:
 

@@ -250,7 +250,7 @@ $$
 
 <section id="proof-by-mathematical-induction" class="level2">
 <h2 class="anchored" data-anchor-id="proof-by-mathematical-induction">6.1. Proof by Mathematical Induction</h2>
-<p>Section 6.1 of <em>HTPI</em> introduces a new proof technique called <em>mathematical induction</em>. It is used for proving statements of the form <code>∀ (n : Nat), P n</code>. Here is how it works:</p>
+<p>Section 6.1 of <em>HTPI</em> introduces a new proof technique called <em>mathematical induction</em>. It is used for proving statements of the form <code>∀ (n : Nat), P n</code>. Here is how it works (<em>HTPI</em> p.&nbsp;273):</p>
 <section id="to-prove-a-goal-of-the-form-n-nat-p-n" class="level4">
 <h4 class="anchored" data-anchor-id="to-prove-a-goal-of-the-form-n-nat-p-n">To prove a goal of the form <code>∀ (n : Nat), P n</code>:</h4>
 <div class="ind">
@@ -272,7 +272,7 @@ $$
 <span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>⊢ ∀ (n : Nat), P n → P (n + 1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </div>
-<p>To illustrate proof by mathematical induction in Lean, we turn first to Example 6.1.2 in <em>HTPI</em>, which gives a proof of the statement <span class="math inline">\(\forall n \in \mathbb{N} (3 \mid (n^3 - n))\)</span>. For reasons that we will explain a little later, we will prove a slightly different theorem: <span class="math inline">\(\forall n \in \mathbb{N} (3 \mid (n^3 + 2n))\)</span>. Here is a proof of the theorem, modeled on the proof in Example 6.1.2 of <em>HTPI</em>.</p>
+<p>To illustrate proof by mathematical induction in Lean, we turn first to Example 6.1.2 in <em>HTPI</em>, which gives a proof of the statement <span class="math inline">\(\forall n \in \mathbb{N} (3 \mid (n^3 - n))\)</span>. For reasons that we will explain a little later, we will prove a slightly different theorem: <span class="math inline">\(\forall n \in \mathbb{N} (3 \mid (n^3 + 2n))\)</span>. Here is a proof of the theorem, modeled on the proof in Example 6.1.2 of <em>HTPI</em> (<em>HTPI</em> pp.&nbsp;276–277).</p>
 <div class="thm">
 <p>For every natural number <span class="math inline">\(n\)</span>, <span class="math inline">\(3 \mid (n^3 + 2n)\)</span>.</p>
 </div>
@@ -426,7 +426,7 @@ $$
 <span id="cb14-17"><a href="#cb14-17" aria-hidden="true" tabindex="-1"></a>        _ = 2 ^ (n + 1 + 1) := <span class="kw">by</span> <span class="kw">ring</span></span>
 <span id="cb14-18"><a href="#cb14-18" aria-hidden="true" tabindex="-1"></a>    <span class="kw">done</span></span>
 <span id="cb14-19"><a href="#cb14-19" aria-hidden="true" tabindex="-1"></a>  <span class="kw">done</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>The last example in Section 6.1 of <em>HTPI</em> gives a proof of the statement <span class="math inline">\(\forall n \ge 5 (2^n &gt; n^2)\)</span>. The proof is by mathematical induction, but since we are only interested in natural numbers greater than or equal to 5, it uses 5 in the base case instead of 0. Here are the theorem and proof from <em>HTPI</em>:</p>
+<p>The last example in Section 6.1 of <em>HTPI</em> gives a proof of the statement <span class="math inline">\(\forall n \ge 5 (2^n &gt; n^2)\)</span>. The proof is by mathematical induction, but since we are only interested in natural numbers greater than or equal to 5, it uses 5 in the base case instead of 0. Here are the theorem and proof from <em>HTPI</em> (<em>HTPI</em> p.&nbsp;278):</p>
 <div class="thm">
 <p>For every natural number <span class="math inline">\(n \ge 5\)</span>, <span class="math inline">\(2^n &gt; n^2\)</span>.</p>
 </div>
@@ -1181,7 +1181,7 @@ $$
 </section>
 <section id="strong-induction" class="level2">
 <h2 class="anchored" data-anchor-id="strong-induction">6.4. Strong Induction</h2>
-<p>In the induction step of a proof by mathematical induction, we prove that a natural number has some property from the assumption that the previous number has the property. Section 6.4 of <em>HTPI</em> introduces a version of mathematical induction in which we get to assume that <em>all</em> smaller numbers have the property. Since this is a stronger assumption, this version of induction is called <em>strong induction</em>. Here is how strong induction works:</p>
+<p>In the induction step of a proof by mathematical induction, we prove that a natural number has some property from the assumption that the previous number has the property. Section 6.4 of <em>HTPI</em> introduces a version of mathematical induction in which we get to assume that <em>all</em> smaller numbers have the property. Since this is a stronger assumption, this version of induction is called <em>strong induction</em>. Here is how strong induction works (<em>HTPI</em> p.&nbsp;304):</p>
 <section id="to-prove-a-goal-of-the-form-n-nat-p-n-1" class="level4">
 <h4 class="anchored" data-anchor-id="to-prove-a-goal-of-the-form-n-nat-p-n-1">To prove a goal of the form <code>∀ (n : Nat), P n</code>:</h4>
 <div class="ind">

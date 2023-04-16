@@ -265,7 +265,7 @@ $$
 <div class="sourceCode" id="cb3"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> func_from_graph {A B : <span class="kw">Type</span>} (F : Set (A × B)) :</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>    (∃ (f : A → B), graph f = F) ↔ is_func_graph F</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>We will ask you to prove the left-to-right direction of this theorem in the exercises. The right-to-left direction can also be proven in Lean, but the proof requires methods that go beyond the scope of this book. Nevertheless, we will go ahead and use the theorem when we find it useful.</p>
-<p>Section 5.1 of <em>HTPI</em> proves two theorems about functions. The first gives a convenient way of proving that two functions are equal:</p>
+<p>Section 5.1 of <em>HTPI</em> proves two theorems about functions. The first gives a convenient way of proving that two functions are equal (<em>HTPI</em> p.&nbsp;232):</p>
 <div class="nthm" data-arguments="Theorem 5.1.4">
 <p>Suppose <span class="math inline">\(f\)</span> and <span class="math inline">\(g\)</span> are functions from <span class="math inline">\(A\)</span> to <span class="math inline">\(B\)</span>. If <span class="math inline">\(\forall a \in A(f(a) = g(a))\)</span>, then <span class="math inline">\(f = g\)</span>.</p>
 </div>
@@ -494,7 +494,7 @@ $$
 </section>
 <section id="inverses-of-functions" class="level2">
 <h2 class="anchored" data-anchor-id="inverses-of-functions">5.3. Inverses of Functions</h2>
-<p>Section 5.3 of <em>HTPI</em> is motivated by the following question: If <span class="math inline">\(f\)</span> is a function from <span class="math inline">\(A\)</span> to <span class="math inline">\(B\)</span>, is <span class="math inline">\(f^{-1}\)</span> a function from <span class="math inline">\(B\)</span> to <span class="math inline">\(A\)</span>? Here is the first theorem in that section:</p>
+<p>Section 5.3 of <em>HTPI</em> is motivated by the following question: If <span class="math inline">\(f\)</span> is a function from <span class="math inline">\(A\)</span> to <span class="math inline">\(B\)</span>, is <span class="math inline">\(f^{-1}\)</span> a function from <span class="math inline">\(B\)</span> to <span class="math inline">\(A\)</span>? Here is the first theorem in that section (<em>HTPI</em> p.&nbsp;250):</p>
 <div class="nthm" data-arguments="Theorem 5.3.1">
 <p>Suppose <span class="math inline">\(f : A \to B\)</span>. If <span class="math inline">\(f\)</span> is one-to-one and onto, then <span class="math inline">\(f^{-1} : B \to A\)</span>.</p>
 </div>
@@ -507,7 +507,11 @@ $$
 <pre><code>@func_from_graph : ∀ {A B : Type} (F : Set (A × B)),
                     (∃ (f : A → B), graph f = F) ↔ is_func_graph F</code></pre>
 </div>
-<p>This means that, in the context of the proof of <code>Theorem_5_3_1</code>, <code>func_from_graph (inv (graph f))</code> is a proof of the statement <code>∃ (g : B → A), graph g = inv (graph f) ↔︎ is_func_graph (inv (graph f))</code>. Therefore the tactic <code>rewrite [func_from_graph (inv (graph f))]</code> will change the goal to <code>is_func_graph (inv (func f))</code>. In fact, we can just use <code>rewrite [func_from_graph]</code>, and Lean will figure out how to apply the theorem to rewrite the goal. The rest of the proof is straightforward.</p>
+<p>This means that, in the context of the proof of <code>Theorem_5_3_1</code>, <code>func_from_graph (inv (graph f))</code> is a proof of the statement</p>
+<div class="ind">
+<p><code>∃ (g : B → A), graph g = inv (graph f) ↔︎ is_func_graph (inv (graph f))</code>.</p>
+</div>
+<p>Therefore the tactic <code>rewrite [func_from_graph (inv (graph f))]</code> will change the goal to <code>is_func_graph (inv (func f))</code>. In fact, we can just use <code>rewrite [func_from_graph]</code>, and Lean will figure out how to apply the theorem to rewrite the goal. The rest of the proof is straightforward.</p>
 <div class="sourceCode" id="cb35"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Theorem_5_3_1 {A B : <span class="kw">Type</span>}</span>
 <span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a>    (f : A → B) (h1 : one_to_one f) (h2 : onto f) :</span>
 <span id="cb35-3"><a href="#cb35-3" aria-hidden="true" tabindex="-1"></a>    ∃ (g : B → A), graph g = inv (graph f) := <span class="kw">by</span></span>
@@ -750,7 +754,7 @@ $$
 </section>
 <section id="images-and-inverse-images-a-research-project" class="level2">
 <h2 class="anchored" data-anchor-id="images-and-inverse-images-a-research-project">5.5. Images and Inverse Images: A Research Project</h2>
-<p>Section 5.5 of <em>HTPI</em> introduces two new definitions. Suppose <span class="math inline">\(f : A \to B\)</span>. If <span class="math inline">\(X \subseteq A\)</span>, then the <em>image</em> of <span class="math inline">\(X\)</span> under <span class="math inline">\(f\)</span> is the set <span class="math inline">\(f(X)\)</span> defined as follows: <span class="math display">\[
+<p>Section 5.5 of <em>HTPI</em> introduces two new definitions (<em>HTPI</em> p.&nbsp;268). Suppose <span class="math inline">\(f : A \to B\)</span>. If <span class="math inline">\(X \subseteq A\)</span>, then the <em>image</em> of <span class="math inline">\(X\)</span> under <span class="math inline">\(f\)</span> is the set <span class="math inline">\(f(X)\)</span> defined as follows: <span class="math display">\[
 f(X) = \{f(x) \mid x \in X\} = \{b \in B \mid \exists x \in X(f(x) = b)\}.
 \]</span> If <span class="math inline">\(Y \subseteq B\)</span>, then the <em>inverse image</em> of <span class="math inline">\(Y\)</span> under <span class="math inline">\(f\)</span> is the set <span class="math inline">\(f^{-1}(Y)\)</span> defined as follows: <span class="math display">\[
 f^{-1}(Y) = \{a \in A \mid f(a) \in Y\}.

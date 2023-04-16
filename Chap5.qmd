@@ -32,7 +32,7 @@ theorem func_from_graph {A B : Type} (F : Set (A × B)) :
 
 We will ask you to prove the left-to-right direction of this theorem in the exercises.  The right-to-left direction can also be proven in Lean, but the proof requires methods that go beyond the scope of this book.  Nevertheless, we will go ahead and use the theorem when we find it useful.
 
-Section 5.1 of *HTPI* proves two theorems about functions.  The first gives a convenient way of proving that two functions are equal:
+Section 5.1 of *HTPI* proves two theorems about functions.  The first gives a convenient way of proving that two functions are equal (*HTPI* p. 232):
 
 ::: {.nthm arguments="Theorem 5.1.4"}
 Suppose $f$ and $g$ are functions from $A$ to $B$.  If $\forall a \in A(f(a) = g(a))$, then $f = g$.
@@ -369,7 +369,7 @@ theorem Exercise_5_2_21b {A B C : Type} (f : B → C) (a : A)
 
 ## 5.3. Inverses of Functions
 
-Section 5.3 of *HTPI* is motivated by the following question: If $f$ is a function from $A$ to $B$, is $f^{-1}$ a function from $B$ to $A$?  Here is the first theorem in that section:
+Section 5.3 of *HTPI* is motivated by the following question: If $f$ is a function from $A$ to $B$, is $f^{-1}$ a function from $B$ to $A$?  Here is the first theorem in that section (*HTPI* p. 250):
 
 ::: {.nthm arguments="Theorem 5.3.1"}
 Suppose $f : A \to B$.  If $f$ is one-to-one and onto, then $f^{-1} : B \to A$.
@@ -392,7 +392,13 @@ To prove this theorem, we will use the theorem `func_from_graph` that was stated
 ```
 :::
 
-This means that, in the context of the proof of `Theorem_5_3_1`, `func_from_graph (inv (graph f))` is a proof of the statement `∃ (g : B → A), graph g = inv (graph f) ↔ is_func_graph (inv (graph f))`.  Therefore the tactic `rewrite [func_from_graph (inv (graph f))]` will change the goal to `is_func_graph (inv (func f))`.  In fact, we can just use `rewrite [func_from_graph]`, and Lean will figure out how to apply the theorem to rewrite the goal.  The rest of the proof is straightforward.
+This means that, in the context of the proof of `Theorem_5_3_1`, `func_from_graph (inv (graph f))` is a proof of the statement
+
+::: {.ind}
+`∃ (g : B → A), graph g = inv (graph f) ↔ is_func_graph (inv (graph f))`.
+:::
+
+Therefore the tactic `rewrite [func_from_graph (inv (graph f))]` will change the goal to `is_func_graph (inv (func f))`.  In fact, we can just use `rewrite [func_from_graph]`, and Lean will figure out how to apply the theorem to rewrite the goal.  The rest of the proof is straightforward.
 
 ```lean
 theorem Theorem_5_3_1 {A B : Type}
@@ -738,7 +744,7 @@ theorem Exercise_5_4_13a {A : Type} (F : Set (A → A)) (B : Set A) :
 
 ## 5.5. Images and Inverse Images: A Research Project
 
-Section 5.5 of *HTPI* introduces two new definitions.  Suppose $f : A \to B$.  If $X \subseteq A$, then the *image* of $X$ under $f$ is the set $f(X)$ defined as follows:
+Section 5.5 of *HTPI* introduces two new definitions (*HTPI* p. 268).  Suppose $f : A \to B$.  If $X \subseteq A$, then the *image* of $X$ under $f$ is the set $f(X)$ defined as follows:
 $$
 f(X) = \{f(x) \mid x \in X\} = \{b \in B \mid \exists x \in X(f(x) = b)\}.
 $$

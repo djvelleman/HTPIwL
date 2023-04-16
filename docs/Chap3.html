@@ -252,7 +252,7 @@ $$
 <section id="proofs-involving-negations-and-conditionals" class="level2">
 <h2 class="anchored" data-anchor-id="proofs-involving-negations-and-conditionals">3.1 &amp; 3.2. Proofs Involving Negations and Conditionals</h2>
 <p>Sections 3.1 and 3.2 of <em>How To Prove It</em> present strategies for dealing with givens and goals involving negations and conditionals. We restate those strategies here, and explain how to use them with Lean.</p>
-<p>Section 3.1 gives two strategies for proving a goal of the form <code>P → Q</code>:</p>
+<p>Section 3.1 gives two strategies for proving a goal of the form <code>P → Q</code> (<em>HTPI</em> pp.&nbsp;95, 96):</p>
 <section id="to-prove-a-goal-of-the-form-p-q" class="level4">
 <h4 class="anchored" data-anchor-id="to-prove-a-goal-of-the-form-p-q">To prove a goal of the form <code>P → Q</code>:</h4>
 <ol type="1">
@@ -283,7 +283,7 @@ $$
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>⊢ ¬P</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </div>
-<p>Section 3.2 gives two strategies for using givens of the form <code>P → Q</code>, with the second once again being a variation on the first based on the contrapositive law:</p>
+<p>Section 3.2 gives two strategies for using givens of the form <code>P → Q</code>, with the second once again being a variation on the first based on the contrapositive law (<em>HTPI</em> p.&nbsp;108):</p>
 </section>
 <section id="to-use-a-given-of-the-form-p-q" class="level4">
 <h4 class="anchored" data-anchor-id="to-use-a-given-of-the-form-p-q">To use a given of the form <code>P → Q</code>:</h4>
@@ -293,7 +293,7 @@ $$
 </ol>
 <p>The first strategy is the modus ponens rule of inference, and we saw in the last chapter that if you have <code>h1 : P → Q</code> and <code>h2 : P</code>, then <code>h1 h2</code> is a (term-mode) proof of <code>Q</code>; often we use this rule with the <code>have</code> or <code>show</code> tactic. For the second strategy, if you have <code>h1 : P → Q</code> and <code>h2 : ¬Q</code>, then the <code>contrapos at h1</code> tactic will change <code>h1</code> to <code>h1 : ¬Q → ¬P</code>, and then <code>h1 h2</code> will be a proof of <code>¬P</code>.</p>
 <p>All of the strategies listed above for working with conditional statements as givens or goals were illustrated in examples in the last chapter.</p>
-<p>Section 3.2 of <em>HTPI</em> offers two strategies for proving negative goals:</p>
+<p>Section 3.2 of <em>HTPI</em> offers two strategies for proving negative goals (<em>HTPI</em> pp.&nbsp;101, 102):</p>
 </section>
 <section id="to-prove-a-goal-of-the-form-p" class="level4">
 <h4 class="anchored" data-anchor-id="to-prove-a-goal-of-the-form-p">To prove a goal of the form <code>¬P</code>:</h4>
@@ -423,7 +423,7 @@ $$
 <div class="sourceCode" id="cb14"><pre class="sourceCode state code-with-copy"><code class="sourceCode state"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;&gt;</span>No goals</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </div>
-<p>Finally, we have two strategies for using a given that is a negative statement:</p>
+<p>Finally, we have two strategies for using a given that is a negative statement (<em>HTPI</em> pp.&nbsp;105, 108):</p>
 </section>
 <section id="to-use-a-given-of-the-form-p" class="level4">
 <h4 class="anchored" data-anchor-id="to-use-a-given-of-the-form-p">To use a given of the form <code>¬P</code>:</h4>
@@ -574,7 +574,7 @@ $$
 </section>
 <section id="exercises" class="level3">
 <h3 class="anchored" data-anchor-id="exercises">Exercises</h3>
-<p>Fill in proofs of the following theorems. All exercises are taken from <em>HTPI</em>.</p>
+<p>Fill in proofs of the following theorems. All of them are based on exercises in <em>HTPI</em>.</p>
 <div class="numex" data-arguments="1">
 <div class="sourceCode" id="cb29"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Exercise_3_2_1a (P Q R : <span class="kw">Prop</span>)</span>
 <span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>    (h1 : P → Q) (h2 : Q → R) : P → R := <span class="kw">by</span></span>
@@ -607,7 +607,7 @@ $$
 <p>To use a predicate in Lean, you must tell Lean the type of objects to which it applies. If <code>U</code> is a type, then <code>Pred U</code> is the type of predicates that apply to objects of type <code>U</code>. If <code>P</code> has type <code>Pred U</code> (that is, <code>P</code> is a predicate applying to objects of type <code>U</code>) and <code>x</code> has type <code>U</code>, then to apply <code>P</code> to <code>x</code> we just write <code>P x</code> (with a space but no parentheses). Thus, if we have <code>P : Pred U</code> and <code>x : U</code>, then <code>P x</code> is an expression of type <code>Prop</code>. That is, <code>P x</code> is a proposition, and its meaning is that <code>x</code> has the property represented by the predicate <code>P</code>.</p>
 <p>There are a few differences between the way quantified statements are written in <em>HTPI</em> and the way they are written in Lean. First of all, when we apply a quantifier to a variable in Lean we will specify the type of the variable explicitly. Also, Lean requires that after specifying the variable and its type, you must put a comma before the proposition to which the quantifier is applied. Thus, if <code>P</code> has type <code>Pred U</code>, then to say that <code>P</code> holds for all objects of type <code>U</code> we would write <code>∀ (x : U), P x</code>. Similarly, <code>∃ (x : U), P x</code> is the proposition asserting that there exists at least one <code>x</code> of type <code>U</code> such that <code>P x</code>.</p>
 <p>And there is one more important difference between the way quantified statements are written in <em>HTPI</em> and Lean. In <em>HTPI</em>, a quantifier is interpreted as applying to as little as possible. Thus, <span class="math inline">\(\forall x\, P(x) \wedge Q(x)\)</span> is interpreted as <span class="math inline">\((\forall x\, P(x)) \wedge Q(x)\)</span>; if you want the quantifier <span class="math inline">\(\forall x\)</span> to apply to the entire statement <span class="math inline">\(P(x) \wedge Q(x)\)</span> you must use parentheses and write <span class="math inline">\(\forall x(P(x) \wedge Q(x))\)</span>. The convention in Lean is exactly the opposite: a quantifier applies to as much as possible. Thus, Lean will interpret <code>∀ (x : U), P x ∧ Q x</code> as meaning <code>∀ (x : U), (P x ∧ Q x)</code>. If you want the quantifier to apply to only <code>P x</code>, then you must use parentheses and write <code>(∀ (x : U), P x) ∧ Q x</code>.</p>
-<p>With this preparation, we are ready to consider how to write proofs involving quantifiers in Lean. The most common way to prove a goal of the form <code>∀ (x : U), P x</code> is to use the following strategy:</p>
+<p>With this preparation, we are ready to consider how to write proofs involving quantifiers in Lean. The most common way to prove a goal of the form <code>∀ (x : U), P x</code> is to use the following strategy (<em>HTPI</em> p.&nbsp;114):</p>
 <section id="to-prove-a-goal-of-the-form-x-u-p-x" class="level4">
 <h4 class="anchored" data-anchor-id="to-prove-a-goal-of-the-form-x-u-p-x">To prove a goal of the form <code>∀ (x : U), P x</code>:</h4>
 <div class="ind">
@@ -625,7 +625,7 @@ $$
 <span id="cb34-3"><a href="#cb34-3" aria-hidden="true" tabindex="-1"></a>⊢ P x</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </div>
-<p>To use a given of the form <code>∀ (x : U), P x</code>, we usually apply a rule of inference called <em>universal instantiation</em>, which is described by the following proof strategy:</p>
+<p>To use a given of the form <code>∀ (x : U), P x</code>, we usually apply a rule of inference called <em>universal instantiation</em>, which is described by the following proof strategy (<em>HTPI</em> p.&nbsp;121):</p>
 </section>
 <section id="to-use-a-given-of-the-form-x-u-p-x" class="level4">
 <h4 class="anchored" data-anchor-id="to-use-a-given-of-the-form-x-u-p-x">To use a given of the form <code>∀ (x : U), P x</code>:</h4>
@@ -1010,7 +1010,7 @@ $$
 <div class="sourceCode" id="cb60"><pre class="sourceCode state code-with-copy"><code class="sourceCode state"><span id="cb60-1"><a href="#cb60-1" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;&gt;</span>No goals</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </div>
-<p>Next we turn to strategies for working with existential quantifiers.</p>
+<p>Next we turn to strategies for working with existential quantifiers (<em>HTPI</em> p.&nbsp;118).</p>
 </section>
 <section id="to-prove-a-goal-of-the-form-x-u-p-x-1" class="level4">
 <h4 class="anchored" data-anchor-id="to-prove-a-goal-of-the-form-x-u-p-x-1">To prove a goal of the form <code>∃ (x : U), P x</code>:</h4>
@@ -1032,7 +1032,7 @@ $$
 <span id="cb62-3"><a href="#cb62-3" aria-hidden="true" tabindex="-1"></a>⊢ P a</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </div>
-<p>Our strategy for using an existential given is a rule that is called <em>existential instantiation</em> in <em>HTPI</em>:</p>
+<p>Our strategy for using an existential given is a rule that is called <em>existential instantiation</em> in <em>HTPI</em> (<em>HTPI</em> p.&nbsp;120):</p>
 </section>
 <section id="to-use-a-given-of-the-form-x-u-p-x-1" class="level4">
 <h4 class="anchored" data-anchor-id="to-use-a-given-of-the-form-x-u-p-x-1">To use a given of the form <code>∃ (x : U), P x</code>:</h4>
@@ -1476,7 +1476,7 @@ $$
 <div class="sourceCode" id="cb96"><pre class="sourceCode state code-with-copy"><code class="sourceCode state"><span id="cb96-1"><a href="#cb96-1" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;&gt;</span>No goals</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </div>
-<p>You might want to compare the Lean proof above to the way the proof was written in <em>HTPI</em>. Here are the theorem and proof from <em>HTPI</em>:</p>
+<p>You might want to compare the Lean proof above to the way the proof was written in <em>HTPI</em>. Here are the theorem and proof from <em>HTPI</em> (<em>HTPI</em> p.&nbsp;125):</p>
 <div class="thm">
 <p>Suppose <span class="math inline">\(B\)</span> is a set and <span class="math inline">\(\mathcal{F}\)</span> is a family of sets. If <span class="math inline">\(\bigcup\mathcal{F} \subseteq B\)</span> then <span class="math inline">\(\mathcal{F} \subseteq \mathscr{P}(B)\)</span>.</p>
 </div>
@@ -1521,7 +1521,7 @@ $$
 </section>
 <section id="proofs-involving-conjunctions-and-biconditionals" class="level2">
 <h2 class="anchored" data-anchor-id="proofs-involving-conjunctions-and-biconditionals">3.4. Proofs Involving Conjunctions and Biconditionals</h2>
-<p>The strategies in <em>HTPI</em> for working with conjunctions are very simple.</p>
+<p>The strategies in <em>HTPI</em> for working with conjunctions are very simple (<em>HTPI</em> p.&nbsp;130).</p>
 <section id="to-prove-a-goal-of-the-form-p-q-1" class="level4">
 <h4 class="anchored" data-anchor-id="to-prove-a-goal-of-the-form-p-q-1">To prove a goal of the form <code>P ∧ Q</code>:</h4>
 <div class="ind">
@@ -1529,7 +1529,7 @@ $$
 </div>
 <p>We already saw an example, at the end of the last section, of the use of the rule <code>And.intro</code> to prove a conjunction. In general, if you have <code>h1 : P</code> and <code>h2 : Q</code>, then <code>And.intro h1 h2</code> is a proof of <code>P ∧ Q</code>. It follows that if your goal is <code>P ∧ Q</code> but you don’t yet have proofs of <code>P</code> and <code>Q</code>, then you can use the tactic <code>apply And.intro _ _</code>. Lean will figure out that the blanks need to be filled in with proofs of <code>P</code> and <code>Q</code>, so it will ask you to prove <code>P</code> and <code>Q</code> separately, as suggested by the strategy above.</p>
 <p>If you already have a proof of either <code>P</code> or <code>Q</code>, then you can fill in one of the blanks in the <code>apply</code> tactic. For example, if you have <code>h : P</code>, then you can write <code>apply And.intro h _</code>, and Lean will tell you that you just have to prove <code>Q</code> to complete the proof. Similarly, if you have <code>h : Q</code>, then <code>apply And.intro _ h</code> will lead to just the single goal <code>P</code>. There is also a shortcut you can use with the <code>apply</code> tactic: any blanks that come at the end of the tactic can be left out. So instead of <code>apply And.intro _ _</code>, you can just write <code>apply And.intro</code>, and instead of <code>apply And.intro h _</code>, you can write <code>apply And.intro h</code>. On the other hand, <code>apply And.intro _ h</code> can’t be shortened; it is only blanks <em>at the end</em> that can be left out.</p>
-<p>The strategy for a given that is a conjunction is similar.</p>
+<p>The strategy for a given that is a conjunction is similar (<em>HTPI</em> p.&nbsp;131).</p>
 </section>
 <section id="to-use-a-given-of-the-form-p-q-1" class="level4">
 <h4 class="anchored" data-anchor-id="to-use-a-given-of-the-form-p-q-1">To use a given of the form <code>P ∧ Q</code>:</h4>
@@ -1634,7 +1634,7 @@ $$
 </div>
 </div>
 <p>Look carefully at the tactic state. Lean has listed <em>two</em> goals, one after the other, and it has helpfully labeled them “case left” and “case right,” indicating that the first goal is to prove the left side of the conjunction and the second is to prove the right. The given information in both cases is the same, but in the first case the goal is <code>x ∈ B</code>, and in the second it is <code>¬x ∈ D</code>. At this point, if we simply continue with the proof, Lean will interpret our tactics as applying to the first goal, until we achieve that goal. Once we achieve it, Lean will move on to the second goal.</p>
-<p>However, we can make our proof more readable by separating and labeling the proofs of the two goals. To do this, we type a bullet (which looks like this: <code>·</code>) and then a comment describing the first goal. (To type a bullet, type <code>\.</code>—that is, backslash–period.) The proof of the first goal will appear below this line, indented further and ending with <code>done</code>. To prepare for this, we leave a blank line, type tab to increase the indenting, and then type <code>done</code>. Then we do the same for the second goal: On the next line, we return to the previous level of indenting and type a bullet and a comment describing the second goal. We follow this with a blank line and then an indented <code>done</code> to indicate the end of the proof of the second goal. We’re going to work on the first goal first, so we click on the first blank line to position the cursor there. The screen now looks like this:</p>
+<p>However, we can make our proof more readable by separating and labeling the proofs of the two goals. To do this, we type a bullet (which looks like this: <code>·</code>) and then a comment describing the first goal. (To type a bullet, type <code>\.</code>—that is, backslash–period.) The proof of the first goal will appear below this line, indented further and ending with <code>done</code>. To prepare for this, we leave a blank line, type tab to increase the indenting, and then type <code>done</code>. Then we do the same for the second goal: on the next line, we return to the previous level of indenting and type a bullet and a comment describing the second goal. We follow this with a blank line and then an indented <code>done</code> to indicate the end of the proof of the second goal. We’re going to work on the first goal first, so we click on the first blank line to position the cursor there. The screen now looks like this:</p>
 <div class="inout">
 <div class="inpt">
 <div class="sourceCode" id="cb110"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb110-1"><a href="#cb110-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Like_Example_3_4_1 (U : <span class="kw">Type</span>)</span>
@@ -1788,7 +1788,7 @@ $$
 <div class="sourceCode" id="cb119"><pre class="sourceCode state code-with-copy"><code class="sourceCode state"><span id="cb119-1"><a href="#cb119-1" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;&gt;</span>No goals</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </div>
-<p>Since <code>P ↔︎ Q</code> is shorthand for <code>(P → Q) ∧ (Q → P)</code>, the strategies given above for conjunctions lead immediately to the following strategies for biconditionals:</p>
+<p>Since <code>P ↔︎ Q</code> is shorthand for <code>(P → Q) ∧ (Q → P)</code>, the strategies given above for conjunctions lead immediately to the following strategies for biconditionals (<em>HTPI</em> p.&nbsp;132):</p>
 </section>
 <section id="to-prove-a-goal-of-the-form-p-q-2" class="level4">
 <h4 class="anchored" data-anchor-id="to-prove-a-goal-of-the-form-p-q-2">To prove a goal of the form <code>P ↔︎ Q</code>:</h4>
@@ -2031,7 +2031,7 @@ $$
 <span id="cb136-16"><a href="#cb136-16" aria-hidden="true" tabindex="-1"></a>    <span class="kw">done</span></span>
 <span id="cb136-17"><a href="#cb136-17" aria-hidden="true" tabindex="-1"></a>  <span class="kw">done</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>To understand the last step, start with the fact that <code>h1 u</code> is a proof of <code>P u ↔︎ Q u</code>. Therefore <code>(h1 u).rtl</code> is a proof of <code>Q u → P u</code>, so by modus ponens, <code>(h1 u).rtl h3</code> is a proof of <code>P u</code>. It follows that <code>Exists.intro u ((h1 u).rtl h3)</code> is a proof of <code>∃ (x : U), P x</code>, which was the goal.</p>
-<p>There is one more style of reasoning that is sometimes used in proofs of biconditional statements. It is illustrated in Example 3.4.5 of <em>HTPI</em>. Here is that theorem, as it is presented in <em>HTPI</em>.</p>
+<p>There is one more style of reasoning that is sometimes used in proofs of biconditional statements. It is illustrated in Example 3.4.5 of <em>HTPI</em>. Here is that theorem, as it is presented in <em>HTPI</em> (<em>HTPI</em> p.&nbsp;137).</p>
 <div class="thm">
 <p>Suppose <span class="math inline">\(A\)</span>, <span class="math inline">\(B\)</span>, and <span class="math inline">\(C\)</span> are sets. Then <span class="math inline">\(A \cap (B \setmin C) = (A \cap B) \setmin C\)</span>.</p>
 </div>
@@ -2143,7 +2143,7 @@ x \in A \cap (B \setmin C) &amp;\text{ iff } x \in A \wedge x \in B \setmin C\\
 </section>
 <section id="proofs-involving-disjunctions" class="level2">
 <h2 class="anchored" data-anchor-id="proofs-involving-disjunctions">3.5. Proofs Involving Disjunctions</h2>
-<p>A common proof method for dealing with givens or goals that are disjunctions is <em>proof by cases</em>. Here’s how it works.</p>
+<p>A common proof method for dealing with givens or goals that are disjunctions is <em>proof by cases</em>. Here’s how it works (<em>HTPI</em> p.&nbsp;143).</p>
 <section id="to-use-a-given-of-the-form-p-q-3" class="level4">
 <h4 class="anchored" data-anchor-id="to-use-a-given-of-the-form-p-q-3">To use a given of the form <code>P ∨ Q</code>:</h4>
 <div class="ind">
@@ -2170,7 +2170,7 @@ x \in A \cap (B \setmin C) &amp;\text{ iff } x \in A \wedge x \in B \setmin C\\
 <p>Notice that the original given <code>h : P ∨ Q</code> gets <em>replaced</em> by <code>h : P</code> in case 1 and <code>h : Q</code> in case 2. This is usually what is most convenient, but if you write <code>by_cases on h with h1</code>, then the original given <code>h</code> will be preserved, and new givens <code>h1 : P</code> and <code>h1 : Q</code> will be added to cases 1 and 2, respectively. If you want different names for the new givens in the two cases, then use <code>by_cases on h with h1, h2</code> to add the new given <code>h1 : P</code> in case 1 and <code>h2 : Q</code> in case 2.</p>
 <p>You can follow <code>by_cases on</code> with any proof of a disjunction, even if that proof is not just a single identifier. In that cases you will want to add <code>with</code> to specify the identifier or identifiers to be used for the new assumptions in the two cases. Another variant is that you can use the tactic <code>by_cases h : P</code> to break your proof into two cases, with the new assumptions being <code>h : P</code> in case 1 and <code>h : ¬P</code> in case 2. In other words, the effect of <code>by_cases h : P</code> is the same as adding the new given <code>h : P ∨ ¬P</code> (which, of course, is a tautology) and then using the tactic <code>by_cases on h</code>.</p>
 <p>There are two introduction rules that you can use in Lean to prove a goal of the form <code>P ∨ Q</code>. If you have <code>h : P</code>, then Lean will accept <code>Or.intro_left h</code> as a proof of <code>P ∨ Q</code>, and if you have <code>h : Q</code>, then <code>Or.intro_right h</code> is a proof of <code>P ∨ Q</code>. There are shortened forms <code>Or.inl</code> and <code>Or.inr</code> for <code>Or.intro_left</code> and <code>Or.intro_right</code>, respectively.</p>
-<p>Often, when your goal has the form <code>P ∨ Q</code>, you will be unable to prove <code>P</code>, and also unable to prove <code>Q</code>. Proof by cases can help in that situation as well.</p>
+<p>Often, when your goal has the form <code>P ∨ Q</code>, you will be unable to prove <code>P</code>, and also unable to prove <code>Q</code>. Proof by cases can help in that situation as well (<em>HTPI</em> p.&nbsp;145).</p>
 </section>
 <section id="to-prove-a-goal-of-the-form-p-q-3" class="level4">
 <h4 class="anchored" data-anchor-id="to-prove-a-goal-of-the-form-p-q-3">To prove a goal of the form <code>P ∨ Q</code>:</h4>
@@ -2356,7 +2356,7 @@ x \in A \cap (B \setmin C) &amp;\text{ iff } x \in A \wedge x \in B \setmin C\\
 <div class="sourceCode" id="cb167"><pre class="sourceCode state code-with-copy"><code class="sourceCode state"><span id="cb167-1"><a href="#cb167-1" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;&gt;</span>No goals</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </div>
-<p>There is a second strategy that is often useful to prove a goal of the form <code>P ∨ Q</code>. It is motivated by the fact that <code>P ∨ Q</code> is equivalent to both <code>¬P → Q</code> and <code>¬Q → P</code>.</p>
+<p>There is a second strategy that is often useful to prove a goal of the form <code>P ∨ Q</code>. It is motivated by the fact that <code>P ∨ Q</code> is equivalent to both <code>¬P → Q</code> and <code>¬Q → P</code> (<em>HTPI</em> p.&nbsp;147).</p>
 </section>
 <section id="to-prove-a-goal-of-the-form-p-q-4" class="level4">
 <h4 class="anchored" data-anchor-id="to-prove-a-goal-of-the-form-p-q-4">To prove a goal of the form <code>P ∨ Q</code>:</h4>
@@ -2446,7 +2446,7 @@ x \in A \cap (B \setmin C) &amp;\text{ iff } x \in A \wedge x \in B \setmin C\\
 <div class="sourceCode" id="cb177"><pre class="sourceCode state code-with-copy"><code class="sourceCode state"><span id="cb177-1"><a href="#cb177-1" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;&gt;</span>No goals</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </div>
-<p>The fact that <code>P ∨ Q</code> is equivalent to both <code>¬P → Q</code> and <code>¬Q → P</code> also suggests another strategy for using a given that is a disjunction.</p>
+<p>The fact that <code>P ∨ Q</code> is equivalent to both <code>¬P → Q</code> and <code>¬Q → P</code> also suggests another strategy for using a given that is a disjunction (<em>HTPI</em> p.&nbsp;149).</p>
 </section>
 <section id="to-use-a-given-of-the-form-p-q-4" class="level4">
 <h4 class="anchored" data-anchor-id="to-use-a-given-of-the-form-p-q-4">To use a given of the form <code>P ∨ Q</code>:</h4>
@@ -2712,13 +2712,13 @@ x \in A \cap (B \setmin C) &amp;\text{ iff } x \in A \wedge x \in B \setmin C\\
 <section id="existence-and-uniqueness-proofs" class="level2">
 <h2 class="anchored" data-anchor-id="existence-and-uniqueness-proofs">3.6. Existence and Uniqueness Proofs</h2>
 <p>Recall that <code>∃! (x : U), P x</code> means that there is exactly one <code>x</code> of type <code>U</code> such that <code>P x</code> is true. One way to deal with a given or goal of this form is to use the <code>define</code> tactic to rewrite it as the equivalent statement <code>∃ (x : U), P x ∧ ∀ (x_1 : U), P x_1 → x_1 = x</code>. You can then apply techniques discussed previously in this chapter. However, there are also proof techniques, and corresponding Lean tactics, for working directly with givens and goals of this form.</p>
-<p>Often a goal of the form <code>∃! (x : U), P x</code> is proven by using the following strategy. This is a slight rephrasing of the strategy presented in <em>HTPI</em>. The rephrasing is based on the fact that for any propositions <code>A</code>, <code>B</code>, and <code>C</code>, <code>A ∧ B → C</code> is equivalent to <code>A → B → C</code> (you can check this equivalence by making a truth table). The second of these statements is usually easier to work with in Lean than the first one, so we will often rephrase statements that have the form <code>A ∧ B → C</code> as <code>A → B → C</code>. That’s what we have done here, as you will see if you compare the strategy stated below to the one in <em>HTPI</em>.</p>
+<p>Often a goal of the form <code>∃! (x : U), P x</code> is proven by using the following strategy. This is a slight rephrasing of the strategy presented in <em>HTPI</em>. The rephrasing is based on the fact that for any propositions <code>A</code>, <code>B</code>, and <code>C</code>, <code>A ∧ B → C</code> is equivalent to <code>A → B → C</code> (you can check this equivalence by making a truth table). The second of these statements is usually easier to work with in Lean than the first one, so we will often rephrase statements that have the form <code>A ∧ B → C</code> as <code>A → B → C</code>. That’s what we have done here, as you will see if you compare the strategy stated below to the one in <em>HTPI</em> (<em>HTPI</em> pp.&nbsp;156–157).</p>
 <section id="to-prove-a-goal-of-the-form-x-u-p-x-2" class="level4">
 <h4 class="anchored" data-anchor-id="to-prove-a-goal-of-the-form-x-u-p-x-2">To prove a goal of the form <code>∃! (x : U), P x</code>:</h4>
 <div class="ind">
 <p>Prove <code>∃ (x : U), P x</code> and <code>∀ (x_1 x_2 : U), P x_1 → P x_2 → x_1 = x_2</code>. The first of these goals says that there exists an <code>x</code> such that <code>P x</code> is true, and the second says that it is unique. The two parts of the proof are therefore sometimes labeled <em>existence</em> and <em>uniqueness</em>.</p>
 </div>
-<p>To apply this strategy in a Lean proof, we use the tactic <code>exists_unique</code>. We’ll illustrate this with the theorem from Example 3.6.2 in <em>HTPI</em>. Here’s how that theorem and its proof are presented in <em>HTPI</em>:</p>
+<p>To apply this strategy in a Lean proof, we use the tactic <code>exists_unique</code>. We’ll illustrate this with the theorem from Example 3.6.2 in <em>HTPI</em>. Here’s how that theorem and its proof are presented in <em>HTPI</em> (<em>HTPI</em> pp.&nbsp;157–158):</p>
 <div class="thm">
 <p>There is a unique set <span class="math inline">\(A\)</span> such that for every set <span class="math inline">\(B\)</span>, <span class="math inline">\(A \cup B = B\)</span>.</p>
 </div>
@@ -3194,7 +3194,7 @@ x \in A \cap (B \setmin C) &amp;\text{ iff } x \in A \wedge x \in B \setmin C\\
 <span id="cb240-19"><a href="#cb240-19" aria-hidden="true" tabindex="-1"></a>        _ = D     := h3</span>
 <span id="cb240-20"><a href="#cb240-20" aria-hidden="true" tabindex="-1"></a>    <span class="kw">done</span></span>
 <span id="cb240-21"><a href="#cb240-21" aria-hidden="true" tabindex="-1"></a>  <span class="kw">done</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>Since the statement <code>∃! (x : U), P x</code> asserts both the existence and the uniqueness of an object satisfying the predicate <code>P</code>, we have the following strategy for using a given of this form:</p>
+<p>Since the statement <code>∃! (x : U), P x</code> asserts both the existence and the uniqueness of an object satisfying the predicate <code>P</code>, we have the following strategy for using a given of this form (<em>HTPI</em> p.&nbsp;159):</p>
 </section>
 <section id="to-use-a-given-of-the-form-x-u-p-x-2" class="level4">
 <h4 class="anchored" data-anchor-id="to-use-a-given-of-the-form-x-u-p-x-2">To use a given of the form <code>∃! (x : U), P x</code>:</h4>
@@ -3346,7 +3346,7 @@ x \in A \cap (B \setmin C) &amp;\text{ iff } x \in A \wedge x \in B \setmin C\\
 <span id="cb249-13"><a href="#cb249-13" aria-hidden="true" tabindex="-1"></a>  <span class="kw">show</span> ∃ (x : U), x ∈ B ∩ C <span class="kw">from</span></span>
 <span id="cb249-14"><a href="#cb249-14" aria-hidden="true" tabindex="-1"></a>    Exists.intro c (And.intro h4.right h5.right)</span>
 <span id="cb249-15"><a href="#cb249-15" aria-hidden="true" tabindex="-1"></a>  <span class="kw">done</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>You might want to compare the Lean proof above to the proof of this theorem as it appears in <em>HTPI</em>:</p>
+<p>You might want to compare the Lean proof above to the proof of this theorem as it appears in <em>HTPI</em> (<em>HTPI</em> p.&nbsp;160):</p>
 <div class="thm">
 <p>Suppose <span class="math inline">\(A\)</span>, <span class="math inline">\(B\)</span>, and <span class="math inline">\(C\)</span> are sets, <span class="math inline">\(A\)</span> and <span class="math inline">\(B\)</span> are not disjoint, <span class="math inline">\(A\)</span> and <span class="math inline">\(C\)</span> are not disjoint, and <span class="math inline">\(A\)</span> has exactly one element. Then <span class="math inline">\(B\)</span> and <span class="math inline">\(C\)</span> are not disjoint</p>
 </div>
@@ -3436,7 +3436,7 @@ x \in A \cap (B \setmin C) &amp;\text{ iff } x \in A \wedge x \in B \setmin C\\
 </section>
 <section id="more-examples-of-proofs" class="level2">
 <h2 class="anchored" data-anchor-id="more-examples-of-proofs">3.7. More Examples of Proofs</h2>
-<p>It is finally time to discuss proofs involving algebraic reasoning. Lean has types for several different kinds of numbers. <code>Nat</code> is the type of natural numbers—that is, the numbers 0, 1, 2, …. <code>Int</code> is the type of integers, <code>Rat</code> is the type of rational numbers, <code>Real</code> is the type of real numbers, and <code>Complex</code> is the type of complex numbers. Lean also uses the notation <code>ℕ</code>, <code>ℤ</code>, <code>ℚ</code>, <code>ℝ</code>, and <code>ℂ</code> for these types. To write formulas involving arithmetic operations, you should use the symbols <code>+</code> for addition, <code>-</code> for subtraction, <code>*</code> for multiplication, <code>/</code> for division, and <code>^</code> for exponentiation. We will discuss some of the more subtle points of algebraic reasoning in Chapter 6. For the moment, you are best off avoiding subtraction and division when working with natural numbers and avoiding division when working with integers.</p>
+<p>It is finally time to discuss proofs involving algebraic reasoning. Lean has types for several different kinds of numbers. <code>Nat</code> is the type of natural numbers—that is, the numbers 0, 1, 2, …. <code>Int</code> is the type of integers, <code>Rat</code> is the type of rational numbers, <code>Real</code> is the type of real numbers, and <code>Complex</code> is the type of complex numbers. Lean also uses the notation <code>ℕ</code>, <code>ℤ</code>, <code>ℚ</code>, <code>ℝ</code>, and <code>ℂ</code> for these types. (If you want to use those names for the number types, you can enter them by typing <code>\N</code>, <code>\Z</code>, <code>\Q</code>, <code>\R</code>, and <code>\C</code>.) To write formulas involving arithmetic operations, you should use the symbols <code>+</code> for addition, <code>-</code> for subtraction, <code>*</code> for multiplication, <code>/</code> for division, and <code>^</code> for exponentiation. We will discuss some of the more subtle points of algebraic reasoning in Chapter 6. For the moment, you are best off avoiding subtraction and division when working with natural numbers and avoiding division when working with integers.</p>
 <p>To see what’s involved in proving theorems about numbers in Lean, we’ll turn to a few examples from earlier in Chapter 3 of <em>HTPI</em>. We begin with Theorem 3.3.7, which concerns divisibility of integers. As in <em>HTPI</em>, for integers <code>x</code> and <code>y</code>, we will write <code>x ∣ y</code> to mean that <code>x</code> divides <code>y</code>, or <code>y</code> is divisible by <code>x</code>. The formal definition is that <code>x ∣ y</code> means that there is an integer <code>k</code> such that <code>y = x * k</code>. For example, <code>3 ∣ 12</code>, since <code>12 = 3 * 4</code>. Lean knows this notation, but there is an important warning: to type the vertical line that means “divides,” you must type <code>\|</code>, not simply <code>|</code>. (There are two slightly different vertical line symbols, and you have to look closely to see that they are different: <code>|</code> and <code>∣</code>. It is the second one that means “divides” in Lean, and to enter it you must type <code>\|</code>.) Here is Theorem 3.3.7, written using our usual rephrasing of a statement of the form <code>A ∧ B → C</code> as <code>A → B → C</code>.</p>
 <div class="inout">
 <div class="inpt">
@@ -3600,7 +3600,7 @@ x \in A \cap (B \setmin C) &amp;\text{ iff } x \in A \wedge x \in B \setmin C\\
 <span id="cb274-11"><a href="#cb274-11" aria-hidden="true" tabindex="-1"></a>  <span class="kw">show</span> c = a * (m * n) <span class="kw">from</span> h4</span>
 <span id="cb274-12"><a href="#cb274-12" aria-hidden="true" tabindex="-1"></a>  <span class="kw">done</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>As usual, you might find it instructive to compare the Lean proof above to the proof of this theorem in <em>HTPI</em>.</p>
-<p>For our next example, we’ll do a somewhat more complex proof concerning divisibility. Here is the proof from <em>HTPI</em>.</p>
+<p>For our next example, we’ll do a somewhat more complex proof concerning divisibility. Here is the proof from <em>HTPI</em> (<em>HTPI</em> p.&nbsp;139).</p>
 <div class="nthm" data-arguments="Theorem 3.4.7">
 <p>For every integer <span class="math inline">\(n\)</span>, <span class="math inline">\(6 \mid n\)</span> iff <span class="math inline">\(2 \mid n\)</span> and <span class="math inline">\(3 \mid n\)</span>.</p>
 </div>
@@ -3961,7 +3961,11 @@ x \in A \cap (B \setmin C) &amp;\text{ iff } x \in A \wedge x \in B \setmin C\\
 <span id="cb297-13"><a href="#cb297-13" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;&gt;</span>    2 * 3 * k</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </div>
-<p>To finish off the justification of the second equation, we’ll use the theorem <code>Eq.refl</code>. The command <code>#check @Eq.refl</code> gives the result <code>@Eq.refl : ∀ {α : Sort u_1} (a : α), a = a</code>. Ignoring the implicit argument <code>α</code>, this should remind you of the theorem <code>Iff.refl : ∀ (a : Prop), a ↔︎ a</code>. Recall that we were able to use <code>Iff.refl _</code> to prove not only any statement of the form <code>a ↔︎ a</code>, but also statements of the form <code>a ↔︎ a'</code>, where <code>a</code> and <code>a'</code> are definitionally equal. Similarly, <code>Eq.refl _</code> will prove any equation of the form <code>a = a'</code>, where <code>a</code> and <code>a'</code> are definitionally equal. Since Lean knows that, by definition, <code>3 * 2 = 6</code> and <code>2 * 3 = 6</code>, the goal has this form. Thus we can complete the proof with the tactic <code>show 6 * j - 6 * k = 3 * 2 * j - 2 * 3 * k from Eq.refl _</code>. As we saw earlier, a shorter version of this would be <code>exact Eq.refl _</code>. But this situation comes up often enough that there is an even shorter version: the tactic <code>rfl</code> can be used as a shorthand for either <code>exact Eq.refl _</code> or <code>exact Iff.refl _</code>. In other words, in a tactic-mode proof, if the goal has one of the forms <code>a = a'</code> or <code>a ↔︎ a'</code>, where <code>a</code> and <code>a'</code> are definitionally equal, then the tactic <code>rfl</code> will prove the goal. So <code>rfl</code> will finish off the justification of the second equation, and we can move on to the third.</p>
+<p>To finish off the justification of the second equation, we’ll use the theorem <code>Eq.refl</code>. The command <code>#check @Eq.refl</code> gives the result</p>
+<div class="ind">
+<p><code>@Eq.refl : ∀ {α : Sort u_1} (a : α), a = a</code></p>
+</div>
+<p>Ignoring the implicit argument <code>α</code>, this should remind you of the theorem <code>Iff.refl : ∀ (a : Prop), a ↔︎ a</code>. Recall that we were able to use <code>Iff.refl _</code> to prove not only any statement of the form <code>a ↔︎ a</code>, but also statements of the form <code>a ↔︎ a'</code>, where <code>a</code> and <code>a'</code> are definitionally equal. Similarly, <code>Eq.refl _</code> will prove any equation of the form <code>a = a'</code>, where <code>a</code> and <code>a'</code> are definitionally equal. Since Lean knows that, by definition, <code>3 * 2 = 6</code> and <code>2 * 3 = 6</code>, the goal has this form. Thus we can complete the proof with the tactic <code>show 6 * j - 6 * k = 3 * 2 * j - 2 * 3 * k from Eq.refl _</code>. As we saw earlier, a shorter version of this would be <code>exact Eq.refl _</code>. But this situation comes up often enough that there is an even shorter version: the tactic <code>rfl</code> can be used as a shorthand for either <code>exact Eq.refl _</code> or <code>exact Iff.refl _</code>. In other words, in a tactic-mode proof, if the goal has one of the forms <code>a = a'</code> or <code>a ↔︎ a'</code>, where <code>a</code> and <code>a'</code> are definitionally equal, then the tactic <code>rfl</code> will prove the goal. So <code>rfl</code> will finish off the justification of the second equation, and we can move on to the third.</p>
 <div class="inout">
 <div class="inpt">
 <div class="sourceCode" id="cb298"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb298-1"><a href="#cb298-1" aria-hidden="true" tabindex="-1"></a><span class="kw">have</span> h6 : 6 * (j - k) = n :=</span>
