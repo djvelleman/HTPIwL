@@ -1578,13 +1578,13 @@ Int.emod_nonneg : ∀ (a : ℤ) {b : ℤ}, b ≠ 0 → 0 ≤ a % b</code></pre>
 <span id="cb84-13"><a href="#cb84-13" aria-hidden="true" tabindex="-1"></a>      _ = cc m 1 := <span class="kw">by</span> <span class="kw">rw</span> [h3]</span>
 <span id="cb84-14"><a href="#cb84-14" aria-hidden="true" tabindex="-1"></a>  <span class="kw">done</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>Rephrasing this theorem in terms of numbers gives us the usual statement of Euler’s theorem:</p>
-<div class="sourceCode" id="cb85"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb85-1"><a href="#cb85-1" aria-hidden="true" tabindex="-1"></a><span class="kw">lemma</span> Exercise_7_4_5 (m a : Nat) :</span>
+<div class="sourceCode" id="cb85"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb85-1"><a href="#cb85-1" aria-hidden="true" tabindex="-1"></a><span class="kw">lemma</span> Exercise_7_4_5 (m : Nat) (a : Int) :</span>
 <span id="cb85-2"><a href="#cb85-2" aria-hidden="true" tabindex="-1"></a>    ∀ (n : Nat), (cc m a) ^ n = cc m (a ^ n) := <span class="cn">sorry</span></span>
 <span id="cb85-3"><a href="#cb85-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb85-4"><a href="#cb85-4" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Theorem_7_4_3_Euler's_theorem (m a : Nat) [NeZero m]</span>
 <span id="cb85-5"><a href="#cb85-5" aria-hidden="true" tabindex="-1"></a>    (h1 : rel_prime m a) : congr_mod m (a ^ (phi m)) 1 := <span class="kw">by</span></span>
 <span id="cb85-6"><a href="#cb85-6" aria-hidden="true" tabindex="-1"></a>  <span class="kw">have</span> h2 : (cc m a) ^ (phi m) = cc m 1 := Theorem_7_4_2 m a h1</span>
-<span id="cb85-7"><a href="#cb85-7" aria-hidden="true" tabindex="-1"></a>  <span class="kw">rewrite</span> [Exercise_7_4_5 m a (phi m)] <span class="kw">at</span> h2</span>
+<span id="cb85-7"><a href="#cb85-7" aria-hidden="true" tabindex="-1"></a>  <span class="kw">rewrite</span> [Exercise_7_4_5 m a (phi m), ←Nat.cast_pow] <span class="kw">at</span> h2</span>
 <span id="cb85-8"><a href="#cb85-8" aria-hidden="true" tabindex="-1"></a>    <span class="co">--h2 : cc m ↑(a ^ phi m) = cc m 1</span></span>
 <span id="cb85-9"><a href="#cb85-9" aria-hidden="true" tabindex="-1"></a>  <span class="kw">show</span> congr_mod m (a ^ (phi m)) 1 <span class="kw">from</span> (cc_eq_iff_congr _ _ _).ltr h2</span>
 <span id="cb85-10"><a href="#cb85-10" aria-hidden="true" tabindex="-1"></a>  <span class="kw">done</span></span>
@@ -1592,6 +1592,52 @@ Int.emod_nonneg : ∀ (a : ℤ) {b : ℤ}, b ≠ 0 → 0 ≤ a % b</code></pre>
 <span id="cb85-12"><a href="#cb85-12" aria-hidden="true" tabindex="-1"></a><span class="kw">#eval</span> gcd 10 7     <span class="co">--Answer: 1.  So 10 and 7 are relatively prime</span></span>
 <span id="cb85-13"><a href="#cb85-13" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb85-14"><a href="#cb85-14" aria-hidden="true" tabindex="-1"></a><span class="kw">#eval</span> 7 ^ phi 10   <span class="co">--Answer: 2401, which is congruent to 1 mod 10.</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>We now turn to the two lemmas whose proofs we skipped over, <code>G_perm_below</code> and <code>perm_prod</code>. To prove <code>G_perm_below</code>, we must prove three facts: <code>maps_below m (G m a)</code>, <code>one_one_below m (G m a)</code>, and <code>onto_below m (G m a)</code>. The first is straightforward:</p>
+<div class="sourceCode" id="cb86"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb86-1"><a href="#cb86-1" aria-hidden="true" tabindex="-1"></a><span class="kw">lemma</span> G_maps_below (m a : Nat) [NeZero m] : maps_below m (G m a) := <span class="kw">by</span></span>
+<span id="cb86-2"><a href="#cb86-2" aria-hidden="true" tabindex="-1"></a>  <span class="kw">define</span>             <span class="co">--Goal : ∀ (i : Nat), i &lt; m → G m a i &lt; m</span></span>
+<span id="cb86-3"><a href="#cb86-3" aria-hidden="true" tabindex="-1"></a>  <span class="kw">fix</span> i : Nat</span>
+<span id="cb86-4"><a href="#cb86-4" aria-hidden="true" tabindex="-1"></a>  <span class="kw">assume</span> h1 : i &lt; m</span>
+<span id="cb86-5"><a href="#cb86-5" aria-hidden="true" tabindex="-1"></a>  <span class="kw">rewrite</span> [G_def]    <span class="co">--Goal : a * i % m &lt; m</span></span>
+<span id="cb86-6"><a href="#cb86-6" aria-hidden="true" tabindex="-1"></a>  <span class="kw">show</span> a * i % m &lt; m <span class="kw">from</span> mod_nonzero_lt (a * i) (NeZero.ne m)</span>
+<span id="cb86-7"><a href="#cb86-7" aria-hidden="true" tabindex="-1"></a>  <span class="kw">done</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>For the second and third, we start with lemmas that are reminiscent of Theorem 5.3.3.</p>
+<div class="sourceCode" id="cb87"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb87-1"><a href="#cb87-1" aria-hidden="true" tabindex="-1"></a><span class="kw">lemma</span> right_inv_onto_below {n : Nat} {g g' : Nat → Nat}</span>
+<span id="cb87-2"><a href="#cb87-2" aria-hidden="true" tabindex="-1"></a>    (h1 : ∀ i &lt; n, g (g' i) = i) (h2 : maps_below n g') :</span>
+<span id="cb87-3"><a href="#cb87-3" aria-hidden="true" tabindex="-1"></a>    onto_below n g := <span class="kw">by</span></span>
+<span id="cb87-4"><a href="#cb87-4" aria-hidden="true" tabindex="-1"></a>  <span class="kw">define</span> <span class="kw">at</span> h2; <span class="kw">define</span></span>
+<span id="cb87-5"><a href="#cb87-5" aria-hidden="true" tabindex="-1"></a>  <span class="kw">fix</span> k : Nat</span>
+<span id="cb87-6"><a href="#cb87-6" aria-hidden="true" tabindex="-1"></a>  <span class="kw">assume</span> h3 : k &lt; n</span>
+<span id="cb87-7"><a href="#cb87-7" aria-hidden="true" tabindex="-1"></a>  <span class="kw">apply</span> Exists.intro (g' k)</span>
+<span id="cb87-8"><a href="#cb87-8" aria-hidden="true" tabindex="-1"></a>  <span class="kw">show</span> g' k &lt; n ∧ g (g' k) = k <span class="kw">from</span> And.intro (h2 k h3) (h1 k h3)</span>
+<span id="cb87-9"><a href="#cb87-9" aria-hidden="true" tabindex="-1"></a>  <span class="kw">done</span></span>
+<span id="cb87-10"><a href="#cb87-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb87-11"><a href="#cb87-11" aria-hidden="true" tabindex="-1"></a><span class="kw">lemma</span> left_inv_one_one_below {n : Nat} {g g' : Nat → Nat}</span>
+<span id="cb87-12"><a href="#cb87-12" aria-hidden="true" tabindex="-1"></a>    (h1 : ∀ i &lt; n, g' (g i) = i) : one_one_below n g := <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>To apply these lemmas with <code>g = G m a</code>, we need a function to play the role of <code>g'</code>. A natural choice is <code>G m a'</code>, where <code>a'</code> is chosen so that <code>cc m a'</code> is the multiplicative inverse of <code>cc m a</code>. We know from earlier work that if <code>m</code> and <code>a</code> are relatively prime then the multiplicative inverse of <code>cc m a</code> is <code>cc m (gcd_c2 m a)</code>. However, in the notation <code>G m a'</code>, we can’t let <code>a' = gcd_c2 m a</code>, because <code>a'</code> must be a natural number and <code>gcd_c2 a</code> is an integer. And we can’t simply coerce an integer to be a natural number—what if it’s negative? But we know <code>cc m (gcd_c2 m a) = cc m ((gcd_c2 m a) % m)</code> and <code>0 ≤ (gcd_c2 m a) % m</code>, and there is a function, <code>Int.toNat</code>, that will convert a nonnegative integer to a natural number. So we make the following definitions:</p>
+<div class="sourceCode" id="cb88"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb88-1"><a href="#cb88-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> inv_mod (m a : Nat) : Nat := Int.toNat ((gcd_c2 m a) % m)</span>
+<span id="cb88-2"><a href="#cb88-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb88-3"><a href="#cb88-3" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> Ginv (m a i : Nat) : Nat := G m (inv_mod m a) i</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Now <code>Ginv m a</code> can play the role of <code>g'</code> in the last two lemmas. We’ll skip the details and just summarize the results.</p>
+<div class="sourceCode" id="cb89"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb89-1"><a href="#cb89-1" aria-hidden="true" tabindex="-1"></a><span class="kw">lemma</span> Ginv_right_inv {m a : Nat} [NeZero m] (h1 : rel_prime m a) :</span>
+<span id="cb89-2"><a href="#cb89-2" aria-hidden="true" tabindex="-1"></a>    ∀ i &lt; m, G m a (Ginv m a i) = i := <span class="cn">sorry</span></span>
+<span id="cb89-3"><a href="#cb89-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb89-4"><a href="#cb89-4" aria-hidden="true" tabindex="-1"></a><span class="kw">lemma</span> Ginv_left_inv {m a : Nat} [NeZero m] (h1 : rel_prime m a) :</span>
+<span id="cb89-5"><a href="#cb89-5" aria-hidden="true" tabindex="-1"></a>    ∀ i &lt; m, Ginv m a (G m a i) = i := <span class="cn">sorry</span></span>
+<span id="cb89-6"><a href="#cb89-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb89-7"><a href="#cb89-7" aria-hidden="true" tabindex="-1"></a><span class="kw">lemma</span> Ginv_maps_below (m a : Nat) [NeZero m] :</span>
+<span id="cb89-8"><a href="#cb89-8" aria-hidden="true" tabindex="-1"></a>    maps_below m (Ginv m a) := G_maps_below m (inv_mod m a)</span>
+<span id="cb89-9"><a href="#cb89-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb89-10"><a href="#cb89-10" aria-hidden="true" tabindex="-1"></a><span class="kw">lemma</span> G_one_one_below {m a : Nat} [NeZero m] (h1 : rel_prime m a) :</span>
+<span id="cb89-11"><a href="#cb89-11" aria-hidden="true" tabindex="-1"></a>    one_one_below m (G m a) :=</span>
+<span id="cb89-12"><a href="#cb89-12" aria-hidden="true" tabindex="-1"></a>  left_inv_one_one_below (Ginv_left_inv h1)</span>
+<span id="cb89-13"><a href="#cb89-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb89-14"><a href="#cb89-14" aria-hidden="true" tabindex="-1"></a><span class="kw">lemma</span> G_onto_below {m a : Nat} [NeZero m] (h1 : rel_prime m a) :</span>
+<span id="cb89-15"><a href="#cb89-15" aria-hidden="true" tabindex="-1"></a>    onto_below m (G m a) :=</span>
+<span id="cb89-16"><a href="#cb89-16" aria-hidden="true" tabindex="-1"></a>  right_inv_onto_below (Ginv_right_inv h1) (Ginv_maps_below m a)</span>
+<span id="cb89-17"><a href="#cb89-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb89-18"><a href="#cb89-18" aria-hidden="true" tabindex="-1"></a><span class="kw">lemma</span> G_perm_below {m a : Nat} [NeZero m] (h1 : rel_prime m a) :</span>
+<span id="cb89-19"><a href="#cb89-19" aria-hidden="true" tabindex="-1"></a>    perm_below m (G m a) := And.intro (G_maps_below m a)</span>
+<span id="cb89-20"><a href="#cb89-20" aria-hidden="true" tabindex="-1"></a>  (And.intro (G_one_one_below h1) (G_onto_below h1))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 
 
 </section>

@@ -1681,13 +1681,13 @@ theorem Theorem_7_4_2 (m a : Nat) [NeZero m] (h1 : rel_prime m a) :
 Rephrasing this theorem in terms of numbers gives us the usual statement of Euler's theorem:
 
 ```lean
-lemma Exercise_7_4_5 (m a : Nat) :
+lemma Exercise_7_4_5 (m : Nat) (a : Int) :
     ∀ (n : Nat), (cc m a) ^ n = cc m (a ^ n) := sorry
 
 theorem Theorem_7_4_3_Euler's_theorem (m a : Nat) [NeZero m]
     (h1 : rel_prime m a) : congr_mod m (a ^ (phi m)) 1 := by
   have h2 : (cc m a) ^ (phi m) = cc m 1 := Theorem_7_4_2 m a h1
-  rewrite [Exercise_7_4_5 m a (phi m)] at h2
+  rewrite [Exercise_7_4_5 m a (phi m), ←Nat.cast_pow] at h2
     --h2 : cc m ↑(a ^ phi m) = cc m 1
   show congr_mod m (a ^ (phi m)) 1 from (cc_eq_iff_congr _ _ _).ltr h2
   done
@@ -1695,4 +1695,66 @@ theorem Theorem_7_4_3_Euler's_theorem (m a : Nat) [NeZero m]
 #eval gcd 10 7     --Answer: 1.  So 10 and 7 are relatively prime
 
 #eval 7 ^ phi 10   --Answer: 2401, which is congruent to 1 mod 10.
+```
+
+We now turn to the two lemmas whose proofs we skipped over, `G_perm_below` and `perm_prod`.  To prove `G_perm_below`, we must prove three facts: `maps_below m (G m a)`, `one_one_below m (G m a)`, and `onto_below m (G m a)`.  The first is straightforward:
+
+```lean
+lemma G_maps_below (m a : Nat) [NeZero m] : maps_below m (G m a) := by
+  define             --Goal : ∀ (i : Nat), i < m → G m a i < m
+  fix i : Nat
+  assume h1 : i < m
+  rewrite [G_def]    --Goal : a * i % m < m
+  show a * i % m < m from mod_nonzero_lt (a * i) (NeZero.ne m)
+  done
+```
+
+For the second and third, we start with lemmas that are reminiscent of Theorem 5.3.3.
+
+```lean
+lemma right_inv_onto_below {n : Nat} {g g' : Nat → Nat}
+    (h1 : ∀ i < n, g (g' i) = i) (h2 : maps_below n g') :
+    onto_below n g := by
+  define at h2; define
+  fix k : Nat
+  assume h3 : k < n
+  apply Exists.intro (g' k)
+  show g' k < n ∧ g (g' k) = k from And.intro (h2 k h3) (h1 k h3)
+  done
+
+lemma left_inv_one_one_below {n : Nat} {g g' : Nat → Nat}
+    (h1 : ∀ i < n, g' (g i) = i) : one_one_below n g := sorry
+```
+
+To apply these lemmas with `g = G m a`, we need a function to play the role of `g'`.  A natural choice is `G m a'`, where `a'` is chosen so that `cc m a'` is the multiplicative inverse of `cc m a`.  We know from earlier work that if `m` and `a` are relatively prime then the multiplicative inverse of `cc m a` is `cc m (gcd_c2 m a)`.  However, in the notation `G m a'`, we can't let `a' = gcd_c2 m a`, because  `a'` must be a natural number and `gcd_c2 a` is an integer.  And we can't simply coerce an integer to be a natural number---what if it's negative?  But we know `cc m (gcd_c2 m a) = cc m ((gcd_c2 m a) % m)` and `0 ≤ (gcd_c2 m a) % m`, and there is a function, `Int.toNat`, that will convert a nonnegative integer to a natural number.  So we make the following definitions:
+
+```lean
+def inv_mod (m a : Nat) : Nat := Int.toNat ((gcd_c2 m a) % m)
+
+def Ginv (m a i : Nat) : Nat := G m (inv_mod m a) i
+```
+
+Now `Ginv m a` can play the role of `g'` in the last two lemmas.  We'll skip the details and just summarize the results.
+
+```lean
+lemma Ginv_right_inv {m a : Nat} [NeZero m] (h1 : rel_prime m a) :
+    ∀ i < m, G m a (Ginv m a i) = i := sorry
+
+lemma Ginv_left_inv {m a : Nat} [NeZero m] (h1 : rel_prime m a) :
+    ∀ i < m, Ginv m a (G m a i) = i := sorry
+
+lemma Ginv_maps_below (m a : Nat) [NeZero m] :
+    maps_below m (Ginv m a) := G_maps_below m (inv_mod m a)
+
+lemma G_one_one_below {m a : Nat} [NeZero m] (h1 : rel_prime m a) :
+    one_one_below m (G m a) :=
+  left_inv_one_one_below (Ginv_left_inv h1)
+
+lemma G_onto_below {m a : Nat} [NeZero m] (h1 : rel_prime m a) :
+    onto_below m (G m a) :=
+  right_inv_onto_below (Ginv_right_inv h1) (Ginv_maps_below m a)
+
+lemma G_perm_below {m a : Nat} [NeZero m] (h1 : rel_prime m a) :
+    perm_below m (G m a) := And.intro (G_maps_below m a)
+  (And.intro (G_one_one_below h1) (G_onto_below h1))
 ```
