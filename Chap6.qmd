@@ -325,6 +325,8 @@ theorem Example_6_1_3 : ∀ n ≥ 5, 2 ^ n > n ^ 2 := by
     show 2 ^ (n + 1) > (n + 1) ^ 2 from
       calc 2 ^ (n + 1)
         _ = 2 * 2 ^ n := by ring
+        _ > 2 * n ^ 2 := by linarith
+        _ ≥ n ^ 2 + 5 * n := by linarith
         _ > n ^ 2 + 2 * n + 1 := by linarith
         _ = (n + 1) ^ 2 := by ring
     done
@@ -1430,54 +1432,15 @@ lemma plus_two_of_ne {n : Nat} (h1 : n ≠ 0) (h2 : n ≠ 1) :
     ∃ (k : Nat), n = k + 2 := plus_two_of_ge (ge_two_of_ne h1 h2)
 ```
 
-In addition to the last lemma, we'll use the theorems `add_lt_add_left` and `add_lt_add_right`; these are similar to the theorem `add_le_add_left`, which we used in `Example_6_3_4`.  We have almost everything that we need:
-
-```lean
-??example:: : ∀ (n : Nat), Fib n < 2 ^ n := by
-  by_strong_induc
-  fix n : Nat
-  assume ih : ∀ n_1 < n, Fib n_1 < 2 ^ n_1
-  by_cases h1 : n = 0
-  · -- Case 1. h1 : n = 0
-    rewrite [h1]          --Goal : Fib 0 < 2 ^ 0
-    norm_num
-    done
-  · -- Case 2. h1 : n ≠ 0
-    by_cases h2 : n = 1
-    · -- Case 2.1. h2 : n = 1
-      rewrite [h2]        --Goal : Fib 1 < 2 ^ 1
-      norm_num
-      done
-    · -- Case 2.2. h2 : n ≠ 1
-      obtain (k : Nat) (h3 : n = k + 2) from plus_two_of_ne h1 h2
-      have h4 : k < n := by linarith
-      have h5 : Fib k < 2 ^ k := ih k h4
-      have h6 : k + 1 < n := by linarith
-      have h7 : Fib (k + 1) < 2 ^ (k + 1) := ih (k + 1) h6
-      show Fib n < 2 ^ n from
-        calc Fib n
-          _ = Fib (k + 2) := by rw [h3]
-          _ = Fib k + Fib (k + 1) := by rfl
-          _ < 2 ^ k + Fib (k + 1) := add_lt_add_right h5 _
-          _ < 2 ^ k + 2 ^ (k + 1) := add_lt_add_left h7 _
-          _ = 2 ^ k * 3 := by ring
-          _ ≤ 2 ^ k * 4 := sorry
-          _ = 2 ^ (k + 2) := by ring
-          _ = 2 ^ n := by rw [h3]
-      done
-    done
-  done
-```
-
-There is one step that we haven't justified.  The following theorem will help us fill in this gap:
+In addition to the last lemma, we'll use the theorems `add_lt_add_left` and `add_lt_add_right`; these are similar to the theorem `add_le_add_left`, which we used in `Example_6_3_4`.  And we'll also use the following theorem:
 
 ::: {.ind}
 ```
-@Nat.mul_le_mul_left : ∀ {n m : ℕ} (k : ℕ), n ≤ m → k * n ≤ k * m
+Nat.le_add_right : ∀ (n k : ℕ), n ≤ n + k
 ```
 :::
 
-To apply the theorem, we'll need to know `3 ≤ 4`, which can be proven by `linarith`.  Here's the complete proof:
+Now that we have everything we need, we can present the proof:
 
 ```lean
 example : ∀ (n : Nat), Fib n < 2 ^ n := by
@@ -1501,15 +1464,13 @@ example : ∀ (n : Nat), Fib n < 2 ^ n := by
       have h5 : Fib k < 2 ^ k := ih k h4
       have h6 : k + 1 < n := by linarith
       have h7 : Fib (k + 1) < 2 ^ (k + 1) := ih (k + 1) h6
-      have h8 : 3 ≤ 4 := by linarith
       show Fib n < 2 ^ n from
         calc Fib n
           _ = Fib (k + 2) := by rw [h3]
           _ = Fib k + Fib (k + 1) := by rfl
           _ < 2 ^ k + Fib (k + 1) := add_lt_add_right h5 _
           _ < 2 ^ k + 2 ^ (k + 1) := add_lt_add_left h7 _
-          _ = 2 ^ k * 3 := by ring
-          _ ≤ 2 ^ k * 4 := Nat.mul_le_mul_left _ h8
+          _ ≤ 2 ^ k + 2 ^ (k + 1) + 2 ^ k := Nat.le_add_right _ _
           _ = 2 ^ (k + 2) := by ring
           _ = 2 ^ n := by rw [h3]
       done
@@ -1520,23 +1481,23 @@ example : ∀ (n : Nat), Fib n < 2 ^ n := by
 As with ordinary induction, strong induction can be useful for proving statements that do not at first seem to have the form `∀ (n : Nat), ...`.  To illustrate this, we'll prove the *well-ordering principle*, which says that if a set `S : Set Nat` is nonempty, then it has a smallest element.  We'll prove the contrapositive: if `S` has no smallest element, then it is empty.  To say that `S` is empty means `∀ (n : Nat), n ∉ S`, and that's the statement to which we will apply strong induction.
 
 ```lean
-theorem well_ord_princ (S : Set Nat) (h1 : ∃ (n : Nat), n ∈ S) :
+theorem well_ord_princ (S : Set Nat) : (∃ (n : Nat), n ∈ S) →
     ∃ (n : Nat), n ∈ S ∧ ∀ (m : Nat), m ∈ S → n ≤ m := by
-  contradict h1 with h2
-    --h2 : ¬∃ (n : Nat), n ∈ S ∧ ∀ (m : Nat), m ∈ S → n ≤ m
+  contrapos
+  assume h1 : ¬∃ (n : Nat), n ∈ S ∧ ∀ (m : Nat), m ∈ S → n ≤ m
   quant_neg                   --Goal : ∀ (n : Nat), ¬n ∈ S
   by_strong_induc
   fix n : Nat
-  assume ih : ∀ n_1 < n, n_1 ∉ S  --Goal : ¬n ∈ S
-  contradict h2 with h3       --h3 : n ∈ S
+  assume ih : ∀ (n_1 : Nat), n_1 < n → ¬n_1 ∈ S  --Goal : ¬n ∈ S
+  contradict h1 with h2       --h2 : n ∈ S
     --Goal : ∃ (n : Nat), n ∈ S ∧ ∀ (m : Nat), m ∈ S → n ≤ m
   apply Exists.intro n
-  apply And.intro h3          --Goal : ∀ (m : Nat), m ∈ S → m ≤ y
+  apply And.intro h2          --Goal : ∀ (m : Nat), m ∈ S → n ≤ m
   fix m : Nat
-  assume h4 : m ∈ S
-  have h5 : m < n → ¬m ∈ S := ih m
-  contrapos at h5             --h5 : m ∈ S → ¬m < n
-  have h6 : ¬m < n := h5 h4
+  assume h3 : m ∈ S
+  have h4 : m < n → ¬m ∈ S := ih m
+  contrapos at h4             --h4 : m ∈ S → ¬m < n
+  have h5 : ¬m < n := h4 h3
   linarith
   done
 ```

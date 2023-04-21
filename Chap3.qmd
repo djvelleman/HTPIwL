@@ -4954,3 +4954,11 @@ theorem Exercise_3_4_27a :
     ∀ (n : Int), 15 ∣ n ↔ 3 ∣ n ∧ 5 ∣ n := sorry
 ```
 :::
+
+::: {.numex arguments="5"}
+```lean
+theorem Like_Exercise_3_7_5 (U : Type) (F : Set (Set U))
+    (h1 : 𝒫 (⋃₀ F) ⊆ ⋃₀ { 𝒫 A | A ∈ F }) :
+    ∃ (A : Set U), A ∈ F ∧ ∀ (B : Set U), B ∈ F → B ⊆ A := sorry
+```
+:::

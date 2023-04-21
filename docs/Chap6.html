@@ -480,10 +480,12 @@ $$
 <span id="cb18-11"><a href="#cb18-11" aria-hidden="true" tabindex="-1"></a>    <span class="kw">show</span> 2 ^ (n + 1) &gt; (n + 1) ^ 2 <span class="kw">from</span></span>
 <span id="cb18-12"><a href="#cb18-12" aria-hidden="true" tabindex="-1"></a>      <span class="kw">calc</span> 2 ^ (n + 1)</span>
 <span id="cb18-13"><a href="#cb18-13" aria-hidden="true" tabindex="-1"></a>        _ = 2 * 2 ^ n := <span class="kw">by</span> <span class="kw">ring</span></span>
-<span id="cb18-14"><a href="#cb18-14" aria-hidden="true" tabindex="-1"></a>        _ &gt; n ^ 2 + 2 * n + 1 := <span class="kw">by</span> <span class="kw">linarith</span></span>
-<span id="cb18-15"><a href="#cb18-15" aria-hidden="true" tabindex="-1"></a>        _ = (n + 1) ^ 2 := <span class="kw">by</span> <span class="kw">ring</span></span>
-<span id="cb18-16"><a href="#cb18-16" aria-hidden="true" tabindex="-1"></a>    <span class="kw">done</span></span>
-<span id="cb18-17"><a href="#cb18-17" aria-hidden="true" tabindex="-1"></a>  <span class="kw">done</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb18-14"><a href="#cb18-14" aria-hidden="true" tabindex="-1"></a>        _ &gt; 2 * n ^ 2 := <span class="kw">by</span> <span class="kw">linarith</span></span>
+<span id="cb18-15"><a href="#cb18-15" aria-hidden="true" tabindex="-1"></a>        _ ≥ n ^ 2 + 5 * n := <span class="kw">by</span> <span class="kw">linarith</span></span>
+<span id="cb18-16"><a href="#cb18-16" aria-hidden="true" tabindex="-1"></a>        _ &gt; n ^ 2 + 2 * n + 1 := <span class="kw">by</span> <span class="kw">linarith</span></span>
+<span id="cb18-17"><a href="#cb18-17" aria-hidden="true" tabindex="-1"></a>        _ = (n + 1) ^ 2 := <span class="kw">by</span> <span class="kw">ring</span></span>
+<span id="cb18-18"><a href="#cb18-18" aria-hidden="true" tabindex="-1"></a>    <span class="kw">done</span></span>
+<span id="cb18-19"><a href="#cb18-19" aria-hidden="true" tabindex="-1"></a>  <span class="kw">done</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>Finally, we turn to the question of why we made small changes in two of the examples from <em>HTPI</em>. Perhaps you have guessed by now that we were trying to avoid the use of subtraction. All of the numbers in the examples in this section were natural numbers, and subtraction of natural numbers is problematic. In the natural numbers, <code>3 - 2</code> is equal to <code>1</code>, but what is <code>2 - 3</code>? Lean’s answer is <code>0</code>.</p>
 <div class="sourceCode" id="cb19"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="sc">++</span><span class="do">#eval</span><span class="sc">::</span> 2 - 3     <span class="co">--Answer: 0</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>In Lean, if <code>a</code> and <code>b</code> are natural numbers and <code>a &lt; b</code>, then <code>a - b</code> is defined to be <code>0</code>. As a result, the algebraic laws of natural number subtraction are complicated. For example, <code>2 - 3 + 1 = 0 + 1 = 1</code>, but <code>2 + 1 - 3 = 3 - 3 = 0</code>, so it is not true that for all natural numbers <code>a</code>, <code>b</code>, and <code>c</code>, <code>a - b + c = a + c - b</code>.</p>
@@ -1285,114 +1287,77 @@ $$
 <span id="cb93-5"><a href="#cb93-5" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb93-6"><a href="#cb93-6" aria-hidden="true" tabindex="-1"></a><span class="kw">lemma</span> plus_two_of_ne {n : Nat} (h1 : n ≠ 0) (h2 : n ≠ 1) :</span>
 <span id="cb93-7"><a href="#cb93-7" aria-hidden="true" tabindex="-1"></a>    ∃ (k : Nat), n = k + 2 := plus_two_of_ge (ge_two_of_ne h1 h2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>In addition to the last lemma, we’ll use the theorems <code>add_lt_add_left</code> and <code>add_lt_add_right</code>; these are similar to the theorem <code>add_le_add_left</code>, which we used in <code>Example_6_3_4</code>. We have almost everything that we need:</p>
-<div class="sourceCode" id="cb94"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb94-1"><a href="#cb94-1" aria-hidden="true" tabindex="-1"></a><span class="sc">??</span><span class="al">example</span><span class="sc">::</span> : ∀ (n : Nat), Fib n &lt; 2 ^ n := <span class="kw">by</span></span>
-<span id="cb94-2"><a href="#cb94-2" aria-hidden="true" tabindex="-1"></a>  <span class="kw">by_strong_induc</span></span>
-<span id="cb94-3"><a href="#cb94-3" aria-hidden="true" tabindex="-1"></a>  <span class="kw">fix</span> n : Nat</span>
-<span id="cb94-4"><a href="#cb94-4" aria-hidden="true" tabindex="-1"></a>  <span class="kw">assume</span> ih : ∀ n_1 &lt; n, Fib n_1 &lt; 2 ^ n_1</span>
-<span id="cb94-5"><a href="#cb94-5" aria-hidden="true" tabindex="-1"></a>  <span class="kw">by_cases</span> h1 : n = 0</span>
-<span id="cb94-6"><a href="#cb94-6" aria-hidden="true" tabindex="-1"></a>  · <span class="co">-- Case 1. h1 : n = 0</span></span>
-<span id="cb94-7"><a href="#cb94-7" aria-hidden="true" tabindex="-1"></a>    <span class="kw">rewrite</span> [h1]          <span class="co">--Goal : Fib 0 &lt; 2 ^ 0</span></span>
-<span id="cb94-8"><a href="#cb94-8" aria-hidden="true" tabindex="-1"></a>    <span class="kw">norm_num</span></span>
-<span id="cb94-9"><a href="#cb94-9" aria-hidden="true" tabindex="-1"></a>    <span class="kw">done</span></span>
-<span id="cb94-10"><a href="#cb94-10" aria-hidden="true" tabindex="-1"></a>  · <span class="co">-- Case 2. h1 : n ≠ 0</span></span>
-<span id="cb94-11"><a href="#cb94-11" aria-hidden="true" tabindex="-1"></a>    <span class="kw">by_cases</span> h2 : n = 1</span>
-<span id="cb94-12"><a href="#cb94-12" aria-hidden="true" tabindex="-1"></a>    · <span class="co">-- Case 2.1. h2 : n = 1</span></span>
-<span id="cb94-13"><a href="#cb94-13" aria-hidden="true" tabindex="-1"></a>      <span class="kw">rewrite</span> [h2]        <span class="co">--Goal : Fib 1 &lt; 2 ^ 1</span></span>
-<span id="cb94-14"><a href="#cb94-14" aria-hidden="true" tabindex="-1"></a>      <span class="kw">norm_num</span></span>
-<span id="cb94-15"><a href="#cb94-15" aria-hidden="true" tabindex="-1"></a>      <span class="kw">done</span></span>
-<span id="cb94-16"><a href="#cb94-16" aria-hidden="true" tabindex="-1"></a>    · <span class="co">-- Case 2.2. h2 : n ≠ 1</span></span>
-<span id="cb94-17"><a href="#cb94-17" aria-hidden="true" tabindex="-1"></a>      <span class="kw">obtain</span> (k : Nat) (h3 : n = k + 2) <span class="kw">from</span> plus_two_of_ne h1 h2</span>
-<span id="cb94-18"><a href="#cb94-18" aria-hidden="true" tabindex="-1"></a>      <span class="kw">have</span> h4 : k &lt; n := <span class="kw">by</span> <span class="kw">linarith</span></span>
-<span id="cb94-19"><a href="#cb94-19" aria-hidden="true" tabindex="-1"></a>      <span class="kw">have</span> h5 : Fib k &lt; 2 ^ k := ih k h4</span>
-<span id="cb94-20"><a href="#cb94-20" aria-hidden="true" tabindex="-1"></a>      <span class="kw">have</span> h6 : k + 1 &lt; n := <span class="kw">by</span> <span class="kw">linarith</span></span>
-<span id="cb94-21"><a href="#cb94-21" aria-hidden="true" tabindex="-1"></a>      <span class="kw">have</span> h7 : Fib (k + 1) &lt; 2 ^ (k + 1) := ih (k + 1) h6</span>
-<span id="cb94-22"><a href="#cb94-22" aria-hidden="true" tabindex="-1"></a>      <span class="kw">show</span> Fib n &lt; 2 ^ n <span class="kw">from</span></span>
-<span id="cb94-23"><a href="#cb94-23" aria-hidden="true" tabindex="-1"></a>        <span class="kw">calc</span> Fib n</span>
-<span id="cb94-24"><a href="#cb94-24" aria-hidden="true" tabindex="-1"></a>          _ = Fib (k + 2) := <span class="kw">by</span> <span class="kw">rw</span> [h3]</span>
-<span id="cb94-25"><a href="#cb94-25" aria-hidden="true" tabindex="-1"></a>          _ = Fib k + Fib (k + 1) := <span class="kw">by</span> <span class="kw">rfl</span></span>
-<span id="cb94-26"><a href="#cb94-26" aria-hidden="true" tabindex="-1"></a>          _ &lt; 2 ^ k + Fib (k + 1) := add_lt_add_right h5 _</span>
-<span id="cb94-27"><a href="#cb94-27" aria-hidden="true" tabindex="-1"></a>          _ &lt; 2 ^ k + 2 ^ (k + 1) := add_lt_add_left h7 _</span>
-<span id="cb94-28"><a href="#cb94-28" aria-hidden="true" tabindex="-1"></a>          _ = 2 ^ k * 3 := <span class="kw">by</span> <span class="kw">ring</span></span>
-<span id="cb94-29"><a href="#cb94-29" aria-hidden="true" tabindex="-1"></a>          _ ≤ 2 ^ k * 4 := <span class="cn">sorry</span></span>
-<span id="cb94-30"><a href="#cb94-30" aria-hidden="true" tabindex="-1"></a>          _ = 2 ^ (k + 2) := <span class="kw">by</span> <span class="kw">ring</span></span>
-<span id="cb94-31"><a href="#cb94-31" aria-hidden="true" tabindex="-1"></a>          _ = 2 ^ n := <span class="kw">by</span> <span class="kw">rw</span> [h3]</span>
-<span id="cb94-32"><a href="#cb94-32" aria-hidden="true" tabindex="-1"></a>      <span class="kw">done</span></span>
-<span id="cb94-33"><a href="#cb94-33" aria-hidden="true" tabindex="-1"></a>    <span class="kw">done</span></span>
-<span id="cb94-34"><a href="#cb94-34" aria-hidden="true" tabindex="-1"></a>  <span class="kw">done</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>There is one step that we haven’t justified. The following theorem will help us fill in this gap:</p>
+<p>In addition to the last lemma, we’ll use the theorems <code>add_lt_add_left</code> and <code>add_lt_add_right</code>; these are similar to the theorem <code>add_le_add_left</code>, which we used in <code>Example_6_3_4</code>. And we’ll also use the following theorem:</p>
 <div class="ind">
-<pre><code>@Nat.mul_le_mul_left : ∀ {n m : ℕ} (k : ℕ), n ≤ m → k * n ≤ k * m</code></pre>
+<pre><code>Nat.le_add_right : ∀ (n k : ℕ), n ≤ n + k</code></pre>
 </div>
-<p>To apply the theorem, we’ll need to know <code>3 ≤ 4</code>, which can be proven by <code>linarith</code>. Here’s the complete proof:</p>
-<div class="sourceCode" id="cb96"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb96-1"><a href="#cb96-1" aria-hidden="true" tabindex="-1"></a><span class="kw">example</span> : ∀ (n : Nat), Fib n &lt; 2 ^ n := <span class="kw">by</span></span>
-<span id="cb96-2"><a href="#cb96-2" aria-hidden="true" tabindex="-1"></a>  <span class="kw">by_strong_induc</span></span>
-<span id="cb96-3"><a href="#cb96-3" aria-hidden="true" tabindex="-1"></a>  <span class="kw">fix</span> n : Nat</span>
-<span id="cb96-4"><a href="#cb96-4" aria-hidden="true" tabindex="-1"></a>  <span class="kw">assume</span> ih : ∀ n_1 &lt; n, Fib n_1 &lt; 2 ^ n_1</span>
-<span id="cb96-5"><a href="#cb96-5" aria-hidden="true" tabindex="-1"></a>  <span class="kw">by_cases</span> h1 : n = 0</span>
-<span id="cb96-6"><a href="#cb96-6" aria-hidden="true" tabindex="-1"></a>  · <span class="co">-- Case 1. h1 : n = 0</span></span>
-<span id="cb96-7"><a href="#cb96-7" aria-hidden="true" tabindex="-1"></a>    <span class="kw">rewrite</span> [h1]          <span class="co">--Goal : Fib 0 &lt; 2 ^ 0</span></span>
-<span id="cb96-8"><a href="#cb96-8" aria-hidden="true" tabindex="-1"></a>    <span class="kw">norm_num</span></span>
-<span id="cb96-9"><a href="#cb96-9" aria-hidden="true" tabindex="-1"></a>    <span class="kw">done</span></span>
-<span id="cb96-10"><a href="#cb96-10" aria-hidden="true" tabindex="-1"></a>  · <span class="co">-- Case 2. h1 : n ≠ 0</span></span>
-<span id="cb96-11"><a href="#cb96-11" aria-hidden="true" tabindex="-1"></a>    <span class="kw">by_cases</span> h2 : n = 1</span>
-<span id="cb96-12"><a href="#cb96-12" aria-hidden="true" tabindex="-1"></a>    · <span class="co">-- Case 2.1. h2 : n = 1</span></span>
-<span id="cb96-13"><a href="#cb96-13" aria-hidden="true" tabindex="-1"></a>      <span class="kw">rewrite</span> [h2]        <span class="co">--Goal : Fib 1 &lt; 2 ^ 1</span></span>
-<span id="cb96-14"><a href="#cb96-14" aria-hidden="true" tabindex="-1"></a>      <span class="kw">norm_num</span></span>
-<span id="cb96-15"><a href="#cb96-15" aria-hidden="true" tabindex="-1"></a>      <span class="kw">done</span></span>
-<span id="cb96-16"><a href="#cb96-16" aria-hidden="true" tabindex="-1"></a>    · <span class="co">-- Case 2.2. h2 : n ≠ 1</span></span>
-<span id="cb96-17"><a href="#cb96-17" aria-hidden="true" tabindex="-1"></a>      <span class="kw">obtain</span> (k : Nat) (h3 : n = k + 2) <span class="kw">from</span> plus_two_of_ne h1 h2</span>
-<span id="cb96-18"><a href="#cb96-18" aria-hidden="true" tabindex="-1"></a>      <span class="kw">have</span> h4 : k &lt; n := <span class="kw">by</span> <span class="kw">linarith</span></span>
-<span id="cb96-19"><a href="#cb96-19" aria-hidden="true" tabindex="-1"></a>      <span class="kw">have</span> h5 : Fib k &lt; 2 ^ k := ih k h4</span>
-<span id="cb96-20"><a href="#cb96-20" aria-hidden="true" tabindex="-1"></a>      <span class="kw">have</span> h6 : k + 1 &lt; n := <span class="kw">by</span> <span class="kw">linarith</span></span>
-<span id="cb96-21"><a href="#cb96-21" aria-hidden="true" tabindex="-1"></a>      <span class="kw">have</span> h7 : Fib (k + 1) &lt; 2 ^ (k + 1) := ih (k + 1) h6</span>
-<span id="cb96-22"><a href="#cb96-22" aria-hidden="true" tabindex="-1"></a>      <span class="kw">have</span> h8 : 3 ≤ 4 := <span class="kw">by</span> <span class="kw">linarith</span></span>
-<span id="cb96-23"><a href="#cb96-23" aria-hidden="true" tabindex="-1"></a>      <span class="kw">show</span> Fib n &lt; 2 ^ n <span class="kw">from</span></span>
-<span id="cb96-24"><a href="#cb96-24" aria-hidden="true" tabindex="-1"></a>        <span class="kw">calc</span> Fib n</span>
-<span id="cb96-25"><a href="#cb96-25" aria-hidden="true" tabindex="-1"></a>          _ = Fib (k + 2) := <span class="kw">by</span> <span class="kw">rw</span> [h3]</span>
-<span id="cb96-26"><a href="#cb96-26" aria-hidden="true" tabindex="-1"></a>          _ = Fib k + Fib (k + 1) := <span class="kw">by</span> <span class="kw">rfl</span></span>
-<span id="cb96-27"><a href="#cb96-27" aria-hidden="true" tabindex="-1"></a>          _ &lt; 2 ^ k + Fib (k + 1) := add_lt_add_right h5 _</span>
-<span id="cb96-28"><a href="#cb96-28" aria-hidden="true" tabindex="-1"></a>          _ &lt; 2 ^ k + 2 ^ (k + 1) := add_lt_add_left h7 _</span>
-<span id="cb96-29"><a href="#cb96-29" aria-hidden="true" tabindex="-1"></a>          _ = 2 ^ k * 3 := <span class="kw">by</span> <span class="kw">ring</span></span>
-<span id="cb96-30"><a href="#cb96-30" aria-hidden="true" tabindex="-1"></a>          _ ≤ 2 ^ k * 4 := Nat.mul_le_mul_left _ h8</span>
-<span id="cb96-31"><a href="#cb96-31" aria-hidden="true" tabindex="-1"></a>          _ = 2 ^ (k + 2) := <span class="kw">by</span> <span class="kw">ring</span></span>
-<span id="cb96-32"><a href="#cb96-32" aria-hidden="true" tabindex="-1"></a>          _ = 2 ^ n := <span class="kw">by</span> <span class="kw">rw</span> [h3]</span>
-<span id="cb96-33"><a href="#cb96-33" aria-hidden="true" tabindex="-1"></a>      <span class="kw">done</span></span>
-<span id="cb96-34"><a href="#cb96-34" aria-hidden="true" tabindex="-1"></a>    <span class="kw">done</span></span>
-<span id="cb96-35"><a href="#cb96-35" aria-hidden="true" tabindex="-1"></a>  <span class="kw">done</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Now that we have everything we need, we can present the proof:</p>
+<div class="sourceCode" id="cb95"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb95-1"><a href="#cb95-1" aria-hidden="true" tabindex="-1"></a><span class="kw">example</span> : ∀ (n : Nat), Fib n &lt; 2 ^ n := <span class="kw">by</span></span>
+<span id="cb95-2"><a href="#cb95-2" aria-hidden="true" tabindex="-1"></a>  <span class="kw">by_strong_induc</span></span>
+<span id="cb95-3"><a href="#cb95-3" aria-hidden="true" tabindex="-1"></a>  <span class="kw">fix</span> n : Nat</span>
+<span id="cb95-4"><a href="#cb95-4" aria-hidden="true" tabindex="-1"></a>  <span class="kw">assume</span> ih : ∀ n_1 &lt; n, Fib n_1 &lt; 2 ^ n_1</span>
+<span id="cb95-5"><a href="#cb95-5" aria-hidden="true" tabindex="-1"></a>  <span class="kw">by_cases</span> h1 : n = 0</span>
+<span id="cb95-6"><a href="#cb95-6" aria-hidden="true" tabindex="-1"></a>  · <span class="co">-- Case 1. h1 : n = 0</span></span>
+<span id="cb95-7"><a href="#cb95-7" aria-hidden="true" tabindex="-1"></a>    <span class="kw">rewrite</span> [h1]          <span class="co">--Goal : Fib 0 &lt; 2 ^ 0</span></span>
+<span id="cb95-8"><a href="#cb95-8" aria-hidden="true" tabindex="-1"></a>    <span class="kw">norm_num</span></span>
+<span id="cb95-9"><a href="#cb95-9" aria-hidden="true" tabindex="-1"></a>    <span class="kw">done</span></span>
+<span id="cb95-10"><a href="#cb95-10" aria-hidden="true" tabindex="-1"></a>  · <span class="co">-- Case 2. h1 : n ≠ 0</span></span>
+<span id="cb95-11"><a href="#cb95-11" aria-hidden="true" tabindex="-1"></a>    <span class="kw">by_cases</span> h2 : n = 1</span>
+<span id="cb95-12"><a href="#cb95-12" aria-hidden="true" tabindex="-1"></a>    · <span class="co">-- Case 2.1. h2 : n = 1</span></span>
+<span id="cb95-13"><a href="#cb95-13" aria-hidden="true" tabindex="-1"></a>      <span class="kw">rewrite</span> [h2]        <span class="co">--Goal : Fib 1 &lt; 2 ^ 1</span></span>
+<span id="cb95-14"><a href="#cb95-14" aria-hidden="true" tabindex="-1"></a>      <span class="kw">norm_num</span></span>
+<span id="cb95-15"><a href="#cb95-15" aria-hidden="true" tabindex="-1"></a>      <span class="kw">done</span></span>
+<span id="cb95-16"><a href="#cb95-16" aria-hidden="true" tabindex="-1"></a>    · <span class="co">-- Case 2.2. h2 : n ≠ 1</span></span>
+<span id="cb95-17"><a href="#cb95-17" aria-hidden="true" tabindex="-1"></a>      <span class="kw">obtain</span> (k : Nat) (h3 : n = k + 2) <span class="kw">from</span> plus_two_of_ne h1 h2</span>
+<span id="cb95-18"><a href="#cb95-18" aria-hidden="true" tabindex="-1"></a>      <span class="kw">have</span> h4 : k &lt; n := <span class="kw">by</span> <span class="kw">linarith</span></span>
+<span id="cb95-19"><a href="#cb95-19" aria-hidden="true" tabindex="-1"></a>      <span class="kw">have</span> h5 : Fib k &lt; 2 ^ k := ih k h4</span>
+<span id="cb95-20"><a href="#cb95-20" aria-hidden="true" tabindex="-1"></a>      <span class="kw">have</span> h6 : k + 1 &lt; n := <span class="kw">by</span> <span class="kw">linarith</span></span>
+<span id="cb95-21"><a href="#cb95-21" aria-hidden="true" tabindex="-1"></a>      <span class="kw">have</span> h7 : Fib (k + 1) &lt; 2 ^ (k + 1) := ih (k + 1) h6</span>
+<span id="cb95-22"><a href="#cb95-22" aria-hidden="true" tabindex="-1"></a>      <span class="kw">show</span> Fib n &lt; 2 ^ n <span class="kw">from</span></span>
+<span id="cb95-23"><a href="#cb95-23" aria-hidden="true" tabindex="-1"></a>        <span class="kw">calc</span> Fib n</span>
+<span id="cb95-24"><a href="#cb95-24" aria-hidden="true" tabindex="-1"></a>          _ = Fib (k + 2) := <span class="kw">by</span> <span class="kw">rw</span> [h3]</span>
+<span id="cb95-25"><a href="#cb95-25" aria-hidden="true" tabindex="-1"></a>          _ = Fib k + Fib (k + 1) := <span class="kw">by</span> <span class="kw">rfl</span></span>
+<span id="cb95-26"><a href="#cb95-26" aria-hidden="true" tabindex="-1"></a>          _ &lt; 2 ^ k + Fib (k + 1) := add_lt_add_right h5 _</span>
+<span id="cb95-27"><a href="#cb95-27" aria-hidden="true" tabindex="-1"></a>          _ &lt; 2 ^ k + 2 ^ (k + 1) := add_lt_add_left h7 _</span>
+<span id="cb95-28"><a href="#cb95-28" aria-hidden="true" tabindex="-1"></a>          _ ≤ 2 ^ k + 2 ^ (k + 1) + 2 ^ k := Nat.le_add_right _ _</span>
+<span id="cb95-29"><a href="#cb95-29" aria-hidden="true" tabindex="-1"></a>          _ = 2 ^ (k + 2) := <span class="kw">by</span> <span class="kw">ring</span></span>
+<span id="cb95-30"><a href="#cb95-30" aria-hidden="true" tabindex="-1"></a>          _ = 2 ^ n := <span class="kw">by</span> <span class="kw">rw</span> [h3]</span>
+<span id="cb95-31"><a href="#cb95-31" aria-hidden="true" tabindex="-1"></a>      <span class="kw">done</span></span>
+<span id="cb95-32"><a href="#cb95-32" aria-hidden="true" tabindex="-1"></a>    <span class="kw">done</span></span>
+<span id="cb95-33"><a href="#cb95-33" aria-hidden="true" tabindex="-1"></a>  <span class="kw">done</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>As with ordinary induction, strong induction can be useful for proving statements that do not at first seem to have the form <code>∀ (n : Nat), ...</code>. To illustrate this, we’ll prove the <em>well-ordering principle</em>, which says that if a set <code>S : Set Nat</code> is nonempty, then it has a smallest element. We’ll prove the contrapositive: if <code>S</code> has no smallest element, then it is empty. To say that <code>S</code> is empty means <code>∀ (n : Nat), n ∉ S</code>, and that’s the statement to which we will apply strong induction.</p>
-<div class="sourceCode" id="cb97"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb97-1"><a href="#cb97-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> well_ord_princ (S : Set Nat) (h1 : ∃ (n : Nat), n ∈ S) :</span>
-<span id="cb97-2"><a href="#cb97-2" aria-hidden="true" tabindex="-1"></a>    ∃ (n : Nat), n ∈ S ∧ ∀ (m : Nat), m ∈ S → n ≤ m := <span class="kw">by</span></span>
-<span id="cb97-3"><a href="#cb97-3" aria-hidden="true" tabindex="-1"></a>  <span class="kw">contradict</span> h1 <span class="kw">with</span> h2</span>
-<span id="cb97-4"><a href="#cb97-4" aria-hidden="true" tabindex="-1"></a>    <span class="co">--h2 : ¬∃ (n : Nat), n ∈ S ∧ ∀ (m : Nat), m ∈ S → n ≤ m</span></span>
-<span id="cb97-5"><a href="#cb97-5" aria-hidden="true" tabindex="-1"></a>  <span class="kw">quant_neg</span>                   <span class="co">--Goal : ∀ (n : Nat), ¬n ∈ S</span></span>
-<span id="cb97-6"><a href="#cb97-6" aria-hidden="true" tabindex="-1"></a>  <span class="kw">by_strong_induc</span></span>
-<span id="cb97-7"><a href="#cb97-7" aria-hidden="true" tabindex="-1"></a>  <span class="kw">fix</span> n : Nat</span>
-<span id="cb97-8"><a href="#cb97-8" aria-hidden="true" tabindex="-1"></a>  <span class="kw">assume</span> ih : ∀ n_1 &lt; n, n_1 ∉ S  <span class="co">--Goal : ¬n ∈ S</span></span>
-<span id="cb97-9"><a href="#cb97-9" aria-hidden="true" tabindex="-1"></a>  <span class="kw">contradict</span> h2 <span class="kw">with</span> h3       <span class="co">--h3 : n ∈ S</span></span>
-<span id="cb97-10"><a href="#cb97-10" aria-hidden="true" tabindex="-1"></a>    <span class="co">--Goal : ∃ (n : Nat), n ∈ S ∧ ∀ (m : Nat), m ∈ S → n ≤ m</span></span>
-<span id="cb97-11"><a href="#cb97-11" aria-hidden="true" tabindex="-1"></a>  <span class="kw">apply</span> Exists.intro n</span>
-<span id="cb97-12"><a href="#cb97-12" aria-hidden="true" tabindex="-1"></a>  <span class="kw">apply</span> And.intro h3          <span class="co">--Goal : ∀ (m : Nat), m ∈ S → m ≤ y</span></span>
-<span id="cb97-13"><a href="#cb97-13" aria-hidden="true" tabindex="-1"></a>  <span class="kw">fix</span> m : Nat</span>
-<span id="cb97-14"><a href="#cb97-14" aria-hidden="true" tabindex="-1"></a>  <span class="kw">assume</span> h4 : m ∈ S</span>
-<span id="cb97-15"><a href="#cb97-15" aria-hidden="true" tabindex="-1"></a>  <span class="kw">have</span> h5 : m &lt; n → ¬m ∈ S := ih m</span>
-<span id="cb97-16"><a href="#cb97-16" aria-hidden="true" tabindex="-1"></a>  <span class="kw">contrapos</span> <span class="kw">at</span> h5             <span class="co">--h5 : m ∈ S → ¬m &lt; n</span></span>
-<span id="cb97-17"><a href="#cb97-17" aria-hidden="true" tabindex="-1"></a>  <span class="kw">have</span> h6 : ¬m &lt; n := h5 h4</span>
-<span id="cb97-18"><a href="#cb97-18" aria-hidden="true" tabindex="-1"></a>  <span class="kw">linarith</span></span>
-<span id="cb97-19"><a href="#cb97-19" aria-hidden="true" tabindex="-1"></a>  <span class="kw">done</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb96"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb96-1"><a href="#cb96-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> well_ord_princ (S : Set Nat) : (∃ (n : Nat), n ∈ S) →</span>
+<span id="cb96-2"><a href="#cb96-2" aria-hidden="true" tabindex="-1"></a>    ∃ (n : Nat), n ∈ S ∧ ∀ (m : Nat), m ∈ S → n ≤ m := <span class="kw">by</span></span>
+<span id="cb96-3"><a href="#cb96-3" aria-hidden="true" tabindex="-1"></a>  <span class="kw">contrapos</span></span>
+<span id="cb96-4"><a href="#cb96-4" aria-hidden="true" tabindex="-1"></a>  <span class="kw">assume</span> h1 : ¬∃ (n : Nat), n ∈ S ∧ ∀ (m : Nat), m ∈ S → n ≤ m</span>
+<span id="cb96-5"><a href="#cb96-5" aria-hidden="true" tabindex="-1"></a>  <span class="kw">quant_neg</span>                   <span class="co">--Goal : ∀ (n : Nat), ¬n ∈ S</span></span>
+<span id="cb96-6"><a href="#cb96-6" aria-hidden="true" tabindex="-1"></a>  <span class="kw">by_strong_induc</span></span>
+<span id="cb96-7"><a href="#cb96-7" aria-hidden="true" tabindex="-1"></a>  <span class="kw">fix</span> n : Nat</span>
+<span id="cb96-8"><a href="#cb96-8" aria-hidden="true" tabindex="-1"></a>  <span class="kw">assume</span> ih : ∀ (n_1 : Nat), n_1 &lt; n → ¬n_1 ∈ S  <span class="co">--Goal : ¬n ∈ S</span></span>
+<span id="cb96-9"><a href="#cb96-9" aria-hidden="true" tabindex="-1"></a>  <span class="kw">contradict</span> h1 <span class="kw">with</span> h2       <span class="co">--h2 : n ∈ S</span></span>
+<span id="cb96-10"><a href="#cb96-10" aria-hidden="true" tabindex="-1"></a>    <span class="co">--Goal : ∃ (n : Nat), n ∈ S ∧ ∀ (m : Nat), m ∈ S → n ≤ m</span></span>
+<span id="cb96-11"><a href="#cb96-11" aria-hidden="true" tabindex="-1"></a>  <span class="kw">apply</span> Exists.intro n</span>
+<span id="cb96-12"><a href="#cb96-12" aria-hidden="true" tabindex="-1"></a>  <span class="kw">apply</span> And.intro h2          <span class="co">--Goal : ∀ (m : Nat), m ∈ S → n ≤ m</span></span>
+<span id="cb96-13"><a href="#cb96-13" aria-hidden="true" tabindex="-1"></a>  <span class="kw">fix</span> m : Nat</span>
+<span id="cb96-14"><a href="#cb96-14" aria-hidden="true" tabindex="-1"></a>  <span class="kw">assume</span> h3 : m ∈ S</span>
+<span id="cb96-15"><a href="#cb96-15" aria-hidden="true" tabindex="-1"></a>  <span class="kw">have</span> h4 : m &lt; n → ¬m ∈ S := ih m</span>
+<span id="cb96-16"><a href="#cb96-16" aria-hidden="true" tabindex="-1"></a>  <span class="kw">contrapos</span> <span class="kw">at</span> h4             <span class="co">--h4 : m ∈ S → ¬m &lt; n</span></span>
+<span id="cb96-17"><a href="#cb96-17" aria-hidden="true" tabindex="-1"></a>  <span class="kw">have</span> h5 : ¬m &lt; n := h4 h3</span>
+<span id="cb96-18"><a href="#cb96-18" aria-hidden="true" tabindex="-1"></a>  <span class="kw">linarith</span></span>
+<span id="cb96-19"><a href="#cb96-19" aria-hidden="true" tabindex="-1"></a>  <span class="kw">done</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>Section 6.4 of <em>HTPI</em> ends with an example of an application of the well ordering principle. The example gives a proof that <span class="math inline">\(\sqrt{2}\)</span> is irrational. If <span class="math inline">\(\sqrt{2}\)</span> were rational, then there would be natural numbers <span class="math inline">\(p\)</span> and <span class="math inline">\(q\)</span> such that <span class="math inline">\(q \ne 0\)</span> and <span class="math inline">\(p/q = \sqrt{2}\)</span>, and therefore <span class="math inline">\(p^2 = 2q^2\)</span>. So we can prove that <span class="math inline">\(\sqrt{2}\)</span> is irrational by showing that there do not exist natural numbers <span class="math inline">\(p\)</span> and <span class="math inline">\(q\)</span> such that <span class="math inline">\(q \ne 0\)</span> and <span class="math inline">\(p^2 = 2q^2\)</span>.</p>
 <p>The proof uses some definitions and theorems from the exercises of Section 6.1:</p>
-<div class="sourceCode" id="cb98"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb98-1"><a href="#cb98-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> nat_even (n : Nat) : <span class="kw">Prop</span> := ∃ (k : Nat), n = 2 * k</span>
-<span id="cb98-2"><a href="#cb98-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb98-3"><a href="#cb98-3" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> nat_odd (n : Nat) : <span class="kw">Prop</span> := ∃ (k : Nat), n = 2 * k + 1</span>
-<span id="cb98-4"><a href="#cb98-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb98-5"><a href="#cb98-5" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Exercise_6_1_16a1 :</span>
-<span id="cb98-6"><a href="#cb98-6" aria-hidden="true" tabindex="-1"></a>    ∀ (n : Nat), nat_even n ∨ nat_odd n</span>
-<span id="cb98-7"><a href="#cb98-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb98-8"><a href="#cb98-8" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Exercise_6_1_16a2 :</span>
-<span id="cb98-9"><a href="#cb98-9" aria-hidden="true" tabindex="-1"></a>    ∀ (n : Nat), ¬(nat_even n ∧ nat_odd n)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb97"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb97-1"><a href="#cb97-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> nat_even (n : Nat) : <span class="kw">Prop</span> := ∃ (k : Nat), n = 2 * k</span>
+<span id="cb97-2"><a href="#cb97-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb97-3"><a href="#cb97-3" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> nat_odd (n : Nat) : <span class="kw">Prop</span> := ∃ (k : Nat), n = 2 * k + 1</span>
+<span id="cb97-4"><a href="#cb97-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb97-5"><a href="#cb97-5" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Exercise_6_1_16a1 :</span>
+<span id="cb97-6"><a href="#cb97-6" aria-hidden="true" tabindex="-1"></a>    ∀ (n : Nat), nat_even n ∨ nat_odd n</span>
+<span id="cb97-7"><a href="#cb97-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb97-8"><a href="#cb97-8" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Exercise_6_1_16a2 :</span>
+<span id="cb97-9"><a href="#cb97-9" aria-hidden="true" tabindex="-1"></a>    ∀ (n : Nat), ¬(nat_even n ∧ nat_odd n)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>We will also use a lemma, whose proof we leave as an exercise for you:</p>
-<div class="sourceCode" id="cb99"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb99-1"><a href="#cb99-1" aria-hidden="true" tabindex="-1"></a><span class="kw">lemma</span> sq_even_iff_even (n : Nat) : nat_even (n * n) ↔ nat_even n := <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb98"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb98-1"><a href="#cb98-1" aria-hidden="true" tabindex="-1"></a><span class="kw">lemma</span> sq_even_iff_even (n : Nat) : nat_even (n * n) ↔ nat_even n := <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>And we’ll need another theorem that we haven’t seen before:</p>
 <div class="ind">
 <pre><code>@mul_left_cancel_iff_of_pos : ∀ {α : Type u_1} {a b c : α}
@@ -1409,340 +1374,340 @@ $$
 <pre><code>S = { q : Nat | ∃ (p : Nat), p * p = 2 * (q * q) ∧ q ≠ 0 }</code></pre>
 </div>
 <p>would be nonempty, and therefore, by the well ordering principle, it would have a smallest element. We then show that this leads to a contradiction. Here is the proof.</p>
-<div class="sourceCode" id="cb103"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb103-1"><a href="#cb103-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> sqrt_2_irrat :</span>
-<span id="cb103-2"><a href="#cb103-2" aria-hidden="true" tabindex="-1"></a>    ¬∃ (q p : Nat), p * p = 2 * (q * q) ∧ q ≠ 0 := <span class="kw">by</span></span>
-<span id="cb103-3"><a href="#cb103-3" aria-hidden="true" tabindex="-1"></a>  <span class="kw">let</span> S : Set Nat :=</span>
-<span id="cb103-4"><a href="#cb103-4" aria-hidden="true" tabindex="-1"></a>    { q : Nat | ∃ (p : Nat), p * p = 2 * (q * q) ∧ q ≠ 0 }</span>
-<span id="cb103-5"><a href="#cb103-5" aria-hidden="true" tabindex="-1"></a>  <span class="kw">by_contra</span> h1</span>
-<span id="cb103-6"><a href="#cb103-6" aria-hidden="true" tabindex="-1"></a>  <span class="kw">have</span> h2 : ∃ (q : Nat), q ∈ S := h1</span>
-<span id="cb103-7"><a href="#cb103-7" aria-hidden="true" tabindex="-1"></a>  <span class="kw">have</span> h3 : ∃ (q : Nat), q ∈ S ∧ ∀ (r : Nat), r ∈ S → q ≤ r :=</span>
-<span id="cb103-8"><a href="#cb103-8" aria-hidden="true" tabindex="-1"></a>    well_ord_princ S h2</span>
-<span id="cb103-9"><a href="#cb103-9" aria-hidden="true" tabindex="-1"></a>  <span class="kw">obtain</span> (q : Nat) (h4 : q ∈ S ∧ ∀ (r : Nat), r ∈ S → q ≤ r) <span class="kw">from</span> h3</span>
-<span id="cb103-10"><a href="#cb103-10" aria-hidden="true" tabindex="-1"></a>  <span class="kw">have</span> qinS : q ∈ S := h4.left</span>
-<span id="cb103-11"><a href="#cb103-11" aria-hidden="true" tabindex="-1"></a>  <span class="kw">have</span> qleast : ∀ (r : ℕ), r ∈ S → q ≤ r := h4.right</span>
-<span id="cb103-12"><a href="#cb103-12" aria-hidden="true" tabindex="-1"></a>  <span class="kw">define</span> <span class="kw">at</span> qinS     <span class="co">--qinS : ∃ (p : Nat), p * p = 2 * (q * q) ∧ q ≠ 0</span></span>
-<span id="cb103-13"><a href="#cb103-13" aria-hidden="true" tabindex="-1"></a>  <span class="kw">obtain</span> (p : Nat) (h5 : p * p = 2 * (q * q) ∧ q ≠ 0) <span class="kw">from</span> qinS</span>
-<span id="cb103-14"><a href="#cb103-14" aria-hidden="true" tabindex="-1"></a>  <span class="kw">have</span> pqsqrt2 : p * p = 2 * (q * q) := h5.left</span>
-<span id="cb103-15"><a href="#cb103-15" aria-hidden="true" tabindex="-1"></a>  <span class="kw">have</span> qne0 : q ≠ 0 := h5.right</span>
-<span id="cb103-16"><a href="#cb103-16" aria-hidden="true" tabindex="-1"></a>  <span class="kw">have</span> h6 : nat_even (p * p) := Exists.intro (q * q) pqsqrt2</span>
-<span id="cb103-17"><a href="#cb103-17" aria-hidden="true" tabindex="-1"></a>  <span class="kw">rewrite</span> [sq_even_iff_even p] <span class="kw">at</span> h6    <span class="co">--h6 : nat_even p</span></span>
-<span id="cb103-18"><a href="#cb103-18" aria-hidden="true" tabindex="-1"></a>  <span class="kw">obtain</span> (p' : Nat) (p'halfp : p = 2 * p') <span class="kw">from</span> h6</span>
-<span id="cb103-19"><a href="#cb103-19" aria-hidden="true" tabindex="-1"></a>  <span class="kw">have</span> h7 : 2 * (2 * (p' * p')) = 2 * (q * q) := <span class="kw">by</span></span>
-<span id="cb103-20"><a href="#cb103-20" aria-hidden="true" tabindex="-1"></a>    <span class="kw">rewrite</span> [←pqsqrt2, p'halfp]</span>
-<span id="cb103-21"><a href="#cb103-21" aria-hidden="true" tabindex="-1"></a>    <span class="kw">ring</span></span>
-<span id="cb103-22"><a href="#cb103-22" aria-hidden="true" tabindex="-1"></a>    <span class="kw">done</span></span>
-<span id="cb103-23"><a href="#cb103-23" aria-hidden="true" tabindex="-1"></a>  <span class="kw">have</span> h8 : 2 &gt; 0 := <span class="kw">by</span> <span class="kw">norm_num</span></span>
-<span id="cb103-24"><a href="#cb103-24" aria-hidden="true" tabindex="-1"></a>  <span class="kw">rewrite</span> [mul_left_cancel_iff_of_pos h8] <span class="kw">at</span> h7</span>
-<span id="cb103-25"><a href="#cb103-25" aria-hidden="true" tabindex="-1"></a>    <span class="co">--h7 : 2 * (p' * p') = q * q</span></span>
-<span id="cb103-26"><a href="#cb103-26" aria-hidden="true" tabindex="-1"></a>  <span class="kw">have</span> h9 : nat_even (q * q) := Exists.intro (p' * p') h7.symm</span>
-<span id="cb103-27"><a href="#cb103-27" aria-hidden="true" tabindex="-1"></a>  <span class="kw">rewrite</span> [sq_even_iff_even q] <span class="kw">at</span> h9   <span class="co">--h9 : nat_even q</span></span>
-<span id="cb103-28"><a href="#cb103-28" aria-hidden="true" tabindex="-1"></a>  <span class="kw">obtain</span> (q' : Nat) (q'halfq : q = 2 * q') <span class="kw">from</span> h9</span>
-<span id="cb103-29"><a href="#cb103-29" aria-hidden="true" tabindex="-1"></a>  <span class="kw">have</span> h10 : 2 * (p' * p') = 2 * (2 * (q' * q')) := <span class="kw">by</span></span>
-<span id="cb103-30"><a href="#cb103-30" aria-hidden="true" tabindex="-1"></a>    <span class="kw">rewrite</span> [h7, q'halfq]</span>
-<span id="cb103-31"><a href="#cb103-31" aria-hidden="true" tabindex="-1"></a>    <span class="kw">ring</span></span>
-<span id="cb103-32"><a href="#cb103-32" aria-hidden="true" tabindex="-1"></a>    <span class="kw">done</span></span>
-<span id="cb103-33"><a href="#cb103-33" aria-hidden="true" tabindex="-1"></a>  <span class="kw">rewrite</span> [mul_left_cancel_iff_of_pos h8] <span class="kw">at</span> h10</span>
-<span id="cb103-34"><a href="#cb103-34" aria-hidden="true" tabindex="-1"></a>    <span class="co">--h10 : p' * p' = 2 * (q' * q')</span></span>
-<span id="cb103-35"><a href="#cb103-35" aria-hidden="true" tabindex="-1"></a>  <span class="kw">have</span> q'ne0 : q' ≠ 0 := <span class="kw">by</span></span>
-<span id="cb103-36"><a href="#cb103-36" aria-hidden="true" tabindex="-1"></a>    <span class="kw">contradict</span> qne0 <span class="kw">with</span> h11</span>
-<span id="cb103-37"><a href="#cb103-37" aria-hidden="true" tabindex="-1"></a>    <span class="kw">rewrite</span> [q'halfq, h11]</span>
-<span id="cb103-38"><a href="#cb103-38" aria-hidden="true" tabindex="-1"></a>    <span class="kw">rfl</span></span>
-<span id="cb103-39"><a href="#cb103-39" aria-hidden="true" tabindex="-1"></a>    <span class="kw">done</span></span>
-<span id="cb103-40"><a href="#cb103-40" aria-hidden="true" tabindex="-1"></a>  <span class="kw">have</span> q'inS : q' ∈ S := Exists.intro p' (And.intro h10 q'ne0)</span>
-<span id="cb103-41"><a href="#cb103-41" aria-hidden="true" tabindex="-1"></a>  <span class="kw">have</span> qleq' : q ≤ q' := qleast q' q'inS</span>
-<span id="cb103-42"><a href="#cb103-42" aria-hidden="true" tabindex="-1"></a>  <span class="kw">rewrite</span> [q'halfq] <span class="kw">at</span> qleq'        <span class="co">--qleq' : 2 * q' ≤ q'</span></span>
-<span id="cb103-43"><a href="#cb103-43" aria-hidden="true" tabindex="-1"></a>  <span class="kw">contradict</span> q'ne0</span>
-<span id="cb103-44"><a href="#cb103-44" aria-hidden="true" tabindex="-1"></a>  <span class="kw">linarith</span></span>
-<span id="cb103-45"><a href="#cb103-45" aria-hidden="true" tabindex="-1"></a>  <span class="kw">done</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb102"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb102-1"><a href="#cb102-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> sqrt_2_irrat :</span>
+<span id="cb102-2"><a href="#cb102-2" aria-hidden="true" tabindex="-1"></a>    ¬∃ (q p : Nat), p * p = 2 * (q * q) ∧ q ≠ 0 := <span class="kw">by</span></span>
+<span id="cb102-3"><a href="#cb102-3" aria-hidden="true" tabindex="-1"></a>  <span class="kw">let</span> S : Set Nat :=</span>
+<span id="cb102-4"><a href="#cb102-4" aria-hidden="true" tabindex="-1"></a>    { q : Nat | ∃ (p : Nat), p * p = 2 * (q * q) ∧ q ≠ 0 }</span>
+<span id="cb102-5"><a href="#cb102-5" aria-hidden="true" tabindex="-1"></a>  <span class="kw">by_contra</span> h1</span>
+<span id="cb102-6"><a href="#cb102-6" aria-hidden="true" tabindex="-1"></a>  <span class="kw">have</span> h2 : ∃ (q : Nat), q ∈ S := h1</span>
+<span id="cb102-7"><a href="#cb102-7" aria-hidden="true" tabindex="-1"></a>  <span class="kw">have</span> h3 : ∃ (q : Nat), q ∈ S ∧ ∀ (r : Nat), r ∈ S → q ≤ r :=</span>
+<span id="cb102-8"><a href="#cb102-8" aria-hidden="true" tabindex="-1"></a>    well_ord_princ S h2</span>
+<span id="cb102-9"><a href="#cb102-9" aria-hidden="true" tabindex="-1"></a>  <span class="kw">obtain</span> (q : Nat) (h4 : q ∈ S ∧ ∀ (r : Nat), r ∈ S → q ≤ r) <span class="kw">from</span> h3</span>
+<span id="cb102-10"><a href="#cb102-10" aria-hidden="true" tabindex="-1"></a>  <span class="kw">have</span> qinS : q ∈ S := h4.left</span>
+<span id="cb102-11"><a href="#cb102-11" aria-hidden="true" tabindex="-1"></a>  <span class="kw">have</span> qleast : ∀ (r : ℕ), r ∈ S → q ≤ r := h4.right</span>
+<span id="cb102-12"><a href="#cb102-12" aria-hidden="true" tabindex="-1"></a>  <span class="kw">define</span> <span class="kw">at</span> qinS     <span class="co">--qinS : ∃ (p : Nat), p * p = 2 * (q * q) ∧ q ≠ 0</span></span>
+<span id="cb102-13"><a href="#cb102-13" aria-hidden="true" tabindex="-1"></a>  <span class="kw">obtain</span> (p : Nat) (h5 : p * p = 2 * (q * q) ∧ q ≠ 0) <span class="kw">from</span> qinS</span>
+<span id="cb102-14"><a href="#cb102-14" aria-hidden="true" tabindex="-1"></a>  <span class="kw">have</span> pqsqrt2 : p * p = 2 * (q * q) := h5.left</span>
+<span id="cb102-15"><a href="#cb102-15" aria-hidden="true" tabindex="-1"></a>  <span class="kw">have</span> qne0 : q ≠ 0 := h5.right</span>
+<span id="cb102-16"><a href="#cb102-16" aria-hidden="true" tabindex="-1"></a>  <span class="kw">have</span> h6 : nat_even (p * p) := Exists.intro (q * q) pqsqrt2</span>
+<span id="cb102-17"><a href="#cb102-17" aria-hidden="true" tabindex="-1"></a>  <span class="kw">rewrite</span> [sq_even_iff_even p] <span class="kw">at</span> h6    <span class="co">--h6 : nat_even p</span></span>
+<span id="cb102-18"><a href="#cb102-18" aria-hidden="true" tabindex="-1"></a>  <span class="kw">obtain</span> (p' : Nat) (p'halfp : p = 2 * p') <span class="kw">from</span> h6</span>
+<span id="cb102-19"><a href="#cb102-19" aria-hidden="true" tabindex="-1"></a>  <span class="kw">have</span> h7 : 2 * (2 * (p' * p')) = 2 * (q * q) := <span class="kw">by</span></span>
+<span id="cb102-20"><a href="#cb102-20" aria-hidden="true" tabindex="-1"></a>    <span class="kw">rewrite</span> [←pqsqrt2, p'halfp]</span>
+<span id="cb102-21"><a href="#cb102-21" aria-hidden="true" tabindex="-1"></a>    <span class="kw">ring</span></span>
+<span id="cb102-22"><a href="#cb102-22" aria-hidden="true" tabindex="-1"></a>    <span class="kw">done</span></span>
+<span id="cb102-23"><a href="#cb102-23" aria-hidden="true" tabindex="-1"></a>  <span class="kw">have</span> h8 : 2 &gt; 0 := <span class="kw">by</span> <span class="kw">norm_num</span></span>
+<span id="cb102-24"><a href="#cb102-24" aria-hidden="true" tabindex="-1"></a>  <span class="kw">rewrite</span> [mul_left_cancel_iff_of_pos h8] <span class="kw">at</span> h7</span>
+<span id="cb102-25"><a href="#cb102-25" aria-hidden="true" tabindex="-1"></a>    <span class="co">--h7 : 2 * (p' * p') = q * q</span></span>
+<span id="cb102-26"><a href="#cb102-26" aria-hidden="true" tabindex="-1"></a>  <span class="kw">have</span> h9 : nat_even (q * q) := Exists.intro (p' * p') h7.symm</span>
+<span id="cb102-27"><a href="#cb102-27" aria-hidden="true" tabindex="-1"></a>  <span class="kw">rewrite</span> [sq_even_iff_even q] <span class="kw">at</span> h9   <span class="co">--h9 : nat_even q</span></span>
+<span id="cb102-28"><a href="#cb102-28" aria-hidden="true" tabindex="-1"></a>  <span class="kw">obtain</span> (q' : Nat) (q'halfq : q = 2 * q') <span class="kw">from</span> h9</span>
+<span id="cb102-29"><a href="#cb102-29" aria-hidden="true" tabindex="-1"></a>  <span class="kw">have</span> h10 : 2 * (p' * p') = 2 * (2 * (q' * q')) := <span class="kw">by</span></span>
+<span id="cb102-30"><a href="#cb102-30" aria-hidden="true" tabindex="-1"></a>    <span class="kw">rewrite</span> [h7, q'halfq]</span>
+<span id="cb102-31"><a href="#cb102-31" aria-hidden="true" tabindex="-1"></a>    <span class="kw">ring</span></span>
+<span id="cb102-32"><a href="#cb102-32" aria-hidden="true" tabindex="-1"></a>    <span class="kw">done</span></span>
+<span id="cb102-33"><a href="#cb102-33" aria-hidden="true" tabindex="-1"></a>  <span class="kw">rewrite</span> [mul_left_cancel_iff_of_pos h8] <span class="kw">at</span> h10</span>
+<span id="cb102-34"><a href="#cb102-34" aria-hidden="true" tabindex="-1"></a>    <span class="co">--h10 : p' * p' = 2 * (q' * q')</span></span>
+<span id="cb102-35"><a href="#cb102-35" aria-hidden="true" tabindex="-1"></a>  <span class="kw">have</span> q'ne0 : q' ≠ 0 := <span class="kw">by</span></span>
+<span id="cb102-36"><a href="#cb102-36" aria-hidden="true" tabindex="-1"></a>    <span class="kw">contradict</span> qne0 <span class="kw">with</span> h11</span>
+<span id="cb102-37"><a href="#cb102-37" aria-hidden="true" tabindex="-1"></a>    <span class="kw">rewrite</span> [q'halfq, h11]</span>
+<span id="cb102-38"><a href="#cb102-38" aria-hidden="true" tabindex="-1"></a>    <span class="kw">rfl</span></span>
+<span id="cb102-39"><a href="#cb102-39" aria-hidden="true" tabindex="-1"></a>    <span class="kw">done</span></span>
+<span id="cb102-40"><a href="#cb102-40" aria-hidden="true" tabindex="-1"></a>  <span class="kw">have</span> q'inS : q' ∈ S := Exists.intro p' (And.intro h10 q'ne0)</span>
+<span id="cb102-41"><a href="#cb102-41" aria-hidden="true" tabindex="-1"></a>  <span class="kw">have</span> qleq' : q ≤ q' := qleast q' q'inS</span>
+<span id="cb102-42"><a href="#cb102-42" aria-hidden="true" tabindex="-1"></a>  <span class="kw">rewrite</span> [q'halfq] <span class="kw">at</span> qleq'        <span class="co">--qleq' : 2 * q' ≤ q'</span></span>
+<span id="cb102-43"><a href="#cb102-43" aria-hidden="true" tabindex="-1"></a>  <span class="kw">contradict</span> q'ne0</span>
+<span id="cb102-44"><a href="#cb102-44" aria-hidden="true" tabindex="-1"></a>  <span class="kw">linarith</span></span>
+<span id="cb102-45"><a href="#cb102-45" aria-hidden="true" tabindex="-1"></a>  <span class="kw">done</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
 <section id="exercises-3" class="level3">
 <h3 class="anchored" data-anchor-id="exercises-3">Exercises</h3>
 <div class="numex" data-arguments="1">
-<div class="sourceCode" id="cb104"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb104-1"><a href="#cb104-1" aria-hidden="true" tabindex="-1"></a><span class="co">--Hint: Use Exercise_6_1_16a1 and Exercise_6_1_16a2</span></span>
-<span id="cb104-2"><a href="#cb104-2" aria-hidden="true" tabindex="-1"></a><span class="kw">lemma</span> sq_even_iff_even_ex (n : Nat) :</span>
-<span id="cb104-3"><a href="#cb104-3" aria-hidden="true" tabindex="-1"></a>    nat_even (n * n) ↔ nat_even n := <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb103"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb103-1"><a href="#cb103-1" aria-hidden="true" tabindex="-1"></a><span class="co">--Hint: Use Exercise_6_1_16a1 and Exercise_6_1_16a2</span></span>
+<span id="cb103-2"><a href="#cb103-2" aria-hidden="true" tabindex="-1"></a><span class="kw">lemma</span> sq_even_iff_even_ex (n : Nat) :</span>
+<span id="cb103-3"><a href="#cb103-3" aria-hidden="true" tabindex="-1"></a>    nat_even (n * n) ↔ nat_even n := <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="numex" data-arguments="2">
-<div class="sourceCode" id="cb105"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb105-1"><a href="#cb105-1" aria-hidden="true" tabindex="-1"></a><span class="co">--This theorem proves that the square root of 6 is irrational</span></span>
-<span id="cb105-2"><a href="#cb105-2" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Exercise_6_4_4a :</span>
-<span id="cb105-3"><a href="#cb105-3" aria-hidden="true" tabindex="-1"></a>    ¬∃ (q p : Nat), p * p = 6 * (q * q) ∧ q ≠ 0 := <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb104"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb104-1"><a href="#cb104-1" aria-hidden="true" tabindex="-1"></a><span class="co">--This theorem proves that the square root of 6 is irrational</span></span>
+<span id="cb104-2"><a href="#cb104-2" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Exercise_6_4_4a :</span>
+<span id="cb104-3"><a href="#cb104-3" aria-hidden="true" tabindex="-1"></a>    ¬∃ (q p : Nat), p * p = 6 * (q * q) ∧ q ≠ 0 := <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="numex" data-arguments="3">
-<div class="sourceCode" id="cb106"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb106-1"><a href="#cb106-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Exercise_6_4_5 :</span>
-<span id="cb106-2"><a href="#cb106-2" aria-hidden="true" tabindex="-1"></a>    ∀ n ≥ 12, ∃ (a b : Nat), 3 * a + 7 * b = n := <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb105"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb105-1"><a href="#cb105-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Exercise_6_4_5 :</span>
+<span id="cb105-2"><a href="#cb105-2" aria-hidden="true" tabindex="-1"></a>    ∀ n ≥ 12, ∃ (a b : Nat), 3 * a + 7 * b = n := <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="numex" data-arguments="4">
-<div class="sourceCode" id="cb107"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb107-1"><a href="#cb107-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Exercise_6_4_7a : ∀ (n : Nat),</span>
-<span id="cb107-2"><a href="#cb107-2" aria-hidden="true" tabindex="-1"></a>    (<span class="kw">Sum</span> i <span class="kw">from</span> 0 <span class="kw">to</span> n, Fib i) + 1 = Fib (n + 2) := <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb106"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb106-1"><a href="#cb106-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Exercise_6_4_7a : ∀ (n : Nat),</span>
+<span id="cb106-2"><a href="#cb106-2" aria-hidden="true" tabindex="-1"></a>    (<span class="kw">Sum</span> i <span class="kw">from</span> 0 <span class="kw">to</span> n, Fib i) + 1 = Fib (n + 2) := <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="numex" data-arguments="5">
-<div class="sourceCode" id="cb108"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb108-1"><a href="#cb108-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Exercise_6_4_7c : ∀ (n : Nat),</span>
-<span id="cb108-2"><a href="#cb108-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">Sum</span> i <span class="kw">from</span> 0 <span class="kw">to</span> n, Fib (2 * i + 1) = Fib (2 * n + 2) := <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb107"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb107-1"><a href="#cb107-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Exercise_6_4_7c : ∀ (n : Nat),</span>
+<span id="cb107-2"><a href="#cb107-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">Sum</span> i <span class="kw">from</span> 0 <span class="kw">to</span> n, Fib (2 * i + 1) = Fib (2 * n + 2) := <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="numex" data-arguments="6">
-<div class="sourceCode" id="cb109"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb109-1"><a href="#cb109-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Exercise_6_4_8a : ∀ (m n : Nat) ,</span>
-<span id="cb109-2"><a href="#cb109-2" aria-hidden="true" tabindex="-1"></a>    Fib (m + n + 1) = Fib m * Fib n + Fib (m + 1) * Fib (n + 1) := <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb108"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb108-1"><a href="#cb108-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Exercise_6_4_8a : ∀ (m n : Nat) ,</span>
+<span id="cb108-2"><a href="#cb108-2" aria-hidden="true" tabindex="-1"></a>    Fib (m + n + 1) = Fib m * Fib n + Fib (m + 1) * Fib (n + 1) := <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="numex" data-arguments="7">
-<div class="sourceCode" id="cb110"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb110-1"><a href="#cb110-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Exercise_6_4_8d : ∀ (m k : Nat), Fib m ∣ Fib (m * k) := <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb109"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb109-1"><a href="#cb109-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Exercise_6_4_8d : ∀ (m k : Nat), Fib m ∣ Fib (m * k) := <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>Hint for #7: Let <code>m</code> be an arbitrary natural number, and then use induction on <code>k</code>. For the induction step, you must prove <code>Fib m ∣ Fib (m * (k + 1))</code>. If <code>m = 0 ∨ k = 0</code>, then this is easy. If not, then show that you can rewrite <code>m * (k + 1)</code> as <code>(m * k - 1) + m + 1</code>, and then apply <code>Exercise_6_4_8a</code>.</p>
 </div>
 <div class="numex" data-arguments="8">
-<div class="sourceCode" id="cb111"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb111-1"><a href="#cb111-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> Fib_like (n : Nat) : Nat :=</span>
-<span id="cb111-2"><a href="#cb111-2" aria-hidden="true" tabindex="-1"></a>  <span class="kw">match</span> n <span class="kw">with</span></span>
-<span id="cb111-3"><a href="#cb111-3" aria-hidden="true" tabindex="-1"></a>    | 0 =&gt; 1</span>
-<span id="cb111-4"><a href="#cb111-4" aria-hidden="true" tabindex="-1"></a>    | 1 =&gt; 2</span>
-<span id="cb111-5"><a href="#cb111-5" aria-hidden="true" tabindex="-1"></a>    | k + 2 =&gt; 2 * (Fib_like k) + Fib_like (k + 1)</span>
-<span id="cb111-6"><a href="#cb111-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb111-7"><a href="#cb111-7" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Fib_like_formula : ∀ (n : Nat), Fib_like n = 2 ^ n := <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb110"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb110-1"><a href="#cb110-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> Fib_like (n : Nat) : Nat :=</span>
+<span id="cb110-2"><a href="#cb110-2" aria-hidden="true" tabindex="-1"></a>  <span class="kw">match</span> n <span class="kw">with</span></span>
+<span id="cb110-3"><a href="#cb110-3" aria-hidden="true" tabindex="-1"></a>    | 0 =&gt; 1</span>
+<span id="cb110-4"><a href="#cb110-4" aria-hidden="true" tabindex="-1"></a>    | 1 =&gt; 2</span>
+<span id="cb110-5"><a href="#cb110-5" aria-hidden="true" tabindex="-1"></a>    | k + 2 =&gt; 2 * (Fib_like k) + Fib_like (k + 1)</span>
+<span id="cb110-6"><a href="#cb110-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb110-7"><a href="#cb110-7" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Fib_like_formula : ∀ (n : Nat), Fib_like n = 2 ^ n := <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="numex" data-arguments="9">
-<div class="sourceCode" id="cb112"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb112-1"><a href="#cb112-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> triple_rec (n : Nat) : Nat :=</span>
-<span id="cb112-2"><a href="#cb112-2" aria-hidden="true" tabindex="-1"></a>  <span class="kw">match</span> n <span class="kw">with</span></span>
-<span id="cb112-3"><a href="#cb112-3" aria-hidden="true" tabindex="-1"></a>    | 0 =&gt; 0</span>
-<span id="cb112-4"><a href="#cb112-4" aria-hidden="true" tabindex="-1"></a>    | 1 =&gt; 2</span>
-<span id="cb112-5"><a href="#cb112-5" aria-hidden="true" tabindex="-1"></a>    | 2 =&gt; 4</span>
-<span id="cb112-6"><a href="#cb112-6" aria-hidden="true" tabindex="-1"></a>    | k + 3 =&gt; 4 * triple_rec k +</span>
-<span id="cb112-7"><a href="#cb112-7" aria-hidden="true" tabindex="-1"></a>                6 * triple_rec (k + 1) + triple_rec (k + 2)</span>
-<span id="cb112-8"><a href="#cb112-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb112-9"><a href="#cb112-9" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> triple_rec_formula :</span>
-<span id="cb112-10"><a href="#cb112-10" aria-hidden="true" tabindex="-1"></a>    ∀ (n : Nat), triple_rec n = 2 ^ n * Fib n := <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb111"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb111-1"><a href="#cb111-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> triple_rec (n : Nat) : Nat :=</span>
+<span id="cb111-2"><a href="#cb111-2" aria-hidden="true" tabindex="-1"></a>  <span class="kw">match</span> n <span class="kw">with</span></span>
+<span id="cb111-3"><a href="#cb111-3" aria-hidden="true" tabindex="-1"></a>    | 0 =&gt; 0</span>
+<span id="cb111-4"><a href="#cb111-4" aria-hidden="true" tabindex="-1"></a>    | 1 =&gt; 2</span>
+<span id="cb111-5"><a href="#cb111-5" aria-hidden="true" tabindex="-1"></a>    | 2 =&gt; 4</span>
+<span id="cb111-6"><a href="#cb111-6" aria-hidden="true" tabindex="-1"></a>    | k + 3 =&gt; 4 * triple_rec k +</span>
+<span id="cb111-7"><a href="#cb111-7" aria-hidden="true" tabindex="-1"></a>                6 * triple_rec (k + 1) + triple_rec (k + 2)</span>
+<span id="cb111-8"><a href="#cb111-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb111-9"><a href="#cb111-9" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> triple_rec_formula :</span>
+<span id="cb111-10"><a href="#cb111-10" aria-hidden="true" tabindex="-1"></a>    ∀ (n : Nat), triple_rec n = 2 ^ n * Fib n := <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>10. In this exercise you will prove that the numbers <code>q</code> and <code>r</code> in <code>Example_6_4_1</code> are unique. It is helpful to prove a lemma first.</p>
-<div class="sourceCode" id="cb113"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb113-1"><a href="#cb113-1" aria-hidden="true" tabindex="-1"></a><span class="kw">lemma</span> quot_rem_unique_lemma {m q r q' r' : Nat}</span>
-<span id="cb113-2"><a href="#cb113-2" aria-hidden="true" tabindex="-1"></a>    (h1 : m * q + r = m * q' + r') (h2 : r' &lt; m) : q ≤ q' := <span class="cn">sorry</span></span>
-<span id="cb113-3"><a href="#cb113-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb113-4"><a href="#cb113-4" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> quot_rem_unique (m q r q' r' : Nat)</span>
-<span id="cb113-5"><a href="#cb113-5" aria-hidden="true" tabindex="-1"></a>    (h1 : m * q + r = m * q' + r') (h2 : r &lt; m) (h3 : r' &lt; m) :</span>
-<span id="cb113-6"><a href="#cb113-6" aria-hidden="true" tabindex="-1"></a>    q = q' ∧ r = r' := <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb112"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb112-1"><a href="#cb112-1" aria-hidden="true" tabindex="-1"></a><span class="kw">lemma</span> quot_rem_unique_lemma {m q r q' r' : Nat}</span>
+<span id="cb112-2"><a href="#cb112-2" aria-hidden="true" tabindex="-1"></a>    (h1 : m * q + r = m * q' + r') (h2 : r' &lt; m) : q ≤ q' := <span class="cn">sorry</span></span>
+<span id="cb112-3"><a href="#cb112-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb112-4"><a href="#cb112-4" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> quot_rem_unique (m q r q' r' : Nat)</span>
+<span id="cb112-5"><a href="#cb112-5" aria-hidden="true" tabindex="-1"></a>    (h1 : m * q + r = m * q' + r') (h2 : r &lt; m) (h3 : r' &lt; m) :</span>
+<span id="cb112-6"><a href="#cb112-6" aria-hidden="true" tabindex="-1"></a>    q = q' ∧ r = r' := <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>11. Use the theorem in the previous exercise to prove the following characterization of <code>n / m</code> and <code>n % m</code>.</p>
-<div class="sourceCode" id="cb114"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb114-1"><a href="#cb114-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> div_mod_char (m n q r : Nat)</span>
-<span id="cb114-2"><a href="#cb114-2" aria-hidden="true" tabindex="-1"></a>    (h1 : n = m * q + r) (h2 : r &lt; m) : q = n / m ∧ r = n % m := <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb113"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb113-1"><a href="#cb113-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> div_mod_char (m n q r : Nat)</span>
+<span id="cb113-2"><a href="#cb113-2" aria-hidden="true" tabindex="-1"></a>    (h1 : n = m * q + r) (h2 : r &lt; m) : q = n / m ∧ r = n % m := <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
 </section>
 <section id="closures-again" class="level2">
 <h2 class="anchored" data-anchor-id="closures-again">6.5. Closures Again</h2>
 <p>Section 6.5 of <em>HTPI</em> gives one more application of recursion and induction: another proof of the existence of closures of sets under functions. Recall from Section 5.4 that if <code>f : A → A</code> and <code>B : Set A</code>, then the <em>closure</em> of <code>B</code> under <code>f</code> is the smallest set containing <code>B</code> that is closed under <code>f</code>. In Section 5.4, we constructed the closure of <code>B</code> under <code>f</code> by taking the intersection of all sets containing <code>B</code> that are closed under <code>f</code>. In this section, we construct the closure by starting with the set <code>B</code> and repeatedly taking the image under <code>f</code>. For the motivation for this strategy, see <em>HTPI</em>; here we focus on how to carry out this strategy in Lean.</p>
 <p>To talk about repeatedly taking the image of a set under a function, we will need a recursive definition:</p>
-<div class="sourceCode" id="cb115"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb115-1"><a href="#cb115-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> rep_image {A : <span class="kw">Type</span>} (f : A → A) (n : Nat) (B : Set A) : Set A :=</span>
-<span id="cb115-2"><a href="#cb115-2" aria-hidden="true" tabindex="-1"></a>  <span class="kw">match</span> n <span class="kw">with</span></span>
-<span id="cb115-3"><a href="#cb115-3" aria-hidden="true" tabindex="-1"></a>    | 0 =&gt; B</span>
-<span id="cb115-4"><a href="#cb115-4" aria-hidden="true" tabindex="-1"></a>    | k + 1 =&gt; image f (rep_image f k B)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb114"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb114-1"><a href="#cb114-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> rep_image {A : <span class="kw">Type</span>} (f : A → A) (n : Nat) (B : Set A) : Set A :=</span>
+<span id="cb114-2"><a href="#cb114-2" aria-hidden="true" tabindex="-1"></a>  <span class="kw">match</span> n <span class="kw">with</span></span>
+<span id="cb114-3"><a href="#cb114-3" aria-hidden="true" tabindex="-1"></a>    | 0 =&gt; B</span>
+<span id="cb114-4"><a href="#cb114-4" aria-hidden="true" tabindex="-1"></a>    | k + 1 =&gt; image f (rep_image f k B)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>According to this definition, <code>rep_image f 0 B = B</code>, <code>rep_image f 1 B = image f B</code>, <code>rep_image f 2 B = image f (image f B)</code>, and so on. In other words, <code>rep_image f n B</code> is the result of starting with <code>B</code> and then taking the image under <code>f</code> <code>n</code> times. To make it easier to work with this definition, we state two simple theorems, both of which follow immediately from the definition.</p>
-<div class="sourceCode" id="cb116"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb116-1"><a href="#cb116-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> rep_image_base {A : <span class="kw">Type</span>} (f : A → A) (B : Set A) :</span>
-<span id="cb116-2"><a href="#cb116-2" aria-hidden="true" tabindex="-1"></a>    rep_image f 0 B = B := <span class="kw">by</span> <span class="kw">rfl</span></span>
-<span id="cb116-3"><a href="#cb116-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb116-4"><a href="#cb116-4" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> rep_image_step {A : <span class="kw">Type</span>} (f : A → A) (n : Nat) (B : Set A) :</span>
-<span id="cb116-5"><a href="#cb116-5" aria-hidden="true" tabindex="-1"></a>    rep_image f (n + 1) B = image f (rep_image f n B) := <span class="kw">by</span> <span class="kw">rfl</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb115"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb115-1"><a href="#cb115-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> rep_image_base {A : <span class="kw">Type</span>} (f : A → A) (B : Set A) :</span>
+<span id="cb115-2"><a href="#cb115-2" aria-hidden="true" tabindex="-1"></a>    rep_image f 0 B = B := <span class="kw">by</span> <span class="kw">rfl</span></span>
+<span id="cb115-3"><a href="#cb115-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb115-4"><a href="#cb115-4" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> rep_image_step {A : <span class="kw">Type</span>} (f : A → A) (n : Nat) (B : Set A) :</span>
+<span id="cb115-5"><a href="#cb115-5" aria-hidden="true" tabindex="-1"></a>    rep_image f (n + 1) B = image f (rep_image f n B) := <span class="kw">by</span> <span class="kw">rfl</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>We will prove that the closure of <code>B</code> under <code>f</code> is the union of the sets <code>rep_image f n B</code>. We will call this the <em>cumulative image</em> of <code>B</code> under <code>f</code>, and we define it as follows:</p>
-<div class="sourceCode" id="cb117"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb117-1"><a href="#cb117-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> cumul_image {A : <span class="kw">Type</span>} (f : A → A) (B : Set A) : Set A :=</span>
-<span id="cb117-2"><a href="#cb117-2" aria-hidden="true" tabindex="-1"></a>  { x : A | ∃ (n : Nat), x ∈ rep_image f n B }</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb116"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb116-1"><a href="#cb116-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> cumul_image {A : <span class="kw">Type</span>} (f : A → A) (B : Set A) : Set A :=</span>
+<span id="cb116-2"><a href="#cb116-2" aria-hidden="true" tabindex="-1"></a>  { x : A | ∃ (n : Nat), x ∈ rep_image f n B }</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>To prove that <code>cumul_image f B</code> is the closure of <code>B</code> under <code>f</code>, we first prove a lemma saying that if <code>B ⊆ D</code> and <code>D</code> is closed under <code>f</code>, then for every natural number <code>n</code>, <code>rep_image f n B ⊆ D</code>. We prove it by induction.</p>
-<div class="sourceCode" id="cb118"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb118-1"><a href="#cb118-1" aria-hidden="true" tabindex="-1"></a><span class="kw">lemma</span> rep_image_sub_closed {A : <span class="kw">Type</span>} {f : A → A} {B D : Set A}</span>
-<span id="cb118-2"><a href="#cb118-2" aria-hidden="true" tabindex="-1"></a>    (h1 : B ⊆ D) (h2 : closed f D) :</span>
-<span id="cb118-3"><a href="#cb118-3" aria-hidden="true" tabindex="-1"></a>    ∀ (n : Nat), rep_image f n B ⊆ D := <span class="kw">by</span></span>
-<span id="cb118-4"><a href="#cb118-4" aria-hidden="true" tabindex="-1"></a>  <span class="kw">by_induc</span></span>
-<span id="cb118-5"><a href="#cb118-5" aria-hidden="true" tabindex="-1"></a>  · <span class="co">-- Base Case</span></span>
-<span id="cb118-6"><a href="#cb118-6" aria-hidden="true" tabindex="-1"></a>    <span class="kw">rewrite</span> [rep_image_base]          <span class="co">--Goal : B ⊆ D</span></span>
-<span id="cb118-7"><a href="#cb118-7" aria-hidden="true" tabindex="-1"></a>    <span class="kw">show</span> B ⊆ D <span class="kw">from</span> h1</span>
-<span id="cb118-8"><a href="#cb118-8" aria-hidden="true" tabindex="-1"></a>    <span class="kw">done</span></span>
-<span id="cb118-9"><a href="#cb118-9" aria-hidden="true" tabindex="-1"></a>  · <span class="co">-- Induction Step</span></span>
-<span id="cb118-10"><a href="#cb118-10" aria-hidden="true" tabindex="-1"></a>    <span class="kw">fix</span> n : Nat</span>
-<span id="cb118-11"><a href="#cb118-11" aria-hidden="true" tabindex="-1"></a>    <span class="kw">assume</span> ih : rep_image f n B ⊆ D   <span class="co">--Goal : rep_image f (n + 1) B ⊆ D</span></span>
-<span id="cb118-12"><a href="#cb118-12" aria-hidden="true" tabindex="-1"></a>    <span class="kw">fix</span> x : A</span>
-<span id="cb118-13"><a href="#cb118-13" aria-hidden="true" tabindex="-1"></a>    <span class="kw">assume</span> h3 : x ∈ rep_image f (n + 1) B  <span class="co">--Goal : x ∈ D</span></span>
-<span id="cb118-14"><a href="#cb118-14" aria-hidden="true" tabindex="-1"></a>    <span class="kw">rewrite</span> [rep_image_step] <span class="kw">at</span> h3</span>
-<span id="cb118-15"><a href="#cb118-15" aria-hidden="true" tabindex="-1"></a>    <span class="kw">define</span> <span class="kw">at</span> h3    <span class="co">--h3 : ∃ (x_1 : A), x_1 ∈ rep_image f n B ∧ f x_1 = x</span></span>
-<span id="cb118-16"><a href="#cb118-16" aria-hidden="true" tabindex="-1"></a>    <span class="kw">obtain</span> (b : A) (h4 : b ∈ rep_image f n B ∧ f b = x) <span class="kw">from</span> h3</span>
-<span id="cb118-17"><a href="#cb118-17" aria-hidden="true" tabindex="-1"></a>    <span class="kw">rewrite</span> [←h4.right]   <span class="co">--Goal : f b ∈ D    </span></span>
-<span id="cb118-18"><a href="#cb118-18" aria-hidden="true" tabindex="-1"></a>    <span class="kw">have</span> h5 : b ∈ D := ih h4.left</span>
-<span id="cb118-19"><a href="#cb118-19" aria-hidden="true" tabindex="-1"></a>    <span class="kw">define</span> <span class="kw">at</span> h2          <span class="co">--h2 : ∀ (x : A), x ∈ D → f x ∈ D</span></span>
-<span id="cb118-20"><a href="#cb118-20" aria-hidden="true" tabindex="-1"></a>    <span class="kw">show</span> f b ∈ D <span class="kw">from</span> h2 b h5</span>
-<span id="cb118-21"><a href="#cb118-21" aria-hidden="true" tabindex="-1"></a>    <span class="kw">done</span></span>
-<span id="cb118-22"><a href="#cb118-22" aria-hidden="true" tabindex="-1"></a>  <span class="kw">done</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb117"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb117-1"><a href="#cb117-1" aria-hidden="true" tabindex="-1"></a><span class="kw">lemma</span> rep_image_sub_closed {A : <span class="kw">Type</span>} {f : A → A} {B D : Set A}</span>
+<span id="cb117-2"><a href="#cb117-2" aria-hidden="true" tabindex="-1"></a>    (h1 : B ⊆ D) (h2 : closed f D) :</span>
+<span id="cb117-3"><a href="#cb117-3" aria-hidden="true" tabindex="-1"></a>    ∀ (n : Nat), rep_image f n B ⊆ D := <span class="kw">by</span></span>
+<span id="cb117-4"><a href="#cb117-4" aria-hidden="true" tabindex="-1"></a>  <span class="kw">by_induc</span></span>
+<span id="cb117-5"><a href="#cb117-5" aria-hidden="true" tabindex="-1"></a>  · <span class="co">-- Base Case</span></span>
+<span id="cb117-6"><a href="#cb117-6" aria-hidden="true" tabindex="-1"></a>    <span class="kw">rewrite</span> [rep_image_base]          <span class="co">--Goal : B ⊆ D</span></span>
+<span id="cb117-7"><a href="#cb117-7" aria-hidden="true" tabindex="-1"></a>    <span class="kw">show</span> B ⊆ D <span class="kw">from</span> h1</span>
+<span id="cb117-8"><a href="#cb117-8" aria-hidden="true" tabindex="-1"></a>    <span class="kw">done</span></span>
+<span id="cb117-9"><a href="#cb117-9" aria-hidden="true" tabindex="-1"></a>  · <span class="co">-- Induction Step</span></span>
+<span id="cb117-10"><a href="#cb117-10" aria-hidden="true" tabindex="-1"></a>    <span class="kw">fix</span> n : Nat</span>
+<span id="cb117-11"><a href="#cb117-11" aria-hidden="true" tabindex="-1"></a>    <span class="kw">assume</span> ih : rep_image f n B ⊆ D   <span class="co">--Goal : rep_image f (n + 1) B ⊆ D</span></span>
+<span id="cb117-12"><a href="#cb117-12" aria-hidden="true" tabindex="-1"></a>    <span class="kw">fix</span> x : A</span>
+<span id="cb117-13"><a href="#cb117-13" aria-hidden="true" tabindex="-1"></a>    <span class="kw">assume</span> h3 : x ∈ rep_image f (n + 1) B  <span class="co">--Goal : x ∈ D</span></span>
+<span id="cb117-14"><a href="#cb117-14" aria-hidden="true" tabindex="-1"></a>    <span class="kw">rewrite</span> [rep_image_step] <span class="kw">at</span> h3</span>
+<span id="cb117-15"><a href="#cb117-15" aria-hidden="true" tabindex="-1"></a>    <span class="kw">define</span> <span class="kw">at</span> h3    <span class="co">--h3 : ∃ (x_1 : A), x_1 ∈ rep_image f n B ∧ f x_1 = x</span></span>
+<span id="cb117-16"><a href="#cb117-16" aria-hidden="true" tabindex="-1"></a>    <span class="kw">obtain</span> (b : A) (h4 : b ∈ rep_image f n B ∧ f b = x) <span class="kw">from</span> h3</span>
+<span id="cb117-17"><a href="#cb117-17" aria-hidden="true" tabindex="-1"></a>    <span class="kw">rewrite</span> [←h4.right]   <span class="co">--Goal : f b ∈ D    </span></span>
+<span id="cb117-18"><a href="#cb117-18" aria-hidden="true" tabindex="-1"></a>    <span class="kw">have</span> h5 : b ∈ D := ih h4.left</span>
+<span id="cb117-19"><a href="#cb117-19" aria-hidden="true" tabindex="-1"></a>    <span class="kw">define</span> <span class="kw">at</span> h2          <span class="co">--h2 : ∀ (x : A), x ∈ D → f x ∈ D</span></span>
+<span id="cb117-20"><a href="#cb117-20" aria-hidden="true" tabindex="-1"></a>    <span class="kw">show</span> f b ∈ D <span class="kw">from</span> h2 b h5</span>
+<span id="cb117-21"><a href="#cb117-21" aria-hidden="true" tabindex="-1"></a>    <span class="kw">done</span></span>
+<span id="cb117-22"><a href="#cb117-22" aria-hidden="true" tabindex="-1"></a>  <span class="kw">done</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>With this preparation, we can now prove that <code>cumul_image f B</code> is the closure of <code>B</code> under <code>f</code>.</p>
-<div class="sourceCode" id="cb119"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb119-1"><a href="#cb119-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Theorem_6_5_1 {A : <span class="kw">Type</span>} (f : A → A) (B : Set A) :</span>
-<span id="cb119-2"><a href="#cb119-2" aria-hidden="true" tabindex="-1"></a>    closure f B (cumul_image f B) := <span class="kw">by</span></span>
-<span id="cb119-3"><a href="#cb119-3" aria-hidden="true" tabindex="-1"></a>  <span class="kw">define</span></span>
-<span id="cb119-4"><a href="#cb119-4" aria-hidden="true" tabindex="-1"></a>  <span class="kw">apply</span> And.intro</span>
-<span id="cb119-5"><a href="#cb119-5" aria-hidden="true" tabindex="-1"></a>  · <span class="co">-- Proof that cumul_image f B ∈ { D : Set A | B ⊆ D ∧ closed f D }</span></span>
-<span id="cb119-6"><a href="#cb119-6" aria-hidden="true" tabindex="-1"></a>    <span class="kw">define</span>  <span class="co">--Goal : B ⊆ cumul_image f B ∧ closed f (cumul_image f B)</span></span>
-<span id="cb119-7"><a href="#cb119-7" aria-hidden="true" tabindex="-1"></a>    <span class="kw">apply</span> And.intro</span>
-<span id="cb119-8"><a href="#cb119-8" aria-hidden="true" tabindex="-1"></a>    · <span class="co">-- Proof that B ⊆ cumul_image f B</span></span>
-<span id="cb119-9"><a href="#cb119-9" aria-hidden="true" tabindex="-1"></a>      <span class="kw">fix</span> x : A</span>
-<span id="cb119-10"><a href="#cb119-10" aria-hidden="true" tabindex="-1"></a>      <span class="kw">assume</span> h1 : x ∈ B</span>
-<span id="cb119-11"><a href="#cb119-11" aria-hidden="true" tabindex="-1"></a>      <span class="kw">define</span>     <span class="co">--Goal : ∃ (n : Nat), x ∈ rep_image f n B</span></span>
-<span id="cb119-12"><a href="#cb119-12" aria-hidden="true" tabindex="-1"></a>      <span class="kw">apply</span> Exists.intro 0</span>
-<span id="cb119-13"><a href="#cb119-13" aria-hidden="true" tabindex="-1"></a>      <span class="kw">rewrite</span> [rep_image_base]  <span class="co">--Goal : x ∈ B</span></span>
-<span id="cb119-14"><a href="#cb119-14" aria-hidden="true" tabindex="-1"></a>      <span class="kw">show</span> x ∈ B <span class="kw">from</span> h1</span>
-<span id="cb119-15"><a href="#cb119-15" aria-hidden="true" tabindex="-1"></a>      <span class="kw">done</span></span>
-<span id="cb119-16"><a href="#cb119-16" aria-hidden="true" tabindex="-1"></a>    · <span class="co">-- Proof that cumul_image f B closed under f</span></span>
-<span id="cb119-17"><a href="#cb119-17" aria-hidden="true" tabindex="-1"></a>      <span class="kw">define</span></span>
-<span id="cb119-18"><a href="#cb119-18" aria-hidden="true" tabindex="-1"></a>      <span class="kw">fix</span> x : A</span>
-<span id="cb119-19"><a href="#cb119-19" aria-hidden="true" tabindex="-1"></a>      <span class="kw">assume</span> h1 : x ∈ cumul_image f B  <span class="co">--Goal : f x ∈ cumul_image f B</span></span>
-<span id="cb119-20"><a href="#cb119-20" aria-hidden="true" tabindex="-1"></a>      <span class="kw">define</span> <span class="kw">at</span> h1</span>
-<span id="cb119-21"><a href="#cb119-21" aria-hidden="true" tabindex="-1"></a>      <span class="kw">obtain</span> (m : Nat) (h2 : x ∈ rep_image f m B) <span class="kw">from</span> h1</span>
-<span id="cb119-22"><a href="#cb119-22" aria-hidden="true" tabindex="-1"></a>      <span class="kw">define</span>     <span class="co">--Goal : ∃ (n : Nat), f x ∈ rep_image f n B</span></span>
-<span id="cb119-23"><a href="#cb119-23" aria-hidden="true" tabindex="-1"></a>      <span class="kw">apply</span> Exists.intro (m + 1) <span class="co">--Goal : f x ∈ rep_image f (m + 1) B</span></span>
-<span id="cb119-24"><a href="#cb119-24" aria-hidden="true" tabindex="-1"></a>      <span class="kw">rewrite</span> [rep_image_step]   <span class="co">--Goal : f x ∈ image f (rep_image f m B)</span></span>
-<span id="cb119-25"><a href="#cb119-25" aria-hidden="true" tabindex="-1"></a>      <span class="kw">define</span>     <span class="co">--Goal : ∃ (x_1 : A), x_1 ∈ rep_image f m B ∧ f x_1 = f x</span></span>
-<span id="cb119-26"><a href="#cb119-26" aria-hidden="true" tabindex="-1"></a>      <span class="kw">apply</span> Exists.intro x  <span class="co">--Goal : x ∈ rep_image f m B ∧ f x = f x</span></span>
-<span id="cb119-27"><a href="#cb119-27" aria-hidden="true" tabindex="-1"></a>      <span class="kw">apply</span> And.intro h2</span>
-<span id="cb119-28"><a href="#cb119-28" aria-hidden="true" tabindex="-1"></a>      <span class="kw">rfl</span></span>
-<span id="cb119-29"><a href="#cb119-29" aria-hidden="true" tabindex="-1"></a>      <span class="kw">done</span></span>
-<span id="cb119-30"><a href="#cb119-30" aria-hidden="true" tabindex="-1"></a>    <span class="kw">done</span></span>
-<span id="cb119-31"><a href="#cb119-31" aria-hidden="true" tabindex="-1"></a>  · <span class="co">-- Proof that cumul_image f B is smallest</span></span>
-<span id="cb119-32"><a href="#cb119-32" aria-hidden="true" tabindex="-1"></a>    <span class="kw">fix</span> D : Set A</span>
-<span id="cb119-33"><a href="#cb119-33" aria-hidden="true" tabindex="-1"></a>    <span class="kw">assume</span> h1 : D ∈ { D : Set A | B ⊆ D ∧ closed f D }</span>
-<span id="cb119-34"><a href="#cb119-34" aria-hidden="true" tabindex="-1"></a>    <span class="kw">define</span> <span class="kw">at</span> h1  <span class="co">--h1 : B ⊆ D ∧ closed f D</span></span>
-<span id="cb119-35"><a href="#cb119-35" aria-hidden="true" tabindex="-1"></a>    <span class="kw">define</span>   <span class="co">--Goal : ∀ ⦃a : A⦄, a ∈ cumul_image f B → a ∈ D</span></span>
-<span id="cb119-36"><a href="#cb119-36" aria-hidden="true" tabindex="-1"></a>    <span class="kw">fix</span> x : A</span>
-<span id="cb119-37"><a href="#cb119-37" aria-hidden="true" tabindex="-1"></a>    <span class="kw">assume</span> h2 : x ∈ cumul_image f B  <span class="co">--Goal : x ∈ D</span></span>
-<span id="cb119-38"><a href="#cb119-38" aria-hidden="true" tabindex="-1"></a>    <span class="kw">define</span> <span class="kw">at</span> h2  <span class="co">--h2: ∃ (n : Nat), x ∈ rep_image f n B</span></span>
-<span id="cb119-39"><a href="#cb119-39" aria-hidden="true" tabindex="-1"></a>    <span class="kw">obtain</span> (m : Nat) (h3 : x ∈ rep_image f m B) <span class="kw">from</span> h2</span>
-<span id="cb119-40"><a href="#cb119-40" aria-hidden="true" tabindex="-1"></a>    <span class="kw">have</span> h4 : rep_image f m B ⊆ D :=</span>
-<span id="cb119-41"><a href="#cb119-41" aria-hidden="true" tabindex="-1"></a>      rep_image_sub_closed h1.left h1.right m</span>
-<span id="cb119-42"><a href="#cb119-42" aria-hidden="true" tabindex="-1"></a>    <span class="kw">show</span> x ∈ D <span class="kw">from</span> h4 h3</span>
-<span id="cb119-43"><a href="#cb119-43" aria-hidden="true" tabindex="-1"></a>    <span class="kw">done</span></span>
-<span id="cb119-44"><a href="#cb119-44" aria-hidden="true" tabindex="-1"></a>  <span class="kw">done</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb118"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb118-1"><a href="#cb118-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Theorem_6_5_1 {A : <span class="kw">Type</span>} (f : A → A) (B : Set A) :</span>
+<span id="cb118-2"><a href="#cb118-2" aria-hidden="true" tabindex="-1"></a>    closure f B (cumul_image f B) := <span class="kw">by</span></span>
+<span id="cb118-3"><a href="#cb118-3" aria-hidden="true" tabindex="-1"></a>  <span class="kw">define</span></span>
+<span id="cb118-4"><a href="#cb118-4" aria-hidden="true" tabindex="-1"></a>  <span class="kw">apply</span> And.intro</span>
+<span id="cb118-5"><a href="#cb118-5" aria-hidden="true" tabindex="-1"></a>  · <span class="co">-- Proof that cumul_image f B ∈ { D : Set A | B ⊆ D ∧ closed f D }</span></span>
+<span id="cb118-6"><a href="#cb118-6" aria-hidden="true" tabindex="-1"></a>    <span class="kw">define</span>  <span class="co">--Goal : B ⊆ cumul_image f B ∧ closed f (cumul_image f B)</span></span>
+<span id="cb118-7"><a href="#cb118-7" aria-hidden="true" tabindex="-1"></a>    <span class="kw">apply</span> And.intro</span>
+<span id="cb118-8"><a href="#cb118-8" aria-hidden="true" tabindex="-1"></a>    · <span class="co">-- Proof that B ⊆ cumul_image f B</span></span>
+<span id="cb118-9"><a href="#cb118-9" aria-hidden="true" tabindex="-1"></a>      <span class="kw">fix</span> x : A</span>
+<span id="cb118-10"><a href="#cb118-10" aria-hidden="true" tabindex="-1"></a>      <span class="kw">assume</span> h1 : x ∈ B</span>
+<span id="cb118-11"><a href="#cb118-11" aria-hidden="true" tabindex="-1"></a>      <span class="kw">define</span>     <span class="co">--Goal : ∃ (n : Nat), x ∈ rep_image f n B</span></span>
+<span id="cb118-12"><a href="#cb118-12" aria-hidden="true" tabindex="-1"></a>      <span class="kw">apply</span> Exists.intro 0</span>
+<span id="cb118-13"><a href="#cb118-13" aria-hidden="true" tabindex="-1"></a>      <span class="kw">rewrite</span> [rep_image_base]  <span class="co">--Goal : x ∈ B</span></span>
+<span id="cb118-14"><a href="#cb118-14" aria-hidden="true" tabindex="-1"></a>      <span class="kw">show</span> x ∈ B <span class="kw">from</span> h1</span>
+<span id="cb118-15"><a href="#cb118-15" aria-hidden="true" tabindex="-1"></a>      <span class="kw">done</span></span>
+<span id="cb118-16"><a href="#cb118-16" aria-hidden="true" tabindex="-1"></a>    · <span class="co">-- Proof that cumul_image f B closed under f</span></span>
+<span id="cb118-17"><a href="#cb118-17" aria-hidden="true" tabindex="-1"></a>      <span class="kw">define</span></span>
+<span id="cb118-18"><a href="#cb118-18" aria-hidden="true" tabindex="-1"></a>      <span class="kw">fix</span> x : A</span>
+<span id="cb118-19"><a href="#cb118-19" aria-hidden="true" tabindex="-1"></a>      <span class="kw">assume</span> h1 : x ∈ cumul_image f B  <span class="co">--Goal : f x ∈ cumul_image f B</span></span>
+<span id="cb118-20"><a href="#cb118-20" aria-hidden="true" tabindex="-1"></a>      <span class="kw">define</span> <span class="kw">at</span> h1</span>
+<span id="cb118-21"><a href="#cb118-21" aria-hidden="true" tabindex="-1"></a>      <span class="kw">obtain</span> (m : Nat) (h2 : x ∈ rep_image f m B) <span class="kw">from</span> h1</span>
+<span id="cb118-22"><a href="#cb118-22" aria-hidden="true" tabindex="-1"></a>      <span class="kw">define</span>     <span class="co">--Goal : ∃ (n : Nat), f x ∈ rep_image f n B</span></span>
+<span id="cb118-23"><a href="#cb118-23" aria-hidden="true" tabindex="-1"></a>      <span class="kw">apply</span> Exists.intro (m + 1) <span class="co">--Goal : f x ∈ rep_image f (m + 1) B</span></span>
+<span id="cb118-24"><a href="#cb118-24" aria-hidden="true" tabindex="-1"></a>      <span class="kw">rewrite</span> [rep_image_step]   <span class="co">--Goal : f x ∈ image f (rep_image f m B)</span></span>
+<span id="cb118-25"><a href="#cb118-25" aria-hidden="true" tabindex="-1"></a>      <span class="kw">define</span>     <span class="co">--Goal : ∃ (x_1 : A), x_1 ∈ rep_image f m B ∧ f x_1 = f x</span></span>
+<span id="cb118-26"><a href="#cb118-26" aria-hidden="true" tabindex="-1"></a>      <span class="kw">apply</span> Exists.intro x  <span class="co">--Goal : x ∈ rep_image f m B ∧ f x = f x</span></span>
+<span id="cb118-27"><a href="#cb118-27" aria-hidden="true" tabindex="-1"></a>      <span class="kw">apply</span> And.intro h2</span>
+<span id="cb118-28"><a href="#cb118-28" aria-hidden="true" tabindex="-1"></a>      <span class="kw">rfl</span></span>
+<span id="cb118-29"><a href="#cb118-29" aria-hidden="true" tabindex="-1"></a>      <span class="kw">done</span></span>
+<span id="cb118-30"><a href="#cb118-30" aria-hidden="true" tabindex="-1"></a>    <span class="kw">done</span></span>
+<span id="cb118-31"><a href="#cb118-31" aria-hidden="true" tabindex="-1"></a>  · <span class="co">-- Proof that cumul_image f B is smallest</span></span>
+<span id="cb118-32"><a href="#cb118-32" aria-hidden="true" tabindex="-1"></a>    <span class="kw">fix</span> D : Set A</span>
+<span id="cb118-33"><a href="#cb118-33" aria-hidden="true" tabindex="-1"></a>    <span class="kw">assume</span> h1 : D ∈ { D : Set A | B ⊆ D ∧ closed f D }</span>
+<span id="cb118-34"><a href="#cb118-34" aria-hidden="true" tabindex="-1"></a>    <span class="kw">define</span> <span class="kw">at</span> h1  <span class="co">--h1 : B ⊆ D ∧ closed f D</span></span>
+<span id="cb118-35"><a href="#cb118-35" aria-hidden="true" tabindex="-1"></a>    <span class="kw">define</span>   <span class="co">--Goal : ∀ ⦃a : A⦄, a ∈ cumul_image f B → a ∈ D</span></span>
+<span id="cb118-36"><a href="#cb118-36" aria-hidden="true" tabindex="-1"></a>    <span class="kw">fix</span> x : A</span>
+<span id="cb118-37"><a href="#cb118-37" aria-hidden="true" tabindex="-1"></a>    <span class="kw">assume</span> h2 : x ∈ cumul_image f B  <span class="co">--Goal : x ∈ D</span></span>
+<span id="cb118-38"><a href="#cb118-38" aria-hidden="true" tabindex="-1"></a>    <span class="kw">define</span> <span class="kw">at</span> h2  <span class="co">--h2: ∃ (n : Nat), x ∈ rep_image f n B</span></span>
+<span id="cb118-39"><a href="#cb118-39" aria-hidden="true" tabindex="-1"></a>    <span class="kw">obtain</span> (m : Nat) (h3 : x ∈ rep_image f m B) <span class="kw">from</span> h2</span>
+<span id="cb118-40"><a href="#cb118-40" aria-hidden="true" tabindex="-1"></a>    <span class="kw">have</span> h4 : rep_image f m B ⊆ D :=</span>
+<span id="cb118-41"><a href="#cb118-41" aria-hidden="true" tabindex="-1"></a>      rep_image_sub_closed h1.left h1.right m</span>
+<span id="cb118-42"><a href="#cb118-42" aria-hidden="true" tabindex="-1"></a>    <span class="kw">show</span> x ∈ D <span class="kw">from</span> h4 h3</span>
+<span id="cb118-43"><a href="#cb118-43" aria-hidden="true" tabindex="-1"></a>    <span class="kw">done</span></span>
+<span id="cb118-44"><a href="#cb118-44" aria-hidden="true" tabindex="-1"></a>  <span class="kw">done</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <section id="exercises-4" class="level3">
 <h3 class="anchored" data-anchor-id="exercises-4">Exercises</h3>
 <p>1. Recall the following definitions from the exercises of Section 5.4:</p>
-<div class="sourceCode" id="cb120"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb120-1"><a href="#cb120-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> closed_family {A : <span class="kw">Type</span>} (F : Set (A → A)) (C : Set A) : <span class="kw">Prop</span> :=</span>
-<span id="cb120-2"><a href="#cb120-2" aria-hidden="true" tabindex="-1"></a>  ∀ f ∈ F, closed f C</span>
-<span id="cb120-3"><a href="#cb120-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb120-4"><a href="#cb120-4" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> closure_family {A : <span class="kw">Type</span>} (F : Set (A → A)) (B C : Set A) : <span class="kw">Prop</span> :=</span>
-<span id="cb120-5"><a href="#cb120-5" aria-hidden="true" tabindex="-1"></a>  smallestElt (sub A) C { D : Set A | B ⊆ D ∧ closed_family F D }</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb119"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb119-1"><a href="#cb119-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> closed_family {A : <span class="kw">Type</span>} (F : Set (A → A)) (C : Set A) : <span class="kw">Prop</span> :=</span>
+<span id="cb119-2"><a href="#cb119-2" aria-hidden="true" tabindex="-1"></a>  ∀ f ∈ F, closed f C</span>
+<span id="cb119-3"><a href="#cb119-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb119-4"><a href="#cb119-4" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> closure_family {A : <span class="kw">Type</span>} (F : Set (A → A)) (B C : Set A) : <span class="kw">Prop</span> :=</span>
+<span id="cb119-5"><a href="#cb119-5" aria-hidden="true" tabindex="-1"></a>  smallestElt (sub A) C { D : Set A | B ⊆ D ∧ closed_family F D }</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>These definitions say that a set is closed under a family of functions if it is closed under all of the functions in the family, and the closure of a set <code>B</code> under a family of functions is the smallest set containing <code>B</code> that is closed under the family.</p>
 <p>In this exercise we will use the following additional definitions:</p>
-<div class="sourceCode" id="cb121"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb121-1"><a href="#cb121-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> rep_image_family {A : <span class="kw">Type</span>}</span>
-<span id="cb121-2"><a href="#cb121-2" aria-hidden="true" tabindex="-1"></a>    (F : Set (A → A)) (n : Nat) (B : Set A) : Set A :=</span>
-<span id="cb121-3"><a href="#cb121-3" aria-hidden="true" tabindex="-1"></a>  <span class="kw">match</span> n <span class="kw">with</span></span>
-<span id="cb121-4"><a href="#cb121-4" aria-hidden="true" tabindex="-1"></a>    | 0 =&gt; B</span>
-<span id="cb121-5"><a href="#cb121-5" aria-hidden="true" tabindex="-1"></a>    | k + 1 =&gt; { x : A | ∃ f ∈ F, x ∈ image f (rep_image_family F k B) }</span>
-<span id="cb121-6"><a href="#cb121-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb121-7"><a href="#cb121-7" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> cumul_image_family {A : <span class="kw">Type</span>}</span>
-<span id="cb121-8"><a href="#cb121-8" aria-hidden="true" tabindex="-1"></a>    (F : Set (A → A)) (B : Set A) : Set A :=</span>
-<span id="cb121-9"><a href="#cb121-9" aria-hidden="true" tabindex="-1"></a>  { x : A | ∃ (n : Nat), x ∈ rep_image_family F n B }</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb120"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb120-1"><a href="#cb120-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> rep_image_family {A : <span class="kw">Type</span>}</span>
+<span id="cb120-2"><a href="#cb120-2" aria-hidden="true" tabindex="-1"></a>    (F : Set (A → A)) (n : Nat) (B : Set A) : Set A :=</span>
+<span id="cb120-3"><a href="#cb120-3" aria-hidden="true" tabindex="-1"></a>  <span class="kw">match</span> n <span class="kw">with</span></span>
+<span id="cb120-4"><a href="#cb120-4" aria-hidden="true" tabindex="-1"></a>    | 0 =&gt; B</span>
+<span id="cb120-5"><a href="#cb120-5" aria-hidden="true" tabindex="-1"></a>    | k + 1 =&gt; { x : A | ∃ f ∈ F, x ∈ image f (rep_image_family F k B) }</span>
+<span id="cb120-6"><a href="#cb120-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb120-7"><a href="#cb120-7" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> cumul_image_family {A : <span class="kw">Type</span>}</span>
+<span id="cb120-8"><a href="#cb120-8" aria-hidden="true" tabindex="-1"></a>    (F : Set (A → A)) (B : Set A) : Set A :=</span>
+<span id="cb120-9"><a href="#cb120-9" aria-hidden="true" tabindex="-1"></a>  { x : A | ∃ (n : Nat), x ∈ rep_image_family F n B }</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>The following theorems establish that if <code>F : Set (A → A)</code> and <code>B : Set A</code>, then <code>cumul_image_family F B</code> is the closure of <code>B</code> under <code>F</code>. The first two are proven by <code>rfl</code>; the other two are for you to prove.</p>
-<div class="sourceCode" id="cb122"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb122-1"><a href="#cb122-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> rep_image_family_base {A : <span class="kw">Type</span>}</span>
-<span id="cb122-2"><a href="#cb122-2" aria-hidden="true" tabindex="-1"></a>    (F : Set (A → A)) (B : Set A) : rep_image_family F 0 B = B := <span class="kw">by</span> <span class="kw">rfl</span></span>
-<span id="cb122-3"><a href="#cb122-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb122-4"><a href="#cb122-4" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> rep_image_family_step {A : <span class="kw">Type</span>}</span>
-<span id="cb122-5"><a href="#cb122-5" aria-hidden="true" tabindex="-1"></a>    (F : Set (A → A)) (n : Nat) (B : Set A) :</span>
-<span id="cb122-6"><a href="#cb122-6" aria-hidden="true" tabindex="-1"></a>    rep_image_family F (n + 1) B =</span>
-<span id="cb122-7"><a href="#cb122-7" aria-hidden="true" tabindex="-1"></a>    { x : A | ∃ f ∈ F, x ∈ image f (rep_image_family F n B) } := <span class="kw">by</span> <span class="kw">rfl</span></span>
-<span id="cb122-8"><a href="#cb122-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb122-9"><a href="#cb122-9" aria-hidden="true" tabindex="-1"></a><span class="kw">lemma</span> rep_image_family_sub_closed {A : <span class="kw">Type</span>}</span>
-<span id="cb122-10"><a href="#cb122-10" aria-hidden="true" tabindex="-1"></a>    (F : Set (A → A)) (B D : Set A)</span>
-<span id="cb122-11"><a href="#cb122-11" aria-hidden="true" tabindex="-1"></a>    (h1 : B ⊆ D) (h2 : closed_family F D) :</span>
-<span id="cb122-12"><a href="#cb122-12" aria-hidden="true" tabindex="-1"></a>    ∀ (n : Nat), rep_image_family F n B ⊆ D := <span class="cn">sorry</span></span>
-<span id="cb122-13"><a href="#cb122-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb122-14"><a href="#cb122-14" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Exercise_6_5_3 {A : <span class="kw">Type</span>} (F : Set (A → A)) (B : Set A) :</span>
-<span id="cb122-15"><a href="#cb122-15" aria-hidden="true" tabindex="-1"></a>    closure_family F B (cumul_image_family F B) := <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb121"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb121-1"><a href="#cb121-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> rep_image_family_base {A : <span class="kw">Type</span>}</span>
+<span id="cb121-2"><a href="#cb121-2" aria-hidden="true" tabindex="-1"></a>    (F : Set (A → A)) (B : Set A) : rep_image_family F 0 B = B := <span class="kw">by</span> <span class="kw">rfl</span></span>
+<span id="cb121-3"><a href="#cb121-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb121-4"><a href="#cb121-4" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> rep_image_family_step {A : <span class="kw">Type</span>}</span>
+<span id="cb121-5"><a href="#cb121-5" aria-hidden="true" tabindex="-1"></a>    (F : Set (A → A)) (n : Nat) (B : Set A) :</span>
+<span id="cb121-6"><a href="#cb121-6" aria-hidden="true" tabindex="-1"></a>    rep_image_family F (n + 1) B =</span>
+<span id="cb121-7"><a href="#cb121-7" aria-hidden="true" tabindex="-1"></a>    { x : A | ∃ f ∈ F, x ∈ image f (rep_image_family F n B) } := <span class="kw">by</span> <span class="kw">rfl</span></span>
+<span id="cb121-8"><a href="#cb121-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb121-9"><a href="#cb121-9" aria-hidden="true" tabindex="-1"></a><span class="kw">lemma</span> rep_image_family_sub_closed {A : <span class="kw">Type</span>}</span>
+<span id="cb121-10"><a href="#cb121-10" aria-hidden="true" tabindex="-1"></a>    (F : Set (A → A)) (B D : Set A)</span>
+<span id="cb121-11"><a href="#cb121-11" aria-hidden="true" tabindex="-1"></a>    (h1 : B ⊆ D) (h2 : closed_family F D) :</span>
+<span id="cb121-12"><a href="#cb121-12" aria-hidden="true" tabindex="-1"></a>    ∀ (n : Nat), rep_image_family F n B ⊆ D := <span class="cn">sorry</span></span>
+<span id="cb121-13"><a href="#cb121-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb121-14"><a href="#cb121-14" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Exercise_6_5_3 {A : <span class="kw">Type</span>} (F : Set (A → A)) (B : Set A) :</span>
+<span id="cb121-15"><a href="#cb121-15" aria-hidden="true" tabindex="-1"></a>    closure_family F B (cumul_image_family F B) := <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="mdsk">
 
 </div>
 <p>The next two exercises concern the following two definitions from Section 5.4:</p>
-<div class="sourceCode" id="cb123"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb123-1"><a href="#cb123-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> closed2 {A : <span class="kw">Type</span>} (f : A → A → A) (C : Set A) : <span class="kw">Prop</span> :=</span>
-<span id="cb123-2"><a href="#cb123-2" aria-hidden="true" tabindex="-1"></a>  ∀ x ∈ C, ∀ y ∈ C, f x y ∈ C</span>
-<span id="cb123-3"><a href="#cb123-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb123-4"><a href="#cb123-4" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> closure2 {A : <span class="kw">Type</span>} (f : A → A → A) (B C : Set A) : <span class="kw">Prop</span> := </span>
-<span id="cb123-5"><a href="#cb123-5" aria-hidden="true" tabindex="-1"></a>  smallestElt (sub A) C { D : Set A | B ⊆ D ∧ closed2 f D }</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb122"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb122-1"><a href="#cb122-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> closed2 {A : <span class="kw">Type</span>} (f : A → A → A) (C : Set A) : <span class="kw">Prop</span> :=</span>
+<span id="cb122-2"><a href="#cb122-2" aria-hidden="true" tabindex="-1"></a>  ∀ x ∈ C, ∀ y ∈ C, f x y ∈ C</span>
+<span id="cb122-3"><a href="#cb122-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb122-4"><a href="#cb122-4" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> closure2 {A : <span class="kw">Type</span>} (f : A → A → A) (B C : Set A) : <span class="kw">Prop</span> := </span>
+<span id="cb122-5"><a href="#cb122-5" aria-hidden="true" tabindex="-1"></a>  smallestElt (sub A) C { D : Set A | B ⊆ D ∧ closed2 f D }</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>They also use the following definition, which extends the idea of the image of a set under a function to functions of two variables:</p>
-<div class="sourceCode" id="cb124"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb124-1"><a href="#cb124-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> image2 {A : <span class="kw">Type</span>} (f : A → A → A) (B : Set A) : Set A :=</span>
-<span id="cb124-2"><a href="#cb124-2" aria-hidden="true" tabindex="-1"></a>  { z : A | ∃ (x y : A), x ∈ B ∧ y ∈ B ∧ z = f x y }</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb123"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb123-1"><a href="#cb123-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> image2 {A : <span class="kw">Type</span>} (f : A → A → A) (B : Set A) : Set A :=</span>
+<span id="cb123-2"><a href="#cb123-2" aria-hidden="true" tabindex="-1"></a>  { z : A | ∃ (x y : A), x ∈ B ∧ y ∈ B ∧ z = f x y }</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>2. A natural way to try to find the closure of a set under a function of two variables would be to use the following definitions and theorems:</p>
-<div class="sourceCode" id="cb125"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb125-1"><a href="#cb125-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> rep_image2 {A : <span class="kw">Type</span>}</span>
-<span id="cb125-2"><a href="#cb125-2" aria-hidden="true" tabindex="-1"></a>    (f : A → A → A) (n : Nat) (B : Set A) : Set A :=</span>
-<span id="cb125-3"><a href="#cb125-3" aria-hidden="true" tabindex="-1"></a>  <span class="kw">match</span> n <span class="kw">with</span></span>
-<span id="cb125-4"><a href="#cb125-4" aria-hidden="true" tabindex="-1"></a>    | 0 =&gt; B</span>
-<span id="cb125-5"><a href="#cb125-5" aria-hidden="true" tabindex="-1"></a>    | k + 1 =&gt; image2 f (rep_image2 f k B)</span>
-<span id="cb125-6"><a href="#cb125-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb125-7"><a href="#cb125-7" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> rep_image2_base {A : <span class="kw">Type</span>} (f : A → A → A) (B : Set A) :</span>
-<span id="cb125-8"><a href="#cb125-8" aria-hidden="true" tabindex="-1"></a>    rep_image2 f 0 B = B := <span class="kw">by</span> <span class="kw">rfl</span></span>
-<span id="cb125-9"><a href="#cb125-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb125-10"><a href="#cb125-10" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> rep_image2_step {A : <span class="kw">Type</span>}</span>
-<span id="cb125-11"><a href="#cb125-11" aria-hidden="true" tabindex="-1"></a>    (f : A → A → A) (n : Nat) (B : Set A) :</span>
-<span id="cb125-12"><a href="#cb125-12" aria-hidden="true" tabindex="-1"></a>    rep_image2 f (n + 1) B = image2 f (rep_image2 f n B) := <span class="kw">by</span> <span class="kw">rfl</span></span>
-<span id="cb125-13"><a href="#cb125-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb125-14"><a href="#cb125-14" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> cumul_image2 {A : <span class="kw">Type</span>} (f : A → A → A) (B : Set A) : Set A :=</span>
-<span id="cb125-15"><a href="#cb125-15" aria-hidden="true" tabindex="-1"></a>  { x : A | ∃ (n : Nat), x ∈ rep_image2 f n B }</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb124"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb124-1"><a href="#cb124-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> rep_image2 {A : <span class="kw">Type</span>}</span>
+<span id="cb124-2"><a href="#cb124-2" aria-hidden="true" tabindex="-1"></a>    (f : A → A → A) (n : Nat) (B : Set A) : Set A :=</span>
+<span id="cb124-3"><a href="#cb124-3" aria-hidden="true" tabindex="-1"></a>  <span class="kw">match</span> n <span class="kw">with</span></span>
+<span id="cb124-4"><a href="#cb124-4" aria-hidden="true" tabindex="-1"></a>    | 0 =&gt; B</span>
+<span id="cb124-5"><a href="#cb124-5" aria-hidden="true" tabindex="-1"></a>    | k + 1 =&gt; image2 f (rep_image2 f k B)</span>
+<span id="cb124-6"><a href="#cb124-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb124-7"><a href="#cb124-7" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> rep_image2_base {A : <span class="kw">Type</span>} (f : A → A → A) (B : Set A) :</span>
+<span id="cb124-8"><a href="#cb124-8" aria-hidden="true" tabindex="-1"></a>    rep_image2 f 0 B = B := <span class="kw">by</span> <span class="kw">rfl</span></span>
+<span id="cb124-9"><a href="#cb124-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb124-10"><a href="#cb124-10" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> rep_image2_step {A : <span class="kw">Type</span>}</span>
+<span id="cb124-11"><a href="#cb124-11" aria-hidden="true" tabindex="-1"></a>    (f : A → A → A) (n : Nat) (B : Set A) :</span>
+<span id="cb124-12"><a href="#cb124-12" aria-hidden="true" tabindex="-1"></a>    rep_image2 f (n + 1) B = image2 f (rep_image2 f n B) := <span class="kw">by</span> <span class="kw">rfl</span></span>
+<span id="cb124-13"><a href="#cb124-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb124-14"><a href="#cb124-14" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> cumul_image2 {A : <span class="kw">Type</span>} (f : A → A → A) (B : Set A) : Set A :=</span>
+<span id="cb124-15"><a href="#cb124-15" aria-hidden="true" tabindex="-1"></a>  { x : A | ∃ (n : Nat), x ∈ rep_image2 f n B }</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>We could now try to prove that if <code>f : A → A → A</code> and <code>B : Set A</code>, then <code>cumul_image2 f B</code> is the closure of <code>B</code> under <code>f</code>. However, this approach doesn’t work, because <code>cumul_image2 f B</code> might not be closed under <code>f</code>.</p>
 <p>Here is an incorrect informal argument that <code>cumul_image2 f B</code> is closed under <code>f</code>. Suppose <code>x</code> and <code>y</code> are elements of <code>cumul_image2 f B</code>. This means that we can choose some natural number <code>n</code> such that <code>x ∈ rep_image2 f n B</code> and <code>y ∈ rep_image2 f n B</code>. This implies that <code>f x y ∈ image2 f (rep_image2 f n B) = rep_image2 f (n + 1) B</code>, so <code>f x y ∈ cumul_image2 f B</code>.</p>
 <p>Find the mistake in this informal argument by trying to turn it into a proof in Lean:</p>
-<div class="sourceCode" id="cb126"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb126-1"><a href="#cb126-1" aria-hidden="true" tabindex="-1"></a><span class="co">--You won't be able to complete this proof</span></span>
-<span id="cb126-2"><a href="#cb126-2" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Exercise_6_5_6 {A : <span class="kw">Type</span>} (f : A → A → A) (B : Set A) :</span>
-<span id="cb126-3"><a href="#cb126-3" aria-hidden="true" tabindex="-1"></a>    closed2 f (cumul_image2 f B) := <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb125"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb125-1"><a href="#cb125-1" aria-hidden="true" tabindex="-1"></a><span class="co">--You won't be able to complete this proof</span></span>
+<span id="cb125-2"><a href="#cb125-2" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Exercise_6_5_6 {A : <span class="kw">Type</span>} (f : A → A → A) (B : Set A) :</span>
+<span id="cb125-3"><a href="#cb125-3" aria-hidden="true" tabindex="-1"></a>    closed2 f (cumul_image2 f B) := <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>3. In this exercise, we fix the mistake in the attempted proof in the previous exercise. Instead of repeatedly taking the image of a set, we repeatedly take the union of a set with its image:</p>
-<div class="sourceCode" id="cb127"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb127-1"><a href="#cb127-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> un_image2 {A : <span class="kw">Type</span>} (f : A → A → A) (B : Set A) : Set A :=</span>
-<span id="cb127-2"><a href="#cb127-2" aria-hidden="true" tabindex="-1"></a>  B ∪ (image2 f B)</span>
-<span id="cb127-3"><a href="#cb127-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb127-4"><a href="#cb127-4" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> rep_un_image2 {A : <span class="kw">Type</span>}</span>
-<span id="cb127-5"><a href="#cb127-5" aria-hidden="true" tabindex="-1"></a>    (f : A → A → A) (n : Nat) (B : Set A) : Set A :=</span>
-<span id="cb127-6"><a href="#cb127-6" aria-hidden="true" tabindex="-1"></a>  <span class="kw">match</span> n <span class="kw">with</span></span>
-<span id="cb127-7"><a href="#cb127-7" aria-hidden="true" tabindex="-1"></a>    | 0 =&gt; B</span>
-<span id="cb127-8"><a href="#cb127-8" aria-hidden="true" tabindex="-1"></a>    | k + 1 =&gt; un_image2 f (rep_un_image2 f k B)</span>
-<span id="cb127-9"><a href="#cb127-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb127-10"><a href="#cb127-10" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> rep_un_image2_base {A : <span class="kw">Type</span>} (f : A → A → A) (B : Set A) :</span>
-<span id="cb127-11"><a href="#cb127-11" aria-hidden="true" tabindex="-1"></a>    rep_un_image2 f 0 B = B := <span class="kw">by</span> <span class="kw">rfl</span></span>
-<span id="cb127-12"><a href="#cb127-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb127-13"><a href="#cb127-13" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> rep_un_image2_step {A : <span class="kw">Type</span>}</span>
-<span id="cb127-14"><a href="#cb127-14" aria-hidden="true" tabindex="-1"></a>    (f : A → A → A) (n : Nat) (B : Set A) :</span>
-<span id="cb127-15"><a href="#cb127-15" aria-hidden="true" tabindex="-1"></a>    rep_un_image2 f (n + 1) B =</span>
-<span id="cb127-16"><a href="#cb127-16" aria-hidden="true" tabindex="-1"></a>    un_image2 f (rep_un_image2 f n B) := <span class="kw">by</span> <span class="kw">rfl</span></span>
-<span id="cb127-17"><a href="#cb127-17" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb127-18"><a href="#cb127-18" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> cumul_un_image2 {A : <span class="kw">Type</span>}</span>
-<span id="cb127-19"><a href="#cb127-19" aria-hidden="true" tabindex="-1"></a>    (f : A → A → A) (B : Set A) : Set A :=</span>
-<span id="cb127-20"><a href="#cb127-20" aria-hidden="true" tabindex="-1"></a>  { x : A | ∃ (n : Nat), x ∈ rep_un_image2 f n B }</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb126"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb126-1"><a href="#cb126-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> un_image2 {A : <span class="kw">Type</span>} (f : A → A → A) (B : Set A) : Set A :=</span>
+<span id="cb126-2"><a href="#cb126-2" aria-hidden="true" tabindex="-1"></a>  B ∪ (image2 f B)</span>
+<span id="cb126-3"><a href="#cb126-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb126-4"><a href="#cb126-4" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> rep_un_image2 {A : <span class="kw">Type</span>}</span>
+<span id="cb126-5"><a href="#cb126-5" aria-hidden="true" tabindex="-1"></a>    (f : A → A → A) (n : Nat) (B : Set A) : Set A :=</span>
+<span id="cb126-6"><a href="#cb126-6" aria-hidden="true" tabindex="-1"></a>  <span class="kw">match</span> n <span class="kw">with</span></span>
+<span id="cb126-7"><a href="#cb126-7" aria-hidden="true" tabindex="-1"></a>    | 0 =&gt; B</span>
+<span id="cb126-8"><a href="#cb126-8" aria-hidden="true" tabindex="-1"></a>    | k + 1 =&gt; un_image2 f (rep_un_image2 f k B)</span>
+<span id="cb126-9"><a href="#cb126-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb126-10"><a href="#cb126-10" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> rep_un_image2_base {A : <span class="kw">Type</span>} (f : A → A → A) (B : Set A) :</span>
+<span id="cb126-11"><a href="#cb126-11" aria-hidden="true" tabindex="-1"></a>    rep_un_image2 f 0 B = B := <span class="kw">by</span> <span class="kw">rfl</span></span>
+<span id="cb126-12"><a href="#cb126-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb126-13"><a href="#cb126-13" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> rep_un_image2_step {A : <span class="kw">Type</span>}</span>
+<span id="cb126-14"><a href="#cb126-14" aria-hidden="true" tabindex="-1"></a>    (f : A → A → A) (n : Nat) (B : Set A) :</span>
+<span id="cb126-15"><a href="#cb126-15" aria-hidden="true" tabindex="-1"></a>    rep_un_image2 f (n + 1) B =</span>
+<span id="cb126-16"><a href="#cb126-16" aria-hidden="true" tabindex="-1"></a>    un_image2 f (rep_un_image2 f n B) := <span class="kw">by</span> <span class="kw">rfl</span></span>
+<span id="cb126-17"><a href="#cb126-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb126-18"><a href="#cb126-18" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> cumul_un_image2 {A : <span class="kw">Type</span>}</span>
+<span id="cb126-19"><a href="#cb126-19" aria-hidden="true" tabindex="-1"></a>    (f : A → A → A) (B : Set A) : Set A :=</span>
+<span id="cb126-20"><a href="#cb126-20" aria-hidden="true" tabindex="-1"></a>  { x : A | ∃ (n : Nat), x ∈ rep_un_image2 f n B }</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>Now prove that if <code>f : A → A → A</code> and <code>B : Set A</code>, then <code>cumul_un_image2 f B</code> is the closure of <code>B</code> under <code>f</code> by completing the following proofs:</p>
-<div class="sourceCode" id="cb128"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb128-1"><a href="#cb128-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Exercise_6_5_8a {A : <span class="kw">Type</span>} (f : A → A → A) (B : Set A) :</span>
-<span id="cb128-2"><a href="#cb128-2" aria-hidden="true" tabindex="-1"></a>    ∀ (m n : Nat), m ≤ n →</span>
-<span id="cb128-3"><a href="#cb128-3" aria-hidden="true" tabindex="-1"></a>    rep_un_image2 f m B ⊆ rep_un_image2 f n B := <span class="cn">sorry</span></span>
-<span id="cb128-4"><a href="#cb128-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb128-5"><a href="#cb128-5" aria-hidden="true" tabindex="-1"></a><span class="kw">lemma</span> rep_un_image2_sub_closed {A : <span class="kw">Type</span>} {f : A → A → A} {B D : Set A}</span>
-<span id="cb128-6"><a href="#cb128-6" aria-hidden="true" tabindex="-1"></a>    (h1 : B ⊆ D) (h2 : closed2 f D) :</span>
-<span id="cb128-7"><a href="#cb128-7" aria-hidden="true" tabindex="-1"></a>    ∀ (n : Nat), rep_un_image2 f n B ⊆ D := <span class="cn">sorry</span></span>
-<span id="cb128-8"><a href="#cb128-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb128-9"><a href="#cb128-9" aria-hidden="true" tabindex="-1"></a><span class="kw">lemma</span> closed_lemma</span>
-<span id="cb128-10"><a href="#cb128-10" aria-hidden="true" tabindex="-1"></a>    {A : <span class="kw">Type</span>} {f : A → A → A} {B : Set A} {x y : A} {nx ny n : Nat}</span>
-<span id="cb128-11"><a href="#cb128-11" aria-hidden="true" tabindex="-1"></a>    (h1 : x ∈ rep_un_image2 f nx B) (h2 : y ∈ rep_un_image2 f ny B)</span>
-<span id="cb128-12"><a href="#cb128-12" aria-hidden="true" tabindex="-1"></a>    (h3 : nx ≤ n) (h4 : ny ≤ n) :</span>
-<span id="cb128-13"><a href="#cb128-13" aria-hidden="true" tabindex="-1"></a>    f x y ∈ cumul_un_image2 f B := <span class="cn">sorry</span></span>
-<span id="cb128-14"><a href="#cb128-14" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb128-15"><a href="#cb128-15" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Exercise_6_5_8b {A : <span class="kw">Type</span>} (f : A → A → A) (B : Set A) :</span>
-<span id="cb128-16"><a href="#cb128-16" aria-hidden="true" tabindex="-1"></a>    closure2 f B (cumul_un_image2 f B) := <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb127"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb127-1"><a href="#cb127-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Exercise_6_5_8a {A : <span class="kw">Type</span>} (f : A → A → A) (B : Set A) :</span>
+<span id="cb127-2"><a href="#cb127-2" aria-hidden="true" tabindex="-1"></a>    ∀ (m n : Nat), m ≤ n →</span>
+<span id="cb127-3"><a href="#cb127-3" aria-hidden="true" tabindex="-1"></a>    rep_un_image2 f m B ⊆ rep_un_image2 f n B := <span class="cn">sorry</span></span>
+<span id="cb127-4"><a href="#cb127-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb127-5"><a href="#cb127-5" aria-hidden="true" tabindex="-1"></a><span class="kw">lemma</span> rep_un_image2_sub_closed {A : <span class="kw">Type</span>} {f : A → A → A} {B D : Set A}</span>
+<span id="cb127-6"><a href="#cb127-6" aria-hidden="true" tabindex="-1"></a>    (h1 : B ⊆ D) (h2 : closed2 f D) :</span>
+<span id="cb127-7"><a href="#cb127-7" aria-hidden="true" tabindex="-1"></a>    ∀ (n : Nat), rep_un_image2 f n B ⊆ D := <span class="cn">sorry</span></span>
+<span id="cb127-8"><a href="#cb127-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb127-9"><a href="#cb127-9" aria-hidden="true" tabindex="-1"></a><span class="kw">lemma</span> closed_lemma</span>
+<span id="cb127-10"><a href="#cb127-10" aria-hidden="true" tabindex="-1"></a>    {A : <span class="kw">Type</span>} {f : A → A → A} {B : Set A} {x y : A} {nx ny n : Nat}</span>
+<span id="cb127-11"><a href="#cb127-11" aria-hidden="true" tabindex="-1"></a>    (h1 : x ∈ rep_un_image2 f nx B) (h2 : y ∈ rep_un_image2 f ny B)</span>
+<span id="cb127-12"><a href="#cb127-12" aria-hidden="true" tabindex="-1"></a>    (h3 : nx ≤ n) (h4 : ny ≤ n) :</span>
+<span id="cb127-13"><a href="#cb127-13" aria-hidden="true" tabindex="-1"></a>    f x y ∈ cumul_un_image2 f B := <span class="cn">sorry</span></span>
+<span id="cb127-14"><a href="#cb127-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb127-15"><a href="#cb127-15" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Exercise_6_5_8b {A : <span class="kw">Type</span>} (f : A → A → A) (B : Set A) :</span>
+<span id="cb127-16"><a href="#cb127-16" aria-hidden="true" tabindex="-1"></a>    closure2 f B (cumul_un_image2 f B) := <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="mdsk">
 
 </div>
 <p>The remaining exercises in this section use the following definitions:</p>
-<div class="sourceCode" id="cb129"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb129-1"><a href="#cb129-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> idExt (A : <span class="kw">Type</span>) : Set (A × A) := { (x, y) : A × A | x = y }</span>
-<span id="cb129-2"><a href="#cb129-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb129-3"><a href="#cb129-3" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> rep_comp {A : <span class="kw">Type</span>} (R : Set (A × A)) (n : Nat) : Set (A × A) :=</span>
-<span id="cb129-4"><a href="#cb129-4" aria-hidden="true" tabindex="-1"></a>  <span class="kw">match</span> n <span class="kw">with</span></span>
-<span id="cb129-5"><a href="#cb129-5" aria-hidden="true" tabindex="-1"></a>    | 0 =&gt; idExt A</span>
-<span id="cb129-6"><a href="#cb129-6" aria-hidden="true" tabindex="-1"></a>    | k + 1 =&gt; comp (rep_comp R k) R</span>
-<span id="cb129-7"><a href="#cb129-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb129-8"><a href="#cb129-8" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> cumul_comp {A : <span class="kw">Type</span>} (R : Set (A × A)) : Set (A × A) :=</span>
-<span id="cb129-9"><a href="#cb129-9" aria-hidden="true" tabindex="-1"></a>  { (x, y) : A × A | ∃ n ≥ 1, (x, y) ∈ rep_comp R n }</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb128"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb128-1"><a href="#cb128-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> idExt (A : <span class="kw">Type</span>) : Set (A × A) := { (x, y) : A × A | x = y }</span>
+<span id="cb128-2"><a href="#cb128-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb128-3"><a href="#cb128-3" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> rep_comp {A : <span class="kw">Type</span>} (R : Set (A × A)) (n : Nat) : Set (A × A) :=</span>
+<span id="cb128-4"><a href="#cb128-4" aria-hidden="true" tabindex="-1"></a>  <span class="kw">match</span> n <span class="kw">with</span></span>
+<span id="cb128-5"><a href="#cb128-5" aria-hidden="true" tabindex="-1"></a>    | 0 =&gt; idExt A</span>
+<span id="cb128-6"><a href="#cb128-6" aria-hidden="true" tabindex="-1"></a>    | k + 1 =&gt; comp (rep_comp R k) R</span>
+<span id="cb128-7"><a href="#cb128-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb128-8"><a href="#cb128-8" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> cumul_comp {A : <span class="kw">Type</span>} (R : Set (A × A)) : Set (A × A) :=</span>
+<span id="cb128-9"><a href="#cb128-9" aria-hidden="true" tabindex="-1"></a>  { (x, y) : A × A | ∃ n ≥ 1, (x, y) ∈ rep_comp R n }</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="numex" data-arguments="4">
-<div class="sourceCode" id="cb130"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb130-1"><a href="#cb130-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> rep_comp_one {A : <span class="kw">Type</span>} (R : Set (A × A)) :</span>
-<span id="cb130-2"><a href="#cb130-2" aria-hidden="true" tabindex="-1"></a>    rep_comp R 1 = R := <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb129"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb129-1"><a href="#cb129-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> rep_comp_one {A : <span class="kw">Type</span>} (R : Set (A × A)) :</span>
+<span id="cb129-2"><a href="#cb129-2" aria-hidden="true" tabindex="-1"></a>    rep_comp R 1 = R := <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="numex" data-arguments="5">
-<div class="sourceCode" id="cb131"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb131-1"><a href="#cb131-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Exercise_6_5_11 {A : <span class="kw">Type</span>} (R : Set (A × A)) :</span>
-<span id="cb131-2"><a href="#cb131-2" aria-hidden="true" tabindex="-1"></a>    ∀ (m n : Nat), rep_comp R (m + n) =</span>
-<span id="cb131-3"><a href="#cb131-3" aria-hidden="true" tabindex="-1"></a>    comp (rep_comp R m) (rep_comp R n) := <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb130"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb130-1"><a href="#cb130-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Exercise_6_5_11 {A : <span class="kw">Type</span>} (R : Set (A × A)) :</span>
+<span id="cb130-2"><a href="#cb130-2" aria-hidden="true" tabindex="-1"></a>    ∀ (m n : Nat), rep_comp R (m + n) =</span>
+<span id="cb130-3"><a href="#cb130-3" aria-hidden="true" tabindex="-1"></a>    comp (rep_comp R m) (rep_comp R n) := <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="numex" data-arguments="6">
-<div class="sourceCode" id="cb132"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb132-1"><a href="#cb132-1" aria-hidden="true" tabindex="-1"></a><span class="kw">lemma</span> rep_comp_sub_trans {A : <span class="kw">Type</span>} {R S : Set (A × A)}</span>
-<span id="cb132-2"><a href="#cb132-2" aria-hidden="true" tabindex="-1"></a>    (h1 : R ⊆ S) (h2 : transitive (RelFromExt S)) :</span>
-<span id="cb132-3"><a href="#cb132-3" aria-hidden="true" tabindex="-1"></a>    ∀ n ≥ 1, rep_comp R n ⊆ S := <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb131"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb131-1"><a href="#cb131-1" aria-hidden="true" tabindex="-1"></a><span class="kw">lemma</span> rep_comp_sub_trans {A : <span class="kw">Type</span>} {R S : Set (A × A)}</span>
+<span id="cb131-2"><a href="#cb131-2" aria-hidden="true" tabindex="-1"></a>    (h1 : R ⊆ S) (h2 : transitive (RelFromExt S)) :</span>
+<span id="cb131-3"><a href="#cb131-3" aria-hidden="true" tabindex="-1"></a>    ∀ n ≥ 1, rep_comp R n ⊆ S := <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="numex" data-arguments="7">
-<div class="sourceCode" id="cb133"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb133-1"><a href="#cb133-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Exercise_6_5_14 {A : <span class="kw">Type</span>} (R : Set (A × A)) :</span>
-<span id="cb133-2"><a href="#cb133-2" aria-hidden="true" tabindex="-1"></a>    smallestElt (sub (A × A)) (cumul_comp R)</span>
-<span id="cb133-3"><a href="#cb133-3" aria-hidden="true" tabindex="-1"></a>    { S : Set (A × A) | R ⊆ S ∧ transitive (RelFromExt S) } := <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb132"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb132-1"><a href="#cb132-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Exercise_6_5_14 {A : <span class="kw">Type</span>} (R : Set (A × A)) :</span>
+<span id="cb132-2"><a href="#cb132-2" aria-hidden="true" tabindex="-1"></a>    smallestElt (sub (A × A)) (cumul_comp R)</span>
+<span id="cb132-3"><a href="#cb132-3" aria-hidden="true" tabindex="-1"></a>    { S : Set (A × A) | R ⊆ S ∧ transitive (RelFromExt S) } := <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 
 
