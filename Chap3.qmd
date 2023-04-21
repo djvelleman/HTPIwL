@@ -4074,7 +4074,7 @@ theorem Exercise_3_6_10 (U : Type) (A : Set U)
     (h1 : ∀ (F : Set (Set U)), ⋃₀ F = A → A ∈ F) :
     ∃! (x : U), x ∈ A := by
   --Hint:  Start like this:
-  let F0 : Set (Set U) := { X : Set U | X ⊆ A ∧ ∃! (x : U), x ∈ X }
+  set F0 : Set (Set U) := { X : Set U | X ⊆ A ∧ ∃! (x : U), x ∈ X }
   --Now F0 is in the tactic state, with the definition above
   have h2 : ⋃₀ F0 = A := sorry
   

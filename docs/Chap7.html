@@ -252,7 +252,7 @@ $$
 <p>Let’s prove these statements in Lean. Recall that in Lean, the remainder when <code>a</code> is divided by <code>b</code> is called <code>a</code> mod <code>b</code>, and it is denoted <code>a % b</code>. We’ll prove the first statement, and leave the second as an exercise for you. It will be convenient for our work with greatest common divisors in Lean to let <code>a</code> and <code>b</code> be natural numbers rather than positive integers (thus allowing either of them to be zero).</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> dvd_mod_of_dvd_a_b {a b d : Nat}</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>    (h1 : d ∣ a) (h2 : d ∣ b) : d ∣ (a % b) := <span class="kw">by</span></span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>  <span class="kw">let</span> q : Nat := a / b</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>  set q : Nat := a / b</span>
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>  <span class="kw">have</span> h3 : b * q + a % b = a := Nat.div_add_mod a b</span>
 <span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>  <span class="kw">obtain</span> (j : Nat) (h4 : a = d * j) <span class="kw">from</span> h1</span>
 <span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>  <span class="kw">obtain</span> (k : Nat) (h5 : b = d * k) <span class="kw">from</span> h2</span>
@@ -412,25 +412,20 @@ s = t', \qquad t = s' - t'q.
 <span id="cb14-13"><a href="#cb14-13" aria-hidden="true" tabindex="-1"></a>    <span class="kw">done</span></span>
 <span id="cb14-14"><a href="#cb14-14" aria-hidden="true" tabindex="-1"></a>  · <span class="co">-- Case 2. h1 : b ≠ 0</span></span>
 <span id="cb14-15"><a href="#cb14-15" aria-hidden="true" tabindex="-1"></a>    <span class="kw">rewrite</span> [gcd_c1_nonzero a h1, gcd_c2_nonzero a h1, gcd_of_nonzero a h1]</span>
-<span id="cb14-16"><a href="#cb14-16" aria-hidden="true" tabindex="-1"></a>    <span class="kw">let</span> r : Nat := a % b</span>
-<span id="cb14-17"><a href="#cb14-17" aria-hidden="true" tabindex="-1"></a>    <span class="kw">let</span> q : Nat := a / b</span>
-<span id="cb14-18"><a href="#cb14-18" aria-hidden="true" tabindex="-1"></a>    <span class="kw">let</span> s : Int := gcd_c1 b r</span>
-<span id="cb14-19"><a href="#cb14-19" aria-hidden="true" tabindex="-1"></a>    <span class="kw">let</span> t : Int := gcd_c2 b r</span>
-<span id="cb14-20"><a href="#cb14-20" aria-hidden="true" tabindex="-1"></a>    <span class="kw">have</span> hr : a % b = r := <span class="kw">by</span> <span class="kw">rfl</span></span>
-<span id="cb14-21"><a href="#cb14-21" aria-hidden="true" tabindex="-1"></a>    <span class="kw">have</span> hq : a / b = q := <span class="kw">by</span> <span class="kw">rfl</span></span>
-<span id="cb14-22"><a href="#cb14-22" aria-hidden="true" tabindex="-1"></a>    <span class="kw">have</span> hs : gcd_c1 b r = s := <span class="kw">by</span> <span class="kw">rfl</span></span>
-<span id="cb14-23"><a href="#cb14-23" aria-hidden="true" tabindex="-1"></a>    <span class="kw">have</span> ht : gcd_c2 b r = t := <span class="kw">by</span> <span class="kw">rfl</span></span>
-<span id="cb14-24"><a href="#cb14-24" aria-hidden="true" tabindex="-1"></a>    <span class="kw">rewrite</span> [hr, hq, hs, ht]</span>
-<span id="cb14-25"><a href="#cb14-25" aria-hidden="true" tabindex="-1"></a>      <span class="co">--Goal : t * ↑a + (s - t * ↑q) * ↑b = ↑(gcd b r)</span></span>
-<span id="cb14-26"><a href="#cb14-26" aria-hidden="true" tabindex="-1"></a>    <span class="kw">have</span> h2 : r &lt; b := mod_nonzero_lt a h1</span>
-<span id="cb14-27"><a href="#cb14-27" aria-hidden="true" tabindex="-1"></a>    <span class="kw">have</span> h3 : s * ↑b + t * ↑r = ↑(gcd b r) := ih r h2 b</span>
-<span id="cb14-28"><a href="#cb14-28" aria-hidden="true" tabindex="-1"></a>    <span class="kw">have</span> h4 : b * q + r = a := Nat.div_add_mod a b</span>
-<span id="cb14-29"><a href="#cb14-29" aria-hidden="true" tabindex="-1"></a>    <span class="kw">rewrite</span> [←h3, ←h4]</span>
-<span id="cb14-30"><a href="#cb14-30" aria-hidden="true" tabindex="-1"></a>    <span class="kw">rewrite</span> [Nat.cast_add, Nat.cast_mul]</span>
-<span id="cb14-31"><a href="#cb14-31" aria-hidden="true" tabindex="-1"></a>      <span class="co">--Goal : t * (↑b * ↑q + ↑r) + (s - t * ↑q) * ↑b = s * ↑b + t * ↑r</span></span>
-<span id="cb14-32"><a href="#cb14-32" aria-hidden="true" tabindex="-1"></a>    <span class="kw">ring</span></span>
-<span id="cb14-33"><a href="#cb14-33" aria-hidden="true" tabindex="-1"></a>    <span class="kw">done</span></span>
-<span id="cb14-34"><a href="#cb14-34" aria-hidden="true" tabindex="-1"></a>  <span class="kw">done</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb14-16"><a href="#cb14-16" aria-hidden="true" tabindex="-1"></a>    set r : Nat := a % b</span>
+<span id="cb14-17"><a href="#cb14-17" aria-hidden="true" tabindex="-1"></a>    set q : Nat := a / b</span>
+<span id="cb14-18"><a href="#cb14-18" aria-hidden="true" tabindex="-1"></a>    set s : Int := gcd_c1 b r</span>
+<span id="cb14-19"><a href="#cb14-19" aria-hidden="true" tabindex="-1"></a>    set t : Int := gcd_c2 b r</span>
+<span id="cb14-20"><a href="#cb14-20" aria-hidden="true" tabindex="-1"></a>      <span class="co">--Goal : t * ↑a + (s - t * ↑q) * ↑b = ↑(gcd b r)</span></span>
+<span id="cb14-21"><a href="#cb14-21" aria-hidden="true" tabindex="-1"></a>    <span class="kw">have</span> h2 : r &lt; b := mod_nonzero_lt a h1</span>
+<span id="cb14-22"><a href="#cb14-22" aria-hidden="true" tabindex="-1"></a>    <span class="kw">have</span> h3 : s * ↑b + t * ↑r = ↑(gcd b r) := ih r h2 b</span>
+<span id="cb14-23"><a href="#cb14-23" aria-hidden="true" tabindex="-1"></a>    <span class="kw">have</span> h4 : b * q + r = a := Nat.div_add_mod a b</span>
+<span id="cb14-24"><a href="#cb14-24" aria-hidden="true" tabindex="-1"></a>    <span class="kw">rewrite</span> [←h3, ←h4]</span>
+<span id="cb14-25"><a href="#cb14-25" aria-hidden="true" tabindex="-1"></a>    <span class="kw">rewrite</span> [Nat.cast_add, Nat.cast_mul]</span>
+<span id="cb14-26"><a href="#cb14-26" aria-hidden="true" tabindex="-1"></a>      <span class="co">--Goal : t * (↑b * ↑q + ↑r) + (s - t * ↑q) * ↑b = s * ↑b + t * ↑r</span></span>
+<span id="cb14-27"><a href="#cb14-27" aria-hidden="true" tabindex="-1"></a>    <span class="kw">ring</span></span>
+<span id="cb14-28"><a href="#cb14-28" aria-hidden="true" tabindex="-1"></a>    <span class="kw">done</span></span>
+<span id="cb14-29"><a href="#cb14-29" aria-hidden="true" tabindex="-1"></a>  <span class="kw">done</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>For clarity, we have written the coercions explicitly in this proof. In case 2, we have introduced the variables <code>r</code>, <code>q</code>, <code>s</code>, and <code>t</code> to simplify the notation. After the step <code>rewrite [←h3, ←h4]</code>, the goal contains the expression <code>↑(b * q + r)</code>. You can use the <code>#check</code> command to see why <code>Nat.cast_add</code> and <code>Nat.cast_mul</code> convert this expression to first <code>↑(b * q) + ↑r</code> and then <code>↑b * ↑q + ↑r</code>.</p>
 <p>We can try out the functions <code>gcd_c1</code> and <code>gcd_c2</code> as follows:</p>
 <div class="sourceCode" id="cb15"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="sc">++</span><span class="do">#eval</span><span class="sc">::</span> gcd_c1 672 161  <span class="co">--Answer: 6</span></span>
@@ -440,8 +435,8 @@ s = t', \qquad t = s' - t'q.
 <div class="sourceCode" id="cb16"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Theorem_7_1_6 {d a b : Nat} (h1 : d ∣ a) (h2 : d ∣ b) :</span>
 <span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>    d ∣ gcd a b := <span class="kw">by</span></span>
 <span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>  <span class="kw">rewrite</span> [←Int.coe_nat_dvd]    <span class="co">--Goal : ↑d ∣ ↑(gcd a b)</span></span>
-<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>  <span class="kw">let</span> s : Int := gcd_c1 a b</span>
-<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>  <span class="kw">let</span> t : Int := gcd_c2 a b</span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>  set s : Int := gcd_c1 a b</span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>  set t : Int := gcd_c2 a b</span>
 <span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>  <span class="kw">have</span> h3 : s * ↑a + t * ↑b = ↑(gcd a b) := gcd_lin_comb b a</span>
 <span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a>  <span class="kw">rewrite</span> [←h3]                 <span class="co">--Goal : ↑d ∣ s * ↑a + t * ↑b</span></span>
 <span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a>  <span class="kw">obtain</span> (j : Nat) (h4 : a = d * j) <span class="kw">from</span> h1</span>
@@ -505,8 +500,8 @@ s = t', \qquad t = s' - t'q.
 <span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>  <span class="kw">rewrite</span> [←Int.coe_nat_dvd]  <span class="co">--Goal : ↑c ∣ ↑b</span></span>
 <span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a>  <span class="kw">define</span> <span class="kw">at</span> h1; <span class="kw">define</span> <span class="kw">at</span> h2; <span class="kw">define</span></span>
 <span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a>  <span class="kw">obtain</span> (j : Nat) (h3 : a * b = c * j) <span class="kw">from</span> h1</span>
-<span id="cb25-6"><a href="#cb25-6" aria-hidden="true" tabindex="-1"></a>  <span class="kw">let</span> s : Int := gcd_c1 a c</span>
-<span id="cb25-7"><a href="#cb25-7" aria-hidden="true" tabindex="-1"></a>  <span class="kw">let</span> t : Int := gcd_c2 a c</span>
+<span id="cb25-6"><a href="#cb25-6" aria-hidden="true" tabindex="-1"></a>  set s : Int := gcd_c1 a c</span>
+<span id="cb25-7"><a href="#cb25-7" aria-hidden="true" tabindex="-1"></a>  set t : Int := gcd_c2 a c</span>
 <span id="cb25-8"><a href="#cb25-8" aria-hidden="true" tabindex="-1"></a>  <span class="kw">have</span> h4 : s * ↑a + t * ↑c = ↑(gcd a c) := gcd_lin_comb c a</span>
 <span id="cb25-9"><a href="#cb25-9" aria-hidden="true" tabindex="-1"></a>  <span class="kw">rewrite</span> [h2, Nat.cast_one] <span class="kw">at</span> h4  <span class="co">--h4 : s * ↑a + t * ↑c = (1 : Int)</span></span>
 <span id="cb25-10"><a href="#cb25-10" aria-hidden="true" tabindex="-1"></a>  <span class="kw">apply</span> Exists.intro (s * ↑j + t * ↑b)</span>
@@ -1239,7 +1234,7 @@ Int.emod_nonneg : ∀ (a : ℤ) {b : ℤ}, b ≠ 0 → 0 ≤ a % b</code></pre>
 <span id="cb64-3"><a href="#cb64-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb64-4"><a href="#cb64-4" aria-hidden="true" tabindex="-1"></a><span class="kw">lemma</span> gcd_c2_inv {m a : Nat} (h1 : rel_prime m a) :</span>
 <span id="cb64-5"><a href="#cb64-5" aria-hidden="true" tabindex="-1"></a>    (cc m a) * (cc m (gcd_c2 m a)) = cc m 1 := <span class="kw">by</span></span>
-<span id="cb64-6"><a href="#cb64-6" aria-hidden="true" tabindex="-1"></a>  <span class="kw">let</span> s : Int := gcd_c1 m a</span>
+<span id="cb64-6"><a href="#cb64-6" aria-hidden="true" tabindex="-1"></a>  set s : Int := gcd_c1 m a</span>
 <span id="cb64-7"><a href="#cb64-7" aria-hidden="true" tabindex="-1"></a>  <span class="kw">have</span> h2 : s * m + (gcd_c2 m a) * a = gcd m a := gcd_lin_comb a m</span>
 <span id="cb64-8"><a href="#cb64-8" aria-hidden="true" tabindex="-1"></a>  <span class="kw">define</span> <span class="kw">at</span> h1</span>
 <span id="cb64-9"><a href="#cb64-9" aria-hidden="true" tabindex="-1"></a>  <span class="kw">rewrite</span> [h1, Nat.cast_one] <span class="kw">at</span> h2</span>
@@ -1578,20 +1573,26 @@ Int.emod_nonneg : ∀ (a : ℤ) {b : ℤ}, b ≠ 0 → 0 ≤ a % b</code></pre>
 <span id="cb84-13"><a href="#cb84-13" aria-hidden="true" tabindex="-1"></a>      _ = cc m 1 := <span class="kw">by</span> <span class="kw">rw</span> [h3]</span>
 <span id="cb84-14"><a href="#cb84-14" aria-hidden="true" tabindex="-1"></a>  <span class="kw">done</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>Rephrasing this theorem in terms of numbers gives us the usual statement of Euler’s theorem:</p>
-<div class="sourceCode" id="cb85"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb85-1"><a href="#cb85-1" aria-hidden="true" tabindex="-1"></a><span class="kw">lemma</span> Exercise_7_4_5 (m : Nat) (a : Int) :</span>
+<div class="sourceCode" id="cb85"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb85-1"><a href="#cb85-1" aria-hidden="true" tabindex="-1"></a><span class="kw">lemma</span> Exercise_7_4_5_Int (m : Nat) (a : Int) :</span>
 <span id="cb85-2"><a href="#cb85-2" aria-hidden="true" tabindex="-1"></a>    ∀ (n : Nat), (cc m a) ^ n = cc m (a ^ n) := <span class="cn">sorry</span></span>
 <span id="cb85-3"><a href="#cb85-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb85-4"><a href="#cb85-4" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Theorem_7_4_3_Euler's_theorem (m a : Nat) [NeZero m]</span>
-<span id="cb85-5"><a href="#cb85-5" aria-hidden="true" tabindex="-1"></a>    (h1 : rel_prime m a) : congr_mod m (a ^ (phi m)) 1 := <span class="kw">by</span></span>
-<span id="cb85-6"><a href="#cb85-6" aria-hidden="true" tabindex="-1"></a>  <span class="kw">have</span> h2 : (cc m a) ^ (phi m) = cc m 1 := Theorem_7_4_2 m a h1</span>
-<span id="cb85-7"><a href="#cb85-7" aria-hidden="true" tabindex="-1"></a>  <span class="kw">rewrite</span> [Exercise_7_4_5 m a (phi m), ←Nat.cast_pow] <span class="kw">at</span> h2</span>
-<span id="cb85-8"><a href="#cb85-8" aria-hidden="true" tabindex="-1"></a>    <span class="co">--h2 : cc m ↑(a ^ phi m) = cc m 1</span></span>
-<span id="cb85-9"><a href="#cb85-9" aria-hidden="true" tabindex="-1"></a>  <span class="kw">show</span> congr_mod m (a ^ (phi m)) 1 <span class="kw">from</span> (cc_eq_iff_congr _ _ _).ltr h2</span>
-<span id="cb85-10"><a href="#cb85-10" aria-hidden="true" tabindex="-1"></a>  <span class="kw">done</span></span>
-<span id="cb85-11"><a href="#cb85-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb85-12"><a href="#cb85-12" aria-hidden="true" tabindex="-1"></a><span class="kw">#eval</span> gcd 10 7     <span class="co">--Answer: 1.  So 10 and 7 are relatively prime</span></span>
-<span id="cb85-13"><a href="#cb85-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb85-14"><a href="#cb85-14" aria-hidden="true" tabindex="-1"></a><span class="kw">#eval</span> 7 ^ phi 10   <span class="co">--Answer: 2401, which is congruent to 1 mod 10.</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb85-4"><a href="#cb85-4" aria-hidden="true" tabindex="-1"></a><span class="kw">lemma</span> Exercise_7_4_5_Nat (m a n : Nat) :</span>
+<span id="cb85-5"><a href="#cb85-5" aria-hidden="true" tabindex="-1"></a>    (cc m a) ^ n = cc m (a ^ n) := <span class="kw">by</span></span>
+<span id="cb85-6"><a href="#cb85-6" aria-hidden="true" tabindex="-1"></a>  <span class="kw">rewrite</span> [Exercise_7_4_5_Int, Nat.cast_pow]</span>
+<span id="cb85-7"><a href="#cb85-7" aria-hidden="true" tabindex="-1"></a>  <span class="kw">rfl</span></span>
+<span id="cb85-8"><a href="#cb85-8" aria-hidden="true" tabindex="-1"></a>  <span class="kw">done</span></span>
+<span id="cb85-9"><a href="#cb85-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb85-10"><a href="#cb85-10" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Theorem_7_4_3_Euler's_theorem (m a : Nat) [NeZero m]</span>
+<span id="cb85-11"><a href="#cb85-11" aria-hidden="true" tabindex="-1"></a>    (h1 : rel_prime m a) : congr_mod m (a ^ (phi m)) 1 := <span class="kw">by</span></span>
+<span id="cb85-12"><a href="#cb85-12" aria-hidden="true" tabindex="-1"></a>  <span class="kw">have</span> h2 : (cc m a) ^ (phi m) = cc m 1 := Theorem_7_4_2 m a h1</span>
+<span id="cb85-13"><a href="#cb85-13" aria-hidden="true" tabindex="-1"></a>  <span class="kw">rewrite</span> [Exercise_7_4_5_Nat m a (phi m)] <span class="kw">at</span> h2</span>
+<span id="cb85-14"><a href="#cb85-14" aria-hidden="true" tabindex="-1"></a>    <span class="co">--h2 : cc m ↑(a ^ phi m) = cc m 1</span></span>
+<span id="cb85-15"><a href="#cb85-15" aria-hidden="true" tabindex="-1"></a>  <span class="kw">show</span> congr_mod m (a ^ (phi m)) 1 <span class="kw">from</span> (cc_eq_iff_congr _ _ _).ltr h2</span>
+<span id="cb85-16"><a href="#cb85-16" aria-hidden="true" tabindex="-1"></a>  <span class="kw">done</span></span>
+<span id="cb85-17"><a href="#cb85-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb85-18"><a href="#cb85-18" aria-hidden="true" tabindex="-1"></a><span class="kw">#eval</span> gcd 10 7     <span class="co">--Answer: 1.  So 10 and 7 are relatively prime</span></span>
+<span id="cb85-19"><a href="#cb85-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb85-20"><a href="#cb85-20" aria-hidden="true" tabindex="-1"></a><span class="kw">#eval</span> 7 ^ phi 10   <span class="co">--Answer: 2401, which is congruent to 1 mod 10.</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>We now turn to the two lemmas whose proofs we skipped over, <code>G_perm_below</code> and <code>perm_prod</code>. To prove <code>G_perm_below</code>, we must prove three facts: <code>maps_below m (G m a)</code>, <code>one_one_below m (G m a)</code>, and <code>onto_below m (G m a)</code>. The first is straightforward:</p>
 <div class="sourceCode" id="cb86"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb86-1"><a href="#cb86-1" aria-hidden="true" tabindex="-1"></a><span class="kw">lemma</span> G_maps_below (m a : Nat) [NeZero m] : maps_below m (G m a) := <span class="kw">by</span></span>
 <span id="cb86-2"><a href="#cb86-2" aria-hidden="true" tabindex="-1"></a>  <span class="kw">define</span>             <span class="co">--Goal : ∀ (i : Nat), i &lt; m → G m a i &lt; m</span></span>

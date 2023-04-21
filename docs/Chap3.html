@@ -3427,7 +3427,7 @@ x \in A \cap (B \setmin C) &amp;\text{ iff } x \in A \wedge x \in B \setmin C\\
 <span id="cb260-2"><a href="#cb260-2" aria-hidden="true" tabindex="-1"></a>    (h1 : ∀ (F : Set (Set U)), ⋃₀ F = A → A ∈ F) :</span>
 <span id="cb260-3"><a href="#cb260-3" aria-hidden="true" tabindex="-1"></a>    ∃! (x : U), x ∈ A := <span class="kw">by</span></span>
 <span id="cb260-4"><a href="#cb260-4" aria-hidden="true" tabindex="-1"></a>  <span class="co">--Hint:  Start like this:</span></span>
-<span id="cb260-5"><a href="#cb260-5" aria-hidden="true" tabindex="-1"></a>  <span class="kw">let</span> F0 : Set (Set U) := { X : Set U | X ⊆ A ∧ ∃! (x : U), x ∈ X }</span>
+<span id="cb260-5"><a href="#cb260-5" aria-hidden="true" tabindex="-1"></a>  set F0 : Set (Set U) := { X : Set U | X ⊆ A ∧ ∃! (x : U), x ∈ X }</span>
 <span id="cb260-6"><a href="#cb260-6" aria-hidden="true" tabindex="-1"></a>  <span class="co">--Now F0 is in the tactic state, with the definition above</span></span>
 <span id="cb260-7"><a href="#cb260-7" aria-hidden="true" tabindex="-1"></a>  <span class="kw">have</span> h2 : ⋃₀ F0 = A := <span class="cn">sorry</span></span>
 <span id="cb260-8"><a href="#cb260-8" aria-hidden="true" tabindex="-1"></a>  </span>

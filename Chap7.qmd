@@ -9,7 +9,7 @@ Let's prove these statements in Lean.  Recall that in Lean, the remainder when `
 ```lean
 theorem dvd_mod_of_dvd_a_b {a b d : Nat}
     (h1 : d ∣ a) (h2 : d ∣ b) : d ∣ (a % b) := by
-  let q : Nat := a / b
+  set q : Nat := a / b
   have h3 : b * q + a % b = a := Nat.div_add_mod a b
   obtain (j : Nat) (h4 : a = d * j) from h1
   obtain (k : Nat) (h5 : b = d * k) from h2
@@ -235,15 +235,10 @@ theorem gcd_lin_comb : ∀ (b a : Nat),
     done
   · -- Case 2. h1 : b ≠ 0
     rewrite [gcd_c1_nonzero a h1, gcd_c2_nonzero a h1, gcd_of_nonzero a h1]
-    let r : Nat := a % b
-    let q : Nat := a / b
-    let s : Int := gcd_c1 b r
-    let t : Int := gcd_c2 b r
-    have hr : a % b = r := by rfl
-    have hq : a / b = q := by rfl
-    have hs : gcd_c1 b r = s := by rfl
-    have ht : gcd_c2 b r = t := by rfl
-    rewrite [hr, hq, hs, ht]
+    set r : Nat := a % b
+    set q : Nat := a / b
+    set s : Int := gcd_c1 b r
+    set t : Int := gcd_c2 b r
       --Goal : t * ↑a + (s - t * ↑q) * ↑b = ↑(gcd b r)
     have h2 : r < b := mod_nonzero_lt a h1
     have h3 : s * ↑b + t * ↑r = ↑(gcd b r) := ih r h2 b
@@ -272,8 +267,8 @@ Finally, we turn to Theorem 7.1.6 in *HTPI*, which expresses one of the senses i
 theorem Theorem_7_1_6 {d a b : Nat} (h1 : d ∣ a) (h2 : d ∣ b) :
     d ∣ gcd a b := by
   rewrite [←Int.coe_nat_dvd]    --Goal : ↑d ∣ ↑(gcd a b)
-  let s : Int := gcd_c1 a b
-  let t : Int := gcd_c2 a b
+  set s : Int := gcd_c1 a b
+  set t : Int := gcd_c2 a b
   have h3 : s * ↑a + t * ↑b = ↑(gcd a b) := gcd_lin_comb b a
   rewrite [←h3]                 --Goal : ↑d ∣ s * ↑a + t * ↑b
   obtain (j : Nat) (h4 : a = d * j) from h1
@@ -365,8 +360,8 @@ theorem Theorem_7_2_2 {a b c : Nat}
   rewrite [←Int.coe_nat_dvd]  --Goal : ↑c ∣ ↑b
   define at h1; define at h2; define
   obtain (j : Nat) (h3 : a * b = c * j) from h1
-  let s : Int := gcd_c1 a c
-  let t : Int := gcd_c2 a c
+  set s : Int := gcd_c1 a c
+  set t : Int := gcd_c2 a c
   have h4 : s * ↑a + t * ↑c = ↑(gcd a c) := gcd_lin_comb c a
   rewrite [h2, Nat.cast_one] at h4  --h4 : s * ↑a + t * ↑c = (1 : Int)
   apply Exists.intro (s * ↑j + t * ↑b)
@@ -1255,7 +1250,7 @@ theorem Exercise_7_2_6 (a b : Nat) :
 
 lemma gcd_c2_inv {m a : Nat} (h1 : rel_prime m a) :
     (cc m a) * (cc m (gcd_c2 m a)) = cc m 1 := by
-  let s : Int := gcd_c1 m a
+  set s : Int := gcd_c1 m a
   have h2 : s * m + (gcd_c2 m a) * a = gcd m a := gcd_lin_comb a m
   define at h1
   rewrite [h1, Nat.cast_one] at h2
@@ -1681,13 +1676,19 @@ theorem Theorem_7_4_2 (m a : Nat) [NeZero m] (h1 : rel_prime m a) :
 Rephrasing this theorem in terms of numbers gives us the usual statement of Euler's theorem:
 
 ```lean
-lemma Exercise_7_4_5 (m : Nat) (a : Int) :
+lemma Exercise_7_4_5_Int (m : Nat) (a : Int) :
     ∀ (n : Nat), (cc m a) ^ n = cc m (a ^ n) := sorry
+
+lemma Exercise_7_4_5_Nat (m a n : Nat) :
+    (cc m a) ^ n = cc m (a ^ n) := by
+  rewrite [Exercise_7_4_5_Int, Nat.cast_pow]
+  rfl
+  done
 
 theorem Theorem_7_4_3_Euler's_theorem (m a : Nat) [NeZero m]
     (h1 : rel_prime m a) : congr_mod m (a ^ (phi m)) 1 := by
   have h2 : (cc m a) ^ (phi m) = cc m 1 := Theorem_7_4_2 m a h1
-  rewrite [Exercise_7_4_5 m a (phi m), ←Nat.cast_pow] at h2
+  rewrite [Exercise_7_4_5_Nat m a (phi m)] at h2
     --h2 : cc m ↑(a ^ phi m) = cc m 1
   show congr_mod m (a ^ (phi m)) 1 from (cc_eq_iff_congr _ _ _).ltr h2
   done

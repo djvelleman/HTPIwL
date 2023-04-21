@@ -915,12 +915,12 @@ theorem Theorem_4_5_6 {A : Type} (F : Set (Set A)) (h: partition F) :
     ∃ (R : BinRel A), equiv_rel R ∧ mod A R = F
 ```
 
-Of course, the relation `R` that we will use to prove the theorem is `EqRelFromPart F`, so we could start the proof with the tactic `apply Exists.intro (EqRelFromPart F)`.  But this means that the rest of the proof will involve many statements about the relation `EqRelFromPart F`.  When a complicated object appears multiple times in a proof, it can make the proof a little easier to read if we give that object a name.  We can do that by using a new tactic.  The tactic `let R : BinRel A := EqRelFromPart F` introduces the new variable `R` into the tactic state.  The variable `R` has type `BinRel A`, and it is definitionally equal to `EqRelFromPart F`.  That means that, when necessary, Lean will fill in this definition of `R`.  For example, one of our first steps will be to apply `Lemma_4_5_7` to `F` and `h`.  The conclusion of that lemma is `equiv_rel (EqRelFromPart F)`, but Lean will recognize this as meaning the same thing as `equiv_rel R`.  Here is the proof of the theorem:
+Of course, the relation `R` that we will use to prove the theorem is `EqRelFromPart F`, so we could start the proof with the tactic `apply Exists.intro (EqRelFromPart F)`.  But this means that the rest of the proof will involve many statements about the relation `EqRelFromPart F`.  When a complicated object appears multiple times in a proof, it can make the proof a little easier to read if we give that object a name.  We can do that by using a new tactic.  The tactic `set R : BinRel A := EqRelFromPart F` introduces the new variable `R` into the tactic state.  The variable `R` has type `BinRel A`, and it is definitionally equal to `EqRelFromPart F`.  That means that, when necessary, Lean will fill in this definition of `R`.  For example, one of our first steps will be to apply `Lemma_4_5_7` to `F` and `h`.  The conclusion of that lemma is `equiv_rel (EqRelFromPart F)`, but Lean will recognize this as meaning the same thing as `equiv_rel R`.  Here is the proof of the theorem:
 
 ```lean
 theorem Theorem_4_5_6 {A : Type} (F : Set (Set A)) (h: partition F) :
     ∃ (R : BinRel A), equiv_rel R ∧ mod A R = F := by
-  let R : BinRel A := EqRelFromPart F
+  set R : BinRel A := EqRelFromPart F
   apply Exists.intro R               --Goal : equiv_rel R ∧ mod A R = F
   apply And.intro (Lemma_4_5_7 F h)  --Goal : mod A R = F
   apply Set.ext

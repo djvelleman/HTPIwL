@@ -560,7 +560,7 @@ theorem Example_6_2_1 {A : Type} (R : BinRel A) (h : partial_order R) :
     assume h3 : numElts B (n + 1)
     have h4 : n + 1 > 0 := by linarith
     obtain (b : A) (h5 : b ∈ B) from nonempty_of_pos_numElts h3 h4
-    let B' : Set A := B \ {b}
+    set B' : Set A := B \ {b}
     have h6 : numElts B' n := remove_one_numElts h3 h5
     obtain (c : A) (h7 : minimalElt R c B') from ih B' h6
     by_cases h8 : R b c
@@ -679,7 +679,7 @@ theorem Exercise_6_2_2 {A : Type} (R : BinRel A) (h : partial_order R) :
     assume h2 : numElts B (n + 1)
     have h3 : n + 1 > 0 := by linarith
     obtain (b : A) (h4 : b ∈ B) from nonempty_of_pos_numElts h2 h3
-    let B' : Set A := B \ {b}
+    set B' : Set A := B \ {b}
     have h5 : numElts B' n := remove_one_numElts h2 h4
     have h6 : ∃ (T : BinRel A), partial_order T ∧
       (∀ (x y : A), R x y → T x y) ∧
@@ -691,7 +691,7 @@ theorem Exercise_6_2_2 {A : Type} (R : BinRel A) (h : partial_order R) :
     have T'extR : ∀ (x y : A), R x y → T' x y := h7.right.left
     have T'compB' : ∀ (x : A), x ∈ B' →
       ∀ (y : A), T' x y ∨ T' y x := h7.right.right
-    let T : BinRel A := extendPO T' b
+    set T : BinRel A := extendPO T' b
     apply Exists.intro T
     apply And.intro (extendPO_is_po T' b T'po)
     apply And.intro
@@ -1358,7 +1358,7 @@ theorem Example_6_4_1 : ∀ m > 0, ∀ (n : Nat),
     done
   · -- Case 2. h2 : ¬n < m
     have h3 : m ≤ n := by linarith
-    let k : Nat := n - m
+    set k : Nat := n - m
     have h4 : k < n := Nat.sub_lt_of_pos_le m n h1 h3
     have h5 : ∃ (q r : Nat), k = m * q + r ∧ r < m := ih k h4
     obtain (q' : Nat)
@@ -1555,7 +1555,7 @@ would be nonempty, and therefore, by the well ordering principle, it would have 
 ```lean
 theorem sqrt_2_irrat :
     ¬∃ (q p : Nat), p * p = 2 * (q * q) ∧ q ≠ 0 := by
-  let S : Set Nat :=
+  set S : Set Nat :=
     { q : Nat | ∃ (p : Nat), p * p = 2 * (q * q) ∧ q ≠ 0 }
   by_contra h1
   have h2 : ∃ (q : Nat), q ∈ S := h1
