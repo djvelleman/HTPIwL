@@ -2,6 +2,8 @@
 
 ## 7.1.  Greatest Common Divisors
 
+In this chapter, we will occasionally use theorems that we have not used before without explanation.  If necessary, you can use `#check` to look up what they say.
+
 Section 7.1 of *HTPI* introduces the Euclidean algorithm for computing the greatest common divisor (gcd) of two positive integers $a$ and $b$.  The motivation for the algorithm is the fact that if $r$ is the remainder when $a$ is divided by $b$, then any natural number that divides both $a$ and $b$ also divides $r$, and any natural number that divides both $b$ and $r$ also divides $a$.
 
 Let's prove these statements in Lean.  Recall that in Lean, the remainder when `a` is divided by `b` is called `a` mod `b`, and it is denoted `a % b`.  We'll prove the first statement, and leave the second as an exercise for you.  It will be convenient for our work with greatest common divisors in Lean to let `a` and `b` be natural numbers rather than positive integers (thus allowing either of them to be zero).  
@@ -47,7 +49,9 @@ def loop (n : Nat) : Nat := loop (n + 1)
 Suppose we try to use this definition to compute `loop 3`.  The definition would lead us to perform the following calculation:
 
 ::: {.ind}
-`loop 3 = loop 4 = loop 5 = loop 6 = ...`
+```
+loop 3 = loop 4 = loop 5 = loop 6 = ...
+```
 :::
 
 Clearly this calculation will go on forever and will never produce an answer.  So the definition of `loop` does not actually succeed in defining a function from `Nat` to `Nat`.
@@ -91,17 +95,28 @@ Notice that in the `have` expression, we have not bothered to specify an identif
 ++#eval:: gcd 672 161    --Answer: 7.  Note 672 = 7 * 96 and 161 = 7 * 23.
 ```
 
-To establish the main properties of `gcd a b` we'll need several lemmas.  We prove some of them and leave others as exercises.
+To establish the main properties of `gcd a b` we'll need several lemmas.  We prove some of them and leave others as exercises.  In the second proof below, we use the theorem:
+
+::: {.ind}
+```
+@Nat.pos_of_ne_zero : ∀ {n : ℕ}, n ≠ 0 → 0 < n
+```
+:::
+
+If we have `h : n ≠ 0`, then `Nat.pos_of_ne_zero h` is a proof of `0 < n`.  But for natural numbers `a`  and `b`, Lean treats `a < b` as meaning the same thing as `a + 1 ≤ b`, so this is also a proof of `1 ≤ n`.
 
 ```lean
 lemma gcd_base (a : Nat) : gcd a 0 = a := by rfl
 
-lemma plus_one_of_ne {n : Nat} (h : n ≠ 0) :
-    ∃ (k : Nat), n = k + 1 := sorry
+lemma exists_eq_add_one_of_ne_zero {n : Nat} (h : n ≠ 0) :
+    ∃ (k : Nat), n = k + 1 := by
+  have h2 : 1 ≤ n := Nat.pos_of_ne_zero h
+  show ∃ (k : Nat), n = k + 1 from Nat.exists_eq_add_of_le' h2
+  done
 
 lemma gcd_nonzero (a : Nat) {b : Nat} (h : b ≠ 0) :
     gcd a b = gcd b (a % b) := by
-  obtain (n : Nat) (h2 : b = n + 1) from plus_one_of_ne h
+  obtain (n : Nat) (h2 : b = n + 1) from exists_eq_add_one_of_ne_zero h
   rewrite [h2]   --Goal : gcd a (n + 1) = gcd (n + 1) (a % (n + 1))
   rfl
   done
@@ -136,6 +151,7 @@ theorem gcd_dvd : ∀ (b a : Nat), (gcd a b) ∣ a ∧ (gcd a b) ∣ b := by
       ih (a % b) h2 b
     apply And.intro _ h3.left
     show (gcd b (a % b)) ∣ a from dvd_a_of_dvd_b_mod h3.left h3.right
+    done
   done
 ```
 
@@ -217,7 +233,7 @@ lemma gcd_c2_nonzero (a : Nat) {b : Nat} (h : b ≠ 0) :
     gcd_c2 a b = gcd_c1 b (a % b) - (gcd_c2 b (a % b)) * ↑(a / b) := sorry
 ```
 
-With that preparation, we are ready to prove that `gcd_c1 a b` and `gcd_c2 a b` give coefficients for expressing `gcd a b` as a linear combination of `a` and `b`.  Of course, the theorem is proven by strong induction.  We'll make a few comments after the proof that may help you follow the details.
+With that preparation, we are ready to prove that `gcd_c1 a b` and `gcd_c2 a b` give coefficients for expressing `gcd a b` as a linear combination of `a` and `b`.  Of course, the theorem is proven by strong induction.  For clarity, we'll write the coercions explicitly in this proof.  We'll make a few comments after the proof that may help you follow the details.
 
 ```lean
 theorem gcd_lin_comb : ∀ (b a : Nat),
@@ -234,7 +250,10 @@ theorem gcd_lin_comb : ∀ (b a : Nat),
     norm_num
     done
   · -- Case 2. h1 : b ≠ 0
-    rewrite [gcd_c1_nonzero a h1, gcd_c2_nonzero a h1, gcd_of_nonzero a h1]
+    rewrite [gcd_c1_nonzero a h1, gcd_c2_nonzero a h1, gcd_nonzero a h1]
+      --Goal : gcd_c2 b (a % b) * ↑a +
+      -- (gcd_c1 b (a % b) - gcd_c2 b (a % b) * ↑(a / b)) * ↑b =
+      -- ↑(gcd b (a % b))
     set r : Nat := a % b
     set q : Nat := a / b
     set s : Int := gcd_c1 b r
@@ -251,7 +270,7 @@ theorem gcd_lin_comb : ∀ (b a : Nat),
   done
 ```
 
-For clarity, we have written the coercions explicitly in this proof.  In case 2, we have introduced the variables `r`, `q`, `s`, and `t` to simplify the notation.  After the step `rewrite [←h3, ←h4]`, the goal contains the expression `↑(b * q + r)`.  You can use the `#check` command to see why `Nat.cast_add` and `Nat.cast_mul` convert this expression to first `↑(b * q) + ↑r` and then `↑b * ↑q + ↑r`.
+In case 2, we have introduced the variables `r`, `q`, `s`, and `t` to simplify the notation.  Notice that the `set` tactic automatically plugs in this notation in the goal.  After the step `rewrite [←h3, ←h4]`, the goal contains the expression `↑(b * q + r)`.  You can use the `#check` command to see why `Nat.cast_add` and `Nat.cast_mul` convert this expression to first `↑(b * q) + ↑r` and then `↑b * ↑q + ↑r`.  Without those steps, the `ring` tactic would not have been able to complete the proof.
 
 We can try out the functions `gcd_c1` and `gcd_c2` as follows:
 
@@ -316,7 +335,7 @@ theorem Exercise_7_1_6 (a b c : Nat) :
 
 ::: {.numex arguments="5"}
 ```lean
-theorem gcd_nonzero {a b : Nat} (h : a ≠ 0 ∨ b ≠ 0) :
+theorem gcd_is_nonzero {a b : Nat} (h : a ≠ 0 ∨ b ≠ 0) :
     gcd a b ≠ 0 := sorry
 ```
 :::
@@ -343,63 +362,79 @@ theorem Exercise_7_1_10 (a b n : Nat) :
 
 ## 7.2.  Prime Factorization
 
-A natural number $n$ is said to be *prime* if it is at least 2 and it cannot be written as a product of two smaller natural numbers.  Two natural numbers are *relatively prime* if their greatest common divisor is 1.  Of course, we can write these definitions in Lean.
+A natural number $n$ is said to be *prime* if it is at least 2 and it cannot be written as a product of two smaller natural numbers.  Of course, we can write this definition in Lean.
 
 ```lean
 def prime (n : Nat) : Prop :=
   2 ≤ n ∧ ¬∃ (a b : Nat), a * b = n ∧ a < n ∧ b < n
-
-def rel_prime (a b : Nat) : Prop := gcd a b = 1
 ```
 
-The main goal of Section 7.2 of *HTPI* is to prove that every positive integer can be written in a unique way as a product of prime numbers.  In preparation for that goal, *HTPI* proves two theorems, 7.2.2 and 7.2.3.  Here are similar proofs of those theorems in Lean, with the proof of one lemma left as an exercise.  In the proof of Theorem 7.2.2, we begin, as we did in the proof of Theorem 7.1.6, by converting the goal from natural numbers to integers so that we can use integer algebra.
+The main goal of Section 7.2 of *HTPI* is to prove that every positive integer has a unique prime factorization; that is, it can be written in a unique way as the product of a nondecreasing list of prime numbers.  To get started on this goal, we first prove that every number greater than or equal to 2 has a prime factor.  We leave one lemma as an exercise for you (it is a natural-number version of `Theorem_3_3_7`).
 
 ```lean
-theorem Theorem_7_2_2 {a b c : Nat}
-    (h1 : c ∣ a * b) (h2 : rel_prime a c) : c ∣ b := by
-  rewrite [←Int.coe_nat_dvd]  --Goal : ↑c ∣ ↑b
-  define at h1; define at h2; define
-  obtain (j : Nat) (h3 : a * b = c * j) from h1
-  set s : Int := gcd_c1 a c
-  set t : Int := gcd_c2 a c
-  have h4 : s * ↑a + t * ↑c = ↑(gcd a c) := gcd_lin_comb c a
-  rewrite [h2, Nat.cast_one] at h4  --h4 : s * ↑a + t * ↑c = (1 : Int)
-  apply Exists.intro (s * ↑j + t * ↑b)
-  show ↑b = ↑c * (s * ↑j + t * ↑b) from
-    calc ↑b
-      _ = (1 : Int) * ↑b := (one_mul _).symm
-      _ = (s * ↑a + t * ↑c) * ↑b := by rw [h4]
-      _ = s * (↑a * ↑b) + t * ↑c * ↑b := by ring
-      _ = s * (↑c * ↑j) + t * ↑c * ↑b := by
-          rw [←Nat.cast_mul a b, h3, Nat.cast_mul c j]
-      _ = ↑c * (s * ↑j + t * ↑b) := by ring
-  done
+def prime_factor (p n : Nat) : Prop := prime p ∧ p ∣ n
 
-lemma dvd_prime {a p : Nat}
-    (h1 : prime p) (h2 : a ∣ p) : a = 1 ∨ a = p := sorry
+lemma dvd_trans {a b c : Nat} (h1 : a ∣ b) (h2 : b ∣ c) : a ∣ c := sorry
 
-lemma rel_prime_of_prime_not_dvd {a p : Nat}
-    (h1 : prime p) (h2 : ¬p ∣ a) : rel_prime a p := by
-  have h3 : gcd a p ∣ a := gcd_dvd_left a p
-  have h4 : gcd a p ∣ p := gcd_dvd_right a p
-  have h5 : gcd a p = 1 ∨ gcd a p = p := dvd_prime h1 h4
-  have h6 : gcd a p ≠ p := by
-    contradict h2 with h6
-    rewrite [h6] at h3
-    show p ∣ a from h3
+lemma exists_prime_factor : ∀ (n : Nat), 2 ≤ n →
+    ∃ (p : Nat), prime_factor p n := by
+  by_strong_induc
+  fix n : Nat
+  assume ih : ∀ (n_1 : Nat), n_1 < n →
+    2 ≤ n_1 → ∃ (p : Nat), prime_factor p n_1
+  assume h1 : 2 ≤ n
+  by_cases h2 : prime n
+  · -- Case 1. h2 : prime n
+    apply Exists.intro n
+    define            --Goal : prime n ∧ n ∣ n
+    show prime n ∧ n ∣ n from And.intro h2 (dvd_self n)
     done
-  disj_syll h5 h6
-  show rel_prime a p from h5
-  done
-
-theorem Theorem_7_2_3 {a b p : Nat}
-    (h1 : prime p) (h2 : p ∣ a * b) : p ∣ a ∨ p ∣ b := by
-  or_right with h3
-  have h4 : rel_prime a p := rel_prime_of_prime_not_dvd h1 h3
-  show p ∣ b from Theorem_7_2_2 h2 h4
+  · -- Case 2. h2 : ¬prime n
+    define at h2
+      --h2 : ¬(2 ≤ n ∧ ¬∃ (a b : Nat), a * b = n ∧ a < n ∧ b < n)
+    demorgan at h2
+    disj_syll h2 h1
+    obtain (a : Nat) (h3 : ∃ (b : Nat), a * b = n ∧ a < n ∧ b < n) from h2
+    obtain (b : Nat) (h4 : a * b = n ∧ a < n ∧ b < n) from h3
+    have h5 : 2 ≤ a := by
+      by_contra h6
+      have h7 : a ≤ 1 := by linarith
+      have h8 : n ≤ b :=
+        calc n
+          _ = a * b := h4.left.symm
+          _ ≤ 1 * b := Nat.mul_le_mul_right b h7
+          _ = b := by ring
+      linarith        --n ≤ b contradicts b < n
+      done
+    have h6 : ∃ (p : Nat), prime_factor p a := ih a h4.right.left h5
+    obtain (p : Nat) (h7 : prime_factor p a) from h6
+    apply Exists.intro p
+    define            --Goal : prime p ∧ p ∣ n
+    define at h7      --h7 : prime p ∧ p ∣ a
+    apply And.intro h7.left
+    have h8 : a ∣ n := by
+      apply Exists.intro b
+      show n = a * b from (h4.left).symm
+      done
+    show p ∣ n from dvd_trans h7.right h8
+    done
   done
 ```
 
+Of course, by the well ordering principle, an immediate consequence of this lemma is that every number greater than or equal to 2 has a *smallest* prime factor.
+
+```lean
+lemma exists_least_prime_factor {n : Nat} (h : 2 ≤ n) :
+    ∃ (p : Nat), prime_factor p n ∧
+    ∀ (q : Nat), prime_factor q n → p ≤ q := by
+  set S : Set Nat := { p : Nat | prime_factor p n }
+  have h2 : ∃ (p : Nat), p ∈ S := exists_prime_factor n h
+  show ∃ (p : Nat), prime_factor p n ∧
+    ∀ (q : Nat), prime_factor q n → p ≤ q from well_ord_princ S h2
+  done
+```
+
+<!--
 Defining the prime factorization of a natural number `n` in Lean will take several steps.  For `n ≥ 2`, we begin by searching for the smallest prime factor of `n`.  A natural approach is to test whether `n` is divisible by 2, then 3, then 4, and so on, until we find a divisor of `n`.  However, we have to be careful how we describe this calculation to Lean: since we are testing larger and larger potential divisors, Lean may fear that the calculation may not terminate.  To avoid this problem, we will ask Lean to test whether or not `(n - k) ∣ n` for various values of `k`.  By performing this test for smaller and smaller values of `k`, we will test larger and larger potential divisors of `n`.  Since `k` is decreasing, the search is guaranteed to terminate.  If `k` reaches 0, then we will test whether or not `n ∣ n`, and of course the answer will be yes.
 
 We begin by defining a function `first_div_ge` such that for any `n` and `k`, `first_div_ge n k` is the smallest divisor of `n` that is greater than or equal to `n - k`.
@@ -560,15 +595,17 @@ theorem fd_prime (n : Nat) : prime (first_div (n + 2)) := by
   linarith   --h9 contradicts h3.right.left
   done
 ```
+-->
 
-To define the prime factorization of a positive integer, we will need a new type.  If `U` is any type, then `List U` is the type of lists of objects of type `U`.  Such a list is written in square brackets, with the entries separated by commas.  For example, `[3, 7, 1]` has type `List Nat`.  The notation `[]` denotes the empty list, and if `a` has type `U` and `l` has type `List U`, then `a :: l` denotes the list consisting of `a` followed by the entries of `l`.  The empty list is sometimes called the `nil` list, and the operation of constructing a list `a :: l` from `a` and `l` is called `cons` (short for *construct*).  Every list can be constructed by applying the `cons` operation repeatedly, starting with the `nil` list.  For example,
+To talk about prime factorizations of positive integers, we'll need to introduce a new type.  If `U` is any type, then `List U` is the type of lists of objects of type `U`.  Such a list is written in square brackets, with the entries separated by commas.  For example, `[3, 7, 1]` has type `List Nat`.  The notation `[]` denotes the empty list, and if `a` has type `U` and `l` has type `List U`, then `a :: l` denotes the list consisting of `a` followed by the entries of `l`.  The empty list is sometimes called the `nil` list, and the operation of constructing a list `a :: l` from `a` and `l` is called `cons` (short for *construct*).  Every list can be constructed by applying the `cons` operation repeatedly, starting with the `nil` list.  For example,
 
 ::: {.ind}
 ```
-[3, 7, 1] = 3 :: [7, 1] = 3 :: (7 :: [1]) = 3 :: (7 :: (1 :: []))
+[3, 7, 1] = 3 :: [7, 1] = 3 :: (7 :: [1]) = 3 :: (7 :: (1 :: [])).
 ```
 :::
 
+<!--
 We can now define the prime factorization of a natural number `n`.  We use the lemma `fc_dec` to help Lean see that the calculation terminates.
 
 ```lean
@@ -598,8 +635,9 @@ prime_fac 276 = (first_div 276) :: (prime_fac (first_codiv 276))
 :::
 
 Notice that `2`, `3`, and `23` are all prime, and `2 * 2 * 3 * 23 = 276`.
+-->
 
-If `l` has type `List U` and `a` has type `U`, then `a ∈ l` means that `a` is one of the entries in the list `l`.  Lean knows several theorems about this notation:
+If `l` has type `List U` and `a` has type `U`, then `a ∈ l` means that `a` is one of the entries in the list `l`.  For example, `7 ∈ [3, 7, 1]`.  Lean knows several theorems about this notation:
 
 ::: {.ind}
 ```
@@ -616,6 +654,82 @@ If `l` has type `List U` and `a` has type `U`, then `a ∈ l` means that `a` is 
 
 The first two theorems give the conditions under which something is a member of the `nil` list or a list constructed by `cons`, and the last two are easy consequences of the second.
 
+To define prime factorizations, we must define several concepts first.  Some of these concepts are most easily defined recursively.
+
+```lean
+def all_prime (l : List Nat) : Prop := ∀ (p : Nat), p ∈ l → prime p
+
+def nondec (l : List Nat) : Prop :=
+  match l with
+    | [] => True   --Of course, True is a proposition that is always true
+    | n :: L => (∀ (m : Nat), m ∈ L → n ≤ m) ∧ nondec L
+
+def nondec_prime_list (l : List Nat) : Prop := all_prime l ∧ nondec l
+
+def prod (l : List Nat) : Nat :=
+  match l with
+    | [] => 1
+    | n :: L => n * (prod L)
+
+def prime_factorization (n : Nat) (l : List Nat) : Prop :=
+  nondec_prime_list l ∧ prod l = n
+```
+
+According to these definitions, `all_prime l` means that every member of the list `l` is prime, `nondec l` means that every member of `l` is less than or equal to all later members, `prod l` is the product of all members of `l`, and `prime_factorization n l` means that `l` is a nondecreasing list of prime numbers whose product is `n`.  It will be convenient to spell out some consequences of these definitions in several lemmas:
+
+```lean
+lemma all_prime_nil : all_prime [] := by
+  define     --Goal : ∀ (p : Nat), p ∈ [] → prime p
+  fix p : Nat
+  contrapos  --Goal : ¬prime p → ¬p ∈ []
+  assume h1 : ¬prime p
+  show ¬p ∈ [] from List.not_mem_nil p
+  done
+
+lemma all_prime_cons (n : Nat) (L : List Nat) :
+    all_prime (n :: L) ↔ prime n ∧ all_prime L := by
+  apply Iff.intro
+  · -- (→)
+    assume h1 : all_prime (n :: L)  --Goal : prime n ∧ all_prime L
+    define at h1  --h1 : ∀ (p : Nat), p ∈ n :: L → prime p
+    apply And.intro (h1 n (List.mem_cons_self n L))
+    define        --Goal : ∀ (p : Nat), p ∈ L → prime p
+    fix p : Nat
+    assume h2 : p ∈ L
+    show prime p from h1 p (List.mem_cons_of_mem n h2)
+    done
+  · -- (←)
+    assume h1 : prime n ∧ all_prime L  --Goal : all_prime (n :: l)
+    define : all_prime L at h1
+    define
+    fix p : Nat
+    assume h2 : p ∈ n :: L
+    rewrite [List.mem_cons] at h2   --h2 : p = n ∨ p ∈ L
+    by_cases on h2
+    · -- Case 1. h2 : p = n
+      rewrite [h2]
+      show prime n from h1.left
+      done
+    · -- Case 2. h2 : p ∈ L
+      show prime p from h1.right p h2
+      done
+    done
+  done
+
+lemma nondec_nil : nondec [] := by
+  define  --Goal : True
+  trivial --trivial proves some obviously true statements, such as True
+  done
+
+lemma nondec_cons (n : Nat) (L : List Nat) :
+    nondec (n :: L) ↔ (∀ (m : Nat), m ∈ L → n ≤ m) ∧ nondec L := by rfl
+
+lemma prod_nil : prod [] = 1 := by rfl
+
+lemma prod_cons : prod (n :: L) = n * (prod L) := by rfl
+```
+
+<!--
 The most important properties of `prime_fac n`, for `n ≥ 1`, are that it is a nondecreasing list of prime numbers whose product is `n`.  Let's start by proving that all members of the list `prime_fac n` are prime.
 
 ```lean
@@ -789,6 +903,273 @@ theorem prime_fac_nondec : ∀ (n : Nat), nondec (prime_fac n) := by
     done
   done
 ```
+-->
+
+Before we can prove the existence of prime factorizations, we will need one more fact: every member of a list of natural numbers divides the product of the list.  The proof will be by induction on the length of the list, so we will need to know how to work with lengths of lists in Lean.  If `l` is a list, then the length of `l` is `List.length l`, which can also be written more briefly as `l.length`.  We'll need a few more theorems about lists:
+
+::: {.ind}
+```
+@List.length_eq_zero : ∀ {α : Type u_1} {l : List α},
+                      List.length l = 0 ↔ l = []
+@List.length_cons : ∀ {α : Type u_1} (a : α) (as : List α),
+                      List.length (a :: as) = Nat.succ (List.length as)
+@List.exists_cons_of_ne_nil : ∀ {α : Type u_1} {l : List α},
+                      l ≠ [] → ∃ (b : α), ∃ (L : List α), l = b :: L
+```
+:::
+
+And we'll need one more lemma, which follows from the three theorems above; we leave the proof as an exercise for you:
+
+```lean
+lemma exists_cons_of_length_eq_succ
+    {l : List Nat} {n : Nat} (h : l.length = n + 1) :
+    ∃ (a : Nat) (L : List Nat), l = a :: L ∧ L.length = n := sorry
+```
+
+We can now prove that every member of a list of natural numbers divides the product of the list.  After proving it by induction on the length of the list, we restate the lemma in a more convenient form.
+
+```lean
+lemma list_elt_dvd_prod_by_length (a : Nat) : ∀ (n : Nat),
+    ∀ (l : List Nat), l.length = n → a ∈ l → a ∣ prod l := by
+  by_induc
+  · --Base Case
+    fix l : List Nat
+    assume h1 : l.length = 0
+    rewrite [List.length_eq_zero] at h1     --h1 : l = []
+    rewrite [h1]                            --Goal : a ∈ [] → a ∣ prod []
+    contrapos
+    assume h2 : ¬a ∣ prod []
+    show ¬a ∈ [] from List.not_mem_nil a
+    done
+  · -- Induction Step
+    fix n : Nat
+    assume ih : ∀ (l : List Nat), List.length l = n → a ∈ l → a ∣ prod l
+    fix l : List Nat
+    assume h1 : l.length = n + 1
+    obtain (b : Nat) (h2 : ∃ (L : List Nat),
+      l = b :: L ∧ L.length = n) from exists_cons_of_length_eq_succ h1
+    obtain (L : List Nat) (h3 : l = b :: L ∧ L.length = n) from h2
+    assume h4 : a ∈ l
+    rewrite [h3.left, prod_cons]            --Goal : a ∣ b * prod L
+    rewrite [h3.left, List.mem_cons] at h4  --h4 : a = b ∨ a ∈ L
+    by_cases on h4
+    · -- Case 1. h4 : a = b
+      apply Exists.intro (prod L)
+      rewrite [h4]
+      rfl
+      done
+    · -- Case 2. h4 : a ∈ L
+      have h5 : a ∣ prod L := ih L h3.right h4
+      have h6 : prod L ∣ b * prod L := by
+        apply Exists.intro b
+        ring
+        done
+      show a ∣ b * prod L from dvd_trans h5 h6
+      done
+    done
+  done
+
+lemma list_elt_dvd_prod {a : Nat} {l : List Nat}
+    (h : a ∈ l) : a ∣ prod l := by
+  set n : Nat := l.length
+  have h1 : l.length = n := by rfl
+  show a ∣ prod l from list_elt_dvd_prod_by_length a n l h1 h
+  done
+```
+
+The proof that every positive integer has a prime factorization is now long but straightforward.
+
+```lean
+lemma exists_prime_factorization : ∀ (n : Nat), n ≥ 1 →
+    ∃ (l : List Nat), prime_factorization n l := by
+  by_strong_induc
+  fix n : Nat
+  assume ih : ∀ (n_1 : Nat), n_1 < n →
+    n_1 ≥ 1 → ∃ (l : List Nat), prime_factorization n_1 l
+  assume h1 : n ≥ 1
+  by_cases h2 : n = 1
+  · -- Case 1. h2 : n = 1
+    apply Exists.intro []
+    define
+    apply And.intro
+    · -- Proof of nondec_prime_list []
+      define
+      show all_prime [] ∧ nondec [] from
+        And.intro all_prime_nil nondec_nil
+      done
+    · -- Proof of prod [] = n
+      rewrite [prod_nil, h2]
+      rfl
+      done
+    done
+  · -- Case 2. h2 : n ≠ 1
+    have h3 : n ≥ 2 := lt_of_le_of_ne' h1 h2
+    obtain (p : Nat) (h4 : prime_factor p n ∧ ∀ (q : Nat),
+      prime_factor q n → p ≤ q) from exists_least_prime_factor h3
+    have p_prime_factor : prime_factor p n := h4.left
+    define at p_prime_factor
+    have p_prime : prime p := p_prime_factor.left
+    have p_dvd_n : p ∣ n := p_prime_factor.right
+    have p_least : ∀ (q : Nat), prime_factor q n → p ≤ q := h4.right
+    obtain (m : Nat) (n_eq_pm : n = p * m) from p_dvd_n
+    have h5 : m ≠ 0 := by
+      contradict h1 with h6
+      have h7 : n = 0 :=
+        calc n
+          _ = p * m := n_eq_pm
+          _ = p * 0 := by rw [h6]
+          _ = 0 := by ring
+      rewrite [h7]
+      norm_num
+      done
+    have m_pos : 0 < m := Nat.pos_of_ne_zero h5
+    have m_lt_n : m < n := by
+      define at p_prime
+      show m < n from
+        calc m
+          _ < m + m := Nat.lt_add_of_pos_right m_pos
+          _ = 2 * m := by ring
+          _ ≤ p * m := Nat.mul_le_mul_right m p_prime.left
+          _ = n := n_eq_pm.symm
+      done
+    obtain (L : List Nat) (h6 : prime_factorization m L)
+      from ih m m_lt_n m_pos
+    define at h6
+    have ndpl_L : nondec_prime_list L := h6.left
+    define at ndpl_L
+    apply Exists.intro (p :: L)
+    define
+    apply And.intro
+    · -- Proof of nondec_prime_list (p :: L)
+      define
+      apply And.intro
+      · -- Proof of all_prime (p :: L)
+        rewrite [all_prime_cons]
+        show prime p ∧ all_prime L from And.intro p_prime ndpl_L.left
+        done
+      · -- Proof of nondec (p :: L)
+        rewrite [nondec_cons]
+        apply And.intro _ ndpl_L.right
+        fix q : Nat
+        assume q_in_L : q ∈ L
+        have h7 : q ∣ prod L := list_elt_dvd_prod q_in_L
+        rewrite [h6.right] at h7   --h7 : q ∣ m
+        have h8 : m ∣ n := by
+          apply Exists.intro p
+          rewrite [n_eq_pm]
+          ring
+          done
+        have q_dvd_n : q ∣ n := dvd_trans h7 h8
+        have ap_L : all_prime L := ndpl_L.left
+        define at ap_L
+        have q_prime_factor : prime_factor q n :=
+          And.intro (ap_L q q_in_L) q_dvd_n
+        show p ≤ q from p_least q q_prime_factor
+        done
+      done
+    · -- Proof of prod (p :: L) = n
+      rewrite [prod_cons, h6.right, n_eq_pm]
+      rfl
+      done
+    done
+  done
+```
+
+We now turn to the proof that the prime factorization of a positive integer is unique.  In preparation for that proof, *HTPI* defines two numbers to be *relatively prime* if their greatest common divisor is 1, and then it uses that concept to prove two theorems, 7.2.2 and 7.2.3.  Here are similar proofs of those theorems in Lean, with the proof of one lemma left as an exercise.  In the proof of Theorem 7.2.2, we begin, as we did in the proof of Theorem 7.1.6, by converting the goal from natural numbers to integers so that we can use integer algebra.
+
+```lean
+def rel_prime (a b : Nat) : Prop := gcd a b = 1
+
+theorem Theorem_7_2_2 {a b c : Nat}
+    (h1 : c ∣ a * b) (h2 : rel_prime a c) : c ∣ b := by
+  rewrite [←Int.coe_nat_dvd]  --Goal : ↑c ∣ ↑b
+  define at h1; define at h2; define
+  obtain (j : Nat) (h3 : a * b = c * j) from h1
+  set s : Int := gcd_c1 a c
+  set t : Int := gcd_c2 a c
+  have h4 : s * ↑a + t * ↑c = ↑(gcd a c) := gcd_lin_comb c a
+  rewrite [h2, Nat.cast_one] at h4  --h4 : s * ↑a + t * ↑c = (1 : Int)
+  apply Exists.intro (s * ↑j + t * ↑b)
+  show ↑b = ↑c * (s * ↑j + t * ↑b) from
+    calc ↑b
+      _ = (1 : Int) * ↑b := (one_mul _).symm
+      _ = (s * ↑a + t * ↑c) * ↑b := by rw [h4]
+      _ = s * (↑a * ↑b) + t * ↑c * ↑b := by ring
+      _ = s * (↑c * ↑j) + t * ↑c * ↑b := by
+          rw [←Nat.cast_mul a b, h3, Nat.cast_mul c j]
+      _ = ↑c * (s * ↑j + t * ↑b) := by ring
+  done
+
+lemma dvd_prime {a p : Nat}
+    (h1 : prime p) (h2 : a ∣ p) : a = 1 ∨ a = p := sorry
+
+lemma rel_prime_of_prime_not_dvd {a p : Nat}
+    (h1 : prime p) (h2 : ¬p ∣ a) : rel_prime a p := by
+  have h3 : gcd a p ∣ a := gcd_dvd_left a p
+  have h4 : gcd a p ∣ p := gcd_dvd_right a p
+  have h5 : gcd a p = 1 ∨ gcd a p = p := dvd_prime h1 h4
+  have h6 : gcd a p ≠ p := by
+    contradict h2 with h6
+    rewrite [h6] at h3
+    show p ∣ a from h3
+    done
+  disj_syll h5 h6
+  show rel_prime a p from h5
+  done
+
+theorem Theorem_7_2_3 {a b p : Nat}
+    (h1 : prime p) (h2 : p ∣ a * b) : p ∣ a ∨ p ∣ b := by
+  or_right with h3
+  have h4 : rel_prime a p := rel_prime_of_prime_not_dvd h1 h3
+  show p ∣ b from Theorem_7_2_2 h2 h4
+  done
+```
+
+Theorem 7.2.4 in *HTPI* extends Theorem 7.2.3 to show that if a prime number divides the product of a list of natural numbers, then it divides one of the numbers in the list.  (Theorem 7.2.3 is the case of a list of length two.)  The proof in *HTPI* is by induction on the length of the list, and we could use that method to prove the theorem in Lean.  But look back at our proof of the lemma `list_elt_dvd_prod_by_length`, which also used induction on the length of a list.  In the base case, we ended up proving that the `nil` list has the property stated in the lemma, and in the induction step we proved that if a list `l` has the property, then so does any list of the form `a :: l`.  We could think of this as a kind of "induction on lists."  As we observed earlier, every list can be constructed by starting with the `nil` list and applying `cons` finitely many times.  It follows that if the `nil` list has some property, and applying the `cons` operation to a list with the property produces another list with the property, then all lists have the property.  (In fact, a similar principle was at work in our recursive definitions of `nondec l` and `prod l`.)
+
+Lean has a theorem called `List.rec` that can be used to justify induction on lists.  We'll use it to prove Theorem 7.2.4.  The proof uses two lemmas, whose proofs we leave as exercises for you.
+
+```lean
+lemma eq_one_of_dvd_one {n : Nat} (h : n ∣ 1) : n = 1 := sorry
+
+lemma prime_not_one {p : Nat} (h : prime p) : p ≠ 1 := sorry
+
+theorem Theorem_7_2_4 {p : Nat} (h1 : prime p) :
+    ∀ (l : List Nat), p ∣ prod l → ∃ (a : Nat), a ∈ l ∧ p ∣ a := by
+  apply List.rec
+  · -- Base Case.  Goal : p ∣ prod [] → ∃ (a : Nat), a ∈ [] ∧ p ∣ a
+    rewrite [prod_nil]
+    assume h2 : p ∣ 1
+    show ∃ (a : Nat), a ∈ [] ∧ p ∣ a from
+      absurd (eq_one_of_dvd_one h2) (prime_not_one h1)
+    done
+  · -- Induction Step
+    fix a : Nat
+    fix L : List Nat
+    assume ih : p ∣ prod L → ∃ (a : Nat), a ∈ L ∧ p ∣ a
+      --Goal : p ∣ prod (a :: L) → ∃ (a_2 : Nat), a_2 ∈ a :: L ∧ p ∣ a_2
+    assume h2 : p ∣ prod (a :: L)
+    rewrite [prod_cons] at h2
+    have h3 : p ∣ a ∨ p ∣ prod L := Theorem_7_2_3 h1 h2
+    by_cases on h3
+    · -- Case 1. h3 : p ∣ a
+      apply Exists.intro a
+      show a ∈ a :: L ∧ p ∣ a from
+        And.intro (List.mem_cons_self a L) h3
+      done
+    · -- Case 2. h3 : p ∣ prod L
+      obtain (b : Nat) (h4 : b ∈ L ∧ p ∣ b) from ih h3
+      apply Exists.intro b
+      show b ∈ a :: L ∧ p ∣ b from
+        And.intro (List.mem_cons_of_mem a h4.left) h4.right
+      done
+    done
+  done
+```
+
+<!--
+And we'll leave a few lemmas as exercises for you:
+
 
 Finally, we turn to the proof of the uniqueness of prime factorizations.  One key ingredient in this proof is Theorem 7.2.4 of *HTPI*, which says that if a prime number divides a product of a list of numbers, then it divides one of the numbers in the list.  The proof is by induction on the length of the list, so we will need to know how to work with lengths of lists in Lean.  If `l` is a list, then the length of `l` is `List.length l`, which can also be written more briefly as `l.length`.  We'll need a few more theorems about lists:
 
@@ -863,13 +1244,14 @@ theorem Theorem_7_2_4 {p : Nat} {l : List Nat}
     (h1 : prime p) (h2 : p ∣ prod l) : ∃ (a : Nat), a ∈ l ∧ p ∣ a :=
   Theorem_7_2_4_by_length h1 l.length l (Eq.refl l.length) h2
 ```
+-->
 
-In Theorem 7.2.4, if all terms in the list `l` are prime, then we can conclude not merely that `p` divides some term, but that `p` is one of the terms of `l`.
+In Theorem 7.2.4, if all members of the list `l` are prime, then we can conclude not merely that `p` divides some member of `l`, but that `p` is one of the members.
 
 ```lean
 lemma prime_in_list {p : Nat} {l : List Nat}
     (h1 : prime p) (h2 : all_prime l) (h3 : p ∣ prod l) : p ∈ l := by
-  obtain (a : Nat) (h4 : a ∈ l ∧ p ∣ a) from Theorem_7_2_4 h1 h3
+  obtain (a : Nat) (h4 : a ∈ l ∧ p ∣ a) from Theorem_7_2_4 h1 l h3
   define at h2
   have h5 : prime a := h2 a h4.left
   have h6 : p = 1 ∨ p = a := dvd_prime h5 h4.right
@@ -879,22 +1261,7 @@ lemma prime_in_list {p : Nat} {l : List Nat}
   done
 ```
 
-Next we'll need some facts about nondecreasing lists of prime numbers.
-
-```lean
-def nondec_prime_list (l : List Nat) : Prop := all_prime l ∧ nondec l
-
-lemma nondec_prime_list_tail {p : Nat} {l : List Nat}
-    (h : nondec_prime_list (p :: l)) : nondec_prime_list l := sorry
-
-lemma cons_prod_not_one {p : Nat} {l : List Nat}
-    (h : nondec_prime_list (p :: l)) : prod (p :: l) ≠ 1 := sorry
-
-lemma list_nil_iff_prod_one {l : List Nat} (h : nondec_prime_list l) :
-    l = [] ↔ prod l = 1 := sorry
-```
-
-In *HTPI*, a key step in the proof of the uniqueness of prime factorizations is to show that if two nondecreasing lists of prime numbers have the same product, then the last entry of one list is less than or equal to the last entry of the other.  In Lean, because of the way the `cons` operation works, it is easier to work with the first entries of the lists.
+The uniqueness of prime factorizations follows from Theorem 7.2.5 of *HTPI*, which says that if two nondecreasing lists of prime numbers have the same product, then the two lists must be the same.  In *HTPI*, a key step in the proof of Theorem 7.2.5 is to show that if two nondecreasing lists of prime numbers have the same product, then the last entry of one list is less than or equal to the last entry of the other.  In Lean, because of the way the `cons` operation works, it is easier to work with the first entries of the lists.
 
 ```lean
 lemma first_le_first {p q : Nat} {l m : List Nat}
@@ -918,22 +1285,28 @@ lemma first_le_first {p q : Nat} {l m : List Nat}
     show p ≤ q from Nat.le_of_eq h6.symm
     done
   · -- Case 2.  h6 : q ∈ l
-    have h8 : le_list p l := h7.left
-    define at h8
+    have h8 : ∀ (m : Nat), m ∈ l → p ≤ m := h7.left
     show p ≤ q from h8 q h6
     done
   done
 ```
 
-The uniqueness of prime factorizations follows from Theorem 7.2.5 of *HTPI*, which says that if two nondecreasing lists of prime numbers have the same product, then the two lists must be the same.  The proof in *HTPI* is by induction on the length of the first list, and we could use that method to prove the theorem in Lean.  But look back at our proof of `Theorem_7_2_4`, which also used induction on the length of a list.  In the base case, we ended up proving that the `nil` list has the property stated in the theorem, and in the induction step we proved that if a list `l` has the property, then so does any list of the form `a :: l`.  We could think of this as a kind of "induction on lists."  As we observed earlier, every list can be constructed by starting with the `nil` list and applying `cons` finitely many times.  If follows that if the `nil` list has some property, and applying the `cons` operation to a list with the property produces another list with the property, then all lists have the property.  (In fact, a similar principle was at work in our recursive definitions of `prod l` and `nondec l`.)
-
-Lean has a theorem called `List.rec` that can be used to justify induction on lists.  We'll use it to prove Theorem 7.2.5.
+The proof of Theorem 7.2.5 is another proof by induction on lists.  It uses a few more lemmas whose proofs we leave as exercises.
 
 ```lean
+lemma nondec_prime_list_tail {p : Nat} {l : List Nat}
+    (h : nondec_prime_list (p :: l)) : nondec_prime_list l := sorry
+
+lemma cons_prod_not_one {p : Nat} {l : List Nat}
+    (h : nondec_prime_list (p :: l)) : prod (p :: l) ≠ 1 := sorry
+
+lemma list_nil_iff_prod_one {l : List Nat} (h : nondec_prime_list l) :
+    l = [] ↔ prod l = 1 := sorry
+
 lemma prime_pos {p : Nat} (h : prime p) : p > 0 := sorry
 
-theorem Theorem_7_2_5 :
-    ∀ (l1 l2 : List Nat), nondec_prime_list l1 → nondec_prime_list l2 →
+theorem Theorem_7_2_5 : ∀ (l1 l2 : List Nat),
+    nondec_prime_list l1 → nondec_prime_list l2 →
     prod l1 = prod l2 → l1 = l2 := by
   apply List.rec
   · -- Base Case.  Goal : ∀ (l2 : List Nat), nondec_prime_list [] →
@@ -981,28 +1354,25 @@ theorem Theorem_7_2_5 :
   done
 ```
 
-Putting it all together, we can finally prove the Fundamental Theorem of Arithmetic, which is stated as Theorem 7.2.6 in *HTPI*:
+Putting it all together, we can finally prove the fundamental theorem of arithmetic, which is stated as Theorem 7.2.6 in *HTPI*:
 
 ```lean
 theorem Theorem_7_2_6_Fund_Thm_Arith (n : Nat) (h : n ≥ 1) :
-    ∃! (l : List Nat), nondec_prime_list l ∧ prod l = n := by
+    ∃! (l : List Nat), prime_factorization n l := by
   exists_unique
   · -- Existence
-    apply Exists.intro (prime_fac n)
-    have h1 : nondec_prime_list (prime_fac n) :=
-      And.intro (prime_fac_all_prime n) (prime_fac_nondec n)
-    show nondec_prime_list (prime_fac n) ∧ prod (prime_fac n) = n from
-      And.intro h1 (prime_fac_prod n h)
+    exact exists_prime_factorization n h
     done
   · -- Uniqueness
     fix l1 : List Nat; fix l2 : List Nat
-    assume h1 : nondec_prime_list l1 ∧ prod l1 = n
-    assume h2 : nondec_prime_list l2 ∧ prod l2 = n
+    assume h1 : prime_factorization n l1
+    assume h2 : prime_factorization n l2
+    define at h1; define at h2
     have h3 : prod l1 = n := h1.right
     rewrite [←h2.right] at h3
     show l1 = l2 from Theorem_7_2_5 l1 l2 h1.left h2.left h3
     done
-  done 
+  done
 ```
 
 ### Exercises
@@ -1016,24 +1386,24 @@ lemma dvd_prime_ex {a p : Nat}
 
 ::: {.numex arguments="2"}
 ```lean
-lemma fd_le_prime_fac_ex (n : Nat) : ∀ (k : Nat),
-    k ∣ (n + 2) → le_list (first_div (n + 2)) (prime_fac k) := sorry
+--Hints:  Start with apply List.rec.  You may find mul_ne_zero useful
+theorem prod_nonzero_nonzero : ∀ (l : List Nat),
+    (∀ (a : Nat), a ∈ l → a ≠ 0) → prod l ≠ 0 := sorry
 ```
 :::
 
 ::: {.numex arguments="3"}
 ```lean
-theorem list_elt_dvd_prod (n : Nat) :
-    ∀ (l : List Nat), n ∈ l → n ∣ (prod l) := sorry
--- Hint:  Start with apply List.rec
+theorem rel_prime_iff_no_common_factor (a b : Nat) :
+    rel_prime a b ↔ ¬∃ (p : Nat), prime p ∧ p ∣ a ∧ p ∣ b := sorry
 ```
 :::
 
 ::: {.numex arguments="4"}
 ```lean
-theorem Exercise_7_2_5 {a b : Nat} (h1 : a ≥ 1) (h2 : b ≥ 1) :
-    rel_prime a b ↔ (¬∃ (p : Nat), prime p ∧
-      p ∈ prime_fac a ∧ p ∈ prime_fac b) := sorry
+theorem Exercise_7_2_5 {a b : Nat} {l m : List Nat}
+    (h1 : prime_factorization a l) (h2 : prime_factorization b m) :
+    rel_prime a b ↔ (¬∃ (p : Nat), p ∈ l ∧ p ∈ m) := sorry
 ```
 :::
 
@@ -1146,7 +1516,7 @@ Int.emod_nonneg : ∀ (a : ℤ) {b : ℤ}, b ≠ 0 → 0 ≤ a % b
 ```
 :::
 
-We now have all the background we need to prove Theorem 7.3.1 in Lean.  We begin with a few lemmas, some of which require the hypothesis `[NeZero m]`.  The proof of the theorem closely follows the proof in *HTPI*.  Note that all of the proofs below involve the expression `a % m`.  Since `a` is an integer, the operator `%` in this expression must be the integer integer version of the mod operator, and therefore `m` must be coerced to be an integer.  Thus, Lean interprets `a % m` as `a % ↑m`
+We now have all the background we need to prove Theorem 7.3.1 in Lean.  We begin with a few lemmas, some of which require the hypothesis `[NeZero m]`.  The proof of the theorem closely follows the proof in *HTPI*.  Note that all of the proofs below involve the expression `a % m`.  Since `a` is an integer, the operator `%` in this expression must be the integer version of the mod operator, and therefore `m` must be coerced to be an integer.  Thus, Lean interprets `a % m` as `a % ↑m`
 
 ```lean
 lemma mod_nonneg (m : Nat) [NeZero m] (a : Int) : 0 ≤ a % m := by
@@ -1235,14 +1605,14 @@ theorem Theorem_7_3_6_7 {m : Nat} (X : ZMod m) : X * cc m 1 = X := by
   done
 ```
 
-`Theorem_7_3_6_7` shows that `cc m 1` is the multiplicative identity element for `ZMod m`.  We say that a congruence class `Y` is the *multiplicative inverse* of another class `X` if `X * Y = cc m 1`, and a congruence class is *invertible* if it has a multiplicative inverse:
+`Theorem_7_3_6_7` shows that `cc m 1` is the multiplicative identity element for `ZMod m`.  We say that a congruence class `Y` is a *multiplicative inverse* of another class `X` if `X * Y = cc m 1`, and a congruence class is *invertible* if it has a multiplicative inverse:
 
 ```lean
 def invertible {m : Nat} (X : ZMod m) : Prop :=
   ∃ (Y : ZMod m), X * Y = cc m 1
 ```
 
-Which congruence classes are invertible?  The answer is given by Theorem 7.3.7 in *HTPI*, which says that if $a$ is a positive integer, then a $[a]_m$ is invertible if and only if $m$ and $a$ are relatively prime.  The proof uses an exercise from the last section.  Here is the Lean version of the proof.
+Which congruence classes are invertible?  The answer is given by Theorem 7.3.7 in *HTPI*, which says that if $a$ is a positive integer, then $[a]_m$ is invertible if and only if $m$ and $a$ are relatively prime.  The proof uses an exercise from the last section.  Here is the Lean version of the proof.
 
 ```lean
 theorem Exercise_7_2_6 (a b : Nat) :
@@ -1279,7 +1649,7 @@ theorem Theorem_7_3_7 (m a : Nat) :
       --Goal : ∃ (s t : Int), s * ↑m + t * ↑a = 1
     apply Exists.intro (-c)
     apply Exists.intro b
-    show -c * m + b * a = 1 from
+    show (-c) * m + b * a = 1 from
       calc (-c) * m + b * a
         _ = (-c) * m + (a * b - 1) + 1 := by ring
         _ = (-c) * m + m * c + 1 := by rw [h4]
@@ -1334,7 +1704,7 @@ theorem Exercise_7_3_4b {m : Nat} (X Y1 Y2 : ZMod m)
 ::: {.numex arguments="6"}
 ```lean
 theorem Theorem_7_3_10 (m a d : Nat) (b : Int) (h1 : d = gcd m a) :
-    ¬ (↑d : Int) ∣ b → ¬∃ (x : Int), congr_mod m (a * x) b := sorry
+    ¬(↑d : Int) ∣ b → ¬∃ (x : Int), congr_mod m (a * x) b := sorry
 ```
 :::
 
@@ -1356,7 +1726,7 @@ theorem Exercise_7_3_16 {m : Nat} {a b : Int} (h : congr_mod m a b) :
 
 The main result of Section 7.4 of *HTPI* is Euler's theorem.  The statement of the theorem involves Euler's totient function $\varphi$.  For any positive integer $m$, *HTPI* defines $\varphi(m)$ to be the number of elements of $\mathbb{Z}/{\equiv_m}$ that have multiplicative inverses.  In order to state and prove Euler's theorem in Lean, our first task is to define a Lean function `phi : Nat → Nat` that computes the totient function.
 
-Since `{0, 1, ..., m - 1}` is a complete residue system modulo `m`, `phi m` can be described as the number of natural numbers `a < m` such that `cc m a` is invertible.  According to `Theorem_7_3_7`, `cc m a` is invertible if and only if `m` and `a` are relatively prime, so `phi m` is also equal to the number of natural numbers `a < m` that are relatively prime to `m`.  We define a function `num_rp_below m k` that counts the number of natural numbers less than `k` that are relatively prime to `m`, and then use it to define `phi`.
+Since `{0, 1, ..., m - 1}` is a complete residue system modulo `m`, `phi m` can be described as the number of natural numbers `a < m` such that `cc m a` is invertible.  According to `Theorem_7_3_7`, `cc m a` is invertible if and only if `m` and `a` are relatively prime, so `phi m` is also equal to the number of natural numbers `a < m` that are relatively prime to `m`.  We begin by defining a function `num_rp_below m k` that counts the number of natural numbers less than `k` that are relatively prime to `m`.
 
 ```lean
 def num_rp_below (m k : Nat) : Nat :=
@@ -1364,7 +1734,22 @@ def num_rp_below (m k : Nat) : Nat :=
     | 0 => 0
     | j + 1 => if gcd m j = 1 then (num_rp_below m j) + 1
                 else num_rp_below m j
+```
 
+This is the first time we have used an `if ... then ... else` expression in a Lean definition.  To prove theorems about such expressions, we will need two theorems from Lean's library, `if_pos` and `if_neg`.  The `#check` command tells us what they say:
+
+::: {.ind}
+```
+@if_pos : ∀ {c : Prop} {h : Decidable c},
+          c → ∀ {α : Sort u_1} {t e : α}, (if c then t else e) = t
+@if_neg : ∀ {c : Prop} {h : Decidable c},
+          ¬c → ∀ {α : Sort u_1} {t e : α}, (if c then t else e) = e
+```
+:::
+
+Ignoring the implicit arguments, this tells us that if `h` is a proof of a proposition `c`, then `if_pos h` is a proof of `(if c then t else e) = t`, and if `h` is a proof of `¬c`, then `if_neg h` is a proof of `(if c then t else e) = e`.  (Technically, the implicit arguments say that `c` must be a "decidable" proposition, but we won't worry about that detail.)  We often use these theorems with the `rewrite` tactic to rewrite an expression of the form `if c then t else e` as either `t` or `e`, depending on whether `c` is true or false.
+
+```lean
 lemma num_rp_below_base {m : Nat} :
     num_rp_below m 0 = 0 := by rfl
 
@@ -1379,8 +1764,19 @@ lemma num_rp_below_step_rp {m j : Nat} (h : rel_prime m j) :
   done
 
 lemma num_rp_below_step_not_rp {m j : Nat} (h : ¬rel_prime m j) :
-    num_rp_below m (j + 1) = num_rp_below m j := sorry
+    num_rp_below m (j + 1) = num_rp_below m j := by
+  have h1 : num_rp_below m (j +1) =
+    if gcd m j = 1 then (num_rp_below m j) + 1
+    else num_rp_below m j := by rfl
+  define at h        --h : ¬gcd m j = 1
+  rewrite [h1, if_neg h]
+  rfl
+  done
+```
 
+We can now use `num_rp_below` to define the totient function.
+
+```lean
 def phi (m : Nat) := num_rp_below m m
 
 lemma phi_def (m : Nat) : phi m = num_rp_below m m := by rfl
@@ -1391,7 +1787,7 @@ lemma phi_def (m : Nat) : phi m = num_rp_below m m := by rfl
 With this preparation, we can now state the theorem we will prove:
 
 ```lean
-theorem Theorem_7_4_2 (m a : Nat) [NeZero m] (h1 : rel_prime m a) :
+theorem Theorem_7_4_2 {m a : Nat} [NeZero m] (h1 : rel_prime m a) :
     (cc m a) ^ (phi m) = cc m 1
 ```
 
@@ -1463,9 +1859,6 @@ lemma prod_seq_step {m : Nat}
 lemma prod_seq_zero_step {m : Nat}
     (n : Nat) (f : Nat → ZMod m) :
     prod_seq (n + 1) 0 f = prod_seq n 0 f * f n := sorry
-
-lemma prod_one {m : Nat}
-    (k : Nat) (f : Nat → ZMod m) : prod_seq 1 k f = f k := sorry
 ```
 
 Using this notation, the expression `prod_seq m 0 (F m)` denotes the `F`-product, which, as we saw earlier, is equal to the product of the invertible congruence classes.
@@ -1479,7 +1872,9 @@ def G (m a i : Nat) : Nat := (a * i) % m
 Consider the following product, which we will call the *`FG`-product*:
 
 ::: {.ind}
-`(F m (G m a 0)) * (F m (G m a 1)) * ... * (F m (G m a (m - 1)))`.
+```
+(F m (G m a 0)) * (F m (G m a 1)) * ... * (F m (G m a (m - 1))).
+```
 :::
 
 Using the partial application `G m a`, which is a function from `Nat` to `Nat`, we can express this in Lean as `prod_seq m 0 ((F m) ∘ (G m a))`.  To understand this product we will need two facts about `G`.  
@@ -1489,7 +1884,7 @@ lemma cc_G (m a i : Nat) : cc m (G m a i) = (cc m a) * (cc m i) :=
   calc cc m (G m a i)
     _ = cc m ((a * i) % m) := by rfl
     _ = cc m (a * i) := (cc_eq_mod m (a * i)).symm
-    _ = (cc m a) * (cc m i) := by rw [mul_class]
+    _ = (cc m a) * (cc m i) := (mul_class m a i).symm
 
 lemma G_rp_iff {m a : Nat} (h1 : rel_prime m a) (i : Nat) :
     rel_prime m (G m a i) ↔ rel_prime m i := by
@@ -1506,7 +1901,9 @@ lemma G_rp_iff {m a : Nat} (h1 : rel_prime m a) (i : Nat) :
 Now let's analyze the `FG`-product.  If `i` is not relatively prime to `m`, then by `G_rp_iff`, `G m a i` is also not relatively prime to `m`, so `F m (G m a i) = cc m 1`.  As before, this means that these terms contribute nothing to the `FG`-product.  If `i` is relatively prime to `m`, then so is `G m a i`, and therefore, by `cc_G`,
 
 ::: {.ind}
-`F m (G m a i) = cc m (G m a i) = (cc m a) * (cc m i) = (cc m a) * (F m i)`
+```
+F m (G m a i) = cc m (G m a i) = (cc m a) * (cc m i) = (cc m a) * (F m i).
+```
 :::
 
 This means that, in the `FG`-product, each factor contributed by a value of `i` that is relatively prime to `m` is `cc m a` times the corresponding factor in the `F`-product.  Since the number of such factors is `phi m`, it follows that the `FG`-product is `(cc m a) ^ (phi m)` times the `F`-product.
@@ -1587,7 +1984,9 @@ lemma FG_prod {m a : Nat} (h1 : rel_prime m a) :
 The lemma `FG_prod`, in the case `k = m`, tells us that
 
 ::: {.ind}
-`prod_seq m 0 ((F m) ∘ (G m a)) = (cc m a) ^ (phi m) * prod_seq m 0 (F m)`.
+```
+prod_seq m 0 ((F m) ∘ (G m a)) = (cc m a) ^ (phi m) * prod_seq m 0 (F m).
+```
 :::
 
 In other words, we have proven that the `FG`-product is `(cc m a) ^ (phi m)` times the `F`-product.
@@ -1625,14 +2024,15 @@ There is just one more fact we need before we can prove `Theorem_7_4_2`: all of 
 ```lean
 lemma F_invertible (m i : Nat) : invertible (F m i) := by
   by_cases h : rel_prime m i
-  · -- Case 1. h: rel_prime m i
+  · -- Case 1. h : rel_prime m i
     rewrite [F_rp_def h]
     show invertible (cc m i) from (Theorem_7_3_7 m i).rtl h
     done
-  · -- Case 2. h: ¬rel_prime m i
+  · -- Case 2. h : ¬rel_prime m i
     rewrite [F_not_rp_def h]
     apply Exists.intro (cc m 1)
     show cc m 1 * cc m 1 = cc m 1 from Theorem_7_3_6_7 (cc m 1)
+    done
   done
 
 lemma Fprod_invertible (m : Nat) :
@@ -1651,13 +2051,14 @@ lemma Fprod_invertible (m : Nat) :
     rewrite [prod_seq_zero_step]
     show invertible (prod_seq k 0 (F m) * (F m k)) from
       (prod_inv_iff_inv ih (F m k)).rtl (F_invertible m k)
+    done
   done
 ```
 
 We now have everything we need to prove `Theorem_7_4_2`:
 
 ```lean
-theorem Theorem_7_4_2 (m a : Nat) [NeZero m] (h1 : rel_prime m a) :
+theorem Theorem_7_4_2 {m a : Nat} [NeZero m] (h1 : rel_prime m a) :
     (cc m a) ^ (phi m) = cc m 1 := by
   have h2 : invertible (prod_seq m 0 (F m)) := Fprod_invertible m m
   obtain (Y : ZMod m) (h3 : prod_seq m 0 (F m) * Y = cc m 1) from h2
@@ -1685,9 +2086,9 @@ lemma Exercise_7_4_5_Nat (m a n : Nat) :
   rfl
   done
 
-theorem Theorem_7_4_3_Euler's_theorem (m a : Nat) [NeZero m]
+theorem Theorem_7_4_3_Euler's_theorem {m a : Nat} [NeZero m]
     (h1 : rel_prime m a) : congr_mod m (a ^ (phi m)) 1 := by
-  have h2 : (cc m a) ^ (phi m) = cc m 1 := Theorem_7_4_2 m a h1
+  have h2 : (cc m a) ^ (phi m) = cc m 1 := Theorem_7_4_2 h1
   rewrite [Exercise_7_4_5_Nat m a (phi m)] at h2
     --h2 : cc m ↑(a ^ phi m) = cc m 1
   show congr_mod m (a ^ (phi m)) 1 from (cc_eq_iff_congr _ _ _).ltr h2
@@ -1759,3 +2160,262 @@ lemma G_perm_below {m a : Nat} [NeZero m] (h1 : rel_prime m a) :
     perm_below m (G m a) := And.intro (G_maps_below m a)
   (And.intro (G_one_one_below h1) (G_onto_below h1))
 ```
+
+Finally, we turn to the proof of `perm_prod`.  Our proof will be by mathematical induction.  In the induction step, our induction hypothesis will be
+
+::: {.ind}
+```
+∀ (g : Nat → Nat), perm_below n g →
+    prod_seq n 0 f = prod_seq n 0 (f ∘ g),
+```
+:::
+
+and we will have to prove
+
+::: {.ind}
+```
+∀ (g : Nat → Nat), perm_below (n + 1) g →
+    prod_seq (n + 1) 0 f = prod_seq (n + 1) 0 (f ∘ g).
+```
+:::
+
+To prove this, we'll introduce an arbitrary function `g : Nat → Nat` and assume `perm_below (n + 1) g`.  How can we make use of the inductive hypothesis?  Here's the key idea:  Since `g` permutes the numbers below `n + 1`, there must be some `u ≤ n` such that `g u = n`.  Now let `s` be a function that swaps `u` and `n`, but leaves all other numbers fixed.  In other words, `s u = n`, `s n = u`, and `s i = i` if `i ≠ u` and `i ≠ n`.  It is not hard to show that `s` permutes the numbers below `n + 1`, and using that fact we can prove that `g ∘ s` permutes the numbers below `n + 1`.  But notice that
+
+::: {.ind}
+```
+(g ∘ s) n = g (s n) = g u = n.
+```
+:::
+
+In other words, `g ∘ s` leaves `n` fixed.  Using that fact, we'll be able to prove that `g ∘ s` permutes the numbers below `n`.  We can therefore apply the inductive hypothesis to `g ∘ s`, which leads to the conclusion
+
+::: {.ind}
+```
+prod_seq n 0 f = prod_seq n 0 (f ∘ g ∘ s).
+```
+:::
+
+Since we also have `(f ∘ g ∘ s) n = f ((g ∘ s) n) = f n`, we can extend this to
+
+::: {.ind}
+```
+prod_seq (n + 1) 0 f = prod_seq (n + 1) 0 (f ∘ g ∘ s).
+```
+:::
+
+Finally, we can then reach the required conclusion by proving
+
+::: {.ind}
+```
+prod_seq (n + 1) 0 (f ∘ g ∘ s) = prod_seq (n + 1) 0 (f ∘ g).
+```
+:::
+
+To carry out this plan, we begin by defining our "swapping" function and proving its properties.
+
+```lean
+def swap (u v i : Nat) : Nat :=
+  if i = u then v else if i = v then u else i
+
+lemma swap_fst (u v : Nat) : swap u v u = v := by
+  define : swap u v u
+    --Goal : (if u = u then v else if u = v then u else u) = v
+  have h : u = u := by rfl
+  rewrite [if_pos h]
+  rfl
+  done
+
+lemma swap_snd (u v : Nat) : swap u v v = u := sorry
+
+lemma swap_perm_below {u v n} (h1 : u < n) (h2 : v < n) :
+    perm_below n (swap u v) := sorry
+```
+
+For the swapping function `s` in the proof outline above, we'll use `swap u n`.  To prove that `g ∘ swap u n` permutes the numbers below `n`, we'll need two lemmas:
+
+```lean
+lemma comp_perm_below {n : Nat} {f g : Nat → Nat}
+    (h1 : perm_below n f) (h2 : perm_below n g) :
+    perm_below n (f ∘ g) := sorry
+
+lemma perm_below_fixed {n : Nat} {g : Nat → Nat}
+    (h1 : perm_below (n + 1) g) (h2 : g n = n) : perm_below n g := sorry
+```
+
+For the final step of the proof, we'll need several lemmas
+
+```lean
+lemma break_prod_twice  {m u j n : Nat} (f : Nat → ZMod m)
+    (h1 : n = u + 1 + j) : prod_seq (n + 1) 0 f =
+      prod_seq u 0 f * f u * prod_seq j (u + 1) f * f n := sorry
+
+lemma swap_prod_eq_prod_below {m u n : Nat} (f : Nat → ZMod m)
+    (h1 : u ≤ n) : prod_seq u 0 (f ∘ swap u n) = prod_seq u 0 f := sorry
+
+lemma swap_prod_eq_prod_between {m u j n : Nat} (f : Nat → ZMod m)
+    (h1 : n = u + 1 + j) : prod_seq j (u + 1) (f ∘ swap u n) =
+      prod_seq j (u + 1) f := sorry
+
+lemma trivial_swap (u : Nat) : swap u u = id := sorry
+```
+
+Using these lemmas, we can prove the fact we'll need in the final step.
+
+```lean
+lemma swap_prod_eq_prod {m u n : Nat} (f : Nat → ZMod m) (h1 : u ≤ n) :
+    prod_seq (n + 1) 0 (f ∘ swap u n) = prod_seq (n + 1) 0 f := by
+  by_cases h2 : u = n
+  · -- Case 1. h2 : u = n
+    rewrite [h2, trivial_swap n]
+      --Goal : prod_seq (n + 1) 0 (f ∘ id) = prod_seq (n + 1) 0 f
+    rfl
+    done
+  · -- Case 2. h2 : ¬u = n
+    have h3 : u + 1 ≤ n := Nat.lt_of_le_of_ne h1 h2
+    obtain (j : Nat) (h4 : n = u + 1 + j) from Nat.exists_eq_add_of_le h3
+    have break_f : prod_seq (n + 1) 0 f =
+      prod_seq u 0 f * f u * prod_seq j (u + 1) f * f n :=
+      break_prod_twice f h4
+    have break_fs : prod_seq (n + 1) 0 (f ∘ swap u n) =
+      prod_seq u 0 (f ∘ swap u n) * (f ∘ swap u n) u *
+      prod_seq j (u + 1) (f ∘ swap u n) * (f ∘ swap u n) n :=
+      break_prod_twice (f ∘ swap u n) h4
+    have f_eq_fs_below : prod_seq u 0 (f ∘ swap u n) =
+      prod_seq u 0 f := swap_prod_eq_prod_below f h1
+    have f_eq_fs_btwn : prod_seq j (u + 1) (f ∘ swap u n) =
+      prod_seq j (u + 1) f := swap_prod_eq_prod_between f h4
+    show prod_seq (n + 1) 0 (f ∘ swap u n) = prod_seq (n + 1) 0 f from
+      calc prod_seq (n + 1) 0 (f ∘ swap u n)
+        _ = prod_seq u 0 (f ∘ swap u n) * (f ∘ swap u n) u *
+            prod_seq j (u + 1) (f ∘ swap u n) * (f ∘ swap u n) n :=
+              break_fs
+        _ = prod_seq u 0 f * (f ∘ swap u n) u *
+            prod_seq j (u + 1) f * (f ∘ swap u n) n := by
+              rw [f_eq_fs_below, f_eq_fs_btwn]
+        _ = prod_seq u 0 f * f (swap u n u) *
+            prod_seq j (u + 1) f * f (swap u n n) := by rfl
+        _ = prod_seq u 0 f * f n * prod_seq j (u + 1) f * f u := by
+              rw [swap_fst, swap_snd]
+        _ = prod_seq u 0 f * f u * prod_seq j (u + 1) f * f n := by ring
+        _ = prod_seq (n + 1) 0 f := break_f.symm
+    done
+  done
+```
+
+We finally have all the pieces in place to prove `perm_prod`:
+
+```lean
+lemma perm_prod {m : Nat} (f : Nat → ZMod m) :
+    ∀ (n : Nat), ∀ (g : Nat → Nat), perm_below n g →
+      prod_seq n 0 f = prod_seq n 0 (f ∘ g) := by
+  by_induc
+  · -- Base Case
+    fix g : Nat → Nat
+    assume h1 : perm_below 0 g
+    rewrite [prod_seq_base, prod_seq_base]
+    rfl
+    done
+  · -- Induction Step
+    fix n : Nat
+    assume ih : ∀ (g : Nat → Nat), perm_below n g →
+      prod_seq n 0 f = prod_seq n 0 (f ∘ g)
+    fix g : Nat → Nat
+    assume g_pb : perm_below (n + 1) g
+    define at g_pb
+    have g_ob : onto_below (n + 1) g := g_pb.right.right
+    define at g_ob
+    have h1 : n < n + 1 := by linarith
+    obtain (u : Nat) (h2 : u < n + 1 ∧ g u = n) from g_ob n h1
+    have s_pb : perm_below (n + 1) (swap u n) :=
+      swap_perm_below h2.left h1
+    have gs_pb_n1 : perm_below (n + 1) (g ∘ swap u n) :=
+      comp_perm_below g_pb s_pb
+    have gs_fix_n : (g ∘ swap u n) n = n :=
+      calc (g ∘ swap u n) n
+        _ = g (swap u n n) := by rfl
+        _ = g u := by rw [swap_snd]
+        _ = n := h2.right
+    have gs_pb_n : perm_below n (g ∘ swap u n) :=
+      perm_below_fixed gs_pb_n1 gs_fix_n
+    have gs_prod : prod_seq n 0 f = prod_seq n 0 (f ∘ (g ∘ swap u n)) :=
+      ih (g ∘ swap u n) gs_pb_n
+    have h3 : u ≤ n := by linarith
+    show prod_seq (n + 1) 0 f = prod_seq (n + 1) 0 (f ∘ g) from
+      calc prod_seq (n + 1) 0 f
+        _ = prod_seq n 0 f * f n := prod_seq_zero_step n f
+        _ = prod_seq n 0 (f ∘ (g ∘ swap u n)) *
+            f ((g ∘ swap u n) n) := by rw [gs_prod, gs_fix_n]
+        _ = prod_seq n 0 (f ∘ g ∘ swap u n) *
+            (f ∘ g ∘ swap u n) n := by rfl
+        _ = prod_seq (n + 1) 0 (f ∘ g ∘ swap u n) :=
+              (prod_seq_zero_step n (f ∘ g ∘ swap u n)).symm
+        _ = prod_seq (n + 1) 0 ((f ∘ g) ∘ swap u n) := by rfl
+        _ = prod_seq (n + 1) 0 (f ∘ g) := swap_prod_eq_prod (f ∘ g) h3
+    done
+  done
+```
+
+### Exercises
+
+::: {.numex arguments="1"}
+```lean
+--Hint:  Use induction.
+--For the base case, compute (cc m a) ^ 0 * (cc m 1) in two ways:
+--by Theorem_7_3_6_7, (cc m a) ^ 0 * (cc m 1) = (cc m a) ^ 0
+--by ring, (cc m a) ^ 0 * (cc m 1) = cc m 1.
+lemma Exercise_7_4_5_Int_ex (m : Nat) (a : Int) :
+    ∀ (n : Nat), (cc m a) ^ n = cc m (a ^ n) := sorry
+```
+:::
+
+::: {.numex arguments="2"}
+```lean
+lemma left_inv_one_one_below_ex {n : Nat} {g g' : Nat → Nat}
+    (h1 : ∀ i < n, g' (g i) = i) : one_one_below n g := sorry
+```
+:::
+
+::: {.numex arguments="3"}
+```lean
+lemma comp_perm_below_ex {n : Nat} {f g : Nat → Nat}
+    (h1 : perm_below n f) (h2 : perm_below n g) :
+    perm_below n (f ∘ g) := sorry
+```
+:::
+
+::: {.numex arguments="4"}
+```lean
+lemma perm_below_fixed_ex {n : Nat} {g : Nat → Nat}
+    (h1 : perm_below (n + 1) g) (h2 : g n = n) : perm_below n g := sorry
+```
+:::
+
+::: {.numex arguments="5"}
+```lean
+lemma Lemma_7_4_6 {a b c : Nat} :
+    rel_prime (a * b) c ↔ rel_prime a c ∧ rel_prime b c := sorry
+```
+:::
+
+::: {.numex arguments="6"}
+```lean
+example {m a : Nat} [NeZero m] (h1 : rel_prime m a) :
+    congr_mod m (a ^ (phi m + 1)) a := sorry
+```
+:::
+
+::: {.numex arguments="7"}
+```lean
+theorem Like_Exercise_7_4_11 {m a p : Nat} [NeZero m]
+    (h1 : rel_prime m a) (h2 : p + 1 = phi m) :
+    (cc m a) * (cc m ↑(a ^ p)) = cc m 1 := sorry
+```
+:::
+
+::: {.numex arguments="8"}
+```lean
+theorem Like_Exercise_7_4_12 {m a p q k : Nat} [NeZero m]
+    (h1 : rel_prime m a) (h2 : p = q + (phi m) * k) :
+    congr_mod m (a ^ p) (a ^ q) := sorry
+```
+:::

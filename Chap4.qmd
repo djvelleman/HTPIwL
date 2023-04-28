@@ -427,12 +427,21 @@ theorem Exercise_4_3_18 {A : Type}
 ```
 :::
 
+::: {.numex arguments="7"}
+```lean
+theorem Exercise_4_3_20 {A : Type} (R : BinRel A) (S : BinRel (Set A))
+    (h : ∀ (X Y : Set A), S X Y ↔ X ≠ ∅ ∧ Y ≠ ∅ ∧
+    ∀ (x y : A), x ∈ X → y ∈ Y → R x y) :
+    transitive R → transitive S := sorry
+```
+:::
+
 ::: {.mdsk}
 :::
 
-In the next two exercises, determine whether or not the theorem is correct.
+In the next three exercises, determine whether or not the theorem is correct.
 
-::: {.numex arguments="7"}
+::: {.numex arguments="8"}
 ```lean
 --You might not be able to complete this proof
 theorem Exercise_4_3_13b {A : Type}
@@ -441,12 +450,21 @@ theorem Exercise_4_3_13b {A : Type}
 ```
 :::
 
-::: {.numex arguments="8"}
+::: {.numex arguments="9"}
 ```lean
 --You might not be able to complete this proof
 theorem Exercise_4_3_13c {A : Type}
     (R1 R2 : BinRel A) (h1 : transitive R1) (h2 : transitive R2) :
     transitive (RelFromExt ((extension R1) ∪ (extension R2))) := sorry
+```
+:::
+
+::: {.numex arguments="10"}
+```lean
+--You might not be able to complete this proof
+theorem Exercise_4_3_19 {A : Type} (R : BinRel A) (S : BinRel (Set A))
+    (h : ∀ (X Y : Set A), S X Y ↔ ∃ (x y : A), x ∈ X ∧ y ∈ Y ∧ R x y) :
+    transitive R → transitive S := sorry
 ```
 :::
 

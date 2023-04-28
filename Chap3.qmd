@@ -4754,7 +4754,9 @@ h5 : n = 3 * k
 To finish off the justification of the second equation, we'll use the theorem `Eq.refl`.  The command `#check @Eq.refl` gives the result
 
 ::: {.ind}
-`@Eq.refl : ∀ {α : Sort u_1} (a : α), a = a`
+```
+@Eq.refl : ∀ {α : Sort u_1} (a : α), a = a
+```
 :::
 
 Ignoring the implicit argument `α`, this should remind you of the theorem `Iff.refl : ∀ (a : Prop), a ↔ a`.  Recall that we were able to use `Iff.refl _` to prove not only any statement of the form `a ↔ a`, but also statements of the form `a ↔ a'`, where `a` and `a'` are definitionally equal.  Similarly, `Eq.refl _` will prove any equation of the form `a = a'`, where `a` and `a'` are definitionally equal.  Since Lean knows that, by definition, `3 * 2 = 6` and `2 * 3 = 6`, the goal has this form.  Thus we can complete the proof with the tactic `show 6 * j - 6 * k = 3 * 2 * j - 2 * 3 * k from Eq.refl _`.  As we saw earlier, a shorter version of this would be `exact Eq.refl _`.  But this situation comes up often enough that there is an even shorter version: the tactic `rfl` can be used as a shorthand for either `exact Eq.refl _` or `exact Iff.refl _`.  In other words, in a tactic-mode proof, if the goal has one of the forms `a = a'` or `a ↔ a'`, where `a` and `a'` are definitionally equal, then the tactic `rfl` will prove the goal.  So `rfl` will finish off the justification of the second equation, and we can move on to the third.

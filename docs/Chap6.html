@@ -387,11 +387,11 @@ $$
 </div>
 <p>and <code>sum_step</code> proves any statement of the form</p>
 <div class="ind">
-<pre><code>k ≤ n → Sum i from k to n + 1, f i = (Sum i from k to n, f i) + f (n + 1)</code></pre>
+<pre><code>k ≤ n → Sum i from k to n + 1, f i = (Sum i from k to n, f i) + f (n + 1).</code></pre>
 </div>
 <p>In the case <code>k = 0</code>, we have the simpler theorem <code>sum_from_zero_step</code>, which proves</p>
 <div class="ind">
-<pre><code>Sum i from 0 to n + 1, f i = (Sum i from 0 to n, f i) + f (n + 1)</code></pre>
+<pre><code>Sum i from 0 to n + 1, f i = (Sum i from 0 to n, f i) + f (n + 1).</code></pre>
 </div>
 <p>With that preparation, we can start on the proof. Once again we begin with the <code>by_induc</code> tactic. Our goal for the base case is <code>(Sum i from 0 to 0, 2 ^ i) + 1 = 2 ^ (0 + 1)</code>. To deal with the term <code>Sum i from 0 to 0, 2 ^ i</code>, we use that fact that <code>sum_base</code> proves <code>Sum i from 0 to 0, 2 ^ i = 2 ^ 0</code>. It follows that the tactic <code>rewrite [sum_base]</code> will change the goal to <code>2 ^ 0 + 1 = 2 ^ (0 + 1)</code>. Of course, this means <code>2 = 2</code>, so <code>rfl</code> finishes the base case. For the induction step, we start by introducing an arbitrary natural number <code>n</code> and assuming the inductive hypothesis.</p>
 <div class="sourceCode" id="cb13"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Like_Example_6_1_1 :</span>
@@ -443,7 +443,7 @@ $$
 \end{align*}\]</span> </p>
 </div>
 <p>Notice that the sequence of calculations at the end of the proof mixes <span class="math inline">\(=\)</span>, <span class="math inline">\(&gt;\)</span>, and <span class="math inline">\(\ge\)</span> in a way that establishes the final conclusion <span class="math inline">\(2^{n+1} &gt; (n+1)^2\)</span>. As we’ll see, such a mixture is allowed in calculational proofs in Lean as well.</p>
-<p>To write this proof in Lean, there is no need to specify that the base case should be <code>n = 5</code>; the <code>by_induc</code> tactic is smart enough to figure that out on its own, as you can see in the tactic state below:</p>
+<p>To write this proof in Lean, there is no need to specify that the base case should be <code>n = 5</code>; the <code>by_induc</code> tactic is smart enough to figure that out on its own, as you can see in the tactic state below. (Notice that, as in <em>HTPI</em>, in Lean we can write <code>∀ n ≥ k, P n</code> as an abbreviation for <code>∀ (n : Nat), n ≥ k → P n</code>.)</p>
 <div class="inout">
 <div class="inpt">
 <div class="sourceCode" id="cb15"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Example_6_1_3 :</span>
@@ -847,7 +847,7 @@ $$
 <p>Lean can use this definition to compute <code>fact k</code> for any natural number <code>k</code>. The <code>match</code> statement tells Lean to try to match the input <code>k</code> with one of the two patterns <code>0</code> and <code>n + 1</code>, and then to use the corresponding formula after <code>=&gt;</code> to compute <code>fact k</code>. For example, if we ask Lean for <code>fact 4</code>, it first checks if <code>4</code> matches <code>0</code>. Since it doesn’t, it goes on to the next line and determines that <code>4</code> matches the pattern <code>n + 1</code>, with <code>n = 3</code>, so it uses the formula <code>fact 4 = 4 * fact 3</code>. Of course, now it must compute <code>fact 3</code>, which it does in the same way: <code>3</code> matches <code>n + 1</code> with <code>n = 2</code>, so <code>fact 3 = 3 * fact 2</code>. Continuing in this way, Lean determines that</p>
 <div class="ind">
 <pre><code>fact 4 = 4 * fact 3 = 4 * (3 * fact 2) = 4 * (3 * (2 * fact 1))
-       = 4 * (3 * (2 * (1 * fact 0))) = 4 * (3 * (2 * (1 * 1))) = 24</code></pre>
+       = 4 * (3 * (2 * (1 * fact 0))) = 4 * (3 * (2 * (1 * 1))) = 24.</code></pre>
 </div>
 <p>You can confirm this with the <code>#eval</code> command:</p>
 <div class="sourceCode" id="cb52"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb52-1"><a href="#cb52-1" aria-hidden="true" tabindex="-1"></a><span class="kw">#eval</span> fact 4   <span class="co">--Answer: 24</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -871,7 +871,7 @@ $$
 <span id="cb53-16"><a href="#cb53-16" aria-hidden="true" tabindex="-1"></a>    <span class="kw">done</span></span>
 <span id="cb53-17"><a href="#cb53-17" aria-hidden="true" tabindex="-1"></a>  <span class="kw">done</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>There are two steps in the calculational proof at the end that require justification. The first says that <code>(n + 1) * fact n &gt; (n + 1) * 2 ^ n</code>, which should follow from the inductive hypothesis <code>ih : fact n &gt; 2 ^ n</code> by multiplying both sides by <code>n + 1</code>. Is there a theorem that would justify this inference?</p>
-<p>This may remind you a step in <code>Example_6_1_3</code> where we used the theorem <code>Nat.mul_le_mul_right</code>, which says <code>∀ {n m : ℕ} (k : ℕ), n ≤ m → n * k ≤ m * k</code>. Our situation in this example is similar, but it involves a strict inequality (<code>&gt;</code> rather than <code>≥</code>) and it involves multiplying on the left rather than the right. Many theorems about inequalities in Lean’s library contain either <code>le</code> (for “less than or equal to”) or <code>lt</code> (for “less than”) in their names, but they can also be used to prove statements involving <code>≥</code> or <code>&gt;</code>. Perhaps the theorem we need is named something like <code>Nat.mul_lt_mul_left</code>. If you type <code>#check @Nat.mul_lt_mul</code> into VS Code, a pop-up window will appear listing several theorems that begin with <code>Nat.mul_lt_mul</code>. There is no <code>Nat.mul_lt_mul_left</code>, but there is a theorem called <code>Nat.mul_lt_mul_of_pos_left</code>, and its meaning is</p>
+<p>This may remind you of a step in <code>Example_6_1_3</code> where we used the theorem <code>Nat.mul_le_mul_right</code>, which says <code>∀ {n m : ℕ} (k : ℕ), n ≤ m → n * k ≤ m * k</code>. Our situation in this example is similar, but it involves a strict inequality (<code>&gt;</code> rather than <code>≥</code>) and it involves multiplying on the left rather than the right. Many theorems about inequalities in Lean’s library contain either <code>le</code> (for “less than or equal to”) or <code>lt</code> (for “less than”) in their names, but they can also be used to prove statements involving <code>≥</code> or <code>&gt;</code>. Perhaps the theorem we need is named something like <code>Nat.mul_lt_mul_left</code>. If you type <code>#check @Nat.mul_lt_mul</code> into VS Code, a pop-up window will appear listing several theorems that begin with <code>Nat.mul_lt_mul</code>. There is no <code>Nat.mul_lt_mul_left</code>, but there is a theorem called <code>Nat.mul_lt_mul_of_pos_left</code>, and its meaning is</p>
 <div class="ind">
 <pre><code>@Nat.mul_lt_mul_of_pos_left : ∀ {n m k : ℕ},
                                 n &lt; m → k &gt; 0 → k * n &lt; k * m</code></pre>
@@ -1038,16 +1038,16 @@ $$
 <span id="cb67-11"><a href="#cb67-11" aria-hidden="true" tabindex="-1"></a>    <span class="kw">fix</span> n : Nat</span>
 <span id="cb67-12"><a href="#cb67-12" aria-hidden="true" tabindex="-1"></a>    <span class="kw">assume</span> ih : (1 + x) ^ n ≥ 1 + n * x</span>
 <span id="cb67-13"><a href="#cb67-13" aria-hidden="true" tabindex="-1"></a>    <span class="kw">rewrite</span> [Nat.cast_succ]</span>
-<span id="cb67-14"><a href="#cb67-14" aria-hidden="true" tabindex="-1"></a>    <span class="kw">show</span> (1 + x) ^ (n + 1) ≥ 1 + (↑n + 1) * x <span class="kw">from</span></span>
+<span id="cb67-14"><a href="#cb67-14" aria-hidden="true" tabindex="-1"></a>    <span class="kw">show</span> (1 + x) ^ (n + 1) ≥ 1 + (n + 1) * x <span class="kw">from</span></span>
 <span id="cb67-15"><a href="#cb67-15" aria-hidden="true" tabindex="-1"></a>      <span class="kw">calc</span> (1 + x) ^ (n + 1)</span>
 <span id="cb67-16"><a href="#cb67-16" aria-hidden="true" tabindex="-1"></a>        _ = (1 + x) * (1 + x) ^ n := <span class="kw">by</span> <span class="kw">rfl</span></span>
 <span id="cb67-17"><a href="#cb67-17" aria-hidden="true" tabindex="-1"></a>        _ ≥ (1 + x) * (1 + n * x) := <span class="cn">sorry</span></span>
 <span id="cb67-18"><a href="#cb67-18" aria-hidden="true" tabindex="-1"></a>        _ = 1 + x + n * x + n * x * x := <span class="kw">by</span> <span class="kw">ring</span></span>
 <span id="cb67-19"><a href="#cb67-19" aria-hidden="true" tabindex="-1"></a>        _ ≥ 1 + x + n * x + 0 := <span class="cn">sorry</span></span>
-<span id="cb67-20"><a href="#cb67-20" aria-hidden="true" tabindex="-1"></a>        _ = 1 + (↑n + 1) * x := <span class="kw">by</span> <span class="kw">ring</span></span>
+<span id="cb67-20"><a href="#cb67-20" aria-hidden="true" tabindex="-1"></a>        _ = 1 + (n + 1) * x := <span class="kw">by</span> <span class="kw">ring</span></span>
 <span id="cb67-21"><a href="#cb67-21" aria-hidden="true" tabindex="-1"></a>    <span class="kw">done</span></span>
 <span id="cb67-22"><a href="#cb67-22" aria-hidden="true" tabindex="-1"></a>  <span class="kw">done</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>Note that in the calculational proof, each <code>n</code> that is multiplied by <code>x</code> is really <code>↑n</code>, but we don’t need to say so explicitly; Lean fills in coercions automatically when they are required.</p>
+<p>Note that in the calculational proof, each <code>n</code> or <code>n + 1</code> that is multiplied by <code>x</code> is really <code>↑n</code> or <code>↑n + 1</code>, but we don’t need to say so explicitly; Lean fills in coercions automatically when they are required.</p>
 <p>All that’s left is to replace the two occurrences of <code>sorry</code> with justifications. We’ll use two theorems:</p>
 <div class="ind">
 <pre><code>@mul_le_mul_of_nonneg_left : ∀ {α : Type u_1} {a b c : α} [inst : Mul α]
@@ -1075,13 +1075,13 @@ $$
 <span id="cb69-13"><a href="#cb69-13" aria-hidden="true" tabindex="-1"></a>    <span class="kw">rewrite</span> [Nat.cast_succ]</span>
 <span id="cb69-14"><a href="#cb69-14" aria-hidden="true" tabindex="-1"></a>    <span class="kw">have</span> h2 : 1 + x ≥ 0 := <span class="kw">by</span> <span class="kw">linarith</span></span>
 <span id="cb69-15"><a href="#cb69-15" aria-hidden="true" tabindex="-1"></a>    <span class="kw">have</span> h3 : n * x * x ≥ 0 := <span class="cn">sorry</span></span>
-<span id="cb69-16"><a href="#cb69-16" aria-hidden="true" tabindex="-1"></a>    <span class="kw">show</span> (1 + x) ^ (n + 1) ≥ 1 + (↑n + 1) * x <span class="kw">from</span></span>
+<span id="cb69-16"><a href="#cb69-16" aria-hidden="true" tabindex="-1"></a>    <span class="kw">show</span> (1 + x) ^ (n + 1) ≥ 1 + (n + 1) * x <span class="kw">from</span></span>
 <span id="cb69-17"><a href="#cb69-17" aria-hidden="true" tabindex="-1"></a>      <span class="kw">calc</span> (1 + x) ^ (n + 1)</span>
 <span id="cb69-18"><a href="#cb69-18" aria-hidden="true" tabindex="-1"></a>        _ = (1 + x) * (1 + x) ^ n := <span class="kw">by</span> <span class="kw">rfl</span></span>
 <span id="cb69-19"><a href="#cb69-19" aria-hidden="true" tabindex="-1"></a>        _ ≥ (1 + x) * (1 + n * x) := mul_le_mul_of_nonneg_left ih h2</span>
 <span id="cb69-20"><a href="#cb69-20" aria-hidden="true" tabindex="-1"></a>        _ = 1 + x + n * x + n * x * x := <span class="kw">by</span> <span class="kw">ring</span></span>
 <span id="cb69-21"><a href="#cb69-21" aria-hidden="true" tabindex="-1"></a>        _ ≥ 1 + x + n * x + 0 := add_le_add_left h3 _</span>
-<span id="cb69-22"><a href="#cb69-22" aria-hidden="true" tabindex="-1"></a>        _ = 1 + (↑n + 1) * x := <span class="kw">by</span> <span class="kw">ring</span></span>
+<span id="cb69-22"><a href="#cb69-22" aria-hidden="true" tabindex="-1"></a>        _ = 1 + (n + 1) * x := <span class="kw">by</span> <span class="kw">ring</span></span>
 <span id="cb69-23"><a href="#cb69-23" aria-hidden="true" tabindex="-1"></a>    <span class="kw">done</span></span>
 <span id="cb69-24"><a href="#cb69-24" aria-hidden="true" tabindex="-1"></a>  <span class="kw">done</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>The <code>linarith</code> tactic is able to prove <code>1 + x ≥ 0</code>, since it follows easily from <code>h1 : x &gt; -1</code>. But how can we prove <code>n * x * x ≥ 0</code>? We start with the fact that the square of any real number is nonnegative:</p>
@@ -1113,13 +1113,13 @@ $$
 <span id="cb71-21"><a href="#cb71-21" aria-hidden="true" tabindex="-1"></a>          _ ≥ n * 0 := mul_le_mul_of_nonneg_left h4 h5</span>
 <span id="cb71-22"><a href="#cb71-22" aria-hidden="true" tabindex="-1"></a>          _ = 0 := <span class="kw">by</span> <span class="kw">ring</span></span>
 <span id="cb71-23"><a href="#cb71-23" aria-hidden="true" tabindex="-1"></a>      <span class="kw">done</span></span>
-<span id="cb71-24"><a href="#cb71-24" aria-hidden="true" tabindex="-1"></a>    <span class="kw">show</span> (1 + x) ^ (n + 1) ≥ 1 + (↑n + 1) * x <span class="kw">from</span></span>
+<span id="cb71-24"><a href="#cb71-24" aria-hidden="true" tabindex="-1"></a>    <span class="kw">show</span> (1 + x) ^ (n + 1) ≥ 1 + (n + 1) * x <span class="kw">from</span></span>
 <span id="cb71-25"><a href="#cb71-25" aria-hidden="true" tabindex="-1"></a>      <span class="kw">calc</span> (1 + x) ^ (n + 1)</span>
 <span id="cb71-26"><a href="#cb71-26" aria-hidden="true" tabindex="-1"></a>        _ = (1 + x) * (1 + x) ^ n := <span class="kw">by</span> <span class="kw">rfl</span></span>
 <span id="cb71-27"><a href="#cb71-27" aria-hidden="true" tabindex="-1"></a>        _ ≥ (1 + x) * (1 + n * x) := mul_le_mul_of_nonneg_left ih h2</span>
 <span id="cb71-28"><a href="#cb71-28" aria-hidden="true" tabindex="-1"></a>        _ = 1 + x + n * x + n * x * x := <span class="kw">by</span> <span class="kw">ring</span></span>
 <span id="cb71-29"><a href="#cb71-29" aria-hidden="true" tabindex="-1"></a>        _ ≥ 1 + x + n * x + 0 := add_le_add_left h3 _</span>
-<span id="cb71-30"><a href="#cb71-30" aria-hidden="true" tabindex="-1"></a>        _ = 1 + (↑n + 1) * x := <span class="kw">by</span> <span class="kw">ring</span></span>
+<span id="cb71-30"><a href="#cb71-30" aria-hidden="true" tabindex="-1"></a>        _ = 1 + (n + 1) * x := <span class="kw">by</span> <span class="kw">ring</span></span>
 <span id="cb71-31"><a href="#cb71-31" aria-hidden="true" tabindex="-1"></a>    <span class="kw">done</span></span>
 <span id="cb71-32"><a href="#cb71-32" aria-hidden="true" tabindex="-1"></a>  <span class="kw">done</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>Before ending this section, we’ll return to a topic left unexplained before. We can now describe how <code>Sum i from k to n, f i</code> is defined. The key is a function <code>sum_seq</code>, which is defined by recursion:</p>
@@ -1131,10 +1131,10 @@ $$
 <p>To get an idea of what this definition means, let’s try evaluating <code>sum_seq 3 k f</code>:</p>
 <div class="ind">
 <pre><code>sum_seq 3 k f = sum_seq 2 k f + f (k + 2)
-             = sum_seq 1 k f + f (k + 1) + f (k + 2)
-             = sum_seq 0 k f + f (k + 0) + f (k + 1) + f (k + 2)
-             = 0 + f (k + 0) + f (k + 1) + f (k + 2)
-             = f k + f (k + 1) + f (k + 2)</code></pre>
+              = sum_seq 1 k f + f (k + 1) + f (k + 2)
+              = sum_seq 0 k f + f (k + 0) + f (k + 1) + f (k + 2)
+              = 0 + f (k + 0) + f (k + 1) + f (k + 2)
+              = f k + f (k + 1) + f (k + 2).</code></pre>
 </div>
 <p>So <code>sum_seq 3 k f</code> adds up three consecutive values of <code>f</code>, starting with <code>f k</code>. More generally, <code>sum_seq n k f</code> adds up a sequence of <code>n</code> consecutive values of <code>f</code>, starting with <code>f k</code>. (The implicit arguments say that the type of the values of <code>f</code> can be any type for which <code>+</code> and <code>0</code> make sense.) The notation <code>Sum i from k to n, f i</code> is now defined to be a shorthand for <code>sum_seq (n + 1 - k) k f</code>. We’ll leave it to you to puzzle out why that gives the desired result.</p>
 <section id="exercises-2" class="level3">
@@ -1213,118 +1213,258 @@ $$
 <span id="cb86-6"><a href="#cb86-6" aria-hidden="true" tabindex="-1"></a>  <span class="kw">fix</span> n : Nat</span>
 <span id="cb86-7"><a href="#cb86-7" aria-hidden="true" tabindex="-1"></a>  <span class="kw">assume</span> ih : ∀ n_1 &lt; n, ∃ (q r : Nat), n_1 = m * q + r ∧ r &lt; m</span>
 <span id="cb86-8"><a href="#cb86-8" aria-hidden="true" tabindex="-1"></a>  <span class="sc">**</span><span class="wa">done</span><span class="sc">::</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>Our goal now is to prove that <code>∃ (q r : Nat), n = m * q + r ∧ r &lt; m</code>. Although strong induction does not require a base case, it is not uncommon for proofs by strong induction to involve reasoning by cases. The proof in <em>HTPI</em> uses the cases <code>n &lt; m</code> and <code>m ≤ n</code>. If <code>n &lt; m</code>, then the proof is easy: the numbers <code>q = 0</code> and <code>r​ = n</code> clearly have the required properties. In the case <code>m ≤ n</code>, the proof in <em>HTPI</em> proceeds by applying the inductive hypothesis to the number <code>k = n - m</code>. Since <code>m &gt; 0</code>, we have <code>k &lt; n</code>, so the inductive hypothesis can be applied. Notice that if <code>m &gt; 1</code>, then <code>n - m</code> is not the number immediately preceding <code>n</code>; that’s why this proof uses strong induction rather than ordinary induction.</p>
-<p>Since <code>n</code> and <code>m</code> have type <code>Nat</code>, the subtraction in the formula <code>n - m</code> is natural number subtraction, which, as we’ve seen, can be difficult to work with. But in this proof we use this formula only in the case when <code>m ≤ n</code>, and in that case the subtraction is unproblematic. Indeed, there are theorems in Lean that tell us that if <code>m ≤ n</code>, then <code>n - m</code> has the properties we expect. We will use two such theorems:</p>
+<p>Our goal now is to prove that <code>∃ (q r : Nat), n = m * q + r ∧ r &lt; m</code>. Although strong induction does not require a base case, it is not uncommon for proofs by strong induction to involve reasoning by cases. The proof in <em>HTPI</em> uses cases based on whether or not <code>n &lt; m</code>. If <code>n &lt; m</code>, then the proof is easy: the numbers <code>q = 0</code> and <code>r​ = n</code> clearly have the required properties. If <code>¬n &lt; m</code>, then we can write <code>n</code> as <code>n = k + m</code>, for some natural number <code>k</code>. Since <code>m &gt; 0</code>, we have <code>k &lt; n</code>, so we can apply the inductive hypothesis to <code>k</code>. Notice that if <code>m &gt; 1</code>, then <code>k</code> is not the number immediately preceding <code>n</code>; that’s why this proof uses strong induction rather than ordinary induction.</p>
+<p>How do we come up with the number <code>k</code> in the previous paragraph? Since similar reasoning will come up in some later proofs, it will be convenient to state the existence of the number <code>k</code> as lemma. To prove it, we’ll use a theorem from Lean’s library:</p>
 <div class="ind">
-<pre><code>@Nat.sub_lt_of_pos_le : ∀ (a b : ℕ), 0 &lt; a → a ≤ b → b - a &lt; b
-
-@Nat.sub_add_cancel : ∀ {n m : ℕ}, m ≤ n → n - m + m = n</code></pre>
+<pre><code>@Nat.exists_eq_add_of_le' : ∀ {m n : ℕ}, m ≤ n → ∃ (k : ℕ), n = k + m</code></pre>
 </div>
+<div class="sourceCode" id="cb88"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb88-1"><a href="#cb88-1" aria-hidden="true" tabindex="-1"></a><span class="kw">lemma</span> exists_eq_add_of_not_lt {n m : Nat} (h : ¬n &lt; m) :</span>
+<span id="cb88-2"><a href="#cb88-2" aria-hidden="true" tabindex="-1"></a>    ∃ (k : Nat), n = k + m := <span class="kw">by</span></span>
+<span id="cb88-3"><a href="#cb88-3" aria-hidden="true" tabindex="-1"></a>  <span class="kw">have</span> h1 : n ≥ m := <span class="kw">by</span> <span class="kw">linarith</span></span>
+<span id="cb88-4"><a href="#cb88-4" aria-hidden="true" tabindex="-1"></a>  <span class="kw">show</span> ∃ (k : Nat), n = k + m <span class="kw">from</span> Nat.exists_eq_add_of_le' h1</span>
+<span id="cb88-5"><a href="#cb88-5" aria-hidden="true" tabindex="-1"></a>  <span class="kw">done</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<!--
+The proof in *HTPI* uses the cases `n < m` and `m ≤ n`.  If `n < m`, then the proof is easy: the numbers `q = 0` and `r​ = n` clearly have the required properties.  In the case `m ≤ n`, the proof in *HTPI* proceeds by applying the inductive hypothesis to the number `k = n - m`.  Since `m > 0`, we have `k < n`, so the inductive hypothesis can be applied.  Notice that if `m > 1`, then `n - m` is not the number immediately preceding `n`; that's why this proof uses strong induction rather than ordinary induction.
+
+Since `n` and `m` have type `Nat`, the subtraction in the formula `n - m` is natural number subtraction, which, as we've seen, can be difficult to work with.  But in this proof we use this formula only in the case when `m ≤ n`, and in that case the subtraction is unproblematic.  Indeed, there are theorems in Lean that tell us that if `m ≤ n`, then `n - m` has the properties we expect.  We will use two such theorems:
+
+::: {.ind}
+```
+@Nat.sub_lt_of_pos_le : ∀ (a b : ℕ), 0 < a → a ≤ b → b - a < b
+
+@Nat.sub_add_cancel : ∀ {n m : ℕ}, m ≤ n → n - m + m = n
+```
+:::
+-->
 <p>With that preparation, we are ready to complete the proof.</p>
-<div class="sourceCode" id="cb88"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb88-1"><a href="#cb88-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Example_6_4_1 : ∀ m &gt; 0, ∀ (n : Nat),</span>
-<span id="cb88-2"><a href="#cb88-2" aria-hidden="true" tabindex="-1"></a>    ∃ (q r : Nat), n = m * q + r ∧ r &lt; m := <span class="kw">by</span></span>
-<span id="cb88-3"><a href="#cb88-3" aria-hidden="true" tabindex="-1"></a>  <span class="kw">fix</span> m : Nat</span>
-<span id="cb88-4"><a href="#cb88-4" aria-hidden="true" tabindex="-1"></a>  <span class="kw">assume</span> h1 : m &gt; 0</span>
-<span id="cb88-5"><a href="#cb88-5" aria-hidden="true" tabindex="-1"></a>  <span class="kw">by_strong_induc</span></span>
-<span id="cb88-6"><a href="#cb88-6" aria-hidden="true" tabindex="-1"></a>  <span class="kw">fix</span> n : Nat</span>
-<span id="cb88-7"><a href="#cb88-7" aria-hidden="true" tabindex="-1"></a>  <span class="kw">assume</span> ih : ∀ n_1 &lt; n, ∃ (q r : Nat), n_1 = m * q + r ∧ r &lt; m</span>
-<span id="cb88-8"><a href="#cb88-8" aria-hidden="true" tabindex="-1"></a>  <span class="kw">by_cases</span> h2 : n &lt; m</span>
-<span id="cb88-9"><a href="#cb88-9" aria-hidden="true" tabindex="-1"></a>  · <span class="co">-- Case 1. h2 : n &lt; m</span></span>
-<span id="cb88-10"><a href="#cb88-10" aria-hidden="true" tabindex="-1"></a>    <span class="kw">apply</span> Exists.intro 0</span>
-<span id="cb88-11"><a href="#cb88-11" aria-hidden="true" tabindex="-1"></a>    <span class="kw">apply</span> Exists.intro n     <span class="co">--Goal : n = m * 0 + n ∧ n &lt; m</span></span>
-<span id="cb88-12"><a href="#cb88-12" aria-hidden="true" tabindex="-1"></a>    <span class="kw">apply</span> And.intro _ h2</span>
-<span id="cb88-13"><a href="#cb88-13" aria-hidden="true" tabindex="-1"></a>    <span class="kw">ring</span></span>
-<span id="cb88-14"><a href="#cb88-14" aria-hidden="true" tabindex="-1"></a>    <span class="kw">done</span></span>
-<span id="cb88-15"><a href="#cb88-15" aria-hidden="true" tabindex="-1"></a>  · <span class="co">-- Case 2. h2 : ¬n &lt; m</span></span>
-<span id="cb88-16"><a href="#cb88-16" aria-hidden="true" tabindex="-1"></a>    <span class="kw">have</span> h3 : m ≤ n := <span class="kw">by</span> <span class="kw">linarith</span></span>
-<span id="cb88-17"><a href="#cb88-17" aria-hidden="true" tabindex="-1"></a>    set k : Nat := n - m</span>
-<span id="cb88-18"><a href="#cb88-18" aria-hidden="true" tabindex="-1"></a>    <span class="kw">have</span> h4 : k &lt; n := Nat.sub_lt_of_pos_le m n h1 h3</span>
-<span id="cb88-19"><a href="#cb88-19" aria-hidden="true" tabindex="-1"></a>    <span class="kw">have</span> h5 : ∃ (q r : Nat), k = m * q + r ∧ r &lt; m := ih k h4</span>
-<span id="cb88-20"><a href="#cb88-20" aria-hidden="true" tabindex="-1"></a>    <span class="kw">obtain</span> (q' : Nat)</span>
-<span id="cb88-21"><a href="#cb88-21" aria-hidden="true" tabindex="-1"></a>      (h6 : ∃ (r : Nat), k = m * q' + r ∧ r &lt; m) <span class="kw">from</span> h5</span>
-<span id="cb88-22"><a href="#cb88-22" aria-hidden="true" tabindex="-1"></a>    <span class="kw">obtain</span> (r' : Nat) (h7 : k = m * q' + r' ∧ r' &lt; m) <span class="kw">from</span> h6</span>
-<span id="cb88-23"><a href="#cb88-23" aria-hidden="true" tabindex="-1"></a>    <span class="kw">apply</span> Exists.intro (q' + 1)</span>
-<span id="cb88-24"><a href="#cb88-24" aria-hidden="true" tabindex="-1"></a>    <span class="kw">apply</span> Exists.intro r'     <span class="co">--Goal : n = m * (q' + 1) + r' ∧ r' &lt; m</span></span>
-<span id="cb88-25"><a href="#cb88-25" aria-hidden="true" tabindex="-1"></a>    <span class="kw">apply</span> And.intro _ h7.right</span>
-<span id="cb88-26"><a href="#cb88-26" aria-hidden="true" tabindex="-1"></a>    <span class="kw">show</span> n = m * (q' + 1) + r' <span class="kw">from</span></span>
-<span id="cb88-27"><a href="#cb88-27" aria-hidden="true" tabindex="-1"></a>      <span class="kw">calc</span> n</span>
-<span id="cb88-28"><a href="#cb88-28" aria-hidden="true" tabindex="-1"></a>        _ = k + m := (Nat.sub_add_cancel h3).symm</span>
-<span id="cb88-29"><a href="#cb88-29" aria-hidden="true" tabindex="-1"></a>        _ = m * q' + r' + m := <span class="kw">by</span> <span class="kw">rw</span> [h7.left]</span>
-<span id="cb88-30"><a href="#cb88-30" aria-hidden="true" tabindex="-1"></a>        _ = m * (q' + 1) + r' := <span class="kw">by</span> <span class="kw">ring</span></span>
-<span id="cb88-31"><a href="#cb88-31" aria-hidden="true" tabindex="-1"></a>    <span class="kw">done</span></span>
-<span id="cb88-32"><a href="#cb88-32" aria-hidden="true" tabindex="-1"></a>  <span class="kw">done</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb89"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb89-1"><a href="#cb89-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Example_6_4_1 : ∀ m &gt; 0, ∀ (n : Nat),</span>
+<span id="cb89-2"><a href="#cb89-2" aria-hidden="true" tabindex="-1"></a>    ∃ (q r : Nat), n = m * q + r ∧ r &lt; m := <span class="kw">by</span></span>
+<span id="cb89-3"><a href="#cb89-3" aria-hidden="true" tabindex="-1"></a>  <span class="kw">fix</span> m : Nat</span>
+<span id="cb89-4"><a href="#cb89-4" aria-hidden="true" tabindex="-1"></a>  <span class="kw">assume</span> h1 : m &gt; 0</span>
+<span id="cb89-5"><a href="#cb89-5" aria-hidden="true" tabindex="-1"></a>  <span class="kw">by_strong_induc</span></span>
+<span id="cb89-6"><a href="#cb89-6" aria-hidden="true" tabindex="-1"></a>  <span class="kw">fix</span> n : Nat</span>
+<span id="cb89-7"><a href="#cb89-7" aria-hidden="true" tabindex="-1"></a>  <span class="kw">assume</span> ih : ∀ n_1 &lt; n, ∃ (q r : Nat), n_1 = m * q + r ∧ r &lt; m</span>
+<span id="cb89-8"><a href="#cb89-8" aria-hidden="true" tabindex="-1"></a>  <span class="kw">by_cases</span> h2 : n &lt; m</span>
+<span id="cb89-9"><a href="#cb89-9" aria-hidden="true" tabindex="-1"></a>  · <span class="co">-- Case 1. h2 : n &lt; m</span></span>
+<span id="cb89-10"><a href="#cb89-10" aria-hidden="true" tabindex="-1"></a>    <span class="kw">apply</span> Exists.intro 0</span>
+<span id="cb89-11"><a href="#cb89-11" aria-hidden="true" tabindex="-1"></a>    <span class="kw">apply</span> Exists.intro n     <span class="co">--Goal : n = m * 0 + n ∧ n &lt; m</span></span>
+<span id="cb89-12"><a href="#cb89-12" aria-hidden="true" tabindex="-1"></a>    <span class="kw">apply</span> And.intro _ h2</span>
+<span id="cb89-13"><a href="#cb89-13" aria-hidden="true" tabindex="-1"></a>    <span class="kw">ring</span></span>
+<span id="cb89-14"><a href="#cb89-14" aria-hidden="true" tabindex="-1"></a>    <span class="kw">done</span></span>
+<span id="cb89-15"><a href="#cb89-15" aria-hidden="true" tabindex="-1"></a>  · <span class="co">-- Case 2. h2 : ¬n &lt; m</span></span>
+<span id="cb89-16"><a href="#cb89-16" aria-hidden="true" tabindex="-1"></a>    <span class="kw">obtain</span> (k : Nat) (h3 : n = k + m) <span class="kw">from</span> exists_eq_add_of_not_lt h2</span>
+<span id="cb89-17"><a href="#cb89-17" aria-hidden="true" tabindex="-1"></a>    <span class="kw">have</span> h4 : k &lt; n := <span class="kw">by</span> <span class="kw">linarith</span></span>
+<span id="cb89-18"><a href="#cb89-18" aria-hidden="true" tabindex="-1"></a>    <span class="kw">have</span> h5 : ∃ (q r : Nat), k = m * q + r ∧ r &lt; m := ih k h4</span>
+<span id="cb89-19"><a href="#cb89-19" aria-hidden="true" tabindex="-1"></a>    <span class="kw">obtain</span> (q' : Nat)</span>
+<span id="cb89-20"><a href="#cb89-20" aria-hidden="true" tabindex="-1"></a>      (h6 : ∃ (r : Nat), k = m * q' + r ∧ r &lt; m) <span class="kw">from</span> h5</span>
+<span id="cb89-21"><a href="#cb89-21" aria-hidden="true" tabindex="-1"></a>    <span class="kw">obtain</span> (r' : Nat) (h7 : k = m * q' + r' ∧ r' &lt; m) <span class="kw">from</span> h6</span>
+<span id="cb89-22"><a href="#cb89-22" aria-hidden="true" tabindex="-1"></a>    <span class="kw">apply</span> Exists.intro (q' + 1)</span>
+<span id="cb89-23"><a href="#cb89-23" aria-hidden="true" tabindex="-1"></a>    <span class="kw">apply</span> Exists.intro r'     <span class="co">--Goal : n = m * (q' + 1) + r' ∧ r' &lt; m</span></span>
+<span id="cb89-24"><a href="#cb89-24" aria-hidden="true" tabindex="-1"></a>    <span class="kw">apply</span> And.intro _ h7.right</span>
+<span id="cb89-25"><a href="#cb89-25" aria-hidden="true" tabindex="-1"></a>    <span class="kw">show</span> n = m * (q' + 1) + r' <span class="kw">from</span></span>
+<span id="cb89-26"><a href="#cb89-26" aria-hidden="true" tabindex="-1"></a>      <span class="kw">calc</span> n</span>
+<span id="cb89-27"><a href="#cb89-27" aria-hidden="true" tabindex="-1"></a>        _ = k + m := h3</span>
+<span id="cb89-28"><a href="#cb89-28" aria-hidden="true" tabindex="-1"></a>        _ = m * q' + r' + m := <span class="kw">by</span> <span class="kw">rw</span> [h7.left]</span>
+<span id="cb89-29"><a href="#cb89-29" aria-hidden="true" tabindex="-1"></a>        _ = m * (q' + 1) + r' := <span class="kw">by</span> <span class="kw">ring</span></span>
+<span id="cb89-30"><a href="#cb89-30" aria-hidden="true" tabindex="-1"></a>    <span class="kw">done</span></span>
+<span id="cb89-31"><a href="#cb89-31" aria-hidden="true" tabindex="-1"></a>  <span class="kw">done</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>The numbers <code>q</code> and <code>r</code> in <code>Example_6_4_1</code> are called the <em>quotient</em> and <em>remainder</em> when <code>n</code> is divided by <code>m</code>. Lean knows how to compute these numbers: if <code>n</code> and <code>m</code> are natural numbers, then in Lean, <code>n / m</code> denotes the quotient when <code>n</code> is divided by <code>m</code>, and <code>n % m</code> denotes the remainder. (The number <code>n % m</code> is also sometimes called <code>n</code> <em>modulo</em> <code>m</code>, or <code>n</code> <em>mod</em> <code>m</code>.) And Lean knows theorems stating that these numbers have the properties specified in <code>Example_6_4_1</code>:</p>
 <div class="ind">
 <pre><code>@Nat.div_add_mod : ∀ (m n : ℕ), n * (m / n) + m % n = m
 
 @Nat.mod_lt : ∀ (x : ℕ) {y : ℕ}, y &gt; 0 → x % y &lt; y</code></pre>
 </div>
-<p>By the way, although we are unlikely to want to use the notation <code>n / 0</code> or <code>n % 0</code>, Lean uses the definitions <code>n / 0 = 0</code> and <code>n % 0 = n</code>. As a result, the equation <code>n * (m / n) + m % n = m</code> is true even if <code>n = 0</code>. That’s why the theorem <code>Nat.div_add_mod</code> doesn’t include a requirement that <code>n &gt; 0</code>.</p>
+<p>By the way, although we are unlikely to want to use the notation <code>n / 0</code> or <code>n % 0</code>, Lean uses the definitions <code>n / 0 = 0</code> and <code>n % 0 = n</code>. As a result, the equation <code>n * (m / n) + m % n = m</code> is true even if <code>n = 0</code>. That’s why the theorem <code>Nat.div_add_mod</code> doesn’t include a requirement that <code>n &gt; 0</code>. It is important to keep in mind that division of natural numbers is not the same as division of real numbers. For example, dividing the natural number <code>5</code> by the natural number <code>2</code> gives a quotient of <code>2</code> (with a remainder of <code>1</code>), so <code>(5 : Nat) / (2 : Nat)</code> is <code>2</code>, but <code>(5 : Real) / (2 : Real)</code> is <code>2.5</code>.</p>
 <p>There is also a strong form of recursion. As an example of this, here is a recursive definition of a sequence of numbers called the <em>Fibonacci numbers</em>:</p>
-<div class="sourceCode" id="cb90"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb90-1"><a href="#cb90-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> Fib (n : Nat) : Nat :=</span>
-<span id="cb90-2"><a href="#cb90-2" aria-hidden="true" tabindex="-1"></a>  <span class="kw">match</span> n <span class="kw">with</span></span>
-<span id="cb90-3"><a href="#cb90-3" aria-hidden="true" tabindex="-1"></a>    | 0 =&gt; 0</span>
-<span id="cb90-4"><a href="#cb90-4" aria-hidden="true" tabindex="-1"></a>    | 1 =&gt; 1</span>
-<span id="cb90-5"><a href="#cb90-5" aria-hidden="true" tabindex="-1"></a>    | k + 2 =&gt; Fib k + Fib (k + 1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>Notice that the formula for <code>Fib (k + 2)</code> involves the <em>two</em> previous values of <code>Fib</code>, not just the immediately preceding value. That is the sense in which the recursion is <em>strong</em>. Not surprisingly, theorems about the Fibonacci numbers are often proven by induction—either ordinary or strong. We’ll illustrate this with a proof that <code>∀ (n : Nat), Fib n &lt; 2 ^ n</code>. This time we’ll need to treat the cases <code>n = 0</code> and <code>n = 1</code> separately, since these values are treated separately in the definition of <code>Fib n</code>. And we’ll need to know that if <code>n</code> doesn’t fall into either of those cases, then it falls into the third case: <code>n = k + 2</code> for some natural number <code>k</code>. Let’s prove this as a lemma.</p>
-<p>We begin by showing that if we have <code>h1 : n ≠ 0</code> and <code>h2 : n ≠ 1</code>, then we can deduce <code>n ≥ 2</code>. We’ll need two theorems from Lean’s library:</p>
-<div class="ind">
-<pre><code>@Nat.pos_of_ne_zero : ∀ {n : ℕ}, n ≠ 0 → 0 &lt; n
-
-@lt_of_le_of_ne' : ∀ {α : Type u_1} [inst : PartialOrder α] {a b : α},
-                    a ≤ b → b ≠ a → a &lt; b</code></pre>
+<div class="sourceCode" id="cb91"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb91-1"><a href="#cb91-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> Fib (n : Nat) : Nat :=</span>
+<span id="cb91-2"><a href="#cb91-2" aria-hidden="true" tabindex="-1"></a>  <span class="kw">match</span> n <span class="kw">with</span></span>
+<span id="cb91-3"><a href="#cb91-3" aria-hidden="true" tabindex="-1"></a>    | 0 =&gt; 0</span>
+<span id="cb91-4"><a href="#cb91-4" aria-hidden="true" tabindex="-1"></a>    | 1 =&gt; 1</span>
+<span id="cb91-5"><a href="#cb91-5" aria-hidden="true" tabindex="-1"></a>    | k + 2 =&gt; Fib k + Fib (k + 1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Notice that the formula for <code>Fib (k + 2)</code> involves the <em>two</em> previous values of <code>Fib</code>, not just the immediately preceding value. That is the sense in which the recursion is <em>strong</em>. Not surprisingly, theorems about the Fibonacci numbers are often proven by induction—either ordinary or strong. We’ll illustrate this with a proof by strong induction that <code>∀ (n : Nat), Fib n &lt; 2 ^ n</code>. This time we’ll need separate cases corresponding to the three cases of the <code>match</code> in the definition of <code>Fib</code>. In this situation, we can use a similar <code>match</code> construction to break the proof into cases.</p>
+<div class="inout">
+<div class="inpt">
+<div class="sourceCode" id="cb92"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb92-1"><a href="#cb92-1" aria-hidden="true" tabindex="-1"></a><span class="kw">example</span> : ∀ (n : Nat), Fib n &lt; 2 ^ n := <span class="kw">by</span></span>
+<span id="cb92-2"><a href="#cb92-2" aria-hidden="true" tabindex="-1"></a>  <span class="kw">by_strong_induc</span></span>
+<span id="cb92-3"><a href="#cb92-3" aria-hidden="true" tabindex="-1"></a>  <span class="kw">fix</span> n : Nat</span>
+<span id="cb92-4"><a href="#cb92-4" aria-hidden="true" tabindex="-1"></a>  <span class="kw">assume</span> ih : ∀ (n_1 : Nat), n_1 &lt; n →</span>
+<span id="cb92-5"><a href="#cb92-5" aria-hidden="true" tabindex="-1"></a>    Fib n_1 &lt; 2 ^ n_1</span>
+<span id="cb92-6"><a href="#cb92-6" aria-hidden="true" tabindex="-1"></a>  <span class="kw">match</span> n <span class="kw">with</span></span>
+<span id="cb92-7"><a href="#cb92-7" aria-hidden="true" tabindex="-1"></a>    | 0 =&gt; <span class="co">-- Case 1. n = 0.</span></span>
+<span id="cb92-8"><a href="#cb92-8" aria-hidden="true" tabindex="-1"></a>        <span class="co">--Goal : Fib 0 &lt; 2 ^ 0</span></span>
+<span id="cb92-9"><a href="#cb92-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb92-10"><a href="#cb92-10" aria-hidden="true" tabindex="-1"></a>      <span class="sc">**</span><span class="wa">done</span><span class="sc">::</span></span>
+<span id="cb92-11"><a href="#cb92-11" aria-hidden="true" tabindex="-1"></a>    | 1 =&gt; <span class="co">-- Case 2. n = 1.</span></span>
+<span id="cb92-12"><a href="#cb92-12" aria-hidden="true" tabindex="-1"></a>        <span class="co">--Goal : Fib 1 &lt; 2 ^ 1</span></span>
+<span id="cb92-13"><a href="#cb92-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb92-14"><a href="#cb92-14" aria-hidden="true" tabindex="-1"></a>      <span class="sc">**</span><span class="wa">done</span><span class="sc">::</span></span>
+<span id="cb92-15"><a href="#cb92-15" aria-hidden="true" tabindex="-1"></a>    | k + 2 =&gt; <span class="co">-- Case 3. n = k + 2.</span></span>
+<span id="cb92-16"><a href="#cb92-16" aria-hidden="true" tabindex="-1"></a>        <span class="co">--Goal : Fib (k + 2) &lt; 2 ^ (k + 2)</span></span>
+<span id="cb92-17"><a href="#cb92-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb92-18"><a href="#cb92-18" aria-hidden="true" tabindex="-1"></a>      <span class="sc">**</span><span class="wa">done</span><span class="sc">::</span></span>
+<span id="cb92-19"><a href="#cb92-19" aria-hidden="true" tabindex="-1"></a>  <span class="kw">done</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>Using the first of these theorems, <code>Nat.pos_of_ne_zero h1</code> is a proof of <code>0 &lt; n</code>. But for natural numbers <code>a</code> and <code>b</code>, Lean treats <code>a &lt; b</code> as meaning the same thing as <code>a + 1 ≤ b</code>, so this is also a proof of <code>1 ≤ n</code>. Applying the theorem <code>lt_of_le_of_ne'</code> to this conclusion and <code>h2</code> proves <code>1 &lt; n</code>, which is definitionally equal to <code>2 ≤ n</code>:</p>
-<div class="sourceCode" id="cb92"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb92-1"><a href="#cb92-1" aria-hidden="true" tabindex="-1"></a><span class="kw">lemma</span> ge_two_of_ne {n : Nat} (h1 : n ≠ 0) (h2 : n ≠ 1) : n ≥ 2 := <span class="kw">by</span></span>
-<span id="cb92-2"><a href="#cb92-2" aria-hidden="true" tabindex="-1"></a>  <span class="kw">have</span> h3 : n ≥ 1 := Nat.pos_of_ne_zero h1</span>
-<span id="cb92-3"><a href="#cb92-3" aria-hidden="true" tabindex="-1"></a>  <span class="kw">show</span> n ≥ 2 <span class="kw">from</span> lt_of_le_of_ne' h3 h2</span>
-<span id="cb92-4"><a href="#cb92-4" aria-hidden="true" tabindex="-1"></a>  <span class="kw">done</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>Once we know that <code>n ≥ 2</code>, we can conclude that <code>n = k + 2</code>, where <code>k = n - 2</code>:</p>
-<div class="sourceCode" id="cb93"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb93-1"><a href="#cb93-1" aria-hidden="true" tabindex="-1"></a><span class="kw">lemma</span> plus_two_of_ge {n : Nat} (h : n ≥ 2) : ∃ (k : Nat), n = k + 2 := <span class="kw">by</span></span>
-<span id="cb93-2"><a href="#cb93-2" aria-hidden="true" tabindex="-1"></a>  <span class="kw">apply</span> Exists.intro (n - 2)</span>
-<span id="cb93-3"><a href="#cb93-3" aria-hidden="true" tabindex="-1"></a>  <span class="kw">show</span> n = n - 2 + 2 <span class="kw">from</span> (Nat.sub_add_cancel h).symm</span>
-<span id="cb93-4"><a href="#cb93-4" aria-hidden="true" tabindex="-1"></a>  <span class="kw">done</span></span>
-<span id="cb93-5"><a href="#cb93-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb93-6"><a href="#cb93-6" aria-hidden="true" tabindex="-1"></a><span class="kw">lemma</span> plus_two_of_ne {n : Nat} (h1 : n ≠ 0) (h2 : n ≠ 1) :</span>
-<span id="cb93-7"><a href="#cb93-7" aria-hidden="true" tabindex="-1"></a>    ∃ (k : Nat), n = k + 2 := plus_two_of_ge (ge_two_of_ne h1 h2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>In addition to the last lemma, we’ll use the theorems <code>add_lt_add_left</code> and <code>add_lt_add_right</code>; these are similar to the theorem <code>add_le_add_left</code>, which we used in <code>Example_6_3_4</code>. And we’ll also use the following theorem:</p>
+<div class="outpt">
+<div class="sourceCode" id="cb93"><pre class="sourceCode state code-with-copy"><code class="sourceCode state"><span id="cb93-1"><a href="#cb93-1" aria-hidden="true" tabindex="-1"></a><span class="in">n </span>: ℕ</span>
+<span id="cb93-2"><a href="#cb93-2" aria-hidden="true" tabindex="-1"></a><span class="in">ih </span>: ∀ (n_1 : ℕ), n_1 &lt; 0 →</span>
+<span id="cb93-3"><a href="#cb93-3" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;&gt;</span>  Fib n_1 &lt; 2 ^ n_1</span>
+<span id="cb93-4"><a href="#cb93-4" aria-hidden="true" tabindex="-1"></a>⊢ Fib 0 &lt; 2 ^ 0</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+<p>Notice that in the tactic state for the first case, Lean has replaced <code>n</code> with <code>0</code> in both the inductive hypothesis and the goal. Similarly, in the second case <code>n</code> gets replaced with <code>1</code>, and in the third it is replaced with <code>k + 2</code>. The first two cases can be proven by the <code>norm_num</code> tactic. For the third case, we’ll use the theorems <code>add_lt_add_left</code> and <code>add_lt_add_right</code>; these are similar to the theorem <code>add_le_add_left</code>, which we used in <code>Example_6_3_4</code>. We’ll also need to use the following theorem:</p>
+<!--
+`n = 0` and `n = 1` separately, since these values are treated separately in the definition of `Fib n`.  Therefore, after introducing the inductive hypothesis, we split the proof into cases depending on whether or not `n < 2`.  In the first case, in which `n < 2`, the only possible values of `n` are `0` and `1`.  In this situation, the tactic `interval_cases n` can be used to split the proof into separate cases for each possible value of `n`.  As you can see in the tactic state below, the `interval_cases n` tactic splits the first case of our proof into two subcases, filling in `0` for `n` in the first subcase and `1` for `n` in the second.
+
+::: {.inout}
+::: {.inpt}
+```lean
+example : ∀ (n : Nat), Fib n < 2 ^ n := by
+  by_strong_induc
+  fix n : Nat
+  assume ih : ∀ (n_1 : Nat), n_1 < n →
+    Fib n_1 < 2 ^ n_1
+  by_cases h1 : n < 2
+  · -- Case 1. h1 : n < 2
+    interval_cases n
+    **done::
+  · -- Case 2. h1 : ¬ n < 2
+
+    **done::
+  done
+```
+:::
+
+::: {.outpt}
+```state
+case pos.«0»
+n : ℕ
+ih : ∀ (n_1 : ℕ), n_1 < 0 →
+>>  Fib n_1 < 2 ^ n_1
+h1 : 0 < 2
+⊢ Fib 0 < 2 ^ 0
+case pos.«1»
+n : ℕ
+ih : ∀ (n_1 : ℕ), n_1 < 1 →
+>>  Fib n_1 < 2 ^ n_1
+h1 : 1 < 2
+⊢ Fib 1 < 2 ^ 1
+```
+:::
+:::
+
+Both subcases of case 1 can be proven by the `norm_num` tactic.  For case 2, in which `¬n < 2`, we'll need to use the lemma `exists_eq_add_of_not_lt`, proven above, to write `n` as `k + 2`, for some natural number `k`.  That will allow us to use the third clause in the definition of `Fib n`.  We'll also use the theorems `add_lt_add_left` and `add_lt_add_right`; these are similar to the theorem `add_le_add_left`, which we used in `Example_6_3_4`.  Finally, we'll need to use the following theorem:
+-->
 <div class="ind">
 <pre><code>Nat.le_add_right : ∀ (n k : ℕ), n ≤ n + k</code></pre>
 </div>
-<p>Now that we have everything we need, we can present the proof:</p>
+<p>Here is the complete proof:</p>
 <div class="sourceCode" id="cb95"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb95-1"><a href="#cb95-1" aria-hidden="true" tabindex="-1"></a><span class="kw">example</span> : ∀ (n : Nat), Fib n &lt; 2 ^ n := <span class="kw">by</span></span>
 <span id="cb95-2"><a href="#cb95-2" aria-hidden="true" tabindex="-1"></a>  <span class="kw">by_strong_induc</span></span>
 <span id="cb95-3"><a href="#cb95-3" aria-hidden="true" tabindex="-1"></a>  <span class="kw">fix</span> n : Nat</span>
-<span id="cb95-4"><a href="#cb95-4" aria-hidden="true" tabindex="-1"></a>  <span class="kw">assume</span> ih : ∀ n_1 &lt; n, Fib n_1 &lt; 2 ^ n_1</span>
-<span id="cb95-5"><a href="#cb95-5" aria-hidden="true" tabindex="-1"></a>  <span class="kw">by_cases</span> h1 : n = 0</span>
-<span id="cb95-6"><a href="#cb95-6" aria-hidden="true" tabindex="-1"></a>  · <span class="co">-- Case 1. h1 : n = 0</span></span>
-<span id="cb95-7"><a href="#cb95-7" aria-hidden="true" tabindex="-1"></a>    <span class="kw">rewrite</span> [h1]          <span class="co">--Goal : Fib 0 &lt; 2 ^ 0</span></span>
-<span id="cb95-8"><a href="#cb95-8" aria-hidden="true" tabindex="-1"></a>    <span class="kw">norm_num</span></span>
-<span id="cb95-9"><a href="#cb95-9" aria-hidden="true" tabindex="-1"></a>    <span class="kw">done</span></span>
-<span id="cb95-10"><a href="#cb95-10" aria-hidden="true" tabindex="-1"></a>  · <span class="co">-- Case 2. h1 : n ≠ 0</span></span>
-<span id="cb95-11"><a href="#cb95-11" aria-hidden="true" tabindex="-1"></a>    <span class="kw">by_cases</span> h2 : n = 1</span>
-<span id="cb95-12"><a href="#cb95-12" aria-hidden="true" tabindex="-1"></a>    · <span class="co">-- Case 2.1. h2 : n = 1</span></span>
-<span id="cb95-13"><a href="#cb95-13" aria-hidden="true" tabindex="-1"></a>      <span class="kw">rewrite</span> [h2]        <span class="co">--Goal : Fib 1 &lt; 2 ^ 1</span></span>
-<span id="cb95-14"><a href="#cb95-14" aria-hidden="true" tabindex="-1"></a>      <span class="kw">norm_num</span></span>
-<span id="cb95-15"><a href="#cb95-15" aria-hidden="true" tabindex="-1"></a>      <span class="kw">done</span></span>
-<span id="cb95-16"><a href="#cb95-16" aria-hidden="true" tabindex="-1"></a>    · <span class="co">-- Case 2.2. h2 : n ≠ 1</span></span>
-<span id="cb95-17"><a href="#cb95-17" aria-hidden="true" tabindex="-1"></a>      <span class="kw">obtain</span> (k : Nat) (h3 : n = k + 2) <span class="kw">from</span> plus_two_of_ne h1 h2</span>
-<span id="cb95-18"><a href="#cb95-18" aria-hidden="true" tabindex="-1"></a>      <span class="kw">have</span> h4 : k &lt; n := <span class="kw">by</span> <span class="kw">linarith</span></span>
-<span id="cb95-19"><a href="#cb95-19" aria-hidden="true" tabindex="-1"></a>      <span class="kw">have</span> h5 : Fib k &lt; 2 ^ k := ih k h4</span>
-<span id="cb95-20"><a href="#cb95-20" aria-hidden="true" tabindex="-1"></a>      <span class="kw">have</span> h6 : k + 1 &lt; n := <span class="kw">by</span> <span class="kw">linarith</span></span>
-<span id="cb95-21"><a href="#cb95-21" aria-hidden="true" tabindex="-1"></a>      <span class="kw">have</span> h7 : Fib (k + 1) &lt; 2 ^ (k + 1) := ih (k + 1) h6</span>
-<span id="cb95-22"><a href="#cb95-22" aria-hidden="true" tabindex="-1"></a>      <span class="kw">show</span> Fib n &lt; 2 ^ n <span class="kw">from</span></span>
-<span id="cb95-23"><a href="#cb95-23" aria-hidden="true" tabindex="-1"></a>        <span class="kw">calc</span> Fib n</span>
-<span id="cb95-24"><a href="#cb95-24" aria-hidden="true" tabindex="-1"></a>          _ = Fib (k + 2) := <span class="kw">by</span> <span class="kw">rw</span> [h3]</span>
-<span id="cb95-25"><a href="#cb95-25" aria-hidden="true" tabindex="-1"></a>          _ = Fib k + Fib (k + 1) := <span class="kw">by</span> <span class="kw">rfl</span></span>
-<span id="cb95-26"><a href="#cb95-26" aria-hidden="true" tabindex="-1"></a>          _ &lt; 2 ^ k + Fib (k + 1) := add_lt_add_right h5 _</span>
-<span id="cb95-27"><a href="#cb95-27" aria-hidden="true" tabindex="-1"></a>          _ &lt; 2 ^ k + 2 ^ (k + 1) := add_lt_add_left h7 _</span>
-<span id="cb95-28"><a href="#cb95-28" aria-hidden="true" tabindex="-1"></a>          _ ≤ 2 ^ k + 2 ^ (k + 1) + 2 ^ k := Nat.le_add_right _ _</span>
-<span id="cb95-29"><a href="#cb95-29" aria-hidden="true" tabindex="-1"></a>          _ = 2 ^ (k + 2) := <span class="kw">by</span> <span class="kw">ring</span></span>
-<span id="cb95-30"><a href="#cb95-30" aria-hidden="true" tabindex="-1"></a>          _ = 2 ^ n := <span class="kw">by</span> <span class="kw">rw</span> [h3]</span>
-<span id="cb95-31"><a href="#cb95-31" aria-hidden="true" tabindex="-1"></a>      <span class="kw">done</span></span>
-<span id="cb95-32"><a href="#cb95-32" aria-hidden="true" tabindex="-1"></a>    <span class="kw">done</span></span>
-<span id="cb95-33"><a href="#cb95-33" aria-hidden="true" tabindex="-1"></a>  <span class="kw">done</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb95-4"><a href="#cb95-4" aria-hidden="true" tabindex="-1"></a>  <span class="kw">assume</span> ih : ∀ (n_1 : Nat), n_1 &lt; n → Fib n_1 &lt; 2 ^ n_1</span>
+<span id="cb95-5"><a href="#cb95-5" aria-hidden="true" tabindex="-1"></a>  <span class="kw">match</span> n <span class="kw">with</span></span>
+<span id="cb95-6"><a href="#cb95-6" aria-hidden="true" tabindex="-1"></a>    | 0 =&gt; <span class="co">-- Case 1. n = 0.  Goal : Fib 0 &lt; 2 ^ 0</span></span>
+<span id="cb95-7"><a href="#cb95-7" aria-hidden="true" tabindex="-1"></a>      <span class="kw">norm_num</span></span>
+<span id="cb95-8"><a href="#cb95-8" aria-hidden="true" tabindex="-1"></a>      <span class="kw">done</span></span>
+<span id="cb95-9"><a href="#cb95-9" aria-hidden="true" tabindex="-1"></a>    | 1 =&gt; <span class="co">-- Case 2. n = 1.  Goal : Fib 1 &lt; 2 ^ 1</span></span>
+<span id="cb95-10"><a href="#cb95-10" aria-hidden="true" tabindex="-1"></a>      <span class="kw">norm_num</span></span>
+<span id="cb95-11"><a href="#cb95-11" aria-hidden="true" tabindex="-1"></a>      <span class="kw">done</span></span>
+<span id="cb95-12"><a href="#cb95-12" aria-hidden="true" tabindex="-1"></a>    | k + 2 =&gt; <span class="co">-- Case 3. n = k + 2.  Goal : Fib (k + 2) &lt; 2 ^ (k + 2)</span></span>
+<span id="cb95-13"><a href="#cb95-13" aria-hidden="true" tabindex="-1"></a>        <span class="co">--ih : ih: ∀ (n_1 : Nat), n_1 &lt; k + 2 → Fib n_1 &lt; 2 ^ n_1</span></span>
+<span id="cb95-14"><a href="#cb95-14" aria-hidden="true" tabindex="-1"></a>      <span class="kw">have</span> h1 : k &lt; k + 2 := <span class="kw">by</span> <span class="kw">linarith</span></span>
+<span id="cb95-15"><a href="#cb95-15" aria-hidden="true" tabindex="-1"></a>      <span class="kw">have</span> h2 : Fib k &lt; 2 ^ k := ih k h1</span>
+<span id="cb95-16"><a href="#cb95-16" aria-hidden="true" tabindex="-1"></a>      <span class="kw">have</span> h3 : k + 1 &lt; k + 2 := <span class="kw">by</span> <span class="kw">linarith</span></span>
+<span id="cb95-17"><a href="#cb95-17" aria-hidden="true" tabindex="-1"></a>      <span class="kw">have</span> h4 : Fib (k + 1) &lt; 2 ^ (k + 1) := ih (k + 1) h3</span>
+<span id="cb95-18"><a href="#cb95-18" aria-hidden="true" tabindex="-1"></a>      <span class="kw">show</span> Fib (k + 2) &lt; 2 ^ (k + 2) <span class="kw">from</span></span>
+<span id="cb95-19"><a href="#cb95-19" aria-hidden="true" tabindex="-1"></a>        <span class="kw">calc</span> Fib (k + 2)</span>
+<span id="cb95-20"><a href="#cb95-20" aria-hidden="true" tabindex="-1"></a>          _ = Fib k + Fib (k + 1) := <span class="kw">by</span> <span class="kw">rfl</span></span>
+<span id="cb95-21"><a href="#cb95-21" aria-hidden="true" tabindex="-1"></a>          _ &lt; 2 ^ k + Fib (k + 1) := add_lt_add_right h2 _</span>
+<span id="cb95-22"><a href="#cb95-22" aria-hidden="true" tabindex="-1"></a>          _ &lt; 2 ^ k + 2 ^ (k + 1) := add_lt_add_left h4 _</span>
+<span id="cb95-23"><a href="#cb95-23" aria-hidden="true" tabindex="-1"></a>          _ ≤ 2 ^ k + 2 ^ (k + 1) + 2 ^ k := Nat.le_add_right _ _</span>
+<span id="cb95-24"><a href="#cb95-24" aria-hidden="true" tabindex="-1"></a>          _ = 2 ^ (k + 2) := <span class="kw">by</span> <span class="kw">ring</span></span>
+<span id="cb95-25"><a href="#cb95-25" aria-hidden="true" tabindex="-1"></a>      <span class="kw">done</span></span>
+<span id="cb95-26"><a href="#cb95-26" aria-hidden="true" tabindex="-1"></a>  <span class="kw">done</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<!--
+Notice that the formula for `Fib (k + 2)` involves the *two* previous values of `Fib`, not just the immediately preceding value.  That is the sense in which the recursion is *strong*.  Not surprisingly, theorems about the Fibonacci numbers are often proven by induction---either ordinary or strong.  We'll illustrate this with a proof that `∀ (n : Nat), Fib n < 2 ^ n`.  This time we'll need to treat the cases `n = 0` and `n = 1` separately, since these values are treated separately in the definition of `Fib n`.  And we'll need to know that if `n` doesn't fall into either of those cases, then it falls into the third case: `n = k + 2` for some natural number `k`.  Let's prove this as a lemma.
+
+We begin by showing that if we have `h1 : n ≠ 0` and `h2 : n ≠ 1`, then we can deduce `n ≥ 2`.  We'll need two theorems from Lean's library:
+
+::: {.ind}
+```
+@Nat.pos_of_ne_zero : ∀ {n : ℕ}, n ≠ 0 → 0 < n
+
+@lt_of_le_of_ne' : ∀ {α : Type u_1} [inst : PartialOrder α] {a b : α},
+                    a ≤ b → b ≠ a → a < b
+```
+:::
+
+Using the first of these theorems, `Nat.pos_of_ne_zero h1` is a proof of `0 < n`.  But for natural numbers `a` and `b`, Lean treats `a < b` as meaning the same thing as `a + 1 ≤ b`, so this is also a proof of `1 ≤ n`.  Applying the theorem `lt_of_le_of_ne'` to this conclusion and `h2` proves `1 < n`, which is definitionally equal to `2 ≤ n`:
+
+```lean
+lemma ge_two_of_ne {n : Nat} (h1 : n ≠ 0) (h2 : n ≠ 1) : n ≥ 2 := by
+  have h3 : n ≥ 1 := Nat.pos_of_ne_zero h1
+  show n ≥ 2 from lt_of_le_of_ne' h3 h2
+  done
+```
+
+Once we know that `n ≥ 2`, we can conclude that `n = k + 2`, where `k = n - 2`:
+
+```lean
+lemma plus_two_of_ge {n : Nat} (h : n ≥ 2) : ∃ (k : Nat), n = k + 2 := by
+  apply Exists.intro (n - 2)
+  show n = n - 2 + 2 from (Nat.sub_add_cancel h).symm
+  done
+
+lemma plus_two_of_ne {n : Nat} (h1 : n ≠ 0) (h2 : n ≠ 1) :
+    ∃ (k : Nat), n = k + 2 := plus_two_of_ge (ge_two_of_ne h1 h2)
+```
+
+In addition to the last lemma, we'll use the theorems `add_lt_add_left` and `add_lt_add_right`; these are similar to the theorem `add_le_add_left`, which we used in `Example_6_3_4`.  And we'll also use the following theorem:
+
+::: {.ind}
+```
+Nat.le_add_right : ∀ (n k : ℕ), n ≤ n + k
+```
+:::
+
+Now that we have everything we need, we can present the proof:
+
+```lean
+example : ∀ (n : Nat), Fib n < 2 ^ n := by
+  by_strong_induc
+  fix n : Nat
+  assume ih : ∀ n_1 < n, Fib n_1 < 2 ^ n_1
+  by_cases h1 : n = 0
+  · -- Case 1. h1 : n = 0
+    rewrite [h1]          --Goal : Fib 0 < 2 ^ 0
+    norm_num
+    done
+  · -- Case 2. h1 : n ≠ 0
+    by_cases h2 : n = 1
+    · -- Case 2.1. h2 : n = 1
+      rewrite [h2]        --Goal : Fib 1 < 2 ^ 1
+      norm_num
+      done
+    · -- Case 2.2. h2 : n ≠ 1
+      obtain (k : Nat) (h3 : n = k + 2) from plus_two_of_ne h1 h2
+      have h4 : k < n := by linarith
+      have h5 : Fib k < 2 ^ k := ih k h4
+      have h6 : k + 1 < n := by linarith
+      have h7 : Fib (k + 1) < 2 ^ (k + 1) := ih (k + 1) h6
+      show Fib n < 2 ^ n from
+        calc Fib n
+          _ = Fib (k + 2) := by rw [h3]
+          _ = Fib k + Fib (k + 1) := by rfl
+          _ < 2 ^ k + Fib (k + 1) := add_lt_add_right h5 _
+          _ < 2 ^ k + 2 ^ (k + 1) := add_lt_add_left h7 _
+          _ ≤ 2 ^ k + 2 ^ (k + 1) + 2 ^ k := Nat.le_add_right _ _
+          _ = 2 ^ (k + 2) := by ring
+          _ = 2 ^ n := by rw [h3]
+      done
+    done
+  done
+```
+-->
 <p>As with ordinary induction, strong induction can be useful for proving statements that do not at first seem to have the form <code>∀ (n : Nat), ...</code>. To illustrate this, we’ll prove the <em>well-ordering principle</em>, which says that if a set <code>S : Set Nat</code> is nonempty, then it has a smallest element. We’ll prove the contrapositive: if <code>S</code> has no smallest element, then it is empty. To say that <code>S</code> is empty means <code>∀ (n : Nat), n ∉ S</code>, and that’s the statement to which we will apply strong induction.</p>
 <div class="sourceCode" id="cb96"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb96-1"><a href="#cb96-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> well_ord_princ (S : Set Nat) : (∃ (n : Nat), n ∈ S) →</span>
 <span id="cb96-2"><a href="#cb96-2" aria-hidden="true" tabindex="-1"></a>    ∃ (n : Nat), n ∈ S ∧ ∀ (m : Nat), m ∈ S → n ≤ m := <span class="kw">by</span></span>
@@ -1450,7 +1590,7 @@ $$
 </div>
 <div class="numex" data-arguments="7">
 <div class="sourceCode" id="cb109"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb109-1"><a href="#cb109-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Exercise_6_4_8d : ∀ (m k : Nat), Fib m ∣ Fib (m * k) := <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>Hint for #7: Let <code>m</code> be an arbitrary natural number, and then use induction on <code>k</code>. For the induction step, you must prove <code>Fib m ∣ Fib (m * (k + 1))</code>. If <code>m = 0 ∨ k = 0</code>, then this is easy. If not, then show that you can rewrite <code>m * (k + 1)</code> as <code>(m * k - 1) + m + 1</code>, and then apply <code>Exercise_6_4_8a</code>.</p>
+<p>Hint for #7: Let <code>m</code> be an arbitrary natural number, and then use induction on <code>k</code>. For the induction step, you must prove <code>Fib m ∣ Fib (m * (k + 1))</code>. If <code>m = 0 ∨ k = 0</code>, then this is easy. If not, then use <code>Nat.exists_eq_add_of_le'</code> to obtain a natural number <code>j</code> such that <code>m * k = j + 1</code>, and therefore <code>m * (k + 1) = j + m + 1</code>, and then apply <code>Exercise_6_4_8a</code>.</p>
 </div>
 <div class="numex" data-arguments="8">
 <div class="sourceCode" id="cb110"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb110-1"><a href="#cb110-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> Fib_like (n : Nat) : Nat :=</span>
