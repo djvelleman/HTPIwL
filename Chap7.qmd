@@ -1361,7 +1361,8 @@ theorem Theorem_7_2_6_Fund_Thm_Arith (n : Nat) (h : n ≥ 1) :
     ∃! (l : List Nat), prime_factorization n l := by
   exists_unique
   · -- Existence
-    exact exists_prime_factorization n h
+    show ∃ (l : List Nat), prime_factorization n l from
+      exists_prime_factorization n h
     done
   · -- Uniqueness
     fix l1 : List Nat; fix l2 : List Nat
@@ -1597,7 +1598,7 @@ theorem Theorem_7_3_1 (m : Nat) [NeZero m] (a : Int) :
   done
 ```
 
-The lemma `mod_cmpl_res` above says that `a % m` is the unique element of the complete residue system `{0, 1, ..., m - 1}` that is congruent to `a` modulo `m`.  The lemma requires the hypothesis `[NeZero m]`, because its proof appeals to two previous lemmas, `mod_nonneg` and `mod_lt`, that require that hypothesis.  But when the proof invokes those previous lemmas, this hypothesis is not mentioned, because it is an implicit argument.
+The lemma `mod_cmpl_res` above says that `a % m` is an element of the complete residue system `{0, 1, ..., m - 1}` that is congruent to `a` modulo `m`.  The lemma requires the hypothesis `[NeZero m]`, because its proof appeals to two previous lemmas, `mod_nonneg` and `mod_lt`, that require that hypothesis.  But when the proof invokes those previous lemmas, this hypothesis is not mentioned, because it is an implicit argument.
 
 An immediate consequence of the lemma `congr_mod_mod` is the following lemma, which will be useful to us later.
 
@@ -2465,7 +2466,6 @@ We will be applying Euler's theorem to the prime numbers `p` and `q`, so we will
 ```lean
 lemma num_rp_prime {p : Nat} (h1 : prime p) :
     ∀ (k : Nat), k < p → num_rp_below p (k + 1) = k := sorry
---Hint : Use induction.
 
 lemma phi_prime {p : Nat} (h1 : prime p) : phi p = p - 1 := by
   have h2 : 1 ≤ p := prime_pos h1
@@ -2489,6 +2489,8 @@ Int.eq_nat_or_neg : ∀ (a : ℤ), ∃ (n : ℕ), a = ↑n ∨ a = -↑n
 As usual, coercions make the reasoning more delicate.  For clarity, we will write the coercions explicitly below.
 
 ```lean
+lemma dvd_neg_iff_dvd (a b : Int) : a ∣ (-b) ↔ a ∣ b := sorry
+
 theorem Theorem_7_2_2_Int {a c : Nat} {b : Int}
     (h1 : ↑c ∣ ↑a * b) (h2 : rel_prime a c) : ↑c ∣ b := by
   obtain (n : Nat) (h3 : b = ↑n ∨ b = -↑n) from Int.eq_nat_or_neg b
@@ -2499,22 +2501,14 @@ theorem Theorem_7_2_2_Int {a c : Nat} {b : Int}
     show c ∣ n from Theorem_7_2_2 h1 h2
     done
   · -- Case 2. h3 : b = -↑n
-    have h4 : c ∣ a * n := by
-      rewrite [←Int.coe_nat_dvd, Nat.cast_mul]  --Goal : ↑c ∣ ↑a * ↑n
-      obtain (j : Int) (h5 : ↑a * b = ↑c * j) from h1
-      apply Exists.intro (-j)
-      show ↑a * ↑n = ↑c * (-j) from
-        calc ↑a * ↑n
-          _ = -(↑a * (-↑n)) := by ring
-          _ = -(↑a * b) := by rw [h3]
-          _ = -(↑c * j) := by rw [h5]
-          _ = ↑c * (-j) := by ring
-      done
-    have h5 : c ∣ n := Theorem_7_2_2 h4 h2
-    obtain (k : Nat) (h6 : n = c * k) from h5
-    apply Exists.intro (-↑k)            --Goal : b = ↑c * (-↑k)
-    rewrite [h3, h6, Nat.cast_mul]      --Goal : -(↑c * ↑k) = ↑c * (-↑k)
-    ring
+    have h4 : ↑a * b = -(↑a * ↑n) :=
+      calc ↑a * b
+        _ = ↑a * (-↑n) := by rw [h3]
+        _ = -(↑a * ↑n) := by ring
+    rewrite [h4, dvd_neg_iff_dvd, ←Nat.cast_mul, Int.coe_nat_dvd] at h1
+                                                        --h1 : c ∣ a * n
+    rewrite [h3, dvd_neg_iff_dvd, Int.coe_nat_dvd]      --Goal : c ∣ n
+    show c ∣ n from Theorem_7_2_2 h1 h2
     done
   done
 ```
@@ -2576,7 +2570,7 @@ lemma prime_NeZero {p : Nat} (h : prime p) : NeZero p := by
   done
 ```
 
-Much of the modular arithmetic reasoning we need for the proof of `Theorem_7_5_1` is contained in a technical lemma:
+Much of the reasoning about modular arithmetic that we need for the proof of `Theorem_7_5_1` is contained in a technical lemma:
 
 ```lean
 lemma Lemma_7_5_1 {p e d m c s : Nat} {t : Int}
@@ -2680,3 +2674,53 @@ theorem Theorem_7_5_1 (p q n e d k m c : Nat)
     And.intro congr_p congr_q
   done
 ```
+
+### Exercises
+
+::: {.numex arguments="1"}
+```lean
+--Hint:  Use induction.
+lemma num_rp_prime_ex {p : Nat} (h1 : prime p) :
+    ∀ (k : Nat), k < p → num_rp_below p (k + 1) = k := sorry
+```
+:::
+
+::: {.numex arguments="2"}
+```lean
+lemma three_prime : prime 3 := sorry
+```
+:::
+
+::: {.numex arguments="3"}
+```lean
+--Hint:  Use the previous exercise, Exercise_7_2_7, and Theorem_7_4_2.
+theorem Exercise_7_5_13a (a : Nat) (h1 : rel_prime 561 a) :
+    congr_mod 3 ↑(a ^ 560) 1 := sorry
+```
+:::
+
+::: {.numex arguments="4"}
+```lean
+lemma dvd_neg_iff_dvd_ex (a b : Int) : a ∣ (-b) ↔ a ∣ b := sorry
+```
+:::
+
+::: {.numex arguments="5"}
+```lean
+--Hint:  Use Int.eq_nat_or_neg, the previous exercise, and Theorem_7_2_3.
+lemma prime_dvd_nat_int {p a : Nat} {b : Int}
+    (h1 : prime p) (h2 : ↑p ∣ ↑a * b) : p ∣ a ∨ ↑p ∣ b := sorry
+
+lemma Theorem_7_2_3_Int {p : Nat} {a b : Int}
+    (h1 : prime p) (h2 : ↑p ∣ a * b) : ↑p ∣ a ∨ ↑p ∣ b := sorry
+```
+:::
+
+::: {.numex arguments="6"}
+```lean
+--Hint:  Use the previous exercise.
+theorem Exercise_7_5_14b (n : Nat) (b : Int)
+    (h1 : prime n) (h2 : congr_mod n (b ^ 2) 1) :
+    congr_mod n b 1 ∨ congr_mod n b (-1) := sorry
+```
+:::

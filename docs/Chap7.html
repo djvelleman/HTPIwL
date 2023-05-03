@@ -1429,18 +1429,19 @@ theorem Theorem_7_2_4 {p : Nat} {l : List Nat}
 <span id="cb42-2"><a href="#cb42-2" aria-hidden="true" tabindex="-1"></a>    ∃! (l : List Nat), prime_factorization n l := <span class="kw">by</span></span>
 <span id="cb42-3"><a href="#cb42-3" aria-hidden="true" tabindex="-1"></a>  <span class="kw">exists_unique</span></span>
 <span id="cb42-4"><a href="#cb42-4" aria-hidden="true" tabindex="-1"></a>  · <span class="co">-- Existence</span></span>
-<span id="cb42-5"><a href="#cb42-5" aria-hidden="true" tabindex="-1"></a>    <span class="kw">exact</span> exists_prime_factorization n h</span>
-<span id="cb42-6"><a href="#cb42-6" aria-hidden="true" tabindex="-1"></a>    <span class="kw">done</span></span>
-<span id="cb42-7"><a href="#cb42-7" aria-hidden="true" tabindex="-1"></a>  · <span class="co">-- Uniqueness</span></span>
-<span id="cb42-8"><a href="#cb42-8" aria-hidden="true" tabindex="-1"></a>    <span class="kw">fix</span> l1 : List Nat; <span class="kw">fix</span> l2 : List Nat</span>
-<span id="cb42-9"><a href="#cb42-9" aria-hidden="true" tabindex="-1"></a>    <span class="kw">assume</span> h1 : prime_factorization n l1</span>
-<span id="cb42-10"><a href="#cb42-10" aria-hidden="true" tabindex="-1"></a>    <span class="kw">assume</span> h2 : prime_factorization n l2</span>
-<span id="cb42-11"><a href="#cb42-11" aria-hidden="true" tabindex="-1"></a>    <span class="kw">define</span> <span class="kw">at</span> h1; <span class="kw">define</span> <span class="kw">at</span> h2</span>
-<span id="cb42-12"><a href="#cb42-12" aria-hidden="true" tabindex="-1"></a>    <span class="kw">have</span> h3 : prod l1 = n := h1.right</span>
-<span id="cb42-13"><a href="#cb42-13" aria-hidden="true" tabindex="-1"></a>    <span class="kw">rewrite</span> [←h2.right] <span class="kw">at</span> h3</span>
-<span id="cb42-14"><a href="#cb42-14" aria-hidden="true" tabindex="-1"></a>    <span class="kw">show</span> l1 = l2 <span class="kw">from</span> Theorem_7_2_5 l1 l2 h1.left h2.left h3</span>
-<span id="cb42-15"><a href="#cb42-15" aria-hidden="true" tabindex="-1"></a>    <span class="kw">done</span></span>
-<span id="cb42-16"><a href="#cb42-16" aria-hidden="true" tabindex="-1"></a>  <span class="kw">done</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb42-5"><a href="#cb42-5" aria-hidden="true" tabindex="-1"></a>    <span class="kw">show</span> ∃ (l : List Nat), prime_factorization n l <span class="kw">from</span></span>
+<span id="cb42-6"><a href="#cb42-6" aria-hidden="true" tabindex="-1"></a>      exists_prime_factorization n h</span>
+<span id="cb42-7"><a href="#cb42-7" aria-hidden="true" tabindex="-1"></a>    <span class="kw">done</span></span>
+<span id="cb42-8"><a href="#cb42-8" aria-hidden="true" tabindex="-1"></a>  · <span class="co">-- Uniqueness</span></span>
+<span id="cb42-9"><a href="#cb42-9" aria-hidden="true" tabindex="-1"></a>    <span class="kw">fix</span> l1 : List Nat; <span class="kw">fix</span> l2 : List Nat</span>
+<span id="cb42-10"><a href="#cb42-10" aria-hidden="true" tabindex="-1"></a>    <span class="kw">assume</span> h1 : prime_factorization n l1</span>
+<span id="cb42-11"><a href="#cb42-11" aria-hidden="true" tabindex="-1"></a>    <span class="kw">assume</span> h2 : prime_factorization n l2</span>
+<span id="cb42-12"><a href="#cb42-12" aria-hidden="true" tabindex="-1"></a>    <span class="kw">define</span> <span class="kw">at</span> h1; <span class="kw">define</span> <span class="kw">at</span> h2</span>
+<span id="cb42-13"><a href="#cb42-13" aria-hidden="true" tabindex="-1"></a>    <span class="kw">have</span> h3 : prod l1 = n := h1.right</span>
+<span id="cb42-14"><a href="#cb42-14" aria-hidden="true" tabindex="-1"></a>    <span class="kw">rewrite</span> [←h2.right] <span class="kw">at</span> h3</span>
+<span id="cb42-15"><a href="#cb42-15" aria-hidden="true" tabindex="-1"></a>    <span class="kw">show</span> l1 = l2 <span class="kw">from</span> Theorem_7_2_5 l1 l2 h1.left h2.left h3</span>
+<span id="cb42-16"><a href="#cb42-16" aria-hidden="true" tabindex="-1"></a>    <span class="kw">done</span></span>
+<span id="cb42-17"><a href="#cb42-17" aria-hidden="true" tabindex="-1"></a>  <span class="kw">done</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <section id="exercises-1" class="level3">
 <h3 class="anchored" data-anchor-id="exercises-1">Exercises</h3>
 <div class="numex" data-arguments="1">
@@ -1608,7 +1609,7 @@ Int.emod_nonneg : ∀ (a : ℤ) {b : ℤ}, b ≠ 0 → 0 ≤ a % b</code></pre>
 <span id="cb57-49"><a href="#cb57-49" aria-hidden="true" tabindex="-1"></a>        _ = r2 := <span class="kw">by</span> <span class="kw">ring</span></span>
 <span id="cb57-50"><a href="#cb57-50" aria-hidden="true" tabindex="-1"></a>    <span class="kw">done</span></span>
 <span id="cb57-51"><a href="#cb57-51" aria-hidden="true" tabindex="-1"></a>  <span class="kw">done</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>The lemma <code>mod_cmpl_res</code> above says that <code>a % m</code> is the unique element of the complete residue system <code>{0, 1, ..., m - 1}</code> that is congruent to <code>a</code> modulo <code>m</code>. The lemma requires the hypothesis <code>[NeZero m]</code>, because its proof appeals to two previous lemmas, <code>mod_nonneg</code> and <code>mod_lt</code>, that require that hypothesis. But when the proof invokes those previous lemmas, this hypothesis is not mentioned, because it is an implicit argument.</p>
+<p>The lemma <code>mod_cmpl_res</code> above says that <code>a % m</code> is an element of the complete residue system <code>{0, 1, ..., m - 1}</code> that is congruent to <code>a</code> modulo <code>m</code>. The lemma requires the hypothesis <code>[NeZero m]</code>, because its proof appeals to two previous lemmas, <code>mod_nonneg</code> and <code>mod_lt</code>, that require that hypothesis. But when the proof invokes those previous lemmas, this hypothesis is not mentioned, because it is an implicit argument.</p>
 <p>An immediate consequence of the lemma <code>congr_mod_mod</code> is the following lemma, which will be useful to us later.</p>
 <div class="sourceCode" id="cb58"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb58-1"><a href="#cb58-1" aria-hidden="true" tabindex="-1"></a><span class="kw">lemma</span> cc_eq_mod (m : Nat) (a : Int) : cc m a = cc m (a % m) := </span>
 <span id="cb58-2"><a href="#cb58-2" aria-hidden="true" tabindex="-1"></a>  (cc_eq_iff_congr m a (a % m)).rtl (congr_mod_mod m a)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -2265,50 +2266,43 @@ Int.emod_nonneg : ∀ (a : ℤ) {b : ℤ}, b ≠ 0 → 0 ≤ a % b</code></pre>
 <p>We will be applying Euler’s theorem to the prime numbers <code>p</code> and <code>q</code>, so we will need to know how to compute <code>phi p</code> and <code>phi q</code>. Fortunately, there is a simple formula we can use.</p>
 <div class="sourceCode" id="cb113"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb113-1"><a href="#cb113-1" aria-hidden="true" tabindex="-1"></a><span class="kw">lemma</span> num_rp_prime {p : Nat} (h1 : prime p) :</span>
 <span id="cb113-2"><a href="#cb113-2" aria-hidden="true" tabindex="-1"></a>    ∀ (k : Nat), k &lt; p → num_rp_below p (k + 1) = k := <span class="cn">sorry</span></span>
-<span id="cb113-3"><a href="#cb113-3" aria-hidden="true" tabindex="-1"></a><span class="co">--Hint : Use induction.</span></span>
-<span id="cb113-4"><a href="#cb113-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb113-5"><a href="#cb113-5" aria-hidden="true" tabindex="-1"></a><span class="kw">lemma</span> phi_prime {p : Nat} (h1 : prime p) : phi p = p - 1 := <span class="kw">by</span></span>
-<span id="cb113-6"><a href="#cb113-6" aria-hidden="true" tabindex="-1"></a>  <span class="kw">have</span> h2 : 1 ≤ p := prime_pos h1</span>
-<span id="cb113-7"><a href="#cb113-7" aria-hidden="true" tabindex="-1"></a>  <span class="kw">have</span> h3 : p - 1 + 1 = p := Nat.sub_add_cancel h2</span>
-<span id="cb113-8"><a href="#cb113-8" aria-hidden="true" tabindex="-1"></a>  <span class="kw">have</span> h4 : p - 1 &lt; p := <span class="kw">by</span> <span class="kw">linarith</span></span>
-<span id="cb113-9"><a href="#cb113-9" aria-hidden="true" tabindex="-1"></a>  <span class="kw">have</span> h5 : num_rp_below p (p - 1 + 1) = p - 1 :=</span>
-<span id="cb113-10"><a href="#cb113-10" aria-hidden="true" tabindex="-1"></a>    num_rp_prime h1 (p - 1) h4</span>
-<span id="cb113-11"><a href="#cb113-11" aria-hidden="true" tabindex="-1"></a>  <span class="kw">rewrite</span> [h3] <span class="kw">at</span> h5</span>
-<span id="cb113-12"><a href="#cb113-12" aria-hidden="true" tabindex="-1"></a>  <span class="kw">show</span> phi p = p - 1 <span class="kw">from</span> h5</span>
-<span id="cb113-13"><a href="#cb113-13" aria-hidden="true" tabindex="-1"></a>  <span class="kw">done</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb113-3"><a href="#cb113-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb113-4"><a href="#cb113-4" aria-hidden="true" tabindex="-1"></a><span class="kw">lemma</span> phi_prime {p : Nat} (h1 : prime p) : phi p = p - 1 := <span class="kw">by</span></span>
+<span id="cb113-5"><a href="#cb113-5" aria-hidden="true" tabindex="-1"></a>  <span class="kw">have</span> h2 : 1 ≤ p := prime_pos h1</span>
+<span id="cb113-6"><a href="#cb113-6" aria-hidden="true" tabindex="-1"></a>  <span class="kw">have</span> h3 : p - 1 + 1 = p := Nat.sub_add_cancel h2</span>
+<span id="cb113-7"><a href="#cb113-7" aria-hidden="true" tabindex="-1"></a>  <span class="kw">have</span> h4 : p - 1 &lt; p := <span class="kw">by</span> <span class="kw">linarith</span></span>
+<span id="cb113-8"><a href="#cb113-8" aria-hidden="true" tabindex="-1"></a>  <span class="kw">have</span> h5 : num_rp_below p (p - 1 + 1) = p - 1 :=</span>
+<span id="cb113-9"><a href="#cb113-9" aria-hidden="true" tabindex="-1"></a>    num_rp_prime h1 (p - 1) h4</span>
+<span id="cb113-10"><a href="#cb113-10" aria-hidden="true" tabindex="-1"></a>  <span class="kw">rewrite</span> [h3] <span class="kw">at</span> h5</span>
+<span id="cb113-11"><a href="#cb113-11" aria-hidden="true" tabindex="-1"></a>  <span class="kw">show</span> phi p = p - 1 <span class="kw">from</span> h5</span>
+<span id="cb113-12"><a href="#cb113-12" aria-hidden="true" tabindex="-1"></a>  <span class="kw">done</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>We will also need to use Lemma 7.4.5 from <em>HTPI</em>. To prove that lemma in Lean, we will use <code>Theorem_7_2_2</code>, which says that for natural numbers <code>a</code>, <code>b</code>, and <code>c</code>, if <code>c ∣ a * b</code> and <code>c</code> and <code>a</code> are relatively prime, then <code>c ∣ b</code>. But we will need to extend the theorem to allow <code>b</code> to be an integer rather than a natural number. The extension will follow from the fact that every integer is either a natural number or the negative of a natural number:</p>
 <div class="ind">
 <pre><code>Int.eq_nat_or_neg : ∀ (a : ℤ), ∃ (n : ℕ), a = ↑n ∨ a = -↑n</code></pre>
 </div>
 <p>As usual, coercions make the reasoning more delicate. For clarity, we will write the coercions explicitly below.</p>
-<div class="sourceCode" id="cb115"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb115-1"><a href="#cb115-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Theorem_7_2_2_Int {a c : Nat} {b : Int}</span>
-<span id="cb115-2"><a href="#cb115-2" aria-hidden="true" tabindex="-1"></a>    (h1 : ↑c ∣ ↑a * b) (h2 : rel_prime a c) : ↑c ∣ b := <span class="kw">by</span></span>
-<span id="cb115-3"><a href="#cb115-3" aria-hidden="true" tabindex="-1"></a>  <span class="kw">obtain</span> (n : Nat) (h3 : b = ↑n ∨ b = -↑n) <span class="kw">from</span> Int.eq_nat_or_neg b</span>
-<span id="cb115-4"><a href="#cb115-4" aria-hidden="true" tabindex="-1"></a>  <span class="kw">by_cases</span> <span class="kw">on</span> h3</span>
-<span id="cb115-5"><a href="#cb115-5" aria-hidden="true" tabindex="-1"></a>  · <span class="co">-- Case 1. h3 : b = ↑n</span></span>
-<span id="cb115-6"><a href="#cb115-6" aria-hidden="true" tabindex="-1"></a>    <span class="kw">rewrite</span> [h3, ←Nat.cast_mul, Int.coe_nat_dvd] <span class="kw">at</span> h1  <span class="co">--h1 : c ∣ a * n</span></span>
-<span id="cb115-7"><a href="#cb115-7" aria-hidden="true" tabindex="-1"></a>    <span class="kw">rewrite</span> [h3, Int.coe_nat_dvd]                       <span class="co">--Goal : c ∣ n</span></span>
-<span id="cb115-8"><a href="#cb115-8" aria-hidden="true" tabindex="-1"></a>    <span class="kw">show</span> c ∣ n <span class="kw">from</span> Theorem_7_2_2 h1 h2</span>
-<span id="cb115-9"><a href="#cb115-9" aria-hidden="true" tabindex="-1"></a>    <span class="kw">done</span></span>
-<span id="cb115-10"><a href="#cb115-10" aria-hidden="true" tabindex="-1"></a>  · <span class="co">-- Case 2. h3 : b = -↑n</span></span>
-<span id="cb115-11"><a href="#cb115-11" aria-hidden="true" tabindex="-1"></a>    <span class="kw">have</span> h4 : c ∣ a * n := <span class="kw">by</span></span>
-<span id="cb115-12"><a href="#cb115-12" aria-hidden="true" tabindex="-1"></a>      <span class="kw">rewrite</span> [←Int.coe_nat_dvd, Nat.cast_mul]  <span class="co">--Goal : ↑c ∣ ↑a * ↑n</span></span>
-<span id="cb115-13"><a href="#cb115-13" aria-hidden="true" tabindex="-1"></a>      <span class="kw">obtain</span> (j : Int) (h5 : ↑a * b = ↑c * j) <span class="kw">from</span> h1</span>
-<span id="cb115-14"><a href="#cb115-14" aria-hidden="true" tabindex="-1"></a>      <span class="kw">apply</span> Exists.intro (-j)</span>
-<span id="cb115-15"><a href="#cb115-15" aria-hidden="true" tabindex="-1"></a>      <span class="kw">show</span> ↑a * ↑n = ↑c * (-j) <span class="kw">from</span></span>
-<span id="cb115-16"><a href="#cb115-16" aria-hidden="true" tabindex="-1"></a>        <span class="kw">calc</span> ↑a * ↑n</span>
-<span id="cb115-17"><a href="#cb115-17" aria-hidden="true" tabindex="-1"></a>          _ = -(↑a * (-↑n)) := <span class="kw">by</span> <span class="kw">ring</span></span>
-<span id="cb115-18"><a href="#cb115-18" aria-hidden="true" tabindex="-1"></a>          _ = -(↑a * b) := <span class="kw">by</span> <span class="kw">rw</span> [h3]</span>
-<span id="cb115-19"><a href="#cb115-19" aria-hidden="true" tabindex="-1"></a>          _ = -(↑c * j) := <span class="kw">by</span> <span class="kw">rw</span> [h5]</span>
-<span id="cb115-20"><a href="#cb115-20" aria-hidden="true" tabindex="-1"></a>          _ = ↑c * (-j) := <span class="kw">by</span> <span class="kw">ring</span></span>
-<span id="cb115-21"><a href="#cb115-21" aria-hidden="true" tabindex="-1"></a>      <span class="kw">done</span></span>
-<span id="cb115-22"><a href="#cb115-22" aria-hidden="true" tabindex="-1"></a>    <span class="kw">have</span> h5 : c ∣ n := Theorem_7_2_2 h4 h2</span>
-<span id="cb115-23"><a href="#cb115-23" aria-hidden="true" tabindex="-1"></a>    <span class="kw">obtain</span> (k : Nat) (h6 : n = c * k) <span class="kw">from</span> h5</span>
-<span id="cb115-24"><a href="#cb115-24" aria-hidden="true" tabindex="-1"></a>    <span class="kw">apply</span> Exists.intro (-↑k)            <span class="co">--Goal : b = ↑c * (-↑k)</span></span>
-<span id="cb115-25"><a href="#cb115-25" aria-hidden="true" tabindex="-1"></a>    <span class="kw">rewrite</span> [h3, h6, Nat.cast_mul]      <span class="co">--Goal : -(↑c * ↑k) = ↑c * (-↑k)</span></span>
-<span id="cb115-26"><a href="#cb115-26" aria-hidden="true" tabindex="-1"></a>    <span class="kw">ring</span></span>
-<span id="cb115-27"><a href="#cb115-27" aria-hidden="true" tabindex="-1"></a>    <span class="kw">done</span></span>
-<span id="cb115-28"><a href="#cb115-28" aria-hidden="true" tabindex="-1"></a>  <span class="kw">done</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb115"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb115-1"><a href="#cb115-1" aria-hidden="true" tabindex="-1"></a><span class="kw">lemma</span> dvd_neg_iff_dvd (a b : Int) : a ∣ (-b) ↔ a ∣ b := <span class="cn">sorry</span></span>
+<span id="cb115-2"><a href="#cb115-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb115-3"><a href="#cb115-3" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Theorem_7_2_2_Int {a c : Nat} {b : Int}</span>
+<span id="cb115-4"><a href="#cb115-4" aria-hidden="true" tabindex="-1"></a>    (h1 : ↑c ∣ ↑a * b) (h2 : rel_prime a c) : ↑c ∣ b := <span class="kw">by</span></span>
+<span id="cb115-5"><a href="#cb115-5" aria-hidden="true" tabindex="-1"></a>  <span class="kw">obtain</span> (n : Nat) (h3 : b = ↑n ∨ b = -↑n) <span class="kw">from</span> Int.eq_nat_or_neg b</span>
+<span id="cb115-6"><a href="#cb115-6" aria-hidden="true" tabindex="-1"></a>  <span class="kw">by_cases</span> <span class="kw">on</span> h3</span>
+<span id="cb115-7"><a href="#cb115-7" aria-hidden="true" tabindex="-1"></a>  · <span class="co">-- Case 1. h3 : b = ↑n</span></span>
+<span id="cb115-8"><a href="#cb115-8" aria-hidden="true" tabindex="-1"></a>    <span class="kw">rewrite</span> [h3, ←Nat.cast_mul, Int.coe_nat_dvd] <span class="kw">at</span> h1  <span class="co">--h1 : c ∣ a * n</span></span>
+<span id="cb115-9"><a href="#cb115-9" aria-hidden="true" tabindex="-1"></a>    <span class="kw">rewrite</span> [h3, Int.coe_nat_dvd]                       <span class="co">--Goal : c ∣ n</span></span>
+<span id="cb115-10"><a href="#cb115-10" aria-hidden="true" tabindex="-1"></a>    <span class="kw">show</span> c ∣ n <span class="kw">from</span> Theorem_7_2_2 h1 h2</span>
+<span id="cb115-11"><a href="#cb115-11" aria-hidden="true" tabindex="-1"></a>    <span class="kw">done</span></span>
+<span id="cb115-12"><a href="#cb115-12" aria-hidden="true" tabindex="-1"></a>  · <span class="co">-- Case 2. h3 : b = -↑n</span></span>
+<span id="cb115-13"><a href="#cb115-13" aria-hidden="true" tabindex="-1"></a>    <span class="kw">have</span> h4 : ↑a * b = -(↑a * ↑n) :=</span>
+<span id="cb115-14"><a href="#cb115-14" aria-hidden="true" tabindex="-1"></a>      <span class="kw">calc</span> ↑a * b</span>
+<span id="cb115-15"><a href="#cb115-15" aria-hidden="true" tabindex="-1"></a>        _ = ↑a * (-↑n) := <span class="kw">by</span> <span class="kw">rw</span> [h3]</span>
+<span id="cb115-16"><a href="#cb115-16" aria-hidden="true" tabindex="-1"></a>        _ = -(↑a * ↑n) := <span class="kw">by</span> <span class="kw">ring</span></span>
+<span id="cb115-17"><a href="#cb115-17" aria-hidden="true" tabindex="-1"></a>    <span class="kw">rewrite</span> [h4, dvd_neg_iff_dvd, ←Nat.cast_mul, Int.coe_nat_dvd] <span class="kw">at</span> h1</span>
+<span id="cb115-18"><a href="#cb115-18" aria-hidden="true" tabindex="-1"></a>                                                        <span class="co">--h1 : c ∣ a * n</span></span>
+<span id="cb115-19"><a href="#cb115-19" aria-hidden="true" tabindex="-1"></a>    <span class="kw">rewrite</span> [h3, dvd_neg_iff_dvd, Int.coe_nat_dvd]      <span class="co">--Goal : c ∣ n</span></span>
+<span id="cb115-20"><a href="#cb115-20" aria-hidden="true" tabindex="-1"></a>    <span class="kw">show</span> c ∣ n <span class="kw">from</span> Theorem_7_2_2 h1 h2</span>
+<span id="cb115-21"><a href="#cb115-21" aria-hidden="true" tabindex="-1"></a>    <span class="kw">done</span></span>
+<span id="cb115-22"><a href="#cb115-22" aria-hidden="true" tabindex="-1"></a>  <span class="kw">done</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>With that preparation, we can now prove <code>Lemma_7_4_5</code>.</p>
 <div class="sourceCode" id="cb116"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb116-1"><a href="#cb116-1" aria-hidden="true" tabindex="-1"></a><span class="kw">lemma</span> Lemma_7_4_5 {m n : Nat} (a b : Nat) (h1 : rel_prime m n) :</span>
 <span id="cb116-2"><a href="#cb116-2" aria-hidden="true" tabindex="-1"></a>    congr_mod (m * n) a b ↔ congr_mod m a b ∧ congr_mod n a b := <span class="kw">by</span></span>
@@ -2358,7 +2352,7 @@ Int.emod_nonneg : ∀ (a : ℤ) {b : ℤ}, b ≠ 0 → 0 ≤ a % b</code></pre>
 <span id="cb117-6"><a href="#cb117-6" aria-hidden="true" tabindex="-1"></a>  <span class="kw">define</span> <span class="kw">at</span> h</span>
 <span id="cb117-7"><a href="#cb117-7" aria-hidden="true" tabindex="-1"></a>  <span class="kw">linarith</span></span>
 <span id="cb117-8"><a href="#cb117-8" aria-hidden="true" tabindex="-1"></a>  <span class="kw">done</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>Much of the modular arithmetic reasoning we need for the proof of <code>Theorem_7_5_1</code> is contained in a technical lemma:</p>
+<p>Much of the reasoning about modular arithmetic that we need for the proof of <code>Theorem_7_5_1</code> is contained in a technical lemma:</p>
 <div class="sourceCode" id="cb118"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb118-1"><a href="#cb118-1" aria-hidden="true" tabindex="-1"></a><span class="kw">lemma</span> Lemma_7_5_1 {p e d m c s : Nat} {t : Int}</span>
 <span id="cb118-2"><a href="#cb118-2" aria-hidden="true" tabindex="-1"></a>    (h1 : prime p) (h2 : e * d = (p - 1) * s + 1)</span>
 <span id="cb118-3"><a href="#cb118-3" aria-hidden="true" tabindex="-1"></a>    (h3 : ↑(m ^ e) - ↑c = ↑p * t) :</span>
@@ -2455,8 +2449,41 @@ Int.emod_nonneg : ∀ (a : ℤ) {b : ℤ}, b ≠ 0 → 0 ≤ a % b</code></pre>
 <span id="cb119-39"><a href="#cb119-39" aria-hidden="true" tabindex="-1"></a>  <span class="kw">show</span> congr_mod p (c ^ d) m ∧ congr_mod q (c ^ d) m <span class="kw">from</span></span>
 <span id="cb119-40"><a href="#cb119-40" aria-hidden="true" tabindex="-1"></a>    And.intro congr_p congr_q</span>
 <span id="cb119-41"><a href="#cb119-41" aria-hidden="true" tabindex="-1"></a>  <span class="kw">done</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<section id="exercises-4" class="level3">
+<h3 class="anchored" data-anchor-id="exercises-4">Exercises</h3>
+<div class="numex" data-arguments="1">
+<div class="sourceCode" id="cb120"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb120-1"><a href="#cb120-1" aria-hidden="true" tabindex="-1"></a><span class="co">--Hint:  Use induction.</span></span>
+<span id="cb120-2"><a href="#cb120-2" aria-hidden="true" tabindex="-1"></a><span class="kw">lemma</span> num_rp_prime_ex {p : Nat} (h1 : prime p) :</span>
+<span id="cb120-3"><a href="#cb120-3" aria-hidden="true" tabindex="-1"></a>    ∀ (k : Nat), k &lt; p → num_rp_below p (k + 1) = k := <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="numex" data-arguments="2">
+<div class="sourceCode" id="cb121"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb121-1"><a href="#cb121-1" aria-hidden="true" tabindex="-1"></a><span class="kw">lemma</span> three_prime : prime 3 := <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="numex" data-arguments="3">
+<div class="sourceCode" id="cb122"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb122-1"><a href="#cb122-1" aria-hidden="true" tabindex="-1"></a><span class="co">--Hint:  Use the previous exercise, Exercise_7_2_7, and Theorem_7_4_2.</span></span>
+<span id="cb122-2"><a href="#cb122-2" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Exercise_7_5_13a (a : Nat) (h1 : rel_prime 561 a) :</span>
+<span id="cb122-3"><a href="#cb122-3" aria-hidden="true" tabindex="-1"></a>    congr_mod 3 ↑(a ^ 560) 1 := <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="numex" data-arguments="4">
+<div class="sourceCode" id="cb123"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb123-1"><a href="#cb123-1" aria-hidden="true" tabindex="-1"></a><span class="kw">lemma</span> dvd_neg_iff_dvd_ex (a b : Int) : a ∣ (-b) ↔ a ∣ b := <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="numex" data-arguments="5">
+<div class="sourceCode" id="cb124"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb124-1"><a href="#cb124-1" aria-hidden="true" tabindex="-1"></a><span class="co">--Hint:  Use Int.eq_nat_or_neg, the previous exercise, and Theorem_7_2_3.</span></span>
+<span id="cb124-2"><a href="#cb124-2" aria-hidden="true" tabindex="-1"></a><span class="kw">lemma</span> prime_dvd_nat_int {p a : Nat} {b : Int}</span>
+<span id="cb124-3"><a href="#cb124-3" aria-hidden="true" tabindex="-1"></a>    (h1 : prime p) (h2 : ↑p ∣ ↑a * b) : p ∣ a ∨ ↑p ∣ b := <span class="cn">sorry</span></span>
+<span id="cb124-4"><a href="#cb124-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb124-5"><a href="#cb124-5" aria-hidden="true" tabindex="-1"></a><span class="kw">lemma</span> Theorem_7_2_3_Int {p : Nat} {a b : Int}</span>
+<span id="cb124-6"><a href="#cb124-6" aria-hidden="true" tabindex="-1"></a>    (h1 : prime p) (h2 : ↑p ∣ a * b) : ↑p ∣ a ∨ ↑p ∣ b := <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="numex" data-arguments="6">
+<div class="sourceCode" id="cb125"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb125-1"><a href="#cb125-1" aria-hidden="true" tabindex="-1"></a><span class="co">--Hint:  Use the previous exercise.</span></span>
+<span id="cb125-2"><a href="#cb125-2" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Exercise_7_5_14b (n : Nat) (b : Int)</span>
+<span id="cb125-3"><a href="#cb125-3" aria-hidden="true" tabindex="-1"></a>    (h1 : prime n) (h2 : congr_mod n (b ^ 2) 1) :</span>
+<span id="cb125-4"><a href="#cb125-4" aria-hidden="true" tabindex="-1"></a>    congr_mod n b 1 ∨ congr_mod n b (-1) := <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
 
 
+</section>
 </section>
 
 </main> <!-- /main -->
