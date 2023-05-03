@@ -813,7 +813,7 @@ $$
 <span id="cb46-3"><a href="#cb46-3" aria-hidden="true" tabindex="-1"></a>    numElts B n → ∃ (b : A), smallestElt R b B := <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="numex" data-arguments="6">
-<div class="sourceCode" id="cb47"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a><span class="co">--Hint:  First prove that R is reflexive</span></span>
+<div class="sourceCode" id="cb47"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a><span class="co">--Hint:  First prove that R is reflexive.</span></span>
 <span id="cb47-2"><a href="#cb47-2" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Exercise_6_2_4a {A : <span class="kw">Type</span>} (R : BinRel A)</span>
 <span id="cb47-3"><a href="#cb47-3" aria-hidden="true" tabindex="-1"></a>    (h : ∀ (x y : A), R x y ∨ R y x) : ∀ n ≥ 1, ∀ (B : Set A),</span>
 <span id="cb47-4"><a href="#cb47-4" aria-hidden="true" tabindex="-1"></a>    numElts B n → ∃ x ∈ B, ∀ y ∈ B, ∃ (z : A), R x z ∧ R z y := <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -824,7 +824,7 @@ $$
 <span id="cb48-3"><a href="#cb48-3" aria-hidden="true" tabindex="-1"></a>    closed f A → ∀ y ∈ A, ∃ x ∈ A, f x = y := <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="numex" data-arguments="8">
-<div class="sourceCode" id="cb49"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb49-1"><a href="#cb49-1" aria-hidden="true" tabindex="-1"></a><span class="co">--Hint:  Use Exercise_6_2_2</span></span>
+<div class="sourceCode" id="cb49"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb49-1"><a href="#cb49-1" aria-hidden="true" tabindex="-1"></a><span class="co">--Hint:  Use Exercise_6_2_2.</span></span>
 <span id="cb49-2"><a href="#cb49-2" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Example_6_2_2 {A : <span class="kw">Type</span>} (R : BinRel A)</span>
 <span id="cb49-3"><a href="#cb49-3" aria-hidden="true" tabindex="-1"></a>    (h1 : ∃ (n : Nat), numElts { x : A | x = x } n)</span>
 <span id="cb49-4"><a href="#cb49-4" aria-hidden="true" tabindex="-1"></a>    (h2 : partial_order R) : ∃ (T : BinRel A),</span>
@@ -1152,7 +1152,7 @@ $$
 <div class="sourceCode" id="cb76"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb76-1"><a href="#cb76-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> fact_pos : ∀ (n : Nat), fact n ≥ 1 := <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="numex" data-arguments="4">
-<div class="sourceCode" id="cb77"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb77-1"><a href="#cb77-1" aria-hidden="true" tabindex="-1"></a><span class="co">--Hint:  Use the theorem fact_pos from the previous exercise</span></span>
+<div class="sourceCode" id="cb77"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb77-1"><a href="#cb77-1" aria-hidden="true" tabindex="-1"></a><span class="co">--Hint:  Use the theorem fact_pos from the previous exercise.</span></span>
 <span id="cb77-2"><a href="#cb77-2" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Exercise_6_3_13a (k : Nat) : ∀ (n : Nat),</span>
 <span id="cb77-3"><a href="#cb77-3" aria-hidden="true" tabindex="-1"></a>    fact (k ^ 2 + n) ≥ k ^ (2 * n) := <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
@@ -1563,7 +1563,7 @@ example : ∀ (n : Nat), Fib n < 2 ^ n := by
 <section id="exercises-3" class="level3">
 <h3 class="anchored" data-anchor-id="exercises-3">Exercises</h3>
 <div class="numex" data-arguments="1">
-<div class="sourceCode" id="cb103"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb103-1"><a href="#cb103-1" aria-hidden="true" tabindex="-1"></a><span class="co">--Hint: Use Exercise_6_1_16a1 and Exercise_6_1_16a2</span></span>
+<div class="sourceCode" id="cb103"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb103-1"><a href="#cb103-1" aria-hidden="true" tabindex="-1"></a><span class="co">--Hint: Use Exercise_6_1_16a1 and Exercise_6_1_16a2.</span></span>
 <span id="cb103-2"><a href="#cb103-2" aria-hidden="true" tabindex="-1"></a><span class="kw">lemma</span> sq_even_iff_even_ex (n : Nat) :</span>
 <span id="cb103-3"><a href="#cb103-3" aria-hidden="true" tabindex="-1"></a>    nat_even (n * n) ↔ nat_even n := <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>

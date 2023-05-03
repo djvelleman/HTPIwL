@@ -769,7 +769,7 @@ theorem Exercise_6_2_3 (A : Type) (R : BinRel A)
 
 ::: {.numex arguments="6"}
 ```lean
---Hint:  First prove that R is reflexive
+--Hint:  First prove that R is reflexive.
 theorem Exercise_6_2_4a {A : Type} (R : BinRel A)
     (h : ∀ (x y : A), R x y ∨ R y x) : ∀ n ≥ 1, ∀ (B : Set A),
     numElts B n → ∃ x ∈ B, ∀ y ∈ B, ∃ (z : A), R x z ∧ R z y := sorry
@@ -786,7 +786,7 @@ theorem Like_Exercise_6_2_16 (f : Nat → Nat) (h : one_to_one f) :
 
 ::: {.numex arguments="8"}
 ```lean
---Hint:  Use Exercise_6_2_2
+--Hint:  Use Exercise_6_2_2.
 theorem Example_6_2_2 {A : Type} (R : BinRel A)
     (h1 : ∃ (n : Nat), numElts { x : A | x = x } n)
     (h2 : partial_order R) : ∃ (T : BinRel A),
@@ -1230,7 +1230,7 @@ theorem fact_pos : ∀ (n : Nat), fact n ≥ 1 := sorry
 
 ::: {.numex arguments="4"}
 ```lean
---Hint:  Use the theorem fact_pos from the previous exercise
+--Hint:  Use the theorem fact_pos from the previous exercise.
 theorem Exercise_6_3_13a (k : Nat) : ∀ (n : Nat),
     fact (k ^ 2 + n) ≥ k ^ (2 * n) := sorry
 ```
@@ -1744,7 +1744,7 @@ theorem sqrt_2_irrat :
 
 ::: {.numex arguments="1"}
 ```lean
---Hint: Use Exercise_6_1_16a1 and Exercise_6_1_16a2
+--Hint: Use Exercise_6_1_16a1 and Exercise_6_1_16a2.
 lemma sq_even_iff_even_ex (n : Nat) :
     nat_even (n * n) ↔ nat_even n := sorry
 ```
