@@ -2478,7 +2478,33 @@ lemma phi_prime {p : Nat} (h1 : prime p) : phi p = p - 1 := by
   done
 ```
 
-We will also need to use Lemma 7.4.5 from *HTPI*.  To prove that lemma in Lean, we will use `Theorem_7_2_2`, which says that for natural numbers `a`, `b`, and `c`, if `c ∣ a * b` and `c` and `a` are relatively prime, then `c ∣ b`.  But we will need to extend the theorem to allow `b` to be an integer rather than a natural number.  The extension will follow from the fact that every integer is either a natural number or the negative of a natural number:
+We will also need to use Lemma 7.4.5 from *HTPI*.  To prove that lemma in Lean, we will use `Theorem_7_2_2`, which says that for natural numbers `a`, `b`, and `c`, if `c ∣ a * b` and `c` and `a` are relatively prime, then `c ∣ b`.  But we will need to extend the theorem to allow `b` to be an integer rather than a natural number.  To prove this extension, we use the Lean function `Int.natAbs : Int → Nat`, which computes the absolute value of an integer.  Lean knows several theorems about this function:
+
+::: {.ind}
+```
+@Int.coe_nat_dvd_left : ∀ {n : ℕ} {z : ℤ}, ↑n ∣ z ↔ n ∣ Int.natAbs z
+
+Int.natAbs_mul : ∀ (a b : ℤ),
+                  Int.natAbs (a * b) = Int.natAbs a * Int.natAbs b
+
+Int.natAbs_ofNat : ∀ (n : ℕ), Int.natAbs ↑n = n
+```
+:::
+
+With the help of these theorems, our extended version of `Theorem_7_2_2` follows easily from the original version:
+
+```lean
+theorem Theorem_7_2_2_Int {a c : Nat} {b : Int}
+    (h1 : ↑c ∣ ↑a * b) (h2 : rel_prime a c) : ↑c ∣ b := by
+  rewrite [Int.coe_nat_dvd_left, Int.natAbs_mul,
+    Int.natAbs_ofNat] at h1        --h1 : c ∣ a * Int.natAbs b
+  rewrite [Int.coe_nat_dvd_left]   --Goal : c ∣ Int.natAbs b
+  show c ∣ Int.natAbs b from Theorem_7_2_2 h1 h2
+  done
+```
+
+<!--
+The extension will follow from the fact that every integer is either a natural number or the negative of a natural number:
 
 ::: {.ind}
 ```
@@ -2512,6 +2538,7 @@ theorem Theorem_7_2_2_Int {a c : Nat} {b : Int}
     done
   done
 ```
+-->
 
 With that preparation, we can now prove `Lemma_7_4_5`.
 
@@ -2701,22 +2728,13 @@ theorem Exercise_7_5_13a (a : Nat) (h1 : rel_prime 561 a) :
 
 ::: {.numex arguments="4"}
 ```lean
-lemma dvd_neg_iff_dvd_ex (a b : Int) : a ∣ (-b) ↔ a ∣ b := sorry
-```
-:::
-
-::: {.numex arguments="5"}
-```lean
---Hint:  Use Int.eq_nat_or_neg, the previous exercise, and Theorem_7_2_3.
-lemma prime_dvd_nat_int {p a : Nat} {b : Int}
-    (h1 : prime p) (h2 : ↑p ∣ ↑a * b) : p ∣ a ∨ ↑p ∣ b := sorry
-
+--Hint:  Imitate the way Theorem_7_2_2_Int was proven from Theorem_7_2_2.
 lemma Theorem_7_2_3_Int {p : Nat} {a b : Int}
     (h1 : prime p) (h2 : ↑p ∣ a * b) : ↑p ∣ a ∨ ↑p ∣ b := sorry
 ```
 :::
 
-::: {.numex arguments="6"}
+::: {.numex arguments="5"}
 ```lean
 --Hint:  Use the previous exercise.
 theorem Exercise_7_5_14b (n : Nat) (b : Int)

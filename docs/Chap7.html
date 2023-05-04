@@ -2276,33 +2276,59 @@ Int.emod_nonneg : ∀ (a : ℤ) {b : ℤ}, b ≠ 0 → 0 ≤ a % b</code></pre>
 <span id="cb113-10"><a href="#cb113-10" aria-hidden="true" tabindex="-1"></a>  <span class="kw">rewrite</span> [h3] <span class="kw">at</span> h5</span>
 <span id="cb113-11"><a href="#cb113-11" aria-hidden="true" tabindex="-1"></a>  <span class="kw">show</span> phi p = p - 1 <span class="kw">from</span> h5</span>
 <span id="cb113-12"><a href="#cb113-12" aria-hidden="true" tabindex="-1"></a>  <span class="kw">done</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>We will also need to use Lemma 7.4.5 from <em>HTPI</em>. To prove that lemma in Lean, we will use <code>Theorem_7_2_2</code>, which says that for natural numbers <code>a</code>, <code>b</code>, and <code>c</code>, if <code>c ∣ a * b</code> and <code>c</code> and <code>a</code> are relatively prime, then <code>c ∣ b</code>. But we will need to extend the theorem to allow <code>b</code> to be an integer rather than a natural number. The extension will follow from the fact that every integer is either a natural number or the negative of a natural number:</p>
+<p>We will also need to use Lemma 7.4.5 from <em>HTPI</em>. To prove that lemma in Lean, we will use <code>Theorem_7_2_2</code>, which says that for natural numbers <code>a</code>, <code>b</code>, and <code>c</code>, if <code>c ∣ a * b</code> and <code>c</code> and <code>a</code> are relatively prime, then <code>c ∣ b</code>. But we will need to extend the theorem to allow <code>b</code> to be an integer rather than a natural number. To prove this extension, we use the Lean function <code>Int.natAbs : Int → Nat</code>, which computes the absolute value of an integer. Lean knows several theorems about this function:</p>
 <div class="ind">
-<pre><code>Int.eq_nat_or_neg : ∀ (a : ℤ), ∃ (n : ℕ), a = ↑n ∨ a = -↑n</code></pre>
+<pre><code>@Int.coe_nat_dvd_left : ∀ {n : ℕ} {z : ℤ}, ↑n ∣ z ↔ n ∣ Int.natAbs z
+
+Int.natAbs_mul : ∀ (a b : ℤ),
+                  Int.natAbs (a * b) = Int.natAbs a * Int.natAbs b
+
+Int.natAbs_ofNat : ∀ (n : ℕ), Int.natAbs ↑n = n</code></pre>
 </div>
-<p>As usual, coercions make the reasoning more delicate. For clarity, we will write the coercions explicitly below.</p>
-<div class="sourceCode" id="cb115"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb115-1"><a href="#cb115-1" aria-hidden="true" tabindex="-1"></a><span class="kw">lemma</span> dvd_neg_iff_dvd (a b : Int) : a ∣ (-b) ↔ a ∣ b := <span class="cn">sorry</span></span>
-<span id="cb115-2"><a href="#cb115-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb115-3"><a href="#cb115-3" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Theorem_7_2_2_Int {a c : Nat} {b : Int}</span>
-<span id="cb115-4"><a href="#cb115-4" aria-hidden="true" tabindex="-1"></a>    (h1 : ↑c ∣ ↑a * b) (h2 : rel_prime a c) : ↑c ∣ b := <span class="kw">by</span></span>
-<span id="cb115-5"><a href="#cb115-5" aria-hidden="true" tabindex="-1"></a>  <span class="kw">obtain</span> (n : Nat) (h3 : b = ↑n ∨ b = -↑n) <span class="kw">from</span> Int.eq_nat_or_neg b</span>
-<span id="cb115-6"><a href="#cb115-6" aria-hidden="true" tabindex="-1"></a>  <span class="kw">by_cases</span> <span class="kw">on</span> h3</span>
-<span id="cb115-7"><a href="#cb115-7" aria-hidden="true" tabindex="-1"></a>  · <span class="co">-- Case 1. h3 : b = ↑n</span></span>
-<span id="cb115-8"><a href="#cb115-8" aria-hidden="true" tabindex="-1"></a>    <span class="kw">rewrite</span> [h3, ←Nat.cast_mul, Int.coe_nat_dvd] <span class="kw">at</span> h1  <span class="co">--h1 : c ∣ a * n</span></span>
-<span id="cb115-9"><a href="#cb115-9" aria-hidden="true" tabindex="-1"></a>    <span class="kw">rewrite</span> [h3, Int.coe_nat_dvd]                       <span class="co">--Goal : c ∣ n</span></span>
-<span id="cb115-10"><a href="#cb115-10" aria-hidden="true" tabindex="-1"></a>    <span class="kw">show</span> c ∣ n <span class="kw">from</span> Theorem_7_2_2 h1 h2</span>
-<span id="cb115-11"><a href="#cb115-11" aria-hidden="true" tabindex="-1"></a>    <span class="kw">done</span></span>
-<span id="cb115-12"><a href="#cb115-12" aria-hidden="true" tabindex="-1"></a>  · <span class="co">-- Case 2. h3 : b = -↑n</span></span>
-<span id="cb115-13"><a href="#cb115-13" aria-hidden="true" tabindex="-1"></a>    <span class="kw">have</span> h4 : ↑a * b = -(↑a * ↑n) :=</span>
-<span id="cb115-14"><a href="#cb115-14" aria-hidden="true" tabindex="-1"></a>      <span class="kw">calc</span> ↑a * b</span>
-<span id="cb115-15"><a href="#cb115-15" aria-hidden="true" tabindex="-1"></a>        _ = ↑a * (-↑n) := <span class="kw">by</span> <span class="kw">rw</span> [h3]</span>
-<span id="cb115-16"><a href="#cb115-16" aria-hidden="true" tabindex="-1"></a>        _ = -(↑a * ↑n) := <span class="kw">by</span> <span class="kw">ring</span></span>
-<span id="cb115-17"><a href="#cb115-17" aria-hidden="true" tabindex="-1"></a>    <span class="kw">rewrite</span> [h4, dvd_neg_iff_dvd, ←Nat.cast_mul, Int.coe_nat_dvd] <span class="kw">at</span> h1</span>
-<span id="cb115-18"><a href="#cb115-18" aria-hidden="true" tabindex="-1"></a>                                                        <span class="co">--h1 : c ∣ a * n</span></span>
-<span id="cb115-19"><a href="#cb115-19" aria-hidden="true" tabindex="-1"></a>    <span class="kw">rewrite</span> [h3, dvd_neg_iff_dvd, Int.coe_nat_dvd]      <span class="co">--Goal : c ∣ n</span></span>
-<span id="cb115-20"><a href="#cb115-20" aria-hidden="true" tabindex="-1"></a>    <span class="kw">show</span> c ∣ n <span class="kw">from</span> Theorem_7_2_2 h1 h2</span>
-<span id="cb115-21"><a href="#cb115-21" aria-hidden="true" tabindex="-1"></a>    <span class="kw">done</span></span>
-<span id="cb115-22"><a href="#cb115-22" aria-hidden="true" tabindex="-1"></a>  <span class="kw">done</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>With the help of these theorems, our extended version of <code>Theorem_7_2_2</code> follows easily from the original version:</p>
+<div class="sourceCode" id="cb115"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb115-1"><a href="#cb115-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Theorem_7_2_2_Int {a c : Nat} {b : Int}</span>
+<span id="cb115-2"><a href="#cb115-2" aria-hidden="true" tabindex="-1"></a>    (h1 : ↑c ∣ ↑a * b) (h2 : rel_prime a c) : ↑c ∣ b := <span class="kw">by</span></span>
+<span id="cb115-3"><a href="#cb115-3" aria-hidden="true" tabindex="-1"></a>  <span class="kw">rewrite</span> [Int.coe_nat_dvd_left, Int.natAbs_mul,</span>
+<span id="cb115-4"><a href="#cb115-4" aria-hidden="true" tabindex="-1"></a>    Int.natAbs_ofNat] <span class="kw">at</span> h1        <span class="co">--h1 : c ∣ a * Int.natAbs b</span></span>
+<span id="cb115-5"><a href="#cb115-5" aria-hidden="true" tabindex="-1"></a>  <span class="kw">rewrite</span> [Int.coe_nat_dvd_left]   <span class="co">--Goal : c ∣ Int.natAbs b</span></span>
+<span id="cb115-6"><a href="#cb115-6" aria-hidden="true" tabindex="-1"></a>  <span class="kw">show</span> c ∣ Int.natAbs b <span class="kw">from</span> Theorem_7_2_2 h1 h2</span>
+<span id="cb115-7"><a href="#cb115-7" aria-hidden="true" tabindex="-1"></a>  <span class="kw">done</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<!--
+The extension will follow from the fact that every integer is either a natural number or the negative of a natural number:
+
+::: {.ind}
+```
+Int.eq_nat_or_neg : ∀ (a : ℤ), ∃ (n : ℕ), a = ↑n ∨ a = -↑n
+```
+:::
+
+As usual, coercions make the reasoning more delicate.  For clarity, we will write the coercions explicitly below.
+
+```lean
+lemma dvd_neg_iff_dvd (a b : Int) : a ∣ (-b) ↔ a ∣ b := sorry
+
+theorem Theorem_7_2_2_Int {a c : Nat} {b : Int}
+    (h1 : ↑c ∣ ↑a * b) (h2 : rel_prime a c) : ↑c ∣ b := by
+  obtain (n : Nat) (h3 : b = ↑n ∨ b = -↑n) from Int.eq_nat_or_neg b
+  by_cases on h3
+  · -- Case 1. h3 : b = ↑n
+    rewrite [h3, ←Nat.cast_mul, Int.coe_nat_dvd] at h1  --h1 : c ∣ a * n
+    rewrite [h3, Int.coe_nat_dvd]                       --Goal : c ∣ n
+    show c ∣ n from Theorem_7_2_2 h1 h2
+    done
+  · -- Case 2. h3 : b = -↑n
+    have h4 : ↑a * b = -(↑a * ↑n) :=
+      calc ↑a * b
+        _ = ↑a * (-↑n) := by rw [h3]
+        _ = -(↑a * ↑n) := by ring
+    rewrite [h4, dvd_neg_iff_dvd, ←Nat.cast_mul, Int.coe_nat_dvd] at h1
+                                                        --h1 : c ∣ a * n
+    rewrite [h3, dvd_neg_iff_dvd, Int.coe_nat_dvd]      --Goal : c ∣ n
+    show c ∣ n from Theorem_7_2_2 h1 h2
+    done
+  done
+```
+-->
 <p>With that preparation, we can now prove <code>Lemma_7_4_5</code>.</p>
 <div class="sourceCode" id="cb116"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb116-1"><a href="#cb116-1" aria-hidden="true" tabindex="-1"></a><span class="kw">lemma</span> Lemma_7_4_5 {m n : Nat} (a b : Nat) (h1 : rel_prime m n) :</span>
 <span id="cb116-2"><a href="#cb116-2" aria-hidden="true" tabindex="-1"></a>    congr_mod (m * n) a b ↔ congr_mod m a b ∧ congr_mod n a b := <span class="kw">by</span></span>
@@ -2465,21 +2491,15 @@ Int.emod_nonneg : ∀ (a : ℤ) {b : ℤ}, b ≠ 0 → 0 ≤ a % b</code></pre>
 <span id="cb122-3"><a href="#cb122-3" aria-hidden="true" tabindex="-1"></a>    congr_mod 3 ↑(a ^ 560) 1 := <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="numex" data-arguments="4">
-<div class="sourceCode" id="cb123"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb123-1"><a href="#cb123-1" aria-hidden="true" tabindex="-1"></a><span class="kw">lemma</span> dvd_neg_iff_dvd_ex (a b : Int) : a ∣ (-b) ↔ a ∣ b := <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb123"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb123-1"><a href="#cb123-1" aria-hidden="true" tabindex="-1"></a><span class="co">--Hint:  Imitate the way Theorem_7_2_2_Int was proven from Theorem_7_2_2.</span></span>
+<span id="cb123-2"><a href="#cb123-2" aria-hidden="true" tabindex="-1"></a><span class="kw">lemma</span> Theorem_7_2_3_Int {p : Nat} {a b : Int}</span>
+<span id="cb123-3"><a href="#cb123-3" aria-hidden="true" tabindex="-1"></a>    (h1 : prime p) (h2 : ↑p ∣ a * b) : ↑p ∣ a ∨ ↑p ∣ b := <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="numex" data-arguments="5">
-<div class="sourceCode" id="cb124"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb124-1"><a href="#cb124-1" aria-hidden="true" tabindex="-1"></a><span class="co">--Hint:  Use Int.eq_nat_or_neg, the previous exercise, and Theorem_7_2_3.</span></span>
-<span id="cb124-2"><a href="#cb124-2" aria-hidden="true" tabindex="-1"></a><span class="kw">lemma</span> prime_dvd_nat_int {p a : Nat} {b : Int}</span>
-<span id="cb124-3"><a href="#cb124-3" aria-hidden="true" tabindex="-1"></a>    (h1 : prime p) (h2 : ↑p ∣ ↑a * b) : p ∣ a ∨ ↑p ∣ b := <span class="cn">sorry</span></span>
-<span id="cb124-4"><a href="#cb124-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb124-5"><a href="#cb124-5" aria-hidden="true" tabindex="-1"></a><span class="kw">lemma</span> Theorem_7_2_3_Int {p : Nat} {a b : Int}</span>
-<span id="cb124-6"><a href="#cb124-6" aria-hidden="true" tabindex="-1"></a>    (h1 : prime p) (h2 : ↑p ∣ a * b) : ↑p ∣ a ∨ ↑p ∣ b := <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<div class="numex" data-arguments="6">
-<div class="sourceCode" id="cb125"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb125-1"><a href="#cb125-1" aria-hidden="true" tabindex="-1"></a><span class="co">--Hint:  Use the previous exercise.</span></span>
-<span id="cb125-2"><a href="#cb125-2" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Exercise_7_5_14b (n : Nat) (b : Int)</span>
-<span id="cb125-3"><a href="#cb125-3" aria-hidden="true" tabindex="-1"></a>    (h1 : prime n) (h2 : congr_mod n (b ^ 2) 1) :</span>
-<span id="cb125-4"><a href="#cb125-4" aria-hidden="true" tabindex="-1"></a>    congr_mod n b 1 ∨ congr_mod n b (-1) := <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb124"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb124-1"><a href="#cb124-1" aria-hidden="true" tabindex="-1"></a><span class="co">--Hint:  Use the previous exercise.</span></span>
+<span id="cb124-2"><a href="#cb124-2" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Exercise_7_5_14b (n : Nat) (b : Int)</span>
+<span id="cb124-3"><a href="#cb124-3" aria-hidden="true" tabindex="-1"></a>    (h1 : prime n) (h2 : congr_mod n (b ^ 2) 1) :</span>
+<span id="cb124-4"><a href="#cb124-4" aria-hidden="true" tabindex="-1"></a>    congr_mod n b 1 ∨ congr_mod n b (-1) := <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 
 
