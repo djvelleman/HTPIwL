@@ -1496,7 +1496,7 @@ example : ∀ (n : Nat), Fib n < 2 ^ n := by
 <span id="cb97-7"><a href="#cb97-7" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb97-8"><a href="#cb97-8" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Exercise_6_1_16a2 :</span>
 <span id="cb97-9"><a href="#cb97-9" aria-hidden="true" tabindex="-1"></a>    ∀ (n : Nat), ¬(nat_even n ∧ nat_odd n)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>We will also use a lemma, whose proof we leave as an exercise for you:</p>
+<p>We will also use the following lemma, whose proof we leave as an exercise for you:</p>
 <div class="sourceCode" id="cb98"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb98-1"><a href="#cb98-1" aria-hidden="true" tabindex="-1"></a><span class="kw">lemma</span> sq_even_iff_even (n : Nat) : nat_even (n * n) ↔ nat_even n := <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>And we’ll need another theorem that we haven’t seen before:</p>
 <div class="ind">
