@@ -2252,7 +2252,7 @@ Int.emod_nonneg : ∀ (a : ℤ) {b : ℤ}, b ≠ 0 → 0 ≤ a % b</code></pre>
 <div class="numex" data-arguments="7">
 <div class="sourceCode" id="cb113"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb113-1"><a href="#cb113-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Like_Exercise_7_4_11 {m a p : Nat} [NeZero m]</span>
 <span id="cb113-2"><a href="#cb113-2" aria-hidden="true" tabindex="-1"></a>    (h1 : rel_prime m a) (h2 : p + 1 = phi m) :</span>
-<span id="cb113-3"><a href="#cb113-3" aria-hidden="true" tabindex="-1"></a>    [a]_m * [↑(a ^ p)]_m = [1]_m := <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb113-3"><a href="#cb113-3" aria-hidden="true" tabindex="-1"></a>    [a]_m * [a ^ p]_m = [1]_m := <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="numex" data-arguments="8">
 <div class="sourceCode" id="cb114"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb114-1"><a href="#cb114-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Like_Exercise_7_4_12 {m a p q k : Nat} [NeZero m]</span>
@@ -2341,40 +2341,38 @@ theorem Theorem_7_2_2_Int {a c : Nat} {b : Int}
 <span id="cb119-3"><a href="#cb119-3" aria-hidden="true" tabindex="-1"></a>  <span class="kw">apply</span> Iff.intro</span>
 <span id="cb119-4"><a href="#cb119-4" aria-hidden="true" tabindex="-1"></a>  · <span class="co">-- (→)</span></span>
 <span id="cb119-5"><a href="#cb119-5" aria-hidden="true" tabindex="-1"></a>    <span class="kw">assume</span> h2 : a ≡ b (MOD (m * n))</span>
-<span id="cb119-6"><a href="#cb119-6" aria-hidden="true" tabindex="-1"></a>    <span class="kw">obtain</span> (j : Int) (h3 : ↑a - ↑b = ↑(m * n) * j) <span class="kw">from</span> h2</span>
-<span id="cb119-7"><a href="#cb119-7" aria-hidden="true" tabindex="-1"></a>    <span class="kw">rewrite</span> [Nat.cast_mul] <span class="kw">at</span> h3    <span class="co">--h3 : ↑a - ↑b = ↑m * ↑n * j</span></span>
-<span id="cb119-8"><a href="#cb119-8" aria-hidden="true" tabindex="-1"></a>    <span class="kw">apply</span> And.intro</span>
-<span id="cb119-9"><a href="#cb119-9" aria-hidden="true" tabindex="-1"></a>    · <span class="co">-- Proof of a ≡ b (MOD m)</span></span>
-<span id="cb119-10"><a href="#cb119-10" aria-hidden="true" tabindex="-1"></a>      <span class="kw">apply</span> Exists.intro (↑n * j)</span>
-<span id="cb119-11"><a href="#cb119-11" aria-hidden="true" tabindex="-1"></a>      <span class="kw">show</span> ↑a - ↑b = ↑m * (↑n * j) <span class="kw">from</span></span>
-<span id="cb119-12"><a href="#cb119-12" aria-hidden="true" tabindex="-1"></a>        <span class="kw">calc</span> ↑a - ↑b</span>
-<span id="cb119-13"><a href="#cb119-13" aria-hidden="true" tabindex="-1"></a>          _ = ↑m * ↑n * j := h3</span>
-<span id="cb119-14"><a href="#cb119-14" aria-hidden="true" tabindex="-1"></a>          _ = ↑m * (↑n * j) := <span class="kw">by</span> <span class="kw">ring</span></span>
-<span id="cb119-15"><a href="#cb119-15" aria-hidden="true" tabindex="-1"></a>      <span class="kw">done</span></span>
-<span id="cb119-16"><a href="#cb119-16" aria-hidden="true" tabindex="-1"></a>    · <span class="co">-- Proof of a ≡ b (MOD n)</span></span>
-<span id="cb119-17"><a href="#cb119-17" aria-hidden="true" tabindex="-1"></a>      <span class="kw">apply</span> Exists.intro (↑m * j)</span>
-<span id="cb119-18"><a href="#cb119-18" aria-hidden="true" tabindex="-1"></a>      <span class="kw">show</span> ↑a - ↑b = ↑n * (↑m * j) <span class="kw">from</span></span>
-<span id="cb119-19"><a href="#cb119-19" aria-hidden="true" tabindex="-1"></a>        <span class="kw">calc</span> ↑a - ↑b</span>
-<span id="cb119-20"><a href="#cb119-20" aria-hidden="true" tabindex="-1"></a>          _ = ↑m * ↑n * j := h3</span>
-<span id="cb119-21"><a href="#cb119-21" aria-hidden="true" tabindex="-1"></a>          _ = ↑n * (↑m * j) := <span class="kw">by</span> <span class="kw">ring</span></span>
-<span id="cb119-22"><a href="#cb119-22" aria-hidden="true" tabindex="-1"></a>      <span class="kw">done</span></span>
-<span id="cb119-23"><a href="#cb119-23" aria-hidden="true" tabindex="-1"></a>    <span class="kw">done</span></span>
-<span id="cb119-24"><a href="#cb119-24" aria-hidden="true" tabindex="-1"></a>  · <span class="co">-- (←)</span></span>
-<span id="cb119-25"><a href="#cb119-25" aria-hidden="true" tabindex="-1"></a>    <span class="kw">assume</span> h2 : a ≡ b (MOD m) ∧ a ≡ b (MOD n)</span>
-<span id="cb119-26"><a href="#cb119-26" aria-hidden="true" tabindex="-1"></a>    <span class="kw">obtain</span> (j : Int) (h3 : ↑a - ↑b = ↑m * j) <span class="kw">from</span> h2.left</span>
-<span id="cb119-27"><a href="#cb119-27" aria-hidden="true" tabindex="-1"></a>    <span class="kw">have</span> h4 : (↑n : Int) ∣ (↑a : Int) - (↑b : Int) := h2.right</span>
-<span id="cb119-28"><a href="#cb119-28" aria-hidden="true" tabindex="-1"></a>    <span class="kw">rewrite</span> [h3] <span class="kw">at</span> h4      <span class="co">--h4 : ↑n ∣ ↑m * j</span></span>
-<span id="cb119-29"><a href="#cb119-29" aria-hidden="true" tabindex="-1"></a>    <span class="kw">have</span> h5 : ↑n ∣ j := Theorem_7_2_2_Int h4 h1</span>
-<span id="cb119-30"><a href="#cb119-30" aria-hidden="true" tabindex="-1"></a>    <span class="kw">obtain</span> (k : Int) (h6 : j = ↑n * k) <span class="kw">from</span> h5</span>
-<span id="cb119-31"><a href="#cb119-31" aria-hidden="true" tabindex="-1"></a>    <span class="kw">apply</span> Exists.intro k    <span class="co">--Goal : ↑a - ↑b = ↑(m * n) * k</span></span>
-<span id="cb119-32"><a href="#cb119-32" aria-hidden="true" tabindex="-1"></a>    <span class="kw">show</span> ↑a - ↑b = ↑(m * n) * k <span class="kw">from</span></span>
-<span id="cb119-33"><a href="#cb119-33" aria-hidden="true" tabindex="-1"></a>      <span class="kw">calc</span> ↑a - ↑b</span>
-<span id="cb119-34"><a href="#cb119-34" aria-hidden="true" tabindex="-1"></a>        _ = ↑m * j := h3</span>
-<span id="cb119-35"><a href="#cb119-35" aria-hidden="true" tabindex="-1"></a>        _ = ↑m * (↑n * k) := <span class="kw">by</span> <span class="kw">rw</span> [h6]</span>
-<span id="cb119-36"><a href="#cb119-36" aria-hidden="true" tabindex="-1"></a>        _ = ↑m * ↑n * k := <span class="kw">by</span> <span class="kw">ring</span></span>
-<span id="cb119-37"><a href="#cb119-37" aria-hidden="true" tabindex="-1"></a>        _ = ↑(m * n) * k := <span class="kw">by</span> <span class="kw">rw</span> [Nat.cast_mul]</span>
-<span id="cb119-38"><a href="#cb119-38" aria-hidden="true" tabindex="-1"></a>    <span class="kw">done</span></span>
-<span id="cb119-39"><a href="#cb119-39" aria-hidden="true" tabindex="-1"></a>  <span class="kw">done</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb119-6"><a href="#cb119-6" aria-hidden="true" tabindex="-1"></a>    <span class="kw">obtain</span> (j : Int) (h3 : a - b = (m * n) * j) <span class="kw">from</span> h2</span>
+<span id="cb119-7"><a href="#cb119-7" aria-hidden="true" tabindex="-1"></a>    <span class="kw">apply</span> And.intro</span>
+<span id="cb119-8"><a href="#cb119-8" aria-hidden="true" tabindex="-1"></a>    · <span class="co">-- Proof of a ≡ b (MOD m)</span></span>
+<span id="cb119-9"><a href="#cb119-9" aria-hidden="true" tabindex="-1"></a>      <span class="kw">apply</span> Exists.intro (n * j)</span>
+<span id="cb119-10"><a href="#cb119-10" aria-hidden="true" tabindex="-1"></a>      <span class="kw">show</span> a - b = m * (n * j) <span class="kw">from</span></span>
+<span id="cb119-11"><a href="#cb119-11" aria-hidden="true" tabindex="-1"></a>        <span class="kw">calc</span> ↑a - ↑b</span>
+<span id="cb119-12"><a href="#cb119-12" aria-hidden="true" tabindex="-1"></a>          _ = m * n * j := h3</span>
+<span id="cb119-13"><a href="#cb119-13" aria-hidden="true" tabindex="-1"></a>          _ = m * (n * j) := <span class="kw">by</span> <span class="kw">ring</span></span>
+<span id="cb119-14"><a href="#cb119-14" aria-hidden="true" tabindex="-1"></a>      <span class="kw">done</span></span>
+<span id="cb119-15"><a href="#cb119-15" aria-hidden="true" tabindex="-1"></a>    · <span class="co">-- Proof of a ≡ b (MOD n)</span></span>
+<span id="cb119-16"><a href="#cb119-16" aria-hidden="true" tabindex="-1"></a>      <span class="kw">apply</span> Exists.intro (m * j)</span>
+<span id="cb119-17"><a href="#cb119-17" aria-hidden="true" tabindex="-1"></a>      <span class="kw">show</span> a - b = n * (m * j) <span class="kw">from</span></span>
+<span id="cb119-18"><a href="#cb119-18" aria-hidden="true" tabindex="-1"></a>        <span class="kw">calc</span> ↑a - ↑b</span>
+<span id="cb119-19"><a href="#cb119-19" aria-hidden="true" tabindex="-1"></a>          _ = m * n * j := h3</span>
+<span id="cb119-20"><a href="#cb119-20" aria-hidden="true" tabindex="-1"></a>          _ = n * (m * j) := <span class="kw">by</span> <span class="kw">ring</span></span>
+<span id="cb119-21"><a href="#cb119-21" aria-hidden="true" tabindex="-1"></a>      <span class="kw">done</span></span>
+<span id="cb119-22"><a href="#cb119-22" aria-hidden="true" tabindex="-1"></a>    <span class="kw">done</span></span>
+<span id="cb119-23"><a href="#cb119-23" aria-hidden="true" tabindex="-1"></a>  · <span class="co">-- (←)</span></span>
+<span id="cb119-24"><a href="#cb119-24" aria-hidden="true" tabindex="-1"></a>    <span class="kw">assume</span> h2 : a ≡ b (MOD m) ∧ a ≡ b (MOD n)</span>
+<span id="cb119-25"><a href="#cb119-25" aria-hidden="true" tabindex="-1"></a>    <span class="kw">obtain</span> (j : Int) (h3 : a - b = m * j) <span class="kw">from</span> h2.left</span>
+<span id="cb119-26"><a href="#cb119-26" aria-hidden="true" tabindex="-1"></a>    <span class="kw">have</span> h4 : (↑n : Int) ∣ a - b := h2.right</span>
+<span id="cb119-27"><a href="#cb119-27" aria-hidden="true" tabindex="-1"></a>    <span class="kw">rewrite</span> [h3] <span class="kw">at</span> h4      <span class="co">--h4 : ↑n ∣ ↑m * j</span></span>
+<span id="cb119-28"><a href="#cb119-28" aria-hidden="true" tabindex="-1"></a>    <span class="kw">have</span> h5 : ↑n ∣ j := Theorem_7_2_2_Int h4 h1</span>
+<span id="cb119-29"><a href="#cb119-29" aria-hidden="true" tabindex="-1"></a>    <span class="kw">obtain</span> (k : Int) (h6 : j = n * k) <span class="kw">from</span> h5</span>
+<span id="cb119-30"><a href="#cb119-30" aria-hidden="true" tabindex="-1"></a>    <span class="kw">apply</span> Exists.intro k    <span class="co">--Goal : ↑a - ↑b = ↑(m * n) * k</span></span>
+<span id="cb119-31"><a href="#cb119-31" aria-hidden="true" tabindex="-1"></a>    <span class="kw">show</span> a - b = (m * n) * k <span class="kw">from</span></span>
+<span id="cb119-32"><a href="#cb119-32" aria-hidden="true" tabindex="-1"></a>      <span class="kw">calc</span> ↑a - ↑b</span>
+<span id="cb119-33"><a href="#cb119-33" aria-hidden="true" tabindex="-1"></a>        _ = m * j := h3</span>
+<span id="cb119-34"><a href="#cb119-34" aria-hidden="true" tabindex="-1"></a>        _ = m * (n * k) := <span class="kw">by</span> <span class="kw">rw</span> [h6]</span>
+<span id="cb119-35"><a href="#cb119-35" aria-hidden="true" tabindex="-1"></a>        _ = (m * n) * k := <span class="kw">by</span> <span class="kw">ring</span></span>
+<span id="cb119-36"><a href="#cb119-36" aria-hidden="true" tabindex="-1"></a>    <span class="kw">done</span></span>
+<span id="cb119-37"><a href="#cb119-37" aria-hidden="true" tabindex="-1"></a>  <span class="kw">done</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>Finally, we will need an exercise from Section 7.2, and we will need to know <code>NeZero p</code> for prime numbers <code>p</code>:</p>
 <div class="sourceCode" id="cb120"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb120-1"><a href="#cb120-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> rel_prime_symm {a b : Nat} (h : rel_prime a b) :</span>
 <span id="cb120-2"><a href="#cb120-2" aria-hidden="true" tabindex="-1"></a>    rel_prime b a := <span class="cn">sorry</span></span>
@@ -2506,12 +2504,12 @@ theorem Theorem_7_2_2_Int {a c : Nat} {b : Int}
 <span id="cb127-3"><a href="#cb127-3" aria-hidden="true" tabindex="-1"></a>    (h1 : prime n) (h2 : (b ^ 2) ≡ 1 (MOD n)) :</span>
 <span id="cb127-4"><a href="#cb127-4" aria-hidden="true" tabindex="-1"></a>    b ≡ 1 (MOD n) ∨ b ≡ (-1) (MOD n) := <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
+<a href="https://doi.org/10.1017/9781108539890">
 
+</a></section><a href="https://doi.org/10.1017/9781108539890">
+</a></section><a href="https://doi.org/10.1017/9781108539890">
 
-</section>
-</section>
-
-</main> <!-- /main -->
+</a></main><a href="https://doi.org/10.1017/9781108539890"> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {
@@ -2610,9 +2608,9 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   }
 });
 </script>
-<nav class="page-navigation">
-  <div class="nav-page nav-page-previous">
-      <a href="./Chap6.html" class="pagination-link">
+</a><nav class="page-navigation"><a href="https://doi.org/10.1017/9781108539890">
+  </a><div class="nav-page nav-page-previous"><a href="https://doi.org/10.1017/9781108539890">
+      </a><a href="./Chap6.html" class="pagination-link">
         <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Mathematical Induction</span></span>
       </a>          
   </div>
@@ -2622,10 +2620,10 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </div> <!-- /content -->
 <footer class="footer">
   <div class="nav-footer">
-      <div class="nav-footer-center">© 2023 Daniel J. Velleman. Short excerpts from <a href="https://doi.org/10.1017/9781108539890"><i>How To Prove It</i></a>, published by Cambridge University Press, reproduced with permission.</div>
-  </div>
-</footer>
+      <div class="nav-footer-center">© 2023 Daniel J. Velleman.<br>Short excerpts from Daniel J. Velleman, <a href="https://doi.org/10.1017/9781108539890"><i>How To Prove It: A Structured Approach, 3rd Edition</i><br>© Daniel J. Velleman 2019, published by Cambridge University Press, reprinted with permission.</a></div><a href="https://doi.org/10.1017/9781108539890">
+  </a></div><a href="https://doi.org/10.1017/9781108539890">
+</a></footer><a href="https://doi.org/10.1017/9781108539890">
 
 
 
-</body></html>
+</a></body></html>

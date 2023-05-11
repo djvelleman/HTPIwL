@@ -2456,7 +2456,7 @@ example {m a : Nat} [NeZero m] (h1 : rel_prime m a) :
 ```lean
 theorem Like_Exercise_7_4_11 {m a p : Nat} [NeZero m]
     (h1 : rel_prime m a) (h2 : p + 1 = phi m) :
-    [a]_m * [↑(a ^ p)]_m = [1]_m := sorry
+    [a]_m * [a ^ p]_m = [1]_m := sorry
 ```
 :::
 
@@ -2568,38 +2568,36 @@ lemma Lemma_7_4_5 {m n : Nat} (a b : Nat) (h1 : rel_prime m n) :
   apply Iff.intro
   · -- (→)
     assume h2 : a ≡ b (MOD (m * n))
-    obtain (j : Int) (h3 : ↑a - ↑b = ↑(m * n) * j) from h2
-    rewrite [Nat.cast_mul] at h3    --h3 : ↑a - ↑b = ↑m * ↑n * j
+    obtain (j : Int) (h3 : a - b = (m * n) * j) from h2
     apply And.intro
     · -- Proof of a ≡ b (MOD m)
-      apply Exists.intro (↑n * j)
-      show ↑a - ↑b = ↑m * (↑n * j) from
+      apply Exists.intro (n * j)
+      show a - b = m * (n * j) from
         calc ↑a - ↑b
-          _ = ↑m * ↑n * j := h3
-          _ = ↑m * (↑n * j) := by ring
+          _ = m * n * j := h3
+          _ = m * (n * j) := by ring
       done
     · -- Proof of a ≡ b (MOD n)
-      apply Exists.intro (↑m * j)
-      show ↑a - ↑b = ↑n * (↑m * j) from
+      apply Exists.intro (m * j)
+      show a - b = n * (m * j) from
         calc ↑a - ↑b
-          _ = ↑m * ↑n * j := h3
-          _ = ↑n * (↑m * j) := by ring
+          _ = m * n * j := h3
+          _ = n * (m * j) := by ring
       done
     done
   · -- (←)
     assume h2 : a ≡ b (MOD m) ∧ a ≡ b (MOD n)
-    obtain (j : Int) (h3 : ↑a - ↑b = ↑m * j) from h2.left
-    have h4 : (↑n : Int) ∣ (↑a : Int) - (↑b : Int) := h2.right
+    obtain (j : Int) (h3 : a - b = m * j) from h2.left
+    have h4 : (↑n : Int) ∣ a - b := h2.right
     rewrite [h3] at h4      --h4 : ↑n ∣ ↑m * j
     have h5 : ↑n ∣ j := Theorem_7_2_2_Int h4 h1
-    obtain (k : Int) (h6 : j = ↑n * k) from h5
+    obtain (k : Int) (h6 : j = n * k) from h5
     apply Exists.intro k    --Goal : ↑a - ↑b = ↑(m * n) * k
-    show ↑a - ↑b = ↑(m * n) * k from
+    show a - b = (m * n) * k from
       calc ↑a - ↑b
-        _ = ↑m * j := h3
-        _ = ↑m * (↑n * k) := by rw [h6]
-        _ = ↑m * ↑n * k := by ring
-        _ = ↑(m * n) * k := by rw [Nat.cast_mul]
+        _ = m * j := h3
+        _ = m * (n * k) := by rw [h6]
+        _ = (m * n) * k := by ring
     done
   done
 ```
