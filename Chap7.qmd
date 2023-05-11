@@ -1467,10 +1467,10 @@ def congr_mod (m : Nat) (a b : Int) : Prop := (↑m : Int) ∣ (a - b)
 We can teach Lean to use more familiar notation for congruence modulo `m` by giving the following command:
 
 ```lean
-notation a " ≡ " b " (MOD " m ")" => congr_mod m a b
+notation:50 a " ≡ " b " (MOD " m ")" => congr_mod m a b
 ```
 
-This tells Lean that if we type `a ≡ b (MOD m)`, then Lean should interpret it as `congr_mod m a b`.  (To enter the symbol `≡`, type `\==`.)
+This tells Lean that if we type `a ≡ b (MOD m)`, then Lean should interpret it as `congr_mod m a b`.  (To enter the symbol `≡`, type `\==`.  Don't worry about the `:50` in the `notation` command above.  It is there to help Lean parse this new notation when it occurs together with other notation.)
 
 We can now prove that congruence modulo `m` is reflexive, symmetric, and transitive.  In these proofs, we leave it to Lean to fill in coercions when they are necessary, and as usual, we leave some details as exercises.
 
@@ -1510,7 +1510,7 @@ Thus, `cc m a` is the congruence class modulo `m` of `a`.  Once again, it will b
 notation:max "["a"]_"m:max => cc m a
 ```
 
-Now if we type `[a]_m`, then Lean will interpret it as `cc m a`.  Thus, from now on, `[a]_m` will be our notation in Lean for the congruence class modulo `m` of `a`; it corresponds to the *HTPI* notation $[a]_m$.  (Don't worry about the two occurrences of `:max` in the `notation` command above.  They are there to help Lean parse this new notation when it occurs together with other notation.)
+Now if we type `[a]_m`, then Lean will interpret it as `cc m a`.  Thus, from now on, `[a]_m` will be our notation in Lean for the congruence class modulo `m` of `a`; it corresponds to the *HTPI* notation $[a]_m$.  (Once again, you can ignore the two occurrences of `:max` in the `notation` command above.)
 
 Properties 2--5 of congruence classes are established by the following theorems:
 
@@ -1583,7 +1583,7 @@ lemma congr_mod_mod (m : Nat) (a : Int) : a ≡ a % m (MOD m) := by
   done
 
 lemma mod_cmpl_res (m : Nat) [NeZero m] (a : Int) :
-    0 ≤ a % m ∧ a % m < m ∧ a ≡ (a % m) (MOD m) :=
+    0 ≤ a % m ∧ a % m < m ∧ a ≡ a % m (MOD m) :=
   And.intro (mod_nonneg m a) (And.intro (mod_lt m a) (congr_mod_mod m a))
 
 theorem Theorem_7_3_1 (m : Nat) [NeZero m] (a : Int) :
@@ -1591,7 +1591,7 @@ theorem Theorem_7_3_1 (m : Nat) [NeZero m] (a : Int) :
   exists_unique
   · -- Existence
     apply Exists.intro (a % m)
-    show 0 ≤ a % m ∧ a % m < m ∧ a ≡ (a % m) (MOD m)
+    show 0 ≤ a % m ∧ a % m < m ∧ a ≡ a % m (MOD m)
       from mod_cmpl_res m a
     done
   · -- Uniqueness
@@ -1752,21 +1752,21 @@ theorem Exercise_7_3_4b {m : Nat} (X Y1 Y2 : ZMod m)
 ::: {.numex arguments="6"}
 ```lean
 theorem Theorem_7_3_10 (m a d : Nat) (b : Int) (h1 : d = gcd m a) :
-    ¬(↑d : Int) ∣ b → ¬∃ (x : Int), (a * x) ≡ b (MOD m) := sorry
+    ¬(↑d : Int) ∣ b → ¬∃ (x : Int), a * x ≡ b (MOD m) := sorry
 ```
 :::
 
 ::: {.numex arguments="7"}
 ```lean
 theorem Theorem_7_3_11 (m n : Nat) (a b : Int) (h1 : n ≠ 0) :
-    (n * a) ≡ (n * b) (MOD n * m) ↔ a ≡ b (MOD m) := sorry
+    n * a ≡ n * b (MOD n * m) ↔ a ≡ b (MOD m) := sorry
 ```
 :::
 
 ::: {.numex arguments="8"}
 ```lean
 theorem Exercise_7_3_16 {m : Nat} {a b : Int} (h : a ≡ b (MOD m)) :
-    ∀ (n : Nat), (a ^ n) ≡ (b ^ n) (MOD m) := sorry
+    ∀ (n : Nat), a ^ n ≡ b ^ n (MOD m) := sorry
 ```
 :::
 
@@ -2135,11 +2135,11 @@ lemma Exercise_7_4_5_Nat (m a n : Nat) :
   done
 
 theorem Theorem_7_4_3_Euler's_theorem {m a : Nat} [NeZero m]
-    (h1 : rel_prime m a) : (a ^ (phi m)) ≡ 1 (MOD m) := by
+    (h1 : rel_prime m a) : a ^ (phi m) ≡ 1 (MOD m) := by
   have h2 : [a]_m ^ (phi m) = [1]_m := Theorem_7_4_2 h1
   rewrite [Exercise_7_4_5_Nat m a (phi m)] at h2
     --h2 : [↑(a ^ phi m)]_m = [1]_m
-  show (a ^ (phi m)) ≡ 1 (MOD m) from (cc_eq_iff_congr _ _ _).ltr h2
+  show a ^ (phi m) ≡ 1 (MOD m) from (cc_eq_iff_congr _ _ _).ltr h2
   done
 
 #eval gcd 10 7     --Answer: 1.  So 10 and 7 are relatively prime
@@ -2448,7 +2448,7 @@ lemma Lemma_7_4_6 {a b c : Nat} :
 ::: {.numex arguments="6"}
 ```lean
 example {m a : Nat} [NeZero m] (h1 : rel_prime m a) :
-    (a ^ (phi m + 1)) ≡ a (MOD m) := sorry
+    a ^ (phi m + 1) ≡ a (MOD m) := sorry
 ```
 :::
 
@@ -2464,7 +2464,7 @@ theorem Like_Exercise_7_4_11 {m a p : Nat} [NeZero m]
 ```lean
 theorem Like_Exercise_7_4_12 {m a p q k : Nat} [NeZero m]
     (h1 : rel_prime m a) (h2 : p = q + (phi m) * k) :
-    (a ^ p) ≡ (a ^ q) (MOD m) := sorry
+    a ^ p ≡ a ^ q (MOD m) := sorry
 ```
 :::
 
@@ -2564,10 +2564,10 @@ With that preparation, we can now prove `Lemma_7_4_5`.
 
 ```lean
 lemma Lemma_7_4_5 {m n : Nat} (a b : Nat) (h1 : rel_prime m n) :
-    a ≡ b (MOD (m * n)) ↔ a ≡ b (MOD m) ∧ a ≡ b (MOD n) := by
+    a ≡ b (MOD m * n) ↔ a ≡ b (MOD m) ∧ a ≡ b (MOD n) := by
   apply Iff.intro
   · -- (→)
-    assume h2 : a ≡ b (MOD (m * n))
+    assume h2 : a ≡ b (MOD m * n)
     obtain (j : Int) (h3 : a - b = (m * n) * j) from h2
     apply And.intro
     · -- Proof of a ≡ b (MOD m)
@@ -2621,8 +2621,8 @@ Much of the reasoning about modular arithmetic that we need for the proof of `Th
 lemma Lemma_7_5_1 {p e d m c s : Nat} {t : Int}
     (h1 : prime p) (h2 : e * d = (p - 1) * s + 1)
     (h3 : ↑(m ^ e) - ↑c = ↑p * t) :
-    (c ^ d) ≡ m (MOD p) := by
-  have h4 : (m ^ e) ≡ c (MOD p) := Exists.intro t h3
+    c ^ d ≡ m (MOD p) := by
+  have h4 : m ^ e ≡ c (MOD p) := Exists.intro t h3
   have h5 : [m ^ e]_p = [c]_p := (cc_eq_iff_congr _ _ _).rtl h4
   rewrite [←Exercise_7_4_5_Nat] at h5  --h5 : [m]_p ^ e = [c]_p
   by_cases h6 : p ∣ m
@@ -2649,7 +2649,7 @@ lemma Lemma_7_5_1 {p e d m c s : Nat} {t : Int}
         _ = [0 ^ (e * d)]_p := Exercise_7_4_5_Int _ _ _
         _ = [0]_p := by rw [h10]
         _ = [m]_p := by rw [h8]
-    show (c ^ d) ≡ m (MOD p)  from (cc_eq_iff_congr _ _ _).ltr h11
+    show c ^ d ≡ m (MOD p)  from (cc_eq_iff_congr _ _ _).ltr h11
     done
   · -- Case 2. h6 : ¬p ∣ m
     have h7 : rel_prime m p := rel_prime_of_prime_not_dvd h1 h6
@@ -2669,7 +2669,7 @@ lemma Lemma_7_5_1 {p e d m c s : Nat} {t : Int}
         _ = [1]_p * [m]_p := by rw [h10]
         _ = [m]_p * [1]_p := by ring
         _ = [m]_p := Theorem_7_3_6_7 _
-    show (c ^ d) ≡ m (MOD p)  from (cc_eq_iff_congr _ _ _).ltr h11
+    show c ^ d ≡ m (MOD p)  from (cc_eq_iff_congr _ _ _).ltr h11
     done
   done
 ```
@@ -2682,9 +2682,9 @@ theorem Theorem_7_5_1 (p q n e d k m c : Nat)
     (n_pq : n = p * q) (ed_congr_1 : e * d = k * (p - 1) * (q - 1) + 1)
     (h1 : [m]_n ^ e = [c]_n) : [c]_n ^ d = [m]_n := by
   rewrite [Exercise_7_4_5_Nat, cc_eq_iff_congr] at h1
-    --h1 : (m ^ e) ≡ c (MOD n)
+    --h1 : m ^ e ≡ c (MOD n)
   rewrite [Exercise_7_4_5_Nat, cc_eq_iff_congr]
-    --Goal : (c ^ d) ≡ m (MOD n)
+    --Goal : c ^ d ≡ m (MOD n)
   obtain (j : Int) (h2 : ↑(m ^ e) - ↑c = ↑n * j) from h1
   rewrite [n_pq, Nat.cast_mul] at h2
     --h2 : ↑(m ^ e) - ↑c = ↑p * ↑q * j
@@ -2696,7 +2696,7 @@ theorem Theorem_7_5_1 (p q n e d k m c : Nat)
     rewrite [h2]
     ring
     done
-  have congr_p : (c ^ d) ≡ m (MOD p) := Lemma_7_5_1 p_prime h3 h4
+  have congr_p : c ^ d ≡ m (MOD p) := Lemma_7_5_1 p_prime h3 h4
   have h5 : e * d = (q - 1) * (k * (p - 1)) + 1 := by
     rewrite [ed_congr_1]
     ring
@@ -2705,7 +2705,7 @@ theorem Theorem_7_5_1 (p q n e d k m c : Nat)
     rewrite [h2]
     ring
     done
-  have congr_q : (c ^ d) ≡ m (MOD q) := Lemma_7_5_1 q_prime h5 h6
+  have congr_q : c ^ d ≡ m (MOD q) := Lemma_7_5_1 q_prime h5 h6
   have h7 : ¬q ∣ p := by
     by_contra h8
     have h9 : q = 1 ∨ q = p := dvd_prime p_prime h8
@@ -2714,7 +2714,7 @@ theorem Theorem_7_5_1 (p q n e d k m c : Nat)
     done
   have h8 : rel_prime p q := rel_prime_of_prime_not_dvd q_prime h7
   rewrite [n_pq, Lemma_7_4_5 _ _ h8]
-  show (c ^ d) ≡ m (MOD p) ∧ (c ^ d) ≡ m (MOD q) from
+  show c ^ d ≡ m (MOD p) ∧ c ^ d ≡ m (MOD q) from
     And.intro congr_p congr_q
   done
 ```
@@ -2755,7 +2755,7 @@ lemma Theorem_7_2_3_Int {p : Nat} {a b : Int}
 ```lean
 --Hint:  Use the previous exercise.
 theorem Exercise_7_5_14b (n : Nat) (b : Int)
-    (h1 : prime n) (h2 : (b ^ 2) ≡ 1 (MOD n)) :
-    b ≡ 1 (MOD n) ∨ b ≡ (-1) (MOD n) := sorry
+    (h1 : prime n) (h2 : b ^ 2 ≡ 1 (MOD n)) :
+    b ≡ 1 (MOD n) ∨ b ≡ -1 (MOD n) := sorry
 ```
 :::
