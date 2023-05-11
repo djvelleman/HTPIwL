@@ -1504,13 +1504,13 @@ Property 1 says that if `a` has type `Int`, then there should be a corresponding
 def cc (m : Nat) (a : Int) : ZMod m := (↑a : ZMod m)
 ```
 
-Thus, `cc m a` is the congruence class modulo `m` of `a`; it corresponds to the notation $[a]_m$ in *HTPI*.  Once again, it will be convenient to teach Lean to use more familiar notation for congruence classes, so we give the command:
+Thus, `cc m a` is the congruence class modulo `m` of `a`.  Once again, it will be convenient to teach Lean to use more familiar notation for congruence classes, so we give the command:
 
 ```lean
 notation:max "["a"]_"m:max => cc m a
 ```
 
-Now if we type `[a]_m`, then Lean will interpret it as `cc m a`.  Thus, from now on, `[a]_m` will be our notation in Lean for the congruence class modulo `m` of `a`, corresponding to the *HTPI* notation $[a]_m$.  (Don't worry about the two occurrences of `:max` in the `notation` command above.  They are there to help Lean parse this new notation when it occurs together with other notation.)
+Now if we type `[a]_m`, then Lean will interpret it as `cc m a`.  Thus, from now on, `[a]_m` will be our notation in Lean for the congruence class modulo `m` of `a`; it corresponds to the *HTPI* notation $[a]_m$.  (Don't worry about the two occurrences of `:max` in the `notation` command above.  They are there to help Lean parse this new notation when it occurs together with other notation.)
 
 Properties 2--5 of congruence classes are established by the following theorems:
 
