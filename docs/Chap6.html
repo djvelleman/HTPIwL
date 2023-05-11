@@ -648,7 +648,7 @@ $$
 <span id="cb35-12"><a href="#cb35-12" aria-hidden="true" tabindex="-1"></a>    <span class="kw">assume</span> h3 : numElts B (n + 1)</span>
 <span id="cb35-13"><a href="#cb35-13" aria-hidden="true" tabindex="-1"></a>    <span class="kw">have</span> h4 : n + 1 &gt; 0 := <span class="kw">by</span> <span class="kw">linarith</span></span>
 <span id="cb35-14"><a href="#cb35-14" aria-hidden="true" tabindex="-1"></a>    <span class="kw">obtain</span> (b : A) (h5 : b ∈ B) <span class="kw">from</span> nonempty_of_pos_numElts h3 h4</span>
-<span id="cb35-15"><a href="#cb35-15" aria-hidden="true" tabindex="-1"></a>    set B' : Set A := B \ {b}</span>
+<span id="cb35-15"><a href="#cb35-15" aria-hidden="true" tabindex="-1"></a>    <span class="kw">set</span> B' : Set A := B \ {b}</span>
 <span id="cb35-16"><a href="#cb35-16" aria-hidden="true" tabindex="-1"></a>    <span class="kw">have</span> h6 : numElts B' n := remove_one_numElts h3 h5</span>
 <span id="cb35-17"><a href="#cb35-17" aria-hidden="true" tabindex="-1"></a>    <span class="kw">obtain</span> (c : A) (h7 : minimalElt R c B') <span class="kw">from</span> ih B' h6</span>
 <span id="cb35-18"><a href="#cb35-18" aria-hidden="true" tabindex="-1"></a>    <span class="kw">by_cases</span> h8 : R b c</span>
@@ -741,7 +741,7 @@ $$
 <span id="cb41-32"><a href="#cb41-32" aria-hidden="true" tabindex="-1"></a>    <span class="kw">assume</span> h2 : numElts B (n + 1)</span>
 <span id="cb41-33"><a href="#cb41-33" aria-hidden="true" tabindex="-1"></a>    <span class="kw">have</span> h3 : n + 1 &gt; 0 := <span class="kw">by</span> <span class="kw">linarith</span></span>
 <span id="cb41-34"><a href="#cb41-34" aria-hidden="true" tabindex="-1"></a>    <span class="kw">obtain</span> (b : A) (h4 : b ∈ B) <span class="kw">from</span> nonempty_of_pos_numElts h2 h3</span>
-<span id="cb41-35"><a href="#cb41-35" aria-hidden="true" tabindex="-1"></a>    set B' : Set A := B \ {b}</span>
+<span id="cb41-35"><a href="#cb41-35" aria-hidden="true" tabindex="-1"></a>    <span class="kw">set</span> B' : Set A := B \ {b}</span>
 <span id="cb41-36"><a href="#cb41-36" aria-hidden="true" tabindex="-1"></a>    <span class="kw">have</span> h5 : numElts B' n := remove_one_numElts h2 h4</span>
 <span id="cb41-37"><a href="#cb41-37" aria-hidden="true" tabindex="-1"></a>    <span class="kw">have</span> h6 : ∃ (T : BinRel A), partial_order T ∧</span>
 <span id="cb41-38"><a href="#cb41-38" aria-hidden="true" tabindex="-1"></a>      (∀ (x y : A), R x y → T x y) ∧</span>
@@ -753,7 +753,7 @@ $$
 <span id="cb41-44"><a href="#cb41-44" aria-hidden="true" tabindex="-1"></a>    <span class="kw">have</span> T'extR : ∀ (x y : A), R x y → T' x y := h7.right.left</span>
 <span id="cb41-45"><a href="#cb41-45" aria-hidden="true" tabindex="-1"></a>    <span class="kw">have</span> T'compB' : ∀ (x : A), x ∈ B' →</span>
 <span id="cb41-46"><a href="#cb41-46" aria-hidden="true" tabindex="-1"></a>      ∀ (y : A), T' x y ∨ T' y x := h7.right.right</span>
-<span id="cb41-47"><a href="#cb41-47" aria-hidden="true" tabindex="-1"></a>    set T : BinRel A := extendPO T' b</span>
+<span id="cb41-47"><a href="#cb41-47" aria-hidden="true" tabindex="-1"></a>    <span class="kw">set</span> T : BinRel A := extendPO T' b</span>
 <span id="cb41-48"><a href="#cb41-48" aria-hidden="true" tabindex="-1"></a>    <span class="kw">apply</span> Exists.intro T</span>
 <span id="cb41-49"><a href="#cb41-49" aria-hidden="true" tabindex="-1"></a>    <span class="kw">apply</span> And.intro (extendPO_is_po T' b T'po)</span>
 <span id="cb41-50"><a href="#cb41-50" aria-hidden="true" tabindex="-1"></a>    <span class="kw">apply</span> And.intro</span>
@@ -1516,7 +1516,7 @@ example : ∀ (n : Nat), Fib n < 2 ^ n := by
 <p>would be nonempty, and therefore, by the well ordering principle, it would have a smallest element. We then show that this leads to a contradiction. Here is the proof.</p>
 <div class="sourceCode" id="cb102"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb102-1"><a href="#cb102-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> sqrt_2_irrat :</span>
 <span id="cb102-2"><a href="#cb102-2" aria-hidden="true" tabindex="-1"></a>    ¬∃ (q p : Nat), p * p = 2 * (q * q) ∧ q ≠ 0 := <span class="kw">by</span></span>
-<span id="cb102-3"><a href="#cb102-3" aria-hidden="true" tabindex="-1"></a>  set S : Set Nat :=</span>
+<span id="cb102-3"><a href="#cb102-3" aria-hidden="true" tabindex="-1"></a>  <span class="kw">set</span> S : Set Nat :=</span>
 <span id="cb102-4"><a href="#cb102-4" aria-hidden="true" tabindex="-1"></a>    { q : Nat | ∃ (p : Nat), p * p = 2 * (q * q) ∧ q ≠ 0 }</span>
 <span id="cb102-5"><a href="#cb102-5" aria-hidden="true" tabindex="-1"></a>  <span class="kw">by_contra</span> h1</span>
 <span id="cb102-6"><a href="#cb102-6" aria-hidden="true" tabindex="-1"></a>  <span class="kw">have</span> h2 : ∃ (q : Nat), q ∈ S := h1</span>
