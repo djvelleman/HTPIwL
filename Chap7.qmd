@@ -1127,7 +1127,7 @@ theorem Theorem_7_2_3 {a b p : Nat}
 
 Theorem 7.2.4 in *HTPI* extends Theorem 7.2.3 to show that if a prime number divides the product of a list of natural numbers, then it divides one of the numbers in the list.  (Theorem 7.2.3 is the case of a list of length two.)  The proof in *HTPI* is by induction on the length of the list, and we could use that method to prove the theorem in Lean.  But look back at our proof of the lemma `list_elt_dvd_prod_by_length`, which also used induction on the length of a list.  In the base case, we ended up proving that the `nil` list has the property stated in the lemma, and in the induction step we proved that if a list `l` has the property, then so does any list of the form `a :: l`.  We could think of this as a kind of "induction on lists."  As we observed earlier, every list can be constructed by starting with the `nil` list and applying `cons` finitely many times.  It follows that if the `nil` list has some property, and applying the `cons` operation to a list with the property produces another list with the property, then all lists have the property.  (In fact, a similar principle was at work in our recursive definitions of `nondec l` and `prod l`.)
 
-Lean has a theorem called `List.rec` that can be used to justify induction on lists.  We'll use it to prove Theorem 7.2.4.  The proof uses two lemmas, whose proofs we leave as exercises for you.
+Lean has a theorem called `List.rec` that can be used to justify induction on lists.  This is a little more convenient than induction on the length of a list, so we'll use it to prove Theorem 7.2.4.  The proof uses two lemmas, whose proofs we leave as exercises for you.
 
 ```lean
 lemma eq_one_of_dvd_one {n : Nat} (h : n ∣ 1) : n = 1 := sorry
@@ -1767,6 +1767,13 @@ theorem Theorem_7_3_11 (m n : Nat) (a b : Int) (h1 : n ≠ 0) :
 ```lean
 theorem Exercise_7_3_16 {m : Nat} {a b : Int} (h : a ≡ b (MOD m)) :
     ∀ (n : Nat), a ^ n ≡ b ^ n (MOD m) := sorry
+```
+:::
+
+::: {.numex arguments="9"}
+```lean
+example {m : Nat} [NeZero m] (X : ZMod m) :
+    ∃! (a : Int), 0 ≤ a ∧ a < m ∧ X = [a]_m := sorry
 ```
 :::
 
