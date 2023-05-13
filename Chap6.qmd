@@ -1644,12 +1644,10 @@ theorem well_ord_princ (S : Set Nat) : (∃ (n : Nat), n ∈ S) →
 
 Section 6.4 of *HTPI* ends with an example of an application of the well ordering principle.  The example gives a proof that $\sqrt{2}$ is irrational.  If $\sqrt{2}$ were rational, then there would be natural numbers $p$ and $q$ such that $q \ne 0$ and $p/q = \sqrt{2}$, and therefore $p^2 = 2q^2$.  So we can prove that $\sqrt{2}$ is irrational by showing that there do not exist natural numbers $p$ and $q$ such that $q \ne 0$ and $p^2 = 2q^2$.
 
-The proof uses some definitions from the exercises of Section 6.1:
+The proof uses a definition from the exercises of Section 6.1:
 
 ```lean
 def nat_even (n : Nat) : Prop := ∃ (k : Nat), n = 2 * k
-
-def nat_odd (n : Nat) : Prop := ∃ (k : Nat), n = 2 * k + 1
 ```
 
 We will also use the following lemma, whose proof we leave as an exercise for you:
