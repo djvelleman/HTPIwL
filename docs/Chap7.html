@@ -93,6 +93,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <script src="site_libs/quarto-search/fuse.min.js"></script>
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
+<link href="./Chap8.html" rel="next">
 <link href="./Chap6.html" rel="prev">
 <script src="site_libs/quarto-html/quarto.js"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
@@ -203,6 +204,11 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./Chap7.html" class="sidebar-item-text sidebar-link active"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Number Theory</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Chap8.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Infinite Sets</span></a>
   </div>
 </li>
     </ul>
@@ -2340,7 +2346,7 @@ theorem Theorem_7_2_2_Int {a c : Nat} {b : Int}
 ```
 -->
 <p>With that preparation, we can now prove <code>Lemma_7_4_5</code>.</p>
-<div class="sourceCode" id="cb120"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb120-1"><a href="#cb120-1" aria-hidden="true" tabindex="-1"></a><span class="kw">lemma</span> Lemma_7_4_5 {m n : Nat} (a b : Nat) (h1 : rel_prime m n) :</span>
+<div class="sourceCode" id="cb120"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb120-1"><a href="#cb120-1" aria-hidden="true" tabindex="-1"></a><span class="kw">lemma</span> Lemma_7_4_5 {m n : Nat} (a b : Int) (h1 : rel_prime m n) :</span>
 <span id="cb120-2"><a href="#cb120-2" aria-hidden="true" tabindex="-1"></a>    a ≡ b (MOD m * n) ↔ a ≡ b (MOD m) ∧ a ≡ b (MOD n) := <span class="kw">by</span></span>
 <span id="cb120-3"><a href="#cb120-3" aria-hidden="true" tabindex="-1"></a>  <span class="kw">apply</span> Iff.intro</span>
 <span id="cb120-4"><a href="#cb120-4" aria-hidden="true" tabindex="-1"></a>  · <span class="co">-- (→)</span></span>
@@ -2350,14 +2356,14 @@ theorem Theorem_7_2_2_Int {a c : Nat} {b : Int}
 <span id="cb120-8"><a href="#cb120-8" aria-hidden="true" tabindex="-1"></a>    · <span class="co">-- Proof of a ≡ b (MOD m)</span></span>
 <span id="cb120-9"><a href="#cb120-9" aria-hidden="true" tabindex="-1"></a>      <span class="kw">apply</span> Exists.intro (n * j)</span>
 <span id="cb120-10"><a href="#cb120-10" aria-hidden="true" tabindex="-1"></a>      <span class="kw">show</span> a - b = m * (n * j) <span class="kw">from</span></span>
-<span id="cb120-11"><a href="#cb120-11" aria-hidden="true" tabindex="-1"></a>        <span class="kw">calc</span> ↑a - ↑b</span>
+<span id="cb120-11"><a href="#cb120-11" aria-hidden="true" tabindex="-1"></a>        <span class="kw">calc</span> a - b</span>
 <span id="cb120-12"><a href="#cb120-12" aria-hidden="true" tabindex="-1"></a>          _ = m * n * j := h3</span>
 <span id="cb120-13"><a href="#cb120-13" aria-hidden="true" tabindex="-1"></a>          _ = m * (n * j) := <span class="kw">by</span> <span class="kw">ring</span></span>
 <span id="cb120-14"><a href="#cb120-14" aria-hidden="true" tabindex="-1"></a>      <span class="kw">done</span></span>
 <span id="cb120-15"><a href="#cb120-15" aria-hidden="true" tabindex="-1"></a>    · <span class="co">-- Proof of a ≡ b (MOD n)</span></span>
 <span id="cb120-16"><a href="#cb120-16" aria-hidden="true" tabindex="-1"></a>      <span class="kw">apply</span> Exists.intro (m * j)</span>
 <span id="cb120-17"><a href="#cb120-17" aria-hidden="true" tabindex="-1"></a>      <span class="kw">show</span> a - b = n * (m * j) <span class="kw">from</span></span>
-<span id="cb120-18"><a href="#cb120-18" aria-hidden="true" tabindex="-1"></a>        <span class="kw">calc</span> ↑a - ↑b</span>
+<span id="cb120-18"><a href="#cb120-18" aria-hidden="true" tabindex="-1"></a>        <span class="kw">calc</span> a - b</span>
 <span id="cb120-19"><a href="#cb120-19" aria-hidden="true" tabindex="-1"></a>          _ = m * n * j := h3</span>
 <span id="cb120-20"><a href="#cb120-20" aria-hidden="true" tabindex="-1"></a>          _ = n * (m * j) := <span class="kw">by</span> <span class="kw">ring</span></span>
 <span id="cb120-21"><a href="#cb120-21" aria-hidden="true" tabindex="-1"></a>      <span class="kw">done</span></span>
@@ -2369,9 +2375,9 @@ theorem Theorem_7_2_2_Int {a c : Nat} {b : Int}
 <span id="cb120-27"><a href="#cb120-27" aria-hidden="true" tabindex="-1"></a>    <span class="kw">rewrite</span> [h3] <span class="kw">at</span> h4      <span class="co">--h4 : ↑n ∣ ↑m * j</span></span>
 <span id="cb120-28"><a href="#cb120-28" aria-hidden="true" tabindex="-1"></a>    <span class="kw">have</span> h5 : ↑n ∣ j := Theorem_7_2_2_Int h4 h1</span>
 <span id="cb120-29"><a href="#cb120-29" aria-hidden="true" tabindex="-1"></a>    <span class="kw">obtain</span> (k : Int) (h6 : j = n * k) <span class="kw">from</span> h5</span>
-<span id="cb120-30"><a href="#cb120-30" aria-hidden="true" tabindex="-1"></a>    <span class="kw">apply</span> Exists.intro k    <span class="co">--Goal : ↑a - ↑b = ↑(m * n) * k</span></span>
+<span id="cb120-30"><a href="#cb120-30" aria-hidden="true" tabindex="-1"></a>    <span class="kw">apply</span> Exists.intro k    <span class="co">--Goal : a - b = ↑(m * n) * k</span></span>
 <span id="cb120-31"><a href="#cb120-31" aria-hidden="true" tabindex="-1"></a>    <span class="kw">show</span> a - b = (m * n) * k <span class="kw">from</span></span>
-<span id="cb120-32"><a href="#cb120-32" aria-hidden="true" tabindex="-1"></a>      <span class="kw">calc</span> ↑a - ↑b</span>
+<span id="cb120-32"><a href="#cb120-32" aria-hidden="true" tabindex="-1"></a>      <span class="kw">calc</span> a - b</span>
 <span id="cb120-33"><a href="#cb120-33" aria-hidden="true" tabindex="-1"></a>        _ = m * j := h3</span>
 <span id="cb120-34"><a href="#cb120-34" aria-hidden="true" tabindex="-1"></a>        _ = m * (n * k) := <span class="kw">by</span> <span class="kw">rw</span> [h6]</span>
 <span id="cb120-35"><a href="#cb120-35" aria-hidden="true" tabindex="-1"></a>        _ = (m * n) * k := <span class="kw">by</span> <span class="kw">ring</span></span>
@@ -2619,6 +2625,9 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       </a>          
   </div>
   <div class="nav-page nav-page-next">
+      <a href="./Chap8.html" class="pagination-link">
+        <span class="nav-page-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Infinite Sets</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
   </div>
 </nav>
 </div> <!-- /content -->

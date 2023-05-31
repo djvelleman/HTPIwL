@@ -206,6 +206,11 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   <a href="./Chap7.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Number Theory</span></a>
   </div>
 </li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Chap8.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Infinite Sets</span></a>
+  </div>
+</li>
     </ul>
     </div>
 </nav>
@@ -2976,7 +2981,7 @@ x \in A \cap (B \setmin C) &amp;\text{ iff } x \in A \wedge x \in B \setmin C\\
 <span id="cb222-5"><a href="#cb222-5" aria-hidden="true" tabindex="-1"></a>⊢ x ∈ X ∪ Y ↔ x ∈ Y ∪ X</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </div>
-<p>To understand the goal better, we’ll write out the definitions of the two sides of the biconditional. We use an extension of the <code>define</code> tactic that allows us to write out the definition of just a part of a given or the goal. The tactic <code>define : x ∈ X ∪ Y</code> will replace <code>x ∈ X ∪ Y</code> with its definition wherever it appears in the goal, and then <code>define : x ∈ Y ∪ X</code> will replace <code>x ∈ Y ∪ X</code> with its definition. (As usual, you can add <code>at</code> to do the replacements in a given rather than the goal.)</p>
+<p>To understand the goal better, we’ll write out the definitions of the two sides of the biconditional. We use an extension of the <code>define</code> tactic that allows us to write out the definition of just a part of a given or the goal. The tactic <code>define : x ∈ X ∪ Y</code> will replace <code>x ∈ X ∪ Y</code> with its definition wherever it appears in the goal, and then <code>define : x ∈ Y ∪ X</code> will replace <code>x ∈ Y ∪ X</code> with its definition. (Note that <code>define : X ∪ Y</code> produces a result that is not as useful. It is usually best to define a complete statement rather than just a part of a statement. As usual, you can add <code>at</code> to do the replacements in a given rather than the goal.)</p>
 <div class="inout">
 <div class="inpt">
 <div class="sourceCode" id="cb223"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb223-1"><a href="#cb223-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> union_comm {U : <span class="kw">Type</span>} (X Y : Set U) :</span>

@@ -1,0 +1,188 @@
+# Infinite Sets
+
+## 8.1.  Equinumerous Sets
+
+Chapter 8 of *HTPI* begins by defining a set $A$ to be *equinumerous* with a set $B$ if there is a function $f : A \to B$ that is one-to-one and onto.  As we will see, in Lean we will need to phrase this definition somewhat differently.  However, we begin by considering some examples of functions that are one-to-one and onto.
+
+The first example in *HTPI* is a one-to-one, onto function from $\mathbb{Z}^+$ to $\mathbb{Z}$.  We will modify this example slightly to make it a function `fnz` from `Nat` to `Int`:
+
+```lean
+def fnz (n : Nat) : Int := if 2 ∣ n then ↑(n / 2) else -↑((n + 1) / 2)
+```
+
+Note that, to get a result of type `Int`, coercion is necessary.  We have specified that the coercion should be done after the computation of either `n / 2` or `(n + 1) / 2`, with that computation being done using natural-number arithmetic.  Checking a few values of this functions suggests a simple pattern:
+
+```lean
+#eval [fnz 0, fnz 1, fnz 2, fnz 3, fnz 4, fnz 5, fnz 6]
+  --Answer: [0, -1, 1, -2, 2, -3, 3]
+```
+
+Perhaps the easiest way to prove that `fnz` is one-to-one and onto is to define a function that turns out to be its inverse.  This time, in order to get the right type for the value of the function, we use the function `Int.toNat` to convert a nonnegative integer to a natural number.
+
+```lean
+def fzn (a : Int) : Nat :=
+  if a ≥ 0 then 2 * Int.toNat a else 2 * Int.toNat (-a) - 1
+
+#eval [fzn 0, fzn (-1), fzn 1, fzn (-2), fzn 2, fzn (-3), fzn 3]
+  --Answer: [0, 1, 2, 3, 4, 5, 6]
+```
+
+To prove that `fzn` is the inverse of `fnz`, we begin by proving lemmas making it easier to compute the values of these functions
+
+```lean
+lemma fnz_even (k : Nat) : fnz (2 * k) = ↑k := by
+  have h1 : 2 ∣ 2 * k := by
+    apply Exists.intro k
+    rfl
+    done
+  define : fnz (2 * k)  --Goal :
+    -- (if 2 ∣ 2 * k then ↑(2 * k / 2) else -↑((2 * k + 1) / 2)) = ↑k
+  rewrite [if_pos h1]    --Goal : ↑(2 * k / 2) = ↑k
+  have h2 : 0 < 2 := by linarith
+  rewrite [Nat.mul_div_cancel_left k h2]
+  rfl
+  done
+
+lemma fnz_odd (k : Nat) : fnz (2 * k + 1) = -↑(k + 1) := sorry
+
+lemma fzn_nat (k : Nat) : fzn ↑k = 2 * k := by
+  have h1 : (↑k : Int) ≥ 0 := Nat.cast_nonneg k
+  define : fzn ↑k  --Goal : 
+    -- (if ↑k ≥ 0 then 2 * Int.toNat ↑k
+    -- else 2 * Int.toNat (-↑k) - 1) = 2 * k
+  rewrite [if_pos h1, Int.toNat_coe_nat]
+  rfl
+  done
+
+lemma fzn_neg_succ_nat (k : Nat) : fzn (-↑(k + 1)) = 2 * k + 1 := sorry
+```
+
+Using these lemmas and reasoning by cases, it is straightforward to prove lemmas confirming that the composition of these functions, in either order, yields the identity function.  The cases for the first lemma are based on an exercise from Section 6.1.
+
+```lean
+lemma fzn_fnz : fzn ∘ fnz = id := by
+  apply funext        --Goal : ∀ (x : Nat), (fzn ∘ fnz) x = id x
+  fix n : Nat
+  rewrite [comp_def]  --Goal : fzn (fnz n) = id n
+  have h1 : nat_even n ∨ nat_odd n := Exercise_6_1_16a1 n
+  by_cases on h1
+  · -- Case 1. h1 : nat_even n
+    obtain (k : Nat) (h2 : n = 2 * k) from h1
+    rewrite [h2, fnz_even, fzn_nat]
+    rfl
+    done
+  · -- Case 2. h1 : nat_odd n
+    obtain (k : Nat) (h2 : n = 2 * k + 1) from h1
+    rewrite [h2, fnz_odd, fzn_neg_succ_nat]
+    rfl
+    done
+  done
+
+lemma fnz_fzn : fnz ∘ fzn = id  := sorry
+```
+
+By theorems from Chapter 5, it follows that both `fnz` and `fzn` are one-to-one and onto.
+
+```lean
+lemma fzn_one_one : one_to_one fzn := by
+  have h : ∃ (g : Nat → Int), g ∘ fzn = id := Exists.intro fnz fnz_fzn
+  show one_to_one fzn from Theorem_5_3_3_1 fzn h
+  done
+
+lemma fzn_onto : onto fzn := sorry
+
+lemma fnz_one_one : one_to_one fnz := sorry
+
+lemma fnz_onto : onto fnz := sorry
+```
+
+We'll give one more example: a one-to-one, onto function `fnnn` from `Nat × Nat` to `Nat`, whose definition is modeled on a function from $\mathbb{Z}^+ \times \mathbb{Z}^+$ to $\mathbb{Z}^+$ in *HTPI*.  The definition of `fnnn` will use numbers of the form `k * (k + 1) / 2`.  These numbers are sometimes called *triangular numbers*, because they count the number of dots in a trianglular grid of dots with `k` rows.
+
+```lean
+def tri (k : Nat) : Nat := k * (k + 1) / 2
+
+def fnnn (p : Nat × Nat) : Nat := tri (p.1 + p.2) + p.1
+
+lemma fnnn_def (a b : Nat) : fnnn (a, b) = tri (a + b) + a := by rfl
+
+#eval [fnnn (0, 0), fnnn (0, 1), fnnn (1, 0), fnnn (0, 2), fnnn (1, 1)]
+  --Answer: [0, 1, 2, 3, 4]
+```
+
+Two simple lemmas about `tri` will help us prove the important properties of `fnnn`:
+
+```lean
+lemma tri_step (k : Nat) : tri (k + 1) = tri k + k + 1 := sorry
+
+lemma tri_incr {j k : Nat} (h1 : j ≤ k) : tri j ≤ tri k := sorry
+
+lemma le_of_fnnn_eq {a1 b1 a2 b2 : Nat}
+    (h1 : fnnn (a1, b1) = fnnn (a2, b2)) : a1 + b1 ≤ a2 + b2 := by
+  by_contra h2
+  have h3 : a2 + b2 + 1 ≤ a1 + b1 := by linarith
+  have h4 : fnnn (a2, b2) < fnnn (a1, b1) :=
+    calc fnnn (a2, b2)
+      _ = tri (a2 + b2) + a2 := by rfl
+      _ < tri (a2 + b2) + (a2 + b2) + 1 := by linarith
+      _ = tri (a2 + b2 + 1) := (tri_step _).symm
+      _ ≤ tri (a1 + b1) := tri_incr h3
+      _ ≤ tri (a1 + b1) + a1 := by linarith
+      _ = fnnn (a1, b1) := by rfl
+  linarith
+  done
+
+lemma fnnn_one_one : one_to_one fnnn := by
+  define
+  fix (a1, b1); fix (a2, b2)
+  assume h1 : fnnn (a1, b1) = fnnn (a2, b2)
+  have h2 : a1 + b1 ≤ a2 + b2 := le_of_fnnn_eq h1
+  have h3 : a2 + b2 ≤ a1 + b1 := le_of_fnnn_eq h1.symm
+  have h4 : a1 + b1 = a2 + b2 := by linarith
+  rewrite [fnnn_def, fnnn_def, h4] at h1
+    --h1 : tri (a2 + b2) + a1 = tri (a2 + b2) + a2
+  have h6 : a1 = a2 := Nat.add_left_cancel h1
+  rewrite [h6] at h4   --h4 : a2 + b1 = a2 + b2
+  have h7 : b1 = b2 := Nat.add_left_cancel h4
+  rewrite [h6, h7]
+  rfl
+  done
+
+lemma fnnn_onto : onto fnnn := by
+  define  --Goal : ∀ (y : Nat), ∃ (x : Nat × Nat), fnnn x = y
+  by_induc
+  · -- Base Case
+    apply Exists.intro (0, 0)
+    rfl
+    done
+  · -- Induction Step
+    fix n : Nat
+    assume ih : ∃ (x : Nat × Nat), fnnn x = n
+    obtain ((a, b) : Nat × Nat) (h1 : fnnn (a, b) = n) from ih
+    by_cases h2 : b = 0
+    · -- Case 1. h2 : b = 0
+      apply Exists.intro (0, a + 1)
+      show fnnn (0, a + 1) = n + 1 from
+        calc fnnn (0, a + 1)
+          _ = tri (0 + (a + 1)) + 0 := by rfl
+          _ = tri (a + 1) := by ring
+          _ = tri a + a + 1 := tri_step a
+          _ = tri (a + 0) + a + 1 := by ring
+          _ = fnnn (a, b) + 1 := by rw [h2, fnnn_def]
+          _ = n + 1 := by rw [h1]
+      done
+    · -- Case 2. h2 : b ≠ 0
+      obtain (k : Nat) (h3 : b = k + 1) from
+        exists_eq_add_one_of_ne_zero h2
+      apply Exists.intro (a + 1, k)
+      show fnnn (a + 1, k) = n + 1 from
+        calc fnnn (a + 1, k)
+          _ = tri (a + 1 + k) + (a + 1) := by rfl
+          _ = tri (a + (k + 1)) + a + 1 := by ring
+          _ = tri (a + b) + a + 1 := by rw [h3]
+          _ = fnnn (a, b) + 1 := by rfl
+          _ = n + 1 := by rw [h1]
+      done
+    done
+  done
+```
+

@@ -267,9 +267,14 @@ theorem Theorem_5_2_5_1 {A B C : Type} (f : A → B) (g : B → C) :
   done
 ```
 
-Notice that the tactic `define : (g ∘ f) a1` replaces `(g ∘ f) a1` with its definition, `g (f a1)`.  As usual, this step isn't really needed---Lean will apply the definition on its own when necessary, without being told.  But using this tactic makes the proof easier to read.  We use a similar approach for the second part of the theorem.
+Notice that the tactic `define : (g ∘ f) a1` replaces `(g ∘ f) a1` with its definition, `g (f a1)`.  As usual, this step isn't really needed---Lean will apply the definition on its own when necessary, without being told.  But using this tactic makes the proof easier to read.  Also, notice that `define : g ∘ f` produces a result that is much less useful.  As we have observed before, the `define` tactic works best when applied to a complete expression, rather than just a part of an expression.
+
+An alternative way to apply the definition of composition of functions is to prove a lemma that can be used in the `rewrite` tactic.  We try out this approach for the second part of the theorem.
 
 ```lean
+lemma comp_def {A B C : Type} (f : A → B) (g : B → C) (x : A) :
+    (g ∘ f) x = g (f x) := by rfl
+
 theorem Theorem_5_2_5_2 {A B C : Type} (f : A → B) (g : B → C) :
     onto f → onto g → onto (g ∘ f) := by
   assume h1 : onto f
@@ -281,7 +286,7 @@ theorem Theorem_5_2_5_2 {A B C : Type} (f : A → B) (g : B → C) :
   obtain (b : B) (h3 : g b = c) from h2 c
   obtain (a : A) (h4 : f a = b) from h1 b
   apply Exists.intro a   --Goal : (g ∘ f) a = c
-  define : (g ∘ f) a     --Goal : g (f a) = c
+  rewrite [comp_def]     --Goal : g (f a) = c
   rewrite [←h4] at h3
   show g (f a) = c from h3
   done

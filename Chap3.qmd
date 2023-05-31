@@ -3481,7 +3481,7 @@ x : U
 :::
 :::
 
-To understand the goal better, we'll write out the definitions of the two sides of the biconditional.  We use an extension of the `define` tactic that allows us to write out the definition of just a part of a given or the goal.  The tactic `define : x ∈ X ∪ Y` will replace `x ∈ X ∪ Y` with its definition wherever it appears in the goal, and then `define : x ∈ Y ∪ X` will replace `x ∈ Y ∪ X` with its definition.  (As usual, you can add `at` to do the replacements in a given rather than the goal.)
+To understand the goal better, we'll write out the definitions of the two sides of the biconditional.  We use an extension of the `define` tactic that allows us to write out the definition of just a part of a given or the goal.  The tactic `define : x ∈ X ∪ Y` will replace `x ∈ X ∪ Y` with its definition wherever it appears in the goal, and then `define : x ∈ Y ∪ X` will replace `x ∈ Y ∪ X` with its definition.  (Note that `define : X ∪ Y` produces a result that is not as useful.  It is usually best to define a complete statement rather than just a part of a statement.  As usual, you can add `at` to do the replacements in a given rather than the goal.)
 
 ::: {.inout}
 ::: {.inpt}

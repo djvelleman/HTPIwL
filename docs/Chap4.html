@@ -206,6 +206,11 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   <a href="./Chap7.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Number Theory</span></a>
   </div>
 </li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Chap8.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Infinite Sets</span></a>
+  </div>
+</li>
     </ul>
     </div>
 </nav>
@@ -250,7 +255,7 @@ $$
 
 <section id="ordered-pairs-and-cartesian-products" class="level2">
 <h2 class="anchored" data-anchor-id="ordered-pairs-and-cartesian-products">4.1. Ordered Pairs and Cartesian Products</h2>
-<p>Section 4.1 of <em>How To Prove It</em> defines the <em>Cartesian product</em> <span class="math inline">\(A \times B\)</span> of two sets <span class="math inline">\(A\)</span> and <span class="math inline">\(B\)</span> to be the set of all ordered pairs <span class="math inline">\((a, b)\)</span>, where <span class="math inline">\(a \in A\)</span> and <span class="math inline">\(b \in B\)</span>. However, in Lean, Cartesian product is an operation on <em>types</em>, not sets. If <code>A</code> and <code>B</code> are types, then <code>A × B</code> is the type of ordered pairs <code>(a, b)</code>, where <code>a</code> has type <code>A</code> and <code>b</code> has type <code>B</code>. In other words, if you have <code>a : A</code> and <code>b : B</code>, then <code>(a, b)</code> is an object of type <code>A × B</code>. There is also notation for the first and second coordinates of an ordered pair. If <code>p</code> has type <code>A × B</code>, then <code>p.1</code> is the first coordinate of <code>p</code>, and <code>p.2</code> is the second coordinate. You can also use the notation <code>p.fst</code> for the first coordinate of <code>p</code> and <code>p.snd</code> for the second coordinate. This means that <code>p = (p.1, p.2) = (p.fst, p.snd)</code>.</p>
+<p>Section 4.1 of <em>How To Prove It</em> defines the <em>Cartesian product</em> <span class="math inline">\(A \times B\)</span> of two sets <span class="math inline">\(A\)</span> and <span class="math inline">\(B\)</span> to be the set of all ordered pairs <span class="math inline">\((a, b)\)</span>, where <span class="math inline">\(a \in A\)</span> and <span class="math inline">\(b \in B\)</span>. However, in Lean, Cartesian product is an operation on <em>types</em>, not sets. If <code>A</code> and <code>B</code> are types, then <code>A × B</code> is the type of ordered pairs <code>(a, b)</code>, where <code>a</code> has type <code>A</code> and <code>b</code> has type <code>B</code>. (To enter the symbol <code>×</code> in Lean, type <code>\times</code> or <code>\x</code>.) In other words, if you have <code>a : A</code> and <code>b : B</code>, then <code>(a, b)</code> is an object of type <code>A × B</code>. There is also notation for the first and second coordinates of an ordered pair. If <code>p</code> has type <code>A × B</code>, then <code>p.1</code> is the first coordinate of <code>p</code>, and <code>p.2</code> is the second coordinate. You can also use the notation <code>p.fst</code> for the first coordinate of <code>p</code> and <code>p.snd</code> for the second coordinate. This means that <code>p = (p.1, p.2) = (p.fst, p.snd)</code>.</p>
 </section>
 <section id="relations" class="level2">
 <h2 class="anchored" data-anchor-id="relations">4.2. Relations</h2>
@@ -759,7 +764,7 @@ $$
 <div class="numex" data-arguments="9">
 <div class="sourceCode" id="cb46"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Exercise_4_4_22 {A : <span class="kw">Type</span>}</span>
 <span id="cb46-2"><a href="#cb46-2" aria-hidden="true" tabindex="-1"></a>    (R : BinRel A) (B1 B2 : Set A) (x1 x2 : A)</span>
-<span id="cb46-3"><a href="#cb46-3" aria-hidden="true" tabindex="-1"></a>    (h1 : lub R x1 B1) (h2 : lub R x2 B2) :</span>
+<span id="cb46-3"><a href="#cb46-3" aria-hidden="true" tabindex="-1"></a>    (h1 : partial_order R) (h2 : lub R x1 B1) (h3 : lub R x2 B2) :</span>
 <span id="cb46-4"><a href="#cb46-4" aria-hidden="true" tabindex="-1"></a>    B1 ⊆ B2 → R x1 x2 := <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="numex" data-arguments="10">
