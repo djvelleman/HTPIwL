@@ -96,7 +96,7 @@ lemma fnz_one_one : one_to_one fnz := sorry
 lemma fnz_onto : onto fnz := sorry
 ```
 
-We'll give one more example: a one-to-one, onto function `fnnn` from `Nat × Nat` to `Nat`, whose definition is modeled on a function from $\mathbb{Z}^+ \times \mathbb{Z}^+$ to $\mathbb{Z}^+$ in *HTPI*.  The definition of `fnnn` will use numbers of the form `k * (k + 1) / 2`.  These numbers are sometimes called *triangular numbers*, because they count the number of dots in a trianglular grid of dots with `k` rows.
+We'll give one more example: a one-to-one, onto function `fnnn` from `Nat × Nat` to `Nat`, whose definition is modeled on a function from $\mathbb{Z}^+ \times \mathbb{Z}^+$ to $\mathbb{Z}^+$ in *HTPI*.  The definition of `fnnn` will use numbers of the form `k * (k + 1) / 2`.  These numbers are sometimes called *triangular numbers*, because they count the number of objects in a triangular grid with `k` rows.
 
 ```lean
 def tri (k : Nat) : Nat := k * (k + 1) / 2
@@ -186,3 +186,179 @@ lemma fnnn_onto : onto fnnn := by
   done
 ```
 
+Despite these successes with one-to-one, onto functions, we will use a different definition of "equinumerous" in Lean.  There are two reasons for this change.  First of all, the domain of a function in Lean must be a *type*, be we want to be able to talk about *sets* being equinumerous.  Secondly, Lean expects functions to be *computable*; it regards the definition of a function as an algorithm for computing the value of the function on any input.  This restriction would cause problems with some of our proofs.  While there are ways to overcome these difficulties, they would introduce complications that we can avoid by using a different approach.
+
+Suppose `A` and `B` are types, and we have sets `X : Set A` and `Y : Set B`.  We will define `X` to be equinumerous with `Y` if there is a relation `R` from `A` to `B` that defines a one-to-one correspondence between the elements of `X` and `Y`.  To formulate this precisely, suppose that `R` has type `Rel A B`.  We will place three requirements on `R`.  First, we require that the relation `R` should hold only between elements of `X` and `Y`.  We say in this case that `R` is a *relation within `X` and `Y`*:
+
+```lean
+def rel_within {A B : Type} (R : Rel A B) (X : Set A) (Y : Set B) : Prop :=
+  ∀ ⦃x : A⦄ ⦃y : B⦄, R x y → x ∈ X ∧ y ∈ Y
+```
+
+Notice that in this definition, we have used the same double braces for the quantified variables `x` and `y` that were used in the definition of "subset."  This means that `x` and `y` are implicit arguments, and therefore if we have `h1 : rel_within R X Y` and `h2 : R a b`, then `h1 h2` is a proof of `a ∈ X ∧ b ∈ Y`.  There is no need to specify that `a` and `b` are the values to be assigned to `x` and `y`; Lean will figure that out for itself.  (To type the double braces `⦃` and `⦄`, type `\{{` and `\}}`.)
+
+Next, we require that every element of `X` is related by `R` to exactly one thing.  We say in this case that `R` is *functional on `X`*:
+
+```lean
+def fcnl_on {A B : Type} (R : Rel A B) (X : Set A) : Prop :=
+  ∀ ⦃x : A⦄, x ∈ X → ∃! (y : B), R x y
+```
+
+Finally, we impose the same requirement in the other direction: for every element of `Y`, exactly one thing should be related to it by `R`.  We can express this by saying that the inverse of `R` is functional on `Y`.  In Chapter 4, we defined the inverse of a set of ordered pairs, but we can easily convert this to an operation on relations:
+
+```lean
+def invRel {A B : Type} (R : Rel A B) : Rel B A :=
+  RelFromExt (inv (extension R))
+
+lemma invRel_def {A B : Type} (R : Rel A B) (a : A) (b : B) :
+    invRel R b a ↔ R a b := by rfl
+```
+
+We will call `R` a *matching from `X` to `Y`* if it meets the three requirements above:
+
+```lean
+def matching {A B : Type} (R : Rel A B) (X : Set A) (Y : Set B) : Prop :=
+  rel_within R X Y ∧ fcnl_on R X ∧ fcnl_on (invRel R) Y
+```
+
+Finally, we say that *`X` is equinumerous with `Y`* if there is a matching from `X` to `Y`, and, as in *HTPI* we introduce the notation `X ∼ Y` to indicate that `X` is equinumerous with `Y`.
+
+```lean
+def equinum {A B : Type} (X : Set A) (Y : Set B) : Prop :=
+  ∃ (R : Rel A B), matching R X Y
+
+notation:50  X:50 " ∼ " Y:50 => equinum X Y
+```
+
+Do the examples at the beginning of this section establish that `Int ∼ Nat` and `Nat × Nat ∼ Nat`?  Not quite, because `Int`, `Nat`, and `Nat × Nat` are types, not sets.  We must talk about the sets of all objects of those types, not the types themselves, so we introduce another definition.
+
+```lean
+def Univ (A : Type) : Set A := { x : A | True }
+
+lemma elt_Univ {A : Type} (a : A) :
+    a ∈ Univ A := by define; trivial
+```
+
+For any type `A`, `Univ A` is the set of all objects of type `A`; we might call it the *universal set* for the type `A`.  Now we can use the functions defined earlier to prove that `Univ Int ∼ Univ Nat` and `Univ (Nat × Nat) ∼ Univ Nat`.  The do this, we must convert the functions into relations and prove that those relations are matchings.  The conversion can be done with the following function.
+
+```lean
+def RelWithinFromFunc {A B : Type} (f : A → B) (X : Set A)
+  (x : A) (y : B) : Prop := x ∈ X ∧ f x = y
+```
+
+We will say that a function is one-to-one on a set `X` if it satisfies the definition of one-to-one for values in `X`:
+
+```lean
+def one_one_on {A B : Type} (f : A → B) (X : Set A) : Prop :=
+  ∀ ⦃x1 x2 : A⦄, x1 ∈ X → x2 ∈ X → f x1 = f x2 → x1 = x2
+```
+
+With all of this preparation, we can now prove that if `f` is one-to-one on `X`, then `X` is equinumerous with its image under `f`.
+
+```lean
+theorem equinum_image {A B : Type} {X : Set A} {f : A → B}
+    (h1 : one_one_on f X) : X ∼ image f X := by
+  define   --Goal : ∃ (R : Rel A B), matching R X (image f X)
+  set R : Rel A B := RelWithinFromFunc f X
+  apply Exists.intro R
+  define   --Goal : rel_within R X (image f X) ∧
+           --fcnl_on R X ∧ fcnl_on (invRel R) (image f X)
+  apply And.intro
+  · -- Proof of rel_within
+    define --Goal : ∀ ⦃x : A⦄ ⦃y : B⦄, R x y → x ∈ X ∧ y ∈ image f X
+    fix x : A; fix y : B
+    assume h2 : R x y  --Goal : x ∈ X ∧ y ∈ image f X
+    define at h2       --h2 : x ∈ X ∧ f x = y
+    apply And.intro h2.left
+    define
+    show ∃ (x : A), x ∈ X ∧ f x = y from Exists.intro x h2
+    done
+  · -- Proofs of fcnl_ons
+    apply And.intro
+    · -- Proof of fcnl_on R X
+      define  --Goal : ∀ ⦃x : A⦄, x ∈ X → ∃! (y : B), R x y
+      fix x : A
+      assume h2 : x ∈ X
+      exists_unique
+      · -- Existence
+        apply Exists.intro (f x)
+        define  --Goal : x ∈ X ∧ f x = f x
+        apply And.intro h2
+        rfl
+        done
+      · -- Uniqueness
+        fix y1 : B; fix y2 : B
+        assume h3 : R x y1
+        assume h4 : R x y2   --Goal : y1 = y2
+        define at h3; define at h4
+          --h3 : x ∈ X ∧ f x = y1;  h4 : x ∈ X ∧ f x = y2
+        rewrite [h3.right] at h4
+        show y1 = y2 from h4.right
+        done
+      done
+    · -- Proof of fcnl_on (invRel R) (image f X)
+      define
+      fix y : B
+      assume h2 : y ∈ image f X
+      define at h2
+      obtain (x : A) (h3 : x ∈ X ∧ f x = y) from h2
+      exists_unique
+      · -- Existence
+        apply Exists.intro x
+        define
+        show x ∈ X ∧ f x = y from h3
+        done
+      · -- Uniqueness
+        fix x1 : A; fix x2 : A
+        assume h4 : invRel R y x1
+        assume h5 : invRel R y x2
+        define at h4; define at h5
+        rewrite [←h5.right] at h4
+        show x1 = x2 from h1 h4.left h5.left h4.right
+        done
+      done
+    done
+  done
+```
+
+To apply this result to the functions introduced at the beginning of this section, we will want to use `Univ A` for the set `X` in the theorem `equinum_image`:
+
+```lean
+def Range {A B : Type} (f : A → B) : Set B := image f (Univ A)
+
+lemma one_one_on_of_one_one {A B : Type} {f : A → B}
+    (h : one_to_one f) (X : Set A) : one_one_on f X := sorry
+
+theorem equinum_Range {A B : Type} {f : A → B} (h : one_to_one f) :
+    Univ A ∼ Range f := equinum_image (one_one_on_of_one_one h (Univ A))
+
+theorem equinum_Univ {A B : Type} {f : A → B}
+    (h1 : one_to_one f) (h2 : onto f) : Univ A ∼ Univ B := by
+  have h3 : Univ A ∼ Range f := equinum_Range h1
+  have h4 : Range f = Univ B := by
+    apply Set.ext
+    fix b : B
+    apply Iff.intro
+    · -- (→)
+      assume h4 : b ∈ Range f
+      show b ∈ Univ B from elt_Univ b
+      done
+    · -- (←)
+      assume h4 : b ∈ Univ B
+      define at h2
+      obtain (a : A) (h5 : f a = b) from h2 b
+      apply Exists.intro a
+      apply And.intro _ h5
+      show a ∈ Univ A from elt_Univ a
+      done
+    done
+  rewrite [h4] at h3
+  show Univ A ∼ Univ B from h3
+  done
+
+theorem Z_equinum_N : Univ Int ∼ Univ Nat :=
+  equinum_Univ fzn_one_one fzn_onto
+
+theorem NxN_equinum_N : Univ (Nat × Nat) ∼ Univ Nat :=
+  equinum_Univ fnnn_one_one fnnn_onto
+```

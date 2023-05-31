@@ -319,7 +319,7 @@ $$
 <span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a><span class="kw">lemma</span> fnz_one_one : one_to_one fnz := <span class="cn">sorry</span></span>
 <span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a><span class="kw">lemma</span> fnz_onto : onto fnz := <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>We’ll give one more example: a one-to-one, onto function <code>fnnn</code> from <code>Nat × Nat</code> to <code>Nat</code>, whose definition is modeled on a function from <span class="math inline">\(\mathbb{Z}^+ \times \mathbb{Z}^+\)</span> to <span class="math inline">\(\mathbb{Z}^+\)</span> in <em>HTPI</em>. The definition of <code>fnnn</code> will use numbers of the form <code>k * (k + 1) / 2</code>. These numbers are sometimes called <em>triangular numbers</em>, because they count the number of dots in a trianglular grid of dots with <code>k</code> rows.</p>
+<p>We’ll give one more example: a one-to-one, onto function <code>fnnn</code> from <code>Nat × Nat</code> to <code>Nat</code>, whose definition is modeled on a function from <span class="math inline">\(\mathbb{Z}^+ \times \mathbb{Z}^+\)</span> to <span class="math inline">\(\mathbb{Z}^+\)</span> in <em>HTPI</em>. The definition of <code>fnnn</code> will use numbers of the form <code>k * (k + 1) / 2</code>. These numbers are sometimes called <em>triangular numbers</em>, because they count the number of objects in a triangular grid with <code>k</code> rows.</p>
 <div class="sourceCode" id="cb7"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> tri (k : Nat) : Nat := k * (k + 1) / 2</span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> fnnn (p : Nat × Nat) : Nat := tri (p.1 + p.2) + p.1</span>
@@ -401,6 +401,141 @@ $$
 <span id="cb8-70"><a href="#cb8-70" aria-hidden="true" tabindex="-1"></a>      <span class="kw">done</span></span>
 <span id="cb8-71"><a href="#cb8-71" aria-hidden="true" tabindex="-1"></a>    <span class="kw">done</span></span>
 <span id="cb8-72"><a href="#cb8-72" aria-hidden="true" tabindex="-1"></a>  <span class="kw">done</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Despite these successes with one-to-one, onto functions, we will use a different definition of “equinumerous” in Lean. There are two reasons for this change. First of all, the domain of a function in Lean must be a <em>type</em>, be we want to be able to talk about <em>sets</em> being equinumerous. Secondly, Lean expects functions to be <em>computable</em>; it regards the definition of a function as an algorithm for computing the value of the function on any input. This restriction would cause problems with some of our proofs. While there are ways to overcome these difficulties, they would introduce complications that we can avoid by using a different approach.</p>
+<p>Suppose <code>A</code> and <code>B</code> are types, and we have sets <code>X : Set A</code> and <code>Y : Set B</code>. We will define <code>X</code> to be equinumerous with <code>Y</code> if there is a relation <code>R</code> from <code>A</code> to <code>B</code> that defines a one-to-one correspondence between the elements of <code>X</code> and <code>Y</code>. To formulate this precisely, suppose that <code>R</code> has type <code>Rel A B</code>. We will place three requirements on <code>R</code>. First, we require that the relation <code>R</code> should hold only between elements of <code>X</code> and <code>Y</code>. We say in this case that <code>R</code> is a <em>relation within <code>X</code> and <code>Y</code></em>:</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> rel_within {A B : <span class="kw">Type</span>} (R : Rel A B) (X : Set A) (Y : Set B) : <span class="kw">Prop</span> :=</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>  ∀ ⦃x : A⦄ ⦃y : B⦄, R x y → x ∈ X ∧ y ∈ Y</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Notice that in this definition, we have used the same double braces for the quantified variables <code>x</code> and <code>y</code> that were used in the definition of “subset.” This means that <code>x</code> and <code>y</code> are implicit arguments, and therefore if we have <code>h1 : rel_within R X Y</code> and <code>h2 : R a b</code>, then <code>h1 h2</code> is a proof of <code>a ∈ X ∧ b ∈ Y</code>. There is no need to specify that <code>a</code> and <code>b</code> are the values to be assigned to <code>x</code> and <code>y</code>; Lean will figure that out for itself. (To type the double braces <code>⦃</code> and <code>⦄</code>, type <code>\{{</code> and <code>\}}</code>.)</p>
+<p>Next, we require that every element of <code>X</code> is related by <code>R</code> to exactly one thing. We say in this case that <code>R</code> is <em>functional on <code>X</code></em>:</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> fcnl_on {A B : <span class="kw">Type</span>} (R : Rel A B) (X : Set A) : <span class="kw">Prop</span> :=</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>  ∀ ⦃x : A⦄, x ∈ X → ∃! (y : B), R x y</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Finally, we impose the same requirement in the other direction: for every element of <code>Y</code>, exactly one thing should be related to it by <code>R</code>. We can express this by saying that the inverse of <code>R</code> is functional on <code>Y</code>. In Chapter 4, we defined the inverse of a set of ordered pairs, but we can easily convert this to an operation on relations:</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> invRel {A B : <span class="kw">Type</span>} (R : Rel A B) : Rel B A :=</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>  RelFromExt (inv (extension R))</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a><span class="kw">lemma</span> invRel_def {A B : <span class="kw">Type</span>} (R : Rel A B) (a : A) (b : B) :</span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>    invRel R b a ↔ R a b := <span class="kw">by</span> <span class="kw">rfl</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>We will call <code>R</code> a <em>matching from <code>X</code> to <code>Y</code></em> if it meets the three requirements above:</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> matching {A B : <span class="kw">Type</span>} (R : Rel A B) (X : Set A) (Y : Set B) : <span class="kw">Prop</span> :=</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>  rel_within R X Y ∧ fcnl_on R X ∧ fcnl_on (invRel R) Y</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Finally, we say that <em><code>X</code> is equinumerous with <code>Y</code></em> if there is a matching from <code>X</code> to <code>Y</code>, and, as in <em>HTPI</em> we introduce the notation <code>X ∼ Y</code> to indicate that <code>X</code> is equinumerous with <code>Y</code>.</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> equinum {A B : <span class="kw">Type</span>} (X : Set A) (Y : Set B) : <span class="kw">Prop</span> :=</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>  ∃ (R : Rel A B), matching R X Y</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a><span class="kw">notation</span>:50  X:50 <span class="st">" ∼ "</span> Y:50 =&gt; equinum X Y</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Do the examples at the beginning of this section establish that <code>Int ∼ Nat</code> and <code>Nat × Nat ∼ Nat</code>? Not quite, because <code>Int</code>, <code>Nat</code>, and <code>Nat × Nat</code> are types, not sets. We must talk about the sets of all objects of those types, not the types themselves, so we introduce another definition.</p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> Univ (A : <span class="kw">Type</span>) : Set A := { x : A | True }</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="kw">lemma</span> elt_Univ {A : <span class="kw">Type</span>} (a : A) :</span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>    a ∈ Univ A := <span class="kw">by</span> <span class="kw">define</span>; <span class="kw">trivial</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>For any type <code>A</code>, <code>Univ A</code> is the set of all objects of type <code>A</code>; we might call it the <em>universal set</em> for the type <code>A</code>. Now we can use the functions defined earlier to prove that <code>Univ Int ∼ Univ Nat</code> and <code>Univ (Nat × Nat) ∼ Univ Nat</code>. The do this, we must convert the functions into relations and prove that those relations are matchings. The conversion can be done with the following function.</p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> RelWithinFromFunc {A B : <span class="kw">Type</span>} (f : A → B) (X : Set A)</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>  (x : A) (y : B) : <span class="kw">Prop</span> := x ∈ X ∧ f x = y</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>We will say that a function is one-to-one on a set <code>X</code> if it satisfies the definition of one-to-one for values in <code>X</code>:</p>
+<div class="sourceCode" id="cb16"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> one_one_on {A B : <span class="kw">Type</span>} (f : A → B) (X : Set A) : <span class="kw">Prop</span> :=</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>  ∀ ⦃x1 x2 : A⦄, x1 ∈ X → x2 ∈ X → f x1 = f x2 → x1 = x2</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>With all of this preparation, we can now prove that if <code>f</code> is one-to-one on <code>X</code>, then <code>X</code> is equinumerous with its image under <code>f</code>.</p>
+<div class="sourceCode" id="cb17"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> equinum_image {A B : <span class="kw">Type</span>} {X : Set A} {f : A → B}</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>    (h1 : one_one_on f X) : X ∼ image f X := <span class="kw">by</span></span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>  <span class="kw">define</span>   <span class="co">--Goal : ∃ (R : Rel A B), matching R X (image f X)</span></span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>  <span class="kw">set</span> R : Rel A B := RelWithinFromFunc f X</span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>  <span class="kw">apply</span> Exists.intro R</span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>  <span class="kw">define</span>   <span class="co">--Goal : rel_within R X (image f X) ∧</span></span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a>           <span class="co">--fcnl_on R X ∧ fcnl_on (invRel R) (image f X)</span></span>
+<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a>  <span class="kw">apply</span> And.intro</span>
+<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a>  · <span class="co">-- Proof of rel_within</span></span>
+<span id="cb17-10"><a href="#cb17-10" aria-hidden="true" tabindex="-1"></a>    <span class="kw">define</span> <span class="co">--Goal : ∀ ⦃x : A⦄ ⦃y : B⦄, R x y → x ∈ X ∧ y ∈ image f X</span></span>
+<span id="cb17-11"><a href="#cb17-11" aria-hidden="true" tabindex="-1"></a>    <span class="kw">fix</span> x : A; <span class="kw">fix</span> y : B</span>
+<span id="cb17-12"><a href="#cb17-12" aria-hidden="true" tabindex="-1"></a>    <span class="kw">assume</span> h2 : R x y  <span class="co">--Goal : x ∈ X ∧ y ∈ image f X</span></span>
+<span id="cb17-13"><a href="#cb17-13" aria-hidden="true" tabindex="-1"></a>    <span class="kw">define</span> <span class="kw">at</span> h2       <span class="co">--h2 : x ∈ X ∧ f x = y</span></span>
+<span id="cb17-14"><a href="#cb17-14" aria-hidden="true" tabindex="-1"></a>    <span class="kw">apply</span> And.intro h2.left</span>
+<span id="cb17-15"><a href="#cb17-15" aria-hidden="true" tabindex="-1"></a>    <span class="kw">define</span></span>
+<span id="cb17-16"><a href="#cb17-16" aria-hidden="true" tabindex="-1"></a>    <span class="kw">show</span> ∃ (x : A), x ∈ X ∧ f x = y <span class="kw">from</span> Exists.intro x h2</span>
+<span id="cb17-17"><a href="#cb17-17" aria-hidden="true" tabindex="-1"></a>    <span class="kw">done</span></span>
+<span id="cb17-18"><a href="#cb17-18" aria-hidden="true" tabindex="-1"></a>  · <span class="co">-- Proofs of fcnl_ons</span></span>
+<span id="cb17-19"><a href="#cb17-19" aria-hidden="true" tabindex="-1"></a>    <span class="kw">apply</span> And.intro</span>
+<span id="cb17-20"><a href="#cb17-20" aria-hidden="true" tabindex="-1"></a>    · <span class="co">-- Proof of fcnl_on R X</span></span>
+<span id="cb17-21"><a href="#cb17-21" aria-hidden="true" tabindex="-1"></a>      <span class="kw">define</span>  <span class="co">--Goal : ∀ ⦃x : A⦄, x ∈ X → ∃! (y : B), R x y</span></span>
+<span id="cb17-22"><a href="#cb17-22" aria-hidden="true" tabindex="-1"></a>      <span class="kw">fix</span> x : A</span>
+<span id="cb17-23"><a href="#cb17-23" aria-hidden="true" tabindex="-1"></a>      <span class="kw">assume</span> h2 : x ∈ X</span>
+<span id="cb17-24"><a href="#cb17-24" aria-hidden="true" tabindex="-1"></a>      <span class="kw">exists_unique</span></span>
+<span id="cb17-25"><a href="#cb17-25" aria-hidden="true" tabindex="-1"></a>      · <span class="co">-- Existence</span></span>
+<span id="cb17-26"><a href="#cb17-26" aria-hidden="true" tabindex="-1"></a>        <span class="kw">apply</span> Exists.intro (f x)</span>
+<span id="cb17-27"><a href="#cb17-27" aria-hidden="true" tabindex="-1"></a>        <span class="kw">define</span>  <span class="co">--Goal : x ∈ X ∧ f x = f x</span></span>
+<span id="cb17-28"><a href="#cb17-28" aria-hidden="true" tabindex="-1"></a>        <span class="kw">apply</span> And.intro h2</span>
+<span id="cb17-29"><a href="#cb17-29" aria-hidden="true" tabindex="-1"></a>        <span class="kw">rfl</span></span>
+<span id="cb17-30"><a href="#cb17-30" aria-hidden="true" tabindex="-1"></a>        <span class="kw">done</span></span>
+<span id="cb17-31"><a href="#cb17-31" aria-hidden="true" tabindex="-1"></a>      · <span class="co">-- Uniqueness</span></span>
+<span id="cb17-32"><a href="#cb17-32" aria-hidden="true" tabindex="-1"></a>        <span class="kw">fix</span> y1 : B; <span class="kw">fix</span> y2 : B</span>
+<span id="cb17-33"><a href="#cb17-33" aria-hidden="true" tabindex="-1"></a>        <span class="kw">assume</span> h3 : R x y1</span>
+<span id="cb17-34"><a href="#cb17-34" aria-hidden="true" tabindex="-1"></a>        <span class="kw">assume</span> h4 : R x y2   <span class="co">--Goal : y1 = y2</span></span>
+<span id="cb17-35"><a href="#cb17-35" aria-hidden="true" tabindex="-1"></a>        <span class="kw">define</span> <span class="kw">at</span> h3; <span class="kw">define</span> <span class="kw">at</span> h4</span>
+<span id="cb17-36"><a href="#cb17-36" aria-hidden="true" tabindex="-1"></a>          <span class="co">--h3 : x ∈ X ∧ f x = y1;  h4 : x ∈ X ∧ f x = y2</span></span>
+<span id="cb17-37"><a href="#cb17-37" aria-hidden="true" tabindex="-1"></a>        <span class="kw">rewrite</span> [h3.right] <span class="kw">at</span> h4</span>
+<span id="cb17-38"><a href="#cb17-38" aria-hidden="true" tabindex="-1"></a>        <span class="kw">show</span> y1 = y2 <span class="kw">from</span> h4.right</span>
+<span id="cb17-39"><a href="#cb17-39" aria-hidden="true" tabindex="-1"></a>        <span class="kw">done</span></span>
+<span id="cb17-40"><a href="#cb17-40" aria-hidden="true" tabindex="-1"></a>      <span class="kw">done</span></span>
+<span id="cb17-41"><a href="#cb17-41" aria-hidden="true" tabindex="-1"></a>    · <span class="co">-- Proof of fcnl_on (invRel R) (image f X)</span></span>
+<span id="cb17-42"><a href="#cb17-42" aria-hidden="true" tabindex="-1"></a>      <span class="kw">define</span></span>
+<span id="cb17-43"><a href="#cb17-43" aria-hidden="true" tabindex="-1"></a>      <span class="kw">fix</span> y : B</span>
+<span id="cb17-44"><a href="#cb17-44" aria-hidden="true" tabindex="-1"></a>      <span class="kw">assume</span> h2 : y ∈ image f X</span>
+<span id="cb17-45"><a href="#cb17-45" aria-hidden="true" tabindex="-1"></a>      <span class="kw">define</span> <span class="kw">at</span> h2</span>
+<span id="cb17-46"><a href="#cb17-46" aria-hidden="true" tabindex="-1"></a>      <span class="kw">obtain</span> (x : A) (h3 : x ∈ X ∧ f x = y) <span class="kw">from</span> h2</span>
+<span id="cb17-47"><a href="#cb17-47" aria-hidden="true" tabindex="-1"></a>      <span class="kw">exists_unique</span></span>
+<span id="cb17-48"><a href="#cb17-48" aria-hidden="true" tabindex="-1"></a>      · <span class="co">-- Existence</span></span>
+<span id="cb17-49"><a href="#cb17-49" aria-hidden="true" tabindex="-1"></a>        <span class="kw">apply</span> Exists.intro x</span>
+<span id="cb17-50"><a href="#cb17-50" aria-hidden="true" tabindex="-1"></a>        <span class="kw">define</span></span>
+<span id="cb17-51"><a href="#cb17-51" aria-hidden="true" tabindex="-1"></a>        <span class="kw">show</span> x ∈ X ∧ f x = y <span class="kw">from</span> h3</span>
+<span id="cb17-52"><a href="#cb17-52" aria-hidden="true" tabindex="-1"></a>        <span class="kw">done</span></span>
+<span id="cb17-53"><a href="#cb17-53" aria-hidden="true" tabindex="-1"></a>      · <span class="co">-- Uniqueness</span></span>
+<span id="cb17-54"><a href="#cb17-54" aria-hidden="true" tabindex="-1"></a>        <span class="kw">fix</span> x1 : A; <span class="kw">fix</span> x2 : A</span>
+<span id="cb17-55"><a href="#cb17-55" aria-hidden="true" tabindex="-1"></a>        <span class="kw">assume</span> h4 : invRel R y x1</span>
+<span id="cb17-56"><a href="#cb17-56" aria-hidden="true" tabindex="-1"></a>        <span class="kw">assume</span> h5 : invRel R y x2</span>
+<span id="cb17-57"><a href="#cb17-57" aria-hidden="true" tabindex="-1"></a>        <span class="kw">define</span> <span class="kw">at</span> h4; <span class="kw">define</span> <span class="kw">at</span> h5</span>
+<span id="cb17-58"><a href="#cb17-58" aria-hidden="true" tabindex="-1"></a>        <span class="kw">rewrite</span> [←h5.right] <span class="kw">at</span> h4</span>
+<span id="cb17-59"><a href="#cb17-59" aria-hidden="true" tabindex="-1"></a>        <span class="kw">show</span> x1 = x2 <span class="kw">from</span> h1 h4.left h5.left h4.right</span>
+<span id="cb17-60"><a href="#cb17-60" aria-hidden="true" tabindex="-1"></a>        <span class="kw">done</span></span>
+<span id="cb17-61"><a href="#cb17-61" aria-hidden="true" tabindex="-1"></a>      <span class="kw">done</span></span>
+<span id="cb17-62"><a href="#cb17-62" aria-hidden="true" tabindex="-1"></a>    <span class="kw">done</span></span>
+<span id="cb17-63"><a href="#cb17-63" aria-hidden="true" tabindex="-1"></a>  <span class="kw">done</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>To apply this result to the functions introduced at the beginning of this section, we will want to use <code>Univ A</code> for the set <code>X</code> in the theorem <code>equinum_image</code>:</p>
+<div class="sourceCode" id="cb18"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> Range {A B : <span class="kw">Type</span>} (f : A → B) : Set B := image f (Univ A)</span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a><span class="kw">lemma</span> one_one_on_of_one_one {A B : <span class="kw">Type</span>} {f : A → B}</span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>    (h : one_to_one f) (X : Set A) : one_one_on f X := <span class="cn">sorry</span></span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> equinum_Range {A B : <span class="kw">Type</span>} {f : A → B} (h : one_to_one f) :</span>
+<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a>    Univ A ∼ Range f := equinum_image (one_one_on_of_one_one h (Univ A))</span>
+<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> equinum_Univ {A B : <span class="kw">Type</span>} {f : A → B}</span>
+<span id="cb18-10"><a href="#cb18-10" aria-hidden="true" tabindex="-1"></a>    (h1 : one_to_one f) (h2 : onto f) : Univ A ∼ Univ B := <span class="kw">by</span></span>
+<span id="cb18-11"><a href="#cb18-11" aria-hidden="true" tabindex="-1"></a>  <span class="kw">have</span> h3 : Univ A ∼ Range f := equinum_Range h1</span>
+<span id="cb18-12"><a href="#cb18-12" aria-hidden="true" tabindex="-1"></a>  <span class="kw">have</span> h4 : Range f = Univ B := <span class="kw">by</span></span>
+<span id="cb18-13"><a href="#cb18-13" aria-hidden="true" tabindex="-1"></a>    <span class="kw">apply</span> Set.ext</span>
+<span id="cb18-14"><a href="#cb18-14" aria-hidden="true" tabindex="-1"></a>    <span class="kw">fix</span> b : B</span>
+<span id="cb18-15"><a href="#cb18-15" aria-hidden="true" tabindex="-1"></a>    <span class="kw">apply</span> Iff.intro</span>
+<span id="cb18-16"><a href="#cb18-16" aria-hidden="true" tabindex="-1"></a>    · <span class="co">-- (→)</span></span>
+<span id="cb18-17"><a href="#cb18-17" aria-hidden="true" tabindex="-1"></a>      <span class="kw">assume</span> h4 : b ∈ Range f</span>
+<span id="cb18-18"><a href="#cb18-18" aria-hidden="true" tabindex="-1"></a>      <span class="kw">show</span> b ∈ Univ B <span class="kw">from</span> elt_Univ b</span>
+<span id="cb18-19"><a href="#cb18-19" aria-hidden="true" tabindex="-1"></a>      <span class="kw">done</span></span>
+<span id="cb18-20"><a href="#cb18-20" aria-hidden="true" tabindex="-1"></a>    · <span class="co">-- (←)</span></span>
+<span id="cb18-21"><a href="#cb18-21" aria-hidden="true" tabindex="-1"></a>      <span class="kw">assume</span> h4 : b ∈ Univ B</span>
+<span id="cb18-22"><a href="#cb18-22" aria-hidden="true" tabindex="-1"></a>      <span class="kw">define</span> <span class="kw">at</span> h2</span>
+<span id="cb18-23"><a href="#cb18-23" aria-hidden="true" tabindex="-1"></a>      <span class="kw">obtain</span> (a : A) (h5 : f a = b) <span class="kw">from</span> h2 b</span>
+<span id="cb18-24"><a href="#cb18-24" aria-hidden="true" tabindex="-1"></a>      <span class="kw">apply</span> Exists.intro a</span>
+<span id="cb18-25"><a href="#cb18-25" aria-hidden="true" tabindex="-1"></a>      <span class="kw">apply</span> And.intro _ h5</span>
+<span id="cb18-26"><a href="#cb18-26" aria-hidden="true" tabindex="-1"></a>      <span class="kw">show</span> a ∈ Univ A <span class="kw">from</span> elt_Univ a</span>
+<span id="cb18-27"><a href="#cb18-27" aria-hidden="true" tabindex="-1"></a>      <span class="kw">done</span></span>
+<span id="cb18-28"><a href="#cb18-28" aria-hidden="true" tabindex="-1"></a>    <span class="kw">done</span></span>
+<span id="cb18-29"><a href="#cb18-29" aria-hidden="true" tabindex="-1"></a>  <span class="kw">rewrite</span> [h4] <span class="kw">at</span> h3</span>
+<span id="cb18-30"><a href="#cb18-30" aria-hidden="true" tabindex="-1"></a>  <span class="kw">show</span> Univ A ∼ Univ B <span class="kw">from</span> h3</span>
+<span id="cb18-31"><a href="#cb18-31" aria-hidden="true" tabindex="-1"></a>  <span class="kw">done</span></span>
+<span id="cb18-32"><a href="#cb18-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-33"><a href="#cb18-33" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Z_equinum_N : Univ Int ∼ Univ Nat :=</span>
+<span id="cb18-34"><a href="#cb18-34" aria-hidden="true" tabindex="-1"></a>  equinum_Univ fzn_one_one fzn_onto</span>
+<span id="cb18-35"><a href="#cb18-35" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-36"><a href="#cb18-36" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> NxN_equinum_N : Univ (Nat × Nat) ∼ Univ Nat :=</span>
+<span id="cb18-37"><a href="#cb18-37" aria-hidden="true" tabindex="-1"></a>  equinum_Univ fnnn_one_one fnnn_onto</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <a href="https://doi.org/10.1017/9781108539890">
 
 </a></section><a href="https://doi.org/10.1017/9781108539890">
