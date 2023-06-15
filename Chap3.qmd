@@ -3963,7 +3963,7 @@ Suppose $A$, $B$, and $C$ are sets, $A$ and $B$ are not disjoint, $A$ and $C$ ar
 Since $A$ and $B$ are not disjoint, we can let $b$ be something such that $b \in A$ and $b \in B$.  Similarly, since $A$ and $C$ are not disjoint, there is some object $c$ such that $c \in A$ and $c \in C$.  Since $A$ has only one element, we must have $b = c$.  Thus $b = c \in B \cap C$ and therefore $B$ and $C$ are not disjoint. [&nbsp;□]{.excl}\qedhere
 :::
 
-Before ending this section, we return to the question of how you can tell if a theorem you want to use is in Lean's library.  In an earlier example, we guessed that the commutative law for "or" might be in Lean's library, and we were then able to use the `#check` command to confirm it.  But there is another technique that we could have used: the tactic `library_search`.  Let's return to our proof of the theorem `union_comm`, which started like this:
+Before ending this section, we return to the question of how you can tell if a theorem you want to use is in Lean's library.  In an earlier example, we guessed that the commutative law for "or" might be in Lean's library, and we were then able to use the `#check` command to confirm it.  But there is another technique that we could have used: the tactic `apply?`, which asks Lean to search through its library of theorems to see if there is one that could be applied to prove the goal.  Let's return to our proof of the theorem `union_comm`, which started like this:
 
 ::: {.inout}
 ::: {.inpt}
@@ -3990,7 +3990,7 @@ x : U
 :::
 :::
 
-Now let's give the `library_search` tactic a try.
+Now let's give the `apply?` tactic a try.
 
 ```lean
 theorem union_comm {U : Type} (X Y : Set U) :
@@ -3999,33 +3999,33 @@ theorem union_comm {U : Type} (X Y : Set U) :
   fix x : U
   define : x ∈ X ∪ Y
   define : x ∈ Y ∪ X
-  ++library_search::
+  ++apply?::
   done
 ```
 
-It takes a few seconds for Lean to search its library of theorems, but eventually a blue squiggle appears under `library_search`, indicating that the tactic has produced an answer.  You will find the answer in the Infoview pane:  `exact or_comm' (x ∈ X) (x ∈ Y)`.  The word `exact` is the name of a tactic that we have not discussed; it is a shorthand for `show _ from`, where the blank gets filled in with the goal.  Thus, you can think of `library_search`'s answer as a shortened form of the tactic
+It takes a few seconds for Lean to search its library of theorems, but eventually a blue squiggle appears under `apply?`, indicating that the tactic has produced an answer.  You will find the answer in the Infoview pane:  `Try this: exact Or.comm`.  The word `exact` is the name of a tactic that we have not discussed; it is a shorthand for `show _ from`, where the blank gets filled in with the goal.  Thus, you can think of `apply?`'s answer as a shortened form of the tactic
 
 ::: {.ind}
 ```
-show x ∈ X ∨ x ∈ Y ↔ x ∈ Y ∨ x ∈ X from or_comm' (x ∈ X) (x ∈ Y)
+show x ∈ X ∨ x ∈ Y ↔ x ∈ Y ∨ x ∈ X from Or.comm
 ```
 :::
 
 Usually your proof will be more readable if you use the `show` tactic to state explicitly the goal that is being proven.  This also gives Lean a chance to correct you if you have become confused about what goal you are proving.  But sometimes---for example, if the goal is very long---it is convenient to use the `exact` tactic instead.  You might think of `exact` as meaning "the following is a term-mode proof that is exactly what is needed to prove the goal."
 
-The `library_search` tactic has not only come up with a suggested tactic, it has applied that tactic, and the proof is now complete.  You can confirm that the tactic completes the proof by replacing the line `library_search` in the proof with either `library_search`'s suggested `exact` tactic or the `show` tactic displayed above.
+The `apply?` tactic has not only come up with a suggested tactic, it has applied that tactic, and the proof is now complete.  You can confirm that the tactic completes the proof by replacing the line `apply?` in the proof with either `apply?`'s suggested `exact` tactic or the `show` tactic displayed above.
 
-But what is `or_comm'`?  The command `#check @or_comm'` gives the result
+But what is `Or.comm`?  The command `#check @Or.comm` gives the result
 
 ::: {.ind}
 ```
-or_comm' : ∀ (a b : Prop), a ∨ b ↔ b ∨ a
+@Or.comm : ∀ {a b : Prop}, a ∨ b ↔ b ∨ a
 ```
 :::
 
-So `or_comm'` is the same as `or_comm`, except that the arguments `a` and `b` are not implicit; that's why `library_search` had to specify values for those arguments in its answer.  The `#check` command also produces a suggestion that we should use `or_comm` instead.
+So `Or.comm` is just another name for the theorem `or_comm`.
 
-The `library_search` tactic is somewhat unpredictable; sometimes it is able to find the right theorem in the library, and sometimes it isn't.  But it is always worth a try.
+The `apply?` tactic is somewhat unpredictable; sometimes it is able to find the right theorem in the library, and sometimes it isn't.  But it is always worth a try.
 
 ### Exercises
 
@@ -4234,7 +4234,7 @@ h4 : c = a * m * n
 :::
 :::
 
-Comparing `h4` to the goal, you might think that we can finish the proof with `show c = a * (m * n) from h4`.  But if you try it, you will get an error message.  What's the problem?  The difference in the parentheses is the clue.  Lean groups the arithmetic operations `+`, `-`, `*`, and `/` to the left, so `h4` means `h4 : c = (a * m) * n`, which is not quite the same as the goal.  To prove the goal, we will need to apply the associative law for multiplication.
+Note that in the application of `Exists.intro`, the parentheses around `m * n` are necessary to help Lean parse the line correctly.  Comparing `h4` to the goal, you might think that we can finish the proof with `show c = a * (m * n) from h4`.  But if you try it, you will get an error message.  What's the problem?  The difference in the parentheses is the clue.  Lean groups the arithmetic operations `+`, `-`, `*`, and `/` to the left, so `h4` means `h4 : c = (a * m) * n`, which is not quite the same as the goal.  To prove the goal, we will need to apply the associative law for multiplication.
 
 We have already seen that `and_assoc` is Lean's name for the associative law for "and".  Perhaps you can guess that the name for the associative law for multiplication is `mul_assoc`.  If you type `#check @mul_assoc`, Lean's response will be:
 
@@ -4665,16 +4665,15 @@ theorem ??Theorem_3_4_7:: :
 
 Sometimes the easiest way to write a calculational proof is to justify each line with `sorry` and then go back and fill in real justifications.  Lean has accepted the proof above, so we know that we'll have a complete proof if we can replace each `sorry` with a justification.
 
-To justify the first line of the calculational proof, try replacing `sorry` with `by library_search`.  Lean comes up with a justification:  `exact mul_sub_left_distrib 6 j k`.  The command `#check @mul_sub_left_distrib` tells us that the theorem `mul_sub_left_distrib` means
+To justify the first line of the calculational proof, try replacing `sorry` with `by apply?`.  Lean comes up with a justification:  `Int.mul_sub 6 j k`.  The command `#check @Int.mul_sub` tells us that the theorem `Int.mul_sub` means
 
 ::: {.ind}
 ```
-@mul_sub_left_distrib : ∀ {α : Type u_1} [inst : NonUnitalNonAssocRing α]
-                          (a b c : α), a * (b - c) = a * b - a * c
+Int.mul_sub : ∀ (a b c : ℤ), a * (b - c) = a * b - a * c
 ```
 :::
 
-Don't worry too much about the confusing implicit arguments in the first line; they are implicit, so you won't have to supply them.  The second line tells us that we can fill in `mul_sub_left_distrib 6 j k` as a proof of the first equation.
+Thus, we can fill in `Int.mul_sub 6 j k` as a proof of the first equation.
 
 It looks like we'll have to use the associativity of multiplication again to prove the second equation, but it will take more than one step.  Let's try writing a tactic-mode proof.  In the display below, we'll just focus on the calculational proof.
 
@@ -4683,8 +4682,7 @@ It looks like we'll have to use the associativity of multiplication again to pro
 ```lean
 have h6 : 6 * (j - k) = n :=
   calc 6 * (j - k)
-    _ = 6 * j - 6 * k :=
-        mul_sub_left_distrib 6 j k
+    _ = 6 * j - 6 * k := Int.mul_sub 6 j k
     _ = 3 * (2 * j) - 2 * (3 * k) := by
 
         **done::
@@ -4720,8 +4718,7 @@ To justify the second equation, we'll have to use associativity to rewrite both 
 ```lean
 have h6 : 6 * (j - k) = n :=
   calc 6 * (j - k)
-    _ = 6 * j - 6 * k :=
-        mul_sub_left_distrib 6 j k
+    _ = 6 * j - 6 * k := Int.mul_sub 6 j k
     _ = 3 * (2 * j) - 2 * (3 * k) := by
         rewrite [←mul_assoc 3 2 j]
         rewrite [←mul_assoc 2 3 k]
@@ -4766,8 +4763,7 @@ Ignoring the implicit argument `α`, this should remind you of the theorem `Iff.
 ```lean
 have h6 : 6 * (j - k) = n :=
   calc 6 * (j - k)
-    _ = 6 * j - 6 * k :=
-        mul_sub_left_distrib 6 j k
+    _ = 6 * j - 6 * k := Int.mul_sub 6 j k
     _ = 3 * (2 * j) - 2 * (3 * k) := by
         rewrite [←mul_assoc 3 2 j]
         rewrite [←mul_assoc 2 3 k]
@@ -4806,8 +4802,7 @@ To justify the third equation we have to substitute `n` for both `2 * j` and `3 
 ```lean
 have h6 : 6 * (j - k) = n :=
   calc 6 * (j - k)
-    _ = 6 * j - 6 * k :=
-        mul_sub_left_distrib 6 j k
+    _ = 6 * j - 6 * k := Int.mul_sub 6 j k
     _ = 3 * (2 * j) - 2 * (3 * k) := by
         rewrite [←mul_assoc 3 2 j]
         rewrite [←mul_assoc 2 3 k]
@@ -4841,43 +4836,41 @@ h5 : n = 3 * k
 
 Of course, the `rfl` tactic will now finish off the justification of the third equation.
 
-The fourth equation is `3 * n - 2 * n = (3 - 2) * n`.  It looks like the algebraic law we need to justify this is a lot like the one that was used in the first equation, but with the multiplication to the right of the subtraction rather than to the left.  It shouldn't be surprising, therefore, that the name of the theorem we need is `mul_sub_right_distrib`.  The command `#check @mul_sub_right_distrib` gives the response
+The fourth equation is `3 * n - 2 * n = (3 - 2) * n`.  It looks like the algebraic law we need to justify this is a lot like the one that was used in the first equation, but with the multiplication to the right of the subtraction rather than to the left.  It shouldn't be surprising, therefore, that the name of the theorem we need is `Int.sub_mul`.  The command `#check @Int.sub_mul` gives the response
 
 :::{.ind}
 ```
-@mul_sub_right_distrib : ∀ {α : Type u_1} [inst : NonUnitalNonAssocRing α]
-                          (a b c : α), (a - b) * c = a * c - b * c
+Int.sub_mul : ∀ (a b c : ℤ), (a - b) * c = a * c - b * c
 ```
 :::
 
-so `mul_sub_right_distrib 3 2 n` is a proof of `(3 - 2) * n = 3 * n - 2 * n`.  But the fourth equation has the sides of this equation reversed, so to justify it we need `(mul_sub_right_distrib 3 2 n).symm`.
+so `Int.sub_mul 3 2 n` is a proof of `(3 - 2) * n = 3 * n - 2 * n`.  But the fourth equation has the sides of this equation reversed, so to justify it we need `(Int.sub_mul 3 2 n).symm`.
 
 Finally, the fifth equation is `(3 - 2) * n = n`.  Why is this true?  Because it is definitionally equal to `1 * n = n`.  Is there a theorem to justify this last equation?  One way to find the answer is to type in this example:
 
 ```lean
-example (n : Int) : 1 * n = n := by ++library_search::
+example (n : Int) : 1 * n = n := by ++apply?::
 ```
 
-Lean responds with `exact one_mul n`, and `#check @one_mul` yields
+Lean responds with `exact Int.one_mul n`, and `#check @Int.one_mul` yields
 
 ::: {.ind}
 ```
-@one_mul : ∀ {M : Type u_1} [inst : MulOneClass M] (a : M), 1 * a = a
+Int.one_mul : ∀ (a : ℤ), 1 * a = a
 ```
 :::
 
-So `one_mul n` should justify the last equation.  Here's the complete calculational proof, where we have shortened the second step a bit by doing both `rewrite`s in one step.  When a tactic proof is short enough that it can be written on one line, we generally leave off `done`.
+So `Int.one_mul n` should justify the last equation.  Here's the complete calculational proof, where we have shortened the second step a bit by doing both `rewrite`s in one step.  When a tactic proof is short enough that it can be written on one line, we generally leave off `done`.
 
 ```lean
 have h6 : 6 * (j - k) = n :=
   calc 6 * (j - k)
-    _ = 6 * j - 6 * k :=
-        mul_sub_left_distrib 6 j k
+    _ = 6 * j - 6 * k := Int.mul_sub 6 j k
     _ = 3 * (2 * j) - 2 * (3 * k) := by
         rewrite [←mul_assoc 3 2 j, ←mul_assoc 2 3 k]; rfl
     _ = 3 * n - 2 * n := by rewrite [←h4, ←h5]; rfl
-    _ = (3 - 2) * n := (mul_sub_right_distrib 3 2 n).symm
-    _ = n := one_mul n
+    _ = (3 - 2) * n := (Int.sub_mul 3 2 n).symm
+    _ = n := Int.one_mul n
 ```
 
 Whew!  This example illustrates why algebraic reasoning in Lean can be difficult.  But one reason why this proof was challenging is that we justified all of our steps from basic algebraic principles.  Fortunately, there are more powerful tactics that can automate some algebraic reasoning.  For example, the tactic `ring` can combine algebraic laws involving addition, subtraction, multiplication, and exponentiation with natural number exponents to prove many equations in one step.  Also, the tactic `rw` is a variant of `rewrite` that automatically applies `rfl` after the rewriting if it can be used to finish the proof.  Here's a shortened version of our calculational proof that uses these tactics.
@@ -4890,7 +4883,22 @@ have h6 : 6 * (j - k) = n :=
     _ = n := by ring
 ```
 
-We end this section with an example of algebraic reasoning involving real numbers.  You can use the `#check` command to find the meanings of the theorems we use in this proof.
+By the way, the theorems `Int.mul_sub`, `Int.sub_mul`, and `Int.one_mul` that we used earlier are the integer versions of more general theorems `mul_sub`, `sub_mul`, and `one_mul`.  The `#check` command tells us what these general theorems say:
+
+:::{.ind}
+```
+@mul_sub : ∀ {α : Type u_1} [inst : NonUnitalNonAssocRing α]
+            (a b c : α), a * (b - c) = a * b - a * c
+
+@sub_mul : ∀ {α : Type u_1} [inst : NonUnitalNonAssocRing α]
+            (a b c : α), (a - b) * c = a * c - b * c
+
+@one_mul : ∀ {M : Type u_1} [inst : MulOneClass M]
+            (a : M), 1 * a = a
+```
+:::
+
+The implicit arguments say that these theorems apply in any number system with the appropriate algebraic properties.  We'll use the third theorem in our next example, which involves algebraic reasoning about real numbers.  You can use the `#check` command to find the meanings of the other theorems we use in this proof.
 
 ```lean
 theorem Example_3_5_4 (x : Real) (h1 : x ≤ x ^ 2) : x ≤ 0 ∨ 1 ≤ x := by

@@ -35,26 +35,19 @@ lemma fnz_even (k : Nat) : fnz (2 * k) = ↑k := by
     apply Exists.intro k
     rfl
     done
-  define : fnz (2 * k)  --Goal :
-    -- (if 2 ∣ 2 * k then ↑(2 * k / 2) else -↑((2 * k + 1) / 2)) = ↑k
-  rewrite [if_pos h1]    --Goal : ↑(2 * k / 2) = ↑k
-  have h2 : 0 < 2 := by linarith
-  rewrite [Nat.mul_div_cancel_left k h2]
-  rfl
+  have h2 : fnz (2 * k) = if 2 ∣ 2 * k then ↑(2 * k / 2)
+    else -↑((2 * k + 1) / 2) := by rfl
+  rewrite [if_pos h1] at h2  --h2 : fnz (2 * k) = ↑(2 * k / 2)
+  have h3 : 0 < 2 := by linarith
+  rewrite [Nat.mul_div_cancel_left k h3] at h2
+  show fnz (2 * k) = ↑k from h2
   done
 
 lemma fnz_odd (k : Nat) : fnz (2 * k + 1) = -↑(k + 1) := sorry
 
-lemma fzn_nat (k : Nat) : fzn ↑k = 2 * k := by
-  have h1 : (↑k : Int) ≥ 0 := Nat.cast_nonneg k
-  define : fzn ↑k  --Goal : 
-    -- (if ↑k ≥ 0 then 2 * Int.toNat ↑k
-    -- else 2 * Int.toNat (-↑k) - 1) = 2 * k
-  rewrite [if_pos h1, Int.toNat_coe_nat]
-  rfl
-  done
+lemma fzn_nat (k : Nat) : fzn ↑k = 2 * k := by rfl
 
-lemma fzn_neg_succ_nat (k : Nat) : fzn (-↑(k + 1)) = 2 * k + 1 := sorry
+lemma fzn_neg_succ_nat (k : Nat) : fzn (-↑(k + 1)) = 2 * k + 1 := by rfl
 ```
 
 Using these lemmas and reasoning by cases, it is straightforward to prove lemmas confirming that the composition of these functions, in either order, yields the identity function.  The cases for the first lemma are based on an exercise from Section 6.1.
@@ -132,9 +125,9 @@ lemma le_of_fnnn_eq {a1 b1 a2 b2 : Nat}
   done
 
 lemma fnnn_one_one : one_to_one fnnn := by
-  define
-  fix (a1, b1); fix (a2, b2)
-  assume h1 : fnnn (a1, b1) = fnnn (a2, b2)
+  fix (a1, b1) : Nat × Nat
+  fix (a2, b2) : Nat × Nat
+  assume h1 : fnnn (a1, b1) = fnnn (a2, b2)  --Goal : (a1, b1) = (a2, b2)
   have h2 : a1 + b1 ≤ a2 + b2 := le_of_fnnn_eq h1
   have h3 : a2 + b2 ≤ a1 + b1 := le_of_fnnn_eq h1.symm
   have h4 : a1 + b1 = a2 + b2 := by linarith
@@ -186,7 +179,7 @@ lemma fnnn_onto : onto fnnn := by
   done
 ```
 
-Despite these successes with one-to-one, onto functions, we will use a different definition of "equinumerous" in Lean.  There are two reasons for this change.  First of all, the domain of a function in Lean must be a *type*, be we want to be able to talk about *sets* being equinumerous.  Secondly, Lean expects functions to be *computable*; it regards the definition of a function as an algorithm for computing the value of the function on any input.  This restriction would cause problems with some of our proofs.  While there are ways to overcome these difficulties, they would introduce complications that we can avoid by using a different approach.
+Despite these successes with one-to-one, onto functions, we will use a definition of "equinumerous" in Lean that is different from the definition in *HTPI*.  There are two reasons for this change.  First of all, the domain of a function in Lean must be a *type*, be we want to be able to talk about *sets* being equinumerous.  Secondly, Lean expects functions to be *computable*; it regards the definition of a function as an algorithm for computing the value of the function on any input.  This restriction would cause problems with some of our proofs.  While there are ways to overcome these difficulties, they would introduce complications that we can avoid by using a different approach.
 
 Suppose `A` and `B` are types, and we have sets `X : Set A` and `Y : Set B`.  We will define `X` to be equinumerous with `Y` if there is a relation `R` from `A` to `B` that defines a one-to-one correspondence between the elements of `X` and `Y`.  To formulate this precisely, suppose that `R` has type `Rel A B`.  We will place three requirements on `R`.  First, we require that the relation `R` should hold only between elements of `X` and `Y`.  We say in this case that `R` is a *relation within `X` and `Y`*:
 
@@ -195,7 +188,7 @@ def rel_within {A B : Type} (R : Rel A B) (X : Set A) (Y : Set B) : Prop :=
   ∀ ⦃x : A⦄ ⦃y : B⦄, R x y → x ∈ X ∧ y ∈ Y
 ```
 
-Notice that in this definition, we have used the same double braces for the quantified variables `x` and `y` that were used in the definition of "subset."  This means that `x` and `y` are implicit arguments, and therefore if we have `h1 : rel_within R X Y` and `h2 : R a b`, then `h1 h2` is a proof of `a ∈ X ∧ b ∈ Y`.  There is no need to specify that `a` and `b` are the values to be assigned to `x` and `y`; Lean will figure that out for itself.  (To type the double braces `⦃` and `⦄`, type `\{{` and `\}}`.)
+Notice that in this definition, we have used the same double braces for the quantified variables `x` and `y` that were used in the definition of "subset."  This means that `x` and `y` are implicit arguments, and therefore if we have `h1 : rel_within R X Y` and `h2 : R a b`, then `h1 h2` is a proof of `a ∈ X ∧ b ∈ Y`.  There is no need to specify that `a` and `b` are the values to be assigned to `x` and `y`; Lean will figure that out for itself.  (To type the double braces `⦃` and `⦄`, type `\{{` and `\}}`.  There were cases in previous chapters where it would have been appropriate to use such implicit arguments, but we chose not to do so to avoid confusion.  But by now you should be comfortable enough with Lean that you won't be confused by this new complication.)
 
 Next, we require that every element of `X` is related by `R` to exactly one thing.  We say in this case that `R` is *functional on `X`*:
 
@@ -230,13 +223,13 @@ def equinum {A B : Type} (X : Set A) (Y : Set B) : Prop :=
 notation:50  X:50 " ∼ " Y:50 => equinum X Y
 ```
 
-Do the examples at the beginning of this section establish that `Int ∼ Nat` and `Nat × Nat ∼ Nat`?  Not quite, because `Int`, `Nat`, and `Nat × Nat` are types, not sets.  We must talk about the sets of all objects of those types, not the types themselves, so we introduce another definition.
+Can the examples at the beginning of this section be used to establish that `Int ∼ Nat` and `Nat × Nat ∼ Nat`?  Not quite, because `Int`, `Nat`, and `Nat × Nat` are types, not sets.  We must talk about the sets of all objects of those types, not the types themselves, so we introduce another definition.
 
 ```lean
 def Univ (A : Type) : Set A := { x : A | True }
 
 lemma elt_Univ {A : Type} (a : A) :
-    a ∈ Univ A := by define; trivial
+    a ∈ Univ A := by trivial
 ```
 
 For any type `A`, `Univ A` is the set of all objects of type `A`; we might call it the *universal set* for the type `A`.  Now we can use the functions defined earlier to prove that `Univ Int ∼ Univ Nat` and `Univ (Nat × Nat) ∼ Univ Nat`.  The do this, we must convert the functions into relations and prove that those relations are matchings.  The conversion can be done with the following function.
@@ -246,7 +239,9 @@ def RelWithinFromFunc {A B : Type} (f : A → B) (X : Set A)
   (x : A) (y : B) : Prop := x ∈ X ∧ f x = y
 ```
 
-We will say that a function is one-to-one on a set `X` if it satisfies the definition of one-to-one for values in `X`:
+This definition says that if we have `f : A → B` and `X : Set A`, then `RelWithinFromFunc f X` is a relation from `A` to `B` that relates any `x ∈ X` to `f x`.
+
+We will say that a function is one-to-one on a set `X` if it satisfies the definition of one-to-one when applied to elements of `X`:
 
 ```lean
 def one_one_on {A B : Type} (f : A → B) (X : Set A) : Prop :=
@@ -297,10 +292,9 @@ theorem equinum_image {A B : Type} {X : Set A} {f : A → B}
         done
       done
     · -- Proof of fcnl_on (invRel R) (image f X)
-      define
+      define  --Goal : ∀ ⦃x : B⦄, x ∈ image f X → ∃! (y : A), invRel R x y
       fix y : B
       assume h2 : y ∈ image f X
-      define at h2
       obtain (x : A) (h3 : x ∈ X ∧ f x = y) from h2
       exists_unique
       · -- Existence
@@ -313,6 +307,7 @@ theorem equinum_image {A B : Type} {X : Set A} {f : A → B}
         assume h4 : invRel R y x1
         assume h5 : invRel R y x2
         define at h4; define at h5
+          --h4 : x1 ∈ X ∧ f x1 = y;  h5 : x2 ∈ X ∧ f x2 = y
         rewrite [←h5.right] at h4
         show x1 = x2 from h1 h4.left h5.left h4.right
         done
@@ -345,7 +340,6 @@ theorem equinum_Univ {A B : Type} {f : A → B}
       done
     · -- (←)
       assume h4 : b ∈ Univ B
-      define at h2
       obtain (a : A) (h5 : f a = b) from h2 b
       apply Exists.intro a
       apply And.intro _ h5
@@ -361,4 +355,554 @@ theorem Z_equinum_N : Univ Int ∼ Univ Nat :=
 
 theorem NxN_equinum_N : Univ (Nat × Nat) ∼ Univ Nat :=
   equinum_Univ fnnn_one_one fnnn_onto
+```
+
+Theorem 8.1.3 in *HTPI* shows that `∼` is reflexive, symmetric, and transitive.  We'll prove the three parts of this theorem separately.  To prove that `∼` is reflexive, we use the identity function.
+
+```lean
+lemma id_one_one_on {A : Type} (X : Set A) : one_one_on id X := sorry
+
+lemma image_id {A : Type} (X : Set A) : image id X = X := sorry
+
+theorem Theorem_8_1_3_1 {A : Type} (X : Set A) : X ∼ X := by
+  have h : X ∼ image id X := equinum_image (id_one_one_on X)
+  rewrite [image_id] at h
+  show X ∼ X from h
+  done
+```
+
+For symmetry, we show that the inverse of a matching is also a matching.
+
+```lean
+lemma inv_inv {A B : Type} (R : Rel A B) : invRel (invRel R) = R := by rfl
+
+lemma inv_match {A B : Type} {R : Rel A B} {X : Set A} {Y : Set B}
+    (h : matching R X Y) : matching (invRel R) Y X := by
+  define       --Goal : rel_within (invRel R) Y X ∧
+               --fcnl_on (invRel R) Y ∧ fcnl_on (invRel (invRel R)) X
+  define at h  --h : rel_within R X Y ∧ fcnl_on R X ∧ fcnl_on (invRel R) Y
+  apply And.intro
+  · -- Proof that rel_within R Y X
+    define     --Goal : ∀ ⦃x : B⦄ ⦃y : A⦄, invRel R x y → x ∈ Y ∧ y ∈ X
+    fix y : B; fix x : A
+    assume h1 : invRel R y x
+    define at h1  --h1 : R x y
+    have h2 : x ∈ X ∧ y ∈ Y := h.left h1
+    show y ∈ Y ∧ x ∈ X from And.intro h2.right h2.left
+    done
+  · -- proof that fcnl_on (inv R) Y ∧ fcnl_on (inv (inv R)) X
+    rewrite [inv_inv]
+    show fcnl_on (invRel R) Y ∧ fcnl_on R X from
+      And.intro h.right.right h.right.left
+    done
+  done
+
+theorem Theorem_8_1_3_2 {A B : Type} {X : Set A} {Y : Set B}
+    (h : X ∼ Y) : Y ∼ X := by
+  obtain (R : Rel A B) (h1 : matching R X Y) from h
+  apply Exists.intro (invRel R)
+  show matching (invRel R) Y X from inv_match h1
+  done
+```
+
+Finally, to prove transitivity, we will show that a composition of matchings is a matching.  Once again we must convert our definition of composition of sets of ordered pairs into an operation on relations.  We'll skip most of the details, which are routine.
+
+```lean
+def compRel {A B C : Type} (S : Rel B C) (R : Rel A B) : Rel A C :=
+  RelFromExt (comp (extension S) (extension R))
+
+lemma compRel_def {A B C : Type}
+    (S : Rel B C) (R : Rel A B) (a : A) (c : C) :
+    compRel S R a c ↔ ∃ (x : B), R a x ∧ S x c := by rfl
+
+lemma comp_match {A B C : Type} {R : Rel A B} {S : Rel B C}
+    {X : Set A} {Y : Set B} {Z : Set C} (h1 : matching R X Y)
+    (h2 : matching S Y Z) : matching (compRel S R) X Z := sorry
+
+theorem Theorem_8_1_3_3 {A B C : Type} {X : Set A} {Y : Set B} {Z : Set C}
+    (h1 : X ∼ Y) (h2 : Y ∼ Z) : X ∼ Z := by
+  obtain (R : Rel A B) (h3 : matching R X Y) from h1
+  obtain (S : Rel B C) (h4 : matching S Y Z) from h2
+  apply Exists.intro (compRel S R)
+  show matching (compRel S R) X Z from comp_match h3 h4
+  done
+```
+
+Now that we have a basic understanding of the concept of equinumerous sets, we can use this concept to make a number of definitions.  For any natural number $n$, *HTPI* defines $I_n$ to be the set $\{1, 2, \ldots, n\}$, and then it defines a set to be *finite* if it is equinumerous with $I_n$, for some $n$.  In Lean, it is a bit more convenient to use the sets $\{0, 1, \ldots, n - 1\}$.  We that small change, we can repeat the definitions of finite, denumerable, and countable in *HTPI*.
+
+```lean
+def I (n : Nat) : Set Nat := { k : Nat | k < n }
+
+lemma I_def (k n : Nat) : k ∈ I n ↔ k < n := by rfl
+
+def finite {A : Type} (X : Set A) : Prop :=
+  ∃ (n : Nat), I n ∼ X
+
+def denum {A : Type} (X : Set A) : Prop :=
+  Univ Nat ∼ X
+
+lemma denum_def {A : Type} (X : Set A) : denum X ↔ Univ Nat ∼ X := by rfl
+
+def ctble {A : Type} (X : Set A) : Prop :=
+  finite X ∨ denum X
+```
+
+Theorem 8.1.5 in *HTPI* gives two useful ways to characterize countable sets.  The proof of the theorem in *HTPI* uses the fact that every set of natural numbers is countable.  *HTPI* gives an intuitive explanation of why this is true, but of course in Lean an intuitive explanation won't do.  So before proving a version of Theorem 8.1.5, we sketch a proof that every set of natural numbers is countable.
+
+Suppose `X` has type `Set Nat`.  To prove that `X` is countable, we will define a relation `enum X` that "enumerates" the elements of `X` by relating `0` to the smallest element of `X`, `1` to the next element of `X`, `2` to the next, and so on.  How do we tell which natural number should be related to any element `n` of `X`?  Notice that if `n` is the smallest element of `X`, then there are `0` elements of `X` that are smaller than `n`; if it is second smallest element of `X`, then there is `1` element of `X` that is smaller than `n`; and so on.  Thus, `enum X` should relate a natural number `s` to `n` if and only if the number of elements of `X` that are smaller than `n` is `s`.  This suggests a plan:  First we define a proposition `num_elts_below X n s` that says that the number of elements of `X` that are smaller than `n` is `s`.  Then we use this proposition to define the relation `enum X`, and finally we show that `enum X` is a matching that can be used to prove that `X` is countable.
+
+The definition of `num_elts_below` is recursive.  The recursive step relates the number of elements of `X` below `n + 1` to the number of elements below `n`.  There are two possibilities: either `n ∈ X` and the number of elements below `n + 1` is one larger than the number below `n`, or `n ∉ X` and the two numbers are the same.  (This may remind you of the recursion we used to define `num_rp_below` in Chapter 7.)
+
+```lean
+def num_elts_below (X : Set Nat) (m s : Nat) : Prop :=
+  match m with
+    | 0 => s = 0
+    | n + 1 => (n ∈ X ∧ 1 ≤ s ∧ num_elts_below X n (s - 1)) ∨
+                (n ∉ X ∧ num_elts_below X n s)
+
+def enum (X : Set Nat) (s n : Nat) : Prop := n ∈ X ∧ num_elts_below X n s
+```
+
+The details of the proof that `enum X` is the required matching are long but not hard.
+
+```lean
+lemma neb_exists (X : Set Nat) :
+    ∀ (n : Nat), ∃ (s : Nat), num_elts_below X n s := sorry
+
+lemma bdd_subset_nat_match {X : Set Nat} {m s : Nat}
+    (h1 : ∀ (n : Nat), n ∈ X → n < m) (h2 : num_elts_below X m s) :
+    matching (enum X) (I s) X := sorry
+
+lemma bdd_subset_nat {X : Set Nat} {m s : Nat}
+    (h1 : ∀ (n : Nat), n ∈ X → n < m) (h2 : num_elts_below X m s) :
+    I s ∼ X := Exists.intro (enum X) (bdd_subset_nat_match h1 h2)
+
+lemma unbdd_subset_nat_match {X : Set Nat}
+    (h1 : ∀ (m : Nat), ∃ (n : Nat), n ∈ X ∧ n ≥ m) :
+    matching (enum X) (Univ Nat) X := sorry
+
+lemma unbdd_subset_nat {X : Set Nat}
+    (h1 : ∀ (m : Nat), ∃ (n : Nat), n ∈ X ∧ n ≥ m) :
+    denum X := Exists.intro (enum X) (unbdd_subset_nat_match h1)
+
+lemma subset_nat_ctble (X : Set Nat) : ctble X := by
+  define          --Goal : finite X ∨ denum X
+  by_cases h1 : ∃ (m : Nat), ∀ (n : Nat), n ∈ X → n < m
+  · -- Case 1. h1 : ∃ (m : Nat), ∀ (n : Nat), n ∈ X → n < m
+    apply Or.inl  --Goal : finite X
+    obtain (m : Nat) (h2 : ∀ (n : Nat), n ∈ X → n < m) from h1
+    obtain (s : Nat) (h3 : num_elts_below X m s) from neb_exists X m
+    apply Exists.intro s
+    show I s ∼ X from bdd_subset_nat h2 h3
+    done
+  · -- Case 2. h1 : ¬∃ (m : Nat), ∀ (n : Nat), n ∈ X → n < m
+    apply Or.inr  --Goal : denum X
+    push_neg at h1
+      --This tactic converts h1 to : ∀ (m : Nat), ∃ (n : Nat), n ∈ X ∧ m ≤ n
+    show denum X from unbdd_subset_nat h1
+    done
+  done
+```
+
+As a consequence of our last lemma, we get another characterization of countable sets: a set is countable if and only if it is equinumerous with some subset of the natural numbers:
+
+```lean
+lemma ctble_of_equinum_ctble {A B : Type} {X : Set A} {Y : Set B}
+    (h1 : X ∼ Y) (h2 : ctble X) : ctble Y := sorry
+
+lemma ctble_iff_equinum_set_nat {A : Type} (X : Set A) : 
+    ctble X ↔ ∃ (I : Set Nat), I ∼ X := by
+  apply Iff.intro
+  · -- (→)
+    assume h1 : ctble X
+    define at h1  --h1 : finite X ∨ denum X
+    by_cases on h1
+    · -- Case 1. h1 : finite X
+      define at h1  --h1 : ∃ (n : Nat), I n ∼ X
+      obtain (n : Nat) (h2 : I n ∼ X) from h1
+      show ∃ (I : Set Nat), I ∼ X from Exists.intro (I n) h2
+      done
+    · -- Case 2. h1 : denum X
+      rewrite [denum_def] at h1  --h1 : Univ Nat ∼ X
+      show ∃ (I : Set Nat), I ∼ X from Exists.intro (Univ Nat) h1
+      done
+    done
+  · -- (←)
+    assume h1 : ∃ (I : Set Nat), I ∼ X
+    obtain (I : Set Nat) (h2 : I ∼ X) from h1
+    have h3 : ctble I := subset_nat_ctble I
+    show ctble X from ctble_of_equinum_ctble h2 h3
+    done
+  done
+```
+
+We are now ready to turn to Theorem 8.1.5 in *HTPI*.  Suppose `X` is a set.  The theorem gives two statements that are equivalent to the countability of `X`.  The first involves a function from the natural numbers to `X` that is onto.  In keeping with our approach in this section, we state a similar characterization involving a relation rather than a function.
+
+```lean
+def unique_val_on_N {A : Type} (R : Rel Nat A) : Prop :=
+  ∀ ⦃n : Nat⦄ ⦃x1 x2 : A⦄, R n x1 → R n x2 → x1 = x2
+
+def nat_rel_onto {A : Type} (R : Rel Nat A) (X : Set A) : Prop :=
+  ∀ ⦃x : A⦄, x ∈ X → ∃ (n : Nat), R n x
+
+def fcnl_onto_from_nat {A : Type} (R : Rel Nat A) (X : Set A) : Prop :=
+  unique_val_on_N R ∧ nat_rel_onto R X
+```
+
+Intuitively, you might think of `fcnl_onto_from_nat R X` as meaning that the relation `R` defines a function whose domain is a subset of the natural numbers and whose range contains `X`.
+
+The second characterization of the countability of `X` in Theorem 8.1.5 involves a function from `X` to the natural numbers that is one-to-one.  Once again, we rephrase this in terms of relations.  We define `fcnl_one_one_to_nat R X` to mean that `R` defines a function from `X` to the natural numbers that is one-to-one:
+
+```lean
+def fcnl_one_one_to_nat {A : Type} (R : Rel A Nat) (X : Set A) : Prop :=
+  fcnl_on R X ∧ ∀ ⦃x1 x2 : A⦄ ⦃n : Nat⦄,
+    (x1 ∈ X ∧ R x1 n) → (x2 ∈ X ∧ R x2 n) → x1 = x2
+```
+
+Our plan is to prove that the following statements are equivalent:
+
+1.  `ctble X`
+2.  `∃ (R : Rel Nat A), fcnl_onto_from_nat R X`
+3.  `∃ (R : Rel A Nat), fcnl_one_one_to_nat R X`
+
+As in *HTPI*, we will do this by proving 1 → 2 → 3 → 1.  Here is the proof of 1 → 2.
+
+```lean
+theorem Theorem_8_1_5_1_to_2 {A : Type} {X : Set A} (h1 : ctble X) :
+    ∃ (R : Rel Nat A), fcnl_onto_from_nat R X := by
+  rewrite [ctble_iff_equinum_set_nat] at h1
+  obtain (I : Set Nat) (h2 : I ∼ X) from h1
+  obtain (R : Rel Nat A) (h3 : matching R I X) from h2
+  define at h3
+    --h3 : rel_within R I X ∧ fcnl_on R I ∧ fcnl_on (invRel R) X
+  apply Exists.intro R
+  define  --Goal : unique_val_on_N R ∧ nat_rel_onto R X
+  apply And.intro
+  · -- Proof of unique_val_on_N R
+    define
+    fix n : Nat; fix x1 : A; fix x2 : A
+    assume h4 : R n x1
+    assume h5 : R n x2      --Goal : x1 = x2
+    have h6 : n ∈ I ∧ x1 ∈ X := h3.left h4
+    show x1 = x2 from fcnl_unique h3.right.left h6.left h4 h5
+    done
+  · -- Proof of nat_rel_onto R X
+    define
+    fix x : A
+    assume h4 : x ∈ X  --Goal : ∃ (n : Nat), R n x
+    show ∃ (n : Nat), R n x from fcnl_exists h3.right.right h4
+    done
+  done
+```
+
+For the proof of 2 → 3, suppose we have `X : Set A` and `S : Rel Nat A`, and the statement `fcnl_onto_from_nat S X` is true.  We need to come up with a relation `R : Rel A Nat` for which we can prove `fcnl_one_one_to_nat R X`.  You might be tempted to try `R = invRel S`, but there is a problem with this choice:  if `x ∈ X`, there might be multiple natural numbers `n` such that `S n x` holds, but we must make sure that there is only one `n` for which `R x n` holds.  Our solution to this problem will be to define `R x n` to mean that `n` is the smallest natural number for which `S n x` holds.  (The proof in *HTPI* uses a similar idea.)  The well ordering principle guarantees that there always is such a smallest element.
+
+```lean
+def least_rel_to {A : Type} (S : Rel Nat A) (x : A) (n : Nat) : Prop :=
+  S n x ∧ ∀ (m : Nat), S m x → n ≤ m
+
+lemma exists_least_rel_to {A : Type} {S : Rel Nat A} {x : A}
+    (h1 : ∃ (n : Nat), S n x) : ∃ (n : Nat), least_rel_to S x n := by
+  set W : Set Nat := { n : Nat | S n x }
+  have h2 : ∃ (n : Nat), n ∈ W := h1
+  show ∃ (n : Nat), least_rel_to S x n from well_ord_princ W h2
+  done
+
+theorem Theorem_8_1_5_2_to_3 {A : Type} {X : Set A}
+    (h1 : ∃ (R : Rel Nat A), fcnl_onto_from_nat R X) :
+    ∃ (R : Rel A Nat), fcnl_one_one_to_nat R X := by
+  obtain (S : Rel Nat A) (h2 : fcnl_onto_from_nat S X) from h1
+  define at h2  --h2 : unique_val_on_N S ∧ nat_rel_onto S X
+  set R : Rel A Nat := least_rel_to S
+  apply Exists.intro R
+  define
+  apply And.intro
+  · -- Proof of fcnl_on R X
+    define
+    fix x : A
+    assume h4 : x ∈ X  --Goal : ∃! (y : Nat), R x y
+    exists_unique
+    · -- Existence
+      have h5 : ∃ (n : Nat), S n x := h2.right h4
+      show ∃ (n : Nat), R x n from exists_least_rel_to h5
+      done
+    · -- Uniqueness
+      fix n1 : Nat; fix n2 : Nat
+      assume h5 : R x n1
+      assume h6 : R x n2      --Goal : n1 = n2
+      define at h5    --h5 : S n1 x ∧ ∀ (m : Nat), S m x → n1 ≤ m
+      define at h6    --h6 : S n2 x ∧ ∀ (m : Nat), S m x → n2 ≤ m
+      have h7 : n1 ≤ n2 := h5.right n2 h6.left
+      have h8 : n2 ≤ n1 := h6.right n1 h5.left
+      linarith
+      done
+    done
+  · -- Proof of one-to-one
+    fix x1 : A; fix x2 : A; fix n : Nat
+    assume h4 : x1 ∈ X ∧ R x1 n
+    assume h5 : x2 ∈ X ∧ R x2 n
+    have h6 : R x1 n := h4.right
+    have h7 : R x2 n := h5.right
+    define at h6   --h6 : S n x1 ∧ ∀ (m : Nat), S m x1 → n ≤ m
+    define at h7   --h7 : S n x2 ∧ ∀ (m : Nat), S m x2 → n ≤ m
+    show x1 = x2 from h2.left h6.left h7.left
+    done
+  done
+```
+
+Finally, for the proof of 3 → 1, suppose we have `X : Set A`, `S : Rel A Nat`, and `fcnl_one_one_to_nat S X` holds.  Our plan is to restrict `S` to elements of `X` and then show that the inverse of the resulting relation is a matching from some set of natural numbers to `X`.  By `ctble_iff_equinum_set_nat`, this implies that `X` is countable.
+
+```lean
+def restrict_to {A B : Type} (S : Rel A B) (X : Set A)
+  (x : A) (y : B) : Prop := x ∈ X ∧ S x y
+
+theorem Theorem_8_1_5_3_to_1 {A : Type} {X : Set A}
+    (h1 : ∃ (R : Rel A Nat), fcnl_one_one_to_nat R X) :
+    ctble X := by
+  obtain (S : Rel A Nat) (h2 : fcnl_one_one_to_nat S X) from h1
+  define at h2  --h2 : fcnl_on S X ∧ ∀ ⦃x1 x2 : A⦄ ⦃n : Nat⦄,
+                --x1 ∈ X ∧ S x1 n → x2 ∈ X ∧ S x2 n → x1 = x2
+  rewrite [ctble_iff_equinum_set_nat]  --Goal : ∃ (I : Set Nat), I ∼ X
+  set R : Rel Nat A := invRel (restrict_to S X)
+  set I : Set Nat := { n : Nat | ∃ (x : A), R n x }
+  apply Exists.intro I
+  define        --Goal : ∃ (R : Rel Nat A), matching R I X
+  apply Exists.intro R
+  define
+  apply And.intro
+  · -- Proof of rel_within R I X
+    define
+    fix n : Nat; fix x : A
+    assume h3 : R n x   --Goal : n ∈ I ∧ x ∈ X
+    apply And.intro
+    · -- Proof that n ∈ I
+      define            --Goal : ∃ (x : A), R n x
+      show ∃ (x : A), R n x from Exists.intro x h3
+      done
+    · -- Proof that x ∈ X
+      define at h3      --h3 : x ∈ X ∧ S x n
+      show x ∈ X from h3.left
+      done
+    done
+  · -- Proofs of fcnl_ons
+    apply And.intro
+    · -- Proof of fcnl_on R I
+      define
+      fix n : Nat
+      assume h3 : n ∈ I   --Goal : ∃! (y : A), R n y
+      exists_unique
+      · -- Existence
+        define at h3      --h3 : ∃ (x : A), R n x
+        show ∃ (y : A), R n y from h3
+        done
+      · -- Uniqueness
+        fix x1 : A; fix x2 : A
+        assume h4 : R n x1
+        assume h5 : R n x2
+        define at h4      --h4 : x1 ∈ X ∧ S x1 n; 
+        define at h5      --h5 : x2 ∈ X ∧ S x2 n
+        show x1 = x2 from h2.right h4 h5
+        done
+      done
+    · -- Proof of fcnl_on (invRel R) X
+      define
+      fix x : A
+      assume h3 : x ∈ X  --Goal : ∃! (y : Nat), invRel R x y
+      exists_unique
+      · -- Existence
+        obtain (y : Nat) (h4 : S x y) from fcnl_exists h2.left h3
+        apply Exists.intro y
+        define
+        show x ∈ X ∧ S x y from And.intro h3 h4
+        done
+      · -- Uniqueness
+        fix n1 : Nat; fix n2 : Nat
+        assume h4 : invRel R x n1
+        assume h5 : invRel R x n2  --Goal : n1 = n2
+        define at h4     --h4 : x ∈ X ∧ S x n1
+        define at h5     --h5 : x ∈ X ∧ S x n2
+        show n1 = n2 from fcnl_unique h2.left h3 h4.right h5.right
+        done
+      done
+    done
+  done
+```
+
+We now know that statements 1--3 are equivalent, which means that statements 2 and 3 can be thought of as alternative ways to think about countability:
+
+```lean
+theorem Theorem_8_1_5_2 {A : Type} (X : Set A) :
+    ctble X ↔ ∃ (R : Rel Nat A), fcnl_onto_from_nat R X := by
+  apply Iff.intro
+  · -- (→)
+    assume h1 : ctble X
+    show ∃ (R : Rel Nat A), fcnl_onto_from_nat R X from
+      Theorem_8_1_5_1_to_2 h1
+    done
+  · -- (←)
+    assume h1 : ∃ (R : Rel Nat A), fcnl_onto_from_nat R X
+    have h2 : ∃ (R : Rel A Nat), fcnl_one_one_to_nat R X :=
+      Theorem_8_1_5_2_to_3 h1
+    show ctble X from Theorem_8_1_5_3_to_1 h2
+    done
+  done
+
+theorem Theorem_8_1_5_3 {A : Type} (X : Set A) :
+    ctble X ↔ ∃ (R : Rel A Nat), fcnl_one_one_to_nat R X := sorry
+```
+
+We end this section with a proof of Theorem 8.1.6 in *HTPI*, which says that the set of rational numbers is denumerable.  Our strategy is to define a one-to-one function from `Rat` (the type of rational numbers) to `Nat`.  We will need to know a little bit about the way rational numbers are represented in Lean.  If `q` has type `Rat`, then `q.num` is the numerator of `q`, which is an integer, and `q.den` is the denominator, which is a nonzero natural number.  The theorem `Rat.ext` says that if two rational numbers have the same numerator and denominator, then they are equal.  And we will also use the theorem `Prod.mk.inj`, which says that if two ordered pairs are equal, then their first coordinates are equal, as are their second coordinates.
+
+```lean
+def fqn (q : Rat) : Nat := fnnn (fzn q.num, q.den)
+
+lemma fqn_def (q : Rat) : fqn q = fnnn (fzn q.num, q.den) := by rfl
+
+lemma fqn_one_one : one_to_one fqn := by
+  define
+  fix q1 : Rat; fix q2 : Rat
+  assume h1 : fqn q1 = fqn q2
+  rewrite [fqn_def, fqn_def] at h1
+    --h1 : fnnn (fzn q1.num, q1.den) = fnnn (fzn q2.num, q2.den)
+  have h2 : (fzn q1.num, q1.den) = (fzn q2.num, q2.den) :=
+    fnnn_one_one _ _ h1
+  have h3 : fzn q1.num = fzn q2.num ∧ q1.den = q2.den :=
+    Prod.mk.inj h2
+  have h4 : q1.num = q2.num := fzn_one_one _ _ h3.left
+  show q1 = q2 from Rat.ext q1 q2 h4 h3.right
+  done
+
+lemma Range_fqn_unbdd :
+    ∀ (m : Nat), ∃ (n : Nat), n ∈ Range fqn ∧ n ≥ m := by
+  fix m : Nat
+  set n : Nat := fqn ↑m
+  have h1 : n = fnnn (fzn ↑m, 1) := by rfl
+  rewrite [fzn_nat, fnnn_def] at h1  --h1 : n = tri (2 * m + 1) + 2 * m
+  apply Exists.intro n
+  apply And.intro
+  · -- Proof that n ∈ Range fqn
+    define
+    apply Exists.intro ↑m
+    apply And.intro (elt_Univ (↑m : Rat))
+    rfl
+    done
+  · -- Proof that n ≥ m
+    show n ≥ m from
+      calc n
+        _ = tri (2 * m + 1) + 2 * m := h1
+        _ ≥ m := by linarith
+    done
+  done
+
+theorem Theorem_8_1_6 : denum (Univ Rat) := by
+  have h1 : Univ Nat ∼ Range fqn := unbdd_subset_nat Range_fqn_unbdd
+  have h2 : Univ Rat ∼ Range fqn := equinum_Range fqn_one_one
+  have h3 : Range fqn ∼ Univ Rat := Theorem_8_1_3_2 h2
+  show denum (Univ Rat) from Theorem_8_1_3_3 h1 h3
+  done
+```
+
+
+## 8.1½. Debts Paid
+
+
+In some of our proofs in this chapter, we will need to prove that two relations are equal.  To prove that two sets are equal, we usually start by applying `Set.ext`, and to prove that two functions are equal we apply `funext`.  We'll need a similar extensionality principle for relations.  If `R` and `S` are relations from `A` to `B`, the principle will say that if we have `h : ∀ (a : A) (b : B), R a b ↔ S a b`, then we can conclude that `R = S`.  To prove it, we'll use `h` to prove `extension R = extension S`, and then go on to deduce `R = S`.
+
+```lean
+theorem relext {A B : Type} {R S : Rel A B}
+    (h : ∀ (a : A) (b : B), R a b ↔ S a b) : R = S := by
+  have h2 : extension R = extension S := by
+    apply Set.ext
+    fix (a, b) : A × B --Goal : (a, b) ∈ extension R ↔ (a, b) ∈ extension S
+    rewrite [ext_def, ext_def]  --Goal : R a b ↔ S a b
+    show R a b ↔ S a b from h a b
+    done
+  show R = S from
+    calc R
+      _ = RelFromExt (extension R) := by rfl
+      _ = RelFromExt (extension S) := by rw [h2]
+      _ = S := by rfl
+  done
+```
+
+Theorem 8.1.2 in *HTPI* contains two statements.  The first says that if $U$, $V$, $W$, and $X$ are sets such that $U \sim V$ and $W \sim X$, then $U \times W \sim V \times X$.  To prove a similar theorem in Lean, we must first deal with the fact that in Lean, Cartesian product is an operation on types, not sets.  But we can define a Cartesian product operation on sets:
+
+```lean
+def Set_prod {A B : Type} (X : Set A) (Y : Set B) : Set (A × B) :=
+  { (a, b) : A × B | a ∈ X ∧ b ∈ Y }
+
+notation:75 X:75 " ×ₛ " Y:75 => Set_prod X Y
+
+lemma Set_prod_def {A B : Type} (X : Set A) (Y : Set B) (a : A) (b : B) :
+    (a, b) ∈ X ×ₛ Y ↔ a ∈ X ∧ b ∈ Y := by rfl
+```
+
+To type the subscript `s` after `×`, type `\_s`.  Thus, to type `×ₛ`, you can type `\times\_s` or `\x\_s`.  Notice that in the `notation` command that introduces the symbol `×ₛ`, we have used the number `75` in positions where we used `50` when defining the notation `∼`.  Without going into detail about exactly what the three occurrences of `50` and `75` mean, we will just say that this tells Lean that `×ₛ` is to be given higher precedence than `∼`, and as a result an expression like `X ∼ Y ×ₛ Z` will be interpreted as `X ∼ (Y ×ₛ Z)` rather than `(X ∼ Y) ×ₛ Z`.
+
+We can now state the theorem corresponding to the first part of Theorem 8.1.2 in *HTPI*.
+
+```lean
+theorem Theorem_8_1_2_1
+    {A B C D : Type} {U : Set A} {V : Set B} {W : Set C} {X : Set D}
+    (h1 : U ∼ V) (h2 : W ∼ X) : U ×ₛ W ∼ V ×ₛ X
+```
+
+To see how to prove this theorem, suppose that `R` is a matching from `U` to `V` and `S` is a matching from `W` to `X`.  We must produce a matching from `U ×ₛ W` to `V ×ₛ X`.  The following definition is motivated by the proof in *HTPI*:
+
+```lean
+def Rel_prod {A B C D : Type} (R : Rel A B) (S : Rel C D)
+  (p : A × C) (q : B × D) : Prop := R p.1 q.1 ∧ S p.2 q.2
+
+notation:75 R:75 " ×ᵣ " S:75 => Rel_prod R S
+
+lemma Rel_prod_def {A B C D : Type} (R : Rel A B) (S : Rel C D)
+    (a : A) (b : B) (c : C) (d : D) :
+    (R ×ᵣ S) (a, c) (b, d) ↔ R a b ∧ S c d := by rfl
+```
+
+With this definition, `R ×ᵣ S` is a relation from `A × C` to `B × D`.  (Of course, to type the subscript `r` after `×`, you should type `\_r`.)  The proof that `R ×ᵣ S` is a matching from `U ×ₛ W` to `V ×ₛ X` is straightforward but tedious.
+
+```lean
+lemma prod_match {A B C D : Type}
+    {U : Set A} {V : Set B} {W : Set C} {X : Set D}
+    {R : Rel A B} {S : Rel C D}
+    (h1 : matching R U V) (h2 : matching S W X) :
+    matching (R ×ᵣ S) (U ×ₛ W) (V ×ₛ X) := sorry
+
+theorem Theorem_8_1_2_1
+    {A B C D : Type} {U : Set A} {V : Set B} {W : Set C} {X : Set D}
+    (h1 : U ∼ V) (h2 : W ∼ X) : U ×ₛ W ∼ V ×ₛ X := by
+  obtain (R : Rel A B) (h3 : matching R U V) from h1
+  obtain (S : Rel C D) (h4 : matching S W X) from h2
+  apply Exists.intro (R ×ᵣ S)
+  show matching (R ×ᵣ S) (U ×ₛ W) (V ×ₛ X) from prod_match h3 h4
+  done
+```
+
+The proof of the second part of Theorem 8.1.2 is similar, and we again skip most of the details.
+
+```lean
+def Rel_union {A B : Type} (R S : Rel A B) : Rel A B :=
+  RelFromExt (extension R ∪ extension S)
+
+notation:75 R:75 " ∪ᵣ " S:75 => Rel_union R S
+
+lemma Rel_union_def {A B : Type} (R S : Rel A B) (a : A) (b : B) :
+    (R ∪ᵣ S) a b ↔ R a b ∨ S a b := by rfl
+
+lemma union_match {A B : Type}
+    {U W : Set A} {V X : Set B} {R S : Rel A B}
+    (h1 : empty (U ∩ W)) (h2 : empty (V ∩ X))
+    (h3 : matching R U V) (h4 : matching S W X) :
+    matching (R ∪ᵣ S) (U ∪ W) (V ∪ X) := sorry
+
+theorem Theorem_8_1_2_2
+    {A B : Type} {U W : Set A} {V X : Set B}
+    (h1 : empty (U ∩ W)) (h2 : empty (V ∩ X))
+    (h3 : U ∼ V) (h4 : W ∼ X) : U ∪ W ∼ V ∪ X := by
+  obtain (R : Rel A B) (h5 : matching R U V) from h3
+  obtain (S : Rel A B) (h6 : matching S W X) from h4
+  apply Exists.intro (R ∪ᵣ S)
+  show matching (R ∪ᵣ S) (U ∪ W) (V ∪ X) from union_match h1 h2 h5 h6
+  done
 ```

@@ -442,7 +442,7 @@ How can mathematical induction be used to prove a statement about finite sets?  
 
 What does it mean to say that a set "has $n$ elements"?  Section 6.2 of *HTPI* says that for the proofs in that section, "an intuitive understanding of this concept will suffice."  Unfortunately, intuition is not Lean's strong suit!  So we'll need to be more explicit about how to talk about finite sets in Lean.
 
-In Chapter 8, we'll define `numElts X n` to be a proposition saying that the set `X` has `n` elements, and we'll prove several theorems involving that proposition.  Those theorems make precise and explicit the intuitive ideas that we'll need in this section.  We'll state those theorems here and use them in our proofs, but you'll have to wait until Chapter 8 to see how they are proven.  Here are the theorems we'll need:
+In Chapter 8, we'll define `numElts X n` to be a proposition saying that the set `X` has `n` elements, and we'll prove several theorems involving that proposition.  Those theorems make precise and explicit the intuitive ideas that we'll need in this section.  We'll state those theorems here and use them in our proofs, but you'll have to wait until Section 8.1½ to see how they are proven.  Here are the theorems we'll need:
 
 ```lean
 theorem zero_elts_iff_empty {A : Type} (X : Set A) :
@@ -873,19 +873,18 @@ So we have three inequalities that we need to prove before we can justify the st
 How can we prove `2 ^ n > 0`?  It is often helpful to think about whether there is a general principle that is behind a statement we are trying to prove.  In our case, the inequality `2 ^ n > 0` is an instance of the general fact that if `m` and `n` are any natural numbers with `m > 0`, then `m ^ n > 0`.  Maybe that fact is in Lean's library:
 
 ```lean
-example (m n : Nat) (h : m > 0) : m ^ n > 0 := by ++library_search::
+example (m n : Nat) (h : m > 0) : m ^ n > 0 := by ++apply?::
 ```
 
-The `library_search` tactic comes up with `exact pow_pos h n`, and `#check @pow_pos` gives the result
+The `apply?` tactic comes up with `exact Nat.pos_pow_of_pos n h`, and `#check @pos_pow_of_pos` gives the result
 
 ::: {.ind}
 ```
-@pow_pos : ∀ {α : Type u_1} [inst : StrictOrderedSemiring α] {a : α},
-            0 < a → ∀ (n : ℕ), 0 < a ^ n
+@Nat.pos_pow_of_pos : ∀ {n : ℕ} (m : ℕ), 0 < n → 0 < n ^ m
 ```
 :::
 
-That means that we can use `pow_pos` to prove `2 ^ n > 0`, but first we'll need to prove that `2 > 0`.  We now have all the pieces we need; putting them together leads to this proof:
+That means that we can use `Nat.pos_pow_of_pos` to prove `2 ^ n > 0`, but first we'll need to prove that `2 > 0`.  We now have all the pieces we need; putting them together leads to this proof:
 
 ```lean
 theorem Example_6_3_1 : ∀ n ≥ 4, fact n > 2 ^ n := by
@@ -900,7 +899,7 @@ theorem Example_6_3_1 : ∀ n ≥ 4, fact n > 2 ^ n := by
     have h2 : n + 1 > 0 := by linarith
     have h3 : n + 1 > 2 := by linarith
     have h4 : 2 > 0 := by linarith
-    have h5 : 2 ^ n > 0 := pow_pos h4 n
+    have h5 : 2 ^ n > 0 := Nat.pos_pow_of_pos n h4
     show fact (n + 1) > 2 ^ (n + 1) from
       calc fact (n + 1)
         _ = (n + 1) * fact n := by rfl
