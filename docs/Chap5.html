@@ -563,31 +563,29 @@ $$
 <span id="cb37-14"><a href="#cb37-14" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Theorem_5_3_2_2 {A B : <span class="kw">Type</span>} (f : A → B) (g : B → A)</span>
 <span id="cb37-15"><a href="#cb37-15" aria-hidden="true" tabindex="-1"></a>    (h1 : graph g = inv (graph f)) : f ∘ g = id := <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>Combining the theorems above, we have shown that if <code>f</code> is one-to-one and onto, then there is a function <code>g</code> such that <code>g ∘ f = id</code> and <code>f ∘ g = id</code>. In fact, the converse is true as well: if such a function <code>g</code> exists, then <code>f</code> must be one-to-one and onto. Again, we’ll prove one statement as leave the second as an exercise.</p>
-<div class="sourceCode" id="cb38"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Theorem_5_3_3_1 {A B : <span class="kw">Type</span>} (f : A → B) :</span>
-<span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a>    (∃ (g : B → A), g ∘ f = id) → one_to_one f := <span class="kw">by</span></span>
-<span id="cb38-3"><a href="#cb38-3" aria-hidden="true" tabindex="-1"></a>  <span class="kw">assume</span> h1 : ∃ (g : B → A), g ∘ f = id</span>
-<span id="cb38-4"><a href="#cb38-4" aria-hidden="true" tabindex="-1"></a>  <span class="kw">obtain</span> (g : B → A) (h2 : g ∘ f = id) <span class="kw">from</span> h1</span>
-<span id="cb38-5"><a href="#cb38-5" aria-hidden="true" tabindex="-1"></a>  <span class="kw">define</span>              <span class="co">--Goal : ∀ (x1 x2 : A), f x1 = f x2 → x1 = x2</span></span>
-<span id="cb38-6"><a href="#cb38-6" aria-hidden="true" tabindex="-1"></a>  <span class="kw">fix</span> a1 : A; <span class="kw">fix</span> a2 : A</span>
-<span id="cb38-7"><a href="#cb38-7" aria-hidden="true" tabindex="-1"></a>  <span class="kw">assume</span> h3 : f a1 = f a2</span>
-<span id="cb38-8"><a href="#cb38-8" aria-hidden="true" tabindex="-1"></a>  <span class="kw">show</span> a1 = a2 <span class="kw">from</span></span>
-<span id="cb38-9"><a href="#cb38-9" aria-hidden="true" tabindex="-1"></a>    <span class="kw">calc</span> a1</span>
-<span id="cb38-10"><a href="#cb38-10" aria-hidden="true" tabindex="-1"></a>      _ = id a1 := <span class="kw">by</span> <span class="kw">rfl</span></span>
-<span id="cb38-11"><a href="#cb38-11" aria-hidden="true" tabindex="-1"></a>      _ = (g ∘ f) a1 := <span class="kw">by</span> <span class="kw">rw</span> [h2]</span>
-<span id="cb38-12"><a href="#cb38-12" aria-hidden="true" tabindex="-1"></a>      _ = g (f a1) := <span class="kw">by</span> <span class="kw">rfl</span></span>
-<span id="cb38-13"><a href="#cb38-13" aria-hidden="true" tabindex="-1"></a>      _ = g (f a2) := <span class="kw">by</span> <span class="kw">rw</span> [h3]</span>
-<span id="cb38-14"><a href="#cb38-14" aria-hidden="true" tabindex="-1"></a>      _ = (g ∘ f) a2 := <span class="kw">by</span> <span class="kw">rfl</span></span>
-<span id="cb38-15"><a href="#cb38-15" aria-hidden="true" tabindex="-1"></a>      _ = id a2 := <span class="kw">by</span> <span class="kw">rw</span> [h2]</span>
-<span id="cb38-16"><a href="#cb38-16" aria-hidden="true" tabindex="-1"></a>      _ = a2 := <span class="kw">by</span> <span class="kw">rfl</span></span>
-<span id="cb38-17"><a href="#cb38-17" aria-hidden="true" tabindex="-1"></a>  <span class="kw">done</span></span>
-<span id="cb38-18"><a href="#cb38-18" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb38-19"><a href="#cb38-19" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Theorem_5_3_3_2 {A B : <span class="kw">Type</span>} (f : A → B) :</span>
-<span id="cb38-20"><a href="#cb38-20" aria-hidden="true" tabindex="-1"></a>    (∃ (g : B → A), f ∘ g = id) → onto f := <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb38"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Theorem_5_3_3_1 {A B : <span class="kw">Type</span>} (f : A → B) (g : B → A)</span>
+<span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a>    (h1 : g ∘ f = id) : one_to_one f := <span class="kw">by</span></span>
+<span id="cb38-3"><a href="#cb38-3" aria-hidden="true" tabindex="-1"></a>  <span class="kw">define</span>              <span class="co">--Goal : ∀ (x1 x2 : A), f x1 = f x2 → x1 = x2</span></span>
+<span id="cb38-4"><a href="#cb38-4" aria-hidden="true" tabindex="-1"></a>  <span class="kw">fix</span> a1 : A; <span class="kw">fix</span> a2 : A</span>
+<span id="cb38-5"><a href="#cb38-5" aria-hidden="true" tabindex="-1"></a>  <span class="kw">assume</span> h2 : f a1 = f a2</span>
+<span id="cb38-6"><a href="#cb38-6" aria-hidden="true" tabindex="-1"></a>  <span class="kw">show</span> a1 = a2 <span class="kw">from</span></span>
+<span id="cb38-7"><a href="#cb38-7" aria-hidden="true" tabindex="-1"></a>    <span class="kw">calc</span> a1</span>
+<span id="cb38-8"><a href="#cb38-8" aria-hidden="true" tabindex="-1"></a>      _ = id a1 := <span class="kw">by</span> <span class="kw">rfl</span></span>
+<span id="cb38-9"><a href="#cb38-9" aria-hidden="true" tabindex="-1"></a>      _ = (g ∘ f) a1 := <span class="kw">by</span> <span class="kw">rw</span> [h1]</span>
+<span id="cb38-10"><a href="#cb38-10" aria-hidden="true" tabindex="-1"></a>      _ = g (f a1) := <span class="kw">by</span> <span class="kw">rfl</span></span>
+<span id="cb38-11"><a href="#cb38-11" aria-hidden="true" tabindex="-1"></a>      _ = g (f a2) := <span class="kw">by</span> <span class="kw">rw</span> [h2]</span>
+<span id="cb38-12"><a href="#cb38-12" aria-hidden="true" tabindex="-1"></a>      _ = (g ∘ f) a2 := <span class="kw">by</span> <span class="kw">rfl</span></span>
+<span id="cb38-13"><a href="#cb38-13" aria-hidden="true" tabindex="-1"></a>      _ = id a2 := <span class="kw">by</span> <span class="kw">rw</span> [h1]</span>
+<span id="cb38-14"><a href="#cb38-14" aria-hidden="true" tabindex="-1"></a>      _ = a2 := <span class="kw">by</span> <span class="kw">rfl</span></span>
+<span id="cb38-15"><a href="#cb38-15" aria-hidden="true" tabindex="-1"></a>  <span class="kw">done</span></span>
+<span id="cb38-16"><a href="#cb38-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb38-17"><a href="#cb38-17" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Theorem_5_3_3_2 {A B : <span class="kw">Type</span>} (f : A → B) (g : B → A)</span>
+<span id="cb38-18"><a href="#cb38-18" aria-hidden="true" tabindex="-1"></a>    (h1 : f ∘ g = id) : onto f := <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>We can combine the theorems above to show that if we have <code>f : A → B</code>, <code>g : B → A</code>, <code>g ∘ f = id</code>, and <code>f ∘ g = id</code>, then <code>graph g</code> must be the inverse of <code>graph f</code>. Compare the proof below to the proof of Theorem 5.3.5 in <em>HTPI</em>.</p>
 <div class="sourceCode" id="cb39"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Theorem_5_3_5 {A B : <span class="kw">Type</span>} (f : A → B) (g : B → A)</span>
 <span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a>    (h1 : g ∘ f = id) (h2 : f ∘ g = id) : graph g = inv (graph f) := <span class="kw">by</span></span>
-<span id="cb39-3"><a href="#cb39-3" aria-hidden="true" tabindex="-1"></a>  <span class="kw">have</span> h3 : one_to_one f := Theorem_5_3_3_1 f (Exists.intro g h1)</span>
-<span id="cb39-4"><a href="#cb39-4" aria-hidden="true" tabindex="-1"></a>  <span class="kw">have</span> h4 : onto f := Theorem_5_3_3_2 f (Exists.intro g h2)</span>
+<span id="cb39-3"><a href="#cb39-3" aria-hidden="true" tabindex="-1"></a>  <span class="kw">have</span> h3 : one_to_one f := Theorem_5_3_3_1 f g h1</span>
+<span id="cb39-4"><a href="#cb39-4" aria-hidden="true" tabindex="-1"></a>  <span class="kw">have</span> h4 : onto f := Theorem_5_3_3_2 f g h2</span>
 <span id="cb39-5"><a href="#cb39-5" aria-hidden="true" tabindex="-1"></a>  <span class="kw">obtain</span> (g' : B → A) (h5 : graph g' = inv (graph f))</span>
 <span id="cb39-6"><a href="#cb39-6" aria-hidden="true" tabindex="-1"></a>    <span class="kw">from</span> Theorem_5_3_1 f h3 h4</span>
 <span id="cb39-7"><a href="#cb39-7" aria-hidden="true" tabindex="-1"></a>  <span class="kw">have</span> h6 : g' ∘ f = id := Theorem_5_3_2_1 f g' h5</span>

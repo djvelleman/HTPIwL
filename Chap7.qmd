@@ -1777,6 +1777,20 @@ example {m : Nat} [NeZero m] (X : ZMod m) :
 ```
 :::
 
+::: {.numex arguments="10"}
+```lean
+theorem congr_rel_prime {m a b : Nat} (h1 : a ≡ b (MOD m)) :
+    rel_prime m a ↔ rel_prime m b := sorry
+```
+:::
+
+::: {.numex arguments="11"}
+```lean
+theorem rel_prime_mod (m a : Nat) :
+    rel_prime m (a % m) ↔ rel_prime m a := sorry
+```
+:::
+
 ## 7.4. Euler's Theorem
 
 The main result of Section 7.4 of *HTPI* is Euler's theorem.  The statement of the theorem involves Euler's totient function $\varphi$.  For any positive integer $m$, *HTPI* defines $\varphi(m)$ to be the number of elements of $\mathbb{Z}/{\equiv_m}$ that have multiplicative inverses.  In order to state and prove Euler's theorem in Lean, our first task is to define a Lean function `phi : Nat → Nat` that computes the totient function.
@@ -2409,6 +2423,8 @@ lemma perm_prod {m : Nat} (f : Nat → ZMod m) :
     done
   done
 ```
+
+There is one more theorem that is proven in Section 7.4 of *HTPI*: Theorem 7.4.4, which says that $\varphi$ is a multiplicative function.  The proof requires ideas that we will not develop in Lean until Chapter 8, so we will put off the proof until Section 8.1½.
 
 ### Exercises
 

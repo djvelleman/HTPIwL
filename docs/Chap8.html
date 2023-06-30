@@ -303,16 +303,13 @@ $$
 <span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a><span class="kw">lemma</span> fnz_fzn : fnz ∘ fzn = id  := <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>By theorems from Chapter 5, it follows that both <code>fnz</code> and <code>fzn</code> are one-to-one and onto.</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="kw">lemma</span> fzn_one_one : one_to_one fzn := <span class="kw">by</span></span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  <span class="kw">have</span> h : ∃ (g : Nat → Int), g ∘ fzn = id := Exists.intro fnz fnz_fzn</span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>  <span class="kw">show</span> one_to_one fzn <span class="kw">from</span> Theorem_5_3_3_1 fzn h</span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>  <span class="kw">done</span></span>
-<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a><span class="kw">lemma</span> fzn_onto : onto fzn := <span class="cn">sorry</span></span>
-<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a><span class="kw">lemma</span> fnz_one_one : one_to_one fnz := <span class="cn">sorry</span></span>
-<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a><span class="kw">lemma</span> fnz_onto : onto fnz := <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="kw">lemma</span> fzn_one_one : one_to_one fzn := Theorem_5_3_3_1 fzn fnz fnz_fzn</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="kw">lemma</span> fzn_onto : onto fzn := Theorem_5_3_3_2 fzn fnz fzn_fnz</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="kw">lemma</span> fnz_one_one : one_to_one fnz := Theorem_5_3_3_1 fnz fzn fzn_fnz</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a><span class="kw">lemma</span> fnz_onto : onto fnz := Theorem_5_3_3_2 fnz fzn fnz_fzn</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>We’ll give one more example: a one-to-one, onto function <code>fnnn</code> from <code>Nat × Nat</code> to <code>Nat</code>, whose definition is modeled on a function from <span class="math inline">\(\mathbb{Z}^+ \times \mathbb{Z}^+\)</span> to <span class="math inline">\(\mathbb{Z}^+\)</span> in <em>HTPI</em>. The definition of <code>fnnn</code> will use numbers of the form <code>k * (k + 1) / 2</code>. These numbers are sometimes called <em>triangular numbers</em>, because they count the number of objects in a triangular grid with <code>k</code> rows.</p>
 <div class="sourceCode" id="cb7"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> tri (k : Nat) : Nat := k * (k + 1) / 2</span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a></span>
@@ -430,116 +427,108 @@ $$
 <div class="sourceCode" id="cb16"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> one_one_on {A B : <span class="kw">Type</span>} (f : A → B) (X : Set A) : <span class="kw">Prop</span> :=</span>
 <span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>  ∀ ⦃x1 x2 : A⦄, x1 ∈ X → x2 ∈ X → f x1 = f x2 → x1 = x2</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>With all of this preparation, we can now prove that if <code>f</code> is one-to-one on <code>X</code>, then <code>X</code> is equinumerous with its image under <code>f</code>.</p>
-<div class="sourceCode" id="cb17"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> equinum_image {A B : <span class="kw">Type</span>} {X : Set A} {f : A → B}</span>
-<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>    (h1 : one_one_on f X) : X ∼ image f X := <span class="kw">by</span></span>
-<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>  <span class="kw">define</span>   <span class="co">--Goal : ∃ (R : Rel A B), matching R X (image f X)</span></span>
-<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>  <span class="kw">set</span> R : Rel A B := RelWithinFromFunc f X</span>
-<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>  <span class="kw">apply</span> Exists.intro R</span>
-<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>  <span class="kw">define</span>   <span class="co">--Goal : rel_within R X (image f X) ∧</span></span>
-<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a>           <span class="co">--fcnl_on R X ∧ fcnl_on (invRel R) (image f X)</span></span>
-<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a>  <span class="kw">apply</span> And.intro</span>
-<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a>  · <span class="co">-- Proof of rel_within</span></span>
-<span id="cb17-10"><a href="#cb17-10" aria-hidden="true" tabindex="-1"></a>    <span class="kw">define</span> <span class="co">--Goal : ∀ ⦃x : A⦄ ⦃y : B⦄, R x y → x ∈ X ∧ y ∈ image f X</span></span>
-<span id="cb17-11"><a href="#cb17-11" aria-hidden="true" tabindex="-1"></a>    <span class="kw">fix</span> x : A; <span class="kw">fix</span> y : B</span>
-<span id="cb17-12"><a href="#cb17-12" aria-hidden="true" tabindex="-1"></a>    <span class="kw">assume</span> h2 : R x y  <span class="co">--Goal : x ∈ X ∧ y ∈ image f X</span></span>
-<span id="cb17-13"><a href="#cb17-13" aria-hidden="true" tabindex="-1"></a>    <span class="kw">define</span> <span class="kw">at</span> h2       <span class="co">--h2 : x ∈ X ∧ f x = y</span></span>
-<span id="cb17-14"><a href="#cb17-14" aria-hidden="true" tabindex="-1"></a>    <span class="kw">apply</span> And.intro h2.left</span>
-<span id="cb17-15"><a href="#cb17-15" aria-hidden="true" tabindex="-1"></a>    <span class="kw">define</span></span>
-<span id="cb17-16"><a href="#cb17-16" aria-hidden="true" tabindex="-1"></a>    <span class="kw">show</span> ∃ (x : A), x ∈ X ∧ f x = y <span class="kw">from</span> Exists.intro x h2</span>
-<span id="cb17-17"><a href="#cb17-17" aria-hidden="true" tabindex="-1"></a>    <span class="kw">done</span></span>
-<span id="cb17-18"><a href="#cb17-18" aria-hidden="true" tabindex="-1"></a>  · <span class="co">-- Proofs of fcnl_ons</span></span>
-<span id="cb17-19"><a href="#cb17-19" aria-hidden="true" tabindex="-1"></a>    <span class="kw">apply</span> And.intro</span>
-<span id="cb17-20"><a href="#cb17-20" aria-hidden="true" tabindex="-1"></a>    · <span class="co">-- Proof of fcnl_on R X</span></span>
-<span id="cb17-21"><a href="#cb17-21" aria-hidden="true" tabindex="-1"></a>      <span class="kw">define</span>  <span class="co">--Goal : ∀ ⦃x : A⦄, x ∈ X → ∃! (y : B), R x y</span></span>
-<span id="cb17-22"><a href="#cb17-22" aria-hidden="true" tabindex="-1"></a>      <span class="kw">fix</span> x : A</span>
-<span id="cb17-23"><a href="#cb17-23" aria-hidden="true" tabindex="-1"></a>      <span class="kw">assume</span> h2 : x ∈ X</span>
-<span id="cb17-24"><a href="#cb17-24" aria-hidden="true" tabindex="-1"></a>      <span class="kw">exists_unique</span></span>
-<span id="cb17-25"><a href="#cb17-25" aria-hidden="true" tabindex="-1"></a>      · <span class="co">-- Existence</span></span>
-<span id="cb17-26"><a href="#cb17-26" aria-hidden="true" tabindex="-1"></a>        <span class="kw">apply</span> Exists.intro (f x)</span>
-<span id="cb17-27"><a href="#cb17-27" aria-hidden="true" tabindex="-1"></a>        <span class="kw">define</span>  <span class="co">--Goal : x ∈ X ∧ f x = f x</span></span>
-<span id="cb17-28"><a href="#cb17-28" aria-hidden="true" tabindex="-1"></a>        <span class="kw">apply</span> And.intro h2</span>
-<span id="cb17-29"><a href="#cb17-29" aria-hidden="true" tabindex="-1"></a>        <span class="kw">rfl</span></span>
-<span id="cb17-30"><a href="#cb17-30" aria-hidden="true" tabindex="-1"></a>        <span class="kw">done</span></span>
-<span id="cb17-31"><a href="#cb17-31" aria-hidden="true" tabindex="-1"></a>      · <span class="co">-- Uniqueness</span></span>
-<span id="cb17-32"><a href="#cb17-32" aria-hidden="true" tabindex="-1"></a>        <span class="kw">fix</span> y1 : B; <span class="kw">fix</span> y2 : B</span>
-<span id="cb17-33"><a href="#cb17-33" aria-hidden="true" tabindex="-1"></a>        <span class="kw">assume</span> h3 : R x y1</span>
-<span id="cb17-34"><a href="#cb17-34" aria-hidden="true" tabindex="-1"></a>        <span class="kw">assume</span> h4 : R x y2   <span class="co">--Goal : y1 = y2</span></span>
-<span id="cb17-35"><a href="#cb17-35" aria-hidden="true" tabindex="-1"></a>        <span class="kw">define</span> <span class="kw">at</span> h3; <span class="kw">define</span> <span class="kw">at</span> h4</span>
-<span id="cb17-36"><a href="#cb17-36" aria-hidden="true" tabindex="-1"></a>          <span class="co">--h3 : x ∈ X ∧ f x = y1;  h4 : x ∈ X ∧ f x = y2</span></span>
-<span id="cb17-37"><a href="#cb17-37" aria-hidden="true" tabindex="-1"></a>        <span class="kw">rewrite</span> [h3.right] <span class="kw">at</span> h4</span>
-<span id="cb17-38"><a href="#cb17-38" aria-hidden="true" tabindex="-1"></a>        <span class="kw">show</span> y1 = y2 <span class="kw">from</span> h4.right</span>
-<span id="cb17-39"><a href="#cb17-39" aria-hidden="true" tabindex="-1"></a>        <span class="kw">done</span></span>
-<span id="cb17-40"><a href="#cb17-40" aria-hidden="true" tabindex="-1"></a>      <span class="kw">done</span></span>
-<span id="cb17-41"><a href="#cb17-41" aria-hidden="true" tabindex="-1"></a>    · <span class="co">-- Proof of fcnl_on (invRel R) (image f X)</span></span>
-<span id="cb17-42"><a href="#cb17-42" aria-hidden="true" tabindex="-1"></a>      <span class="kw">define</span>  <span class="co">--Goal : ∀ ⦃x : B⦄, x ∈ image f X → ∃! (y : A), invRel R x y</span></span>
-<span id="cb17-43"><a href="#cb17-43" aria-hidden="true" tabindex="-1"></a>      <span class="kw">fix</span> y : B</span>
-<span id="cb17-44"><a href="#cb17-44" aria-hidden="true" tabindex="-1"></a>      <span class="kw">assume</span> h2 : y ∈ image f X</span>
-<span id="cb17-45"><a href="#cb17-45" aria-hidden="true" tabindex="-1"></a>      <span class="kw">obtain</span> (x : A) (h3 : x ∈ X ∧ f x = y) <span class="kw">from</span> h2</span>
-<span id="cb17-46"><a href="#cb17-46" aria-hidden="true" tabindex="-1"></a>      <span class="kw">exists_unique</span></span>
-<span id="cb17-47"><a href="#cb17-47" aria-hidden="true" tabindex="-1"></a>      · <span class="co">-- Existence</span></span>
-<span id="cb17-48"><a href="#cb17-48" aria-hidden="true" tabindex="-1"></a>        <span class="kw">apply</span> Exists.intro x</span>
-<span id="cb17-49"><a href="#cb17-49" aria-hidden="true" tabindex="-1"></a>        <span class="kw">define</span></span>
-<span id="cb17-50"><a href="#cb17-50" aria-hidden="true" tabindex="-1"></a>        <span class="kw">show</span> x ∈ X ∧ f x = y <span class="kw">from</span> h3</span>
-<span id="cb17-51"><a href="#cb17-51" aria-hidden="true" tabindex="-1"></a>        <span class="kw">done</span></span>
-<span id="cb17-52"><a href="#cb17-52" aria-hidden="true" tabindex="-1"></a>      · <span class="co">-- Uniqueness</span></span>
-<span id="cb17-53"><a href="#cb17-53" aria-hidden="true" tabindex="-1"></a>        <span class="kw">fix</span> x1 : A; <span class="kw">fix</span> x2 : A</span>
-<span id="cb17-54"><a href="#cb17-54" aria-hidden="true" tabindex="-1"></a>        <span class="kw">assume</span> h4 : invRel R y x1</span>
-<span id="cb17-55"><a href="#cb17-55" aria-hidden="true" tabindex="-1"></a>        <span class="kw">assume</span> h5 : invRel R y x2</span>
-<span id="cb17-56"><a href="#cb17-56" aria-hidden="true" tabindex="-1"></a>        <span class="kw">define</span> <span class="kw">at</span> h4; <span class="kw">define</span> <span class="kw">at</span> h5</span>
-<span id="cb17-57"><a href="#cb17-57" aria-hidden="true" tabindex="-1"></a>          <span class="co">--h4 : x1 ∈ X ∧ f x1 = y;  h5 : x2 ∈ X ∧ f x2 = y</span></span>
-<span id="cb17-58"><a href="#cb17-58" aria-hidden="true" tabindex="-1"></a>        <span class="kw">rewrite</span> [←h5.right] <span class="kw">at</span> h4</span>
-<span id="cb17-59"><a href="#cb17-59" aria-hidden="true" tabindex="-1"></a>        <span class="kw">show</span> x1 = x2 <span class="kw">from</span> h1 h4.left h5.left h4.right</span>
-<span id="cb17-60"><a href="#cb17-60" aria-hidden="true" tabindex="-1"></a>        <span class="kw">done</span></span>
-<span id="cb17-61"><a href="#cb17-61" aria-hidden="true" tabindex="-1"></a>      <span class="kw">done</span></span>
-<span id="cb17-62"><a href="#cb17-62" aria-hidden="true" tabindex="-1"></a>    <span class="kw">done</span></span>
-<span id="cb17-63"><a href="#cb17-63" aria-hidden="true" tabindex="-1"></a>  <span class="kw">done</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb17"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> equinum_image {A B : <span class="kw">Type</span>} {X : Set A} {Y : Set B} {f : A → B}</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>    (h1 : one_one_on f X) (h2 : image f X = Y) : X ∼ Y := <span class="kw">by</span></span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>  <span class="kw">rewrite</span> [←h2]</span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>  <span class="kw">define</span>   <span class="co">--Goal : ∃ (R : Rel A B), matching R X (image f X)</span></span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>  <span class="kw">set</span> R : Rel A B := RelWithinFromFunc f X</span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>  <span class="kw">apply</span> Exists.intro R</span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a>  <span class="kw">define</span>   <span class="co">--Goal : rel_within R X (image f X) ∧</span></span>
+<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a>           <span class="co">--fcnl_on R X ∧ fcnl_on (invRel R) (image f X)</span></span>
+<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a>  <span class="kw">apply</span> And.intro</span>
+<span id="cb17-10"><a href="#cb17-10" aria-hidden="true" tabindex="-1"></a>  · <span class="co">-- Proof of rel_within</span></span>
+<span id="cb17-11"><a href="#cb17-11" aria-hidden="true" tabindex="-1"></a>    <span class="kw">define</span> <span class="co">--Goal : ∀ ⦃x : A⦄ ⦃y : B⦄, R x y → x ∈ X ∧ y ∈ image f X</span></span>
+<span id="cb17-12"><a href="#cb17-12" aria-hidden="true" tabindex="-1"></a>    <span class="kw">fix</span> x : A; <span class="kw">fix</span> y : B</span>
+<span id="cb17-13"><a href="#cb17-13" aria-hidden="true" tabindex="-1"></a>    <span class="kw">assume</span> h3 : R x y  <span class="co">--Goal : x ∈ X ∧ y ∈ image f X</span></span>
+<span id="cb17-14"><a href="#cb17-14" aria-hidden="true" tabindex="-1"></a>    <span class="kw">define</span> <span class="kw">at</span> h3       <span class="co">--h2 : x ∈ X ∧ f x = y</span></span>
+<span id="cb17-15"><a href="#cb17-15" aria-hidden="true" tabindex="-1"></a>    <span class="kw">apply</span> And.intro h3.left</span>
+<span id="cb17-16"><a href="#cb17-16" aria-hidden="true" tabindex="-1"></a>    <span class="kw">define</span></span>
+<span id="cb17-17"><a href="#cb17-17" aria-hidden="true" tabindex="-1"></a>    <span class="kw">show</span> ∃ (x : A), x ∈ X ∧ f x = y <span class="kw">from</span> Exists.intro x h3</span>
+<span id="cb17-18"><a href="#cb17-18" aria-hidden="true" tabindex="-1"></a>    <span class="kw">done</span></span>
+<span id="cb17-19"><a href="#cb17-19" aria-hidden="true" tabindex="-1"></a>  · <span class="co">-- Proofs of fcnl_ons</span></span>
+<span id="cb17-20"><a href="#cb17-20" aria-hidden="true" tabindex="-1"></a>    <span class="kw">apply</span> And.intro</span>
+<span id="cb17-21"><a href="#cb17-21" aria-hidden="true" tabindex="-1"></a>    · <span class="co">-- Proof of fcnl_on R X</span></span>
+<span id="cb17-22"><a href="#cb17-22" aria-hidden="true" tabindex="-1"></a>      <span class="kw">define</span>  <span class="co">--Goal : ∀ ⦃x : A⦄, x ∈ X → ∃! (y : B), R x y</span></span>
+<span id="cb17-23"><a href="#cb17-23" aria-hidden="true" tabindex="-1"></a>      <span class="kw">fix</span> x : A</span>
+<span id="cb17-24"><a href="#cb17-24" aria-hidden="true" tabindex="-1"></a>      <span class="kw">assume</span> h3 : x ∈ X</span>
+<span id="cb17-25"><a href="#cb17-25" aria-hidden="true" tabindex="-1"></a>      <span class="kw">exists_unique</span></span>
+<span id="cb17-26"><a href="#cb17-26" aria-hidden="true" tabindex="-1"></a>      · <span class="co">-- Existence</span></span>
+<span id="cb17-27"><a href="#cb17-27" aria-hidden="true" tabindex="-1"></a>        <span class="kw">apply</span> Exists.intro (f x)</span>
+<span id="cb17-28"><a href="#cb17-28" aria-hidden="true" tabindex="-1"></a>        <span class="kw">define</span>  <span class="co">--Goal : x ∈ X ∧ f x = f x</span></span>
+<span id="cb17-29"><a href="#cb17-29" aria-hidden="true" tabindex="-1"></a>        <span class="kw">apply</span> And.intro h3</span>
+<span id="cb17-30"><a href="#cb17-30" aria-hidden="true" tabindex="-1"></a>        <span class="kw">rfl</span></span>
+<span id="cb17-31"><a href="#cb17-31" aria-hidden="true" tabindex="-1"></a>        <span class="kw">done</span></span>
+<span id="cb17-32"><a href="#cb17-32" aria-hidden="true" tabindex="-1"></a>      · <span class="co">-- Uniqueness</span></span>
+<span id="cb17-33"><a href="#cb17-33" aria-hidden="true" tabindex="-1"></a>        <span class="kw">fix</span> y1 : B; <span class="kw">fix</span> y2 : B</span>
+<span id="cb17-34"><a href="#cb17-34" aria-hidden="true" tabindex="-1"></a>        <span class="kw">assume</span> h4 : R x y1</span>
+<span id="cb17-35"><a href="#cb17-35" aria-hidden="true" tabindex="-1"></a>        <span class="kw">assume</span> h5 : R x y2   <span class="co">--Goal : y1 = y2</span></span>
+<span id="cb17-36"><a href="#cb17-36" aria-hidden="true" tabindex="-1"></a>        <span class="kw">define</span> <span class="kw">at</span> h4; <span class="kw">define</span> <span class="kw">at</span> h5</span>
+<span id="cb17-37"><a href="#cb17-37" aria-hidden="true" tabindex="-1"></a>          <span class="co">--h3 : x ∈ X ∧ f x = y1;  h4 : x ∈ X ∧ f x = y2</span></span>
+<span id="cb17-38"><a href="#cb17-38" aria-hidden="true" tabindex="-1"></a>        <span class="kw">rewrite</span> [h4.right] <span class="kw">at</span> h5</span>
+<span id="cb17-39"><a href="#cb17-39" aria-hidden="true" tabindex="-1"></a>        <span class="kw">show</span> y1 = y2 <span class="kw">from</span> h5.right</span>
+<span id="cb17-40"><a href="#cb17-40" aria-hidden="true" tabindex="-1"></a>        <span class="kw">done</span></span>
+<span id="cb17-41"><a href="#cb17-41" aria-hidden="true" tabindex="-1"></a>      <span class="kw">done</span></span>
+<span id="cb17-42"><a href="#cb17-42" aria-hidden="true" tabindex="-1"></a>    · <span class="co">-- Proof of fcnl_on (invRel R) (image f X)</span></span>
+<span id="cb17-43"><a href="#cb17-43" aria-hidden="true" tabindex="-1"></a>      <span class="kw">define</span>  <span class="co">--Goal : ∀ ⦃x : B⦄, x ∈ image f X → ∃! (y : A), invRel R x y</span></span>
+<span id="cb17-44"><a href="#cb17-44" aria-hidden="true" tabindex="-1"></a>      <span class="kw">fix</span> y : B</span>
+<span id="cb17-45"><a href="#cb17-45" aria-hidden="true" tabindex="-1"></a>      <span class="kw">assume</span> h3 : y ∈ image f X</span>
+<span id="cb17-46"><a href="#cb17-46" aria-hidden="true" tabindex="-1"></a>      <span class="kw">obtain</span> (x : A) (h4 : x ∈ X ∧ f x = y) <span class="kw">from</span> h3</span>
+<span id="cb17-47"><a href="#cb17-47" aria-hidden="true" tabindex="-1"></a>      <span class="kw">exists_unique</span></span>
+<span id="cb17-48"><a href="#cb17-48" aria-hidden="true" tabindex="-1"></a>      · <span class="co">-- Existence</span></span>
+<span id="cb17-49"><a href="#cb17-49" aria-hidden="true" tabindex="-1"></a>        <span class="kw">apply</span> Exists.intro x</span>
+<span id="cb17-50"><a href="#cb17-50" aria-hidden="true" tabindex="-1"></a>        <span class="kw">define</span></span>
+<span id="cb17-51"><a href="#cb17-51" aria-hidden="true" tabindex="-1"></a>        <span class="kw">show</span> x ∈ X ∧ f x = y <span class="kw">from</span> h4</span>
+<span id="cb17-52"><a href="#cb17-52" aria-hidden="true" tabindex="-1"></a>        <span class="kw">done</span></span>
+<span id="cb17-53"><a href="#cb17-53" aria-hidden="true" tabindex="-1"></a>      · <span class="co">-- Uniqueness</span></span>
+<span id="cb17-54"><a href="#cb17-54" aria-hidden="true" tabindex="-1"></a>        <span class="kw">fix</span> x1 : A; <span class="kw">fix</span> x2 : A</span>
+<span id="cb17-55"><a href="#cb17-55" aria-hidden="true" tabindex="-1"></a>        <span class="kw">assume</span> h5 : invRel R y x1</span>
+<span id="cb17-56"><a href="#cb17-56" aria-hidden="true" tabindex="-1"></a>        <span class="kw">assume</span> h6 : invRel R y x2</span>
+<span id="cb17-57"><a href="#cb17-57" aria-hidden="true" tabindex="-1"></a>        <span class="kw">define</span> <span class="kw">at</span> h5; <span class="kw">define</span> <span class="kw">at</span> h6</span>
+<span id="cb17-58"><a href="#cb17-58" aria-hidden="true" tabindex="-1"></a>          <span class="co">--h4 : x1 ∈ X ∧ f x1 = y;  h5 : x2 ∈ X ∧ f x2 = y</span></span>
+<span id="cb17-59"><a href="#cb17-59" aria-hidden="true" tabindex="-1"></a>        <span class="kw">rewrite</span> [←h6.right] <span class="kw">at</span> h5</span>
+<span id="cb17-60"><a href="#cb17-60" aria-hidden="true" tabindex="-1"></a>        <span class="kw">show</span> x1 = x2 <span class="kw">from</span> h1 h5.left h6.left h5.right</span>
+<span id="cb17-61"><a href="#cb17-61" aria-hidden="true" tabindex="-1"></a>        <span class="kw">done</span></span>
+<span id="cb17-62"><a href="#cb17-62" aria-hidden="true" tabindex="-1"></a>      <span class="kw">done</span></span>
+<span id="cb17-63"><a href="#cb17-63" aria-hidden="true" tabindex="-1"></a>    <span class="kw">done</span></span>
+<span id="cb17-64"><a href="#cb17-64" aria-hidden="true" tabindex="-1"></a>  <span class="kw">done</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>To apply this result to the functions introduced at the beginning of this section, we will want to use <code>Univ A</code> for the set <code>X</code> in the theorem <code>equinum_image</code>:</p>
-<div class="sourceCode" id="cb18"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> Range {A B : <span class="kw">Type</span>} (f : A → B) : Set B := image f (Univ A)</span>
-<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a><span class="kw">lemma</span> one_one_on_of_one_one {A B : <span class="kw">Type</span>} {f : A → B}</span>
-<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>    (h : one_to_one f) (X : Set A) : one_one_on f X := <span class="cn">sorry</span></span>
-<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> equinum_Range {A B : <span class="kw">Type</span>} {f : A → B} (h : one_to_one f) :</span>
-<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a>    Univ A ∼ Range f := equinum_image (one_one_on_of_one_one h (Univ A))</span>
-<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> equinum_Univ {A B : <span class="kw">Type</span>} {f : A → B}</span>
-<span id="cb18-10"><a href="#cb18-10" aria-hidden="true" tabindex="-1"></a>    (h1 : one_to_one f) (h2 : onto f) : Univ A ∼ Univ B := <span class="kw">by</span></span>
-<span id="cb18-11"><a href="#cb18-11" aria-hidden="true" tabindex="-1"></a>  <span class="kw">have</span> h3 : Univ A ∼ Range f := equinum_Range h1</span>
-<span id="cb18-12"><a href="#cb18-12" aria-hidden="true" tabindex="-1"></a>  <span class="kw">have</span> h4 : Range f = Univ B := <span class="kw">by</span></span>
-<span id="cb18-13"><a href="#cb18-13" aria-hidden="true" tabindex="-1"></a>    <span class="kw">apply</span> Set.ext</span>
-<span id="cb18-14"><a href="#cb18-14" aria-hidden="true" tabindex="-1"></a>    <span class="kw">fix</span> b : B</span>
-<span id="cb18-15"><a href="#cb18-15" aria-hidden="true" tabindex="-1"></a>    <span class="kw">apply</span> Iff.intro</span>
-<span id="cb18-16"><a href="#cb18-16" aria-hidden="true" tabindex="-1"></a>    · <span class="co">-- (→)</span></span>
-<span id="cb18-17"><a href="#cb18-17" aria-hidden="true" tabindex="-1"></a>      <span class="kw">assume</span> h4 : b ∈ Range f</span>
-<span id="cb18-18"><a href="#cb18-18" aria-hidden="true" tabindex="-1"></a>      <span class="kw">show</span> b ∈ Univ B <span class="kw">from</span> elt_Univ b</span>
-<span id="cb18-19"><a href="#cb18-19" aria-hidden="true" tabindex="-1"></a>      <span class="kw">done</span></span>
-<span id="cb18-20"><a href="#cb18-20" aria-hidden="true" tabindex="-1"></a>    · <span class="co">-- (←)</span></span>
-<span id="cb18-21"><a href="#cb18-21" aria-hidden="true" tabindex="-1"></a>      <span class="kw">assume</span> h4 : b ∈ Univ B</span>
-<span id="cb18-22"><a href="#cb18-22" aria-hidden="true" tabindex="-1"></a>      <span class="kw">obtain</span> (a : A) (h5 : f a = b) <span class="kw">from</span> h2 b</span>
-<span id="cb18-23"><a href="#cb18-23" aria-hidden="true" tabindex="-1"></a>      <span class="kw">apply</span> Exists.intro a</span>
-<span id="cb18-24"><a href="#cb18-24" aria-hidden="true" tabindex="-1"></a>      <span class="kw">apply</span> And.intro _ h5</span>
-<span id="cb18-25"><a href="#cb18-25" aria-hidden="true" tabindex="-1"></a>      <span class="kw">show</span> a ∈ Univ A <span class="kw">from</span> elt_Univ a</span>
-<span id="cb18-26"><a href="#cb18-26" aria-hidden="true" tabindex="-1"></a>      <span class="kw">done</span></span>
-<span id="cb18-27"><a href="#cb18-27" aria-hidden="true" tabindex="-1"></a>    <span class="kw">done</span></span>
-<span id="cb18-28"><a href="#cb18-28" aria-hidden="true" tabindex="-1"></a>  <span class="kw">rewrite</span> [h4] <span class="kw">at</span> h3</span>
-<span id="cb18-29"><a href="#cb18-29" aria-hidden="true" tabindex="-1"></a>  <span class="kw">show</span> Univ A ∼ Univ B <span class="kw">from</span> h3</span>
-<span id="cb18-30"><a href="#cb18-30" aria-hidden="true" tabindex="-1"></a>  <span class="kw">done</span></span>
-<span id="cb18-31"><a href="#cb18-31" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-32"><a href="#cb18-32" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Z_equinum_N : Univ Int ∼ Univ Nat :=</span>
-<span id="cb18-33"><a href="#cb18-33" aria-hidden="true" tabindex="-1"></a>  equinum_Univ fzn_one_one fzn_onto</span>
-<span id="cb18-34"><a href="#cb18-34" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-35"><a href="#cb18-35" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> NxN_equinum_N : Univ (Nat × Nat) ∼ Univ Nat :=</span>
-<span id="cb18-36"><a href="#cb18-36" aria-hidden="true" tabindex="-1"></a>  equinum_Univ fnnn_one_one fnnn_onto</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb18"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="kw">lemma</span> one_one_on_of_one_one {A B : <span class="kw">Type</span>} {f : A → B}</span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>    (h : one_to_one f) (X : Set A) : one_one_on f X := <span class="cn">sorry</span></span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> equinum_Univ {A B : <span class="kw">Type</span>} {f : A → B}</span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>    (h1 : one_to_one f) (h2 : onto f) : Univ A ∼ Univ B := <span class="kw">by</span></span>
+<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a>  <span class="kw">have</span> h3 : image f (Univ A) = Univ B := <span class="kw">by</span></span>
+<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a>    <span class="kw">apply</span> Set.ext</span>
+<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a>    <span class="kw">fix</span> b : B</span>
+<span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a>    <span class="kw">apply</span> Iff.intro</span>
+<span id="cb18-10"><a href="#cb18-10" aria-hidden="true" tabindex="-1"></a>    · <span class="co">-- (→)</span></span>
+<span id="cb18-11"><a href="#cb18-11" aria-hidden="true" tabindex="-1"></a>      <span class="kw">assume</span> h3 : b ∈ image f (Univ A)</span>
+<span id="cb18-12"><a href="#cb18-12" aria-hidden="true" tabindex="-1"></a>      <span class="kw">show</span> b ∈ Univ B <span class="kw">from</span> elt_Univ b</span>
+<span id="cb18-13"><a href="#cb18-13" aria-hidden="true" tabindex="-1"></a>      <span class="kw">done</span></span>
+<span id="cb18-14"><a href="#cb18-14" aria-hidden="true" tabindex="-1"></a>    · <span class="co">-- (←)</span></span>
+<span id="cb18-15"><a href="#cb18-15" aria-hidden="true" tabindex="-1"></a>      <span class="kw">assume</span> h3 : b ∈ Univ B</span>
+<span id="cb18-16"><a href="#cb18-16" aria-hidden="true" tabindex="-1"></a>      <span class="kw">obtain</span> (a : A) (h4 : f a = b) <span class="kw">from</span> h2 b</span>
+<span id="cb18-17"><a href="#cb18-17" aria-hidden="true" tabindex="-1"></a>      <span class="kw">apply</span> Exists.intro a</span>
+<span id="cb18-18"><a href="#cb18-18" aria-hidden="true" tabindex="-1"></a>      <span class="kw">apply</span> And.intro _ h4</span>
+<span id="cb18-19"><a href="#cb18-19" aria-hidden="true" tabindex="-1"></a>      <span class="kw">show</span> a ∈ Univ A <span class="kw">from</span> elt_Univ a</span>
+<span id="cb18-20"><a href="#cb18-20" aria-hidden="true" tabindex="-1"></a>      <span class="kw">done</span></span>
+<span id="cb18-21"><a href="#cb18-21" aria-hidden="true" tabindex="-1"></a>    <span class="kw">done</span></span>
+<span id="cb18-22"><a href="#cb18-22" aria-hidden="true" tabindex="-1"></a>  <span class="kw">show</span> Univ A ∼ Univ B <span class="kw">from</span></span>
+<span id="cb18-23"><a href="#cb18-23" aria-hidden="true" tabindex="-1"></a>    equinum_image (one_one_on_of_one_one h1 (Univ A)) h3</span>
+<span id="cb18-24"><a href="#cb18-24" aria-hidden="true" tabindex="-1"></a>  <span class="kw">done</span></span>
+<span id="cb18-25"><a href="#cb18-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-26"><a href="#cb18-26" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Z_equinum_N : Univ Int ∼ Univ Nat :=</span>
+<span id="cb18-27"><a href="#cb18-27" aria-hidden="true" tabindex="-1"></a>  equinum_Univ fzn_one_one fzn_onto</span>
+<span id="cb18-28"><a href="#cb18-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-29"><a href="#cb18-29" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> NxN_equinum_N : Univ (Nat × Nat) ∼ Univ Nat :=</span>
+<span id="cb18-30"><a href="#cb18-30" aria-hidden="true" tabindex="-1"></a>  equinum_Univ fnnn_one_one fnnn_onto</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>Theorem 8.1.3 in <em>HTPI</em> shows that <code>∼</code> is reflexive, symmetric, and transitive. We’ll prove the three parts of this theorem separately. To prove that <code>∼</code> is reflexive, we use the identity function.</p>
 <div class="sourceCode" id="cb19"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="kw">lemma</span> id_one_one_on {A : <span class="kw">Type</span>} (X : Set A) : one_one_on id X := <span class="cn">sorry</span></span>
 <span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a><span class="kw">lemma</span> image_id {A : <span class="kw">Type</span>} (X : Set A) : image id X = X := <span class="cn">sorry</span></span>
 <span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Theorem_8_1_3_1 {A : <span class="kw">Type</span>} (X : Set A) : X ∼ X := <span class="kw">by</span></span>
-<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a>  <span class="kw">have</span> h : X ∼ image id X := equinum_image (id_one_one_on X)</span>
-<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a>  <span class="kw">rewrite</span> [image_id] <span class="kw">at</span> h</span>
-<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a>  <span class="kw">show</span> X ∼ X <span class="kw">from</span> h</span>
-<span id="cb19-9"><a href="#cb19-9" aria-hidden="true" tabindex="-1"></a>  <span class="kw">done</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Theorem_8_1_3_1 {A : <span class="kw">Type</span>} (X : Set A) : X ∼ X :=</span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a>  equinum_image (id_one_one_on X) (image_id X)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>For symmetry, we show that the inverse of a matching is also a matching.</p>
 <div class="sourceCode" id="cb20"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="kw">lemma</span> inv_inv {A B : <span class="kw">Type</span>} (R : Rel A B) : invRel (invRel R) = R := <span class="kw">by</span> <span class="kw">rfl</span></span>
 <span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a></span>
@@ -570,7 +559,7 @@ $$
 <span id="cb20-27"><a href="#cb20-27" aria-hidden="true" tabindex="-1"></a>  <span class="kw">apply</span> Exists.intro (invRel R)</span>
 <span id="cb20-28"><a href="#cb20-28" aria-hidden="true" tabindex="-1"></a>  <span class="kw">show</span> matching (invRel R) Y X <span class="kw">from</span> inv_match h1</span>
 <span id="cb20-29"><a href="#cb20-29" aria-hidden="true" tabindex="-1"></a>  <span class="kw">done</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>Finally, to prove transitivity, we will show that a composition of matchings is a matching. Once again we must convert our definition of composition of sets of ordered pairs into an operation on relations. We’ll skip most of the details, which are routine.</p>
+<p>Finally, to prove transitivity, we will show that a composition of matchings is a matching. Once again we must convert our definition of composition of sets of ordered pairs into an operation on relations. A few preliminary lemmas help with the proof.</p>
 <div class="sourceCode" id="cb21"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> compRel {A B C : <span class="kw">Type</span>} (S : Rel B C) (R : Rel A B) : Rel A C :=</span>
 <span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>  RelFromExt (comp (extension S) (extension R))</span>
 <span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -578,17 +567,99 @@ $$
 <span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a>    (S : Rel B C) (R : Rel A B) (a : A) (c : C) :</span>
 <span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a>    compRel S R a c ↔ ∃ (x : B), R a x ∧ S x c := <span class="kw">by</span> <span class="kw">rfl</span></span>
 <span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb21-8"><a href="#cb21-8" aria-hidden="true" tabindex="-1"></a><span class="kw">lemma</span> comp_match {A B C : <span class="kw">Type</span>} {R : Rel A B} {S : Rel B C}</span>
-<span id="cb21-9"><a href="#cb21-9" aria-hidden="true" tabindex="-1"></a>    {X : Set A} {Y : Set B} {Z : Set C} (h1 : matching R X Y)</span>
-<span id="cb21-10"><a href="#cb21-10" aria-hidden="true" tabindex="-1"></a>    (h2 : matching S Y Z) : matching (compRel S R) X Z := <span class="cn">sorry</span></span>
-<span id="cb21-11"><a href="#cb21-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb21-12"><a href="#cb21-12" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Theorem_8_1_3_3 {A B C : <span class="kw">Type</span>} {X : Set A} {Y : Set B} {Z : Set C}</span>
-<span id="cb21-13"><a href="#cb21-13" aria-hidden="true" tabindex="-1"></a>    (h1 : X ∼ Y) (h2 : Y ∼ Z) : X ∼ Z := <span class="kw">by</span></span>
-<span id="cb21-14"><a href="#cb21-14" aria-hidden="true" tabindex="-1"></a>  <span class="kw">obtain</span> (R : Rel A B) (h3 : matching R X Y) <span class="kw">from</span> h1</span>
-<span id="cb21-15"><a href="#cb21-15" aria-hidden="true" tabindex="-1"></a>  <span class="kw">obtain</span> (S : Rel B C) (h4 : matching S Y Z) <span class="kw">from</span> h2</span>
-<span id="cb21-16"><a href="#cb21-16" aria-hidden="true" tabindex="-1"></a>  <span class="kw">apply</span> Exists.intro (compRel S R)</span>
-<span id="cb21-17"><a href="#cb21-17" aria-hidden="true" tabindex="-1"></a>  <span class="kw">show</span> matching (compRel S R) X Z <span class="kw">from</span> comp_match h3 h4</span>
-<span id="cb21-18"><a href="#cb21-18" aria-hidden="true" tabindex="-1"></a>  <span class="kw">done</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb21-8"><a href="#cb21-8" aria-hidden="true" tabindex="-1"></a><span class="kw">lemma</span> inv_comp {A B C : <span class="kw">Type</span>} (R : Rel A B) (S : Rel B C) :</span>
+<span id="cb21-9"><a href="#cb21-9" aria-hidden="true" tabindex="-1"></a>    invRel (compRel S R) = compRel (invRel R) (invRel S) := </span>
+<span id="cb21-10"><a href="#cb21-10" aria-hidden="true" tabindex="-1"></a>  <span class="kw">calc</span> invRel (compRel S R)</span>
+<span id="cb21-11"><a href="#cb21-11" aria-hidden="true" tabindex="-1"></a>    _ = RelFromExt (inv (comp (extension S) (extension R))) := <span class="kw">by</span> <span class="kw">rfl</span></span>
+<span id="cb21-12"><a href="#cb21-12" aria-hidden="true" tabindex="-1"></a>    _ = RelFromExt (comp (inv (extension R)) (inv (extension S))) :=</span>
+<span id="cb21-13"><a href="#cb21-13" aria-hidden="true" tabindex="-1"></a>        <span class="kw">by</span> <span class="kw">rw</span> [Theorem_4_2_5_5]</span>
+<span id="cb21-14"><a href="#cb21-14" aria-hidden="true" tabindex="-1"></a>    _ = compRel (invRel R) (invRel S) := <span class="kw">by</span> <span class="kw">rfl</span></span>
+<span id="cb21-15"><a href="#cb21-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-16"><a href="#cb21-16" aria-hidden="true" tabindex="-1"></a><span class="kw">lemma</span> fcnl_exists {A B : <span class="kw">Type</span>} {R : Rel A B} {X : Set A} {x : A}</span>
+<span id="cb21-17"><a href="#cb21-17" aria-hidden="true" tabindex="-1"></a>    (h1 : fcnl_on R X) (h2 : x ∈ X) : ∃ (y : B), R x y := <span class="kw">by</span></span>
+<span id="cb21-18"><a href="#cb21-18" aria-hidden="true" tabindex="-1"></a>  <span class="kw">define</span> <span class="kw">at</span> h1</span>
+<span id="cb21-19"><a href="#cb21-19" aria-hidden="true" tabindex="-1"></a>  <span class="kw">obtain</span> (y : B) (h3 : R x y)</span>
+<span id="cb21-20"><a href="#cb21-20" aria-hidden="true" tabindex="-1"></a>    (h4 : ∀ (y_1 y_2 : B), R x y_1 → R x y_2 → y_1 = y_2) <span class="kw">from</span> h1 h2</span>
+<span id="cb21-21"><a href="#cb21-21" aria-hidden="true" tabindex="-1"></a>  <span class="kw">show</span> ∃ (y : B), R x y <span class="kw">from</span> Exists.intro y h3</span>
+<span id="cb21-22"><a href="#cb21-22" aria-hidden="true" tabindex="-1"></a>  <span class="kw">done</span></span>
+<span id="cb21-23"><a href="#cb21-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-24"><a href="#cb21-24" aria-hidden="true" tabindex="-1"></a><span class="kw">lemma</span> fcnl_unique {A B : <span class="kw">Type</span>}</span>
+<span id="cb21-25"><a href="#cb21-25" aria-hidden="true" tabindex="-1"></a>    {R : Rel A B} {X : Set A} {x : A} {y1 y2 : B} (h1 : fcnl_on R X)</span>
+<span id="cb21-26"><a href="#cb21-26" aria-hidden="true" tabindex="-1"></a>    (h2 : x ∈ X) (h3 : R x y1) (h4 : R x y2) : y1 = y2 := <span class="kw">by</span></span>
+<span id="cb21-27"><a href="#cb21-27" aria-hidden="true" tabindex="-1"></a>  <span class="kw">define</span> <span class="kw">at</span> h1</span>
+<span id="cb21-28"><a href="#cb21-28" aria-hidden="true" tabindex="-1"></a>  <span class="kw">obtain</span> (z : B) (h5 : R x z)</span>
+<span id="cb21-29"><a href="#cb21-29" aria-hidden="true" tabindex="-1"></a>    (h6 : ∀ (y_1 y_2 : B), R x y_1 → R x y_2 → y_1 = y_2) <span class="kw">from</span> h1 h2</span>
+<span id="cb21-30"><a href="#cb21-30" aria-hidden="true" tabindex="-1"></a>  <span class="kw">show</span> y1 = y2 <span class="kw">from</span> h6 y1 y2 h3 h4</span>
+<span id="cb21-31"><a href="#cb21-31" aria-hidden="true" tabindex="-1"></a>  <span class="kw">done</span></span>
+<span id="cb21-32"><a href="#cb21-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-33"><a href="#cb21-33" aria-hidden="true" tabindex="-1"></a><span class="kw">lemma</span> comp_fcnl {A B C : <span class="kw">Type</span>} {R : Rel A B} {S : Rel B C}</span>
+<span id="cb21-34"><a href="#cb21-34" aria-hidden="true" tabindex="-1"></a>    {X : Set A} {Y : Set B} {Z : Set C} (h1 : matching R X Y)</span>
+<span id="cb21-35"><a href="#cb21-35" aria-hidden="true" tabindex="-1"></a>    (h2 : matching S Y Z) : fcnl_on (compRel S R) X := <span class="kw">by</span></span>
+<span id="cb21-36"><a href="#cb21-36" aria-hidden="true" tabindex="-1"></a>  <span class="kw">define</span>; <span class="kw">define</span> <span class="kw">at</span> h1; <span class="kw">define</span> <span class="kw">at</span> h2</span>
+<span id="cb21-37"><a href="#cb21-37" aria-hidden="true" tabindex="-1"></a>  <span class="kw">fix</span> a : A</span>
+<span id="cb21-38"><a href="#cb21-38" aria-hidden="true" tabindex="-1"></a>  <span class="kw">assume</span> h3 : a ∈ X</span>
+<span id="cb21-39"><a href="#cb21-39" aria-hidden="true" tabindex="-1"></a>  <span class="kw">obtain</span> (b : B) (h4 : R a b) <span class="kw">from</span> fcnl_exists h1.right.left h3</span>
+<span id="cb21-40"><a href="#cb21-40" aria-hidden="true" tabindex="-1"></a>  <span class="kw">have</span> h5 : a ∈ X ∧ b ∈ Y := h1.left h4</span>
+<span id="cb21-41"><a href="#cb21-41" aria-hidden="true" tabindex="-1"></a>  <span class="kw">obtain</span> (c : C) (h6 : S b c) <span class="kw">from</span> fcnl_exists h2.right.left h5.right</span>
+<span id="cb21-42"><a href="#cb21-42" aria-hidden="true" tabindex="-1"></a>  <span class="kw">exists_unique</span></span>
+<span id="cb21-43"><a href="#cb21-43" aria-hidden="true" tabindex="-1"></a>  · <span class="co">-- Existence</span></span>
+<span id="cb21-44"><a href="#cb21-44" aria-hidden="true" tabindex="-1"></a>    <span class="kw">apply</span> Exists.intro c</span>
+<span id="cb21-45"><a href="#cb21-45" aria-hidden="true" tabindex="-1"></a>    <span class="kw">rewrite</span> [compRel_def]</span>
+<span id="cb21-46"><a href="#cb21-46" aria-hidden="true" tabindex="-1"></a>    <span class="kw">show</span> ∃ (x : B), R a x ∧ S x c <span class="kw">from</span> Exists.intro b (And.intro h4 h6)</span>
+<span id="cb21-47"><a href="#cb21-47" aria-hidden="true" tabindex="-1"></a>    <span class="kw">done</span></span>
+<span id="cb21-48"><a href="#cb21-48" aria-hidden="true" tabindex="-1"></a>  · <span class="co">-- Uniqueness</span></span>
+<span id="cb21-49"><a href="#cb21-49" aria-hidden="true" tabindex="-1"></a>    <span class="kw">fix</span> c1 : C; <span class="kw">fix</span> c2 : C</span>
+<span id="cb21-50"><a href="#cb21-50" aria-hidden="true" tabindex="-1"></a>    <span class="kw">assume</span> h7 : compRel S R a c1</span>
+<span id="cb21-51"><a href="#cb21-51" aria-hidden="true" tabindex="-1"></a>    <span class="kw">assume</span> h8 : compRel S R a c2    <span class="co">--Goal : c1 = c2</span></span>
+<span id="cb21-52"><a href="#cb21-52" aria-hidden="true" tabindex="-1"></a>    <span class="kw">rewrite</span> [compRel_def] <span class="kw">at</span> h7</span>
+<span id="cb21-53"><a href="#cb21-53" aria-hidden="true" tabindex="-1"></a>    <span class="kw">rewrite</span> [compRel_def] <span class="kw">at</span> h8</span>
+<span id="cb21-54"><a href="#cb21-54" aria-hidden="true" tabindex="-1"></a>    <span class="kw">obtain</span> (b1 : B) (h9 : R a b1 ∧ S b1 c1) <span class="kw">from</span> h7</span>
+<span id="cb21-55"><a href="#cb21-55" aria-hidden="true" tabindex="-1"></a>    <span class="kw">obtain</span> (b2 : B) (h10 : R a b2 ∧ S b2 c2) <span class="kw">from</span> h8</span>
+<span id="cb21-56"><a href="#cb21-56" aria-hidden="true" tabindex="-1"></a>    <span class="kw">have</span> h11 : b1 = b := fcnl_unique h1.right.left h3 h9.left h4</span>
+<span id="cb21-57"><a href="#cb21-57" aria-hidden="true" tabindex="-1"></a>    <span class="kw">have</span> h12 : b2 = b := fcnl_unique h1.right.left h3 h10.left h4</span>
+<span id="cb21-58"><a href="#cb21-58" aria-hidden="true" tabindex="-1"></a>    <span class="kw">rewrite</span> [h11] <span class="kw">at</span> h9</span>
+<span id="cb21-59"><a href="#cb21-59" aria-hidden="true" tabindex="-1"></a>    <span class="kw">rewrite</span> [h12] <span class="kw">at</span> h10</span>
+<span id="cb21-60"><a href="#cb21-60" aria-hidden="true" tabindex="-1"></a>    <span class="kw">show</span> c1 = c2 <span class="kw">from</span></span>
+<span id="cb21-61"><a href="#cb21-61" aria-hidden="true" tabindex="-1"></a>      fcnl_unique h2.right.left h5.right h9.right h10.right</span>
+<span id="cb21-62"><a href="#cb21-62" aria-hidden="true" tabindex="-1"></a>    <span class="kw">done</span></span>
+<span id="cb21-63"><a href="#cb21-63" aria-hidden="true" tabindex="-1"></a>  <span class="kw">done</span></span>
+<span id="cb21-64"><a href="#cb21-64" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-65"><a href="#cb21-65" aria-hidden="true" tabindex="-1"></a><span class="kw">lemma</span> comp_match {A B C : <span class="kw">Type</span>} {R : Rel A B} {S : Rel B C}</span>
+<span id="cb21-66"><a href="#cb21-66" aria-hidden="true" tabindex="-1"></a>    {X : Set A} {Y : Set B} {Z : Set C} (h1 : matching R X Y)</span>
+<span id="cb21-67"><a href="#cb21-67" aria-hidden="true" tabindex="-1"></a>    (h2 : matching S Y Z) : matching (compRel S R) X Z := <span class="kw">by</span></span>
+<span id="cb21-68"><a href="#cb21-68" aria-hidden="true" tabindex="-1"></a>  <span class="kw">define</span></span>
+<span id="cb21-69"><a href="#cb21-69" aria-hidden="true" tabindex="-1"></a>  <span class="kw">apply</span> And.intro</span>
+<span id="cb21-70"><a href="#cb21-70" aria-hidden="true" tabindex="-1"></a>  · <span class="co">-- Proof of rel_within (compRel S R) X Z</span></span>
+<span id="cb21-71"><a href="#cb21-71" aria-hidden="true" tabindex="-1"></a>    <span class="kw">define</span></span>
+<span id="cb21-72"><a href="#cb21-72" aria-hidden="true" tabindex="-1"></a>    <span class="kw">fix</span> a : A; <span class="kw">fix</span> c : C</span>
+<span id="cb21-73"><a href="#cb21-73" aria-hidden="true" tabindex="-1"></a>    <span class="kw">assume</span> h3 : compRel S R a c</span>
+<span id="cb21-74"><a href="#cb21-74" aria-hidden="true" tabindex="-1"></a>    <span class="kw">rewrite</span> [compRel_def] <span class="kw">at</span> h3</span>
+<span id="cb21-75"><a href="#cb21-75" aria-hidden="true" tabindex="-1"></a>    <span class="kw">obtain</span> (b : B) (h4 : R a b ∧ S b c) <span class="kw">from</span> h3</span>
+<span id="cb21-76"><a href="#cb21-76" aria-hidden="true" tabindex="-1"></a>    <span class="kw">have</span> h5 : a ∈ X ∧ b ∈ Y := h1.left h4.left</span>
+<span id="cb21-77"><a href="#cb21-77" aria-hidden="true" tabindex="-1"></a>    <span class="kw">have</span> h6 : b ∈ Y ∧ c ∈ Z := h2.left h4.right</span>
+<span id="cb21-78"><a href="#cb21-78" aria-hidden="true" tabindex="-1"></a>    <span class="kw">show</span> a ∈ X ∧ c ∈ Z <span class="kw">from</span> And.intro h5.left h6.right</span>
+<span id="cb21-79"><a href="#cb21-79" aria-hidden="true" tabindex="-1"></a>    <span class="kw">done</span></span>
+<span id="cb21-80"><a href="#cb21-80" aria-hidden="true" tabindex="-1"></a>  · <span class="co">-- Proof of fcnl_on statements</span></span>
+<span id="cb21-81"><a href="#cb21-81" aria-hidden="true" tabindex="-1"></a>    <span class="kw">apply</span> And.intro</span>
+<span id="cb21-82"><a href="#cb21-82" aria-hidden="true" tabindex="-1"></a>    · <span class="co">-- Proof of fcnl_on (compRel S R) X</span></span>
+<span id="cb21-83"><a href="#cb21-83" aria-hidden="true" tabindex="-1"></a>      <span class="kw">show</span> fcnl_on (compRel S R) X <span class="kw">from</span> comp_fcnl h1 h2</span>
+<span id="cb21-84"><a href="#cb21-84" aria-hidden="true" tabindex="-1"></a>      <span class="kw">done</span></span>
+<span id="cb21-85"><a href="#cb21-85" aria-hidden="true" tabindex="-1"></a>    · <span class="co">-- Proof of fcnl_on (invRel (compRel S R)) Z</span></span>
+<span id="cb21-86"><a href="#cb21-86" aria-hidden="true" tabindex="-1"></a>      <span class="kw">rewrite</span> [inv_comp]</span>
+<span id="cb21-87"><a href="#cb21-87" aria-hidden="true" tabindex="-1"></a>      <span class="kw">have</span> h3 : matching (invRel R) Y X := inv_match h1</span>
+<span id="cb21-88"><a href="#cb21-88" aria-hidden="true" tabindex="-1"></a>      <span class="kw">have</span> h4 : matching (invRel S) Z Y := inv_match h2</span>
+<span id="cb21-89"><a href="#cb21-89" aria-hidden="true" tabindex="-1"></a>      <span class="kw">show</span> fcnl_on (compRel (invRel R) (invRel S)) Z <span class="kw">from</span> comp_fcnl h4 h3</span>
+<span id="cb21-90"><a href="#cb21-90" aria-hidden="true" tabindex="-1"></a>      <span class="kw">done</span></span>
+<span id="cb21-91"><a href="#cb21-91" aria-hidden="true" tabindex="-1"></a>    <span class="kw">done</span></span>
+<span id="cb21-92"><a href="#cb21-92" aria-hidden="true" tabindex="-1"></a>  <span class="kw">done</span></span>
+<span id="cb21-93"><a href="#cb21-93" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-94"><a href="#cb21-94" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Theorem_8_1_3_3 {A B C : <span class="kw">Type</span>} {X : Set A} {Y : Set B} {Z : Set C}</span>
+<span id="cb21-95"><a href="#cb21-95" aria-hidden="true" tabindex="-1"></a>    (h1 : X ∼ Y) (h2 : Y ∼ Z) : X ∼ Z := <span class="kw">by</span></span>
+<span id="cb21-96"><a href="#cb21-96" aria-hidden="true" tabindex="-1"></a>  <span class="kw">obtain</span> (R : Rel A B) (h3 : matching R X Y) <span class="kw">from</span> h1</span>
+<span id="cb21-97"><a href="#cb21-97" aria-hidden="true" tabindex="-1"></a>  <span class="kw">obtain</span> (S : Rel B C) (h4 : matching S Y Z) <span class="kw">from</span> h2</span>
+<span id="cb21-98"><a href="#cb21-98" aria-hidden="true" tabindex="-1"></a>  <span class="kw">apply</span> Exists.intro (compRel S R)</span>
+<span id="cb21-99"><a href="#cb21-99" aria-hidden="true" tabindex="-1"></a>  <span class="kw">show</span> matching (compRel S R) X Z <span class="kw">from</span> comp_match h3 h4</span>
+<span id="cb21-100"><a href="#cb21-100" aria-hidden="true" tabindex="-1"></a>  <span class="kw">done</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>Now that we have a basic understanding of the concept of equinumerous sets, we can use this concept to make a number of definitions. For any natural number <span class="math inline">\(n\)</span>, <em>HTPI</em> defines <span class="math inline">\(I_n\)</span> to be the set <span class="math inline">\(\{1, 2, \ldots, n\}\)</span>, and then it defines a set to be <em>finite</em> if it is equinumerous with <span class="math inline">\(I_n\)</span>, for some <span class="math inline">\(n\)</span>. In Lean, it is a bit more convenient to use the sets <span class="math inline">\(\{0, 1, \ldots, n - 1\}\)</span>. We that small change, we can repeat the definitions of finite, denumerable, and countable in <em>HTPI</em>.</p>
 <div class="sourceCode" id="cb22"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> I (n : Nat) : Set Nat := { k : Nat | k &lt; n }</span>
 <span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a></span>
@@ -647,7 +718,7 @@ $$
 <span id="cb24-30"><a href="#cb24-30" aria-hidden="true" tabindex="-1"></a>  · <span class="co">-- Case 2. h1 : ¬∃ (m : Nat), ∀ (n : Nat), n ∈ X → n &lt; m</span></span>
 <span id="cb24-31"><a href="#cb24-31" aria-hidden="true" tabindex="-1"></a>    <span class="kw">apply</span> Or.inr  <span class="co">--Goal : denum X</span></span>
 <span id="cb24-32"><a href="#cb24-32" aria-hidden="true" tabindex="-1"></a>    <span class="kw">push_neg</span> <span class="kw">at</span> h1</span>
-<span id="cb24-33"><a href="#cb24-33" aria-hidden="true" tabindex="-1"></a>      <span class="co">--This tactic converts h1 to : ∀ (m : Nat), ∃ (n : Nat), n ∈ X ∧ m ≤ n</span></span>
+<span id="cb24-33"><a href="#cb24-33" aria-hidden="true" tabindex="-1"></a>      <span class="co">--This tactic converts h1 to ∀ (m : Nat), ∃ (n : Nat), n ∈ X ∧ m ≤ n</span></span>
 <span id="cb24-34"><a href="#cb24-34" aria-hidden="true" tabindex="-1"></a>    <span class="kw">show</span> denum X <span class="kw">from</span> unbdd_subset_nat h1</span>
 <span id="cb24-35"><a href="#cb24-35" aria-hidden="true" tabindex="-1"></a>    <span class="kw">done</span></span>
 <span id="cb24-36"><a href="#cb24-36" aria-hidden="true" tabindex="-1"></a>  <span class="kw">done</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -888,113 +959,617 @@ $$
 <span id="cb32-16"><a href="#cb32-16" aria-hidden="true" tabindex="-1"></a>  <span class="kw">show</span> q1 = q2 <span class="kw">from</span> Rat.ext q1 q2 h4 h3.right</span>
 <span id="cb32-17"><a href="#cb32-17" aria-hidden="true" tabindex="-1"></a>  <span class="kw">done</span></span>
 <span id="cb32-18"><a href="#cb32-18" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb32-19"><a href="#cb32-19" aria-hidden="true" tabindex="-1"></a><span class="kw">lemma</span> Range_fqn_unbdd :</span>
-<span id="cb32-20"><a href="#cb32-20" aria-hidden="true" tabindex="-1"></a>    ∀ (m : Nat), ∃ (n : Nat), n ∈ Range fqn ∧ n ≥ m := <span class="kw">by</span></span>
+<span id="cb32-19"><a href="#cb32-19" aria-hidden="true" tabindex="-1"></a><span class="kw">lemma</span> image_fqn_unbdd :</span>
+<span id="cb32-20"><a href="#cb32-20" aria-hidden="true" tabindex="-1"></a>    ∀ (m : Nat), ∃ (n : Nat), n ∈ image fqn (Univ Rat) ∧ n ≥ m := <span class="kw">by</span></span>
 <span id="cb32-21"><a href="#cb32-21" aria-hidden="true" tabindex="-1"></a>  <span class="kw">fix</span> m : Nat</span>
 <span id="cb32-22"><a href="#cb32-22" aria-hidden="true" tabindex="-1"></a>  <span class="kw">set</span> n : Nat := fqn ↑m</span>
-<span id="cb32-23"><a href="#cb32-23" aria-hidden="true" tabindex="-1"></a>  <span class="kw">have</span> h1 : n = fnnn (fzn ↑m, 1) := <span class="kw">by</span> <span class="kw">rfl</span></span>
-<span id="cb32-24"><a href="#cb32-24" aria-hidden="true" tabindex="-1"></a>  <span class="kw">rewrite</span> [fzn_nat, fnnn_def] <span class="kw">at</span> h1  <span class="co">--h1 : n = tri (2 * m + 1) + 2 * m</span></span>
-<span id="cb32-25"><a href="#cb32-25" aria-hidden="true" tabindex="-1"></a>  <span class="kw">apply</span> Exists.intro n</span>
-<span id="cb32-26"><a href="#cb32-26" aria-hidden="true" tabindex="-1"></a>  <span class="kw">apply</span> And.intro</span>
-<span id="cb32-27"><a href="#cb32-27" aria-hidden="true" tabindex="-1"></a>  · <span class="co">-- Proof that n ∈ Range fqn</span></span>
-<span id="cb32-28"><a href="#cb32-28" aria-hidden="true" tabindex="-1"></a>    <span class="kw">define</span></span>
-<span id="cb32-29"><a href="#cb32-29" aria-hidden="true" tabindex="-1"></a>    <span class="kw">apply</span> Exists.intro ↑m</span>
-<span id="cb32-30"><a href="#cb32-30" aria-hidden="true" tabindex="-1"></a>    <span class="kw">apply</span> And.intro (elt_Univ (↑m : Rat))</span>
-<span id="cb32-31"><a href="#cb32-31" aria-hidden="true" tabindex="-1"></a>    <span class="kw">rfl</span></span>
-<span id="cb32-32"><a href="#cb32-32" aria-hidden="true" tabindex="-1"></a>    <span class="kw">done</span></span>
-<span id="cb32-33"><a href="#cb32-33" aria-hidden="true" tabindex="-1"></a>  · <span class="co">-- Proof that n ≥ m</span></span>
-<span id="cb32-34"><a href="#cb32-34" aria-hidden="true" tabindex="-1"></a>    <span class="kw">show</span> n ≥ m <span class="kw">from</span></span>
-<span id="cb32-35"><a href="#cb32-35" aria-hidden="true" tabindex="-1"></a>      <span class="kw">calc</span> n</span>
-<span id="cb32-36"><a href="#cb32-36" aria-hidden="true" tabindex="-1"></a>        _ = tri (2 * m + 1) + 2 * m := h1</span>
-<span id="cb32-37"><a href="#cb32-37" aria-hidden="true" tabindex="-1"></a>        _ ≥ m := <span class="kw">by</span> <span class="kw">linarith</span></span>
-<span id="cb32-38"><a href="#cb32-38" aria-hidden="true" tabindex="-1"></a>    <span class="kw">done</span></span>
-<span id="cb32-39"><a href="#cb32-39" aria-hidden="true" tabindex="-1"></a>  <span class="kw">done</span></span>
-<span id="cb32-40"><a href="#cb32-40" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb32-41"><a href="#cb32-41" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Theorem_8_1_6 : denum (Univ Rat) := <span class="kw">by</span></span>
-<span id="cb32-42"><a href="#cb32-42" aria-hidden="true" tabindex="-1"></a>  <span class="kw">have</span> h1 : Univ Nat ∼ Range fqn := unbdd_subset_nat Range_fqn_unbdd</span>
-<span id="cb32-43"><a href="#cb32-43" aria-hidden="true" tabindex="-1"></a>  <span class="kw">have</span> h2 : Univ Rat ∼ Range fqn := equinum_Range fqn_one_one</span>
-<span id="cb32-44"><a href="#cb32-44" aria-hidden="true" tabindex="-1"></a>  <span class="kw">have</span> h3 : Range fqn ∼ Univ Rat := Theorem_8_1_3_2 h2</span>
-<span id="cb32-45"><a href="#cb32-45" aria-hidden="true" tabindex="-1"></a>  <span class="kw">show</span> denum (Univ Rat) <span class="kw">from</span> Theorem_8_1_3_3 h1 h3</span>
-<span id="cb32-46"><a href="#cb32-46" aria-hidden="true" tabindex="-1"></a>  <span class="kw">done</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb32-23"><a href="#cb32-23" aria-hidden="true" tabindex="-1"></a>  <span class="kw">apply</span> Exists.intro n</span>
+<span id="cb32-24"><a href="#cb32-24" aria-hidden="true" tabindex="-1"></a>  <span class="kw">apply</span> And.intro</span>
+<span id="cb32-25"><a href="#cb32-25" aria-hidden="true" tabindex="-1"></a>  · <span class="co">-- Proof that n ∈ image fqn (Univ Rat)</span></span>
+<span id="cb32-26"><a href="#cb32-26" aria-hidden="true" tabindex="-1"></a>    <span class="kw">define</span></span>
+<span id="cb32-27"><a href="#cb32-27" aria-hidden="true" tabindex="-1"></a>    <span class="kw">apply</span> Exists.intro ↑m</span>
+<span id="cb32-28"><a href="#cb32-28" aria-hidden="true" tabindex="-1"></a>    <span class="kw">apply</span> And.intro (elt_Univ (↑m : Rat))</span>
+<span id="cb32-29"><a href="#cb32-29" aria-hidden="true" tabindex="-1"></a>    <span class="kw">rfl</span></span>
+<span id="cb32-30"><a href="#cb32-30" aria-hidden="true" tabindex="-1"></a>    <span class="kw">done</span></span>
+<span id="cb32-31"><a href="#cb32-31" aria-hidden="true" tabindex="-1"></a>  · <span class="co">-- Proof that n ≥ m</span></span>
+<span id="cb32-32"><a href="#cb32-32" aria-hidden="true" tabindex="-1"></a>    <span class="kw">show</span> n ≥ m <span class="kw">from</span></span>
+<span id="cb32-33"><a href="#cb32-33" aria-hidden="true" tabindex="-1"></a>      <span class="kw">calc</span> n</span>
+<span id="cb32-34"><a href="#cb32-34" aria-hidden="true" tabindex="-1"></a>        _ = tri (2 * m + 1) + 2 * m := <span class="kw">by</span> <span class="kw">rfl</span></span>
+<span id="cb32-35"><a href="#cb32-35" aria-hidden="true" tabindex="-1"></a>        _ ≥ m := <span class="kw">by</span> <span class="kw">linarith</span></span>
+<span id="cb32-36"><a href="#cb32-36" aria-hidden="true" tabindex="-1"></a>    <span class="kw">done</span></span>
+<span id="cb32-37"><a href="#cb32-37" aria-hidden="true" tabindex="-1"></a>  <span class="kw">done</span></span>
+<span id="cb32-38"><a href="#cb32-38" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-39"><a href="#cb32-39" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Theorem_8_1_6 : denum (Univ Rat) := <span class="kw">by</span></span>
+<span id="cb32-40"><a href="#cb32-40" aria-hidden="true" tabindex="-1"></a>  <span class="kw">set</span> I : Set Nat := image fqn (Univ Rat)</span>
+<span id="cb32-41"><a href="#cb32-41" aria-hidden="true" tabindex="-1"></a>  <span class="kw">have</span> h1 : Univ Nat ∼ I := unbdd_subset_nat image_fqn_unbdd</span>
+<span id="cb32-42"><a href="#cb32-42" aria-hidden="true" tabindex="-1"></a>  <span class="kw">have</span> h2 : image fqn (Univ Rat) = I := <span class="kw">by</span> <span class="kw">rfl</span></span>
+<span id="cb32-43"><a href="#cb32-43" aria-hidden="true" tabindex="-1"></a>  <span class="kw">have</span> h3 : Univ Rat ∼ I :=</span>
+<span id="cb32-44"><a href="#cb32-44" aria-hidden="true" tabindex="-1"></a>    equinum_image (one_one_on_of_one_one fqn_one_one (Univ Rat)) h2</span>
+<span id="cb32-45"><a href="#cb32-45" aria-hidden="true" tabindex="-1"></a>  <span class="kw">have</span> h4 : I ∼ Univ Rat := Theorem_8_1_3_2 h3</span>
+<span id="cb32-46"><a href="#cb32-46" aria-hidden="true" tabindex="-1"></a>  <span class="kw">show</span> denum (Univ Rat) <span class="kw">from</span> Theorem_8_1_3_3 h1 h4</span>
+<span id="cb32-47"><a href="#cb32-47" aria-hidden="true" tabindex="-1"></a>  <span class="kw">done</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
 <section id="debts-paid" class="level2">
 <h2 class="anchored" data-anchor-id="debts-paid">8.1½. Debts Paid</h2>
-<p>In some of our proofs in this chapter, we will need to prove that two relations are equal. To prove that two sets are equal, we usually start by applying <code>Set.ext</code>, and to prove that two functions are equal we apply <code>funext</code>. We’ll need a similar extensionality principle for relations. If <code>R</code> and <code>S</code> are relations from <code>A</code> to <code>B</code>, the principle will say that if we have <code>h : ∀ (a : A) (b : B), R a b ↔︎ S a b</code>, then we can conclude that <code>R = S</code>. To prove it, we’ll use <code>h</code> to prove <code>extension R = extension S</code>, and then go on to deduce <code>R = S</code>.</p>
-<div class="sourceCode" id="cb33"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> relext {A B : <span class="kw">Type</span>} {R S : Rel A B}</span>
-<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a>    (h : ∀ (a : A) (b : B), R a b ↔ S a b) : R = S := <span class="kw">by</span></span>
-<span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a>  <span class="kw">have</span> h2 : extension R = extension S := <span class="kw">by</span></span>
-<span id="cb33-4"><a href="#cb33-4" aria-hidden="true" tabindex="-1"></a>    <span class="kw">apply</span> Set.ext</span>
-<span id="cb33-5"><a href="#cb33-5" aria-hidden="true" tabindex="-1"></a>    <span class="kw">fix</span> (a, b) : A × B <span class="co">--Goal : (a, b) ∈ extension R ↔ (a, b) ∈ extension S</span></span>
-<span id="cb33-6"><a href="#cb33-6" aria-hidden="true" tabindex="-1"></a>    <span class="kw">rewrite</span> [ext_def, ext_def]  <span class="co">--Goal : R a b ↔ S a b</span></span>
-<span id="cb33-7"><a href="#cb33-7" aria-hidden="true" tabindex="-1"></a>    <span class="kw">show</span> R a b ↔ S a b <span class="kw">from</span> h a b</span>
-<span id="cb33-8"><a href="#cb33-8" aria-hidden="true" tabindex="-1"></a>    <span class="kw">done</span></span>
-<span id="cb33-9"><a href="#cb33-9" aria-hidden="true" tabindex="-1"></a>  <span class="kw">show</span> R = S <span class="kw">from</span></span>
-<span id="cb33-10"><a href="#cb33-10" aria-hidden="true" tabindex="-1"></a>    <span class="kw">calc</span> R</span>
-<span id="cb33-11"><a href="#cb33-11" aria-hidden="true" tabindex="-1"></a>      _ = RelFromExt (extension R) := <span class="kw">by</span> <span class="kw">rfl</span></span>
-<span id="cb33-12"><a href="#cb33-12" aria-hidden="true" tabindex="-1"></a>      _ = RelFromExt (extension S) := <span class="kw">by</span> <span class="kw">rw</span> [h2]</span>
-<span id="cb33-13"><a href="#cb33-13" aria-hidden="true" tabindex="-1"></a>      _ = S := <span class="kw">by</span> <span class="kw">rfl</span></span>
-<span id="cb33-14"><a href="#cb33-14" aria-hidden="true" tabindex="-1"></a>  <span class="kw">done</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>Theorem 8.1.2 in <em>HTPI</em> contains two statements. The first says that if <span class="math inline">\(U\)</span>, <span class="math inline">\(V\)</span>, <span class="math inline">\(W\)</span>, and <span class="math inline">\(X\)</span> are sets such that <span class="math inline">\(U \sim V\)</span> and <span class="math inline">\(W \sim X\)</span>, then <span class="math inline">\(U \times W \sim V \times X\)</span>. To prove a similar theorem in Lean, we must first deal with the fact that in Lean, Cartesian product is an operation on types, not sets. But we can define a Cartesian product operation on sets:</p>
-<div class="sourceCode" id="cb34"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> Set_prod {A B : <span class="kw">Type</span>} (X : Set A) (Y : Set B) : Set (A × B) :=</span>
-<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a>  { (a, b) : A × B | a ∈ X ∧ b ∈ Y }</span>
-<span id="cb34-3"><a href="#cb34-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-4"><a href="#cb34-4" aria-hidden="true" tabindex="-1"></a><span class="kw">notation</span>:75 X:75 <span class="st">" ×ₛ "</span> Y:75 =&gt; Set_prod X Y</span>
-<span id="cb34-5"><a href="#cb34-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-6"><a href="#cb34-6" aria-hidden="true" tabindex="-1"></a><span class="kw">lemma</span> Set_prod_def {A B : <span class="kw">Type</span>} (X : Set A) (Y : Set B) (a : A) (b : B) :</span>
-<span id="cb34-7"><a href="#cb34-7" aria-hidden="true" tabindex="-1"></a>    (a, b) ∈ X ×ₛ Y ↔ a ∈ X ∧ b ∈ Y := <span class="kw">by</span> <span class="kw">rfl</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>It is time to fulfill promises we made in two earlier chapters.</p>
+<p>In Section 6.2, we promised to define a proposition <code>numElts X n</code> to express the idea that the set <code>X</code> has <code>n</code> elements. It should now be clear how to define this proposition:</p>
+<div class="sourceCode" id="cb33"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> numElts {A : <span class="kw">Type</span>} (X : Set A) (n : Nat) : <span class="kw">Prop</span> := I n ∼ X</span>
+<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a><span class="kw">lemma</span> numElts_def {A : <span class="kw">Type</span>} (X : Set A) (n : Nat) :</span>
+<span id="cb33-4"><a href="#cb33-4" aria-hidden="true" tabindex="-1"></a>    numElts X n ↔ I n ∼ X := <span class="kw">by</span> <span class="kw">rfl</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>We also owe you the proofs of several theorems about <code>numElts</code>. We begin with the fact that a set has zero elements if and only if it is empty. To prove this, we will need to produce a relation that is a matching between two sets if the sets are empty. The natural choice for this relation is what we will call the empty relation—the relation that is always false.</p>
+<div class="sourceCode" id="cb34"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> emptyRel (A B : <span class="kw">Type</span>) (a : A) (b : B) : <span class="kw">Prop</span> := False</span>
+<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-3"><a href="#cb34-3" aria-hidden="true" tabindex="-1"></a><span class="kw">lemma</span> fcnl_on_empty {A B : <span class="kw">Type</span>}</span>
+<span id="cb34-4"><a href="#cb34-4" aria-hidden="true" tabindex="-1"></a>    (R : Rel A B) {X : Set A} (h1 : empty X) : fcnl_on R X := <span class="kw">by</span></span>
+<span id="cb34-5"><a href="#cb34-5" aria-hidden="true" tabindex="-1"></a>  <span class="kw">define</span></span>
+<span id="cb34-6"><a href="#cb34-6" aria-hidden="true" tabindex="-1"></a>  <span class="kw">fix</span> a : A</span>
+<span id="cb34-7"><a href="#cb34-7" aria-hidden="true" tabindex="-1"></a>  <span class="kw">assume</span> h2 : a ∈ X      <span class="co">--Goal : ∃! (y : B), R a y</span></span>
+<span id="cb34-8"><a href="#cb34-8" aria-hidden="true" tabindex="-1"></a>  <span class="kw">contradict</span> h1 <span class="kw">with</span> h3  <span class="co">--Goal : ∃ (x : A), x ∈ X</span></span>
+<span id="cb34-9"><a href="#cb34-9" aria-hidden="true" tabindex="-1"></a>  <span class="kw">show</span> ∃ (x : A), x ∈ X <span class="kw">from</span> Exists.intro a h2</span>
+<span id="cb34-10"><a href="#cb34-10" aria-hidden="true" tabindex="-1"></a>  <span class="kw">done</span></span>
+<span id="cb34-11"><a href="#cb34-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-12"><a href="#cb34-12" aria-hidden="true" tabindex="-1"></a><span class="kw">lemma</span> empty_match {A B : <span class="kw">Type</span>} {X : Set A} {Y : Set B}</span>
+<span id="cb34-13"><a href="#cb34-13" aria-hidden="true" tabindex="-1"></a>    (h1 : empty X) (h2 : empty Y) : matching (emptyRel A B) X Y := <span class="kw">by</span></span>
+<span id="cb34-14"><a href="#cb34-14" aria-hidden="true" tabindex="-1"></a>  <span class="kw">define</span></span>
+<span id="cb34-15"><a href="#cb34-15" aria-hidden="true" tabindex="-1"></a>  <span class="kw">apply</span> And.intro</span>
+<span id="cb34-16"><a href="#cb34-16" aria-hidden="true" tabindex="-1"></a>  · <span class="co">-- Proof of rel_within</span></span>
+<span id="cb34-17"><a href="#cb34-17" aria-hidden="true" tabindex="-1"></a>    <span class="kw">define</span></span>
+<span id="cb34-18"><a href="#cb34-18" aria-hidden="true" tabindex="-1"></a>    <span class="kw">fix</span> a : A; <span class="kw">fix</span> b : B</span>
+<span id="cb34-19"><a href="#cb34-19" aria-hidden="true" tabindex="-1"></a>    <span class="kw">assume</span> h3 : emptyRel A B a b   <span class="co">--Goal : a ∈ X ∧ b ∈ Y</span></span>
+<span id="cb34-20"><a href="#cb34-20" aria-hidden="true" tabindex="-1"></a>    <span class="kw">by_contra</span> h4                   <span class="co">--Goal : False</span></span>
+<span id="cb34-21"><a href="#cb34-21" aria-hidden="true" tabindex="-1"></a>    <span class="kw">define</span> <span class="kw">at</span> h3</span>
+<span id="cb34-22"><a href="#cb34-22" aria-hidden="true" tabindex="-1"></a>    <span class="kw">show</span> False <span class="kw">from</span> h3</span>
+<span id="cb34-23"><a href="#cb34-23" aria-hidden="true" tabindex="-1"></a>    <span class="kw">done</span></span>
+<span id="cb34-24"><a href="#cb34-24" aria-hidden="true" tabindex="-1"></a>  · <span class="co">-- Proof of fcnl_ons</span></span>
+<span id="cb34-25"><a href="#cb34-25" aria-hidden="true" tabindex="-1"></a>    <span class="kw">apply</span> And.intro</span>
+<span id="cb34-26"><a href="#cb34-26" aria-hidden="true" tabindex="-1"></a>    · <span class="co">-- Proof of fcnl_on emptyRel</span></span>
+<span id="cb34-27"><a href="#cb34-27" aria-hidden="true" tabindex="-1"></a>      <span class="kw">show</span> fcnl_on (emptyRel A B) X <span class="kw">from</span> fcnl_on_empty (emptyRel A B) h1</span>
+<span id="cb34-28"><a href="#cb34-28" aria-hidden="true" tabindex="-1"></a>      <span class="kw">done</span></span>
+<span id="cb34-29"><a href="#cb34-29" aria-hidden="true" tabindex="-1"></a>    · <span class="co">-- Proof of fcnl_on (invRel emptyRel)</span></span>
+<span id="cb34-30"><a href="#cb34-30" aria-hidden="true" tabindex="-1"></a>      <span class="kw">show</span> fcnl_on (invRel (emptyRel A B)) Y <span class="kw">from</span></span>
+<span id="cb34-31"><a href="#cb34-31" aria-hidden="true" tabindex="-1"></a>        fcnl_on_empty (invRel (emptyRel A B)) h2</span>
+<span id="cb34-32"><a href="#cb34-32" aria-hidden="true" tabindex="-1"></a>      <span class="kw">done</span></span>
+<span id="cb34-33"><a href="#cb34-33" aria-hidden="true" tabindex="-1"></a>  <span class="kw">done</span></span>
+<span id="cb34-34"><a href="#cb34-34" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-35"><a href="#cb34-35" aria-hidden="true" tabindex="-1"></a><span class="kw">lemma</span> I_0_empty : empty (I 0) := <span class="kw">by</span></span>
+<span id="cb34-36"><a href="#cb34-36" aria-hidden="true" tabindex="-1"></a>  <span class="kw">define</span></span>
+<span id="cb34-37"><a href="#cb34-37" aria-hidden="true" tabindex="-1"></a>  <span class="kw">by_contra</span> h1    <span class="co">--h1 : ∃ (x : Nat), x ∈ I 0</span></span>
+<span id="cb34-38"><a href="#cb34-38" aria-hidden="true" tabindex="-1"></a>  <span class="kw">obtain</span> (x : Nat) (h2 : x ∈ I 0) <span class="kw">from</span> h1</span>
+<span id="cb34-39"><a href="#cb34-39" aria-hidden="true" tabindex="-1"></a>  <span class="kw">define</span> <span class="kw">at</span> h2    <span class="co">--h2 : x &lt; 0</span></span>
+<span id="cb34-40"><a href="#cb34-40" aria-hidden="true" tabindex="-1"></a>  <span class="kw">linarith</span></span>
+<span id="cb34-41"><a href="#cb34-41" aria-hidden="true" tabindex="-1"></a>  <span class="kw">done</span></span>
+<span id="cb34-42"><a href="#cb34-42" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-43"><a href="#cb34-43" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> zero_elts_iff_empty {A : <span class="kw">Type</span>} (X : Set A) :</span>
+<span id="cb34-44"><a href="#cb34-44" aria-hidden="true" tabindex="-1"></a>    numElts X 0 ↔ empty X := <span class="kw">by</span></span>
+<span id="cb34-45"><a href="#cb34-45" aria-hidden="true" tabindex="-1"></a>  <span class="kw">apply</span> Iff.intro</span>
+<span id="cb34-46"><a href="#cb34-46" aria-hidden="true" tabindex="-1"></a>  · <span class="co">-- (→)</span></span>
+<span id="cb34-47"><a href="#cb34-47" aria-hidden="true" tabindex="-1"></a>    <span class="kw">assume</span> h1 : numElts X 0</span>
+<span id="cb34-48"><a href="#cb34-48" aria-hidden="true" tabindex="-1"></a>    <span class="kw">define</span></span>
+<span id="cb34-49"><a href="#cb34-49" aria-hidden="true" tabindex="-1"></a>    <span class="kw">by_contra</span> h2         <span class="co">--h2 : ∃ (x : A), x ∈ X</span></span>
+<span id="cb34-50"><a href="#cb34-50" aria-hidden="true" tabindex="-1"></a>    <span class="kw">obtain</span> (x : A) (h3 : x ∈ X) <span class="kw">from</span> h2</span>
+<span id="cb34-51"><a href="#cb34-51" aria-hidden="true" tabindex="-1"></a>    <span class="kw">define</span> <span class="kw">at</span> h1</span>
+<span id="cb34-52"><a href="#cb34-52" aria-hidden="true" tabindex="-1"></a>    <span class="kw">obtain</span> (R : Rel Nat A) (h4 : matching R (I 0) X) <span class="kw">from</span> h1</span>
+<span id="cb34-53"><a href="#cb34-53" aria-hidden="true" tabindex="-1"></a>    <span class="kw">define</span> <span class="kw">at</span> h4</span>
+<span id="cb34-54"><a href="#cb34-54" aria-hidden="true" tabindex="-1"></a>      <span class="co">--h4 : rel_within R (I 0) X ∧ fcnl_on R (I 0) ∧ fcnl_on (invRel R) X</span></span>
+<span id="cb34-55"><a href="#cb34-55" aria-hidden="true" tabindex="-1"></a>    <span class="kw">obtain</span> (j : Nat) (h5 : invRel R x j) <span class="kw">from</span></span>
+<span id="cb34-56"><a href="#cb34-56" aria-hidden="true" tabindex="-1"></a>      fcnl_exists h4.right.right h3</span>
+<span id="cb34-57"><a href="#cb34-57" aria-hidden="true" tabindex="-1"></a>    <span class="kw">define</span> <span class="kw">at</span> h5         <span class="co">--h5 : R j x</span></span>
+<span id="cb34-58"><a href="#cb34-58" aria-hidden="true" tabindex="-1"></a>    <span class="kw">have</span> h6 : j ∈ I 0 ∧ x ∈ X := h4.left h5</span>
+<span id="cb34-59"><a href="#cb34-59" aria-hidden="true" tabindex="-1"></a>    <span class="kw">contradict</span> I_0_empty <span class="co">--Goal : ∃ (x : Nat), x ∈ I 0</span></span>
+<span id="cb34-60"><a href="#cb34-60" aria-hidden="true" tabindex="-1"></a>    <span class="kw">show</span> ∃ (x : Nat), x ∈ I 0 <span class="kw">from</span> Exists.intro j h6.left</span>
+<span id="cb34-61"><a href="#cb34-61" aria-hidden="true" tabindex="-1"></a>    <span class="kw">done</span></span>
+<span id="cb34-62"><a href="#cb34-62" aria-hidden="true" tabindex="-1"></a>  · <span class="co">-- (←)</span></span>
+<span id="cb34-63"><a href="#cb34-63" aria-hidden="true" tabindex="-1"></a>    <span class="kw">assume</span> h1 : empty X</span>
+<span id="cb34-64"><a href="#cb34-64" aria-hidden="true" tabindex="-1"></a>    <span class="kw">show</span> ∃ (R : Rel Nat A), matching R (I 0) X <span class="kw">from</span></span>
+<span id="cb34-65"><a href="#cb34-65" aria-hidden="true" tabindex="-1"></a>      Exists.intro (emptyRel Nat A) (empty_match I_0_empty h1)</span>
+<span id="cb34-66"><a href="#cb34-66" aria-hidden="true" tabindex="-1"></a>    <span class="kw">done</span></span>
+<span id="cb34-67"><a href="#cb34-67" aria-hidden="true" tabindex="-1"></a>  <span class="kw">done</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Next, we prove that if a set has a positive number of elements then it is not empty. The proof is straightforward.</p>
+<div class="sourceCode" id="cb35"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> nonempty_of_pos_numElts {A : <span class="kw">Type</span>} {X : Set A} {n : Nat}</span>
+<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a>    (h1 : numElts X n) (h2 : n &gt; 0) : ∃ (x : A), x ∈ X := <span class="kw">by</span></span>
+<span id="cb35-3"><a href="#cb35-3" aria-hidden="true" tabindex="-1"></a>  <span class="kw">define</span> <span class="kw">at</span> h1</span>
+<span id="cb35-4"><a href="#cb35-4" aria-hidden="true" tabindex="-1"></a>  <span class="kw">obtain</span> (R : Rel Nat A) (h3 : matching R (I n) X) <span class="kw">from</span> h1</span>
+<span id="cb35-5"><a href="#cb35-5" aria-hidden="true" tabindex="-1"></a>  <span class="kw">define</span> <span class="kw">at</span> h3</span>
+<span id="cb35-6"><a href="#cb35-6" aria-hidden="true" tabindex="-1"></a>  <span class="kw">have</span> h4 : 0 ∈ I n := h2</span>
+<span id="cb35-7"><a href="#cb35-7" aria-hidden="true" tabindex="-1"></a>  <span class="kw">obtain</span> (x : A) (h5 : R 0 x) <span class="kw">from</span> fcnl_exists h3.right.left h4</span>
+<span id="cb35-8"><a href="#cb35-8" aria-hidden="true" tabindex="-1"></a>  <span class="kw">have</span> h6 : 0 ∈ I n ∧ x ∈ X := h3.left h5</span>
+<span id="cb35-9"><a href="#cb35-9" aria-hidden="true" tabindex="-1"></a>  <span class="kw">show</span> ∃ (x : A), x ∈ X <span class="kw">from</span> Exists.intro x h6.right</span>
+<span id="cb35-10"><a href="#cb35-10" aria-hidden="true" tabindex="-1"></a>  <span class="kw">done</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>To prove our next theorem about <code>numElts</code>, we will need to prove that two relations are equal. How can we do that? To prove that two sets are equal, we usually start by applying <code>Set.ext</code>, and to prove that two functions are equal we apply <code>funext</code>. We’ll need a similar extensionality principle for relations. If <code>R</code> and <code>S</code> are relations from <code>A</code> to <code>B</code>, the principle will say that if we have <code>h : ∀ (a : A) (b : B), R a b ↔︎ S a b</code>, then we can conclude that <code>R = S</code>. To prove it, we’ll use <code>h</code> to prove <code>extension R = extension S</code>, and then go on to deduce <code>R = S</code>.</p>
+<div class="sourceCode" id="cb36"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> relext {A B : <span class="kw">Type</span>} {R S : Rel A B}</span>
+<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a>    (h : ∀ (a : A) (b : B), R a b ↔ S a b) : R = S := <span class="kw">by</span></span>
+<span id="cb36-3"><a href="#cb36-3" aria-hidden="true" tabindex="-1"></a>  <span class="kw">have</span> h2 : extension R = extension S := <span class="kw">by</span></span>
+<span id="cb36-4"><a href="#cb36-4" aria-hidden="true" tabindex="-1"></a>    <span class="kw">apply</span> Set.ext</span>
+<span id="cb36-5"><a href="#cb36-5" aria-hidden="true" tabindex="-1"></a>    <span class="kw">fix</span> (a, b) : A × B <span class="co">--Goal : (a, b) ∈ extension R ↔ (a, b) ∈ extension S</span></span>
+<span id="cb36-6"><a href="#cb36-6" aria-hidden="true" tabindex="-1"></a>    <span class="kw">rewrite</span> [ext_def, ext_def]  <span class="co">--Goal : R a b ↔ S a b</span></span>
+<span id="cb36-7"><a href="#cb36-7" aria-hidden="true" tabindex="-1"></a>    <span class="kw">show</span> R a b ↔ S a b <span class="kw">from</span> h a b</span>
+<span id="cb36-8"><a href="#cb36-8" aria-hidden="true" tabindex="-1"></a>    <span class="kw">done</span></span>
+<span id="cb36-9"><a href="#cb36-9" aria-hidden="true" tabindex="-1"></a>  <span class="kw">show</span> R = S <span class="kw">from</span></span>
+<span id="cb36-10"><a href="#cb36-10" aria-hidden="true" tabindex="-1"></a>    <span class="kw">calc</span> R</span>
+<span id="cb36-11"><a href="#cb36-11" aria-hidden="true" tabindex="-1"></a>      _ = RelFromExt (extension R) := <span class="kw">by</span> <span class="kw">rfl</span></span>
+<span id="cb36-12"><a href="#cb36-12" aria-hidden="true" tabindex="-1"></a>      _ = RelFromExt (extension S) := <span class="kw">by</span> <span class="kw">rw</span> [h2]</span>
+<span id="cb36-13"><a href="#cb36-13" aria-hidden="true" tabindex="-1"></a>      _ = S := <span class="kw">by</span> <span class="kw">rfl</span></span>
+<span id="cb36-14"><a href="#cb36-14" aria-hidden="true" tabindex="-1"></a>  <span class="kw">done</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Now we are ready to prove that if <code>X</code> has <code>n + 1</code> elements and we remove one element, then the resulting set has <code>n</code> elements. The key lemma for this proof says that if <code>X ∼ Y</code>, <code>u ∈ X</code>, and <code>v ∈ Y</code>, then <code>X \ {u} ∼ Y \ {v}</code>. To see how to prove this lemma, suppose that <code>R</code> is a matching from <code>X</code> to <code>Y</code>. We must find a way to modify <code>R</code> to get a matching from <code>X \ {u}</code> to <code>Y \ {v}</code>. If we’re lucky, <code>R u v</code> will be true, in which case if we simply eliminate the pairing of <code>u</code> with <code>v</code> from <code>R</code>, the resulting relation will be a matching from <code>X \ {u}</code> to <code>Y \ {v}</code>. But it may happen that <code>R u v</code> is not true. In that case, there must be some <code>x ∈ X \ {u}</code> and some <code>y ∈ Y \ {v}</code> such that <code>R x v</code> and <code>R u y</code>. When we remove <code>u</code> from <code>X</code> and <code>v</code> from <code>Y</code>, <code>x</code> and <code>y</code> will be left unpaired. The obvious solution is to pair them with each other! This motivates the definition of a new relation <code>remove_one R u v</code>:</p>
+<div class="sourceCode" id="cb37"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> remove_one {A B : <span class="kw">Type</span>} (R : Rel A B) (u : A) (v : B)</span>
+<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a>  (x : A) (y : B) : <span class="kw">Prop</span> := x ≠ u ∧ y ≠ v ∧ (R x y ∨ (R x v ∧ R u y))</span>
+<span id="cb37-3"><a href="#cb37-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-4"><a href="#cb37-4" aria-hidden="true" tabindex="-1"></a><span class="kw">lemma</span> remove_one_def {A B : <span class="kw">Type</span>} (R : Rel A B) (u x : A) (v y : B) :</span>
+<span id="cb37-5"><a href="#cb37-5" aria-hidden="true" tabindex="-1"></a>    remove_one R u v x y ↔</span>
+<span id="cb37-6"><a href="#cb37-6" aria-hidden="true" tabindex="-1"></a>      x ≠ u ∧ y ≠ v ∧ (R x y ∨ (R x v ∧ R u y)) := <span class="kw">by</span> <span class="kw">rfl</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Our strategy now is to prove that <code>remove_one R u v</code> is a matching from <code>X \ {u}</code> to <code>Y \ {v}</code>. The proof is long but not hard, so we skip some of the details.</p>
+<div class="sourceCode" id="cb38"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="kw">lemma</span> remove_one_rel_within {A B : <span class="kw">Type</span>}</span>
+<span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a>    {R : Rel A B} {X : Set A} {Y : Set B} {x u : A} {y v : B}</span>
+<span id="cb38-3"><a href="#cb38-3" aria-hidden="true" tabindex="-1"></a>    (h1 : matching R X Y) (h2 : remove_one R u v x y) :</span>
+<span id="cb38-4"><a href="#cb38-4" aria-hidden="true" tabindex="-1"></a>    x ∈ X \ {u} ∧ y ∈ Y \ {v} := <span class="cn">sorry</span></span>
+<span id="cb38-5"><a href="#cb38-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb38-6"><a href="#cb38-6" aria-hidden="true" tabindex="-1"></a><span class="kw">lemma</span> remove_one_inv {A B : <span class="kw">Type</span>} (R : Rel A B) (u : A) (v : B) :</span>
+<span id="cb38-7"><a href="#cb38-7" aria-hidden="true" tabindex="-1"></a>    invRel (remove_one R u v) = remove_one (invRel R) v u := <span class="kw">by</span></span>
+<span id="cb38-8"><a href="#cb38-8" aria-hidden="true" tabindex="-1"></a>  <span class="kw">apply</span> relext</span>
+<span id="cb38-9"><a href="#cb38-9" aria-hidden="true" tabindex="-1"></a>  <span class="kw">fix</span> b : B; <span class="kw">fix</span> a : A</span>
+<span id="cb38-10"><a href="#cb38-10" aria-hidden="true" tabindex="-1"></a>    <span class="co">--Goal : invRel (remove_one R u v) b a ↔ remove_one (invRel R) v u b a</span></span>
+<span id="cb38-11"><a href="#cb38-11" aria-hidden="true" tabindex="-1"></a>  <span class="kw">rewrite</span> [invRel_def, remove_one_def, remove_one_def]</span>
+<span id="cb38-12"><a href="#cb38-12" aria-hidden="true" tabindex="-1"></a>  <span class="kw">rewrite</span> [invRel_def, invRel_def, invRel_def]</span>
+<span id="cb38-13"><a href="#cb38-13" aria-hidden="true" tabindex="-1"></a>  <span class="kw">rewrite</span> [←and_assoc, ←and_assoc]</span>
+<span id="cb38-14"><a href="#cb38-14" aria-hidden="true" tabindex="-1"></a>    <span class="co">--Goal : (a ≠ u ∧ b ≠ v) ∧ (R a b ∨ R a v ∧ R u b) ↔</span></span>
+<span id="cb38-15"><a href="#cb38-15" aria-hidden="true" tabindex="-1"></a>    <span class="co">--       (b ≠ v ∧ a ≠ u) ∧ (R a b ∨ R u b ∧ R a v)</span></span>
+<span id="cb38-16"><a href="#cb38-16" aria-hidden="true" tabindex="-1"></a>  <span class="kw">have</span> h1 : a ≠ u ∧ b ≠ v ↔ b ≠ v ∧ a ≠ u := and_comm</span>
+<span id="cb38-17"><a href="#cb38-17" aria-hidden="true" tabindex="-1"></a>  <span class="kw">have</span> h2 : R a v ∧ R u b ↔ R u b ∧ R a v := and_comm</span>
+<span id="cb38-18"><a href="#cb38-18" aria-hidden="true" tabindex="-1"></a>  <span class="kw">rewrite</span> [h1, h2]</span>
+<span id="cb38-19"><a href="#cb38-19" aria-hidden="true" tabindex="-1"></a>  <span class="kw">rfl</span></span>
+<span id="cb38-20"><a href="#cb38-20" aria-hidden="true" tabindex="-1"></a>  <span class="kw">done</span></span>
+<span id="cb38-21"><a href="#cb38-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb38-22"><a href="#cb38-22" aria-hidden="true" tabindex="-1"></a><span class="kw">lemma</span> remove_one_iff {A B : <span class="kw">Type</span>}</span>
+<span id="cb38-23"><a href="#cb38-23" aria-hidden="true" tabindex="-1"></a>    {X : Set A} {Y : Set B} {R : Rel A B} (h1 : matching R X Y)</span>
+<span id="cb38-24"><a href="#cb38-24" aria-hidden="true" tabindex="-1"></a>    {u : A} (h2 : u ∈ X) (v : B) {x : A} (h3 : x ∈ X \ {u}) :</span>
+<span id="cb38-25"><a href="#cb38-25" aria-hidden="true" tabindex="-1"></a>    ∃ (w : A), w ∈ X ∧ ∀ (y : B), remove_one R u v x y ↔ R w y := <span class="cn">sorry</span></span>
+<span id="cb38-26"><a href="#cb38-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb38-27"><a href="#cb38-27" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> remove_one_fcnl {A B : <span class="kw">Type</span>}</span>
+<span id="cb38-28"><a href="#cb38-28" aria-hidden="true" tabindex="-1"></a>    {R : Rel A B} {X : Set A} {Y : Set B} {u : A}</span>
+<span id="cb38-29"><a href="#cb38-29" aria-hidden="true" tabindex="-1"></a>    (h1 : matching R X Y) (h2 : u ∈ X) (v : B) :</span>
+<span id="cb38-30"><a href="#cb38-30" aria-hidden="true" tabindex="-1"></a>    fcnl_on (remove_one R u v) (X \ {u}) := <span class="kw">by</span></span>
+<span id="cb38-31"><a href="#cb38-31" aria-hidden="true" tabindex="-1"></a>  <span class="kw">define</span></span>
+<span id="cb38-32"><a href="#cb38-32" aria-hidden="true" tabindex="-1"></a>  <span class="kw">fix</span> x : A</span>
+<span id="cb38-33"><a href="#cb38-33" aria-hidden="true" tabindex="-1"></a>  <span class="kw">assume</span> h3 : x ∈ X \ {u}  <span class="co">--Goal : ∃! (y : B), remove_one R u v x y</span></span>
+<span id="cb38-34"><a href="#cb38-34" aria-hidden="true" tabindex="-1"></a>  <span class="kw">obtain</span> (w : A) (h4 : w ∈ X ∧ ∀ (y : B),</span>
+<span id="cb38-35"><a href="#cb38-35" aria-hidden="true" tabindex="-1"></a>    remove_one R u v x y ↔ R w y) <span class="kw">from</span> remove_one_iff h1 h2 v h3</span>
+<span id="cb38-36"><a href="#cb38-36" aria-hidden="true" tabindex="-1"></a>  <span class="kw">define</span> <span class="kw">at</span> h1</span>
+<span id="cb38-37"><a href="#cb38-37" aria-hidden="true" tabindex="-1"></a>  <span class="kw">exists_unique</span></span>
+<span id="cb38-38"><a href="#cb38-38" aria-hidden="true" tabindex="-1"></a>  · <span class="co">-- Existence</span></span>
+<span id="cb38-39"><a href="#cb38-39" aria-hidden="true" tabindex="-1"></a>    <span class="kw">obtain</span> (y : B) (h5 : R w y) <span class="kw">from</span> fcnl_exists h1.right.left h4.left</span>
+<span id="cb38-40"><a href="#cb38-40" aria-hidden="true" tabindex="-1"></a>    <span class="kw">apply</span> Exists.intro y</span>
+<span id="cb38-41"><a href="#cb38-41" aria-hidden="true" tabindex="-1"></a>    <span class="kw">rewrite</span> [h4.right]</span>
+<span id="cb38-42"><a href="#cb38-42" aria-hidden="true" tabindex="-1"></a>    <span class="kw">show</span> R w y <span class="kw">from</span> h5</span>
+<span id="cb38-43"><a href="#cb38-43" aria-hidden="true" tabindex="-1"></a>    <span class="kw">done</span></span>
+<span id="cb38-44"><a href="#cb38-44" aria-hidden="true" tabindex="-1"></a>  · <span class="co">-- Uniqueness</span></span>
+<span id="cb38-45"><a href="#cb38-45" aria-hidden="true" tabindex="-1"></a>    <span class="kw">fix</span> y1 : B; <span class="kw">fix</span> y2 : B</span>
+<span id="cb38-46"><a href="#cb38-46" aria-hidden="true" tabindex="-1"></a>    <span class="kw">rewrite</span> [h4.right, h4.right]</span>
+<span id="cb38-47"><a href="#cb38-47" aria-hidden="true" tabindex="-1"></a>    <span class="kw">assume</span> h5 : R w y1</span>
+<span id="cb38-48"><a href="#cb38-48" aria-hidden="true" tabindex="-1"></a>    <span class="kw">assume</span> h6 : R w y2</span>
+<span id="cb38-49"><a href="#cb38-49" aria-hidden="true" tabindex="-1"></a>    <span class="kw">show</span> y1 = y2 <span class="kw">from</span> fcnl_unique h1.right.left h4.left h5 h6</span>
+<span id="cb38-50"><a href="#cb38-50" aria-hidden="true" tabindex="-1"></a>    <span class="kw">done</span></span>
+<span id="cb38-51"><a href="#cb38-51" aria-hidden="true" tabindex="-1"></a>  <span class="kw">done</span></span>
+<span id="cb38-52"><a href="#cb38-52" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb38-53"><a href="#cb38-53" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> remove_one_match {A B : <span class="kw">Type</span>}</span>
+<span id="cb38-54"><a href="#cb38-54" aria-hidden="true" tabindex="-1"></a>    {R : Rel A B} {X : Set A} {Y : Set B} {u : A} {v : B}</span>
+<span id="cb38-55"><a href="#cb38-55" aria-hidden="true" tabindex="-1"></a>    (h1 : matching R X Y) (h2 : u ∈ X) (h3 : v ∈ Y) :</span>
+<span id="cb38-56"><a href="#cb38-56" aria-hidden="true" tabindex="-1"></a>    matching (remove_one R u v) (X \ {u}) (Y \ {v}) := <span class="kw">by</span></span>
+<span id="cb38-57"><a href="#cb38-57" aria-hidden="true" tabindex="-1"></a>  <span class="kw">define</span></span>
+<span id="cb38-58"><a href="#cb38-58" aria-hidden="true" tabindex="-1"></a>  <span class="kw">apply</span> And.intro</span>
+<span id="cb38-59"><a href="#cb38-59" aria-hidden="true" tabindex="-1"></a>  · <span class="co">-- Proof of rel_within</span></span>
+<span id="cb38-60"><a href="#cb38-60" aria-hidden="true" tabindex="-1"></a>    <span class="kw">define</span></span>
+<span id="cb38-61"><a href="#cb38-61" aria-hidden="true" tabindex="-1"></a>    <span class="kw">fix</span> x : A; <span class="kw">fix</span> y : B</span>
+<span id="cb38-62"><a href="#cb38-62" aria-hidden="true" tabindex="-1"></a>    <span class="kw">assume</span> h4 : remove_one R u v x y</span>
+<span id="cb38-63"><a href="#cb38-63" aria-hidden="true" tabindex="-1"></a>    <span class="kw">show</span> x ∈ X \ {u} ∧ y ∈ Y \ {v} <span class="kw">from</span> remove_one_rel_within h1 h4</span>
+<span id="cb38-64"><a href="#cb38-64" aria-hidden="true" tabindex="-1"></a>    <span class="kw">done</span></span>
+<span id="cb38-65"><a href="#cb38-65" aria-hidden="true" tabindex="-1"></a>  · <span class="co">-- Proof of fcnl_ons</span></span>
+<span id="cb38-66"><a href="#cb38-66" aria-hidden="true" tabindex="-1"></a>    <span class="kw">apply</span> And.intro (remove_one_fcnl h1 h2 v)</span>
+<span id="cb38-67"><a href="#cb38-67" aria-hidden="true" tabindex="-1"></a>    <span class="kw">rewrite</span> [remove_one_inv]</span>
+<span id="cb38-68"><a href="#cb38-68" aria-hidden="true" tabindex="-1"></a>    <span class="kw">show</span> fcnl_on (remove_one (invRel R) v u) (Y \ {v}) <span class="kw">from</span></span>
+<span id="cb38-69"><a href="#cb38-69" aria-hidden="true" tabindex="-1"></a>      remove_one_fcnl (inv_match h1) h3 u</span>
+<span id="cb38-70"><a href="#cb38-70" aria-hidden="true" tabindex="-1"></a>  <span class="kw">done</span></span>
+<span id="cb38-71"><a href="#cb38-71" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb38-72"><a href="#cb38-72" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> remove_one_equinum {A B : <span class="kw">Type</span>}</span>
+<span id="cb38-73"><a href="#cb38-73" aria-hidden="true" tabindex="-1"></a>    {X : Set A} {Y : Set B} {u : A} {v : B}</span>
+<span id="cb38-74"><a href="#cb38-74" aria-hidden="true" tabindex="-1"></a>    (h1 : X ∼ Y) (h2 : u ∈ X) (h3 : v ∈ Y) : X \ {u} ∼ Y \ {v} := <span class="kw">by</span></span>
+<span id="cb38-75"><a href="#cb38-75" aria-hidden="true" tabindex="-1"></a>  <span class="kw">define</span></span>
+<span id="cb38-76"><a href="#cb38-76" aria-hidden="true" tabindex="-1"></a>  <span class="kw">obtain</span> (R : Rel A B) (h4 : matching R X Y) <span class="kw">from</span> h1</span>
+<span id="cb38-77"><a href="#cb38-77" aria-hidden="true" tabindex="-1"></a>  <span class="kw">apply</span> Exists.intro (remove_one R u v)</span>
+<span id="cb38-78"><a href="#cb38-78" aria-hidden="true" tabindex="-1"></a>  <span class="kw">show</span> matching (remove_one R u v) (X \ {u}) (Y \ {v}) <span class="kw">from</span></span>
+<span id="cb38-79"><a href="#cb38-79" aria-hidden="true" tabindex="-1"></a>    remove_one_match h4 h2 h3</span>
+<span id="cb38-80"><a href="#cb38-80" aria-hidden="true" tabindex="-1"></a>  <span class="kw">done</span></span>
+<span id="cb38-81"><a href="#cb38-81" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb38-82"><a href="#cb38-82" aria-hidden="true" tabindex="-1"></a><span class="kw">lemma</span> I_max (n : Nat) : n ∈ I (n + 1) := <span class="cn">sorry</span></span>
+<span id="cb38-83"><a href="#cb38-83" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb38-84"><a href="#cb38-84" aria-hidden="true" tabindex="-1"></a><span class="kw">lemma</span> I_diff (n : Nat) : I (n + 1) \ {n} = I n := <span class="cn">sorry</span></span>
+<span id="cb38-85"><a href="#cb38-85" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb38-86"><a href="#cb38-86" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> remove_one_numElts {A : <span class="kw">Type</span>} {X : Set A} {n : Nat} {x : A}</span>
+<span id="cb38-87"><a href="#cb38-87" aria-hidden="true" tabindex="-1"></a>    (h1 : numElts X (n + 1)) (h2 : x ∈ X) : numElts (X \ {x}) n := <span class="kw">by</span></span>
+<span id="cb38-88"><a href="#cb38-88" aria-hidden="true" tabindex="-1"></a>  <span class="kw">have</span> h3 : n ∈ I (n + 1) := I_max n</span>
+<span id="cb38-89"><a href="#cb38-89" aria-hidden="true" tabindex="-1"></a>  <span class="kw">rewrite</span> [numElts_def] <span class="kw">at</span> h1     <span class="co">--h1 : I (n + 1) ∼ X</span></span>
+<span id="cb38-90"><a href="#cb38-90" aria-hidden="true" tabindex="-1"></a>  <span class="kw">have</span> h4 : I (n + 1) \ {n} ∼ X \ {x} := remove_one_equinum h1 h3 h2</span>
+<span id="cb38-91"><a href="#cb38-91" aria-hidden="true" tabindex="-1"></a>  <span class="kw">rewrite</span> [I_diff] <span class="kw">at</span> h4          <span class="co">--h4 : I n ∼ X \ {x}</span></span>
+<span id="cb38-92"><a href="#cb38-92" aria-hidden="true" tabindex="-1"></a>  <span class="kw">show</span> numElts (X \ {x}) n <span class="kw">from</span> h4</span>
+<span id="cb38-93"><a href="#cb38-93" aria-hidden="true" tabindex="-1"></a>  <span class="kw">done</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Finally, we prove that a set has one element if and only if it is a singleton set. For this proof, we need to be able to produce a relation that is a matching between two singleton sets. Suppose we have <code>a : A</code> and <code>b : B</code>. Of course, a matching from <code>{a}</code> to <code>{b}</code> must pair <code>a</code> with <code>b</code>, so we make the following definition:</p>
+<div class="sourceCode" id="cb39"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> one_match {A B : <span class="kw">Type</span>} (a : A) (b : B)</span>
+<span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a>  (x : A) (y : B) : <span class="kw">Prop</span> := x = a ∧ y = b</span>
+<span id="cb39-3"><a href="#cb39-3" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb39-4"><a href="#cb39-4" aria-hidden="true" tabindex="-1"></a><span class="kw">lemma</span> one_match_def {A B : <span class="kw">Type</span>} (a x : A) (b y : B) :</span>
+<span id="cb39-5"><a href="#cb39-5" aria-hidden="true" tabindex="-1"></a>    one_match a b x y ↔ x = a ∧ y = b := <span class="kw">by</span> <span class="kw">rfl</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>We prove the theorem using a few lemmas, whose proofs we leave to you.</p>
+<div class="sourceCode" id="cb40"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a><span class="kw">lemma</span> one_match_match {A B : <span class="kw">Type</span>} (a : A) (b : B) :</span>
+<span id="cb40-2"><a href="#cb40-2" aria-hidden="true" tabindex="-1"></a>    matching (one_match a b) {a} {b} := <span class="cn">sorry</span></span>
+<span id="cb40-3"><a href="#cb40-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb40-4"><a href="#cb40-4" aria-hidden="true" tabindex="-1"></a><span class="kw">lemma</span> I_1_singleton : I 1 = {0} := <span class="cn">sorry</span></span>
+<span id="cb40-5"><a href="#cb40-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb40-6"><a href="#cb40-6" aria-hidden="true" tabindex="-1"></a><span class="kw">lemma</span> singleton_of_diff_empty {A : <span class="kw">Type</span>} {X : Set A} {x : A}</span>
+<span id="cb40-7"><a href="#cb40-7" aria-hidden="true" tabindex="-1"></a>    (h1 : x ∈ X) (h2 : empty (X \ {x})) : X = {x} := <span class="cn">sorry</span></span>
+<span id="cb40-8"><a href="#cb40-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb40-9"><a href="#cb40-9" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> one_elt_iff_singleton {A : <span class="kw">Type</span>} (X : Set A) :</span>
+<span id="cb40-10"><a href="#cb40-10" aria-hidden="true" tabindex="-1"></a>    numElts X 1 ↔ ∃ (x : A), X = {x} := <span class="kw">by</span></span>
+<span id="cb40-11"><a href="#cb40-11" aria-hidden="true" tabindex="-1"></a>  <span class="kw">apply</span> Iff.intro</span>
+<span id="cb40-12"><a href="#cb40-12" aria-hidden="true" tabindex="-1"></a>  · <span class="co">-- (→)</span></span>
+<span id="cb40-13"><a href="#cb40-13" aria-hidden="true" tabindex="-1"></a>    <span class="kw">assume</span> h1 : numElts X 1  <span class="co">--Goal : ∃ (x : A), X = {x}</span></span>
+<span id="cb40-14"><a href="#cb40-14" aria-hidden="true" tabindex="-1"></a>    <span class="kw">have</span> h2 : 1 &gt; 0 := <span class="kw">by</span> <span class="kw">norm_num</span></span>
+<span id="cb40-15"><a href="#cb40-15" aria-hidden="true" tabindex="-1"></a>    <span class="kw">obtain</span> (x : A) (h3 : x ∈ X) <span class="kw">from</span> nonempty_of_pos_numElts h1 h2</span>
+<span id="cb40-16"><a href="#cb40-16" aria-hidden="true" tabindex="-1"></a>    <span class="kw">have</span> h4 : numElts (X \ {x}) 0 := remove_one_numElts h1 h3</span>
+<span id="cb40-17"><a href="#cb40-17" aria-hidden="true" tabindex="-1"></a>    <span class="kw">rewrite</span> [zero_elts_iff_empty] <span class="kw">at</span> h4</span>
+<span id="cb40-18"><a href="#cb40-18" aria-hidden="true" tabindex="-1"></a>    <span class="kw">show</span> ∃ (x : A), X = {x} <span class="kw">from</span></span>
+<span id="cb40-19"><a href="#cb40-19" aria-hidden="true" tabindex="-1"></a>      Exists.intro x (singleton_of_diff_empty h3 h4)</span>
+<span id="cb40-20"><a href="#cb40-20" aria-hidden="true" tabindex="-1"></a>    <span class="kw">done</span></span>
+<span id="cb40-21"><a href="#cb40-21" aria-hidden="true" tabindex="-1"></a>  · <span class="co">-- (←)</span></span>
+<span id="cb40-22"><a href="#cb40-22" aria-hidden="true" tabindex="-1"></a>    <span class="kw">assume</span> h1 : ∃ (x : A), X = {x}</span>
+<span id="cb40-23"><a href="#cb40-23" aria-hidden="true" tabindex="-1"></a>    <span class="kw">obtain</span> (x : A) (h2 : X = {x}) <span class="kw">from</span> h1</span>
+<span id="cb40-24"><a href="#cb40-24" aria-hidden="true" tabindex="-1"></a>    <span class="kw">define</span></span>
+<span id="cb40-25"><a href="#cb40-25" aria-hidden="true" tabindex="-1"></a>    <span class="kw">rewrite</span> [I_1_singleton, h2]</span>
+<span id="cb40-26"><a href="#cb40-26" aria-hidden="true" tabindex="-1"></a>    <span class="kw">show</span> ∃ (R : Rel Nat A), matching R {0} {x} <span class="kw">from</span></span>
+<span id="cb40-27"><a href="#cb40-27" aria-hidden="true" tabindex="-1"></a>      Exists.intro (one_match 0 x) (one_match_match 0 x)</span>
+<span id="cb40-28"><a href="#cb40-28" aria-hidden="true" tabindex="-1"></a>    <span class="kw">done</span></span>
+<span id="cb40-29"><a href="#cb40-29" aria-hidden="true" tabindex="-1"></a>  <span class="kw">done</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>We have now proven all of the theorems about <code>numElts</code> whose proofs were promised in Section 6.2. However, there is still one important issue that we have not addressed. Could there be a set <code>X</code> such that, say, <code>numElts X 5</code> and <code>numElts X 6</code> are both true? Surely the answer is no—a set can’t have five elements and also have six elements! But it requires proof.</p>
+<div class="sourceCode" id="cb41"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a><span class="kw">lemma</span> eq_zero_of_I_zero_equinum {n : Nat} (h1 : I 0 ∼ I n) : n = 0 := <span class="kw">by</span></span>
+<span id="cb41-2"><a href="#cb41-2" aria-hidden="true" tabindex="-1"></a>  <span class="kw">rewrite</span> [←numElts_def, zero_elts_iff_empty] <span class="kw">at</span> h1</span>
+<span id="cb41-3"><a href="#cb41-3" aria-hidden="true" tabindex="-1"></a>    <span class="co">--h1 : empty (I n)</span></span>
+<span id="cb41-4"><a href="#cb41-4" aria-hidden="true" tabindex="-1"></a>  <span class="kw">contradict</span> h1 <span class="kw">with</span> h2       <span class="co">--Goal : ∃ (x : Nat), x ∈ I n</span></span>
+<span id="cb41-5"><a href="#cb41-5" aria-hidden="true" tabindex="-1"></a>  <span class="kw">apply</span> Exists.intro 0</span>
+<span id="cb41-6"><a href="#cb41-6" aria-hidden="true" tabindex="-1"></a>  <span class="kw">define</span></span>
+<span id="cb41-7"><a href="#cb41-7" aria-hidden="true" tabindex="-1"></a>  <span class="kw">show</span> 0 &lt; n <span class="kw">from</span> Nat.pos_of_ne_zero h2</span>
+<span id="cb41-8"><a href="#cb41-8" aria-hidden="true" tabindex="-1"></a>  <span class="kw">done</span></span>
+<span id="cb41-9"><a href="#cb41-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-10"><a href="#cb41-10" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> eq_of_I_equinum : ∀ ⦃m n : Nat⦄, I m ∼ I n → m = n := <span class="kw">by</span></span>
+<span id="cb41-11"><a href="#cb41-11" aria-hidden="true" tabindex="-1"></a>  <span class="kw">by_induc</span></span>
+<span id="cb41-12"><a href="#cb41-12" aria-hidden="true" tabindex="-1"></a>  · <span class="co">-- Base Case</span></span>
+<span id="cb41-13"><a href="#cb41-13" aria-hidden="true" tabindex="-1"></a>    <span class="kw">fix</span> n : Nat</span>
+<span id="cb41-14"><a href="#cb41-14" aria-hidden="true" tabindex="-1"></a>    <span class="kw">assume</span> h1 : I 0 ∼ I n</span>
+<span id="cb41-15"><a href="#cb41-15" aria-hidden="true" tabindex="-1"></a>    <span class="kw">show</span> 0 = n <span class="kw">from</span> (eq_zero_of_I_zero_equinum h1).symm</span>
+<span id="cb41-16"><a href="#cb41-16" aria-hidden="true" tabindex="-1"></a>    <span class="kw">done</span></span>
+<span id="cb41-17"><a href="#cb41-17" aria-hidden="true" tabindex="-1"></a>  · <span class="co">-- Induction Step</span></span>
+<span id="cb41-18"><a href="#cb41-18" aria-hidden="true" tabindex="-1"></a>    <span class="kw">fix</span> m : Nat</span>
+<span id="cb41-19"><a href="#cb41-19" aria-hidden="true" tabindex="-1"></a>    <span class="kw">assume</span> ih : ∀ ⦃n : Nat⦄, I m ∼ I n → m = n</span>
+<span id="cb41-20"><a href="#cb41-20" aria-hidden="true" tabindex="-1"></a>    <span class="kw">fix</span> n : Nat</span>
+<span id="cb41-21"><a href="#cb41-21" aria-hidden="true" tabindex="-1"></a>    <span class="kw">assume</span> h1 : I (m + 1) ∼ I n      <span class="co">--Goal : m + 1 = n</span></span>
+<span id="cb41-22"><a href="#cb41-22" aria-hidden="true" tabindex="-1"></a>    <span class="kw">have</span> h2 : n ≠ 0 := <span class="kw">by</span></span>
+<span id="cb41-23"><a href="#cb41-23" aria-hidden="true" tabindex="-1"></a>      <span class="kw">by_contra</span> h2</span>
+<span id="cb41-24"><a href="#cb41-24" aria-hidden="true" tabindex="-1"></a>      <span class="kw">have</span> h3 : I n ∼ I (m + 1) := Theorem_8_1_3_2 h1</span>
+<span id="cb41-25"><a href="#cb41-25" aria-hidden="true" tabindex="-1"></a>      <span class="kw">rewrite</span> [h2] <span class="kw">at</span> h3</span>
+<span id="cb41-26"><a href="#cb41-26" aria-hidden="true" tabindex="-1"></a>      <span class="kw">have</span> h4 : m + 1 = 0 := eq_zero_of_I_zero_equinum h3</span>
+<span id="cb41-27"><a href="#cb41-27" aria-hidden="true" tabindex="-1"></a>      <span class="kw">linarith</span></span>
+<span id="cb41-28"><a href="#cb41-28" aria-hidden="true" tabindex="-1"></a>      <span class="kw">done</span></span>
+<span id="cb41-29"><a href="#cb41-29" aria-hidden="true" tabindex="-1"></a>    <span class="kw">obtain</span> (k : Nat) (h3 : n = k + 1) <span class="kw">from</span> exists_eq_add_one_of_ne_zero h2</span>
+<span id="cb41-30"><a href="#cb41-30" aria-hidden="true" tabindex="-1"></a>    <span class="kw">rewrite</span> [h3] <span class="kw">at</span> h1               <span class="co">--h1 : I (m + 1) ∼ I (k + 1)</span></span>
+<span id="cb41-31"><a href="#cb41-31" aria-hidden="true" tabindex="-1"></a>    <span class="kw">rewrite</span> [h3]                     <span class="co">--Goal : m + 1 = k + 1</span></span>
+<span id="cb41-32"><a href="#cb41-32" aria-hidden="true" tabindex="-1"></a>    <span class="kw">have</span> h4 : m ∈ I (m + 1) := I_max m</span>
+<span id="cb41-33"><a href="#cb41-33" aria-hidden="true" tabindex="-1"></a>    <span class="kw">have</span> h5 : k ∈ I (k + 1) := I_max k</span>
+<span id="cb41-34"><a href="#cb41-34" aria-hidden="true" tabindex="-1"></a>    <span class="kw">have</span> h6 : I (m + 1) \ {m} ∼ I (k + 1) \ {k} :=</span>
+<span id="cb41-35"><a href="#cb41-35" aria-hidden="true" tabindex="-1"></a>      remove_one_equinum h1 h4 h5</span>
+<span id="cb41-36"><a href="#cb41-36" aria-hidden="true" tabindex="-1"></a>    <span class="kw">rewrite</span> [I_diff, I_diff] <span class="kw">at</span> h6   <span class="co">--h6 : I m ∼ I k</span></span>
+<span id="cb41-37"><a href="#cb41-37" aria-hidden="true" tabindex="-1"></a>    <span class="kw">have</span> h7 : m = k := ih h6</span>
+<span id="cb41-38"><a href="#cb41-38" aria-hidden="true" tabindex="-1"></a>    <span class="kw">rewrite</span> [h7]</span>
+<span id="cb41-39"><a href="#cb41-39" aria-hidden="true" tabindex="-1"></a>    <span class="kw">rfl</span></span>
+<span id="cb41-40"><a href="#cb41-40" aria-hidden="true" tabindex="-1"></a>    <span class="kw">done</span></span>
+<span id="cb41-41"><a href="#cb41-41" aria-hidden="true" tabindex="-1"></a>  <span class="kw">done</span></span>
+<span id="cb41-42"><a href="#cb41-42" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-43"><a href="#cb41-43" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> numElts_unique {A : <span class="kw">Type</span>} {X : Set A} {m n : Nat}</span>
+<span id="cb41-44"><a href="#cb41-44" aria-hidden="true" tabindex="-1"></a>    (h1 : numElts X m) (h2 : numElts X n) : m = n := <span class="kw">by</span></span>
+<span id="cb41-45"><a href="#cb41-45" aria-hidden="true" tabindex="-1"></a>  <span class="kw">rewrite</span> [numElts_def] <span class="kw">at</span> h1      <span class="co">--h1 : I m ∼ X</span></span>
+<span id="cb41-46"><a href="#cb41-46" aria-hidden="true" tabindex="-1"></a>  <span class="kw">rewrite</span> [numElts_def] <span class="kw">at</span> h2      <span class="co">--h2 : I n ∼ X</span></span>
+<span id="cb41-47"><a href="#cb41-47" aria-hidden="true" tabindex="-1"></a>  <span class="kw">have</span> h3 : X ∼ I n := Theorem_8_1_3_2 h2</span>
+<span id="cb41-48"><a href="#cb41-48" aria-hidden="true" tabindex="-1"></a>  <span class="kw">have</span> h4 : I m ∼ I n := Theorem_8_1_3_3 h1 h3</span>
+<span id="cb41-49"><a href="#cb41-49" aria-hidden="true" tabindex="-1"></a>  <span class="kw">show</span> m = n <span class="kw">from</span> eq_of_I_equinum h4</span>
+<span id="cb41-50"><a href="#cb41-50" aria-hidden="true" tabindex="-1"></a>  <span class="kw">done</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Next, we turn to our promise, at the end of Section 7.4, to prove Theorem 7.4.4 of <em>HTPI</em>, which says that the totient function <span class="math inline">\(\varphi\)</span> is multiplicative.</p>
+<p>To define the totient function in Lean, in Chapter 7 we defined <code>phi m</code> to be <code>num_rp_below m m</code>, where <code>num_rp_below m k</code> is the number of natural numbers less than <code>k</code> that are relatively prime to <code>m</code>. But in this chapter we have developed new methods for counting things. Our first task is to show that these new methods agree with the method used in Chapter 7.</p>
+<p>We have already remarked that the definition of <code>num_elts_below</code> in this chapter bears some resemblence to the definition of <code>num_rp_below</code> in Chapter 7. It should not be surprising, therefore, that these two counting methods give results that agree.</p>
+<div class="sourceCode" id="cb42"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> Set_rp_below (m : Nat) : Set Nat := { n : Nat | rel_prime m n ∧ n &lt; m }</span>
+<span id="cb42-2"><a href="#cb42-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb42-3"><a href="#cb42-3" aria-hidden="true" tabindex="-1"></a><span class="kw">lemma</span> Set_rp_below_def (a m : Nat) :</span>
+<span id="cb42-4"><a href="#cb42-4" aria-hidden="true" tabindex="-1"></a>    a ∈ Set_rp_below m ↔ rel_prime m a ∧ a &lt; m := <span class="kw">by</span> <span class="kw">rfl</span></span>
+<span id="cb42-5"><a href="#cb42-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb42-6"><a href="#cb42-6" aria-hidden="true" tabindex="-1"></a><span class="kw">lemma</span> neb_nrpb (m : Nat) : ∀ ⦃k : Nat⦄, k ≤ m →</span>
+<span id="cb42-7"><a href="#cb42-7" aria-hidden="true" tabindex="-1"></a>    num_elts_below (Set_rp_below m) k (num_rp_below m k) := <span class="cn">sorry</span></span>
+<span id="cb42-8"><a href="#cb42-8" aria-hidden="true" tabindex="-1"></a><span class="co">--Hint:  Use induction.</span></span>
+<span id="cb42-9"><a href="#cb42-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb42-10"><a href="#cb42-10" aria-hidden="true" tabindex="-1"></a><span class="kw">lemma</span> neb_phi (m : Nat) :</span>
+<span id="cb42-11"><a href="#cb42-11" aria-hidden="true" tabindex="-1"></a>    num_elts_below (Set_rp_below m) m (phi m) := <span class="kw">by</span></span>
+<span id="cb42-12"><a href="#cb42-12" aria-hidden="true" tabindex="-1"></a>  <span class="kw">rewrite</span> [phi_def]</span>
+<span id="cb42-13"><a href="#cb42-13" aria-hidden="true" tabindex="-1"></a>  <span class="kw">have</span> h1 : m ≤ m := <span class="kw">by</span> <span class="kw">linarith</span></span>
+<span id="cb42-14"><a href="#cb42-14" aria-hidden="true" tabindex="-1"></a>  <span class="kw">show</span> num_elts_below (Set_rp_below m) m (num_rp_below m m) <span class="kw">from</span></span>
+<span id="cb42-15"><a href="#cb42-15" aria-hidden="true" tabindex="-1"></a>    neb_nrpb m h1</span>
+<span id="cb42-16"><a href="#cb42-16" aria-hidden="true" tabindex="-1"></a>  <span class="kw">done</span></span>
+<span id="cb42-17"><a href="#cb42-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb42-18"><a href="#cb42-18" aria-hidden="true" tabindex="-1"></a><span class="kw">lemma</span> phi_is_numElts (m : Nat) :</span>
+<span id="cb42-19"><a href="#cb42-19" aria-hidden="true" tabindex="-1"></a>    numElts (Set_rp_below m) (phi m) := <span class="kw">by</span></span>
+<span id="cb42-20"><a href="#cb42-20" aria-hidden="true" tabindex="-1"></a>  <span class="kw">rewrite</span> [numElts_def]    <span class="co">--Goal : I (phi m) ∼ Set_rp_below m</span></span>
+<span id="cb42-21"><a href="#cb42-21" aria-hidden="true" tabindex="-1"></a>  <span class="kw">have</span> h1 : ∀ (n : Nat), n ∈ Set_rp_below m → n &lt; m := <span class="kw">by</span></span>
+<span id="cb42-22"><a href="#cb42-22" aria-hidden="true" tabindex="-1"></a>    <span class="kw">fix</span> n : Nat</span>
+<span id="cb42-23"><a href="#cb42-23" aria-hidden="true" tabindex="-1"></a>    <span class="kw">assume</span> h2 : n ∈ Set_rp_below m</span>
+<span id="cb42-24"><a href="#cb42-24" aria-hidden="true" tabindex="-1"></a>    <span class="kw">define</span> <span class="kw">at</span> h2</span>
+<span id="cb42-25"><a href="#cb42-25" aria-hidden="true" tabindex="-1"></a>    <span class="kw">show</span> n &lt; m <span class="kw">from</span> h2.right</span>
+<span id="cb42-26"><a href="#cb42-26" aria-hidden="true" tabindex="-1"></a>    <span class="kw">done</span></span>
+<span id="cb42-27"><a href="#cb42-27" aria-hidden="true" tabindex="-1"></a>  <span class="kw">have</span> h2 : num_elts_below (Set_rp_below m) m (phi m) := neb_phi m</span>
+<span id="cb42-28"><a href="#cb42-28" aria-hidden="true" tabindex="-1"></a>  <span class="kw">show</span> I (phi m) ∼ Set_rp_below m <span class="kw">from</span> bdd_subset_nat h1 h2</span>
+<span id="cb42-29"><a href="#cb42-29" aria-hidden="true" tabindex="-1"></a>  <span class="kw">done</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>According to the last lemma, we can now think of <code>phi m</code> as the number of elements of the set <code>Set_rp_below m</code>.</p>
+<p>We will need one more number-theoretic fact: Lemma 7.4.7 from <em>HTPI</em>. We follow the strategy of the proof in <em>HTPI</em>, separating out one calculation as an auxiliary lemma before giving the main proof.</p>
+<div class="sourceCode" id="cb43"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a><span class="kw">lemma</span> Lemma_7_4_7_aux {m n : Nat} {s t : Int}</span>
+<span id="cb43-2"><a href="#cb43-2" aria-hidden="true" tabindex="-1"></a>    (h : s * m + t * n = 1) (a b : Nat) :</span>
+<span id="cb43-3"><a href="#cb43-3" aria-hidden="true" tabindex="-1"></a>    t * n * a + s * m * b ≡ a (MOD m) := <span class="kw">by</span></span>
+<span id="cb43-4"><a href="#cb43-4" aria-hidden="true" tabindex="-1"></a>  <span class="kw">define</span></span>
+<span id="cb43-5"><a href="#cb43-5" aria-hidden="true" tabindex="-1"></a>  <span class="kw">apply</span> Exists.intro (s * (b - a))</span>
+<span id="cb43-6"><a href="#cb43-6" aria-hidden="true" tabindex="-1"></a>  <span class="kw">show</span> t * n * a + s * m * b - a = m * (s * (b - a)) <span class="kw">from</span></span>
+<span id="cb43-7"><a href="#cb43-7" aria-hidden="true" tabindex="-1"></a>    <span class="kw">calc</span> t * n * a + s * m * b - a</span>
+<span id="cb43-8"><a href="#cb43-8" aria-hidden="true" tabindex="-1"></a>      _ = (t * n - 1) * a + s * m * b := <span class="kw">by</span> <span class="kw">ring</span></span>
+<span id="cb43-9"><a href="#cb43-9" aria-hidden="true" tabindex="-1"></a>      _ = (t * n - (s * m + t * n)) * a + s * m * b := <span class="kw">by</span> <span class="kw">rw</span> [h]</span>
+<span id="cb43-10"><a href="#cb43-10" aria-hidden="true" tabindex="-1"></a>      _ = m * (s * (b - a)) := <span class="kw">by</span> <span class="kw">ring</span></span>
+<span id="cb43-11"><a href="#cb43-11" aria-hidden="true" tabindex="-1"></a>  <span class="kw">done</span></span>
+<span id="cb43-12"><a href="#cb43-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb43-13"><a href="#cb43-13" aria-hidden="true" tabindex="-1"></a><span class="kw">lemma</span> Lemma_7_4_7 {m n : Nat} [NeZero m] [NeZero n]</span>
+<span id="cb43-14"><a href="#cb43-14" aria-hidden="true" tabindex="-1"></a>    (h1 : rel_prime m n) (a b : Nat) :</span>
+<span id="cb43-15"><a href="#cb43-15" aria-hidden="true" tabindex="-1"></a>    ∃ (r : Nat), r &lt; m * n ∧ r ≡ a (MOD m) ∧ r ≡ b (MOD n) := <span class="kw">by</span></span>
+<span id="cb43-16"><a href="#cb43-16" aria-hidden="true" tabindex="-1"></a>  <span class="kw">set</span> s : Int := gcd_c1 m n</span>
+<span id="cb43-17"><a href="#cb43-17" aria-hidden="true" tabindex="-1"></a>  <span class="kw">set</span> t : Int := gcd_c2 m n</span>
+<span id="cb43-18"><a href="#cb43-18" aria-hidden="true" tabindex="-1"></a>  <span class="kw">have</span> h4 : s * m + t * n = gcd m n := gcd_lin_comb n m</span>
+<span id="cb43-19"><a href="#cb43-19" aria-hidden="true" tabindex="-1"></a>  <span class="kw">define</span> <span class="kw">at</span> h1                      <span class="co">--h1 : gcd m n = 1</span></span>
+<span id="cb43-20"><a href="#cb43-20" aria-hidden="true" tabindex="-1"></a>  <span class="kw">rewrite</span> [h1, Nat.cast_one] <span class="kw">at</span> h4  <span class="co">--h4 : s * m + t * n = 1</span></span>
+<span id="cb43-21"><a href="#cb43-21" aria-hidden="true" tabindex="-1"></a>  <span class="kw">set</span> x : Int := t * n * a + s * m * b</span>
+<span id="cb43-22"><a href="#cb43-22" aria-hidden="true" tabindex="-1"></a>  <span class="kw">have</span> h5 : x ≡ a (MOD m) := Lemma_7_4_7_aux h4 a b</span>
+<span id="cb43-23"><a href="#cb43-23" aria-hidden="true" tabindex="-1"></a>  <span class="kw">rewrite</span> [add_comm] <span class="kw">at</span> h4          <span class="co">--h4 : t * n + s * m = 1</span></span>
+<span id="cb43-24"><a href="#cb43-24" aria-hidden="true" tabindex="-1"></a>  <span class="kw">have</span> h6 : s * m * b + t * n * a ≡ b (MOD n) :=</span>
+<span id="cb43-25"><a href="#cb43-25" aria-hidden="true" tabindex="-1"></a>    Lemma_7_4_7_aux h4 b a</span>
+<span id="cb43-26"><a href="#cb43-26" aria-hidden="true" tabindex="-1"></a>  <span class="kw">have</span> h7 : s * m * b + t * n * a = x := <span class="kw">by</span> <span class="kw">ring</span></span>
+<span id="cb43-27"><a href="#cb43-27" aria-hidden="true" tabindex="-1"></a>  <span class="kw">rewrite</span> [h7] <span class="kw">at</span> h6                <span class="co">--h6 : x ≡ b (MOD n)</span></span>
+<span id="cb43-28"><a href="#cb43-28" aria-hidden="true" tabindex="-1"></a>  <span class="kw">have</span> h8 : m * n ≠ 0 := mul_ne_zero (NeZero.ne m) (NeZero.ne n)</span>
+<span id="cb43-29"><a href="#cb43-29" aria-hidden="true" tabindex="-1"></a>  <span class="kw">rewrite</span> [←neZero_iff] <span class="kw">at</span> h8       <span class="co">--h8 : NeZero (m * n)</span></span>
+<span id="cb43-30"><a href="#cb43-30" aria-hidden="true" tabindex="-1"></a>  <span class="kw">have</span> h9 : 0 ≤ x % ↑(m * n) ∧ x % ↑(m * n) &lt; ↑(m * n) ∧</span>
+<span id="cb43-31"><a href="#cb43-31" aria-hidden="true" tabindex="-1"></a>    x ≡ x % ↑(m * n) (MOD m * n) := mod_cmpl_res (m * n) x</span>
+<span id="cb43-32"><a href="#cb43-32" aria-hidden="true" tabindex="-1"></a>  <span class="kw">have</span> h10 : x % ↑(m * n) &lt; ↑(m * n) ∧</span>
+<span id="cb43-33"><a href="#cb43-33" aria-hidden="true" tabindex="-1"></a>    x ≡ x % ↑(m * n) (MOD m * n) := h9.right</span>
+<span id="cb43-34"><a href="#cb43-34" aria-hidden="true" tabindex="-1"></a>  <span class="kw">set</span> r : Nat := Int.toNat (x % ↑(m * n))</span>
+<span id="cb43-35"><a href="#cb43-35" aria-hidden="true" tabindex="-1"></a>  <span class="kw">have</span> h11 : x % ↑(m * n) = ↑r := (Int.toNat_of_nonneg h9.left).symm</span>
+<span id="cb43-36"><a href="#cb43-36" aria-hidden="true" tabindex="-1"></a>  <span class="kw">rewrite</span> [h11, Nat.cast_lt] <span class="kw">at</span> h10 <span class="co">--h10 : r &lt; m * n ∧ x ≡ r (MOD m * n)</span></span>
+<span id="cb43-37"><a href="#cb43-37" aria-hidden="true" tabindex="-1"></a>  <span class="kw">apply</span> Exists.intro r</span>
+<span id="cb43-38"><a href="#cb43-38" aria-hidden="true" tabindex="-1"></a>  <span class="kw">apply</span> And.intro h10.left</span>
+<span id="cb43-39"><a href="#cb43-39" aria-hidden="true" tabindex="-1"></a>  <span class="kw">have</span> h12 : r ≡ x (MOD (m * n)) := congr_symm h10.right</span>
+<span id="cb43-40"><a href="#cb43-40" aria-hidden="true" tabindex="-1"></a>  <span class="kw">rewrite</span> [Lemma_7_4_5 _ _ h1] <span class="kw">at</span> h12 <span class="co">--h12 : r ≡ x (MOD m) ∧ r ≡ x (MOD n)</span></span>
+<span id="cb43-41"><a href="#cb43-41" aria-hidden="true" tabindex="-1"></a>  <span class="kw">apply</span> And.intro</span>
+<span id="cb43-42"><a href="#cb43-42" aria-hidden="true" tabindex="-1"></a>  · <span class="co">-- Proof that r ≡ a (MOD m)</span></span>
+<span id="cb43-43"><a href="#cb43-43" aria-hidden="true" tabindex="-1"></a>    <span class="kw">show</span> r ≡ a (MOD m) <span class="kw">from</span> congr_trans h12.left h5</span>
+<span id="cb43-44"><a href="#cb43-44" aria-hidden="true" tabindex="-1"></a>    <span class="kw">done</span></span>
+<span id="cb43-45"><a href="#cb43-45" aria-hidden="true" tabindex="-1"></a>  · <span class="co">-- Proof that r ≡ b (MOD n)</span></span>
+<span id="cb43-46"><a href="#cb43-46" aria-hidden="true" tabindex="-1"></a>    <span class="kw">show</span> r ≡ b (MOD n) <span class="kw">from</span> congr_trans h12.right h6</span>
+<span id="cb43-47"><a href="#cb43-47" aria-hidden="true" tabindex="-1"></a>    <span class="kw">done</span></span>
+<span id="cb43-48"><a href="#cb43-48" aria-hidden="true" tabindex="-1"></a>  <span class="kw">done</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>The next fact we need is part 1 of Theorem 8.1.2 in <em>HTPI</em>, which says that if <span class="math inline">\(U\)</span>, <span class="math inline">\(V\)</span>, <span class="math inline">\(W\)</span>, and <span class="math inline">\(X\)</span> are sets such that <span class="math inline">\(U \sim V\)</span> and <span class="math inline">\(W \sim X\)</span>, then <span class="math inline">\(U \times W \sim V \times X\)</span>. We would like to prove this in Lean, but how do we state the theorem? In Lean, Cartesian product is an operation on types, not sets. However, we can define a Cartesian product operation on sets:</p>
+<div class="sourceCode" id="cb44"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> Set_prod {A B : <span class="kw">Type</span>} (X : Set A) (Y : Set B) : Set (A × B) :=</span>
+<span id="cb44-2"><a href="#cb44-2" aria-hidden="true" tabindex="-1"></a>  { (a, b) : A × B | a ∈ X ∧ b ∈ Y }</span>
+<span id="cb44-3"><a href="#cb44-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb44-4"><a href="#cb44-4" aria-hidden="true" tabindex="-1"></a><span class="kw">notation</span>:75 X:75 <span class="st">" ×ₛ "</span> Y:75 =&gt; Set_prod X Y</span>
+<span id="cb44-5"><a href="#cb44-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb44-6"><a href="#cb44-6" aria-hidden="true" tabindex="-1"></a><span class="kw">lemma</span> Set_prod_def {A B : <span class="kw">Type</span>} (X : Set A) (Y : Set B) (a : A) (b : B) :</span>
+<span id="cb44-7"><a href="#cb44-7" aria-hidden="true" tabindex="-1"></a>    (a, b) ∈ X ×ₛ Y ↔ a ∈ X ∧ b ∈ Y := <span class="kw">by</span> <span class="kw">rfl</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>To type the subscript <code>s</code> after <code>×</code>, type <code>\_s</code>. Thus, to type <code>×ₛ</code>, you can type <code>\times\_s</code> or <code>\x\_s</code>. Notice that in the <code>notation</code> command that introduces the symbol <code>×ₛ</code>, we have used the number <code>75</code> in positions where we used <code>50</code> when defining the notation <code>∼</code>. Without going into detail about exactly what the three occurrences of <code>50</code> and <code>75</code> mean, we will just say that this tells Lean that <code>×ₛ</code> is to be given higher precedence than <code>∼</code>, and as a result an expression like <code>X ∼ Y ×ₛ Z</code> will be interpreted as <code>X ∼ (Y ×ₛ Z)</code> rather than <code>(X ∼ Y) ×ₛ Z</code>.</p>
 <p>We can now state the theorem corresponding to the first part of Theorem 8.1.2 in <em>HTPI</em>.</p>
-<div class="sourceCode" id="cb35"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Theorem_8_1_2_1</span>
-<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a>    {A B C D : <span class="kw">Type</span>} {U : Set A} {V : Set B} {W : Set C} {X : Set D}</span>
-<span id="cb35-3"><a href="#cb35-3" aria-hidden="true" tabindex="-1"></a>    (h1 : U ∼ V) (h2 : W ∼ X) : U ×ₛ W ∼ V ×ₛ X</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb45"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Theorem_8_1_2_1</span>
+<span id="cb45-2"><a href="#cb45-2" aria-hidden="true" tabindex="-1"></a>    {A B C D : <span class="kw">Type</span>} {U : Set A} {V : Set B} {W : Set C} {X : Set D}</span>
+<span id="cb45-3"><a href="#cb45-3" aria-hidden="true" tabindex="-1"></a>    (h1 : U ∼ V) (h2 : W ∼ X) : U ×ₛ W ∼ V ×ₛ X</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>To see how to prove this theorem, suppose that <code>R</code> is a matching from <code>U</code> to <code>V</code> and <code>S</code> is a matching from <code>W</code> to <code>X</code>. We must produce a matching from <code>U ×ₛ W</code> to <code>V ×ₛ X</code>. The following definition is motivated by the proof in <em>HTPI</em>:</p>
-<div class="sourceCode" id="cb36"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> Rel_prod {A B C D : <span class="kw">Type</span>} (R : Rel A B) (S : Rel C D)</span>
-<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a>  (p : A × C) (q : B × D) : <span class="kw">Prop</span> := R p.1 q.1 ∧ S p.2 q.2</span>
-<span id="cb36-3"><a href="#cb36-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-4"><a href="#cb36-4" aria-hidden="true" tabindex="-1"></a><span class="kw">notation</span>:75 R:75 <span class="st">" ×ᵣ "</span> S:75 =&gt; Rel_prod R S</span>
-<span id="cb36-5"><a href="#cb36-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-6"><a href="#cb36-6" aria-hidden="true" tabindex="-1"></a><span class="kw">lemma</span> Rel_prod_def {A B C D : <span class="kw">Type</span>} (R : Rel A B) (S : Rel C D)</span>
-<span id="cb36-7"><a href="#cb36-7" aria-hidden="true" tabindex="-1"></a>    (a : A) (b : B) (c : C) (d : D) :</span>
-<span id="cb36-8"><a href="#cb36-8" aria-hidden="true" tabindex="-1"></a>    (R ×ᵣ S) (a, c) (b, d) ↔ R a b ∧ S c d := <span class="kw">by</span> <span class="kw">rfl</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb46"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> Rel_prod {A B C D : <span class="kw">Type</span>} (R : Rel A B) (S : Rel C D)</span>
+<span id="cb46-2"><a href="#cb46-2" aria-hidden="true" tabindex="-1"></a>  (p : A × C) (q : B × D) : <span class="kw">Prop</span> := R p.1 q.1 ∧ S p.2 q.2</span>
+<span id="cb46-3"><a href="#cb46-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb46-4"><a href="#cb46-4" aria-hidden="true" tabindex="-1"></a><span class="kw">notation</span>:75 R:75 <span class="st">" ×ᵣ "</span> S:75 =&gt; Rel_prod R S</span>
+<span id="cb46-5"><a href="#cb46-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb46-6"><a href="#cb46-6" aria-hidden="true" tabindex="-1"></a><span class="kw">lemma</span> Rel_prod_def {A B C D : <span class="kw">Type</span>} (R : Rel A B) (S : Rel C D)</span>
+<span id="cb46-7"><a href="#cb46-7" aria-hidden="true" tabindex="-1"></a>    (a : A) (b : B) (c : C) (d : D) :</span>
+<span id="cb46-8"><a href="#cb46-8" aria-hidden="true" tabindex="-1"></a>    (R ×ᵣ S) (a, c) (b, d) ↔ R a b ∧ S c d := <span class="kw">by</span> <span class="kw">rfl</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>With this definition, <code>R ×ᵣ S</code> is a relation from <code>A × C</code> to <code>B × D</code>. (Of course, to type the subscript <code>r</code> after <code>×</code>, you should type <code>\_r</code>.) The proof that <code>R ×ᵣ S</code> is a matching from <code>U ×ₛ W</code> to <code>V ×ₛ X</code> is straightforward but tedious.</p>
-<div class="sourceCode" id="cb37"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="kw">lemma</span> prod_match {A B C D : <span class="kw">Type</span>}</span>
-<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a>    {U : Set A} {V : Set B} {W : Set C} {X : Set D}</span>
-<span id="cb37-3"><a href="#cb37-3" aria-hidden="true" tabindex="-1"></a>    {R : Rel A B} {S : Rel C D}</span>
-<span id="cb37-4"><a href="#cb37-4" aria-hidden="true" tabindex="-1"></a>    (h1 : matching R U V) (h2 : matching S W X) :</span>
-<span id="cb37-5"><a href="#cb37-5" aria-hidden="true" tabindex="-1"></a>    matching (R ×ᵣ S) (U ×ₛ W) (V ×ₛ X) := <span class="cn">sorry</span></span>
-<span id="cb37-6"><a href="#cb37-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb37-7"><a href="#cb37-7" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Theorem_8_1_2_1</span>
-<span id="cb37-8"><a href="#cb37-8" aria-hidden="true" tabindex="-1"></a>    {A B C D : <span class="kw">Type</span>} {U : Set A} {V : Set B} {W : Set C} {X : Set D}</span>
-<span id="cb37-9"><a href="#cb37-9" aria-hidden="true" tabindex="-1"></a>    (h1 : U ∼ V) (h2 : W ∼ X) : U ×ₛ W ∼ V ×ₛ X := <span class="kw">by</span></span>
-<span id="cb37-10"><a href="#cb37-10" aria-hidden="true" tabindex="-1"></a>  <span class="kw">obtain</span> (R : Rel A B) (h3 : matching R U V) <span class="kw">from</span> h1</span>
-<span id="cb37-11"><a href="#cb37-11" aria-hidden="true" tabindex="-1"></a>  <span class="kw">obtain</span> (S : Rel C D) (h4 : matching S W X) <span class="kw">from</span> h2</span>
-<span id="cb37-12"><a href="#cb37-12" aria-hidden="true" tabindex="-1"></a>  <span class="kw">apply</span> Exists.intro (R ×ᵣ S)</span>
-<span id="cb37-13"><a href="#cb37-13" aria-hidden="true" tabindex="-1"></a>  <span class="kw">show</span> matching (R ×ᵣ S) (U ×ₛ W) (V ×ₛ X) <span class="kw">from</span> prod_match h3 h4</span>
-<span id="cb37-14"><a href="#cb37-14" aria-hidden="true" tabindex="-1"></a>  <span class="kw">done</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>The proof of the second part of Theorem 8.1.2 is similar, and we again skip most of the details.</p>
-<div class="sourceCode" id="cb38"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> Rel_union {A B : <span class="kw">Type</span>} (R S : Rel A B) : Rel A B :=</span>
-<span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a>  RelFromExt (extension R ∪ extension S)</span>
-<span id="cb38-3"><a href="#cb38-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb38-4"><a href="#cb38-4" aria-hidden="true" tabindex="-1"></a><span class="kw">notation</span>:75 R:75 <span class="st">" ∪ᵣ "</span> S:75 =&gt; Rel_union R S</span>
-<span id="cb38-5"><a href="#cb38-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb38-6"><a href="#cb38-6" aria-hidden="true" tabindex="-1"></a><span class="kw">lemma</span> Rel_union_def {A B : <span class="kw">Type</span>} (R S : Rel A B) (a : A) (b : B) :</span>
-<span id="cb38-7"><a href="#cb38-7" aria-hidden="true" tabindex="-1"></a>    (R ∪ᵣ S) a b ↔ R a b ∨ S a b := <span class="kw">by</span> <span class="kw">rfl</span></span>
-<span id="cb38-8"><a href="#cb38-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb38-9"><a href="#cb38-9" aria-hidden="true" tabindex="-1"></a><span class="kw">lemma</span> union_match {A B : <span class="kw">Type</span>}</span>
-<span id="cb38-10"><a href="#cb38-10" aria-hidden="true" tabindex="-1"></a>    {U W : Set A} {V X : Set B} {R S : Rel A B}</span>
-<span id="cb38-11"><a href="#cb38-11" aria-hidden="true" tabindex="-1"></a>    (h1 : empty (U ∩ W)) (h2 : empty (V ∩ X))</span>
-<span id="cb38-12"><a href="#cb38-12" aria-hidden="true" tabindex="-1"></a>    (h3 : matching R U V) (h4 : matching S W X) :</span>
-<span id="cb38-13"><a href="#cb38-13" aria-hidden="true" tabindex="-1"></a>    matching (R ∪ᵣ S) (U ∪ W) (V ∪ X) := <span class="cn">sorry</span></span>
-<span id="cb38-14"><a href="#cb38-14" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb38-15"><a href="#cb38-15" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Theorem_8_1_2_2</span>
-<span id="cb38-16"><a href="#cb38-16" aria-hidden="true" tabindex="-1"></a>    {A B : <span class="kw">Type</span>} {U W : Set A} {V X : Set B}</span>
-<span id="cb38-17"><a href="#cb38-17" aria-hidden="true" tabindex="-1"></a>    (h1 : empty (U ∩ W)) (h2 : empty (V ∩ X))</span>
-<span id="cb38-18"><a href="#cb38-18" aria-hidden="true" tabindex="-1"></a>    (h3 : U ∼ V) (h4 : W ∼ X) : U ∪ W ∼ V ∪ X := <span class="kw">by</span></span>
-<span id="cb38-19"><a href="#cb38-19" aria-hidden="true" tabindex="-1"></a>  <span class="kw">obtain</span> (R : Rel A B) (h5 : matching R U V) <span class="kw">from</span> h3</span>
-<span id="cb38-20"><a href="#cb38-20" aria-hidden="true" tabindex="-1"></a>  <span class="kw">obtain</span> (S : Rel A B) (h6 : matching S W X) <span class="kw">from</span> h4</span>
-<span id="cb38-21"><a href="#cb38-21" aria-hidden="true" tabindex="-1"></a>  <span class="kw">apply</span> Exists.intro (R ∪ᵣ S)</span>
-<span id="cb38-22"><a href="#cb38-22" aria-hidden="true" tabindex="-1"></a>  <span class="kw">show</span> matching (R ∪ᵣ S) (U ∪ W) (V ∪ X) <span class="kw">from</span> union_match h1 h2 h5 h6</span>
-<span id="cb38-23"><a href="#cb38-23" aria-hidden="true" tabindex="-1"></a>  <span class="kw">done</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb47"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a><span class="kw">lemma</span> prod_match {A B C D : <span class="kw">Type</span>}</span>
+<span id="cb47-2"><a href="#cb47-2" aria-hidden="true" tabindex="-1"></a>    {U : Set A} {V : Set B} {W : Set C} {X : Set D}</span>
+<span id="cb47-3"><a href="#cb47-3" aria-hidden="true" tabindex="-1"></a>    {R : Rel A B} {S : Rel C D}</span>
+<span id="cb47-4"><a href="#cb47-4" aria-hidden="true" tabindex="-1"></a>    (h1 : matching R U V) (h2 : matching S W X) :</span>
+<span id="cb47-5"><a href="#cb47-5" aria-hidden="true" tabindex="-1"></a>    matching (R ×ᵣ S) (U ×ₛ W) (V ×ₛ X) := <span class="cn">sorry</span></span>
+<span id="cb47-6"><a href="#cb47-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb47-7"><a href="#cb47-7" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Theorem_8_1_2_1</span>
+<span id="cb47-8"><a href="#cb47-8" aria-hidden="true" tabindex="-1"></a>    {A B C D : <span class="kw">Type</span>} {U : Set A} {V : Set B} {W : Set C} {X : Set D}</span>
+<span id="cb47-9"><a href="#cb47-9" aria-hidden="true" tabindex="-1"></a>    (h1 : U ∼ V) (h2 : W ∼ X) : U ×ₛ W ∼ V ×ₛ X := <span class="kw">by</span></span>
+<span id="cb47-10"><a href="#cb47-10" aria-hidden="true" tabindex="-1"></a>  <span class="kw">obtain</span> (R : Rel A B) (h3 : matching R U V) <span class="kw">from</span> h1</span>
+<span id="cb47-11"><a href="#cb47-11" aria-hidden="true" tabindex="-1"></a>  <span class="kw">obtain</span> (S : Rel C D) (h4 : matching S W X) <span class="kw">from</span> h2</span>
+<span id="cb47-12"><a href="#cb47-12" aria-hidden="true" tabindex="-1"></a>  <span class="kw">apply</span> Exists.intro (R ×ᵣ S)</span>
+<span id="cb47-13"><a href="#cb47-13" aria-hidden="true" tabindex="-1"></a>  <span class="kw">show</span> matching (R ×ᵣ S) (U ×ₛ W) (V ×ₛ X) <span class="kw">from</span> prod_match h3 h4</span>
+<span id="cb47-14"><a href="#cb47-14" aria-hidden="true" tabindex="-1"></a>  <span class="kw">done</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>As explained in Section 7.4 of <em>HTPI</em>, a key fact used in the proof of Theorem 7.4.4 is that if <span class="math inline">\(X\)</span> is a set with <span class="math inline">\(m\)</span> elements and <span class="math inline">\(Y\)</span> is a set with <span class="math inline">\(n\)</span> elements, then <span class="math inline">\(X \times Y\)</span> has <span class="math inline">\(mn\)</span> elements. Section 7.4 of <em>HTPI</em> gives an intuitive explanation of this fact, but we’ll need to prove it in Lean. In other words, we need to prove the following theorem:</p>
+<div class="sourceCode" id="cb48"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> numElts_prod {A B : <span class="kw">Type</span>} {X : Set A} {Y : Set B} {m n : Nat}</span>
+<span id="cb48-2"><a href="#cb48-2" aria-hidden="true" tabindex="-1"></a>    (h1 : numElts X m) (h2 : numElts Y n) : numElts (X ×ₛ Y) (m * n)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Here’s our plan for this proof: The hypotheses <code>numElts X m</code> and <code>numElts Y n</code> mean <code>I m ∼ X</code> and <code>I n ∼ Y</code>. Applying <code>Theorem_8_1_2_1</code> to these hypotheses, we can infer <code>I m ×ₛ I n ∼ X ×ₛ Y</code>. If we can prove that <code>I (m * n) ∼ I m ×ₛ I n</code>, then we’ll be able to conclude <code>I (m * n) ∼ X ×ₛ Y</code>, or in other words <code>numElts (X ×ₛ Y) (m * n)</code>, as required. Thus, the key to the proof is to show that <code>I (m * n) ∼ I m ×ₛ I n</code>.</p>
+<p>To prove this, we’ll define a function from <code>Nat</code> to <code>Nat × Nat</code> that maps <code>I (m * n)</code> to <code>I m ×ₛ I n</code>. The function we will use maps a natural number <code>a</code> to the quotient and remainder when <code>a</code> is divided by <code>n</code>.</p>
+<div class="sourceCode" id="cb49"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb49-1"><a href="#cb49-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> qr (n a : Nat) : Nat × Nat := (a / n, a % n)</span>
+<span id="cb49-2"><a href="#cb49-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb49-3"><a href="#cb49-3" aria-hidden="true" tabindex="-1"></a><span class="kw">lemma</span> qr_def (n a : Nat) : qr n a = (a / n, a % n) := <span class="kw">by</span> <span class="kw">rfl</span></span>
+<span id="cb49-4"><a href="#cb49-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb49-5"><a href="#cb49-5" aria-hidden="true" tabindex="-1"></a><span class="kw">lemma</span> qr_one_one (n : Nat) : one_to_one (qr n) := <span class="kw">by</span></span>
+<span id="cb49-6"><a href="#cb49-6" aria-hidden="true" tabindex="-1"></a>  <span class="kw">define</span></span>
+<span id="cb49-7"><a href="#cb49-7" aria-hidden="true" tabindex="-1"></a>  <span class="kw">fix</span> a1 : Nat; <span class="kw">fix</span> a2 : Nat</span>
+<span id="cb49-8"><a href="#cb49-8" aria-hidden="true" tabindex="-1"></a>  <span class="kw">assume</span> h1 : qr n a1 = qr n a2       <span class="co">--Goal : a1 = a2</span></span>
+<span id="cb49-9"><a href="#cb49-9" aria-hidden="true" tabindex="-1"></a>  <span class="kw">rewrite</span> [qr_def, qr_def] <span class="kw">at</span> h1</span>
+<span id="cb49-10"><a href="#cb49-10" aria-hidden="true" tabindex="-1"></a>  <span class="kw">have</span> h2 : a1 / n = a2 / n ∧ a1 % n = a2 % n := <span class="kw">Prod</span>.mk.inj h1</span>
+<span id="cb49-11"><a href="#cb49-11" aria-hidden="true" tabindex="-1"></a>  <span class="kw">show</span> a1 = a2 <span class="kw">from</span></span>
+<span id="cb49-12"><a href="#cb49-12" aria-hidden="true" tabindex="-1"></a>    <span class="kw">calc</span> a1</span>
+<span id="cb49-13"><a href="#cb49-13" aria-hidden="true" tabindex="-1"></a>      _ = n * (a1 / n) + a1 % n := (Nat.div_add_mod a1 n).symm</span>
+<span id="cb49-14"><a href="#cb49-14" aria-hidden="true" tabindex="-1"></a>      _ = n * (a2 / n) + a2 % n := <span class="kw">by</span> <span class="kw">rw</span> [h2.left, h2.right]</span>
+<span id="cb49-15"><a href="#cb49-15" aria-hidden="true" tabindex="-1"></a>      _ = a2 := Nat.div_add_mod a2 n</span>
+<span id="cb49-16"><a href="#cb49-16" aria-hidden="true" tabindex="-1"></a>  <span class="kw">done</span></span>
+<span id="cb49-17"><a href="#cb49-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb49-18"><a href="#cb49-18" aria-hidden="true" tabindex="-1"></a><span class="kw">lemma</span> qr_image (m n : Nat) : image (qr n) (I (m * n)) = I m ×ₛ I n := <span class="cn">sorry</span></span>
+<span id="cb49-19"><a href="#cb49-19" aria-hidden="true" tabindex="-1"></a><span class="co">--Hint: You might find it helpful to apply the theorem div_mod_char,</span></span>
+<span id="cb49-20"><a href="#cb49-20" aria-hidden="true" tabindex="-1"></a><span class="co">--which is in the exercises of Section 6.4.</span></span>
+<span id="cb49-21"><a href="#cb49-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb49-22"><a href="#cb49-22" aria-hidden="true" tabindex="-1"></a><span class="kw">lemma</span> I_prod (m n : Nat) : I (m * n) ∼ I m ×ₛ I n := equinum_image</span>
+<span id="cb49-23"><a href="#cb49-23" aria-hidden="true" tabindex="-1"></a>  (one_one_on_of_one_one (qr_one_one n) (I (m * n))) (qr_image m n)</span>
+<span id="cb49-24"><a href="#cb49-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb49-25"><a href="#cb49-25" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> numElts_prod {A B : <span class="kw">Type</span>} {X : Set A} {Y : Set B} {m n : Nat}</span>
+<span id="cb49-26"><a href="#cb49-26" aria-hidden="true" tabindex="-1"></a>    (h1 : numElts X m) (h2 : numElts Y n) : numElts (X ×ₛ Y) (m * n) := <span class="kw">by</span></span>
+<span id="cb49-27"><a href="#cb49-27" aria-hidden="true" tabindex="-1"></a>  <span class="kw">rewrite</span> [numElts_def] <span class="kw">at</span> h1     <span class="co">--h1 : I m ∼ X</span></span>
+<span id="cb49-28"><a href="#cb49-28" aria-hidden="true" tabindex="-1"></a>  <span class="kw">rewrite</span> [numElts_def] <span class="kw">at</span> h2     <span class="co">--h2 : I n ∼ Y</span></span>
+<span id="cb49-29"><a href="#cb49-29" aria-hidden="true" tabindex="-1"></a>  <span class="kw">rewrite</span> [numElts_def]           <span class="co">--Goal : I (m * n) ∼ X ×ₛ Y</span></span>
+<span id="cb49-30"><a href="#cb49-30" aria-hidden="true" tabindex="-1"></a>  <span class="kw">have</span> h3 : I m ×ₛ I n ∼ X ×ₛ Y := Theorem_8_1_2_1 h1 h2</span>
+<span id="cb49-31"><a href="#cb49-31" aria-hidden="true" tabindex="-1"></a>  <span class="kw">have</span> h4 : I (m * n) ∼ I m ×ₛ I n := I_prod m n</span>
+<span id="cb49-32"><a href="#cb49-32" aria-hidden="true" tabindex="-1"></a>  <span class="kw">show</span> I (m * n) ∼ X ×ₛ Y <span class="kw">from</span> Theorem_8_1_3_3 h4 h3</span>
+<span id="cb49-33"><a href="#cb49-33" aria-hidden="true" tabindex="-1"></a>  <span class="kw">done</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Our strategy for proving Theorem 7.4.4 will be to show that if <code>m</code> and <code>n</code> are relatively prime, then <code>Set_rp_below (m * n) ∼ Set_rp_below m ×ₛ Set_rp_below n</code>. Once again, we use a function from <code>Nat</code> to <code>Nat × Nat</code> to show that these sets are equinumerous. This time, the function will map <code>a</code> to <code>(a % m, a % n)</code>.</p>
+<div class="sourceCode" id="cb50"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb50-1"><a href="#cb50-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> mod_mod (m n a : Nat) : Nat × Nat := (a % m, a % n)</span>
+<span id="cb50-2"><a href="#cb50-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb50-3"><a href="#cb50-3" aria-hidden="true" tabindex="-1"></a><span class="kw">lemma</span> mod_mod_def (m n a : Nat) : mod_mod m n a = (a % m, a % n) := <span class="kw">by</span> <span class="kw">rfl</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Our proof will make use of several theorems from the exercises of Sections 7.3 and 7.4:</p>
+<div class="sourceCode" id="cb51"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb51-1"><a href="#cb51-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> congr_rel_prime {m a b : Nat} (h1 : a ≡ b (MOD m)) :</span>
+<span id="cb51-2"><a href="#cb51-2" aria-hidden="true" tabindex="-1"></a>    rel_prime m a ↔ rel_prime m b := <span class="cn">sorry</span></span>
+<span id="cb51-3"><a href="#cb51-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb51-4"><a href="#cb51-4" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> rel_prime_mod (m a : Nat) :</span>
+<span id="cb51-5"><a href="#cb51-5" aria-hidden="true" tabindex="-1"></a>    rel_prime m (a % m) ↔ rel_prime m a := <span class="cn">sorry</span></span>
+<span id="cb51-6"><a href="#cb51-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb51-7"><a href="#cb51-7" aria-hidden="true" tabindex="-1"></a><span class="kw">lemma</span> Lemma_7_4_6 {a b c : Nat} :</span>
+<span id="cb51-8"><a href="#cb51-8" aria-hidden="true" tabindex="-1"></a>    rel_prime (a * b) c ↔ rel_prime a c ∧ rel_prime b c := <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Combining these with other theorems from Chapter 7, we can now show that <code>mod_mod m n</code> maps <code>Set_rp_below (m * n)</code> to <code>Set_rp_below m ×ₛ Set_rp_below n</code>.</p>
+<div class="sourceCode" id="cb52"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb52-1"><a href="#cb52-1" aria-hidden="true" tabindex="-1"></a><span class="kw">lemma</span> left_NeZero_of_mul {m n : Nat} (h : m * n ≠ 0) : NeZero m :=</span>
+<span id="cb52-2"><a href="#cb52-2" aria-hidden="true" tabindex="-1"></a>  neZero_iff.rtl (left_ne_zero_of_mul h)</span>
+<span id="cb52-3"><a href="#cb52-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb52-4"><a href="#cb52-4" aria-hidden="true" tabindex="-1"></a><span class="kw">lemma</span> right_NeZero_of_mul {m n : Nat} (h : m * n ≠ 0) : NeZero n :=</span>
+<span id="cb52-5"><a href="#cb52-5" aria-hidden="true" tabindex="-1"></a>  neZero_iff.rtl (right_ne_zero_of_mul h)</span>
+<span id="cb52-6"><a href="#cb52-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb52-7"><a href="#cb52-7" aria-hidden="true" tabindex="-1"></a><span class="kw">lemma</span> mod_mod_one_one_on {m n : Nat} (h1 : rel_prime m n) :</span>
+<span id="cb52-8"><a href="#cb52-8" aria-hidden="true" tabindex="-1"></a>    one_one_on (mod_mod m n) (Set_rp_below (m * n)) := <span class="kw">by</span></span>
+<span id="cb52-9"><a href="#cb52-9" aria-hidden="true" tabindex="-1"></a>  <span class="kw">define</span></span>
+<span id="cb52-10"><a href="#cb52-10" aria-hidden="true" tabindex="-1"></a>  <span class="kw">fix</span> a1 : Nat; <span class="kw">fix</span> a2 : Nat</span>
+<span id="cb52-11"><a href="#cb52-11" aria-hidden="true" tabindex="-1"></a>  <span class="kw">assume</span> h2 : a1 ∈ Set_rp_below (m * n)</span>
+<span id="cb52-12"><a href="#cb52-12" aria-hidden="true" tabindex="-1"></a>  <span class="kw">assume</span> h3 : a2 ∈ Set_rp_below (m * n)</span>
+<span id="cb52-13"><a href="#cb52-13" aria-hidden="true" tabindex="-1"></a>  <span class="kw">assume</span> h4 : mod_mod m n a1 = mod_mod m n a2   <span class="co">--Goal : a1 = a2</span></span>
+<span id="cb52-14"><a href="#cb52-14" aria-hidden="true" tabindex="-1"></a>  <span class="kw">define</span> <span class="kw">at</span> h2; <span class="kw">define</span> <span class="kw">at</span> h3</span>
+<span id="cb52-15"><a href="#cb52-15" aria-hidden="true" tabindex="-1"></a>  <span class="kw">rewrite</span> [mod_mod_def, mod_mod_def] <span class="kw">at</span> h4</span>
+<span id="cb52-16"><a href="#cb52-16" aria-hidden="true" tabindex="-1"></a>  <span class="kw">have</span> h5 : a1 % m = a2 % m ∧ a1 % n = a2 % n := <span class="kw">Prod</span>.mk.inj h4</span>
+<span id="cb52-17"><a href="#cb52-17" aria-hidden="true" tabindex="-1"></a>  <span class="kw">have</span> h6 : m * n ≠ 0 := <span class="kw">by</span> <span class="kw">linarith</span></span>
+<span id="cb52-18"><a href="#cb52-18" aria-hidden="true" tabindex="-1"></a>  <span class="kw">have</span> h7 : NeZero m := left_NeZero_of_mul h6</span>
+<span id="cb52-19"><a href="#cb52-19" aria-hidden="true" tabindex="-1"></a>  <span class="kw">have</span> h8 : NeZero n := right_NeZero_of_mul h6</span>
+<span id="cb52-20"><a href="#cb52-20" aria-hidden="true" tabindex="-1"></a>  <span class="kw">rewrite</span> [←congr_iff_mod_eq, ←congr_iff_mod_eq] <span class="kw">at</span> h5</span>
+<span id="cb52-21"><a href="#cb52-21" aria-hidden="true" tabindex="-1"></a>      <span class="co">--h5 : a1 ≡ a2 (MOD m) ∧ a1 ≡ a2 (MOD n)</span></span>
+<span id="cb52-22"><a href="#cb52-22" aria-hidden="true" tabindex="-1"></a>  <span class="kw">rewrite</span> [←Lemma_7_4_5 _ _ h1] <span class="kw">at</span> h5  <span class="co">--h5 : a1 ≡ a2 (MOD m * n)</span></span>
+<span id="cb52-23"><a href="#cb52-23" aria-hidden="true" tabindex="-1"></a>  <span class="kw">rewrite</span> [congr_iff_mod_eq] <span class="kw">at</span> h5     <span class="co">--h5 : a1 % (m * n) = a2 % (m * n)</span></span>
+<span id="cb52-24"><a href="#cb52-24" aria-hidden="true" tabindex="-1"></a>  <span class="kw">rewrite</span> [Nat.mod_eq_of_lt h2.right, Nat.mod_eq_of_lt h3.right] <span class="kw">at</span> h5</span>
+<span id="cb52-25"><a href="#cb52-25" aria-hidden="true" tabindex="-1"></a>  <span class="kw">show</span> a1 = a2 <span class="kw">from</span> h5</span>
+<span id="cb52-26"><a href="#cb52-26" aria-hidden="true" tabindex="-1"></a>  <span class="kw">done</span></span>
+<span id="cb52-27"><a href="#cb52-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb52-28"><a href="#cb52-28" aria-hidden="true" tabindex="-1"></a><span class="kw">lemma</span> mod_elt_Set_rp_below {a m : Nat} [NeZero m] (h1 : rel_prime m a) :</span>
+<span id="cb52-29"><a href="#cb52-29" aria-hidden="true" tabindex="-1"></a>    a % m ∈ Set_rp_below m := <span class="kw">by</span></span>
+<span id="cb52-30"><a href="#cb52-30" aria-hidden="true" tabindex="-1"></a>  <span class="kw">define</span>                  <span class="co">--Goal : rel_prime m (a % m) ∧ a % m &lt; m</span></span>
+<span id="cb52-31"><a href="#cb52-31" aria-hidden="true" tabindex="-1"></a>  <span class="kw">rewrite</span> [rel_prime_mod] <span class="co">--Goal : rel_prime m a ∧ a % m &lt; m</span></span>
+<span id="cb52-32"><a href="#cb52-32" aria-hidden="true" tabindex="-1"></a>  <span class="kw">show</span> rel_prime m a ∧ a % m &lt; m <span class="kw">from</span></span>
+<span id="cb52-33"><a href="#cb52-33" aria-hidden="true" tabindex="-1"></a>    And.intro h1 (mod_nonzero_lt a (NeZero.ne m))</span>
+<span id="cb52-34"><a href="#cb52-34" aria-hidden="true" tabindex="-1"></a>  <span class="kw">done</span></span>
+<span id="cb52-35"><a href="#cb52-35" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb52-36"><a href="#cb52-36" aria-hidden="true" tabindex="-1"></a><span class="kw">lemma</span> mod_mod_image {m n : Nat} (h1 : rel_prime m n) :</span>
+<span id="cb52-37"><a href="#cb52-37" aria-hidden="true" tabindex="-1"></a>    image (mod_mod m n) (Set_rp_below (m * n)) =</span>
+<span id="cb52-38"><a href="#cb52-38" aria-hidden="true" tabindex="-1"></a>      (Set_rp_below m) ×ₛ (Set_rp_below n) := <span class="kw">by</span></span>
+<span id="cb52-39"><a href="#cb52-39" aria-hidden="true" tabindex="-1"></a>  <span class="kw">apply</span> Set.ext</span>
+<span id="cb52-40"><a href="#cb52-40" aria-hidden="true" tabindex="-1"></a>  <span class="kw">fix</span> (b, c) : Nat × Nat</span>
+<span id="cb52-41"><a href="#cb52-41" aria-hidden="true" tabindex="-1"></a>  <span class="kw">apply</span> Iff.intro</span>
+<span id="cb52-42"><a href="#cb52-42" aria-hidden="true" tabindex="-1"></a>  · <span class="co">-- (→)</span></span>
+<span id="cb52-43"><a href="#cb52-43" aria-hidden="true" tabindex="-1"></a>    <span class="kw">assume</span> h2 : (b, c) ∈ image (mod_mod m n) (Set_rp_below (m * n))</span>
+<span id="cb52-44"><a href="#cb52-44" aria-hidden="true" tabindex="-1"></a>    <span class="kw">define</span> <span class="kw">at</span> h2</span>
+<span id="cb52-45"><a href="#cb52-45" aria-hidden="true" tabindex="-1"></a>    <span class="kw">obtain</span> (a : Nat)</span>
+<span id="cb52-46"><a href="#cb52-46" aria-hidden="true" tabindex="-1"></a>      (h3 : a ∈ Set_rp_below (m * n) ∧ mod_mod m n a = (b, c)) <span class="kw">from</span> h2</span>
+<span id="cb52-47"><a href="#cb52-47" aria-hidden="true" tabindex="-1"></a>    <span class="kw">rewrite</span> [Set_rp_below_def, mod_mod_def] <span class="kw">at</span> h3</span>
+<span id="cb52-48"><a href="#cb52-48" aria-hidden="true" tabindex="-1"></a>    <span class="kw">have</span> h4 : rel_prime (m * n) a := h3.left.left</span>
+<span id="cb52-49"><a href="#cb52-49" aria-hidden="true" tabindex="-1"></a>    <span class="kw">rewrite</span> [Lemma_7_4_6] <span class="kw">at</span> h4   <span class="co">--h4 : rel_prime m a ∧ rel_prime n a</span></span>
+<span id="cb52-50"><a href="#cb52-50" aria-hidden="true" tabindex="-1"></a>    <span class="kw">have</span> h5 : a % m = b ∧ a % n = c := <span class="kw">Prod</span>.mk.inj h3.right</span>
+<span id="cb52-51"><a href="#cb52-51" aria-hidden="true" tabindex="-1"></a>    <span class="kw">define</span></span>
+<span id="cb52-52"><a href="#cb52-52" aria-hidden="true" tabindex="-1"></a>    <span class="kw">rewrite</span> [←h5.left, ←h5.right]</span>
+<span id="cb52-53"><a href="#cb52-53" aria-hidden="true" tabindex="-1"></a>      <span class="co">--Goal : a % m ∈ Set_rp_below m ∧ a % n ∈ Set_rp_below n</span></span>
+<span id="cb52-54"><a href="#cb52-54" aria-hidden="true" tabindex="-1"></a>    <span class="kw">have</span> h6 : m * n ≠ 0 := <span class="kw">by</span> <span class="kw">linarith</span></span>
+<span id="cb52-55"><a href="#cb52-55" aria-hidden="true" tabindex="-1"></a>    <span class="kw">have</span> h7 : NeZero m := left_NeZero_of_mul h6</span>
+<span id="cb52-56"><a href="#cb52-56" aria-hidden="true" tabindex="-1"></a>    <span class="kw">have</span> h8 : NeZero n := right_NeZero_of_mul h6</span>
+<span id="cb52-57"><a href="#cb52-57" aria-hidden="true" tabindex="-1"></a>    <span class="kw">apply</span> And.intro</span>
+<span id="cb52-58"><a href="#cb52-58" aria-hidden="true" tabindex="-1"></a>    · <span class="co">-- Proof that a % m ∈ Set_rp_below m</span></span>
+<span id="cb52-59"><a href="#cb52-59" aria-hidden="true" tabindex="-1"></a>      <span class="kw">show</span> a % m ∈ Set_rp_below m <span class="kw">from</span> mod_elt_Set_rp_below h4.left</span>
+<span id="cb52-60"><a href="#cb52-60" aria-hidden="true" tabindex="-1"></a>      <span class="kw">done</span></span>
+<span id="cb52-61"><a href="#cb52-61" aria-hidden="true" tabindex="-1"></a>    · <span class="co">-- Proof that a % n ∈ Set_rp_below n</span></span>
+<span id="cb52-62"><a href="#cb52-62" aria-hidden="true" tabindex="-1"></a>      <span class="kw">show</span> a % n ∈ Set_rp_below n <span class="kw">from</span> mod_elt_Set_rp_below h4.right</span>
+<span id="cb52-63"><a href="#cb52-63" aria-hidden="true" tabindex="-1"></a>      <span class="kw">done</span></span>
+<span id="cb52-64"><a href="#cb52-64" aria-hidden="true" tabindex="-1"></a>    <span class="kw">done</span></span>
+<span id="cb52-65"><a href="#cb52-65" aria-hidden="true" tabindex="-1"></a>  · <span class="co">-- (←)</span></span>
+<span id="cb52-66"><a href="#cb52-66" aria-hidden="true" tabindex="-1"></a>    <span class="kw">assume</span> h2 : (b, c) ∈ Set_rp_below m ×ₛ Set_rp_below n</span>
+<span id="cb52-67"><a href="#cb52-67" aria-hidden="true" tabindex="-1"></a>    <span class="kw">rewrite</span> [Set_prod_def, Set_rp_below_def, Set_rp_below_def] <span class="kw">at</span> h2</span>
+<span id="cb52-68"><a href="#cb52-68" aria-hidden="true" tabindex="-1"></a>      <span class="co">--h2 : (rel_prime m b ∧ b &lt; m) ∧ (rel_prime n c ∧ c &lt; n)</span></span>
+<span id="cb52-69"><a href="#cb52-69" aria-hidden="true" tabindex="-1"></a>    <span class="kw">define</span></span>
+<span id="cb52-70"><a href="#cb52-70" aria-hidden="true" tabindex="-1"></a>    <span class="kw">have</span> h3 : m ≠ 0 := <span class="kw">by</span> <span class="kw">linarith</span></span>
+<span id="cb52-71"><a href="#cb52-71" aria-hidden="true" tabindex="-1"></a>    <span class="kw">have</span> h4 : n ≠ 0 := <span class="kw">by</span> <span class="kw">linarith</span></span>
+<span id="cb52-72"><a href="#cb52-72" aria-hidden="true" tabindex="-1"></a>    <span class="kw">rewrite</span> [←neZero_iff] <span class="kw">at</span> h3</span>
+<span id="cb52-73"><a href="#cb52-73" aria-hidden="true" tabindex="-1"></a>    <span class="kw">rewrite</span> [←neZero_iff] <span class="kw">at</span> h4</span>
+<span id="cb52-74"><a href="#cb52-74" aria-hidden="true" tabindex="-1"></a>    <span class="kw">obtain</span> (a : Nat) (h5 : a &lt; m * n ∧ a ≡ b (MOD m) ∧ a ≡ c (MOD n))</span>
+<span id="cb52-75"><a href="#cb52-75" aria-hidden="true" tabindex="-1"></a>      <span class="kw">from</span> Lemma_7_4_7 h1 b c</span>
+<span id="cb52-76"><a href="#cb52-76" aria-hidden="true" tabindex="-1"></a>    <span class="kw">apply</span> Exists.intro a</span>
+<span id="cb52-77"><a href="#cb52-77" aria-hidden="true" tabindex="-1"></a>    <span class="kw">apply</span> And.intro</span>
+<span id="cb52-78"><a href="#cb52-78" aria-hidden="true" tabindex="-1"></a>    · <span class="co">-- Proof of a ∈ Set_rp_below (m * n)</span></span>
+<span id="cb52-79"><a href="#cb52-79" aria-hidden="true" tabindex="-1"></a>      <span class="kw">define</span>                  <span class="co">--Goal : rel_prime (m * n) a ∧ a &lt; m * n</span></span>
+<span id="cb52-80"><a href="#cb52-80" aria-hidden="true" tabindex="-1"></a>      <span class="kw">apply</span> And.intro _ h5.left</span>
+<span id="cb52-81"><a href="#cb52-81" aria-hidden="true" tabindex="-1"></a>      <span class="kw">rewrite</span> [Lemma_7_4_6]   <span class="co">--Goal : rel_prime m a ∧ rel_prime n a</span></span>
+<span id="cb52-82"><a href="#cb52-82" aria-hidden="true" tabindex="-1"></a>      <span class="kw">rewrite</span> [congr_rel_prime h5.right.left,</span>
+<span id="cb52-83"><a href="#cb52-83" aria-hidden="true" tabindex="-1"></a>        congr_rel_prime h5.right.right]</span>
+<span id="cb52-84"><a href="#cb52-84" aria-hidden="true" tabindex="-1"></a>      <span class="kw">show</span> rel_prime m b ∧ rel_prime n c <span class="kw">from</span></span>
+<span id="cb52-85"><a href="#cb52-85" aria-hidden="true" tabindex="-1"></a>        And.intro h2.left.left h2.right.left</span>
+<span id="cb52-86"><a href="#cb52-86" aria-hidden="true" tabindex="-1"></a>      <span class="kw">done</span></span>
+<span id="cb52-87"><a href="#cb52-87" aria-hidden="true" tabindex="-1"></a>    · <span class="co">-- Proof of mod_mod m n a = (b, c)</span></span>
+<span id="cb52-88"><a href="#cb52-88" aria-hidden="true" tabindex="-1"></a>      <span class="kw">rewrite</span> [congr_iff_mod_eq, congr_iff_mod_eq] <span class="kw">at</span> h5</span>
+<span id="cb52-89"><a href="#cb52-89" aria-hidden="true" tabindex="-1"></a>      <span class="kw">rewrite</span> [mod_mod_def, h5.right.left, h5.right.right]</span>
+<span id="cb52-90"><a href="#cb52-90" aria-hidden="true" tabindex="-1"></a>        <span class="co">--Goal : (b % m, c % n) = (b, c)</span></span>
+<span id="cb52-91"><a href="#cb52-91" aria-hidden="true" tabindex="-1"></a>      <span class="kw">rewrite</span> [Nat.mod_eq_of_lt h2.left.right,</span>
+<span id="cb52-92"><a href="#cb52-92" aria-hidden="true" tabindex="-1"></a>        Nat.mod_eq_of_lt h2.right.right]</span>
+<span id="cb52-93"><a href="#cb52-93" aria-hidden="true" tabindex="-1"></a>      <span class="kw">rfl</span></span>
+<span id="cb52-94"><a href="#cb52-94" aria-hidden="true" tabindex="-1"></a>      <span class="kw">done</span></span>
+<span id="cb52-95"><a href="#cb52-95" aria-hidden="true" tabindex="-1"></a>    <span class="kw">done</span></span>
+<span id="cb52-96"><a href="#cb52-96" aria-hidden="true" tabindex="-1"></a>  <span class="kw">done</span></span>
+<span id="cb52-97"><a href="#cb52-97" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb52-98"><a href="#cb52-98" aria-hidden="true" tabindex="-1"></a><span class="kw">lemma</span> Set_rp_below_prod {m n : Nat} (h1 : rel_prime m n) :</span>
+<span id="cb52-99"><a href="#cb52-99" aria-hidden="true" tabindex="-1"></a>    Set_rp_below (m * n) ∼ (Set_rp_below m) ×ₛ (Set_rp_below n) :=</span>
+<span id="cb52-100"><a href="#cb52-100" aria-hidden="true" tabindex="-1"></a>  equinum_image (mod_mod_one_one_on h1) (mod_mod_image h1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>We finally have everything we need to prove Theorem 7.4.4.</p>
+<div class="sourceCode" id="cb53"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb53-1"><a href="#cb53-1" aria-hidden="true" tabindex="-1"></a><span class="kw">lemma</span> eq_numElts_of_equinum {A B : <span class="kw">Type</span>} {X : Set A} {Y : Set B} {n : Nat}</span>
+<span id="cb53-2"><a href="#cb53-2" aria-hidden="true" tabindex="-1"></a>    (h1 : X ∼ Y) (h2 : numElts X n) : numElts Y n := <span class="kw">by</span></span>
+<span id="cb53-3"><a href="#cb53-3" aria-hidden="true" tabindex="-1"></a>  <span class="kw">rewrite</span> [numElts_def] <span class="kw">at</span> h2   <span class="co">--h2 : I n ∼ X</span></span>
+<span id="cb53-4"><a href="#cb53-4" aria-hidden="true" tabindex="-1"></a>  <span class="kw">rewrite</span> [numElts_def]         <span class="co">--Goal : I n ∼ Y</span></span>
+<span id="cb53-5"><a href="#cb53-5" aria-hidden="true" tabindex="-1"></a>  <span class="kw">show</span> I n ∼ Y <span class="kw">from</span> Theorem_8_1_3_3 h2 h1</span>
+<span id="cb53-6"><a href="#cb53-6" aria-hidden="true" tabindex="-1"></a>  <span class="kw">done</span></span>
+<span id="cb53-7"><a href="#cb53-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb53-8"><a href="#cb53-8" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Theorem_7_4_4 {m n : Nat} (h1 : rel_prime m n) :</span>
+<span id="cb53-9"><a href="#cb53-9" aria-hidden="true" tabindex="-1"></a>    phi (m * n) = (phi m) * (phi n) := <span class="kw">by</span></span>
+<span id="cb53-10"><a href="#cb53-10" aria-hidden="true" tabindex="-1"></a>  <span class="kw">have</span> h2 : numElts (Set_rp_below m) (phi m) := phi_is_numElts m</span>
+<span id="cb53-11"><a href="#cb53-11" aria-hidden="true" tabindex="-1"></a>  <span class="kw">have</span> h3 : numElts (Set_rp_below n) (phi n) := phi_is_numElts n</span>
+<span id="cb53-12"><a href="#cb53-12" aria-hidden="true" tabindex="-1"></a>  <span class="kw">have</span> h4 : numElts (Set_rp_below (m * n)) (phi (m * n)) :=</span>
+<span id="cb53-13"><a href="#cb53-13" aria-hidden="true" tabindex="-1"></a>    phi_is_numElts (m * n)</span>
+<span id="cb53-14"><a href="#cb53-14" aria-hidden="true" tabindex="-1"></a>  <span class="kw">have</span> h5 : numElts (Set_rp_below m ×ₛ Set_rp_below n) (phi (m * n)) :=</span>
+<span id="cb53-15"><a href="#cb53-15" aria-hidden="true" tabindex="-1"></a>    eq_numElts_of_equinum (Set_rp_below_prod h1) h4</span>
+<span id="cb53-16"><a href="#cb53-16" aria-hidden="true" tabindex="-1"></a>  <span class="kw">have</span> h6 : numElts (Set_rp_below m ×ₛ Set_rp_below n) (phi m * phi n) :=</span>
+<span id="cb53-17"><a href="#cb53-17" aria-hidden="true" tabindex="-1"></a>    numElts_prod h2 h3</span>
+<span id="cb53-18"><a href="#cb53-18" aria-hidden="true" tabindex="-1"></a>  <span class="kw">show</span> phi (m * n) = phi m * phi n <span class="kw">from</span> numElts_unique h5 h6</span>
+<span id="cb53-19"><a href="#cb53-19" aria-hidden="true" tabindex="-1"></a>  <span class="kw">done</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <a href="https://doi.org/10.1017/9781108539890">
 
 </a></section><a href="https://doi.org/10.1017/9781108539890">
