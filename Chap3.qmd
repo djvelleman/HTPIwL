@@ -2415,7 +2415,19 @@ Notice that the original given `h : P ∨ Q` gets *replaced* by `h : P` in case 
 
 You can follow `by_cases on` with any proof of a disjunction, even if that proof is not just a single identifier.  In that cases you will want to add `with` to specify the identifier or identifiers to be used for the new assumptions in the two cases.  Another variant is that you can use the tactic `by_cases h : P` to break your proof into two cases, with the new assumptions being `h : P` in case 1 and `h : ¬P` in case 2.  In other words, the effect of `by_cases h : P` is the same as adding the new given `h : P ∨ ¬P` (which, of course, is a tautology) and then using the tactic `by_cases on h`.
 
-There are two introduction rules that you can use in Lean to prove a goal of the form `P ∨ Q`.  If you have `h : P`, then Lean will accept `Or.intro_left h` as a proof of `P ∨ Q`, and if you have `h : Q`, then `Or.intro_right h` is a proof of `P ∨ Q`.  There are shortened forms `Or.inl` and `Or.inr` for `Or.intro_left` and `Or.intro_right`, respectively.
+There are several introduction rules that you can use in Lean to prove a goal of the form `P ∨ Q`.  If you have `h : P`, then Lean will accept `Or.intro_left Q h` as a proof of `P ∨ Q`.  In most situations Lean can infer the proposition `Q` from context, and in that case you can use the shorter form `Or.inl h` as a proof of `P ∨ Q`.  You can see the difference between `Or.intro_left` and `Or.inl` by using the `#check` command:
+
+::: {.ind}
+```
+@Or.intro_left : ∀ {a : Prop} (b : Prop), a → a ∨ b
+
+@Or.inl : ∀ {a b : Prop}, a → a ∨ b
+```
+:::
+
+Notice that `b` is an implicit argument in `Or.inl`, but not in `Or.intro_left`.
+
+Similarly, if you have `h : Q`, then `Or.intro_right P h` is a proof of `P ∨ Q`.  In most situations Lean can infer `P` from context, and you can use the shorter form `Or.inr h`.
 
 Often, when your goal has the form `P ∨ Q`, you will be unable to prove `P`, and also unable to prove `Q`.  Proof by cases can help in that situation as well (*HTPI* p. 145).
 

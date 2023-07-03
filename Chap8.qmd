@@ -91,7 +91,7 @@ We'll give one more example: a one-to-one, onto function `fnnn` from `Nat × Nat
 ```lean
 def tri (k : Nat) : Nat := k * (k + 1) / 2
 
-def fnnn (p : Nat × Nat) : Nat := tri (p.1 + p.2) + p.1
+def fnnn (p : Nat × Nat) : Nat := tri (p.fst + p.snd) + p.fst
 
 lemma fnnn_def (a b : Nat) : fnnn (a, b) = tri (a + b) + a := by rfl
 
@@ -236,7 +236,7 @@ def RelWithinFromFunc {A B : Type} (f : A → B) (X : Set A)
   (x : A) (y : B) : Prop := x ∈ X ∧ f x = y
 ```
 
-This definition says that if we have `f : A → B` and `X : Set A`, then `RelWithinFromFunc f X` is a relation from `A` to `B` that relates any `x ∈ X` to `f x`.
+This definition says that if we have `f : A → B` and `X : Set A`, then `RelWithinFromFunc f X` is a relation from `A` to `B` that relates any `x` that is an element of `X` to `f x`.
 
 We will say that a function is one-to-one on a set `X` if it satisfies the definition of one-to-one when applied to elements of `X`:
 
@@ -261,7 +261,7 @@ theorem equinum_image {A B : Type} {X : Set A} {Y : Set B} {f : A → B}
     define --Goal : ∀ ⦃x : A⦄ ⦃y : B⦄, R x y → x ∈ X ∧ y ∈ image f X
     fix x : A; fix y : B
     assume h3 : R x y  --Goal : x ∈ X ∧ y ∈ image f X
-    define at h3       --h2 : x ∈ X ∧ f x = y
+    define at h3       --h3 : x ∈ X ∧ f x = y
     apply And.intro h3.left
     define
     show ∃ (x : A), x ∈ X ∧ f x = y from Exists.intro x h3
@@ -284,7 +284,7 @@ theorem equinum_image {A B : Type} {X : Set A} {Y : Set B} {f : A → B}
         assume h4 : R x y1
         assume h5 : R x y2   --Goal : y1 = y2
         define at h4; define at h5
-          --h3 : x ∈ X ∧ f x = y1;  h4 : x ∈ X ∧ f x = y2
+          --h4 : x ∈ X ∧ f x = y1;  h5 : x ∈ X ∧ f x = y2
         rewrite [h4.right] at h5
         show y1 = y2 from h5.right
         done
@@ -305,7 +305,7 @@ theorem equinum_image {A B : Type} {X : Set A} {Y : Set B} {f : A → B}
         assume h5 : invRel R y x1
         assume h6 : invRel R y x2
         define at h5; define at h6
-          --h4 : x1 ∈ X ∧ f x1 = y;  h5 : x2 ∈ X ∧ f x2 = y
+          --h5 : x1 ∈ X ∧ f x1 = y;  h6 : x2 ∈ X ∧ f x2 = y
         rewrite [←h6.right] at h5
         show x1 = x2 from h1 h5.left h6.left h5.right
         done
@@ -394,24 +394,9 @@ theorem Theorem_8_1_3_2 {A B : Type} {X : Set A} {Y : Set B}
   done
 ```
 
-Finally, to prove transitivity, we will show that a composition of matchings is a matching.  Once again we must convert our definition of composition of sets of ordered pairs into an operation on relations.  A few preliminary lemmas help with the proof.
+The proof of transitivity is a bit more involved.  In this proof, as well as some later proofs, we find it useful to separate out the existence and uniqueness parts of the definition of `fcnl_on`:
 
 ```lean
-def compRel {A B C : Type} (S : Rel B C) (R : Rel A B) : Rel A C :=
-  RelFromExt (comp (extension S) (extension R))
-
-lemma compRel_def {A B C : Type}
-    (S : Rel B C) (R : Rel A B) (a : A) (c : C) :
-    compRel S R a c ↔ ∃ (x : B), R a x ∧ S x c := by rfl
-
-lemma inv_comp {A B C : Type} (R : Rel A B) (S : Rel B C) :
-    invRel (compRel S R) = compRel (invRel R) (invRel S) := 
-  calc invRel (compRel S R)
-    _ = RelFromExt (inv (comp (extension S) (extension R))) := by rfl
-    _ = RelFromExt (comp (inv (extension R)) (inv (extension S))) :=
-        by rw [Theorem_4_2_5_5]
-    _ = compRel (invRel R) (invRel S) := by rfl
-
 lemma fcnl_exists {A B : Type} {R : Rel A B} {X : Set A} {x : A}
     (h1 : fcnl_on R X) (h2 : x ∈ X) : ∃ (y : B), R x y := by
   define at h1
@@ -428,6 +413,25 @@ lemma fcnl_unique {A B : Type}
     (h6 : ∀ (y_1 y_2 : B), R x y_1 → R x y_2 → y_1 = y_2) from h1 h2
   show y1 = y2 from h6 y1 y2 h3 h4
   done
+```
+
+To prove transitivity, we will show that a composition of matchings is a matching.  Once again we must convert our definition of composition of sets of ordered pairs into an operation on relations.  A few preliminary lemmas help with the proof.
+
+```lean
+def compRel {A B C : Type} (S : Rel B C) (R : Rel A B) : Rel A C :=
+  RelFromExt (comp (extension S) (extension R))
+
+lemma compRel_def {A B C : Type}
+    (S : Rel B C) (R : Rel A B) (a : A) (c : C) :
+    compRel S R a c ↔ ∃ (x : B), R a x ∧ S x c := by rfl
+
+lemma inv_comp {A B C : Type} (R : Rel A B) (S : Rel B C) :
+    invRel (compRel S R) = compRel (invRel R) (invRel S) := 
+  calc invRel (compRel S R)
+    _ = RelFromExt (inv (comp (extension S) (extension R))) := by rfl
+    _ = RelFromExt (comp (inv (extension R)) (inv (extension S))) :=
+        by rw [Theorem_4_2_5_5]
+    _ = compRel (invRel R) (invRel S) := by rfl
 
 lemma comp_fcnl {A B C : Type} {R : Rel A B} {S : Rel B C}
     {X : Set A} {Y : Set B} {Z : Set C} (h1 : matching R X Y)
@@ -534,7 +538,7 @@ def num_elts_below (X : Set Nat) (m s : Nat) : Prop :=
 def enum (X : Set Nat) (s n : Nat) : Prop := n ∈ X ∧ num_elts_below X n s
 ```
 
-The details of the proof that `enum X` is the required matching are long but not hard.
+The details of the proof that `enum X` is the required matching are long.  We'll skip them here, but you can find them in the HTPI Lean Package.
 
 ```lean
 lemma neb_exists (X : Set Nat) :
@@ -874,6 +878,105 @@ theorem Theorem_8_1_6 : denum (Univ Rat) := by
   done
 ```
 
+### Exercises
+
+::: {.numex arguments="1"}
+```lean
+--Hint:  Use Exercise_6_1_16a2 from the exercises of Section 6.1
+lemma fnz_odd_ex (k : Nat) : fnz (2 * k + 1) = -↑(k + 1) := sorry
+```
+:::
+
+::: {.numex arguments="2"}
+```lean
+lemma fnz_fzn_ex : fnz ∘ fzn = id  := sorry
+```
+:::
+
+::: {.numex arguments="3"}
+```lean
+lemma tri_step_ex (k : Nat) : tri (k + 1) = tri k + k + 1 := sorry
+```
+:::
+
+::: {.numex arguments="4"}
+```lean
+lemma tri_incr_ex {j k : Nat} (h1 : j ≤ k) : tri j ≤ tri k := sorry
+```
+:::
+
+::: {.numex arguments="5"}
+```lean
+lemma ctble_of_equinum_ctble_ex {A B : Type} {X : Set A} {Y : Set B}
+    (h1 : X ∼ Y) (h2 : ctble X) : ctble Y := sorry
+```
+:::
+
+::: {.numex arguments="6"}
+```lean
+theorem Exercise_8_1_1_b : denum { n : Int | even n } := sorry
+```
+:::
+
+::: {.mdsk}
+:::
+
+The next four exercises use the following definition:
+
+```lean
+def Rel_image {A B : Type} (R : Rel A B) (X : Set A) : Set B :=
+  { y : B | ∃ (x : A), x ∈ X ∧ R x y }
+```
+
+Note that if `R` has type `Rel A B`, then `Rel_image R` has type `Set A → Set B`.
+
+::: {.numex arguments="7"}
+```lean
+lemma Rel_image_on_power_set {A B : Type} {R : Rel A B}
+    {X U : Set A} {Y : Set B} (h1 : matching R X Y) (h2 : U ∈ 𝒫 X) :
+    Rel_image R U ∈ 𝒫 Y := sorry
+```
+:::
+
+::: {.numex arguments="8"}
+```lean
+lemma Rel_image_inv {A B : Type} {R : Rel A B}
+    {X U : Set A} {Y : Set B} (h1 : matching R X Y) (h2 : U ∈ 𝒫 X) :
+    Rel_image (invRel R) (Rel_image R U) = U := sorry
+```
+:::
+
+::: {.numex arguments="9"}
+```lean
+lemma Rel_image_one_one_on {A B : Type} {R : Rel A B}
+    {X : Set A} {Y : Set B} (h1 : matching R X Y) :
+    one_one_on (Rel_image R) (𝒫 X) := sorry
+```
+:::
+
+::: {.numex arguments="10"}
+```lean
+lemma Rel_image_image {A B : Type} {R : Rel A B}
+    {X : Set A} {Y : Set B} (h1 : matching R X Y) :
+    image (Rel_image R) (𝒫 X) = 𝒫 Y := sorry
+```
+:::
+
+::: {.numex arguments="11"}
+```lean
+--Hint:  Use the previous two exercises.
+theorem Exercise_8_1_5 {A B : Type} {X : Set A} {Y : Set B}
+    (h1 : X ∼ Y) : 𝒫 X ∼ 𝒫 Y := sorry
+```
+:::
+
+::: {.numex arguments="12"}
+```lean
+theorem Exercise_8_1_17_ex {A : Type} {X Y : Set A}
+    (h1 : X ⊆ Y) (h2 : ctble Y) : ctble X := sorry
+```
+:::
+
 
 ## 8.1½. Debts Paid
 
@@ -891,7 +994,7 @@ lemma numElts_def {A : Type} (X : Set A) (n : Nat) :
 We also owe you the proofs of several theorems about `numElts`.  We begin with the fact that a set has zero elements if and only if it is empty.  To prove this, we will need to produce a relation that is a matching between two sets if the sets are empty.  The natural choice for this relation is what we will call the empty relation---the relation that is always false.
 
 ```lean
-def emptyRel (A B : Type) (a : A) (b : B) : Prop := False
+def emptyRel (A B : Type) (x : A) (y : B) : Prop := False
 
 lemma fcnl_on_empty {A B : Type}
     (R : Rel A B) {X : Set A} (h1 : empty X) : fcnl_on R X := by
@@ -1016,15 +1119,15 @@ lemma remove_one_rel_within {A B : Type}
 lemma remove_one_inv {A B : Type} (R : Rel A B) (u : A) (v : B) :
     invRel (remove_one R u v) = remove_one (invRel R) v u := by
   apply relext
-  fix b : B; fix a : A
-    --Goal : invRel (remove_one R u v) b a ↔ remove_one (invRel R) v u b a
+  fix y : B; fix x : A
+    --Goal : invRel (remove_one R u v) y x ↔ remove_one (invRel R) v u y x
   rewrite [invRel_def, remove_one_def, remove_one_def]
   rewrite [invRel_def, invRel_def, invRel_def]
   rewrite [←and_assoc, ←and_assoc]
-    --Goal : (a ≠ u ∧ b ≠ v) ∧ (R a b ∨ R a v ∧ R u b) ↔
-    --       (b ≠ v ∧ a ≠ u) ∧ (R a b ∨ R u b ∧ R a v)
-  have h1 : a ≠ u ∧ b ≠ v ↔ b ≠ v ∧ a ≠ u := and_comm
-  have h2 : R a v ∧ R u b ↔ R u b ∧ R a v := and_comm
+    --Goal : (x ≠ u ∧ y ≠ v) ∧ (R x y ∨ R x v ∧ R u y) ↔
+    --       (y ≠ v ∧ x ≠ u) ∧ (R x y ∨ R u y ∧ R x v)
+  have h1 : x ≠ u ∧ y ≠ v ↔ y ≠ v ∧ x ≠ u := and_comm
+  have h2 : R x v ∧ R u y ↔ R u y ∧ R x v := and_comm
   rewrite [h1, h2]
   rfl
   done
@@ -1124,6 +1227,13 @@ lemma I_1_singleton : I 1 = {0} := sorry
 lemma singleton_of_diff_empty {A : Type} {X : Set A} {x : A}
     (h1 : x ∈ X) (h2 : empty (X \ {x})) : X = {x} := sorry
 
+lemma singleton_one_elt {A : Type} (a : A) : numElts {a} 1 := by
+  define
+  rewrite [I_1_singleton]
+  show ∃ (R : Rel Nat A), matching R {0} {a} from
+    Exists.intro (one_match 0 a) (one_match_match 0 a)
+  done
+
 theorem one_elt_iff_singleton {A : Type} (X : Set A) :
     numElts X 1 ↔ ∃ (x : A), X = {x} := by
   apply Iff.intro
@@ -1139,10 +1249,8 @@ theorem one_elt_iff_singleton {A : Type} (X : Set A) :
   · -- (←)
     assume h1 : ∃ (x : A), X = {x}
     obtain (x : A) (h2 : X = {x}) from h1
-    define
-    rewrite [I_1_singleton, h2]
-    show ∃ (R : Rel Nat A), matching R {0} {x} from
-      Exists.intro (one_match 0 x) (one_match_match 0 x)
+    rewrite [h2]
+    show numElts {x} 1 from singleton_one_elt x
     done
   done
 ```
@@ -1216,7 +1324,6 @@ lemma Set_rp_below_def (a m : Nat) :
 
 lemma neb_nrpb (m : Nat) : ∀ ⦃k : Nat⦄, k ≤ m →
     num_elts_below (Set_rp_below m) k (num_rp_below m k) := sorry
---Hint:  Use induction.
 
 lemma neb_phi (m : Nat) :
     num_elts_below (Set_rp_below m) m (phi m) := by
@@ -1321,7 +1428,7 @@ To see how to prove this theorem, suppose that `R` is a matching from `U` to `V`
 
 ```lean
 def Rel_prod {A B C D : Type} (R : Rel A B) (S : Rel C D)
-  (p : A × C) (q : B × D) : Prop := R p.1 q.1 ∧ S p.2 q.2
+  (p : A × C) (q : B × D) : Prop := R p.fst q.fst ∧ S p.snd q.snd
 
 notation:75 R:75 " ×ᵣ " S:75 => Rel_prod R S
 
@@ -1379,8 +1486,6 @@ lemma qr_one_one (n : Nat) : one_to_one (qr n) := by
   done
 
 lemma qr_image (m n : Nat) : image (qr n) (I (m * n)) = I m ×ₛ I n := sorry
---Hint: You might find it helpful to apply the theorem div_mod_char,
---which is in the exercises of Section 6.4.
 
 lemma I_prod (m n : Nat) : I (m * n) ∼ I m ×ₛ I n := equinum_image
   (one_one_on_of_one_one (qr_one_one n) (I (m * n))) (qr_image m n)
@@ -1417,7 +1522,7 @@ lemma Lemma_7_4_6 {a b c : Nat} :
     rel_prime (a * b) c ↔ rel_prime a c ∧ rel_prime b c := sorry
 ```
 
-Combining these with other theorems from Chapter 7, we can now show that `mod_mod m n` maps `Set_rp_below (m * n)` to `Set_rp_below m ×ₛ Set_rp_below n`.
+Combining these with other theorems from Chapter 7, we can now use `mod_mod m n` to show that `Set_rp_below (m * n) ∼ Set_rp_below m ×ₛ Set_rp_below n`.
 
 ```lean
 lemma left_NeZero_of_mul {m n : Nat} (h : m * n ≠ 0) : NeZero m :=
@@ -1545,3 +1650,108 @@ theorem Theorem_7_4_4 {m n : Nat} (h1 : rel_prime m n) :
   show phi (m * n) = phi m * phi n from numElts_unique h5 h6
   done
 ```
+
+### Exercises
+
+::: {.numex arguments="1"}
+```lean
+lemma remove_one_iff_ex {A B : Type}
+    {X : Set A} {Y : Set B} {R : Rel A B} (h1 : matching R X Y)
+    {u : A} (h2 : u ∈ X) (v : B) {x : A} (h3 : x ∈ X \ {u}) :
+    ∃ (w : A), w ∈ X ∧ ∀ (y : B), remove_one R u v x y ↔ R w y := sorry
+```
+:::
+
+::: {.numex arguments="2"}
+```lean
+lemma inv_one_match {A B : Type} (a : A) (b : B) :
+    invRel (one_match a b) = one_match b a := sorry
+```
+:::
+
+::: {.numex arguments="3"}
+```lean
+theorem one_match_fcnl {A B : Type} (a : A) (b : B) :
+    fcnl_on (one_match a b) {a} := sorry
+```
+:::
+
+::: {.numex arguments="4"}
+```lean
+--Hint : Use the previous two exercises.
+lemma one_match_match_ex {A B : Type} (a : A) (b : B) :
+    matching (one_match a b) {a} {b} := sorry
+```
+:::
+
+::: {.numex arguments="5"}
+```lean
+lemma neb_nrpb_ex (m : Nat) : ∀ ⦃k : Nat⦄, k ≤ m →
+    num_elts_below (Set_rp_below m) k (num_rp_below m k) := sorry
+```
+:::
+
+::: {.numex arguments="6"}
+```lean
+lemma prod_fcnl {A B C D : Type} {R : Rel A B} {S : Rel C D}
+    {X : Set A} {Y : Set C} (h1 : fcnl_on R X) (h2 : fcnl_on S Y) :
+    fcnl_on (R ×ᵣ S) (X ×ₛ Y) := sorry
+```
+:::
+
+::: {.numex arguments="7"}
+```lean
+--Hint:  Use the previous exercise.
+lemma prod_match_ex {A B C D : Type}
+    {U : Set A} {V : Set B} {W : Set C} {X : Set D}
+    {R : Rel A B} {S : Rel C D}
+    (h1 : matching R U V) (h2 : matching S W X) :
+    matching (R ×ᵣ S) (U ×ₛ W) (V ×ₛ X) := sorry
+```
+:::
+
+::: {.numex arguments="8"}
+```lean
+--Hint: You might find it helpful to apply the theorem div_mod_char
+--from the exercises of Section 6.4.
+lemma qr_image_ex (m n : Nat) :
+    image (qr n) (I (m * n)) = I m ×ₛ I n := sorry
+```
+:::
+
+::: {.numex arguments="9"}
+```lean
+theorem Theorem_8_1_2_2
+    {A B : Type} {U W : Set A} {V X : Set B}
+    (h1 : empty (U ∩ W)) (h2 : empty (V ∩ X))
+    (h3 : U ∼ V) (h4 : W ∼ X) : U ∪ W ∼ V ∪ X := sorry
+```
+:::
+
+::: {.numex arguments="10"}
+```lean
+lemma shift_I_equinum (n m : Nat) : I m ∼ I (n + m) \ I n := sorry
+```
+:::
+
+::: {.numex arguments="11"}
+```lean
+theorem Theorem_8_1_7 {A : Type} {X Y : Set A} {n m : Nat}
+    (h1 : empty (X ∩ Y)) (h2 : numElts X n) (h3 : numElts Y m) :
+    numElts (X ∪ Y) (n + m) := sorry
+```
+:::
+
+::: {.numex arguments="12"}
+```lean
+theorem equinum_sub {A B : Type} {X U : Set A} {Y : Set B}
+    (h1 : X ∼ Y) (h2 : U ⊆ X) : ∃ (V : Set B), V ⊆ Y ∧ U ∼ V := sorry
+```
+:::
+
+::: {.numex arguments="13"}
+```lean
+theorem Exercise_8_1_8b {A : Type} {X U : Set A}
+    (h1 : finite X) (h2 : U ⊆ X) : finite U := sorry
+```
+:::

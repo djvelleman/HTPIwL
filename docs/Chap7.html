@@ -1029,9 +1029,9 @@ theorem prime_fac_nondec : ∀ (n : Nat), nondec (prime_fac n) := by
                       l ≠ [] → ∃ (b : α), ∃ (L : List α), l = b :: L</code></pre>
 </div>
 <p>And we’ll need one more lemma, which follows from the three theorems above; we leave the proof as an exercise for you:</p>
-<div class="sourceCode" id="cb34"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="kw">lemma</span> exists_cons_of_length_eq_succ</span>
-<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a>    {l : List Nat} {n : Nat} (h : l.length = n + 1) :</span>
-<span id="cb34-3"><a href="#cb34-3" aria-hidden="true" tabindex="-1"></a>    ∃ (a : Nat) (L : List Nat), l = a :: L ∧ L.length = n := <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb34"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="kw">lemma</span> exists_cons_of_length_eq_succ {A : <span class="kw">Type</span>}</span>
+<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a>    {l : List A} {n : Nat} (h : l.length = n + 1) :</span>
+<span id="cb34-3"><a href="#cb34-3" aria-hidden="true" tabindex="-1"></a>    ∃ (a : A) (L : List A), l = a :: L ∧ L.length = n := <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>We can now prove that every member of a list of natural numbers divides the product of the list. After proving it by induction on the length of the list, we restate the lemma in a more convenient form.</p>
 <div class="sourceCode" id="cb35"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="kw">lemma</span> list_elt_dvd_prod_by_length (a : Nat) : ∀ (n : Nat),</span>
 <span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a>    ∀ (l : List Nat), l.length = n → a ∈ l → a ∣ prod l := <span class="kw">by</span></span>

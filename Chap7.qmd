@@ -921,9 +921,9 @@ Before we can prove the existence of prime factorizations, we will need one more
 And we'll need one more lemma, which follows from the three theorems above; we leave the proof as an exercise for you:
 
 ```lean
-lemma exists_cons_of_length_eq_succ
-    {l : List Nat} {n : Nat} (h : l.length = n + 1) :
-    ∃ (a : Nat) (L : List Nat), l = a :: L ∧ L.length = n := sorry
+lemma exists_cons_of_length_eq_succ {A : Type}
+    {l : List A} {n : Nat} (h : l.length = n + 1) :
+    ∃ (a : A) (L : List A), l = a :: L ∧ L.length = n := sorry
 ```
 
 We can now prove that every member of a list of natural numbers divides the product of the list.  After proving it by induction on the length of the list, we restate the lemma in a more convenient form.

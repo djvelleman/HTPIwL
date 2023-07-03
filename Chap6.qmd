@@ -787,9 +787,9 @@ theorem Exercise_6_2_4a {A : Type} (R : BinRel A)
 
 ::: {.numex arguments="7"}
 ```lean
-theorem Like_Exercise_6_2_16 (f : Nat → Nat) (h : one_to_one f) :
-    ∀ (n : Nat) (A : Set Nat), numElts A n →
-    closed f A → ∀ y ∈ A, ∃ x ∈ A, f x = y := sorry
+theorem Like_Exercise_6_2_16 {A : Type} (f : A → A)
+    (h : one_to_one f) : ∀ (n : Nat) (B : Set A), numElts B n →
+    closed f B → ∀ y ∈ B, ∃ x ∈ B, f x = y := sorry
 ```
 :::
 
