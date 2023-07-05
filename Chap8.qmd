@@ -826,6 +826,8 @@ theorem Theorem_8_1_5_3 {A : Type} (X : Set A) :
     ctble X ↔ ∃ (R : Rel A Nat), fcnl_one_one_to_nat R X := sorry
 ```
 
+In the exercises, we ask you to show that countability of a set can be proven using functions of the kind considered in Theorem 8.1.5 of *HTPI*.
+
 We end this section with a proof of Theorem 8.1.6 in *HTPI*, which says that the set of rational numbers is denumerable.  Our strategy is to define a one-to-one function from `Rat` (the type of rational numbers) to `Nat`.  We will need to know a little bit about the way rational numbers are represented in Lean.  If `q` has type `Rat`, then `q.num` is the numerator of `q`, which is an integer, and `q.den` is the denominator, which is a nonzero natural number.  The theorem `Rat.ext` says that if two rational numbers have the same numerator and denominator, then they are equal.  And we will also use the theorem `Prod.mk.inj`, which says that if two ordered pairs are equal, then their first coordinates are equal, as are their second coordinates.
 
 ```lean
@@ -974,6 +976,20 @@ theorem Exercise_8_1_5 {A B : Type} {X : Set A} {Y : Set B}
 ```lean
 theorem Exercise_8_1_17 {A : Type} {X Y : Set A}
     (h1 : X ⊆ Y) (h2 : ctble Y) : ctble X := sorry
+```
+:::
+
+::: {.numex arguments="13"}
+```lean
+theorem ctble_of_onto_func_from_N {A : Type} {X : Set A} {f : Nat → A}
+    (h1 : ∀ x ∈ X, ∃ (n : Nat), f n = x) : ctble X := sorry
+```
+:::
+
+::: {.numex arguments="14"}
+```lean
+theorem ctble_of_one_one_func_to_N {A : Type} {X : Set A} {f : A → Nat}
+    (h1 : one_one_on f X) : ctble X := sorry
 ```
 :::
 
@@ -1922,7 +1938,7 @@ theorem Theorem_8_2_2 {A : Type} {F : Set (Set A)}
   done
 ```
 
-By the way, we can now explain a mystery from Section 5.1.  The reason we skipped the proof of the right-to-left direction of `func_from_graph` is that the proof uses `Classical.choose` and `Classical.choose_spec`.  Now that you know about them, we can show you the proof.
+By the way, we can now explain a mystery from Section 5.1.  The reason we skipped the proof of the right-to-left direction of `func_from_graph` is that the proof uses `Classical.choose` and `Classical.choose_spec`.  Now that you know about this function and theorem, we can show you the proof.
 
 ```lean
 theorem func_from_graph_rtl {A B : Type} (F : Set (A × B)) :
@@ -1956,3 +1972,218 @@ theorem func_from_graph_rtl {A B : Type} (F : Set (A × B)) :
     done
   done
 ```
+
+There is one more theorem in Section 8.2 of *HTPI* showing that a set-theoretic operation, when applied to a countable set, gives a countable result.  Theorem 8.2.4 says that if a set $X$ is countable, then the set of all finite sequences of elements of $X$ is also countable.  In *HTPI*, finite sequences are represented by functions, but in Lean it is easier to use lists.  Thus, if `X` has type `Set A`, then we define a *finite sequence of elements of `X`* to be a list `l : List A` with the property that every entry of `l` is an element of `X`.  Letting `seq X` denote the set of all finite sequences of elements of `X`, our version of Theorem 8.2.4 will say that if `X` is countable, then so is `seq X`.
+
+```lean
+def seq {A : Type} (X : Set A) : Set (List A) :=
+  { l : List A | ∀ (x : A), x ∈ l → x ∈ X }
+
+lemma seq_def {A : Type} (X : Set A) (l : List A) :
+    l ∈ seq X ↔ ∀ (x : A), x ∈ l → x ∈ X := by rfl
+
+theorem Theorem_8_2_4 {A : Type} {X : Set A}
+    (h1 : ctble X) : ctble (seq X)
+```
+
+Our proof of `Theorem_8_2_4` will use exactly the same strategy as the proof in *HTPI*.  We begin by showing that, for every natural number `n`, the set of sequences of elements of `X` of length `n` is countable.  The proof is by mathematical induction.  The base case is easy, because the only sequence of length `0` is the `nil` list.
+
+```lean
+def seq_by_length {A : Type} (X : Set A) (n : Nat) : Set (List A) :=
+  { l : List A | l ∈ seq X ∧ l.length = n }
+
+lemma sbl_base {A : Type} (X : Set A) : seq_by_length X 0 = {[]} := by
+  apply Set.ext
+  fix l : List A
+  apply Iff.intro
+  · -- (→)
+    assume h1 : l ∈ seq_by_length X 0
+    define at h1   --h1 : l ∈ seq X ∧ List.length l = 0
+    rewrite [List.length_eq_zero] at h1
+    define
+    show l = [] from h1.right
+    done
+  · -- (←)
+    assume h1 : l ∈ {[]}
+    define at h1     --h1 : l = []
+    define           --Goal : l ∈ seq X ∧ List.length l = 0
+    apply And.intro _ (List.length_eq_zero.rtl h1)
+    define           --Goal : ∀ (x : A), x ∈ l → x ∈ X
+    fix a : A
+    assume h2 : a ∈ l
+    contradict h2 with h3
+    rewrite [h1]
+    show ¬a ∈ [] from List.not_mem_nil a
+    done
+  done
+```
+
+For the induction step, the key idea is that `X ×ₛ (seq_by_length X n) ∼ seq_by_length X (n + 1)`.  To prove this, we define a function `seq_cons A` that matches up `X ×ₛ (seq_by_length X n)` with `seq_by_length X (n + 1)`.
+
+```lean
+def seq_cons (A : Type) (p : A × (List A)) : List A := p.fst :: p.snd
+
+lemma seq_cons_def {A : Type} (x : A) (l : List A) :
+    seq_cons A (x, l) = x :: l := by rfl
+
+lemma seq_cons_one_one (A : Type) : one_to_one (seq_cons A) := by
+  fix (a1, l1) : A × List A; fix (a2, l2) : A × List A
+  assume h1 : seq_cons A (a1, l1) = seq_cons A (a2, l2)
+  rewrite [seq_cons_def, seq_cons_def] at h1  --h1 : a1 :: l1 = a2 :: l2
+  rewrite [List.cons_eq_cons] at h1           --h1 : a1 = a2 ∧ l1 = l2
+  rewrite [h1.left, h1.right]
+  rfl
+  done
+
+lemma seq_cons_image {A : Type} (X : Set A) (n : Nat) :
+    image (seq_cons A) (X ×ₛ (seq_by_length X n))
+      = seq_by_length X (n + 1) := sorry
+
+lemma Lemma_8_2_4_1 {A : Type} (X : Set A) (n : Nat) :
+    X ×ₛ (seq_by_length X n) ∼ seq_by_length X (n + 1) :=
+  equinum_image (one_one_on_of_one_one (seq_cons_one_one A)
+    (X ×ₛ (seq_by_length X n))) (seq_cons_image X n)
+```
+
+With this preparation, we can now use `singleton_one_elt` to justify the base case of our induction proof and `Theorem_8_2_1_1` for the induction step.
+
+```lean
+lemma Lemma_8_2_4_2 {A : Type} {X : Set A} (h1 : ctble X) :
+    ∀ (n : Nat), ctble (seq_by_length X n) := by
+  by_induc
+  · -- Base Case
+    rewrite [sbl_base]   --Goal : ctble {[]}
+    define
+    apply Or.inl         --Goal : finite {[]}
+    define
+    apply Exists.intro 1 --Goal : I 1 ∼ {[]}
+    show I 1 ∼ {[]} from singleton_one_elt []
+    done
+  · -- Induction Step
+    fix n : Nat
+    assume ih : ctble (seq_by_length X n)
+    have h2 : X ×ₛ (seq_by_length X n) ∼ seq_by_length X (n + 1) :=
+      Lemma_8_2_4_1 X n
+    have h3 : ctble (X ×ₛ (seq_by_length X n)) := Theorem_8_2_1_1 h1 ih
+    show ctble (seq_by_length X (n + 1)) from ctble_of_equinum_ctble h2 h3
+    done
+  done
+```
+
+Our next step is to show that the union of all of the sets `seq_by_length X n`, for `n : Nat`, is `seq X`.
+
+```lean
+def sbl_set {A : Type} (X : Set A) : Set (Set (List A)) :=
+  { S : Set (List A) | ∃ (n : Nat), seq_by_length X n = S }
+
+lemma Lemma_8_2_4_3 {A : Type} (X : Set A) : ⋃₀ (sbl_set X) = seq X := by
+  apply Set.ext
+  fix l : List A
+  apply Iff.intro
+  · -- (→)
+    assume h1 : l ∈ ⋃₀ (sbl_set X)
+    define at h1
+    obtain (S : Set (List A)) (h2 :  S ∈ sbl_set X ∧ l ∈ S) from h1
+    have h3 : S ∈ sbl_set X := h2.left
+    define at h3
+    obtain (n : Nat) (h4 : seq_by_length X n = S) from h3
+    have h5 : l ∈ S := h2.right
+    rewrite [←h4] at h5
+    define at h5
+    show l ∈ seq X from h5.left
+    done
+  · -- (←)
+    assume h1 : l ∈ seq X
+    define
+    set n : Nat := l.length
+    apply Exists.intro (seq_by_length X n)
+    apply And.intro
+    · -- Proof of seq_by_length X n ∈ sbl_set X
+      define
+      apply Exists.intro n
+      rfl
+      done
+    · -- Proof of l ∈ seq_by_length X n
+      define
+      apply And.intro h1
+      rfl
+      done
+    done
+  done
+```
+
+Of course, `sbl_set X` is countable.  The easiest way to prove this is to apply an exercise from Section 8.1.
+
+```lean
+theorem ctble_of_onto_func_from_N {A : Type} {X : Set A} {f : Nat → A}
+    (h1 : ∀ x ∈ X, ∃ (n : Nat), f n = x) : ctble X := sorry
+
+def enum_sbl_sets {A : Type} (X : Set A) (n : Nat) : Set (List A) :=
+  seq_by_length X n
+
+lemma Lemma_8_2_4_4 {A : Type} (X : Set A) : ctble (sbl_set X) := by
+  have h1 : ∀ S ∈ sbl_set X, ∃ (n : Nat), enum_sbl_sets X n = S := by
+    fix S : Set (List A)
+    assume h1 : S ∈ sbl_set X
+    define at h1
+    show ∃ (n : ℕ), enum_sbl_sets X n = S from h1
+    done
+  show ctble (sbl_set X) from ctble_of_onto_func_from_N h1
+  done
+```
+
+We now have everything in place to prove `Theorem_8_2_4` as an application of `Theorem_8_2_2`.
+
+```lean
+theorem Theorem_8_2_4 {A : Type} {X : Set A}
+    (h1 : ctble X) : ctble (seq X) := by
+  set F : Set (Set (List A)) := sbl_set X
+  have h2 : ctble F := Lemma_8_2_4_4 X
+  have h3 : ∀ S ∈ F, ctble S := by
+    fix S : Set (List A)
+    assume h3 : S ∈ F
+    define at h3
+    obtain (n : Nat) (h4 : seq_by_length X n = S) from h3
+    rewrite [←h4]
+    show ctble (seq_by_length X n) from Lemma_8_2_4_2 h1 n
+    done
+  rewrite [←Lemma_8_2_4_3 X]
+  show ctble (⋃₀ sbl_set X) from Theorem_8_2_2 h2 h3
+  done
+```
+
+There is a set-theoretic operation that can produce an uncountable set from a countable set: the power set operation.  *HTPI* demonstrates this by proving Theorem 8.2.5, which says that $\mathscr{P}(\mathbb{Z}^+)$ is uncountable.  The strategy for this proof is tricky; it involves defining a set $D$ using a method called *diagonalization*.  For an explanation of the motivation behind this strategy, see *HTPI*.  Here we will use the same strategy to prove that `Univ (Set Nat)` is uncountable.
+
+```lean
+theorem Theorem_8_2_5 : ¬ctble (Univ (Set Nat)) := by
+  by_contra h1
+  rewrite [Theorem_8_1_5_2] at h1
+  obtain (R : Rel Nat (Set Nat))
+    (h2 : fcnl_onto_from_nat R (Univ (Set ℕ))) from h1
+  define at h2
+  have h3 : unique_val_on_N R := h2.left
+  have h4 : nat_rel_onto R (Univ (Set Nat)) := h2.right
+  set D : Set Nat := { n : Nat | ∃ (X : Set Nat), R n X ∧ n ∉ X }
+  have h5 : D ∈ Univ (Set Nat) := elt_Univ D
+  define at h4
+  obtain (n : Nat) (h6 : R n D) from h4 h5
+  by_cases h7 : n ∈ D
+  · -- Case 1. h7 : n ∈ D
+    contradict h7
+    define at h7
+    obtain (X : Set Nat) (h8 : R n X ∧ ¬n ∈ X) from h7
+    define at h3
+    have h9 : D = X := h3 h6 h8.left
+    rewrite [h9]
+    show ¬n ∈ X from h8.right
+    done
+  · -- Case 2. h7 : n ∉ D
+    contradict h7
+    define
+    show ∃ (X : Set ℕ), R n X ∧ ¬n ∈ X from
+      Exists.intro D (And.intro h6 h7)
+    done
+  done
+```
+
+As a consequence of Theorem 8.2.5, *HTPI* shows that $\mathbb{R}$ is uncountable.  The proof is not hard, but it requires facts about the decimal expansions of real numbers.  Developing those facts in Lean would take us too far afield, so we will skip the proof.
