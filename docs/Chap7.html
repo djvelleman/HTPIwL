@@ -470,7 +470,7 @@ s = t', \qquad t = s' - t'q.
 <section id="exercises" class="level3">
 <h3 class="anchored" data-anchor-id="exercises">Exercises</h3>
 <div class="numex" data-arguments="1">
-<div class="sourceCode" id="cb19"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> dvd_a_of_dvd_b_mod_ex {a b d : Nat}</span>
+<div class="sourceCode" id="cb19"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> dvd_a_of_dvd_b_mod {a b d : Nat}</span>
 <span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>    (h1 : d ∣ b) (h2 : d ∣ (a % b)) : d ∣ a := <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="numex" data-arguments="2">
@@ -1451,7 +1451,7 @@ theorem Theorem_7_2_4 {p : Nat} {l : List Nat}
 <section id="exercises-1" class="level3">
 <h3 class="anchored" data-anchor-id="exercises-1">Exercises</h3>
 <div class="numex" data-arguments="1">
-<div class="sourceCode" id="cb43"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a><span class="kw">lemma</span> dvd_prime_ex {a p : Nat}</span>
+<div class="sourceCode" id="cb43"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a><span class="kw">lemma</span> dvd_prime {a p : Nat}</span>
 <span id="cb43-2"><a href="#cb43-2" aria-hidden="true" tabindex="-1"></a>    (h1 : prime p) (h2 : a ∣ p) : a = 1 ∨ a = p := <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="numex" data-arguments="2">
@@ -1465,7 +1465,7 @@ theorem Theorem_7_2_4 {p : Nat} {l : List Nat}
 <span id="cb45-2"><a href="#cb45-2" aria-hidden="true" tabindex="-1"></a>    rel_prime a b ↔ ¬∃ (p : Nat), prime p ∧ p ∣ a ∧ p ∣ b := <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="numex" data-arguments="4">
-<div class="sourceCode" id="cb46"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> rel_prime_symm_ex {a b : Nat} (h : rel_prime a b) :</span>
+<div class="sourceCode" id="cb46"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> rel_prime_symm {a b : Nat} (h : rel_prime a b) :</span>
 <span id="cb46-2"><a href="#cb46-2" aria-hidden="true" tabindex="-1"></a>    rel_prime b a := <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="numex" data-arguments="5">
@@ -1474,7 +1474,7 @@ theorem Theorem_7_2_4 {p : Nat} {l : List Nat}
 <span id="cb47-3"><a href="#cb47-3" aria-hidden="true" tabindex="-1"></a>    rel_prime a b ↔ (¬∃ (p : Nat), p ∈ l ∧ p ∈ m) := <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="numex" data-arguments="6">
-<div class="sourceCode" id="cb48"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Exercise_7_2_6_ex (a b : Nat) :</span>
+<div class="sourceCode" id="cb48"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Exercise_7_2_6 (a b : Nat) :</span>
 <span id="cb48-2"><a href="#cb48-2" aria-hidden="true" tabindex="-1"></a>    rel_prime a b ↔ ∃ (s t : Int), s * a + t * b = 1 := <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="numex" data-arguments="7">
@@ -1701,7 +1701,7 @@ Int.emod_nonneg : ∀ (a : ℤ) {b : ℤ}, b ≠ 0 → 0 ≤ a % b</code></pre>
 <section id="exercises-2" class="level3">
 <h3 class="anchored" data-anchor-id="exercises-2">Exercises</h3>
 <div class="numex" data-arguments="1">
-<div class="sourceCode" id="cb65"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb65-1"><a href="#cb65-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> congr_trans_ex {m : Nat} : ∀ {a b c : Int},</span>
+<div class="sourceCode" id="cb65"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb65-1"><a href="#cb65-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> congr_trans {m : Nat} : ∀ {a b c : Int},</span>
 <span id="cb65-2"><a href="#cb65-2" aria-hidden="true" tabindex="-1"></a>    a ≡ b (MOD m) → b ≡ c (MOD m) → a ≡ c (MOD m) := <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="numex" data-arguments="2">
@@ -2244,20 +2244,20 @@ Int.emod_nonneg : ∀ (a : ℤ) {b : ℤ}, b ≠ 0 → 0 ≤ a % b</code></pre>
 <span id="cb110-2"><a href="#cb110-2" aria-hidden="true" tabindex="-1"></a><span class="co">--For the base case, compute [a]_m ^ 0 * [1]_m in two ways:</span></span>
 <span id="cb110-3"><a href="#cb110-3" aria-hidden="true" tabindex="-1"></a><span class="co">--by Theorem_7_3_6_7, [a] ^ 0 * [1]_m = [a]_m ^ 0</span></span>
 <span id="cb110-4"><a href="#cb110-4" aria-hidden="true" tabindex="-1"></a><span class="co">--by ring, [a]_m ^ 0 * [1]_m = [1]_m.</span></span>
-<span id="cb110-5"><a href="#cb110-5" aria-hidden="true" tabindex="-1"></a><span class="kw">lemma</span> Exercise_7_4_5_Int_ex (m : Nat) (a : Int) :</span>
+<span id="cb110-5"><a href="#cb110-5" aria-hidden="true" tabindex="-1"></a><span class="kw">lemma</span> Exercise_7_4_5_Int (m : Nat) (a : Int) :</span>
 <span id="cb110-6"><a href="#cb110-6" aria-hidden="true" tabindex="-1"></a>    ∀ (n : Nat), [a]_m ^ n = [a ^ n]_m := <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="numex" data-arguments="2">
-<div class="sourceCode" id="cb111"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb111-1"><a href="#cb111-1" aria-hidden="true" tabindex="-1"></a><span class="kw">lemma</span> left_inv_one_one_below_ex {n : Nat} {g g' : Nat → Nat}</span>
+<div class="sourceCode" id="cb111"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb111-1"><a href="#cb111-1" aria-hidden="true" tabindex="-1"></a><span class="kw">lemma</span> left_inv_one_one_below {n : Nat} {g g' : Nat → Nat}</span>
 <span id="cb111-2"><a href="#cb111-2" aria-hidden="true" tabindex="-1"></a>    (h1 : ∀ i &lt; n, g' (g i) = i) : one_one_below n g := <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="numex" data-arguments="3">
-<div class="sourceCode" id="cb112"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb112-1"><a href="#cb112-1" aria-hidden="true" tabindex="-1"></a><span class="kw">lemma</span> comp_perm_below_ex {n : Nat} {f g : Nat → Nat}</span>
+<div class="sourceCode" id="cb112"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb112-1"><a href="#cb112-1" aria-hidden="true" tabindex="-1"></a><span class="kw">lemma</span> comp_perm_below {n : Nat} {f g : Nat → Nat}</span>
 <span id="cb112-2"><a href="#cb112-2" aria-hidden="true" tabindex="-1"></a>    (h1 : perm_below n f) (h2 : perm_below n g) :</span>
 <span id="cb112-3"><a href="#cb112-3" aria-hidden="true" tabindex="-1"></a>    perm_below n (f ∘ g) := <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="numex" data-arguments="4">
-<div class="sourceCode" id="cb113"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb113-1"><a href="#cb113-1" aria-hidden="true" tabindex="-1"></a><span class="kw">lemma</span> perm_below_fixed_ex {n : Nat} {g : Nat → Nat}</span>
+<div class="sourceCode" id="cb113"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb113-1"><a href="#cb113-1" aria-hidden="true" tabindex="-1"></a><span class="kw">lemma</span> perm_below_fixed {n : Nat} {g : Nat → Nat}</span>
 <span id="cb113-2"><a href="#cb113-2" aria-hidden="true" tabindex="-1"></a>    (h1 : perm_below (n + 1) g) (h2 : g n = n) : perm_below n g := <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="numex" data-arguments="5">
@@ -2501,7 +2501,7 @@ theorem Theorem_7_2_2_Int {a c : Nat} {b : Int}
 <h3 class="anchored" data-anchor-id="exercises-4">Exercises</h3>
 <div class="numex" data-arguments="1">
 <div class="sourceCode" id="cb126"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb126-1"><a href="#cb126-1" aria-hidden="true" tabindex="-1"></a><span class="co">--Hint:  Use induction.</span></span>
-<span id="cb126-2"><a href="#cb126-2" aria-hidden="true" tabindex="-1"></a><span class="kw">lemma</span> num_rp_prime_ex {p : Nat} (h1 : prime p) :</span>
+<span id="cb126-2"><a href="#cb126-2" aria-hidden="true" tabindex="-1"></a><span class="kw">lemma</span> num_rp_prime {p : Nat} (h1 : prime p) :</span>
 <span id="cb126-3"><a href="#cb126-3" aria-hidden="true" tabindex="-1"></a>    ∀ (k : Nat), k &lt; p → num_rp_below p (k + 1) = k := <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="numex" data-arguments="2">
@@ -2523,12 +2523,12 @@ theorem Theorem_7_2_2_Int {a c : Nat} {b : Int}
 <span id="cb130-3"><a href="#cb130-3" aria-hidden="true" tabindex="-1"></a>    (h1 : prime n) (h2 : b ^ 2 ≡ 1 (MOD n)) :</span>
 <span id="cb130-4"><a href="#cb130-4" aria-hidden="true" tabindex="-1"></a>    b ≡ 1 (MOD n) ∨ b ≡ -1 (MOD n) := <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<a href="https://doi.org/10.1017/9781108539890">
 
-</a></section><a href="https://doi.org/10.1017/9781108539890">
-</a></section><a href="https://doi.org/10.1017/9781108539890">
 
-</a></main><a href="https://doi.org/10.1017/9781108539890"> <!-- /main -->
+</section>
+</section>
+
+</main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {
@@ -2627,9 +2627,9 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   }
 });
 </script>
-</a><nav class="page-navigation"><a href="https://doi.org/10.1017/9781108539890">
-  </a><div class="nav-page nav-page-previous"><a href="https://doi.org/10.1017/9781108539890">
-      </a><a href="./Chap6.html" class="pagination-link">
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="./Chap6.html" class="pagination-link">
         <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Mathematical Induction</span></span>
       </a>          
   </div>
@@ -2642,10 +2642,10 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </div> <!-- /content -->
 <footer class="footer">
   <div class="nav-footer">
-      <div class="nav-footer-center">© 2023 Daniel J. Velleman.<br>Short excerpts from Daniel J. Velleman, <a href="https://doi.org/10.1017/9781108539890"><i>How To Prove It: A Structured Approach, 3rd Edition</i><br>© Daniel J. Velleman 2019, published by Cambridge University Press, reprinted with permission.</a></div><a href="https://doi.org/10.1017/9781108539890">
-  </a></div><a href="https://doi.org/10.1017/9781108539890">
-</a></footer><a href="https://doi.org/10.1017/9781108539890">
+      <div class="nav-footer-center">© 2023 Daniel J. Velleman.<br>Short excerpts from Daniel J. Velleman, <a href="https://doi.org/10.1017/9781108539890"><i>How To Prove It: A Structured Approach, 3rd Edition</i></a><br>© Daniel J. Velleman 2019, published by Cambridge University Press, reprinted with permission.</div>
+  </div>
+</footer>
 
 
 
-</a></body></html>
+</body></html>

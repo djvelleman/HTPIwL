@@ -269,7 +269,7 @@ $$
 <p>And now we can say that the sets of type <code>Set (A × B)</code> that are graphs of functions from <code>A</code> to <code>B</code> are precisely the ones that have the property <code>is_func_graph</code>:</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> func_from_graph {A B : <span class="kw">Type</span>} (F : Set (A × B)) :</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>    (∃ (f : A → B), graph f = F) ↔ is_func_graph F</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>We will ask you to prove the left-to-right direction of this theorem in the exercises. The right-to-left direction can also be proven in Lean, but the proof requires methods that go beyond the scope of this book. Nevertheless, we will go ahead and use the theorem when we find it useful.</p>
+<p>We will ask you to prove the left-to-right direction of this theorem in the exercises. The proof of the right-to-left direction in Lean is tricky; it requires an idea that we won’t introduce until Section 8.2. We’ll give the proof then, but we’ll go ahead and use the theorem in this chapter when we find it useful.</p>
 <p>Section 5.1 of <em>HTPI</em> proves two theorems about functions. The first gives a convenient way of proving that two functions are equal (<em>HTPI</em> p.&nbsp;232):</p>
 <div class="nthm" data-arguments="Theorem 5.1.4">
 <p>Suppose <span class="math inline">\(f\)</span> and <span class="math inline">\(g\)</span> are functions from <span class="math inline">\(A\)</span> to <span class="math inline">\(B\)</span>. If <span class="math inline">\(\forall a \in A(f(a) = g(a))\)</span>, then <span class="math inline">\(f = g\)</span>.</p>
@@ -602,11 +602,11 @@ $$
 <section id="exercises-2" class="level3">
 <h3 class="anchored" data-anchor-id="exercises-2">Exercises</h3>
 <div class="numex" data-arguments="1">
-<div class="sourceCode" id="cb40"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Theorem_5_3_2_2_ex {A B : <span class="kw">Type</span>} (f : A → B) (g : B → A)</span>
+<div class="sourceCode" id="cb40"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Theorem_5_3_2_2 {A B : <span class="kw">Type</span>} (f : A → B) (g : B → A)</span>
 <span id="cb40-2"><a href="#cb40-2" aria-hidden="true" tabindex="-1"></a>    (h1 : graph g = inv (graph f)) : f ∘ g = id := <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="numex" data-arguments="2">
-<div class="sourceCode" id="cb41"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Theorem_5_3_3_2_ex {A B : <span class="kw">Type</span>} (f : A → B) :</span>
+<div class="sourceCode" id="cb41"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Theorem_5_3_3_2 {A B : <span class="kw">Type</span>} (f : A → B) :</span>
 <span id="cb41-2"><a href="#cb41-2" aria-hidden="true" tabindex="-1"></a>    (∃ (g : B → A), f ∘ g = id) → onto f := <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="numex" data-arguments="3">
@@ -745,7 +745,7 @@ $$
 <span id="cb61-3"><a href="#cb61-3" aria-hidden="true" tabindex="-1"></a>    closure f (B1 ∪ B2) (C1 ∪ C2) := <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="numex" data-arguments="6">
-<div class="sourceCode" id="cb62"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb62-1"><a href="#cb62-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Theorem_5_4_9_ex {A : <span class="kw">Type</span>} (f : A → A → A) (B : Set A) :</span>
+<div class="sourceCode" id="cb62"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb62-1"><a href="#cb62-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Theorem_5_4_9 {A : <span class="kw">Type</span>} (f : A → A → A) (B : Set A) :</span>
 <span id="cb62-2"><a href="#cb62-2" aria-hidden="true" tabindex="-1"></a>    ∃ (C : Set A), closure2 f B C := <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>7. Suppose we define a set to be closed under a family of functions if it is closed under all of the functions in the family. Of course, the closure of a set <code>B</code> under a family of functions is the smallest set containing <code>B</code> that is closed under the family.</p>
@@ -869,11 +869,11 @@ f^{-1}(Y) = \{a \in A \mid f(a) \in Y\}.
 <span id="cb67-42"><a href="#cb67-42" aria-hidden="true" tabindex="-1"></a><span class="kw">example</span> {A B : <span class="kw">Type</span>} (f : A → B) (g : B → A) (Y : Set B)</span>
 <span id="cb67-43"><a href="#cb67-43" aria-hidden="true" tabindex="-1"></a>    (h1 : f ∘ g = id) (h2 : g ∘ f = id) :</span>
 <span id="cb67-44"><a href="#cb67-44" aria-hidden="true" tabindex="-1"></a>    inverse_image f Y = image g Y := <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<a href="https://doi.org/10.1017/9781108539890">
 
-</a></section><a href="https://doi.org/10.1017/9781108539890">
 
-</a></main><a href="https://doi.org/10.1017/9781108539890"> <!-- /main -->
+</section>
+
+</main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {
@@ -972,9 +972,9 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   }
 });
 </script>
-</a><nav class="page-navigation"><a href="https://doi.org/10.1017/9781108539890">
-  </a><div class="nav-page nav-page-previous"><a href="https://doi.org/10.1017/9781108539890">
-      </a><a href="./Chap4.html" class="pagination-link">
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="./Chap4.html" class="pagination-link">
         <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Relations</span></span>
       </a>          
   </div>
@@ -987,10 +987,10 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </div> <!-- /content -->
 <footer class="footer">
   <div class="nav-footer">
-      <div class="nav-footer-center">© 2023 Daniel J. Velleman.<br>Short excerpts from Daniel J. Velleman, <a href="https://doi.org/10.1017/9781108539890"><i>How To Prove It: A Structured Approach, 3rd Edition</i><br>© Daniel J. Velleman 2019, published by Cambridge University Press, reprinted with permission.</a></div><a href="https://doi.org/10.1017/9781108539890">
-  </a></div><a href="https://doi.org/10.1017/9781108539890">
-</a></footer><a href="https://doi.org/10.1017/9781108539890">
+      <div class="nav-footer-center">© 2023 Daniel J. Velleman.<br>Short excerpts from Daniel J. Velleman, <a href="https://doi.org/10.1017/9781108539890"><i>How To Prove It: A Structured Approach, 3rd Edition</i></a><br>© Daniel J. Velleman 2019, published by Cambridge University Press, reprinted with permission.</div>
+  </div>
+</footer>
 
 
 
-</a></body></html>
+</body></html>

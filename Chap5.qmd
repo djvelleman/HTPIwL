@@ -30,7 +30,7 @@ theorem func_from_graph {A B : Type} (F : Set (A × B)) :
     (∃ (f : A → B), graph f = F) ↔ is_func_graph F
 ```
 
-We will ask you to prove the left-to-right direction of this theorem in the exercises.  The right-to-left direction can also be proven in Lean, but the proof requires methods that go beyond the scope of this book.  Nevertheless, we will go ahead and use the theorem when we find it useful.
+We will ask you to prove the left-to-right direction of this theorem in the exercises.  The proof of the right-to-left direction in Lean is tricky; it requires an idea that we won't introduce until Section 8.2.  We'll give the proof then, but we'll go ahead and use the theorem in this chapter when we find it useful.
 
 Section 5.1 of *HTPI* proves two theorems about functions.  The first gives a convenient way of proving that two functions are equal (*HTPI* p. 232):
 
@@ -504,14 +504,14 @@ theorem Theorem_5_3_5 {A B : Type} (f : A → B) (g : B → A)
 
 ::: {.numex arguments="1"}
 ```lean
-theorem Theorem_5_3_2_2_ex {A B : Type} (f : A → B) (g : B → A)
+theorem Theorem_5_3_2_2 {A B : Type} (f : A → B) (g : B → A)
     (h1 : graph g = inv (graph f)) : f ∘ g = id := sorry
 ```
 :::
 
 ::: {.numex arguments="2"}
 ```lean
-theorem Theorem_5_3_3_2_ex {A B : Type} (f : A → B) :
+theorem Theorem_5_3_3_2 {A B : Type} (f : A → B) :
     (∃ (g : B → A), f ∘ g = id) → onto f := sorry
 ```
 :::
@@ -725,7 +725,7 @@ theorem Exercise_5_4_10b {A : Type} (f : A → A) (B1 B2 C1 C2 : Set A)
 
 ::: {.numex arguments="6"}
 ```lean
-theorem Theorem_5_4_9_ex {A : Type} (f : A → A → A) (B : Set A) :
+theorem Theorem_5_4_9 {A : Type} (f : A → A → A) (B : Set A) :
     ∃ (C : Set A), closure2 f B C := sorry
 ```
 :::

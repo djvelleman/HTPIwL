@@ -802,20 +802,20 @@ $$
 <section id="exercises-1" class="level3">
 <h3 class="anchored" data-anchor-id="exercises-1">Exercises</h3>
 <div class="numex" data-arguments="1">
-<div class="sourceCode" id="cb43"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a><span class="kw">lemma</span> Lemma_6_2_1_2_ex {A : <span class="kw">Type</span>} {R : BinRel A} {B : Set A} {b c : A}</span>
+<div class="sourceCode" id="cb43"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a><span class="kw">lemma</span> Lemma_6_2_1_2 {A : <span class="kw">Type</span>} {R : BinRel A} {B : Set A} {b c : A}</span>
 <span id="cb43-2"><a href="#cb43-2" aria-hidden="true" tabindex="-1"></a>    (h1 : partial_order R) (h2 : b ∈ B) (h3 : minimalElt R c (B \ {b}))</span>
 <span id="cb43-3"><a href="#cb43-3" aria-hidden="true" tabindex="-1"></a>    (h4 : ¬R b c) : minimalElt R c B := <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="numex" data-arguments="2">
-<div class="sourceCode" id="cb44"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a><span class="kw">lemma</span> extendPO_is_ref_ex {A : <span class="kw">Type</span>} (R : BinRel A) (b : A)</span>
+<div class="sourceCode" id="cb44"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a><span class="kw">lemma</span> extendPO_is_ref {A : <span class="kw">Type</span>} (R : BinRel A) (b : A)</span>
 <span id="cb44-2"><a href="#cb44-2" aria-hidden="true" tabindex="-1"></a>    (h : partial_order R) : reflexive (extendPO R b) := <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="numex" data-arguments="3">
-<div class="sourceCode" id="cb45"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a><span class="kw">lemma</span> extendPO_is_trans_ex {A : <span class="kw">Type</span>} (R : BinRel A) (b : A)</span>
+<div class="sourceCode" id="cb45"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a><span class="kw">lemma</span> extendPO_is_trans {A : <span class="kw">Type</span>} (R : BinRel A) (b : A)</span>
 <span id="cb45-2"><a href="#cb45-2" aria-hidden="true" tabindex="-1"></a>    (h : partial_order R) : transitive (extendPO R b) := <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="numex" data-arguments="4">
-<div class="sourceCode" id="cb46"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a><span class="kw">lemma</span> extendPO_is_antisymm_ex {A : <span class="kw">Type</span>} (R : BinRel A) (b : A)</span>
+<div class="sourceCode" id="cb46"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a><span class="kw">lemma</span> extendPO_is_antisymm {A : <span class="kw">Type</span>} (R : BinRel A) (b : A)</span>
 <span id="cb46-2"><a href="#cb46-2" aria-hidden="true" tabindex="-1"></a>    (h : partial_order R) : antisymmetric (extendPO R b) := <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="numex" data-arguments="5">
@@ -1567,7 +1567,7 @@ example : ∀ (n : Nat), Fib n < 2 ^ n := by
 <div class="numex" data-arguments="1">
 <div class="sourceCode" id="cb104"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb104-1"><a href="#cb104-1" aria-hidden="true" tabindex="-1"></a><span class="co">--Hint: Use Exercise_6_1_16a1 and Exercise_6_1_16a2</span></span>
 <span id="cb104-2"><a href="#cb104-2" aria-hidden="true" tabindex="-1"></a><span class="co">--from the exercises of Section 6.1.</span></span>
-<span id="cb104-3"><a href="#cb104-3" aria-hidden="true" tabindex="-1"></a><span class="kw">lemma</span> sq_even_iff_even_ex (n : Nat) :</span>
+<span id="cb104-3"><a href="#cb104-3" aria-hidden="true" tabindex="-1"></a><span class="kw">lemma</span> sq_even_iff_even (n : Nat) :</span>
 <span id="cb104-4"><a href="#cb104-4" aria-hidden="true" tabindex="-1"></a>    nat_even (n * n) ↔ nat_even n := <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="numex" data-arguments="2">
@@ -1852,12 +1852,12 @@ example : ∀ (n : Nat), Fib n < 2 ^ n := by
 <span id="cb133-2"><a href="#cb133-2" aria-hidden="true" tabindex="-1"></a>    smallestElt (sub (A × A)) (cumul_comp R)</span>
 <span id="cb133-3"><a href="#cb133-3" aria-hidden="true" tabindex="-1"></a>    { S : Set (A × A) | R ⊆ S ∧ transitive (RelFromExt S) } := <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<a href="https://doi.org/10.1017/9781108539890">
 
-</a></section><a href="https://doi.org/10.1017/9781108539890">
-</a></section><a href="https://doi.org/10.1017/9781108539890">
 
-</a></main><a href="https://doi.org/10.1017/9781108539890"> <!-- /main -->
+</section>
+</section>
+
+</main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {
@@ -1956,9 +1956,9 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   }
 });
 </script>
-</a><nav class="page-navigation"><a href="https://doi.org/10.1017/9781108539890">
-  </a><div class="nav-page nav-page-previous"><a href="https://doi.org/10.1017/9781108539890">
-      </a><a href="./Chap5.html" class="pagination-link">
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="./Chap5.html" class="pagination-link">
         <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Functions</span></span>
       </a>          
   </div>
@@ -1971,10 +1971,10 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </div> <!-- /content -->
 <footer class="footer">
   <div class="nav-footer">
-      <div class="nav-footer-center">© 2023 Daniel J. Velleman.<br>Short excerpts from Daniel J. Velleman, <a href="https://doi.org/10.1017/9781108539890"><i>How To Prove It: A Structured Approach, 3rd Edition</i><br>© Daniel J. Velleman 2019, published by Cambridge University Press, reprinted with permission.</a></div><a href="https://doi.org/10.1017/9781108539890">
-  </a></div><a href="https://doi.org/10.1017/9781108539890">
-</a></footer><a href="https://doi.org/10.1017/9781108539890">
+      <div class="nav-footer-center">© 2023 Daniel J. Velleman.<br>Short excerpts from Daniel J. Velleman, <a href="https://doi.org/10.1017/9781108539890"><i>How To Prove It: A Structured Approach, 3rd Edition</i></a><br>© Daniel J. Velleman 2019, published by Cambridge University Press, reprinted with permission.</div>
+  </div>
+</footer>
 
 
 
-</a></body></html>
+</body></html>

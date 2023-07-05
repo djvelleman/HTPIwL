@@ -883,31 +883,31 @@ theorem Theorem_8_1_6 : denum (Univ Rat) := by
 ::: {.numex arguments="1"}
 ```lean
 --Hint:  Use Exercise_6_1_16a2 from the exercises of Section 6.1
-lemma fnz_odd_ex (k : Nat) : fnz (2 * k + 1) = -↑(k + 1) := sorry
+lemma fnz_odd (k : Nat) : fnz (2 * k + 1) = -↑(k + 1) := sorry
 ```
 :::
 
 ::: {.numex arguments="2"}
 ```lean
-lemma fnz_fzn_ex : fnz ∘ fzn = id  := sorry
+lemma fnz_fzn : fnz ∘ fzn = id  := sorry
 ```
 :::
 
 ::: {.numex arguments="3"}
 ```lean
-lemma tri_step_ex (k : Nat) : tri (k + 1) = tri k + k + 1 := sorry
+lemma tri_step (k : Nat) : tri (k + 1) = tri k + k + 1 := sorry
 ```
 :::
 
 ::: {.numex arguments="4"}
 ```lean
-lemma tri_incr_ex {j k : Nat} (h1 : j ≤ k) : tri j ≤ tri k := sorry
+lemma tri_incr {j k : Nat} (h1 : j ≤ k) : tri j ≤ tri k := sorry
 ```
 :::
 
 ::: {.numex arguments="5"}
 ```lean
-lemma ctble_of_equinum_ctble_ex {A B : Type} {X : Set A} {Y : Set B}
+lemma ctble_of_equinum_ctble {A B : Type} {X : Set A} {Y : Set B}
     (h1 : X ∼ Y) (h2 : ctble X) : ctble Y := sorry
 ```
 :::
@@ -972,7 +972,7 @@ theorem Exercise_8_1_5 {A B : Type} {X : Set A} {Y : Set B}
 
 ::: {.numex arguments="12"}
 ```lean
-theorem Exercise_8_1_17_ex {A : Type} {X Y : Set A}
+theorem Exercise_8_1_17 {A : Type} {X Y : Set A}
     (h1 : X ⊆ Y) (h2 : ctble Y) : ctble X := sorry
 ```
 :::
@@ -1437,7 +1437,7 @@ lemma Rel_prod_def {A B C D : Type} (R : Rel A B) (S : Rel C D)
     (R ×ᵣ S) (a, c) (b, d) ↔ R a b ∧ S c d := by rfl
 ```
 
-With this definition, `R ×ᵣ S` is a relation from `A × C` to `B × D`.  (Of course, to type the subscript `r` after `×`, you should type `\_r`.)  The proof that `R ×ᵣ S` is a matching from `U ×ₛ W` to `V ×ₛ X` is straightforward but tedious.
+With this definition, `R ×ᵣ S` is a relation from `A × C` to `B × D`.  (Of course, to type the subscript `r` after `×`, you should type `\_r`.)  We leave the proof that `R ×ᵣ S` is a matching from `U ×ₛ W` to `V ×ₛ X` as an exercise for you.
 
 ```lean
 lemma prod_match {A B C D : Type}
@@ -1655,7 +1655,7 @@ theorem Theorem_7_4_4 {m n : Nat} (h1 : rel_prime m n) :
 
 ::: {.numex arguments="1"}
 ```lean
-lemma remove_one_iff_ex {A B : Type}
+lemma remove_one_iff {A B : Type}
     {X : Set A} {Y : Set B} {R : Rel A B} (h1 : matching R X Y)
     {u : A} (h2 : u ∈ X) (v : B) {x : A} (h3 : x ∈ X \ {u}) :
     ∃ (w : A), w ∈ X ∧ ∀ (y : B), remove_one R u v x y ↔ R w y := sorry
@@ -1679,14 +1679,14 @@ theorem one_match_fcnl {A B : Type} (a : A) (b : B) :
 ::: {.numex arguments="4"}
 ```lean
 --Hint : Use the previous two exercises.
-lemma one_match_match_ex {A B : Type} (a : A) (b : B) :
+lemma one_match_match {A B : Type} (a : A) (b : B) :
     matching (one_match a b) {a} {b} := sorry
 ```
 :::
 
 ::: {.numex arguments="5"}
 ```lean
-lemma neb_nrpb_ex (m : Nat) : ∀ ⦃k : Nat⦄, k ≤ m →
+lemma neb_nrpb (m : Nat) : ∀ ⦃k : Nat⦄, k ≤ m →
     num_elts_below (Set_rp_below m) k (num_rp_below m k) := sorry
 ```
 :::
@@ -1702,7 +1702,7 @@ lemma prod_fcnl {A B C D : Type} {R : Rel A B} {S : Rel C D}
 ::: {.numex arguments="7"}
 ```lean
 --Hint:  Use the previous exercise.
-lemma prod_match_ex {A B C D : Type}
+lemma prod_match {A B C D : Type}
     {U : Set A} {V : Set B} {W : Set C} {X : Set D}
     {R : Rel A B} {S : Rel C D}
     (h1 : matching R U V) (h2 : matching S W X) :
@@ -1714,7 +1714,7 @@ lemma prod_match_ex {A B C D : Type}
 ```lean
 --Hint: You might find it helpful to apply the theorem div_mod_char
 --from the exercises of Section 6.4.
-lemma qr_image_ex (m n : Nat) :
+lemma qr_image (m n : Nat) :
     image (qr n) (I (m * n)) = I m ×ₛ I n := sorry
 ```
 :::
@@ -1755,3 +1755,204 @@ theorem Exercise_8_1_8b {A : Type} {X U : Set A}
     (h1 : finite X) (h2 : U ⊆ X) : finite U := sorry
 ```
 :::
+
+## 8.2. Countable and Uncountable Sets
+
+Section 8.2 of *HTPI* shows that many set-theoretic operations, when applied to countable sets, produce results that are countable.  For example, the first part of Theorem 8.2.1 shows that a Cartesian product of countable sets is countable.  Our proof of this statement in Lean is based on `Theorem_8_1_2_1` and the countability of `Univ (Nat × Nat)`.  We also use an exercise from Section 8.1.
+
+```lean
+theorem Exercise_8_1_17 {A : Type} {X Y : Set A}
+    (h1 : X ⊆ Y) (h2 : ctble Y) : ctble X := sorry
+
+theorem Theorem_8_2_1_1 {A B : Type} {X : Set A} {Y : Set B}
+    (h1 : ctble X) (h2 : ctble Y) : ctble (X ×ₛ Y) := by
+  rewrite [ctble_iff_equinum_set_nat] at h1
+  rewrite [ctble_iff_equinum_set_nat] at h2
+  obtain (I : Set Nat) (h3 : I ∼ X) from h1
+  obtain (J : Set Nat) (h4 : J ∼ Y) from h2
+  have h5 : I ×ₛ J ∼ X ×ₛ Y := Theorem_8_1_2_1 h3 h4
+  have h6 : I ×ₛ J ⊆ Univ (Nat × Nat) := by
+    fix p : Nat × Nat
+    assume h6 : p ∈ I ×ₛ J
+    show p ∈ Univ (Nat × Nat) from elt_Univ p
+    done
+  have h7 : ctble (Univ (Nat × Nat)) := by
+    define       --Goal : finite (Univ (ℕ × ℕ)) ∨ denum (Univ (ℕ × ℕ))
+    apply Or.inr
+    rewrite [denum_def]
+    show Univ Nat ∼ Univ (Nat × Nat) from Theorem_8_1_3_2 NxN_equinum_N
+    done
+  have h8 : ctble (I ×ₛ J) := Exercise_8_1_17 h6 h7
+  show ctble (X ×ₛ Y) from ctble_of_equinum_ctble h5 h8
+  done
+```
+
+The second part of Theorem 8.2.1 shows that a union of two countable sets is countable, but, as we ask you to show in the exercises, it is superseded by Theorem 8.2.2, which says that a union of a countable family of countable sets is countable.  So we will skip ahead to Theorem 8.2.2.  Here's how we state the theorem in Lean:
+
+```lean
+theorem Theorem_8_2_2 {A : Type} {F : Set (Set A)}
+    (h1 : ctble F) (h2 : ∀ X ∈ F, ctble X) : ctble (⋃₀ F)
+```
+
+In our proof, we will use the characterization of countability from `Theorem_8_1_5_2`.  Thus, we will use the hypotheses `h1` and `h2` to conclude that there is a relation `R : Rel Nat (Set A)` such that `fcnl_onto_from_nat R F`, and also that for each `X ∈ F` there is a relation `SX : Rel Nat A` such that `fcnl_onto_from_nat SX X`.  We begin by proving an easier version of the theorem, where we assume that we have a function `f : Set A → Rel Nat A` that supplies, for each `X ∈ F`, the required relation `SX`.  Imitating the proof in *HTPI*, we can use `R` and `f` to construct the relation needed to prove that `⋃₀ F` is countable.
+
+```lean
+def enum_union_fam {A : Type}
+  (F : Set (Set A)) (f : Set A → Rel Nat A) (R : Rel Nat (Set A))
+  (n : Nat) (a : A) : Prop := ∃ (p : Nat × Nat), fnnn p = n ∧
+    ∃ (X : Set A), X ∈ F ∧ R p.fst X ∧ (f X) p.snd a
+
+lemma Lemma_8_2_2_1 {A : Type} {F : Set (Set A)} {f : Set A → Rel Nat A}
+    (h1 : ctble F) (h2 : ∀ X ∈ F, fcnl_onto_from_nat (f X) X) :
+    ctble (⋃₀ F) := by
+  rewrite [Theorem_8_1_5_2] at h1
+  rewrite [Theorem_8_1_5_2]
+  obtain (R : Rel Nat (Set A)) (h3 : fcnl_onto_from_nat R F) from h1
+  define at h3
+  have Runiqueval : unique_val_on_N R := h3.left
+  have Ronto : nat_rel_onto R F := h3.right
+  set S : Rel Nat A := enum_union_fam F f R
+  apply Exists.intro S
+  define
+  apply And.intro
+  · -- Proof of unique_val_on_N S
+    define
+    fix n : Nat; fix a1 : A; fix a2 : A
+    assume Sna1 : S n a1
+    assume Sna2 : S n a2         --Goal : a1 = a2
+    define at Sna1; define at Sna2
+    obtain ((i1, j1) : Nat × Nat) (h4 : fnnn (i1, j1) = n ∧
+      ∃ (X : Set A), X ∈ F ∧ R i1 X ∧ f X j1 a1) from Sna1
+    obtain (X1 : Set A) (Xija1 : X1 ∈ F ∧ R i1 X1 ∧ f X1 j1 a1)
+      from h4.right
+    obtain ((i2, j2) : Nat × Nat) (h5 : fnnn (i2, j2) = n ∧
+      ∃ (X : Set A), X ∈ F ∧ R i2 X ∧ f X j2 a2) from Sna2
+    obtain (X2 : Set A) (Xija2 : X2 ∈ F ∧ R i2 X2 ∧ f X2 j2 a2)
+      from h5.right
+    rewrite [←h5.left] at h4
+    have h6 : (i1, j1) = (i2, j2) :=
+      fnnn_one_one (i1, j1) (i2, j2) h4.left
+    have h7 : i1 = i2 ∧ j1 = j2 := Prod.mk.inj h6
+    rewrite [h7.left, h7.right] at Xija1
+      --Xija1 : X1 ∈ F ∧ R i2 X1 ∧ f X1 j2 a1
+    define at Runiqueval
+    have h8 : X1 = X2 := Runiqueval Xija1.right.left Xija2.right.left
+    rewrite [h8] at Xija1       --Xija1 : X2 ∈ F ∧ R i2 X2 ∧ f X2 j2 a1
+    have fX2fcnlonto : fcnl_onto_from_nat (f X2) X2 := h2 X2 Xija2.left
+    define at fX2fcnlonto
+    have fX2uniqueval : unique_val_on_N (f X2) := fX2fcnlonto.left
+    define at fX2uniqueval
+    show a1 = a2 from fX2uniqueval Xija1.right.right Xija2.right.right
+    done
+  · -- Proof of nat_rel_onto S (⋃₀ F)
+    define
+    fix x : A
+    assume h4 : x ∈ ⋃₀ F    --Goal : ∃ (n : Nat), S n x
+    define at h4
+    obtain (X : Set A) (h5 : X ∈ F ∧ x ∈ X) from h4
+    define at Ronto
+    obtain (i : Nat) (h6 : R i X) from Ronto h5.left
+    have fXfcnlonto : fcnl_onto_from_nat (f X) X := h2 X h5.left
+    define at fXfcnlonto
+    have fXonto : nat_rel_onto (f X) X := fXfcnlonto.right
+    define at fXonto
+    obtain (j : Nat) (h7 : f X j x) from fXonto h5.right
+    apply Exists.intro (fnnn (i, j))
+    define    --Goal : ∃ (p : Nat × Nat), fnnn p = fnnn (i, j) ∧
+              --       ∃ (X : Set A), X ∈ F ∧ R p.fst X ∧ f X p.snd x
+    apply Exists.intro (i, j)
+    apply And.intro
+    · -- Proof that fnnn (i, j) = fnnn (i, j)
+      rfl
+      done
+    · -- Proof that ∃ (X : Set A), X ∈ F ∧
+      --            R (i, j).fst X ∧ f X (i, j).snd x
+      apply Exists.intro X
+      show X ∈ F ∧ R (i, j).fst X ∧ f X (i, j).snd x from
+        And.intro h5.left (And.intro h6 h7)
+      done
+    done
+  done
+```
+
+How can we use `Lemma_8_2_2_1` to prove `Theorem_8_2_2`?  We must use the hypothesis `h2 : ∀ X ∈ F, ctble X` in `Theorem_8_2_2` to produce the function `f` required in `Lemma_8_2_2_1`.  As we have already observed, `Theorem_8_1_5_2` guarantees that for each `X ∈ F`, an appropriate relation `SX : Rel Nat A` exists.  We need a function `f` that will *choose* such a relation `SX` for each `X`.  A function with this property is often called a *choice function*.  And now we come to a delicate point that was skipped over in *HTPI*: to prove the existence of a choice function, we must use a statement called the *axiom of choice*.^[The axiom of choice was first stated by Ernst Zermelo in 1904.  You can learn more about it in Gregory H. Moore, *Zermelo's Axiom of Choice: Its Origins, Development, and Influence*, Dover Publications, 2013.  See also <https://en.wikipedia.org/wiki/Axiom_of_choice>.]
+
+The distinction between the existence of an appropriate relation `SX` for each `X` and the existence of a function that chooses such a relation for each `X` is a subtle one.  Perhaps for this reason, many people find the axiom of choice to be intuitively obvious.  *HTPI* took advantage of this intuition to skip over this step in the proof without comment.  But of course Lean won't let us skip anything!
+
+To implement the axiom of choice, Lean uses a function called `Classical.choose`.  Given a proof `h` of a statement of the form `∃ (x : A), P x`, the expression `Classical.choose h` produces ("chooses") some `a : A` such that `P a` is true.  There is also a theorem `Classical.choose_spec` that guarantees that the `Classical.choose` function meets its specification---that is, `P (Classical.choose h)` is true.  Using these, we can prove a lemma that will bridge the gap between `Lemma_8_2_2_1` and `Theorem_8_2_2`.
+
+```lean
+lemma Lemma_8_2_2_2 {A : Type} {F : Set (Set A)} (h : ∀ X ∈ F, ctble X) :
+    ∃ (f : Set A → Rel Nat A), ∀ X ∈ F, fcnl_onto_from_nat (f X) X := by
+  have h1 : ∀ (X : Set A), ∃ (SX : Rel Nat A),
+      X ∈ F → fcnl_onto_from_nat SX X := by
+    fix X
+    by_cases h2 : X ∈ F
+    · -- Case 1. h2 : X ∈ F
+      have h3 : ctble X := h X h2
+      rewrite [Theorem_8_1_5_2] at h3
+      obtain (SX : Rel Nat A) (h4 : fcnl_onto_from_nat SX X) from h3
+      apply Exists.intro SX
+      assume h5 : X ∈ F
+      show fcnl_onto_from_nat SX X from h4
+      done
+    · -- Case 2. h2 : X ∉ F
+      apply Exists.intro (emptyRel Nat A)
+      assume h3 : X ∈ F
+      show fcnl_onto_from_nat (emptyRel Nat A) X from absurd h3 h2
+      done
+    done
+  set f : Set A → Rel Nat A := fun (X : Set A) => Classical.choose (h1 X)
+  apply Exists.intro f
+  fix X : Set A
+  show X ∈ F → fcnl_onto_from_nat (f X) X from Classical.choose_spec (h1 X)
+  done
+```
+
+Notice that the domain of the function `f` in `Lemma_8_2_2_2` is `Set A`, not `F`.  Thus, we must produce a relation `SX` for every `X : Set A`, but it is only when `X ∈ F` that we care what `SX` is.  Thus, the proof above just picks a default value (`emptyRel Nat A`) when `X ∉ F`.
+
+We now have everything in place to prove `Theorem_8_2_2`:
+
+```lean
+theorem Theorem_8_2_2 {A : Type} {F : Set (Set A)}
+    (h1 : ctble F) (h2 : ∀ X ∈ F, ctble X) : ctble (⋃₀ F) := by
+  obtain (f : Set A → Rel Nat A) (h3 : ∀ (X : Set A), X ∈ F →
+    fcnl_onto_from_nat (f X) X) from Lemma_8_2_2_2 h2
+  show ctble (⋃₀ F) from Lemma_8_2_2_1 h1 h3
+  done
+```
+
+By the way, we can now explain a mystery from Section 5.1.  The reason we skipped the proof of the right-to-left direction of `func_from_graph` is that the proof uses `Classical.choose` and `Classical.choose_spec`.  Now that you know about them, we can show you the proof.
+
+```lean
+theorem func_from_graph_rtl {A B : Type} (F : Set (A × B)) :
+    is_func_graph F → (∃ (f : A → B), graph f = F) := by
+  assume h1 : is_func_graph F
+  define at h1    --h1 : ∀ (x : A), ∃! (y : B), (x, y) ∈ F
+  have h2 : ∀ (x : A), ∃ (y : B), (x, y) ∈ F := by
+    fix x : A
+    obtain (y : B) (h3 : (x, y) ∈ F)
+      (h4 : ∀ (y1 y2 : B), (x, y1) ∈ F → (x, y2) ∈ F → y1 = y2) from h1 x
+    show ∃ (y : B), (x, y) ∈ F from Exists.intro y h3
+    done
+  set f : A → B := fun (x : A) => Classical.choose (h2 x)
+  apply Exists.intro f
+  apply Set.ext
+  fix (x, y) : A × B
+  have h3 : (x, f x) ∈ F := Classical.choose_spec (h2 x)
+  apply Iff.intro
+  · -- (→)
+    assume h4 : (x, y) ∈ graph f
+    define at h4        --h4 : f x = y
+    rewrite [h4] at h3
+    show (x, y) ∈ F from h3
+    done
+  · -- (←)
+    assume h4 : (x, y) ∈ F
+    define              --Goal : f x = y
+    obtain (z : B) (h5 : (x, z) ∈ F)
+      (h6 : ∀ (y1 y2 : B), (x, y1) ∈ F → (x, y2) ∈ F → y1 = y2) from h1 x
+    show f x = y from h6 (f x) y h3 h4
+    done
+  done
+```
