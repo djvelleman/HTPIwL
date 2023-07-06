@@ -1658,7 +1658,7 @@ $$
 <span id="cb72-2"><a href="#cb72-2" aria-hidden="true" tabindex="-1"></a>    fcnl_on (one_match a b) {a} := <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="numex" data-arguments="4">
-<div class="sourceCode" id="cb73"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb73-1"><a href="#cb73-1" aria-hidden="true" tabindex="-1"></a><span class="co">--Hint : Use the previous two exercises.</span></span>
+<div class="sourceCode" id="cb73"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb73-1"><a href="#cb73-1" aria-hidden="true" tabindex="-1"></a><span class="co">--Hint:  Use the previous two exercises.</span></span>
 <span id="cb73-2"><a href="#cb73-2" aria-hidden="true" tabindex="-1"></a><span class="kw">lemma</span> one_match_match {A B : <span class="kw">Type</span>} (a : A) (b : B) :</span>
 <span id="cb73-3"><a href="#cb73-3" aria-hidden="true" tabindex="-1"></a>    matching (one_match a b) {a} {b} := <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
@@ -1680,7 +1680,7 @@ $$
 <span id="cb76-6"><a href="#cb76-6" aria-hidden="true" tabindex="-1"></a>    matching (R ×ᵣ S) (U ×ₛ W) (V ×ₛ X) := <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="numex" data-arguments="8">
-<div class="sourceCode" id="cb77"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb77-1"><a href="#cb77-1" aria-hidden="true" tabindex="-1"></a><span class="co">--Hint: You might find it helpful to apply the theorem div_mod_char</span></span>
+<div class="sourceCode" id="cb77"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb77-1"><a href="#cb77-1" aria-hidden="true" tabindex="-1"></a><span class="co">--Hint:  You might find it helpful to apply the theorem div_mod_char</span></span>
 <span id="cb77-2"><a href="#cb77-2" aria-hidden="true" tabindex="-1"></a><span class="co">--from the exercises of Section 6.4.</span></span>
 <span id="cb77-3"><a href="#cb77-3" aria-hidden="true" tabindex="-1"></a><span class="kw">lemma</span> qr_image (m n : Nat) :</span>
 <span id="cb77-4"><a href="#cb77-4" aria-hidden="true" tabindex="-1"></a>    image (qr n) (I (m * n)) = I m ×ₛ I n := <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -2065,8 +2065,50 @@ $$
 <span id="cb96-28"><a href="#cb96-28" aria-hidden="true" tabindex="-1"></a>    <span class="kw">done</span></span>
 <span id="cb96-29"><a href="#cb96-29" aria-hidden="true" tabindex="-1"></a>  <span class="kw">done</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>As a consequence of Theorem 8.2.5, <em>HTPI</em> shows that <span class="math inline">\(\mathbb{R}\)</span> is uncountable. The proof is not hard, but it requires facts about the decimal expansions of real numbers. Developing those facts in Lean would take us too far afield, so we will skip the proof.</p>
+<section id="exercises-2" class="level3">
+<h3 class="anchored" data-anchor-id="exercises-2">Exercises</h3>
+<div class="numex" data-arguments="1">
+<div class="sourceCode" id="cb97"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb97-1"><a href="#cb97-1" aria-hidden="true" tabindex="-1"></a><span class="kw">lemma</span> pair_ctble {A : <span class="kw">Type</span>} (a b : A) : ctble {a, b} := <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="numex" data-arguments="2">
+<div class="sourceCode" id="cb98"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb98-1"><a href="#cb98-1" aria-hidden="true" tabindex="-1"></a><span class="co">--Hint:  Use the previous exercise and Theorem_8_2_2</span></span>
+<span id="cb98-2"><a href="#cb98-2" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Theorem_8_2_1_2 {A : <span class="kw">Type</span>} {X Y : Set A}</span>
+<span id="cb98-3"><a href="#cb98-3" aria-hidden="true" tabindex="-1"></a>    (h1 : ctble X) (h2 : ctble Y) : ctble (X ∪ Y) := <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="numex" data-arguments="3">
+<div class="sourceCode" id="cb99"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb99-1"><a href="#cb99-1" aria-hidden="true" tabindex="-1"></a><span class="kw">lemma</span> seq_cons_image {A : <span class="kw">Type</span>} (X : Set A) (n : Nat) :</span>
+<span id="cb99-2"><a href="#cb99-2" aria-hidden="true" tabindex="-1"></a>    image (seq_cons A) (X ×ₛ (seq_by_length X n)) =</span>
+<span id="cb99-3"><a href="#cb99-3" aria-hidden="true" tabindex="-1"></a>      seq_by_length X (n + 1) := <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="numex" data-arguments="4">
+<div class="sourceCode" id="cb100"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb100-1"><a href="#cb100-1" aria-hidden="true" tabindex="-1"></a><span class="co">--Hint:  Use induction on the size of X</span></span>
+<span id="cb100-2"><a href="#cb100-2" aria-hidden="true" tabindex="-1"></a><span class="kw">lemma</span> set_to_list {A : <span class="kw">Type</span>} {X : Set A} (h : finite X) :</span>
+<span id="cb100-3"><a href="#cb100-3" aria-hidden="true" tabindex="-1"></a>    ∃ (l : List A), ∀ (x : A), x ∈ l ↔ x ∈ X := <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="numex" data-arguments="5">
+<div class="sourceCode" id="cb101"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb101-1"><a href="#cb101-1" aria-hidden="true" tabindex="-1"></a><span class="co">--Hint:  Use the previous exercise and Theorem_8_2_4</span></span>
+<span id="cb101-2"><a href="#cb101-2" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Like_Exercise_8_2_4 {A : <span class="kw">Type</span>} {X : Set A} (h : ctble X) :</span>
+<span id="cb101-3"><a href="#cb101-3" aria-hidden="true" tabindex="-1"></a>    ctble { Y : Set A | Y ⊆ X ∧ finite Y } := <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="numex" data-arguments="6">
+<div class="sourceCode" id="cb102"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb102-1"><a href="#cb102-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Exercise_8_2_6b (A B C : <span class="kw">Type</span>) :</span>
+<span id="cb102-2"><a href="#cb102-2" aria-hidden="true" tabindex="-1"></a>    equinum (Univ (A × B → C)) (Univ (A → B → C)) := <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="numex" data-arguments="7">
+<div class="sourceCode" id="cb103"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb103-1"><a href="#cb103-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Like_Exercise_8_2_7 : ∃ (P : Set (Set Nat)),</span>
+<span id="cb103-2"><a href="#cb103-2" aria-hidden="true" tabindex="-1"></a>    partition P ∧ ctble P ∧ ∀ X ∈ P, ctble X := <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="numex" data-arguments="8">
+<div class="sourceCode" id="cb104"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb104-1"><a href="#cb104-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> unctbly_many_inf_set_nat :</span>
+<span id="cb104-2"><a href="#cb104-2" aria-hidden="true" tabindex="-1"></a>    ¬ctble { X : Set Nat | ¬finite X } := <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="numex" data-arguments="9">
+<div class="sourceCode" id="cb105"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb105-1"><a href="#cb105-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Exercise_8_2_8 {A : <span class="kw">Type</span>} {X Y : Set A}</span>
+<span id="cb105-2"><a href="#cb105-2" aria-hidden="true" tabindex="-1"></a>    (h : empty (X ∩ Y)) : 𝒫 (X ∪ Y) ∼ 𝒫 X ×ₛ 𝒫 Y := <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
 
 
+</section>
 </section>
 <section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes">
 <hr>

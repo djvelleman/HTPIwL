@@ -1694,7 +1694,7 @@ theorem one_match_fcnl {A B : Type} (a : A) (b : B) :
 
 ::: {.numex arguments="4"}
 ```lean
---Hint : Use the previous two exercises.
+--Hint:  Use the previous two exercises.
 lemma one_match_match {A B : Type} (a : A) (b : B) :
     matching (one_match a b) {a} {b} := sorry
 ```
@@ -1728,7 +1728,7 @@ lemma prod_match {A B C D : Type}
 
 ::: {.numex arguments="8"}
 ```lean
---Hint: You might find it helpful to apply the theorem div_mod_char
+--Hint:  You might find it helpful to apply the theorem div_mod_char
 --from the exercises of Section 6.4.
 lemma qr_image (m n : Nat) :
     image (qr n) (I (m * n)) = I m ×ₛ I n := sorry
@@ -2187,3 +2187,71 @@ theorem Theorem_8_2_5 : ¬ctble (Univ (Set Nat)) := by
 ```
 
 As a consequence of Theorem 8.2.5, *HTPI* shows that $\mathbb{R}$ is uncountable.  The proof is not hard, but it requires facts about the decimal expansions of real numbers.  Developing those facts in Lean would take us too far afield, so we will skip the proof.
+
+### Exercises
+
+::: {.numex arguments="1"}
+```lean
+lemma pair_ctble {A : Type} (a b : A) : ctble {a, b} := sorry
+```
+:::
+
+::: {.numex arguments="2"}
+```lean
+--Hint:  Use the previous exercise and Theorem_8_2_2
+theorem Theorem_8_2_1_2 {A : Type} {X Y : Set A}
+    (h1 : ctble X) (h2 : ctble Y) : ctble (X ∪ Y) := sorry
+```
+:::
+
+::: {.numex arguments="3"}
+```lean
+lemma seq_cons_image {A : Type} (X : Set A) (n : Nat) :
+    image (seq_cons A) (X ×ₛ (seq_by_length X n)) =
+      seq_by_length X (n + 1) := sorry
+```
+:::
+
+::: {.numex arguments="4"}
+```lean
+--Hint:  Use induction on the size of X
+lemma set_to_list {A : Type} {X : Set A} (h : finite X) :
+    ∃ (l : List A), ∀ (x : A), x ∈ l ↔ x ∈ X := sorry
+```
+:::
+
+::: {.numex arguments="5"}
+```lean
+--Hint:  Use the previous exercise and Theorem_8_2_4
+theorem Like_Exercise_8_2_4 {A : Type} {X : Set A} (h : ctble X) :
+    ctble { Y : Set A | Y ⊆ X ∧ finite Y } := sorry
+```
+:::
+
+::: {.numex arguments="6"}
+```lean
+theorem Exercise_8_2_6b (A B C : Type) :
+    equinum (Univ (A × B → C)) (Univ (A → B → C)) := sorry
+```
+:::
+
+::: {.numex arguments="7"}
+```lean
+theorem Like_Exercise_8_2_7 : ∃ (P : Set (Set Nat)),
+    partition P ∧ ctble P ∧ ∀ X ∈ P, ctble X := sorry
+```
+:::
+
+::: {.numex arguments="8"}
+```lean
+theorem unctbly_many_inf_set_nat :
+    ¬ctble { X : Set Nat | ¬finite X } := sorry
+```
+:::
+
+::: {.numex arguments="9"}
+```lean
+theorem Exercise_8_2_8 {A : Type} {X Y : Set A}
+    (h : empty (X ∩ Y)) : 𝒫 (X ∪ Y) ∼ 𝒫 X ×ₛ 𝒫 Y := sorry
+```
+:::
