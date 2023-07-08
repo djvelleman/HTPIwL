@@ -1431,7 +1431,7 @@ theorem Theorem_7_2_4 {p : Nat} {l : List Nat}
 <span id="cb41-57"><a href="#cb41-57" aria-hidden="true" tabindex="-1"></a>    <span class="kw">done</span></span>
 <span id="cb41-58"><a href="#cb41-58" aria-hidden="true" tabindex="-1"></a>  <span class="kw">done</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>Putting it all together, we can finally prove the fundamental theorem of arithmetic, which is stated as Theorem 7.2.6 in <em>HTPI</em>:</p>
-<div class="sourceCode" id="cb42"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Theorem_7_2_6_Fund_Thm_Arith (n : Nat) (h : n ≥ 1) :</span>
+<div class="sourceCode" id="cb42"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> fund_thm_arith (n : Nat) (h : n ≥ 1) :</span>
 <span id="cb42-2"><a href="#cb42-2" aria-hidden="true" tabindex="-1"></a>    ∃! (l : List Nat), prime_factorization n l := <span class="kw">by</span></span>
 <span id="cb42-3"><a href="#cb42-3" aria-hidden="true" tabindex="-1"></a>  <span class="kw">exists_unique</span></span>
 <span id="cb42-4"><a href="#cb42-4" aria-hidden="true" tabindex="-1"></a>  · <span class="co">-- Existence</span></span>
@@ -2029,7 +2029,7 @@ Int.emod_nonneg : ∀ (a : ℤ) {b : ℤ}, b ≠ 0 → 0 ≤ a % b</code></pre>
 <span id="cb94-7"><a href="#cb94-7" aria-hidden="true" tabindex="-1"></a>  <span class="kw">rfl</span></span>
 <span id="cb94-8"><a href="#cb94-8" aria-hidden="true" tabindex="-1"></a>  <span class="kw">done</span></span>
 <span id="cb94-9"><a href="#cb94-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb94-10"><a href="#cb94-10" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Theorem_7_4_3_Euler's_theorem {m a : Nat} [NeZero m]</span>
+<span id="cb94-10"><a href="#cb94-10" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Euler's_theorem {m a : Nat} [NeZero m]</span>
 <span id="cb94-11"><a href="#cb94-11" aria-hidden="true" tabindex="-1"></a>    (h1 : rel_prime m a) : a ^ (phi m) ≡ 1 (MOD m) := <span class="kw">by</span></span>
 <span id="cb94-12"><a href="#cb94-12" aria-hidden="true" tabindex="-1"></a>  <span class="kw">have</span> h2 : [a]_m ^ (phi m) = [1]_m := Theorem_7_4_2 h1</span>
 <span id="cb94-13"><a href="#cb94-13" aria-hidden="true" tabindex="-1"></a>  <span class="kw">rewrite</span> [Exercise_7_4_5_Nat m a (phi m)] <span class="kw">at</span> h2</span>

@@ -1693,7 +1693,7 @@ S = { q : Nat | ∃ (p : Nat), p * p = 2 * (q * q) ∧ q ≠ 0 }
 would be nonempty, and therefore, by the well ordering principle, it would have a smallest element.  We then show that this leads to a contradiction.  Here is the proof.
 
 ```lean
-theorem sqrt_2_irrat :
+theorem Theorem_6_4_5 :
     ¬∃ (q p : Nat), p * p = 2 * (q * q) ∧ q ≠ 0 := by
   set S : Set Nat :=
     { q : Nat | ∃ (p : Nat), p * p = 2 * (q * q) ∧ q ≠ 0 }

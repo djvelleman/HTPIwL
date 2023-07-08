@@ -1516,7 +1516,7 @@ example : ∀ (n : Nat), Fib n < 2 ^ n := by
 <pre><code>S = { q : Nat | ∃ (p : Nat), p * p = 2 * (q * q) ∧ q ≠ 0 }</code></pre>
 </div>
 <p>would be nonempty, and therefore, by the well ordering principle, it would have a smallest element. We then show that this leads to a contradiction. Here is the proof.</p>
-<div class="sourceCode" id="cb103"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb103-1"><a href="#cb103-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> sqrt_2_irrat :</span>
+<div class="sourceCode" id="cb103"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb103-1"><a href="#cb103-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Theorem_6_4_5 :</span>
 <span id="cb103-2"><a href="#cb103-2" aria-hidden="true" tabindex="-1"></a>    ¬∃ (q p : Nat), p * p = 2 * (q * q) ∧ q ≠ 0 := <span class="kw">by</span></span>
 <span id="cb103-3"><a href="#cb103-3" aria-hidden="true" tabindex="-1"></a>  <span class="kw">set</span> S : Set Nat :=</span>
 <span id="cb103-4"><a href="#cb103-4" aria-hidden="true" tabindex="-1"></a>    { q : Nat | ∃ (p : Nat), p * p = 2 * (q * q) ∧ q ≠ 0 }</span>

@@ -1007,6 +1007,13 @@ lemma numElts_def {A : Type} (X : Set A) (n : Nat) :
     numElts X n ↔ I n ∼ X := by rfl
 ```
 
+It is sometimes convenient to phrase the definition of `finite` in terms of `numElts`, so we state that version of the definition as a lemma.
+
+```lean
+lemma finite_def {A : Type} (X : Set A) :
+    finite X ↔ ∃ (n : Nat), numElts X n := by rfl
+```
+
 We also owe you the proofs of several theorems about `numElts`.  We begin with the fact that a set has zero elements if and only if it is empty.  To prove this, we will need to produce a relation that is a matching between two sets if the sets are empty.  The natural choice for this relation is what we will call the empty relation---the relation that is always false.
 
 ```lean
@@ -1772,6 +1779,20 @@ theorem Exercise_8_1_8b {A : Type} {X U : Set A}
 ```
 :::
 
+::: {.numex arguments="14"}
+```lean
+--Hint:  Use Like_Exercise_6_2_16 from the exercises of Section 6.2
+lemma N_not_finite : ¬finite (Univ Nat) := sorry
+```
+:::
+
+::: {.numex arguments="15"}
+```lean
+theorem denum_not_finite {A : Type} {X : Set A}
+    (h : denum X) : ¬finite X := sorry
+```
+:::
+
 ## 8.2. Countable and Uncountable Sets
 
 Section 8.2 of *HTPI* shows that many set-theoretic operations, when applied to countable sets, produce results that are countable.  For example, the first part of Theorem 8.2.1 shows that a Cartesian product of countable sets is countable.  Our proof of this statement in Lean is based on `Theorem_8_1_2_1` and the countability of `Univ (Nat × Nat)`.  We also use an exercise from Section 8.1.
@@ -2055,9 +2076,9 @@ lemma Lemma_8_2_4_2 {A : Type} {X : Set A} (h1 : ctble X) :
     rewrite [sbl_base]   --Goal : ctble {[]}
     define
     apply Or.inl         --Goal : finite {[]}
-    define
-    apply Exists.intro 1 --Goal : I 1 ∼ {[]}
-    show I 1 ∼ {[]} from singleton_one_elt []
+    rewrite [finite_def]
+    apply Exists.intro 1 --Goal : numElts {[]} 1
+    show numElts {[]} 1 from singleton_one_elt []
     done
   · -- Induction Step
     fix n : Nat
@@ -2132,7 +2153,7 @@ lemma Lemma_8_2_4_4 {A : Type} (X : Set A) : ctble (sbl_set X) := by
   done
 ```
 
-We now have everything in place to prove `Theorem_8_2_4` as an application of `Theorem_8_2_2`.
+We now have everything we need to prove `Theorem_8_2_4` as an application of `Theorem_8_2_2`.
 
 ```lean
 theorem Theorem_8_2_4 {A : Type} {X : Set A}
@@ -2152,10 +2173,10 @@ theorem Theorem_8_2_4 {A : Type} {X : Set A}
   done
 ```
 
-There is a set-theoretic operation that can produce an uncountable set from a countable set: the power set operation.  *HTPI* demonstrates this by proving Theorem 8.2.5, which says that $\mathscr{P}(\mathbb{Z}^+)$ is uncountable.  The strategy for this proof is tricky; it involves defining a set $D$ using a method called *diagonalization*.  For an explanation of the motivation behind this strategy, see *HTPI*.  Here we will use the same strategy to prove that `Univ (Set Nat)` is uncountable.
+There is a set-theoretic operation that can produce an uncountable set from a countable set: the power set operation.  *HTPI* demonstrates this by proving Cantor's theorem (Theorem 8.2.5), which says that $\mathscr{P}(\mathbb{Z}^+)$ is uncountable.  The strategy for this proof is tricky; it involves defining a set $D$ using a method called *diagonalization*.  For an explanation of the motivation behind this strategy, see *HTPI*.  Here we will use the same strategy to prove that `Univ (Set Nat)` is uncountable.
 
 ```lean
-theorem Theorem_8_2_5 : ¬ctble (Univ (Set Nat)) := by
+theorem Cantor's_theorem : ¬ctble (Univ (Set Nat)) := by
   by_contra h1
   rewrite [Theorem_8_1_5_2] at h1
   obtain (R : Rel Nat (Set Nat))
