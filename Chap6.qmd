@@ -451,20 +451,20 @@ How can mathematical induction be used to prove a statement about finite sets?  
 
 What does it mean to say that a set "has $n$ elements"?  Section 6.2 of *HTPI* says that for the proofs in that section, "an intuitive understanding of this concept will suffice."  Unfortunately, intuition is not Lean's strong suit!  So we'll need to be more explicit about how to talk about finite sets in Lean.
 
-In Chapter 8, we'll define `numElts X n` to be a proposition saying that the set `X` has `n` elements, and we'll prove several theorems involving that proposition.  Those theorems make precise and explicit the intuitive ideas that we'll need in this section.  We'll state those theorems here and use them in our proofs, but you'll have to wait until Section 8.1½ to see how they are proven.  Here are the theorems we'll need:
+In Chapter 8, we'll define `numElts A n` to be a proposition saying that the set `A` has `n` elements, and we'll prove several theorems involving that proposition.  Those theorems make precise and explicit the intuitive ideas that we'll need in this section.  We'll state those theorems here and use them in our proofs, but you'll have to wait until Section 8.1½ to see how they are proven.  Here are the theorems we'll need:
 
 ```lean
-theorem zero_elts_iff_empty {A : Type} (X : Set A) :
-    numElts X 0 ↔ empty X
+theorem zero_elts_iff_empty {U : Type} (A : Set U) :
+    numElts A 0 ↔ empty A
 
-theorem one_elt_iff_singleton {A : Type} (X : Set A) :
-    numElts X 1 ↔ ∃ (x : A), X = {x}
+theorem one_elt_iff_singleton {U : Type} (A : Set U) :
+    numElts A 1 ↔ ∃ (x : U), A = {x}
 
-theorem nonempty_of_pos_numElts {A : Type} {X : Set A} {n : Nat}
-    (h1 : numElts X n) (h2 : n > 0) : ∃ (x : A), x ∈ X
+theorem nonempty_of_pos_numElts {U : Type} {A : Set U} {n : Nat}
+    (h1 : numElts A n) (h2 : n > 0) : ∃ (x : U), x ∈ A
 
-theorem remove_one_numElts {A : Type} {X : Set A} {n : Nat} {x : A}
-    (h1 : numElts X (n + 1)) (h2 : x ∈ X) : numElts (X \ {x}) n
+theorem remove_one_numElts {U : Type} {A : Set U} {n : Nat} {a : U}
+    (h1 : numElts A (n + 1)) (h2 : a ∈ A) : numElts (A \ {a}) n
 ```
 
 These theorems should make intuitive sense.  The first says that a set has zero elements if and only if it is empty, and the second says that a set has one element if and only if it is a singleton set.  The third theorem says that if a set has a positive number of elements, then there is something in the set.  And the fourth says that if a set has $n + 1$ elements and you remove one element, then the resulting set has $n$ elements.  You can probably guess that we'll be using the last theorem in the induction steps of our proofs.
