@@ -2343,8 +2343,58 @@ $$
 <span id="cb116-158"><a href="#cb116-158" aria-hidden="true" tabindex="-1"></a>      <span class="kw">done</span></span>
 <span id="cb116-159"><a href="#cb116-159" aria-hidden="true" tabindex="-1"></a>    <span class="kw">done</span></span>
 <span id="cb116-160"><a href="#cb116-160" aria-hidden="true" tabindex="-1"></a>  <span class="kw">done</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<section id="exercises-3" class="level3">
+<h3 class="anchored" data-anchor-id="exercises-3">Exercises</h3>
+<div class="numex" data-arguments="1">
+<div class="sourceCode" id="cb117"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb117-1"><a href="#cb117-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> CSB_func {U V : <span class="kw">Type</span>} {f : U → V} {g : V → U}</span>
+<span id="cb117-2"><a href="#cb117-2" aria-hidden="true" tabindex="-1"></a>    (h1 : one_to_one f) (h2 : one_to_one g) : Univ U ∼ Univ V := <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="numex" data-arguments="2">
+<div class="sourceCode" id="cb118"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb118-1"><a href="#cb118-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> intervals_equinum :</span>
+<span id="cb118-2"><a href="#cb118-2" aria-hidden="true" tabindex="-1"></a>    { x : Real | 0 &lt; x ∧ x &lt; 1 } ∼ { x : Real | 0 &lt; x ∧ x ≤ 1 } := <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="mdsk">
+
+</div>
+<p>The next six exercises lead up to a proof that the set of all equivalence relations on the natural numbers is equinumerous with the power set of the natural numbers. These exercises use the following definitions:</p>
+<div class="sourceCode" id="cb119"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb119-1"><a href="#cb119-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> EqRel (A : <span class="kw">Type</span>) : Set (BinRel A) :=</span>
+<span id="cb119-2"><a href="#cb119-2" aria-hidden="true" tabindex="-1"></a>  { R : BinRel A | equiv_rel R }</span>
+<span id="cb119-3"><a href="#cb119-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb119-4"><a href="#cb119-4" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> Part (A : <span class="kw">Type</span>) : Set (Set (Set A)) :=</span>
+<span id="cb119-5"><a href="#cb119-5" aria-hidden="true" tabindex="-1"></a>  { P : Set (Set A) | partition P }</span>
+<span id="cb119-6"><a href="#cb119-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb119-7"><a href="#cb119-7" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> EqRelExt (A : <span class="kw">Type</span>) : Set (Set (A × A)) :=</span>
+<span id="cb119-8"><a href="#cb119-8" aria-hidden="true" tabindex="-1"></a>  { E : Set (A × A) | ∃ (R : BinRel A), equiv_rel R ∧ extension R = E}</span>
+<span id="cb119-9"><a href="#cb119-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb119-10"><a href="#cb119-10" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> shift_and_zero (X : Set Nat) : Set Nat :=</span>
+<span id="cb119-11"><a href="#cb119-11" aria-hidden="true" tabindex="-1"></a>  { x + 2 | x ∈ X } ∪ {0}</span>
+<span id="cb119-12"><a href="#cb119-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb119-13"><a href="#cb119-13" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> saz_pair (X : Set Nat) : Set (Set Nat) :=</span>
+<span id="cb119-14"><a href="#cb119-14" aria-hidden="true" tabindex="-1"></a>  { shift_and_zero X, (Univ Nat) \ (shift_and_zero X) }</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="numex" data-arguments="3">
+<div class="sourceCode" id="cb120"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb120-1"><a href="#cb120-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> EqRel_equinum_Part (A : <span class="kw">Type</span>) : EqRel A ∼ Part A := <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="numex" data-arguments="4">
+<div class="sourceCode" id="cb121"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb121-1"><a href="#cb121-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> EqRel_equinum_EqRelExt (A : <span class="kw">Type</span>) :</span>
+<span id="cb121-2"><a href="#cb121-2" aria-hidden="true" tabindex="-1"></a>    EqRel A ∼ EqRelExt A := <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="numex" data-arguments="5">
+<div class="sourceCode" id="cb122"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb122-1"><a href="#cb122-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> EqRel_Nat_equinum_sub_PN :</span>
+<span id="cb122-2"><a href="#cb122-2" aria-hidden="true" tabindex="-1"></a>    ∃ (D : Set (Set Nat)), D ⊆ 𝒫 (Univ Nat) ∧ EqRel Nat ∼ D := <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="numex" data-arguments="6">
+<div class="sourceCode" id="cb123"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb123-1"><a href="#cb123-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> saz_pair_part (X : Set Nat) : partition (saz_pair X) := <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="numex" data-arguments="7">
+<div class="sourceCode" id="cb124"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb124-1"><a href="#cb124-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> PN_equinum_sub_EqRel_Nat :</span>
+<span id="cb124-2"><a href="#cb124-2" aria-hidden="true" tabindex="-1"></a>    ∃ (C : Set (BinRel Nat)), C ⊆ EqRel Nat ∧ C ∼ 𝒫 (Univ Nat) := <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="numex" data-arguments="8">
+<div class="sourceCode" id="cb125"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb125-1"><a href="#cb125-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> EqRel_Nat_equinum_PN : EqRel Nat ∼ 𝒫 (Univ Nat) := <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
 
 
+</section>
 </section>
 <section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes">
 <hr>

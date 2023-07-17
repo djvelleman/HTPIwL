@@ -2532,3 +2532,80 @@ theorem Cantor_Schroeder_Bernstein_theorem
     done
   done
 ```
+
+### Exercises
+
+::: {.numex arguments="1"}
+```lean
+theorem CSB_func {U V : Type} {f : U → V} {g : V → U}
+    (h1 : one_to_one f) (h2 : one_to_one g) : Univ U ∼ Univ V := sorry
+```
+:::
+
+::: {.numex arguments="2"}
+```lean
+theorem intervals_equinum :
+    { x : Real | 0 < x ∧ x < 1 } ∼ { x : Real | 0 < x ∧ x ≤ 1 } := sorry
+```
+:::
+
+::: {.mdsk}
+:::
+
+The next six exercises lead up to a proof that the set of all equivalence relations on the natural numbers is equinumerous with the power set of the natural numbers.  These exercises use the following definitions:
+
+```lean
+def EqRel (A : Type) : Set (BinRel A) :=
+  { R : BinRel A | equiv_rel R }
+
+def Part (A : Type) : Set (Set (Set A)) :=
+  { P : Set (Set A) | partition P }
+
+def EqRelExt (A : Type) : Set (Set (A × A)) :=
+  { E : Set (A × A) | ∃ (R : BinRel A), equiv_rel R ∧ extension R = E}
+
+def shift_and_zero (X : Set Nat) : Set Nat :=
+  { x + 2 | x ∈ X } ∪ {0}
+
+def saz_pair (X : Set Nat) : Set (Set Nat) :=
+  { shift_and_zero X, (Univ Nat) \ (shift_and_zero X) }
+```
+
+::: {.numex arguments="3"}
+```lean
+theorem EqRel_equinum_Part (A : Type) : EqRel A ∼ Part A := sorry
+```
+:::
+
+::: {.numex arguments="4"}
+```lean
+theorem EqRel_equinum_EqRelExt (A : Type) :
+    EqRel A ∼ EqRelExt A := sorry
+```
+:::
+
+::: {.numex arguments="5"}
+```lean
+theorem EqRel_Nat_equinum_sub_PN :
+    ∃ (D : Set (Set Nat)), D ⊆ 𝒫 (Univ Nat) ∧ EqRel Nat ∼ D := sorry
+```
+:::
+
+::: {.numex arguments="6"}
+```lean
+theorem saz_pair_part (X : Set Nat) : partition (saz_pair X) := sorry
+```
+:::
+
+::: {.numex arguments="7"}
+```lean
+theorem PN_equinum_sub_EqRel_Nat :
+    ∃ (C : Set (BinRel Nat)), C ⊆ EqRel Nat ∧ C ∼ 𝒫 (Univ Nat) := sorry
+```
+:::
+
+::: {.numex arguments="8"}
+```lean
+theorem EqRel_Nat_equinum_PN : EqRel Nat ∼ 𝒫 (Univ Nat) := sorry
+```
+:::
