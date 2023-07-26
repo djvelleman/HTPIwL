@@ -367,10 +367,15 @@ theorem Example_6_1_1 :
   · -- Induction Step
     fix n : Nat
     assume ih : Sum i from 0 to n, (2 : Int) ^ i =
-      (2 : Int) ^ (n + 1) - (1 : Int)
-    rewrite [sum_from_zero_step, ih]
-      --Goal : 2 ^ (n + 1) - 1 + 2 ^ (n + 1) = 2 ^ (n + 1 + 1) - 1
-    ring
+        (2 : Int) ^ (n + 1) - (1 : Int)
+    show Sum i from 0 to n + 1, (2 : Int) ^ i =
+        (2 : Int) ^ (n + 1 +1) - (1 : Int) from
+      calc Sum i from 0 to n + 1, (2 : Int) ^ i
+        _ = (Sum i from 0 to n, (2 : Int) ^ i)
+            + (2 : Int) ^ (n + 1) := by rw [sum_from_zero_step]
+        _ = (2 : Int) ^ (n + 1) - (1 : Int)
+            + (2 : Int) ^ (n + 1) := by rw [ih]
+        _ = (2 : Int) ^ (n + 1 + 1) - (1 : Int) := by ring
     done
   done
 ```
@@ -494,7 +499,7 @@ theorem Example_6_2_1 {A : Type} (R : BinRel A) (h : partial_order R) :
     apply And.intro
     · -- Proof that b ∈ B
       rewrite [h3]    --Goal : b ∈ {b}
-      define
+      define          --Goal : b = b
       rfl
       done
     · -- Proof that nothing in B is smaller than b
@@ -523,10 +528,10 @@ lemma Lemma_6_2_1_1 {A : Type} {R : BinRel A} {B : Set A} {b c : A}
   define at h3
     --h3 : c ∈ B \ {b} ∧ ¬∃ (x : A), x ∈ B \ {b} ∧ R x c ∧ x ≠ c
   define  --Goal : b ∈ B ∧ ¬∃ (x : A), x ∈ B ∧ R x b ∧ x ≠ b
-  apply And.intro h2  --Goal : ¬∃ (x : A), x ∈ B ∧ R x b ∧ x ≠ b
+  apply And.intro h2    --Goal : ¬∃ (x : A), x ∈ B ∧ R x b ∧ x ≠ b
   contradict h3.right with h5
   obtain (x : A) (h6 : x ∈ B ∧ R x b ∧ x ≠ b) from h5
-  apply Exists.intro x
+  apply Exists.intro x  --Goal : x ∈ B \ {b} ∧ R x c ∧ x ≠ c
   apply And.intro
   · -- Proof that x ∈ B \ {b}
     show x ∈ B \ {b} from And.intro h6.left h6.right.right
@@ -536,7 +541,7 @@ lemma Lemma_6_2_1_1 {A : Type} {R : BinRel A} {B : Set A} {b c : A}
     have h7 : R x c := Rtrans x b c h6.right.left h4
     apply And.intro h7
     by_contra h8
-    rewrite [h8] at h6
+    rewrite [h8] at h6  --h6 : c ∈ B ∧ R c b ∧ c ≠ b
     have Rantisymm : antisymmetric R := h1.right.right
     have h9 : c = b := Rantisymm c b h6.right.left h4
     show False from h6.right.right h9
@@ -723,11 +728,11 @@ theorem Exercise_6_2_2 {A : Type} (R : BinRel A) (h : partial_order R) :
         fix y : A
         have h11 : T' x y ∨ T' y x := T'compB' x h10 y
         by_cases on h11
-        · -- Case 1. h11 : T' x y
+        · -- Case 2.1. h11 : T' x y
           show T x y ∨ T y x from
             Or.inl (extendPO_extends T' b x y h11)
           done
-        · -- Case 2. h11 : T' y x
+        · -- Case 2.2. h11 : T' y x
           show T x y ∨ T y x from
             Or.inr (extendPO_extends T' b y x h11)
           done
@@ -919,6 +924,29 @@ theorem Example_6_3_1 : ∀ n ≥ 4, fact n > 2 ^ n := by
   done
 ```
 
+But there is an easier way.  Look at the two ">" steps in the calculational proof at the end of `Example_6_3_1`.  In both cases, we took a known relationship between two quantities and did something to both sides that preserved the relationship.  In the first case, the known relationship was `ih : fact n > 2 ^ n`, and we multiplied both sides by `n + 1` on the left; in the second, the known relationship was `h3 : n + 1 > 2`, and we multiplied both sides by `2 ^ n` on the right.  To justify these steps, we had to find the right theorems in Lean's library, and we ended up needing auxiliary positivity facts: `h2 : n + 1 > 0` in the first case and `h5 : 2 ^ n > 0` in the second.  There is a tactic that can simplify these steps: if `h` is a proof of a statement asserting a relationship between two quantities, then the tactic `rel [h]` will attempt to prove any statement obtained from that relationship by applying the same operation to both sides.  The tactic will try to find a theorem in Lean's library that says that the operation preserves the relationship, and if the theorem requires auxiliary positivity facts, it will try to prove those facts as well.  The `rel` tactic doesn't always succeed, but when it does, it saves you the trouble of searching through the library for the necessary theorems.  In this case, the tactic allows us to give a much simpler proof of `Example_6_3_1`:
+
+```lean
+theorem Example_6_3_1 : ∀ n ≥ 4, fact n > 2 ^ n := by
+  by_induc
+  · -- Base Case
+    norm_num
+    done
+  · -- Induction Step
+    fix n : Nat
+    assume h1 : n ≥ 4
+    assume ih : fact n > 2 ^ n
+    have h2 : n + 1 > 2 := by linarith
+    show fact (n + 1) > 2 ^ (n + 1) from
+      calc fact (n + 1)
+        _ = (n + 1) * fact n := by rfl
+        _ > (n + 1) * 2 ^ n := by rel [ih]
+        _ > 2 * 2 ^ n := by rel [h2]
+        _ = 2 ^ (n + 1) := by ring
+    done
+  done
+```
+
 The next example in *HTPI* is a proof of one of the laws of exponents:  `a ^ (m + n) = a ^ m * a ^ n`.  Lean's definition of exponentiation with natural number exponents is recursive.  For some reason, the definitions are slightly different for different kinds of bases.  The definitions Lean uses are essentially as follows:
 
 ```lean
@@ -1090,7 +1118,7 @@ theorem ??Example_6_3_4:: : ∀ (x : Real), x > -1 →
       calc (1 + x) ^ (n + 1)
         _ = (1 + x) * (1 + x) ^ n := by rfl
         _ ≥ (1 + x) * (1 + n * x) := sorry
-        _ = 1 + x + n * x + n * x * x := by ring
+        _ = 1 + x + n * x + n * x ^ 2 := by ring
         _ ≥ 1 + x + n * x + 0 := sorry
         _ = 1 + (n + 1) * x := by ring
     done
@@ -1099,22 +1127,7 @@ theorem ??Example_6_3_4:: : ∀ (x : Real), x > -1 →
 
 Note that in the calculational proof, each `n` or `n + 1` that is multiplied by `x` is really `↑n` or `↑n + 1`, but we don't need to say so explicitly; Lean fills in coercions automatically when they are required.
 
-All that's left is to replace the two occurrences of `sorry` with justifications.  We'll use two theorems:
-
-::: {.ind}
-```
-@mul_le_mul_of_nonneg_left : ∀ {α : Type u_1} {a b c : α} [inst : Mul α]
-        [inst_1 : Zero α] [inst_2 : Preorder α] [inst_3 : PosMulMono α],
-        b ≤ c → 0 ≤ a → a * b ≤ a * c
-
-@add_le_add_left : ∀ {α : Type u_1} [inst : Add α] [inst_1 : LE α]
-        [inst_2 : CovariantClass α α (fun (x x_1 : α) => x + x_1)
-        fun (x x_1 : α) => x ≤ x_1] {b c : α},
-        b ≤ c → ∀ (a : α), a + b ≤ a + c
-```
-:::
-
-As usual, we don't need to pay much attention to the long lists of implicit arguments; what is important is the last line of each statement.  Those lines tell us that `mul_le_mul_of_nonneg_left` can be applied to the inductive hypothesis to justify the first `sorry` step, if we can prove `1 + x ≥ 0`.  And then `add_le_add_left` will justify the second `sorry` step, if we can prove `n * x * x ≥ 0`.  So here is our next attempt:
+All that's left is to replace the two occurrences of `sorry` with justifications.  The first `sorry` step should follow from the inductive hypothesis by multiplying both sides by `1 + x`, so a natural attempt to justify it would be `by rel [ih]`.  Unfortunately, we get an error message saying that `rel` failed.  The error message tells us that `rel` needed to know that `0 ≤ 1 + x`, and it was unable to prove it, so we'll have to provide a proof of that statement ourselves.  Fortunately, `linarith` can handle it (deducing it from `h1 : x > -1`), and once we fill in that additional step, the `rel` tactic succeeds.
 
 ```lean
 theorem ??Example_6_3_4:: : ∀ (x : Real), x > -1 →
@@ -1130,29 +1143,28 @@ theorem ??Example_6_3_4:: : ∀ (x : Real), x > -1 →
     fix n : Nat
     assume ih : (1 + x) ^ n ≥ 1 + n * x
     rewrite [Nat.cast_succ]
-    have h2 : 1 + x ≥ 0 := by linarith
-    have h3 : n * x * x ≥ 0 := sorry
+    have h2 : 0 ≤ 1 + x := by linarith
     show (1 + x) ^ (n + 1) ≥ 1 + (n + 1) * x from
       calc (1 + x) ^ (n + 1)
         _ = (1 + x) * (1 + x) ^ n := by rfl
-        _ ≥ (1 + x) * (1 + n * x) := mul_le_mul_of_nonneg_left ih h2
-        _ = 1 + x + n * x + n * x * x := by ring
-        _ ≥ 1 + x + n * x + 0 := add_le_add_left h3 _
+        _ ≥ (1 + x) * (1 + n * x) := by rel [ih]
+        _ = 1 + x + n * x + n * x ^ 2 := by ring
+        _ ≥ 1 + x + n * x + 0 := sorry
         _ = 1 + (n + 1) * x := by ring
     done
   done
 ```
 
-The `linarith` tactic is able to prove `1 + x ≥ 0`, since it follows easily from `h1 : x > -1`.  But how can we prove `n * x * x ≥ 0`?  We start with the fact that the square of any real number is nonnegative:
+For the second `sorry` step, we'll need to know that `n * x ^ 2 ≥ 0`.  To prove it, we start with the fact that the square of any real number is nonnegative:
 
 ::: {.ind}
 ```
-@mul_self_nonneg : ∀ {α : Type u_1} [inst : LinearOrderedRing α]
-                    (a : α), 0 ≤ a * a
+@sq_nonneg : ∀ {R : Type u_1} [inst : LinearOrderedRing R]
+              (a : R), 0 ≤ a ^ 2
 ```
 :::
 
-So `mul_self_nonneg x` is a proof of `x * x ≥ 0`.  To get `n * x * x ≥ 0`, which means `↑n * x * x ≥ 0`, we'll need another application of `mul_le_mul_of_nonneg_left`, and we'll need to know `↑n ≥ 0`.  But if we use the `have` tactic to assert `↑n ≥ 0`, then Lean won't know what we mean.  The problem is that this last statement is ambiguous.  The notation `↑n` means "`n` coerced to some other type," but what is the other type?  Lean can usually figure this out from context, but in the statement `↑n ≥ 0` there is no context to tell Lean what type to use.  So we must say `(↑n : Real) ≥ 0` to eliminate the ambiguity.  The theorem `Nat.cast_nonneg` proves this statement, providing the last piece of the puzzle.  Here's the complete proof:
+As usual, we don't need to pay much attention to the implicit arguments; what is important is the last line, which tells us that `sq_nonneg x` is a proof of `x ^ 2 ≥ 0`.  To get `n * x ^ 2 ≥ 0` we just have to multiply both sides by `n`, which we can justify with the `rel` tactic, and then one more application of `rel` will handle the remaining `sorry`.  Here is the complete proof:
 
 ```lean
 theorem Example_6_3_4 : ∀ (x : Real), x > -1 →
@@ -1168,22 +1180,18 @@ theorem Example_6_3_4 : ∀ (x : Real), x > -1 →
     fix n : Nat
     assume ih : (1 + x) ^ n ≥ 1 + n * x
     rewrite [Nat.cast_succ]
-    have h2 : 1 + x ≥ 0 := by linarith
-    have h3 : n * x * x ≥ 0 := by
-      have h4 : x * x ≥ 0 := mul_self_nonneg x
-      have h5 : (↑n : Real) ≥ 0 := Nat.cast_nonneg n
-      show n * x * x ≥ 0 from 
-        calc n * x * x
-          _ = n * (x * x) := mul_assoc _ _ _
-          _ ≥ n * 0 := mul_le_mul_of_nonneg_left h4 h5
-          _ = 0 := by ring
-      done
+    have h2 : 0 ≤ 1 + x := by linarith
+    have h3 : x ^ 2 ≥ 0 := sq_nonneg x
+    have h4 : n * x ^ 2 ≥ 0 :=
+      calc n * x ^ 2
+        _ ≥ n * 0 := by rel [h3]
+        _ = 0 := by ring
     show (1 + x) ^ (n + 1) ≥ 1 + (n + 1) * x from
       calc (1 + x) ^ (n + 1)
         _ = (1 + x) * (1 + x) ^ n := by rfl
-        _ ≥ (1 + x) * (1 + n * x) := mul_le_mul_of_nonneg_left ih h2
-        _ = 1 + x + n * x + n * x * x := by ring
-        _ ≥ 1 + x + n * x + 0 := add_le_add_left h3 _
+        _ ≥ (1 + x) * (1 + n * x) := by rel [ih]
+        _ = 1 + x + n * x + n * x ^ 2 := by ring
+        _ ≥ 1 + x + n * x + 0 := by rel [h4]
         _ = 1 + (n + 1) * x := by ring
     done
   done
@@ -1337,14 +1345,19 @@ theorem Example_6_4_1 : ∀ m > 0, ∀ (n : Nat),
 
 Our goal now is to prove that `∃ (q r : Nat), n = m * q + r ∧ r < m`.  Although strong induction does not require a base case, it is not uncommon for proofs by strong induction to involve reasoning by cases.  The proof in *HTPI* uses cases based on whether or not `n < m`.  If `n < m`, then the proof is easy: the numbers `q = 0` and `r​ = n` clearly have the required properties.  If `¬n < m`, then we can write `n` as `n = k + m`, for some natural number `k`.  Since `m > 0`, we have `k < n`, so we can apply the inductive hypothesis to `k`.  Notice that if `m > 1`, then `k` is not the number immediately preceding `n`; that's why this proof uses strong induction rather than ordinary induction.
 
-How do we come up with the number `k` in the previous paragraph?  Since similar reasoning will come up in some later proofs, it will be convenient to state the existence of the number `k` as lemma.  To prove it, we'll use a theorem from Lean's library:
+How do we come up with the number `k` in the previous paragraph?  We'll use a theorem from Lean's library.  There are two slightly different versions of the theorem---notice that the first ends with `m + k` and the second ends with `k + m`:
 
 ::: {.ind}
 ```
+@Nat.exists_eq_add_of_le : ∀ {m n : ℕ}, m ≤ n → ∃ (k : ℕ), n = m + k
+
 @Nat.exists_eq_add_of_le' : ∀ {m n : ℕ}, m ≤ n → ∃ (k : ℕ), n = k + m
 ```
 :::
 
+We'll use the second version in our proof.
+
+<!--
 ```lean
 lemma exists_eq_add_of_not_lt {n m : Nat} (h : ¬n < m) :
     ∃ (k : Nat), n = k + m := by
@@ -1353,7 +1366,6 @@ lemma exists_eq_add_of_not_lt {n m : Nat} (h : ¬n < m) :
   done
 ```
 
-<!--
 The proof in *HTPI* uses the cases `n < m` and `m ≤ n`.  If `n < m`, then the proof is easy: the numbers `q = 0` and `r​ = n` clearly have the required properties.  In the case `m ≤ n`, the proof in *HTPI* proceeds by applying the inductive hypothesis to the number `k = n - m`.  Since `m > 0`, we have `k < n`, so the inductive hypothesis can be applied.  Notice that if `m > 1`, then `n - m` is not the number immediately preceding `n`; that's why this proof uses strong induction rather than ordinary induction.
 
 Since `n` and `m` have type `Nat`, the subtraction in the formula `n - m` is natural number subtraction, which, as we've seen, can be difficult to work with.  But in this proof we use this formula only in the case when `m ≤ n`, and in that case the subtraction is unproblematic.  Indeed, there are theorems in Lean that tell us that if `m ≤ n`, then `n - m` has the properties we expect.  We will use two such theorems:
@@ -1365,9 +1377,9 @@ Since `n` and `m` have type `Nat`, the subtraction in the formula `n - m` is nat
 @Nat.sub_add_cancel : ∀ {n m : ℕ}, m ≤ n → n - m + m = n
 ```
 :::
--->
 
 With that preparation, we are ready to complete the proof.
+-->
 
 ```lean
 theorem Example_6_4_1 : ∀ m > 0, ∀ (n : Nat),
@@ -1385,19 +1397,20 @@ theorem Example_6_4_1 : ∀ m > 0, ∀ (n : Nat),
     ring
     done
   · -- Case 2. h2 : ¬n < m
-    obtain (k : Nat) (h3 : n = k + m) from exists_eq_add_of_not_lt h2
-    have h4 : k < n := by linarith
-    have h5 : ∃ (q r : Nat), k = m * q + r ∧ r < m := ih k h4
+    have h3 : m ≤ n := by linarith
+    obtain (k : Nat) (h4 : n = k + m) from Nat.exists_eq_add_of_le' h3
+    have h5 : k < n := by linarith
+    have h6 : ∃ (q r : Nat), k = m * q + r ∧ r < m := ih k h5
     obtain (q' : Nat)
-      (h6 : ∃ (r : Nat), k = m * q' + r ∧ r < m) from h5
-    obtain (r' : Nat) (h7 : k = m * q' + r' ∧ r' < m) from h6
+      (h7 : ∃ (r : Nat), k = m * q' + r ∧ r < m) from h6
+    obtain (r' : Nat) (h8 : k = m * q' + r' ∧ r' < m) from h7
     apply Exists.intro (q' + 1)
     apply Exists.intro r'     --Goal : n = m * (q' + 1) + r' ∧ r' < m
-    apply And.intro _ h7.right
+    apply And.intro _ h8.right
     show n = m * (q' + 1) + r' from
       calc n
-        _ = k + m := h3
-        _ = m * q' + r' + m := by rw [h7.left]
+        _ = k + m := h4
+        _ = m * q' + r' + m := by rw [h8.left]
         _ = m * (q' + 1) + r' := by ring
     done
   done
@@ -1425,7 +1438,79 @@ def Fib (n : Nat) : Nat :=
     | k + 2 => Fib k + Fib (k + 1)
 ```
 
-Notice that the formula for `Fib (k + 2)` involves the *two* previous values of `Fib`, not just the immediately preceding value.  That is the sense in which the recursion is *strong*.  Not surprisingly, theorems about the Fibonacci numbers are often proven by induction---either ordinary or strong.  We'll illustrate this with a proof by strong induction that `∀ (n : Nat), Fib n < 2 ^ n`.  This time we'll need separate cases corresponding to the three cases of the `match` in the definition of `Fib`.  In this situation, we can use a similar `match` construction to break the proof into cases.
+Notice that the formula for `Fib (k + 2)` involves the *two* previous values of `Fib`, not just the immediately preceding value.  That is the sense in which the recursion is *strong*.  Not surprisingly, theorems about the Fibonacci numbers are often proven by induction---either ordinary or strong.  We'll illustrate this with a proof by strong induction that `∀ (n : Nat), Fib n < 2 ^ n`.  This time we'll need to treat the cases `n = 0` and `n = 1` separately, since these values are treated separately in the definition of `Fib n`.  And we'll need to know that if `n` doesn't fall into either of those cases, then it falls into the third case: `n = k + 2` for some natural number `k`.  Since similar ideas will come up several times in the rest of this book, it will be useful to begin by proving lemmas that will help with this kind of reasoning.
+
+We'll need two theorems from Lean's library, the second of which has two slightly different versions:
+
+::: {.ind}
+```
+@Nat.pos_of_ne_zero : ∀ {n : ℕ}, n ≠ 0 → 0 < n
+
+@lt_of_le_of_ne : ∀ {α : Type u_1} [inst : PartialOrder α] {a b : α},
+                    a ≤ b → a ≠ b → a < b
+
+@lt_of_le_of_ne' : ∀ {α : Type u_1} [inst : PartialOrder α] {a b : α},
+                    a ≤ b → b ≠ a → a < b
+```
+:::
+
+If we have `h1 : n ≠ 0`, then `Nat.pos_of_ne_zero h1` is a proof of `0 < n`.  But for natural numbers `a` and `b`, Lean treats `a < b` as meaning the same thing as `a + 1 ≤ b`, so this is also a proof of `1 ≤ n`.  If we also have `h2 : n ≠ 1`, then we can use `lt_of_le_of_ne'` to conclude `1 < n`, which is definitionally equal to `2 ≤ n`.  Combining this reasoning with the theorem `Nat.exists_eq_add_of_le'`, which we used in the last example, we can prove two lemmas that will be helpful for reasoning in which the first one or two natural numbers have to be treated separately.
+
+```lean
+lemma exists_eq_add_one_of_ne_zero {n : Nat}
+    (h1 : n ≠ 0) : ∃ (k : Nat), n = k + 1 := by
+  have h2 : 1 ≤ n := Nat.pos_of_ne_zero h1
+  show ∃ (k : Nat), n = k + 1 from Nat.exists_eq_add_of_le' h2
+  done
+
+theorem exists_eq_add_two_of_ne_zero_one {n : Nat}
+    (h1 : n ≠ 0) (h2 : n ≠ 1) : ∃ (k : Nat), n = k + 2 := by
+  have h3 : 1 ≤ n := Nat.pos_of_ne_zero h1
+  have h4 : 2 ≤ n := lt_of_le_of_ne' h3 h2
+  show ∃ (k : Nat), n = k + 2 from Nat.exists_eq_add_of_le' h4
+  done
+```
+
+With this preparation, we can present the proof:
+
+```lean
+example : ∀ (n : Nat), Fib n < 2 ^ n := by
+  by_strong_induc
+  fix n : Nat
+  assume ih : ∀ (n_1 : Nat), n_1 < n → Fib n_1 < 2 ^ n_1
+  by_cases h1 : n = 0
+  · -- Case 1. h1 : n = 0
+    rewrite [h1]   --Goal : Fib 0 < 2 ^ 0
+    norm_num
+    done
+  · -- Case 2. h1 : ¬n = 0
+    by_cases h2 : n = 1
+    · -- Case 2.1. h2 : n = 1
+      rewrite [h2]
+      norm_num
+      done
+    · -- Case 2.2. h2 : ¬n = 1
+      obtain (k : Nat) (h3 : n = k + 2) from
+        exists_eq_add_two_of_ne_zero_one h1 h2
+      have h4 : k < n := by linarith
+      have h5 : Fib k < 2 ^ k := ih k h4
+      have h6 : k + 1 < n := by linarith
+      have h7 : Fib (k + 1) < 2 ^ (k + 1) := ih (k + 1) h6
+      rewrite [h3]            --Goal : Fib (k + 2) < 2 ^ (k + 2)
+      show Fib (k + 2) < 2 ^ (k + 2) from
+        calc Fib (k + 2)
+          _ = Fib k + Fib (k + 1) := by rfl
+          _ < 2 ^ k + Fib (k + 1) := by rel [h5]
+          _ < 2 ^ k + 2 ^ (k + 1) := by rel [h7]
+          _ ≤ 2 ^ k + 2 ^ (k + 1) + 2 ^ k := by linarith
+          _ = 2 ^ (k + 2) := by ring
+      done
+    done
+  done
+```
+
+<!--
+In this situation, we can use a similar `match` construction to break the proof into cases.
 
 ::: {.inout}
 ::: {.inpt}
@@ -1463,8 +1548,6 @@ ih : ∀ (n_1 : ℕ), n_1 < 0 →
 :::
 
 Notice that in the tactic state for the first case, Lean has replaced `n` with `0` in both the inductive hypothesis and the goal.  Similarly, in the second case `n` gets replaced with `1`, and in the third it is replaced with `k + 2`.  The first two cases can be proven by the `norm_num` tactic.  For the third case, we'll use the theorems `add_lt_add_left` and `add_lt_add_right`; these are similar to the theorem `add_le_add_left`, which we used in `Example_6_3_4`.  We'll also need to use the following theorem:
-
-<!--
 `n = 0` and `n = 1` separately, since these values are treated separately in the definition of `Fib n`.  Therefore, after introducing the inductive hypothesis, we split the proof into cases depending on whether or not `n < 2`.  In the first case, in which `n < 2`, the only possible values of `n` are `0` and `1`.  In this situation, the tactic `interval_cases n` can be used to split the proof into separate cases for each possible value of `n`.  As you can see in the tactic state below, the `interval_cases n` tactic splits the first case of our proof into two subcases, filling in `0` for `n` in the first subcase and `1` for `n` in the second.
 
 ::: {.inout}
@@ -1505,7 +1588,6 @@ h1 : 1 < 2
 :::
 
 Both subcases of case 1 can be proven by the `norm_num` tactic.  For case 2, in which `¬n < 2`, we'll need to use the lemma `exists_eq_add_of_not_lt`, proven above, to write `n` as `k + 2`, for some natural number `k`.  That will allow us to use the third clause in the definition of `Fib n`.  We'll also use the theorems `add_lt_add_left` and `add_lt_add_right`; these are similar to the theorem `add_le_add_left`, which we used in `Example_6_3_4`.  Finally, we'll need to use the following theorem:
--->
 
 ::: {.ind}
 ```
@@ -1544,7 +1626,7 @@ example : ∀ (n : Nat), Fib n < 2 ^ n := by
   done
 ```
 
-<!--
+
 Notice that the formula for `Fib (k + 2)` involves the *two* previous values of `Fib`, not just the immediately preceding value.  That is the sense in which the recursion is *strong*.  Not surprisingly, theorems about the Fibonacci numbers are often proven by induction---either ordinary or strong.  We'll illustrate this with a proof that `∀ (n : Nat), Fib n < 2 ^ n`.  This time we'll need to treat the cases `n = 0` and `n = 1` separately, since these values are treated separately in the definition of `Fib n`.  And we'll need to know that if `n` doesn't fall into either of those cases, then it falls into the third case: `n = k + 2` for some natural number `k`.  Let's prove this as a lemma.
 
 We begin by showing that if we have `h1 : n ≠ 0` and `h2 : n ≠ 1`, then we can deduce `n ≥ 2`.  We'll need two theorems from Lean's library:
@@ -1791,7 +1873,7 @@ theorem Exercise_6_4_8a : ∀ (m n : Nat) ,
 ```lean
 theorem Exercise_6_4_8d : ∀ (m k : Nat), Fib m ∣ Fib (m * k) := sorry
 ```
-Hint for \#7:  Let `m` be an arbitrary natural number, and then use induction on `k`.  For the induction step, you must prove `Fib m ∣ Fib (m * (k + 1))`.  If `m = 0 ∨ k = 0`, then this is easy.  If not, then use `Nat.exists_eq_add_of_le'` to obtain a natural number `j` such that `m * k = j + 1`, and therefore `m * (k + 1) = j + m + 1`, and then apply `Exercise_6_4_8a`.
+Hint for \#7:  Let `m` be an arbitrary natural number, and then use induction on `k`.  For the induction step, you must prove `Fib m ∣ Fib (m * (k + 1))`.  If `m = 0 ∨ k = 0`, then this is easy.  If not, then use `exists_eq_add_one_of_ne_zero` to obtain a natural number `j` such that `m * k = j + 1`, and therefore `m * (k + 1) = j + m + 1`, and then apply `Exercise_6_4_8a`.
 :::
 
 ::: {.numex arguments="8"}

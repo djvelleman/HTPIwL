@@ -503,7 +503,7 @@ theorem Theorem_8_1_3_3 {U V W : Type} {A : Set U} {B : Set V} {C : Set W}
   done
 ```
 
-Now that we have a basic understanding of the concept of equinumerous sets, we can use this concept to make a number of definitions.  For any natural number $n$, *HTPI* defines $I_n$ to be the set $\{1, 2, \ldots, n\}$, and then it defines a set to be *finite* if it is equinumerous with $I_n$, for some $n$.  In Lean, it is a bit more convenient to use the sets $\{0, 1, \ldots, n - 1\}$.  We that small change, we can repeat the definitions of finite, denumerable, and countable in *HTPI*.
+Now that we have a basic understanding of the concept of equinumerous sets, we can use this concept to make a number of definitions.  For any natural number $n$, *HTPI* defines $I_n$ to be the set $\{1, 2, \ldots, n\}$, and then it defines a set to be *finite* if it is equinumerous with $I_n$, for some $n$.  In Lean, it is a bit more convenient to use the sets $\{0, 1, \ldots, n - 1\}$.  With that small change, we can repeat the definitions of finite, denumerable, and countable in *HTPI*.
 
 ```lean
 def I (n : Nat) : Set Nat := { k : Nat | k < n }
@@ -2170,7 +2170,7 @@ theorem Theorem_8_2_4 {U : Type} {A : Set U}
   done
 ```
 
-There is a set-theoretic operation that can produce an uncountable set from a countable set: the power set operation.  *HTPI* demonstrates this by proving Cantor's theorem (Theorem 8.2.5), which says that $\mathscr{P}(\mathbb{Z}^+)$ is uncountable.  The strategy for this proof is tricky; it involves defining a set $D$ using a method called *diagonalization*.  For an explanation of the motivation behind this strategy, see *HTPI*.  Here we will use the same strategy to prove that `Univ (Set Nat)` is uncountable.
+There is a set-theoretic operation that can produce an uncountable set from a countable set: the power set operation.  *HTPI* demonstrates this by proving Cantor's theorem (Theorem 8.2.5), which says that $\mathscr{P}(\mathbb{Z}^+)$ is uncountable.  The strategy for this proof is tricky; it involves defining a set $D$ using a method called *diagonalization*.  For an explanation of the motivation behind this strategy, see *HTPI*.  Here we will use this strategy to prove that `Univ (Set Nat)` is uncountable.
 
 ```lean
 theorem Cantor's_theorem : ¬ctble (Univ (Set Nat)) := by

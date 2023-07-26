@@ -2583,7 +2583,7 @@ x \in A \cap (B \setmin C) &amp;\text{ iff } x \in A \wedge x \in B \setmin C\\
 <p>At this point, you might see a possible route to the goal: from <code>h2</code> and <code>h3</code> we should be able to prove that <code>a ∉ B</code>, and then, combining that with <code>h4</code> by the disjunctive syllogism rule, we should be able to deduce the goal <code>a ∈ C</code>. Let’s try writing the proof that way.</p>
 <div class="inout">
 <div class="inpt">
-<div class="sourceCode" id="cb189"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb189-1"><a href="#cb189-1" aria-hidden="true" tabindex="-1"></a><span class="sc">??</span><span class="al">example</span><span class="sc">::</span></span>
+<div class="sourceCode" id="cb189"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb189-1"><a href="#cb189-1" aria-hidden="true" tabindex="-1"></a><span class="sc">??</span><span class="an">example</span><span class="sc">::</span></span>
 <span id="cb189-2"><a href="#cb189-2" aria-hidden="true" tabindex="-1"></a>    (U : <span class="kw">Type</span>) (A B C : Set U) (h1 : A ⊆ B ∪ C)</span>
 <span id="cb189-3"><a href="#cb189-3" aria-hidden="true" tabindex="-1"></a>    (h2 : ¬∃ (x : U), x ∈ A ∩ B) : A ⊆ C := <span class="kw">by</span></span>
 <span id="cb189-4"><a href="#cb189-4" aria-hidden="true" tabindex="-1"></a>  <span class="kw">fix</span> a : U</span>
@@ -3393,7 +3393,7 @@ x \in A \cap (B \setmin C) &amp;\text{ iff } x \in A \wedge x \in B \setmin C\\
 <span id="cb253-4"><a href="#cb253-4" aria-hidden="true" tabindex="-1"></a>  <span class="kw">fix</span> x : U</span>
 <span id="cb253-5"><a href="#cb253-5" aria-hidden="true" tabindex="-1"></a>  <span class="kw">define</span> : x ∈ X ∪ Y</span>
 <span id="cb253-6"><a href="#cb253-6" aria-hidden="true" tabindex="-1"></a>  <span class="kw">define</span> : x ∈ Y ∪ X</span>
-<span id="cb253-7"><a href="#cb253-7" aria-hidden="true" tabindex="-1"></a>  <span class="sc">++</span><span class="do">apply</span><span class="ot">?</span><span class="sc">::</span></span>
+<span id="cb253-7"><a href="#cb253-7" aria-hidden="true" tabindex="-1"></a>  <span class="sc">++</span><span class="do">apply?</span><span class="sc">::</span></span>
 <span id="cb253-8"><a href="#cb253-8" aria-hidden="true" tabindex="-1"></a>  <span class="kw">done</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>It takes a few seconds for Lean to search its library of theorems, but eventually a blue squiggle appears under <code>apply?</code>, indicating that the tactic has produced an answer. You will find the answer in the Infoview pane: <code>Try this: exact Or.comm</code>. The word <code>exact</code> is the name of a tactic that we have not discussed; it is a shorthand for <code>show _ from</code>, where the blank gets filled in with the goal. Thus, you can think of <code>apply?</code>’s answer as a shortened form of the tactic</p>
 <div class="ind">
@@ -3569,7 +3569,7 @@ x \in A \cap (B \setmin C) &amp;\text{ iff } x \in A \wedge x \in B \setmin C\\
 <pre><code>@mul_assoc : ∀ {G : Type u_1} [inst : Semigroup G] (a b c : G),
               a * b * c = a * (b * c)</code></pre>
 </div>
-<p>The implicit arguments in this cases are a little complicated (the expression <code>[inst : Semigroup G]</code> represents yet another kind of implicit argument). But what they mean is that <code>mul_assoc</code> can be used to prove any statement of the form <code>∀ (a b c : U), a * b * c = a * (b * c)</code>, as long as <code>U</code> is a type that has an associative multiplication operation. In particular, <code>mul_assoc</code> can be used as a proof of <code>∀ (a b c : Int), a * b * c = a * (b * c)</code>. (There are also versions of this theorem for particular number types. You can use the <code>#check</code> command to verify the theorems <code>Nat.mul_assoc : ∀ (a b c : ℕ), a * b * c = a * (b * c)</code>, <code>Int.mul_assoc : ∀ (a b c : ℤ), a * b * c = a * (b * c)</code>, and so on.)</p>
+<p>The implicit arguments in this cases are a little complicated (the expression <code>[inst : Semigroup G]</code> represents yet another kind of implicit argument). But what they mean is that <code>mul_assoc</code> can be used to prove any statement of the form <code>∀ (a b c : G), a * b * c = a * (b * c)</code>, as long as <code>G</code> is a type that has an associative multiplication operation. In particular, <code>mul_assoc</code> can be used as a proof of <code>∀ (a b c : Int), a * b * c = a * (b * c)</code>. (There are also versions of this theorem for particular number types. You can use the <code>#check</code> command to verify the theorems <code>Nat.mul_assoc : ∀ (a b c : ℕ), a * b * c = a * (b * c)</code>, <code>Int.mul_assoc : ∀ (a b c : ℤ), a * b * c = a * (b * c)</code>, and so on.)</p>
 <p>Returning to our proof of Theorem 3.3.7, by three applications of universal instantiation, <code>mul_assoc a m n</code> is a proof of <code>a * m * n = a * (m * n)</code>, and that is exactly what we need to finish the proof. The tactic <code>rewrite [mul_assoc a m n] at h4</code> will replace <code>a * m * n</code> in <code>h4</code> with <code>a * (m * n)</code>.</p>
 <div class="inout">
 <div class="inpt">
@@ -4047,7 +4047,7 @@ x \in A \cap (B \setmin C) &amp;\text{ iff } x \in A \wedge x \in B \setmin C\\
 </div>
 <p>so <code>Int.sub_mul 3 2 n</code> is a proof of <code>(3 - 2) * n = 3 * n - 2 * n</code>. But the fourth equation has the sides of this equation reversed, so to justify it we need <code>(Int.sub_mul 3 2 n).symm</code>.</p>
 <p>Finally, the fifth equation is <code>(3 - 2) * n = n</code>. Why is this true? Because it is definitionally equal to <code>1 * n = n</code>. Is there a theorem to justify this last equation? One way to find the answer is to type in this example:</p>
-<div class="sourceCode" id="cb305"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb305-1"><a href="#cb305-1" aria-hidden="true" tabindex="-1"></a><span class="kw">example</span> (n : Int) : 1 * n = n := <span class="kw">by</span> <span class="sc">++</span><span class="do">apply</span><span class="ot">?</span><span class="sc">::</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb305"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb305-1"><a href="#cb305-1" aria-hidden="true" tabindex="-1"></a><span class="kw">example</span> (n : Int) : 1 * n = n := <span class="kw">by</span> <span class="sc">++</span><span class="do">apply?</span><span class="sc">::</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>Lean responds with <code>exact Int.one_mul n</code>, and <code>#check @Int.one_mul</code> yields</p>
 <div class="ind">
 <pre><code>Int.one_mul : ∀ (a : ℤ), 1 * a = a</code></pre>
