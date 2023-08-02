@@ -1,0 +1,629 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.1.189">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>How To Prove It With Lean - Appendix</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1.6em;
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href="./Chap8.html" rel="prev">
+<script src="site_libs/quarto-html/quarto.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit"
+  }
+}</script>
+
+
+<link rel="stylesheet" href="HTPIwLstyles.css">
+</head>
+
+<body class="nav-sidebar floating">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+    <div class="container-fluid d-flex justify-content-between">
+      <h1 class="quarto-secondary-nav-title">Appendix</h1>
+      <button type="button" class="quarto-btn-toggle btn" aria-label="Show secondary navigation">
+        <i class="bi bi-chevron-right"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="./">How To Prove It With Lean</a> 
+        <div class="sidebar-tools-main">
+    <a href="./How-To-Prove-It-With-Lean.pdf" title="Download PDF" class="sidebar-tool px-1"><i class="bi bi-file-pdf"></i></a>
+</div>
+    </div>
+      </div>
+      <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+      </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">Preface</a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Chap1.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Sentential Logic</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Chap2.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Quantificational Logic</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IntroLean.html" class="sidebar-item-text sidebar-link">Introduction to Lean</a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Chap3.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Proofs</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Chap4.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Relations</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Chap5.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Functions</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Chap6.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Mathematical Induction</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Chap7.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Number Theory</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Chap8.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Infinite Sets</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Appendix.html" class="sidebar-item-text sidebar-link active">Appendix</a>
+  </div>
+</li>
+    </ul>
+    </div>
+</nav>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">In This Chapter</h2>
+   
+  <ul class="collapse">
+  <li><a href="#tactics-used" id="toc-tactics-used" class="nav-link active" data-scroll-target="#tactics-used">Tactics Used</a></li>
+  <li><a href="#typing-symbols" id="toc-typing-symbols" class="nav-link" data-scroll-target="#typing-symbols">Typing Symbols</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+<div class="hidden">
+$$
+\newcommand{\setmin}{\mathbin{\backslash}}
+\newcommand{\symmdiff}{\bigtriangleup}
+$$
+</div>
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title d-none d-lg-block">Appendix</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+    
+  </div>
+  
+
+</header>
+
+<section id="tactics-used" class="level2">
+<h2 class="anchored" data-anchor-id="tactics-used">Tactics Used</h2>
+<table class="table">
+<thead>
+<tr class="header">
+<th style="text-align: left;">Tactic</th>
+<th style="text-align: left;">Where Introduced</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;"><code>apply</code></td>
+<td style="text-align: left;"><a href="Chap3.html#proofs-involving-negations-and-conditionals">Sections 3.1 &amp; 3.2</a></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><code>apply?</code></td>
+<td style="text-align: left;"><a href="Chap3.html#existence-and-uniqueness-proofs">Section 3.6</a></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><code>assume</code></td>
+<td style="text-align: left;"><a href="IntroLean.html#a-first-example">Introduction to Lean: A First Example</a></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><code>bicond_neg</code></td>
+<td style="text-align: left;"><a href="IntroLean.html#tactic-mode">Introduction to Lean: Tactic Mode</a></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><code>by_cases</code></td>
+<td style="text-align: left;"><a href="Chap3.html#proofs-involving-disjunctions">Section 3.5</a></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><code>by_contra</code></td>
+<td style="text-align: left;"><a href="Chap3.html#proofs-involving-negations-and-conditionals">Sections 3.1 &amp; 3.2</a></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><code>by_induc</code></td>
+<td style="text-align: left;"><a href="Chap6.html#proof-by-mathematical-induction">Section 6.1</a></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><code>by_strong_induc</code></td>
+<td style="text-align: left;"><a href="Chap6.html#strong-induction">Section 6.4</a></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><code>conditional</code></td>
+<td style="text-align: left;"><a href="IntroLean.html#tactic-mode">Introduction to Lean: Tactic Mode</a></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><code>contradict</code></td>
+<td style="text-align: left;"><a href="Chap3.html#proofs-involving-negations-and-conditionals">Sections 3.1 &amp; 3.2</a></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><code>contrapos</code></td>
+<td style="text-align: left;"><a href="IntroLean.html#a-first-example">Introduction to Lean: A First Example</a></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><code>define</code></td>
+<td style="text-align: left;"><a href="IntroLean.html#types">Introduction to Lean: Types</a></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><code>demorgan</code></td>
+<td style="text-align: left;"><a href="IntroLean.html#tactic-mode">Introduction to Lean: Tactic Mode</a></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><code>disj_syll</code></td>
+<td style="text-align: left;"><a href="Chap3.html#proofs-involving-disjunctions">Section 3.5</a></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><code>double_neg</code></td>
+<td style="text-align: left;"><a href="IntroLean.html#tactic-mode">Introduction to Lean: Tactic Mode</a></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><code>exact</code></td>
+<td style="text-align: left;"><a href="Chap3.html#existence-and-uniqueness-proofs">Section 3.6</a></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><code>exists_unique</code></td>
+<td style="text-align: left;"><a href="Chap3.html#existence-and-uniqueness-proofs">Section 3.6</a></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><code>fix</code></td>
+<td style="text-align: left;"><a href="Chap3.html#proofs-involving-quantifiers">Section 3.3</a></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><code>have</code></td>
+<td style="text-align: left;"><a href="IntroLean.html#a-first-example">Introduction to Lean: A First Example</a></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><code>linarith</code></td>
+<td style="text-align: left;"><a href="Chap6.html#proof-by-mathematical-induction">Section 6.1</a></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><code>norm_num</code></td>
+<td style="text-align: left;"><a href="Chap6.html#proof-by-mathematical-induction">Section 6.1</a></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><code>obtain</code></td>
+<td style="text-align: left;"><a href="Chap3.html#proofs-involving-quantifiers">Section 3.3</a></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><code>or_left</code></td>
+<td style="text-align: left;"><a href="Chap3.html#proofs-involving-disjunctions">Section 3.5</a></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><code>or_right</code></td>
+<td style="text-align: left;"><a href="Chap3.html#proofs-involving-disjunctions">Section 3.5</a></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><code>push_neg</code></td>
+<td style="text-align: left;"><a href="Chap8.html#equinumerous-sets">Section 8.1</a></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><code>quant_neg</code></td>
+<td style="text-align: left;"><a href="Chap3.html#proofs-involving-quantifiers">Section 3.3</a></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><code>rel</code></td>
+<td style="text-align: left;"><a href="Chap6.html#recursion">Section 6.3</a></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><code>rewrite</code></td>
+<td style="text-align: left;"><a href="Chap3.html#existence-and-uniqueness-proofs">Section 3.6</a></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><code>rfl</code></td>
+<td style="text-align: left;"><a href="Chap3.html#more-examples-of-proofs">Section 3.7</a></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><code>ring</code></td>
+<td style="text-align: left;"><a href="Chap3.html#more-examples-of-proofs">Section 3.7</a></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><code>rw</code></td>
+<td style="text-align: left;"><a href="Chap3.html#more-examples-of-proofs">Section 3.7</a></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><code>set</code></td>
+<td style="text-align: left;"><a href="Chap4.html#equivalence-relations">Section 4.5</a></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><code>show</code></td>
+<td style="text-align: left;"><a href="IntroLean.html#a-first-example">Introduction to Lean: A First Example</a></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><code>trivial</code></td>
+<td style="text-align: left;"><a href="Chap7.html#prime-factorization">Section 7.2</a></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="typing-symbols" class="level2">
+<h2 class="anchored" data-anchor-id="typing-symbols">Typing Symbols</h2>
+<div style="margin: 0% 10%">
+<table class="table">
+<thead>
+<tr class="header">
+<th style="text-align: center;">Symbol</th>
+<th style="text-align: center;">How To Type It</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;"><code>¬</code></td>
+<td style="text-align: center;"><code>\not</code> or <code>\n</code></td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"><code>∧</code></td>
+<td style="text-align: center;"><code>\and</code></td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;"><code>∨</code></td>
+<td style="text-align: center;"><code>\or</code> or <code>\v</code></td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"><code>→</code></td>
+<td style="text-align: center;"><code>\to</code> or <code>\r</code> or <code>\imp</code></td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;"><code>↔︎</code></td>
+<td style="text-align: center;"><code>\iff</code> or <code>\lr</code></td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"><code>∀</code></td>
+<td style="text-align: center;"><code>\forall</code> or <code>\all</code></td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;"><code>∃</code></td>
+<td style="text-align: center;"><code>\exists</code> or <code>\ex</code></td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"><code>⦃</code></td>
+<td style="text-align: center;"><code>\{{</code></td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;"><code>⦄</code></td>
+<td style="text-align: center;"><code>\}}</code></td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"><code>∈</code></td>
+<td style="text-align: center;"><code>\in</code></td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;"><code>∉</code></td>
+<td style="text-align: center;"><code>\notin</code> or <code>\inn</code></td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"><code>⊆</code></td>
+<td style="text-align: center;"><code>\sub</code></td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;"><code>⊈</code></td>
+<td style="text-align: center;"><code>\subn</code></td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"><code>=</code></td>
+<td style="text-align: center;"><code>=</code></td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;"><code>≠</code></td>
+<td style="text-align: center;"><code>\ne</code></td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"><code>∪</code></td>
+<td style="text-align: center;"><code>\union</code> or <code>\cup</code></td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;"><code>∩</code></td>
+<td style="text-align: center;"><code>\inter</code> or <code>\cap</code></td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"><code>⋃₀</code></td>
+<td style="text-align: center;"><code>\U0</code></td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;"><code>⋂₀</code></td>
+<td style="text-align: center;"><code>\I0</code></td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"><code>\</code></td>
+<td style="text-align: center;"><code>\\</code></td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;"><code>△</code></td>
+<td style="text-align: center;"><code>\bigtriangleup</code></td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"><code>∅</code></td>
+<td style="text-align: center;"><code>\emptyset</code></td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;"><code>𝒫</code></td>
+<td style="text-align: center;"><code>\powerset</code></td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"><code>·</code></td>
+<td style="text-align: center;"><code>\.</code></td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;"><code>←</code></td>
+<td style="text-align: center;"><code>\leftarrow</code> or <code>\l</code></td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"><code>↑</code></td>
+<td style="text-align: center;"><code>\uparrow</code> or <code>\u</code></td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;"><code>ℕ</code></td>
+<td style="text-align: center;"><code>\N</code></td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"><code>ℤ</code></td>
+<td style="text-align: center;"><code>\Z</code></td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;"><code>ℚ</code></td>
+<td style="text-align: center;"><code>\Q</code></td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"><code>ℝ</code></td>
+<td style="text-align: center;"><code>\R</code></td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;"><code>ℂ</code></td>
+<td style="text-align: center;"><code>\C</code></td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"><code>∣</code></td>
+<td style="text-align: center;"><code>\|</code></td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;"><code>×</code></td>
+<td style="text-align: center;"><code>\times</code> or <code>\x</code></td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"><code>∘</code></td>
+<td style="text-align: center;"><code>\comp</code> or <code>\circ</code></td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;"><code>≡</code></td>
+<td style="text-align: center;"><code>\==</code></td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"><code>∼</code></td>
+<td style="text-align: center;"><code>\sim</code></td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;"><code>ₛ</code></td>
+<td style="text-align: center;"><code>\_s</code></td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"><code>ᵣ</code></td>
+<td style="text-align: center;"><code>\_r</code></td>
+</tr>
+</tbody>
+</table>
+</div>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    setTimeout(function() {
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const cites = ref.parentNode.getAttribute('data-cites').split(' ');
+    tippyHover(ref, function() {
+      var popup = window.document.createElement('div');
+      cites.forEach(function(cite) {
+        var citeDiv = window.document.createElement('div');
+        citeDiv.classList.add('hanging-indent');
+        citeDiv.classList.add('csl-entry');
+        var biblioDiv = window.document.getElementById('ref-' + cite);
+        if (biblioDiv) {
+          citeDiv.innerHTML = biblioDiv.innerHTML;
+        }
+        popup.appendChild(citeDiv);
+      });
+      return popup.innerHTML;
+    });
+  }
+});
+</script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="./Chap8.html" class="pagination-link">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Infinite Sets</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+  </div>
+</nav>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+      <div class="nav-footer-center">© 2023 Daniel J. Velleman.<br>Short excerpts from Daniel J. Velleman, <a href="https://doi.org/10.1017/9781108539890"><i>How To Prove It: A Structured Approach, 3rd Edition</i></a><br>© Daniel J. Velleman 2019, published by Cambridge University Press, reprinted with permission.</div>
+  </div>
+</footer>
+
+
+
+</body></html>

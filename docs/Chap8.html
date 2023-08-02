@@ -93,6 +93,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <script src="site_libs/quarto-search/fuse.min.js"></script>
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
+<link href="./Appendix.html" rel="next">
 <link href="./Chap7.html" rel="prev">
 <script src="site_libs/quarto-html/quarto.js"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
@@ -208,6 +209,11 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./Chap8.html" class="sidebar-item-text sidebar-link active"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Infinite Sets</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Appendix.html" class="sidebar-item-text sidebar-link">Appendix</a>
   </div>
 </li>
     </ul>
@@ -411,7 +417,7 @@ $$
 <p>We will call <code>R</code> a <em>matching from <code>A</code> to <code>B</code></em> if it meets the three requirements above:</p>
 <div class="sourceCode" id="cb12"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> matching {U V : <span class="kw">Type</span>} (R : Rel U V) (A : Set U) (B : Set V) : <span class="kw">Prop</span> :=</span>
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>  rel_within R A B ∧ fcnl_on R A ∧ fcnl_on (invRel R) B</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>Finally, we say that <em><code>A</code> is equinumerous with <code>B</code></em> if there is a matching from <code>A</code> to <code>B</code>, and, as in <em>HTPI</em> we introduce the notation <code>A ∼ B</code> to indicate that <code>A</code> is equinumerous with <code>B</code>.</p>
+<p>Finally, we say that <em><code>A</code> is equinumerous with <code>B</code></em> if there is a matching from <code>A</code> to <code>B</code>, and, as in <em>HTPI</em> we introduce the notation <code>A ∼ B</code> to indicate that <code>A</code> is equinumerous with <code>B</code> (to enter the symbol <code>∼</code>, type <code>\sim</code>).</p>
 <div class="sourceCode" id="cb13"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> equinum {U V : <span class="kw">Type</span>} (A : Set U) (B : Set V) : <span class="kw">Prop</span> :=</span>
 <span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>  ∃ (R : Rel U V), matching R A B</span>
 <span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -2509,6 +2515,9 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       </a>          
   </div>
   <div class="nav-page nav-page-next">
+      <a href="./Appendix.html" class="pagination-link">
+        <span class="nav-page-text">Appendix</span> <i class="bi bi-arrow-right-short"></i>
+      </a>
   </div>
 </nav>
 </div> <!-- /content -->
