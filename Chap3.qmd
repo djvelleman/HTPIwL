@@ -352,7 +352,7 @@ h3 : a ∈ B → a ∈ C
 :::
 :::
 
-It may not be clear what to do next, but the given `h2` is a negative statement, so perhaps reexpressing it will help.  Writing out the definition of set difference, `h2` means `¬(a ∈ A ∧ a ∉ B)`, and then one of De Morgan's laws and a conditional law allow us to rewrite it first as `a ∉ A ∨ a ∈ B` and then as `a ∈ A → a ∈ B`.  Of course, we have tactics to accomplish all of these reexpressions:
+Our situation now is very much like the one in the theorem `Example_3_2_5_Simple` in the previous chapter, and the rest of our proof will be similar to the proof there.  The given `h2` is a negative statement, so, as suggested by our first strategy for using negative givens, we reexpress it as an equivalent positive statement.  Writing out the definition of set difference, `h2` means `¬(a ∈ A ∧ a ∉ B)`, and then one of De Morgan's laws and a conditional law allow us to rewrite it first as `a ∉ A ∨ a ∈ B` and then as `a ∈ A → a ∈ B`.  Of course, we have tactics to accomplish all of these reexpressions:
 
 ::: {.inout}
 ::: {.inpt}

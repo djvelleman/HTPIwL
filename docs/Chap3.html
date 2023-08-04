@@ -540,7 +540,7 @@ $$
 <span id="cb24-7"><a href="#cb24-7" aria-hidden="true" tabindex="-1"></a>⊢ a ∈ B</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </div>
-<p>It may not be clear what to do next, but the given <code>h2</code> is a negative statement, so perhaps reexpressing it will help. Writing out the definition of set difference, <code>h2</code> means <code>¬(a ∈ A ∧ a ∉ B)</code>, and then one of De Morgan’s laws and a conditional law allow us to rewrite it first as <code>a ∉ A ∨ a ∈ B</code> and then as <code>a ∈ A → a ∈ B</code>. Of course, we have tactics to accomplish all of these reexpressions:</p>
+<p>Our situation now is very much like the one in the theorem <code>Example_3_2_5_Simple</code> in the previous chapter, and the rest of our proof will be similar to the proof there. The given <code>h2</code> is a negative statement, so, as suggested by our first strategy for using negative givens, we reexpress it as an equivalent positive statement. Writing out the definition of set difference, <code>h2</code> means <code>¬(a ∈ A ∧ a ∉ B)</code>, and then one of De Morgan’s laws and a conditional law allow us to rewrite it first as <code>a ∉ A ∨ a ∈ B</code> and then as <code>a ∈ A → a ∈ B</code>. Of course, we have tactics to accomplish all of these reexpressions:</p>
 <div class="inout">
 <div class="inpt">
 <div class="sourceCode" id="cb25"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Like_Example_3_2_5</span>
