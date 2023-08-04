@@ -519,7 +519,7 @@ $$
 <span id="cb21-11"><a href="#cb21-11" aria-hidden="true" tabindex="-1"></a>    <span class="kw">assume</span> ih : <span class="kw">Sum</span> i <span class="kw">from</span> 0 <span class="kw">to</span> n, (2 : Int) ^ i =</span>
 <span id="cb21-12"><a href="#cb21-12" aria-hidden="true" tabindex="-1"></a>        (2 : Int) ^ (n + 1) - (1 : Int)</span>
 <span id="cb21-13"><a href="#cb21-13" aria-hidden="true" tabindex="-1"></a>    <span class="kw">show</span> <span class="kw">Sum</span> i <span class="kw">from</span> 0 <span class="kw">to</span> n + 1, (2 : Int) ^ i =</span>
-<span id="cb21-14"><a href="#cb21-14" aria-hidden="true" tabindex="-1"></a>        (2 : Int) ^ (n + 1 +1) - (1 : Int) <span class="kw">from</span></span>
+<span id="cb21-14"><a href="#cb21-14" aria-hidden="true" tabindex="-1"></a>        (2 : Int) ^ (n + 1 + 1) - (1 : Int) <span class="kw">from</span></span>
 <span id="cb21-15"><a href="#cb21-15" aria-hidden="true" tabindex="-1"></a>      <span class="kw">calc</span> <span class="kw">Sum</span> i <span class="kw">from</span> 0 <span class="kw">to</span> n + 1, (2 : Int) ^ i</span>
 <span id="cb21-16"><a href="#cb21-16" aria-hidden="true" tabindex="-1"></a>        _ = (<span class="kw">Sum</span> i <span class="kw">from</span> 0 <span class="kw">to</span> n, (2 : Int) ^ i)</span>
 <span id="cb21-17"><a href="#cb21-17" aria-hidden="true" tabindex="-1"></a>            + (2 : Int) ^ (n + 1) := <span class="kw">by</span> <span class="kw">rw</span> [sum_from_zero_step]</span>

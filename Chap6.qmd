@@ -369,7 +369,7 @@ theorem Example_6_1_1 :
     assume ih : Sum i from 0 to n, (2 : Int) ^ i =
         (2 : Int) ^ (n + 1) - (1 : Int)
     show Sum i from 0 to n + 1, (2 : Int) ^ i =
-        (2 : Int) ^ (n + 1 +1) - (1 : Int) from
+        (2 : Int) ^ (n + 1 + 1) - (1 : Int) from
       calc Sum i from 0 to n + 1, (2 : Int) ^ i
         _ = (Sum i from 0 to n, (2 : Int) ^ i)
             + (2 : Int) ^ (n + 1) := by rw [sum_from_zero_step]
