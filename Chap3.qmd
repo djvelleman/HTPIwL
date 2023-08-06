@@ -2560,8 +2560,8 @@ Of course, now that we have two goals, we will introduce bullets labeling the tw
 ::: {.inpt}
 ```lean
 theorem Example_3_5_2
-(U : Type) (A B C : Set U) :
-A \ (B \ C) ⊆ (A \ B) ∪ C := by
+    (U : Type) (A B C : Set U) :
+    A \ (B \ C) ⊆ (A \ B) ∪ C := by
   fix x : U
   assume h1 : x ∈ A \ (B \ C)
   define; define at h1
@@ -2599,8 +2599,8 @@ Notice that the tactic `apply Or.inl` has changed the goal for case 1 to the lef
 ::: {.inpt}
 ```lean
 theorem Example_3_5_2
-(U : Type) (A B C : Set U) :
-A \ (B \ C) ⊆ (A \ B) ∪ C := by
+    (U : Type) (A B C : Set U) :
+    A \ (B \ C) ⊆ (A \ B) ∪ C := by
   fix x : U
   assume h1 : x ∈ A \ (B \ C)
   define; define at h1
@@ -2639,8 +2639,8 @@ Case 2 is similar, using `Or.inr` and `h2`
 ::: {.inpt}
 ```lean
 theorem Example_3_5_2
-(U : Type) (A B C : Set U) :
-A \ (B \ C) ⊆ (A \ B) ∪ C := by
+    (U : Type) (A B C : Set U) :
+    A \ (B \ C) ⊆ (A \ B) ∪ C := by
   fix x : U
   assume h1 : x ∈ A \ (B \ C)
   define; define at h1

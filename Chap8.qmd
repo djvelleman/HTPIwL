@@ -1541,6 +1541,9 @@ theorem congr_rel_prime {m a b : Nat} (h1 : a ≡ b (MOD m)) :
 theorem rel_prime_mod (m a : Nat) :
     rel_prime m (a % m) ↔ rel_prime m a := sorry
 
+theorem congr_iff_mod_eq_Nat (m a b : Nat) [NeZero m] :
+    ↑a ≡ ↑b (MOD m) ↔ a % m = b % m := sorry
+
 lemma Lemma_7_4_6 {a b c : Nat} :
     rel_prime (a * b) c ↔ rel_prime a c ∧ rel_prime b c := sorry
 ```
@@ -1567,10 +1570,10 @@ lemma mod_mod_one_one_on {m n : Nat} (h1 : rel_prime m n) :
   have h6 : m * n ≠ 0 := by linarith
   have h7 : NeZero m := left_NeZero_of_mul h6
   have h8 : NeZero n := right_NeZero_of_mul h6
-  rewrite [←congr_iff_mod_eq, ←congr_iff_mod_eq] at h5
-      --h5 : a1 ≡ a2 (MOD m) ∧ a1 ≡ a2 (MOD n)
-  rewrite [←Lemma_7_4_5 _ _ h1] at h5  --h5 : a1 ≡ a2 (MOD m * n)
-  rewrite [congr_iff_mod_eq] at h5     --h5 : a1 % (m * n) = a2 % (m * n)
+  rewrite [←congr_iff_mod_eq_Nat, ←congr_iff_mod_eq_Nat] at h5
+      --h5 : ↑a1 ≡ ↑a2 (MOD m) ∧ ↑a1 ≡ ↑a2 (MOD n)
+  rewrite [←Lemma_7_4_5 _ _ h1] at h5  --h5 : ↑a1 ≡ ↑a2 (MOD m * n)
+  rewrite [congr_iff_mod_eq_Nat] at h5     --h5 : a1 % (m * n) = a2 % (m * n)
   rewrite [Nat.mod_eq_of_lt h2.right, Nat.mod_eq_of_lt h3.right] at h5
   show a1 = a2 from h5
   done
@@ -1635,7 +1638,7 @@ lemma mod_mod_image {m n : Nat} (h1 : rel_prime m n) :
         And.intro h2.left.left h2.right.left
       done
     · -- Proof of mod_mod m n a = (b, c)
-      rewrite [congr_iff_mod_eq, congr_iff_mod_eq] at h5
+      rewrite [congr_iff_mod_eq_Nat, congr_iff_mod_eq_Nat] at h5
       rewrite [mod_mod_def, h5.right.left, h5.right.right]
         --Goal : (b % m, c % n) = (b, c)
       rewrite [Nat.mod_eq_of_lt h2.left.right,

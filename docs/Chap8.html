@@ -1528,8 +1528,11 @@ $$
 <span id="cb68-4"><a href="#cb68-4" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> rel_prime_mod (m a : Nat) :</span>
 <span id="cb68-5"><a href="#cb68-5" aria-hidden="true" tabindex="-1"></a>    rel_prime m (a % m) ↔ rel_prime m a := <span class="cn">sorry</span></span>
 <span id="cb68-6"><a href="#cb68-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb68-7"><a href="#cb68-7" aria-hidden="true" tabindex="-1"></a><span class="kw">lemma</span> Lemma_7_4_6 {a b c : Nat} :</span>
-<span id="cb68-8"><a href="#cb68-8" aria-hidden="true" tabindex="-1"></a>    rel_prime (a * b) c ↔ rel_prime a c ∧ rel_prime b c := <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb68-7"><a href="#cb68-7" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> congr_iff_mod_eq_Nat (m a b : Nat) [NeZero m] :</span>
+<span id="cb68-8"><a href="#cb68-8" aria-hidden="true" tabindex="-1"></a>    ↑a ≡ ↑b (MOD m) ↔ a % m = b % m := <span class="cn">sorry</span></span>
+<span id="cb68-9"><a href="#cb68-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb68-10"><a href="#cb68-10" aria-hidden="true" tabindex="-1"></a><span class="kw">lemma</span> Lemma_7_4_6 {a b c : Nat} :</span>
+<span id="cb68-11"><a href="#cb68-11" aria-hidden="true" tabindex="-1"></a>    rel_prime (a * b) c ↔ rel_prime a c ∧ rel_prime b c := <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>Combining these with other theorems from Chapter 7, we can now use <code>mod_mod m n</code> to show that <code>Set_rp_below (m * n) ∼ Set_rp_below m ×ₛ Set_rp_below n</code>.</p>
 <div class="sourceCode" id="cb69"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb69-1"><a href="#cb69-1" aria-hidden="true" tabindex="-1"></a><span class="kw">lemma</span> left_NeZero_of_mul {m n : Nat} (h : m * n ≠ 0) : NeZero m :=</span>
 <span id="cb69-2"><a href="#cb69-2" aria-hidden="true" tabindex="-1"></a>  neZero_iff.rtl (left_ne_zero_of_mul h)</span>
@@ -1550,10 +1553,10 @@ $$
 <span id="cb69-17"><a href="#cb69-17" aria-hidden="true" tabindex="-1"></a>  <span class="kw">have</span> h6 : m * n ≠ 0 := <span class="kw">by</span> <span class="kw">linarith</span></span>
 <span id="cb69-18"><a href="#cb69-18" aria-hidden="true" tabindex="-1"></a>  <span class="kw">have</span> h7 : NeZero m := left_NeZero_of_mul h6</span>
 <span id="cb69-19"><a href="#cb69-19" aria-hidden="true" tabindex="-1"></a>  <span class="kw">have</span> h8 : NeZero n := right_NeZero_of_mul h6</span>
-<span id="cb69-20"><a href="#cb69-20" aria-hidden="true" tabindex="-1"></a>  <span class="kw">rewrite</span> [←congr_iff_mod_eq, ←congr_iff_mod_eq] <span class="kw">at</span> h5</span>
-<span id="cb69-21"><a href="#cb69-21" aria-hidden="true" tabindex="-1"></a>      <span class="co">--h5 : a1 ≡ a2 (MOD m) ∧ a1 ≡ a2 (MOD n)</span></span>
-<span id="cb69-22"><a href="#cb69-22" aria-hidden="true" tabindex="-1"></a>  <span class="kw">rewrite</span> [←Lemma_7_4_5 _ _ h1] <span class="kw">at</span> h5  <span class="co">--h5 : a1 ≡ a2 (MOD m * n)</span></span>
-<span id="cb69-23"><a href="#cb69-23" aria-hidden="true" tabindex="-1"></a>  <span class="kw">rewrite</span> [congr_iff_mod_eq] <span class="kw">at</span> h5     <span class="co">--h5 : a1 % (m * n) = a2 % (m * n)</span></span>
+<span id="cb69-20"><a href="#cb69-20" aria-hidden="true" tabindex="-1"></a>  <span class="kw">rewrite</span> [←congr_iff_mod_eq_Nat, ←congr_iff_mod_eq_Nat] <span class="kw">at</span> h5</span>
+<span id="cb69-21"><a href="#cb69-21" aria-hidden="true" tabindex="-1"></a>      <span class="co">--h5 : ↑a1 ≡ ↑a2 (MOD m) ∧ ↑a1 ≡ ↑a2 (MOD n)</span></span>
+<span id="cb69-22"><a href="#cb69-22" aria-hidden="true" tabindex="-1"></a>  <span class="kw">rewrite</span> [←Lemma_7_4_5 _ _ h1] <span class="kw">at</span> h5  <span class="co">--h5 : ↑a1 ≡ ↑a2 (MOD m * n)</span></span>
+<span id="cb69-23"><a href="#cb69-23" aria-hidden="true" tabindex="-1"></a>  <span class="kw">rewrite</span> [congr_iff_mod_eq_Nat] <span class="kw">at</span> h5     <span class="co">--h5 : a1 % (m * n) = a2 % (m * n)</span></span>
 <span id="cb69-24"><a href="#cb69-24" aria-hidden="true" tabindex="-1"></a>  <span class="kw">rewrite</span> [Nat.mod_eq_of_lt h2.right, Nat.mod_eq_of_lt h3.right] <span class="kw">at</span> h5</span>
 <span id="cb69-25"><a href="#cb69-25" aria-hidden="true" tabindex="-1"></a>  <span class="kw">show</span> a1 = a2 <span class="kw">from</span> h5</span>
 <span id="cb69-26"><a href="#cb69-26" aria-hidden="true" tabindex="-1"></a>  <span class="kw">done</span></span>
@@ -1618,7 +1621,7 @@ $$
 <span id="cb69-85"><a href="#cb69-85" aria-hidden="true" tabindex="-1"></a>        And.intro h2.left.left h2.right.left</span>
 <span id="cb69-86"><a href="#cb69-86" aria-hidden="true" tabindex="-1"></a>      <span class="kw">done</span></span>
 <span id="cb69-87"><a href="#cb69-87" aria-hidden="true" tabindex="-1"></a>    · <span class="co">-- Proof of mod_mod m n a = (b, c)</span></span>
-<span id="cb69-88"><a href="#cb69-88" aria-hidden="true" tabindex="-1"></a>      <span class="kw">rewrite</span> [congr_iff_mod_eq, congr_iff_mod_eq] <span class="kw">at</span> h5</span>
+<span id="cb69-88"><a href="#cb69-88" aria-hidden="true" tabindex="-1"></a>      <span class="kw">rewrite</span> [congr_iff_mod_eq_Nat, congr_iff_mod_eq_Nat] <span class="kw">at</span> h5</span>
 <span id="cb69-89"><a href="#cb69-89" aria-hidden="true" tabindex="-1"></a>      <span class="kw">rewrite</span> [mod_mod_def, h5.right.left, h5.right.right]</span>
 <span id="cb69-90"><a href="#cb69-90" aria-hidden="true" tabindex="-1"></a>        <span class="co">--Goal : (b % m, c % n) = (b, c)</span></span>
 <span id="cb69-91"><a href="#cb69-91" aria-hidden="true" tabindex="-1"></a>      <span class="kw">rewrite</span> [Nat.mod_eq_of_lt h2.left.right,</span>
