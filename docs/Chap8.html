@@ -1749,7 +1749,7 @@ $$
 <span id="cb86-14"><a href="#cb86-14" aria-hidden="true" tabindex="-1"></a>    <span class="kw">show</span> p ∈ Univ (Nat × Nat) <span class="kw">from</span> elt_Univ p</span>
 <span id="cb86-15"><a href="#cb86-15" aria-hidden="true" tabindex="-1"></a>    <span class="kw">done</span></span>
 <span id="cb86-16"><a href="#cb86-16" aria-hidden="true" tabindex="-1"></a>  <span class="kw">have</span> h7 : ctble (Univ (Nat × Nat)) := <span class="kw">by</span></span>
-<span id="cb86-17"><a href="#cb86-17" aria-hidden="true" tabindex="-1"></a>    <span class="kw">define</span>       <span class="co">--Goal : finite (Univ (ℕ × ℕ)) ∨ denum (Univ (ℕ × ℕ))</span></span>
+<span id="cb86-17"><a href="#cb86-17" aria-hidden="true" tabindex="-1"></a>    <span class="kw">define</span>   <span class="co">--Goal : finite (Univ (Nat × Nat)) ∨ denum (Univ (Nat × Nat))</span></span>
 <span id="cb86-18"><a href="#cb86-18" aria-hidden="true" tabindex="-1"></a>    <span class="kw">apply</span> Or.inr</span>
 <span id="cb86-19"><a href="#cb86-19" aria-hidden="true" tabindex="-1"></a>    <span class="kw">rewrite</span> [denum_def]</span>
 <span id="cb86-20"><a href="#cb86-20" aria-hidden="true" tabindex="-1"></a>    <span class="kw">show</span> Univ Nat ∼ Univ (Nat × Nat) <span class="kw">from</span> Theorem_8_1_3_2 NxN_equinum_N</span>
@@ -2057,7 +2057,7 @@ $$
 <span id="cb99-2"><a href="#cb99-2" aria-hidden="true" tabindex="-1"></a>  <span class="kw">by_contra</span> h1</span>
 <span id="cb99-3"><a href="#cb99-3" aria-hidden="true" tabindex="-1"></a>  <span class="kw">rewrite</span> [Theorem_8_1_5_2] <span class="kw">at</span> h1</span>
 <span id="cb99-4"><a href="#cb99-4" aria-hidden="true" tabindex="-1"></a>  <span class="kw">obtain</span> (R : Rel Nat (Set Nat))</span>
-<span id="cb99-5"><a href="#cb99-5" aria-hidden="true" tabindex="-1"></a>    (h2 : fcnl_onto_from_nat R (Univ (Set ℕ))) <span class="kw">from</span> h1</span>
+<span id="cb99-5"><a href="#cb99-5" aria-hidden="true" tabindex="-1"></a>    (h2 : fcnl_onto_from_nat R (Univ (Set Nat))) <span class="kw">from</span> h1</span>
 <span id="cb99-6"><a href="#cb99-6" aria-hidden="true" tabindex="-1"></a>  <span class="kw">define</span> <span class="kw">at</span> h2</span>
 <span id="cb99-7"><a href="#cb99-7" aria-hidden="true" tabindex="-1"></a>  <span class="kw">have</span> h3 : unique_val_on_N R := h2.left</span>
 <span id="cb99-8"><a href="#cb99-8" aria-hidden="true" tabindex="-1"></a>  <span class="kw">have</span> h4 : nat_rel_onto R (Univ (Set Nat)) := h2.right</span>
@@ -2078,7 +2078,7 @@ $$
 <span id="cb99-23"><a href="#cb99-23" aria-hidden="true" tabindex="-1"></a>  · <span class="co">-- Case 2. h7 : n ∉ D</span></span>
 <span id="cb99-24"><a href="#cb99-24" aria-hidden="true" tabindex="-1"></a>    <span class="kw">contradict</span> h7</span>
 <span id="cb99-25"><a href="#cb99-25" aria-hidden="true" tabindex="-1"></a>    <span class="kw">define</span></span>
-<span id="cb99-26"><a href="#cb99-26" aria-hidden="true" tabindex="-1"></a>    <span class="kw">show</span> ∃ (X : Set ℕ), R n X ∧ ¬n ∈ X <span class="kw">from</span></span>
+<span id="cb99-26"><a href="#cb99-26" aria-hidden="true" tabindex="-1"></a>    <span class="kw">show</span> ∃ (X : Set Nat), R n X ∧ ¬n ∈ X <span class="kw">from</span></span>
 <span id="cb99-27"><a href="#cb99-27" aria-hidden="true" tabindex="-1"></a>      Exists.intro D (And.intro h6 h7)</span>
 <span id="cb99-28"><a href="#cb99-28" aria-hidden="true" tabindex="-1"></a>    <span class="kw">done</span></span>
 <span id="cb99-29"><a href="#cb99-29" aria-hidden="true" tabindex="-1"></a>  <span class="kw">done</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -2315,7 +2315,7 @@ $$
 <span id="cb116-121"><a href="#cb116-121" aria-hidden="true" tabindex="-1"></a>          <span class="kw">rewrite</span> [h11] <span class="kw">at</span> h10</span>
 <span id="cb116-122"><a href="#cb116-122" aria-hidden="true" tabindex="-1"></a>          <span class="kw">apply</span> And.intro _ h10.left</span>
 <span id="cb116-123"><a href="#cb116-123" aria-hidden="true" tabindex="-1"></a>          <span class="kw">define</span></span>
-<span id="cb116-124"><a href="#cb116-124" aria-hidden="true" tabindex="-1"></a>          <span class="kw">show</span> ∃ (n : ℕ), a ∈ rep_common_image R S X0 n <span class="kw">from</span></span>
+<span id="cb116-124"><a href="#cb116-124" aria-hidden="true" tabindex="-1"></a>          <span class="kw">show</span> ∃ (n : Nat), a ∈ rep_common_image R S X0 n <span class="kw">from</span></span>
 <span id="cb116-125"><a href="#cb116-125" aria-hidden="true" tabindex="-1"></a>            Exists.intro m h9.left</span>
 <span id="cb116-126"><a href="#cb116-126" aria-hidden="true" tabindex="-1"></a>          <span class="kw">done</span></span>
 <span id="cb116-127"><a href="#cb116-127" aria-hidden="true" tabindex="-1"></a>        · <span class="co">-- Case 2. h5 : ¬c ∈ X</span></span>
