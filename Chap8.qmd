@@ -211,7 +211,7 @@ def matching {U V : Type} (R : Rel U V) (A : Set U) (B : Set V) : Prop :=
   rel_within R A B ∧ fcnl_on R A ∧ fcnl_on (invRel R) B
 ```
 
-Finally, we say that *`A` is equinumerous with `B`* if there is a matching from `A` to `B`, and, as in *HTPI* we introduce the notation `A ∼ B` to indicate that `A` is equinumerous with `B` (to enter the symbol `∼`, type `\sim`).
+Finally, we say that *`A` is equinumerous with `B`* if there is a matching from `A` to `B`, and, as in *HTPI* we introduce the notation `A ∼ B` to indicate that `A` is equinumerous with `B` (to enter the symbol `∼`, type `\~` or `\sim`).
 
 ```lean
 def equinum {U V : Type} (A : Set U) (B : Set V) : Prop :=
