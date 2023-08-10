@@ -192,6 +192,7 @@ $$
 
 <section id="tactics-used" class="level2">
 <h2 class="anchored" data-anchor-id="tactics-used">Tactics Used</h2>
+<p>Tactics marked with an asterisk (*) are defined in the file <code>HTPIDefs.lean</code> in the HTPI Lean Package that accompanies this book. They will not work without that file. The others are either standard Lean tactics or defined in Lean’s mathematics library, <code>Mathlib</code>.</p>
 <div style="margin: 0% 10%">
 <table class="table">
 <thead>
@@ -210,11 +211,11 @@ $$
 <td style="text-align: left;"><a href="Chap3.html#existence-and-uniqueness-proofs">Section 3.6</a></td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;"><code>assume</code></td>
+<td style="text-align: left;"><code>assume</code>*</td>
 <td style="text-align: left;"><a href="IntroLean.html#a-first-example">Introduction to Lean: A First Example</a></td>
 </tr>
 <tr class="even">
-<td style="text-align: left;"><code>bicond_neg</code></td>
+<td style="text-align: left;"><code>bicond_neg</code>*</td>
 <td style="text-align: left;"><a href="IntroLean.html#tactic-mode">Introduction to Lean: Tactic Mode</a></td>
 </tr>
 <tr class="odd">
@@ -222,118 +223,122 @@ $$
 <td style="text-align: left;"><a href="Chap3.html#proofs-involving-disjunctions">Section 3.5</a></td>
 </tr>
 <tr class="even">
+<td style="text-align: left;"><code>by_cases on</code>*</td>
+<td style="text-align: left;"><a href="Chap3.html#proofs-involving-disjunctions">Section 3.5</a></td>
+</tr>
+<tr class="odd">
 <td style="text-align: left;"><code>by_contra</code></td>
 <td style="text-align: left;"><a href="Chap3.html#proofs-involving-negations-and-conditionals">Sections 3.1 &amp; 3.2</a></td>
 </tr>
-<tr class="odd">
-<td style="text-align: left;"><code>by_induc</code></td>
+<tr class="even">
+<td style="text-align: left;"><code>by_induc</code>*</td>
 <td style="text-align: left;"><a href="Chap6.html#proof-by-mathematical-induction">Section 6.1</a></td>
 </tr>
-<tr class="even">
-<td style="text-align: left;"><code>by_strong_induc</code></td>
+<tr class="odd">
+<td style="text-align: left;"><code>by_strong_induc</code>*</td>
 <td style="text-align: left;"><a href="Chap6.html#strong-induction">Section 6.4</a></td>
 </tr>
-<tr class="odd">
-<td style="text-align: left;"><code>conditional</code></td>
+<tr class="even">
+<td style="text-align: left;"><code>conditional</code>*</td>
 <td style="text-align: left;"><a href="IntroLean.html#tactic-mode">Introduction to Lean: Tactic Mode</a></td>
 </tr>
-<tr class="even">
-<td style="text-align: left;"><code>contradict</code></td>
+<tr class="odd">
+<td style="text-align: left;"><code>contradict</code>*</td>
 <td style="text-align: left;"><a href="Chap3.html#proofs-involving-negations-and-conditionals">Sections 3.1 &amp; 3.2</a></td>
 </tr>
-<tr class="odd">
-<td style="text-align: left;"><code>contrapos</code></td>
+<tr class="even">
+<td style="text-align: left;"><code>contrapos</code>*</td>
 <td style="text-align: left;"><a href="IntroLean.html#a-first-example">Introduction to Lean: A First Example</a></td>
 </tr>
-<tr class="even">
-<td style="text-align: left;"><code>define</code></td>
+<tr class="odd">
+<td style="text-align: left;"><code>define</code>*</td>
 <td style="text-align: left;"><a href="IntroLean.html#types">Introduction to Lean: Types</a></td>
 </tr>
-<tr class="odd">
-<td style="text-align: left;"><code>demorgan</code></td>
+<tr class="even">
+<td style="text-align: left;"><code>demorgan</code>*</td>
 <td style="text-align: left;"><a href="IntroLean.html#tactic-mode">Introduction to Lean: Tactic Mode</a></td>
 </tr>
-<tr class="even">
-<td style="text-align: left;"><code>disj_syll</code></td>
+<tr class="odd">
+<td style="text-align: left;"><code>disj_syll</code>*</td>
 <td style="text-align: left;"><a href="Chap3.html#proofs-involving-disjunctions">Section 3.5</a></td>
 </tr>
-<tr class="odd">
-<td style="text-align: left;"><code>double_neg</code></td>
+<tr class="even">
+<td style="text-align: left;"><code>double_neg</code>*</td>
 <td style="text-align: left;"><a href="IntroLean.html#tactic-mode">Introduction to Lean: Tactic Mode</a></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td style="text-align: left;"><code>exact</code></td>
 <td style="text-align: left;"><a href="Chap3.html#existence-and-uniqueness-proofs">Section 3.6</a></td>
 </tr>
-<tr class="odd">
-<td style="text-align: left;"><code>exists_unique</code></td>
+<tr class="even">
+<td style="text-align: left;"><code>exists_unique</code>*</td>
 <td style="text-align: left;"><a href="Chap3.html#existence-and-uniqueness-proofs">Section 3.6</a></td>
 </tr>
-<tr class="even">
-<td style="text-align: left;"><code>fix</code></td>
+<tr class="odd">
+<td style="text-align: left;"><code>fix</code>*</td>
 <td style="text-align: left;"><a href="Chap3.html#proofs-involving-quantifiers">Section 3.3</a></td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td style="text-align: left;"><code>have</code></td>
 <td style="text-align: left;"><a href="IntroLean.html#a-first-example">Introduction to Lean: A First Example</a></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td style="text-align: left;"><code>linarith</code></td>
 <td style="text-align: left;"><a href="Chap6.html#proof-by-mathematical-induction">Section 6.1</a></td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td style="text-align: left;"><code>norm_num</code></td>
 <td style="text-align: left;"><a href="Chap6.html#proof-by-mathematical-induction">Section 6.1</a></td>
 </tr>
-<tr class="even">
-<td style="text-align: left;"><code>obtain</code></td>
+<tr class="odd">
+<td style="text-align: left;"><code>obtain</code>*</td>
 <td style="text-align: left;"><a href="Chap3.html#proofs-involving-quantifiers">Section 3.3</a></td>
 </tr>
+<tr class="even">
+<td style="text-align: left;"><code>or_left</code>*</td>
+<td style="text-align: left;"><a href="Chap3.html#proofs-involving-disjunctions">Section 3.5</a></td>
+</tr>
 <tr class="odd">
-<td style="text-align: left;"><code>or_left</code></td>
+<td style="text-align: left;"><code>or_right</code>*</td>
 <td style="text-align: left;"><a href="Chap3.html#proofs-involving-disjunctions">Section 3.5</a></td>
 </tr>
 <tr class="even">
-<td style="text-align: left;"><code>or_right</code></td>
-<td style="text-align: left;"><a href="Chap3.html#proofs-involving-disjunctions">Section 3.5</a></td>
-</tr>
-<tr class="odd">
 <td style="text-align: left;"><code>push_neg</code></td>
 <td style="text-align: left;"><a href="Chap8.html#equinumerous-sets">Section 8.1</a></td>
 </tr>
-<tr class="even">
-<td style="text-align: left;"><code>quant_neg</code></td>
+<tr class="odd">
+<td style="text-align: left;"><code>quant_neg</code>*</td>
 <td style="text-align: left;"><a href="Chap3.html#proofs-involving-quantifiers">Section 3.3</a></td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td style="text-align: left;"><code>rel</code></td>
 <td style="text-align: left;"><a href="Chap6.html#recursion">Section 6.3</a></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td style="text-align: left;"><code>rewrite</code></td>
 <td style="text-align: left;"><a href="Chap3.html#existence-and-uniqueness-proofs">Section 3.6</a></td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td style="text-align: left;"><code>rfl</code></td>
 <td style="text-align: left;"><a href="Chap3.html#more-examples-of-proofs">Section 3.7</a></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td style="text-align: left;"><code>ring</code></td>
 <td style="text-align: left;"><a href="Chap3.html#more-examples-of-proofs">Section 3.7</a></td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td style="text-align: left;"><code>rw</code></td>
 <td style="text-align: left;"><a href="Chap3.html#more-examples-of-proofs">Section 3.7</a></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td style="text-align: left;"><code>set</code></td>
 <td style="text-align: left;"><a href="Chap4.html#equivalence-relations">Section 4.5</a></td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td style="text-align: left;"><code>show</code></td>
 <td style="text-align: left;"><a href="IntroLean.html#a-first-example">Introduction to Lean: A First Example</a></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td style="text-align: left;"><code>trivial</code></td>
 <td style="text-align: left;"><a href="Chap7.html#prime-factorization">Section 7.2</a></td>
 </tr>
