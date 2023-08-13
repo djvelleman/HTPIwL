@@ -1337,7 +1337,7 @@ Next, we turn to our promise, at the end of Section 7.4, to prove Theorem 7.4.4 
 
 To define the totient function in Lean, in Chapter 7 we defined `phi m` to be `num_rp_below m m`, where `num_rp_below m k` is the number of natural numbers less than `k` that are relatively prime to `m`.  But in this chapter we have developed new methods for counting things.  Our first task is to show that these new methods agree with the method used in Chapter 7.
 
-We have already remarked that the definition of `num_elts_below` in this chapter bears some resemblence to the definition of `num_rp_below` in Chapter 7.  It should not be surprising, therefore, that these two counting methods give results that agree.
+We have already remarked that the definition of `num_elts_below` in this chapter bears some resemblance to the definition of `num_rp_below` in Chapter 7.  It should not be surprising, therefore, that these two counting methods give results that agree.
 
 ```lean
 def Set_rp_below (m : Nat) : Set Nat := { n : Nat | rel_prime m n ∧ n < m }

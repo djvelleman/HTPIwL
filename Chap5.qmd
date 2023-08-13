@@ -247,7 +247,7 @@ def one_to_one {A B : Type} (f : A → B) : Prop :=
   ∀ (x1 x2 : A), f x1 = f x2 → x1 = x2
 ```
 
-There is only one more theorem about these properties in Section 5.2 of *HTPI*.  It says that a composition of one-to-one functions is one-to-one, and a composition of onto functions is onto.  It is straightforward to carry out these proofs in Lean by simplying applying the definitions of the relevant concepts.
+There is only one more theorem about these properties in Section 5.2 of *HTPI*.  It says that a composition of one-to-one functions is one-to-one, and a composition of onto functions is onto.  It is straightforward to carry out these proofs in Lean by simply applying the definitions of the relevant concepts.
 
 ```lean
 theorem Theorem_5_2_5_1 {A B C : Type} (f : A → B) (g : B → C) :
