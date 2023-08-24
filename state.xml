@@ -2,12 +2,17 @@
 <!DOCTYPE language SYSTEM "language.dtd">
 <language name="state" version="1.0" section="Sources" extensions="">
 <highlighting>
-<list name="keywords">
+<list name="case">
 <item>case</item>
+</list>
+<list name="nogo">
+<item>No</item>
+<item>goals</item>
 </list>
 <contexts>
 <context attribute="Ids" lineEndContext="#pop" name="Ids" >
-<keyword attribute="Keyword" context="types" String="keywords" />
+<keyword attribute="Case" context="types" String="case" />
+<keyword attribute="Nogo" context="Ids" String="nogo" />
 <DetectChar attribute="Types" context="types" char=":" />
 <DetectChar attribute="Types" context="types" char="⊢" />
 <Detect2Chars attribute="Delim" context="types" char=">" char1=">" />
@@ -19,7 +24,8 @@
 <itemData name="Ids" defStyleNum="dsInformation" />
 <itemData name="Types" defStyleNum="dsNormal"/>
 <itemData name="Delim" defStyleNum="dsSpecialChar"/>
-<itemData name="Keyword" defStyleNum="dsRegionMarker" />
+<itemData name="Case" defStyleNum="dsRegionMarker" />
+<itemData name="Nogo" defStyleNum="dsSpecialString" />
 </itemDatas>
 </highlighting>
 </language>

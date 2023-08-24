@@ -86,6 +86,17 @@ code span.re {      /* "case" label in Infoview */
   font-weight: bold
 }
 
+code span.ss {      /* "No goals" in Infoview */
+  color: steelblue;
+  font-weight: bold
+}
+
+code span.re::before{
+  content: "▼";
+  color: black;
+  padding-right: 3px
+}
+
 .inout {
   display: grid;
   grid-template-columns: 2fr 1fr;
