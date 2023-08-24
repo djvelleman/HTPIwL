@@ -3854,9 +3854,9 @@ x \in A \cap (B \setmin C) &amp;\text{ iff } x \in A \wedge x \in B \setmin C\\
 <span id="cb290-5"><a href="#cb290-5" aria-hidden="true" tabindex="-1"></a>  · <span class="co">-- (→)</span></span>
 <span id="cb290-6"><a href="#cb290-6" aria-hidden="true" tabindex="-1"></a>    ...</span>
 <span id="cb290-7"><a href="#cb290-7" aria-hidden="true" tabindex="-1"></a>  · <span class="co">-- (←)</span></span>
-<span id="cb290-8"><a href="#cb290-8" aria-hidden="true" tabindex="-1"></a>    <span class="kw">assume</span> h1</span>
-<span id="cb290-9"><a href="#cb290-9" aria-hidden="true" tabindex="-1"></a>    <span class="kw">have</span> h2 := h1.left</span>
-<span id="cb290-10"><a href="#cb290-10" aria-hidden="true" tabindex="-1"></a>    <span class="kw">have</span> h3 := h1.right</span>
+<span id="cb290-8"><a href="#cb290-8" aria-hidden="true" tabindex="-1"></a>    <span class="kw">assume</span> h1 : 2 ∣ n ∧ 3 ∣ n</span>
+<span id="cb290-9"><a href="#cb290-9" aria-hidden="true" tabindex="-1"></a>    <span class="kw">have</span> h2 : 2 ∣ n := h1.left</span>
+<span id="cb290-10"><a href="#cb290-10" aria-hidden="true" tabindex="-1"></a>    <span class="kw">have</span> h3 : 3 ∣ n := h1.right</span>
 <span id="cb290-11"><a href="#cb290-11" aria-hidden="true" tabindex="-1"></a>    <span class="kw">define</span> <span class="kw">at</span> h2; <span class="kw">define</span> <span class="kw">at</span> h3; <span class="kw">define</span></span>
 <span id="cb290-12"><a href="#cb290-12" aria-hidden="true" tabindex="-1"></a>    <span class="kw">obtain</span> (j : Int) (h4 : n = 2 * j) <span class="kw">from</span> h2</span>
 <span id="cb290-13"><a href="#cb290-13" aria-hidden="true" tabindex="-1"></a>    <span class="kw">obtain</span> (k : Int) (h5 : n = 3 * k) <span class="kw">from</span> h3</span>
@@ -3889,9 +3889,9 @@ x \in A \cap (B \setmin C) &amp;\text{ iff } x \in A \wedge x \in B \setmin C\\
 <span id="cb292-5"><a href="#cb292-5" aria-hidden="true" tabindex="-1"></a>  · <span class="co">-- (→)</span></span>
 <span id="cb292-6"><a href="#cb292-6" aria-hidden="true" tabindex="-1"></a>    ...</span>
 <span id="cb292-7"><a href="#cb292-7" aria-hidden="true" tabindex="-1"></a>  · <span class="co">-- (←)</span></span>
-<span id="cb292-8"><a href="#cb292-8" aria-hidden="true" tabindex="-1"></a>    <span class="kw">assume</span> h1</span>
-<span id="cb292-9"><a href="#cb292-9" aria-hidden="true" tabindex="-1"></a>    <span class="kw">have</span> h2 := h1.left</span>
-<span id="cb292-10"><a href="#cb292-10" aria-hidden="true" tabindex="-1"></a>    <span class="kw">have</span> h3 := h1.right</span>
+<span id="cb292-8"><a href="#cb292-8" aria-hidden="true" tabindex="-1"></a>    <span class="kw">assume</span> h1 : 2 ∣ n ∧ 3 ∣ n</span>
+<span id="cb292-9"><a href="#cb292-9" aria-hidden="true" tabindex="-1"></a>    <span class="kw">have</span> h2 : 2 ∣ n := h1.left</span>
+<span id="cb292-10"><a href="#cb292-10" aria-hidden="true" tabindex="-1"></a>    <span class="kw">have</span> h3 : 3 ∣ n := h1.right</span>
 <span id="cb292-11"><a href="#cb292-11" aria-hidden="true" tabindex="-1"></a>    <span class="kw">define</span> <span class="kw">at</span> h2; <span class="kw">define</span> <span class="kw">at</span> h3; <span class="kw">define</span></span>
 <span id="cb292-12"><a href="#cb292-12" aria-hidden="true" tabindex="-1"></a>    <span class="kw">obtain</span> (j : Int) (h4 : n = 2 * j) <span class="kw">from</span> h2</span>
 <span id="cb292-13"><a href="#cb292-13" aria-hidden="true" tabindex="-1"></a>    <span class="kw">obtain</span> (k : Int) (h5 : n = 3 * k) <span class="kw">from</span> h3</span>
