@@ -511,8 +511,8 @@ theorem Theorem_5_3_2_2 {A B : Type} (f : A → B) (g : B → A)
 
 ::: {.numex arguments="2"}
 ```lean
-theorem Theorem_5_3_3_2 {A B : Type} (f : A → B) :
-    (∃ (g : B → A), f ∘ g = id) → onto f := sorry
+theorem Theorem_5_3_3_2 {A B : Type} (f : A → B) (g : B → A)
+    (h1 : f ∘ g = id) : onto f := sorry
 ```
 :::
 
