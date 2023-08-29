@@ -1330,20 +1330,22 @@ Int.emod_nonneg : ∀ (a : ℤ) {b : ℤ}, b ≠ 0 → 0 ≤ a % b</code></pre>
 <span id="cb78-6"><a href="#cb78-6" aria-hidden="true" tabindex="-1"></a>  <span class="kw">have</span> h1 : num_rp_below m (j + 1) =</span>
 <span id="cb78-7"><a href="#cb78-7" aria-hidden="true" tabindex="-1"></a>    if gcd m j = 1 then (num_rp_below m j) + 1</span>
 <span id="cb78-8"><a href="#cb78-8" aria-hidden="true" tabindex="-1"></a>    else num_rp_below m j := <span class="kw">by</span> <span class="kw">rfl</span></span>
-<span id="cb78-9"><a href="#cb78-9" aria-hidden="true" tabindex="-1"></a>  <span class="kw">define</span> <span class="kw">at</span> h        <span class="co">--h : gcd m j = 1</span></span>
+<span id="cb78-9"><a href="#cb78-9" aria-hidden="true" tabindex="-1"></a>  <span class="kw">define</span> <span class="kw">at</span> h     <span class="co">--h : gcd m j = 1</span></span>
 <span id="cb78-10"><a href="#cb78-10" aria-hidden="true" tabindex="-1"></a>  <span class="kw">rewrite</span> [if_pos h] <span class="kw">at</span> h1</span>
-<span id="cb78-11"><a href="#cb78-11" aria-hidden="true" tabindex="-1"></a>  <span class="kw">show</span> num_rp_below m (j + 1) = num_rp_below m j + 1 <span class="kw">from</span> h1</span>
-<span id="cb78-12"><a href="#cb78-12" aria-hidden="true" tabindex="-1"></a>  <span class="kw">done</span></span>
-<span id="cb78-13"><a href="#cb78-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb78-14"><a href="#cb78-14" aria-hidden="true" tabindex="-1"></a><span class="kw">lemma</span> num_rp_below_step_not_rp {m j : Nat} (h : ¬rel_prime m j) :</span>
-<span id="cb78-15"><a href="#cb78-15" aria-hidden="true" tabindex="-1"></a>    num_rp_below m (j + 1) = num_rp_below m j := <span class="kw">by</span></span>
-<span id="cb78-16"><a href="#cb78-16" aria-hidden="true" tabindex="-1"></a>  <span class="kw">have</span> h1 : num_rp_below m (j +1) =</span>
-<span id="cb78-17"><a href="#cb78-17" aria-hidden="true" tabindex="-1"></a>    if gcd m j = 1 then (num_rp_below m j) + 1</span>
-<span id="cb78-18"><a href="#cb78-18" aria-hidden="true" tabindex="-1"></a>    else num_rp_below m j := <span class="kw">by</span> <span class="kw">rfl</span></span>
-<span id="cb78-19"><a href="#cb78-19" aria-hidden="true" tabindex="-1"></a>  <span class="kw">define</span> <span class="kw">at</span> h        <span class="co">--h : ¬gcd m j = 1</span></span>
-<span id="cb78-20"><a href="#cb78-20" aria-hidden="true" tabindex="-1"></a>  <span class="kw">rewrite</span> [if_neg h] <span class="kw">at</span> h1</span>
-<span id="cb78-21"><a href="#cb78-21" aria-hidden="true" tabindex="-1"></a>  <span class="kw">show</span> num_rp_below m (j + 1) = num_rp_below m j <span class="kw">from</span> h1</span>
-<span id="cb78-22"><a href="#cb78-22" aria-hidden="true" tabindex="-1"></a>  <span class="kw">done</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb78-11"><a href="#cb78-11" aria-hidden="true" tabindex="-1"></a>                  <span class="co">--h1 : num_rp_below m (j + 1) = num_rp_below m j + 1</span></span>
+<span id="cb78-12"><a href="#cb78-12" aria-hidden="true" tabindex="-1"></a>  <span class="kw">show</span> num_rp_below m (j + 1) = num_rp_below m j + 1 <span class="kw">from</span> h1</span>
+<span id="cb78-13"><a href="#cb78-13" aria-hidden="true" tabindex="-1"></a>  <span class="kw">done</span></span>
+<span id="cb78-14"><a href="#cb78-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb78-15"><a href="#cb78-15" aria-hidden="true" tabindex="-1"></a><span class="kw">lemma</span> num_rp_below_step_not_rp {m j : Nat} (h : ¬rel_prime m j) :</span>
+<span id="cb78-16"><a href="#cb78-16" aria-hidden="true" tabindex="-1"></a>    num_rp_below m (j + 1) = num_rp_below m j := <span class="kw">by</span></span>
+<span id="cb78-17"><a href="#cb78-17" aria-hidden="true" tabindex="-1"></a>  <span class="kw">have</span> h1 : num_rp_below m (j +1) =</span>
+<span id="cb78-18"><a href="#cb78-18" aria-hidden="true" tabindex="-1"></a>    if gcd m j = 1 then (num_rp_below m j) + 1</span>
+<span id="cb78-19"><a href="#cb78-19" aria-hidden="true" tabindex="-1"></a>    else num_rp_below m j := <span class="kw">by</span> <span class="kw">rfl</span></span>
+<span id="cb78-20"><a href="#cb78-20" aria-hidden="true" tabindex="-1"></a>  <span class="kw">define</span> <span class="kw">at</span> h     <span class="co">--h : ¬gcd m j = 1</span></span>
+<span id="cb78-21"><a href="#cb78-21" aria-hidden="true" tabindex="-1"></a>  <span class="kw">rewrite</span> [if_neg h] <span class="kw">at</span> h1</span>
+<span id="cb78-22"><a href="#cb78-22" aria-hidden="true" tabindex="-1"></a>                  <span class="co">--h1 : num_rp_below m (j + 1) = num_rp_below m j</span></span>
+<span id="cb78-23"><a href="#cb78-23" aria-hidden="true" tabindex="-1"></a>  <span class="kw">show</span> num_rp_below m (j + 1) = num_rp_below m j <span class="kw">from</span> h1</span>
+<span id="cb78-24"><a href="#cb78-24" aria-hidden="true" tabindex="-1"></a>  <span class="kw">done</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>We can now use <code>num_rp_below</code> to define the totient function.</p>
 <div class="sourceCode" id="cb79"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb79-1"><a href="#cb79-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> phi (m : Nat) := num_rp_below m m</span>
 <span id="cb79-2"><a href="#cb79-2" aria-hidden="true" tabindex="-1"></a></span>
