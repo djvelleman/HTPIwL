@@ -3775,7 +3775,7 @@ theorem Example_3_6_2 (U : Type) :
       calc C
         _ = D ∪ C := h4.symm
         _ = C ∪ D := union_comm D C
-        _ = D     := h3
+        _ = D := h3
     done
   done
 ```
@@ -4697,7 +4697,7 @@ have h6 : 6 * (j - k) = n :=
     _ = 6 * j - 6 * k := Int.mul_sub 6 j k
     _ = 3 * (2 * j) - 2 * (3 * k) := by
 
-        **done::
+          **done::
     _ = 3 * n - 2 * n := sorry
     _ = (3 - 2) * n := sorry
     _ = n := sorry
@@ -4732,9 +4732,9 @@ have h6 : 6 * (j - k) = n :=
   calc 6 * (j - k)
     _ = 6 * j - 6 * k := Int.mul_sub 6 j k
     _ = 3 * (2 * j) - 2 * (3 * k) := by
-        rewrite [←mul_assoc 3 2 j]
-        rewrite [←mul_assoc 2 3 k]
-        **done::
+          rewrite [←mul_assoc 3 2 j]
+          rewrite [←mul_assoc 2 3 k]
+          **done::
     _ = 3 * n - 2 * n := sorry
     _ = (3 - 2) * n := sorry
     _ = n := sorry
@@ -4777,13 +4777,13 @@ have h6 : 6 * (j - k) = n :=
   calc 6 * (j - k)
     _ = 6 * j - 6 * k := Int.mul_sub 6 j k
     _ = 3 * (2 * j) - 2 * (3 * k) := by
-        rewrite [←mul_assoc 3 2 j]
-        rewrite [←mul_assoc 2 3 k]
-        rfl
-        done
+          rewrite [←mul_assoc 3 2 j]
+          rewrite [←mul_assoc 2 3 k]
+          rfl
+          done
     _ = 3 * n - 2 * n := by
 
-        **done::
+          **done::
     _ = (3 - 2) * n := sorry
     _ = n := sorry
 ```
@@ -4816,13 +4816,13 @@ have h6 : 6 * (j - k) = n :=
   calc 6 * (j - k)
     _ = 6 * j - 6 * k := Int.mul_sub 6 j k
     _ = 3 * (2 * j) - 2 * (3 * k) := by
-        rewrite [←mul_assoc 3 2 j]
-        rewrite [←mul_assoc 2 3 k]
-        rfl
-        done
+          rewrite [←mul_assoc 3 2 j]
+          rewrite [←mul_assoc 2 3 k]
+          rfl
+          done
     _ = 3 * n - 2 * n := by
-        rewrite [←h4, ←h5]
-        **done::
+          rewrite [←h4, ←h5]
+          **done::
     _ = (3 - 2) * n := sorry
     _ = n := sorry
 ```
@@ -4879,7 +4879,7 @@ have h6 : 6 * (j - k) = n :=
   calc 6 * (j - k)
     _ = 6 * j - 6 * k := Int.mul_sub 6 j k
     _ = 3 * (2 * j) - 2 * (3 * k) := by
-        rewrite [←mul_assoc 3 2 j, ←mul_assoc 2 3 k]; rfl
+          rewrite [←mul_assoc 3 2 j, ←mul_assoc 2 3 k]; rfl
     _ = 3 * n - 2 * n := by rewrite [←h4, ←h5]; rfl
     _ = (3 - 2) * n := (Int.sub_mul 3 2 n).symm
     _ = n := Int.one_mul n

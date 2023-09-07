@@ -825,7 +825,7 @@ s = t', \qquad t = s' - t'q.
 <span id="cb36-16"><a href="#cb36-16" aria-hidden="true" tabindex="-1"></a>      _ = (s * ↑a + t * ↑c) * ↑b := <span class="kw">by</span> <span class="kw">rw</span> [h4]</span>
 <span id="cb36-17"><a href="#cb36-17" aria-hidden="true" tabindex="-1"></a>      _ = s * (↑a * ↑b) + t * ↑c * ↑b := <span class="kw">by</span> <span class="kw">ring</span></span>
 <span id="cb36-18"><a href="#cb36-18" aria-hidden="true" tabindex="-1"></a>      _ = s * (↑c * ↑j) + t * ↑c * ↑b := <span class="kw">by</span></span>
-<span id="cb36-19"><a href="#cb36-19" aria-hidden="true" tabindex="-1"></a>          <span class="kw">rw</span> [←Nat.cast_mul a b, h3, Nat.cast_mul c j]</span>
+<span id="cb36-19"><a href="#cb36-19" aria-hidden="true" tabindex="-1"></a>            <span class="kw">rw</span> [←Nat.cast_mul a b, h3, Nat.cast_mul c j]</span>
 <span id="cb36-20"><a href="#cb36-20" aria-hidden="true" tabindex="-1"></a>      _ = ↑c * (s * ↑j + t * ↑b) := <span class="kw">by</span> <span class="kw">ring</span></span>
 <span id="cb36-21"><a href="#cb36-21" aria-hidden="true" tabindex="-1"></a>  <span class="kw">done</span></span>
 <span id="cb36-22"><a href="#cb36-22" aria-hidden="true" tabindex="-1"></a></span>

@@ -430,7 +430,7 @@ $$
 <span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a>    <span class="kw">show</span> (<span class="kw">Sum</span> i <span class="kw">from</span> 0 <span class="kw">to</span> n + 1, 2 ^ i) + 1 = 2 ^ (n + 1 + 1) <span class="kw">from</span></span>
 <span id="cb14-12"><a href="#cb14-12" aria-hidden="true" tabindex="-1"></a>      <span class="kw">calc</span> (<span class="kw">Sum</span> i <span class="kw">from</span> 0 <span class="kw">to</span> n + 1, 2 ^ i) + 1</span>
 <span id="cb14-13"><a href="#cb14-13" aria-hidden="true" tabindex="-1"></a>        _ = (<span class="kw">Sum</span> i <span class="kw">from</span> 0 <span class="kw">to</span> n, 2 ^ i) + 2 ^ (n + 1) + 1 := <span class="kw">by</span></span>
-<span id="cb14-14"><a href="#cb14-14" aria-hidden="true" tabindex="-1"></a>            <span class="kw">rw</span> [sum_from_zero_step]</span>
+<span id="cb14-14"><a href="#cb14-14" aria-hidden="true" tabindex="-1"></a>              <span class="kw">rw</span> [sum_from_zero_step]</span>
 <span id="cb14-15"><a href="#cb14-15" aria-hidden="true" tabindex="-1"></a>        _ = (<span class="kw">Sum</span> i <span class="kw">from</span> 0 <span class="kw">to</span> n, 2 ^ i) + 1 + 2 ^ (n + 1) := <span class="kw">by</span> <span class="kw">ring</span></span>
 <span id="cb14-16"><a href="#cb14-16" aria-hidden="true" tabindex="-1"></a>        _ = 2 ^ (n + 1) + 2 ^ (n + 1) := <span class="kw">by</span> <span class="kw">rw</span> [ih]</span>
 <span id="cb14-17"><a href="#cb14-17" aria-hidden="true" tabindex="-1"></a>        _ = 2 ^ (n + 1 + 1) := <span class="kw">by</span> <span class="kw">ring</span></span>
@@ -987,7 +987,7 @@ $$
 <span id="cb62-19"><a href="#cb62-19" aria-hidden="true" tabindex="-1"></a>        _ = a * a ^ (m + n) := <span class="kw">by</span> <span class="kw">rfl</span></span>
 <span id="cb62-20"><a href="#cb62-20" aria-hidden="true" tabindex="-1"></a>        _ = a * (a ^ m * a ^ n) := <span class="kw">by</span> <span class="kw">rw</span> [ih]</span>
 <span id="cb62-21"><a href="#cb62-21" aria-hidden="true" tabindex="-1"></a>        _ = a ^ m * (a * a ^ n) := <span class="kw">by</span></span>
-<span id="cb62-22"><a href="#cb62-22" aria-hidden="true" tabindex="-1"></a>            <span class="kw">rw</span> [←mul_assoc, mul_comm a, mul_assoc]</span>
+<span id="cb62-22"><a href="#cb62-22" aria-hidden="true" tabindex="-1"></a>              <span class="kw">rw</span> [←mul_assoc, mul_comm a, mul_assoc]</span>
 <span id="cb62-23"><a href="#cb62-23" aria-hidden="true" tabindex="-1"></a>        _ = a ^ m * (a ^ (n + 1)) := <span class="kw">by</span> <span class="kw">rfl</span></span>
 <span id="cb62-24"><a href="#cb62-24" aria-hidden="true" tabindex="-1"></a>    <span class="kw">done</span></span>
 <span id="cb62-25"><a href="#cb62-25" aria-hidden="true" tabindex="-1"></a>  <span class="kw">done</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>

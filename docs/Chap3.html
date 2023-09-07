@@ -3209,7 +3209,7 @@ x \in A \cap (B \setmin C) &amp;\text{ iff } x \in A \wedge x \in B \setmin C\\
 <span id="cb241-16"><a href="#cb241-16" aria-hidden="true" tabindex="-1"></a>      <span class="kw">calc</span> C</span>
 <span id="cb241-17"><a href="#cb241-17" aria-hidden="true" tabindex="-1"></a>        _ = D ∪ C := h4.symm</span>
 <span id="cb241-18"><a href="#cb241-18" aria-hidden="true" tabindex="-1"></a>        _ = C ∪ D := union_comm D C</span>
-<span id="cb241-19"><a href="#cb241-19" aria-hidden="true" tabindex="-1"></a>        _ = D     := h3</span>
+<span id="cb241-19"><a href="#cb241-19" aria-hidden="true" tabindex="-1"></a>        _ = D := h3</span>
 <span id="cb241-20"><a href="#cb241-20" aria-hidden="true" tabindex="-1"></a>    <span class="kw">done</span></span>
 <span id="cb241-21"><a href="#cb241-21" aria-hidden="true" tabindex="-1"></a>  <span class="kw">done</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>Since the statement <code>∃! (x : U), P x</code> asserts both the existence and the uniqueness of an object satisfying the predicate <code>P</code>, we have the following strategy for using a given of this form (<em>HTPI</em> p.&nbsp;159):</p>
@@ -3925,7 +3925,7 @@ x \in A \cap (B \setmin C) &amp;\text{ iff } x \in A \wedge x \in B \setmin C\\
 <span id="cb295-3"><a href="#cb295-3" aria-hidden="true" tabindex="-1"></a>    _ = 6 * j - 6 * k := Int.mul_sub 6 j k</span>
 <span id="cb295-4"><a href="#cb295-4" aria-hidden="true" tabindex="-1"></a>    _ = 3 * (2 * j) - 2 * (3 * k) := <span class="kw">by</span></span>
 <span id="cb295-5"><a href="#cb295-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb295-6"><a href="#cb295-6" aria-hidden="true" tabindex="-1"></a>        <span class="sc">**</span><span class="wa">done</span><span class="sc">::</span></span>
+<span id="cb295-6"><a href="#cb295-6" aria-hidden="true" tabindex="-1"></a>          <span class="sc">**</span><span class="wa">done</span><span class="sc">::</span></span>
 <span id="cb295-7"><a href="#cb295-7" aria-hidden="true" tabindex="-1"></a>    _ = 3 * n - 2 * n := <span class="cn">sorry</span></span>
 <span id="cb295-8"><a href="#cb295-8" aria-hidden="true" tabindex="-1"></a>    _ = (3 - 2) * n := <span class="cn">sorry</span></span>
 <span id="cb295-9"><a href="#cb295-9" aria-hidden="true" tabindex="-1"></a>    _ = n := <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -3953,9 +3953,9 @@ x \in A \cap (B \setmin C) &amp;\text{ iff } x \in A \wedge x \in B \setmin C\\
 <span id="cb297-2"><a href="#cb297-2" aria-hidden="true" tabindex="-1"></a>  <span class="kw">calc</span> 6 * (j - k)</span>
 <span id="cb297-3"><a href="#cb297-3" aria-hidden="true" tabindex="-1"></a>    _ = 6 * j - 6 * k := Int.mul_sub 6 j k</span>
 <span id="cb297-4"><a href="#cb297-4" aria-hidden="true" tabindex="-1"></a>    _ = 3 * (2 * j) - 2 * (3 * k) := <span class="kw">by</span></span>
-<span id="cb297-5"><a href="#cb297-5" aria-hidden="true" tabindex="-1"></a>        <span class="kw">rewrite</span> [←mul_assoc 3 2 j]</span>
-<span id="cb297-6"><a href="#cb297-6" aria-hidden="true" tabindex="-1"></a>        <span class="kw">rewrite</span> [←mul_assoc 2 3 k]</span>
-<span id="cb297-7"><a href="#cb297-7" aria-hidden="true" tabindex="-1"></a>        <span class="sc">**</span><span class="wa">done</span><span class="sc">::</span></span>
+<span id="cb297-5"><a href="#cb297-5" aria-hidden="true" tabindex="-1"></a>          <span class="kw">rewrite</span> [←mul_assoc 3 2 j]</span>
+<span id="cb297-6"><a href="#cb297-6" aria-hidden="true" tabindex="-1"></a>          <span class="kw">rewrite</span> [←mul_assoc 2 3 k]</span>
+<span id="cb297-7"><a href="#cb297-7" aria-hidden="true" tabindex="-1"></a>          <span class="sc">**</span><span class="wa">done</span><span class="sc">::</span></span>
 <span id="cb297-8"><a href="#cb297-8" aria-hidden="true" tabindex="-1"></a>    _ = 3 * n - 2 * n := <span class="cn">sorry</span></span>
 <span id="cb297-9"><a href="#cb297-9" aria-hidden="true" tabindex="-1"></a>    _ = (3 - 2) * n := <span class="cn">sorry</span></span>
 <span id="cb297-10"><a href="#cb297-10" aria-hidden="true" tabindex="-1"></a>    _ = n := <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -3987,13 +3987,13 @@ x \in A \cap (B \setmin C) &amp;\text{ iff } x \in A \wedge x \in B \setmin C\\
 <span id="cb300-2"><a href="#cb300-2" aria-hidden="true" tabindex="-1"></a>  <span class="kw">calc</span> 6 * (j - k)</span>
 <span id="cb300-3"><a href="#cb300-3" aria-hidden="true" tabindex="-1"></a>    _ = 6 * j - 6 * k := Int.mul_sub 6 j k</span>
 <span id="cb300-4"><a href="#cb300-4" aria-hidden="true" tabindex="-1"></a>    _ = 3 * (2 * j) - 2 * (3 * k) := <span class="kw">by</span></span>
-<span id="cb300-5"><a href="#cb300-5" aria-hidden="true" tabindex="-1"></a>        <span class="kw">rewrite</span> [←mul_assoc 3 2 j]</span>
-<span id="cb300-6"><a href="#cb300-6" aria-hidden="true" tabindex="-1"></a>        <span class="kw">rewrite</span> [←mul_assoc 2 3 k]</span>
-<span id="cb300-7"><a href="#cb300-7" aria-hidden="true" tabindex="-1"></a>        <span class="kw">rfl</span></span>
-<span id="cb300-8"><a href="#cb300-8" aria-hidden="true" tabindex="-1"></a>        <span class="kw">done</span></span>
+<span id="cb300-5"><a href="#cb300-5" aria-hidden="true" tabindex="-1"></a>          <span class="kw">rewrite</span> [←mul_assoc 3 2 j]</span>
+<span id="cb300-6"><a href="#cb300-6" aria-hidden="true" tabindex="-1"></a>          <span class="kw">rewrite</span> [←mul_assoc 2 3 k]</span>
+<span id="cb300-7"><a href="#cb300-7" aria-hidden="true" tabindex="-1"></a>          <span class="kw">rfl</span></span>
+<span id="cb300-8"><a href="#cb300-8" aria-hidden="true" tabindex="-1"></a>          <span class="kw">done</span></span>
 <span id="cb300-9"><a href="#cb300-9" aria-hidden="true" tabindex="-1"></a>    _ = 3 * n - 2 * n := <span class="kw">by</span></span>
 <span id="cb300-10"><a href="#cb300-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb300-11"><a href="#cb300-11" aria-hidden="true" tabindex="-1"></a>        <span class="sc">**</span><span class="wa">done</span><span class="sc">::</span></span>
+<span id="cb300-11"><a href="#cb300-11" aria-hidden="true" tabindex="-1"></a>          <span class="sc">**</span><span class="wa">done</span><span class="sc">::</span></span>
 <span id="cb300-12"><a href="#cb300-12" aria-hidden="true" tabindex="-1"></a>    _ = (3 - 2) * n := <span class="cn">sorry</span></span>
 <span id="cb300-13"><a href="#cb300-13" aria-hidden="true" tabindex="-1"></a>    _ = n := <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
@@ -4020,13 +4020,13 @@ x \in A \cap (B \setmin C) &amp;\text{ iff } x \in A \wedge x \in B \setmin C\\
 <span id="cb302-2"><a href="#cb302-2" aria-hidden="true" tabindex="-1"></a>  <span class="kw">calc</span> 6 * (j - k)</span>
 <span id="cb302-3"><a href="#cb302-3" aria-hidden="true" tabindex="-1"></a>    _ = 6 * j - 6 * k := Int.mul_sub 6 j k</span>
 <span id="cb302-4"><a href="#cb302-4" aria-hidden="true" tabindex="-1"></a>    _ = 3 * (2 * j) - 2 * (3 * k) := <span class="kw">by</span></span>
-<span id="cb302-5"><a href="#cb302-5" aria-hidden="true" tabindex="-1"></a>        <span class="kw">rewrite</span> [←mul_assoc 3 2 j]</span>
-<span id="cb302-6"><a href="#cb302-6" aria-hidden="true" tabindex="-1"></a>        <span class="kw">rewrite</span> [←mul_assoc 2 3 k]</span>
-<span id="cb302-7"><a href="#cb302-7" aria-hidden="true" tabindex="-1"></a>        <span class="kw">rfl</span></span>
-<span id="cb302-8"><a href="#cb302-8" aria-hidden="true" tabindex="-1"></a>        <span class="kw">done</span></span>
+<span id="cb302-5"><a href="#cb302-5" aria-hidden="true" tabindex="-1"></a>          <span class="kw">rewrite</span> [←mul_assoc 3 2 j]</span>
+<span id="cb302-6"><a href="#cb302-6" aria-hidden="true" tabindex="-1"></a>          <span class="kw">rewrite</span> [←mul_assoc 2 3 k]</span>
+<span id="cb302-7"><a href="#cb302-7" aria-hidden="true" tabindex="-1"></a>          <span class="kw">rfl</span></span>
+<span id="cb302-8"><a href="#cb302-8" aria-hidden="true" tabindex="-1"></a>          <span class="kw">done</span></span>
 <span id="cb302-9"><a href="#cb302-9" aria-hidden="true" tabindex="-1"></a>    _ = 3 * n - 2 * n := <span class="kw">by</span></span>
-<span id="cb302-10"><a href="#cb302-10" aria-hidden="true" tabindex="-1"></a>        <span class="kw">rewrite</span> [←h4, ←h5]</span>
-<span id="cb302-11"><a href="#cb302-11" aria-hidden="true" tabindex="-1"></a>        <span class="sc">**</span><span class="wa">done</span><span class="sc">::</span></span>
+<span id="cb302-10"><a href="#cb302-10" aria-hidden="true" tabindex="-1"></a>          <span class="kw">rewrite</span> [←h4, ←h5]</span>
+<span id="cb302-11"><a href="#cb302-11" aria-hidden="true" tabindex="-1"></a>          <span class="sc">**</span><span class="wa">done</span><span class="sc">::</span></span>
 <span id="cb302-12"><a href="#cb302-12" aria-hidden="true" tabindex="-1"></a>    _ = (3 - 2) * n := <span class="cn">sorry</span></span>
 <span id="cb302-13"><a href="#cb302-13" aria-hidden="true" tabindex="-1"></a>    _ = n := <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
@@ -4062,7 +4062,7 @@ x \in A \cap (B \setmin C) &amp;\text{ iff } x \in A \wedge x \in B \setmin C\\
 <span id="cb307-2"><a href="#cb307-2" aria-hidden="true" tabindex="-1"></a>  <span class="kw">calc</span> 6 * (j - k)</span>
 <span id="cb307-3"><a href="#cb307-3" aria-hidden="true" tabindex="-1"></a>    _ = 6 * j - 6 * k := Int.mul_sub 6 j k</span>
 <span id="cb307-4"><a href="#cb307-4" aria-hidden="true" tabindex="-1"></a>    _ = 3 * (2 * j) - 2 * (3 * k) := <span class="kw">by</span></span>
-<span id="cb307-5"><a href="#cb307-5" aria-hidden="true" tabindex="-1"></a>        <span class="kw">rewrite</span> [←mul_assoc 3 2 j, ←mul_assoc 2 3 k]; <span class="kw">rfl</span></span>
+<span id="cb307-5"><a href="#cb307-5" aria-hidden="true" tabindex="-1"></a>          <span class="kw">rewrite</span> [←mul_assoc 3 2 j, ←mul_assoc 2 3 k]; <span class="kw">rfl</span></span>
 <span id="cb307-6"><a href="#cb307-6" aria-hidden="true" tabindex="-1"></a>    _ = 3 * n - 2 * n := <span class="kw">by</span> <span class="kw">rewrite</span> [←h4, ←h5]; <span class="kw">rfl</span></span>
 <span id="cb307-7"><a href="#cb307-7" aria-hidden="true" tabindex="-1"></a>    _ = (3 - 2) * n := (Int.sub_mul 3 2 n).symm</span>
 <span id="cb307-8"><a href="#cb307-8" aria-hidden="true" tabindex="-1"></a>    _ = n := Int.one_mul n</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>

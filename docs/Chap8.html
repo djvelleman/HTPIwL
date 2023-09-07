@@ -596,8 +596,8 @@ $$
 <span id="cb22-9"><a href="#cb22-9" aria-hidden="true" tabindex="-1"></a>    invRel (compRel S R) = compRel (invRel R) (invRel S) := </span>
 <span id="cb22-10"><a href="#cb22-10" aria-hidden="true" tabindex="-1"></a>  <span class="kw">calc</span> invRel (compRel S R)</span>
 <span id="cb22-11"><a href="#cb22-11" aria-hidden="true" tabindex="-1"></a>    _ = RelFromExt (inv (comp (extension S) (extension R))) := <span class="kw">by</span> <span class="kw">rfl</span></span>
-<span id="cb22-12"><a href="#cb22-12" aria-hidden="true" tabindex="-1"></a>    _ = RelFromExt (comp (inv (extension R)) (inv (extension S))) :=</span>
-<span id="cb22-13"><a href="#cb22-13" aria-hidden="true" tabindex="-1"></a>        <span class="kw">by</span> <span class="kw">rw</span> [Theorem_4_2_5_5]</span>
+<span id="cb22-12"><a href="#cb22-12" aria-hidden="true" tabindex="-1"></a>    _ = RelFromExt (comp (inv (extension R)) (inv (extension S))) := <span class="kw">by</span></span>
+<span id="cb22-13"><a href="#cb22-13" aria-hidden="true" tabindex="-1"></a>          <span class="kw">rw</span> [Theorem_4_2_5_5]</span>
 <span id="cb22-14"><a href="#cb22-14" aria-hidden="true" tabindex="-1"></a>    _ = compRel (invRel R) (invRel S) := <span class="kw">by</span> <span class="kw">rfl</span></span>
 <span id="cb22-15"><a href="#cb22-15" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb22-16"><a href="#cb22-16" aria-hidden="true" tabindex="-1"></a><span class="kw">lemma</span> comp_fcnl {U V W : <span class="kw">Type</span>} {R : Rel U V} {S : Rel V W}</span>
