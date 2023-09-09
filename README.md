@@ -1,2 +1,2 @@
 # How To Prove It With Lean
- This is a book about using Lean with How To Prove It
+ These are the source files for a book about using Lean with How To Prove It.  You can read the book [here](https://djvelleman.github.io/HTPIwL/).
