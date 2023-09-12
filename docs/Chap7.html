@@ -490,14 +490,17 @@ s = t', \qquad t = s' - t'q.
 <span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>    (h2 : d ∣ a) (h3 : d ∣ b) : d ≤ gcd a b := <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="numex" data-arguments="7">
-<div class="sourceCode" id="cb24"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="kw">lemma</span> Lemma_7_1_10a {a b : Nat} (n : Nat) (h : a ∣ b) :</span>
-<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>    (n * a) ∣ (n * b) := <span class="cn">sorry</span></span>
+<div class="sourceCode" id="cb24"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="kw">lemma</span> Lemma_7_1_10a {a b : Nat}</span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>    (n : Nat) (h : a ∣ b) : (n * a) ∣ (n * b) := <span class="cn">sorry</span></span>
 <span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a><span class="kw">lemma</span> Lemma_7_1_10b {a b : Nat} (h1 : a ∣ b) (h2 : b ∣ a) :</span>
-<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a>    a = b := <span class="cn">sorry</span></span>
+<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a><span class="kw">lemma</span> Lemma_7_1_10b {a b n : Nat}</span>
+<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a>    (h1 : n ≠ 0) (h2 : (n * a) ∣ (n * b)) : a ∣ b := <span class="cn">sorry</span></span>
 <span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb24-7"><a href="#cb24-7" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Exercise_7_1_10 (a b n : Nat) :</span>
-<span id="cb24-8"><a href="#cb24-8" aria-hidden="true" tabindex="-1"></a>    gcd (n * a) (n * b) = n * gcd a b := <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb24-7"><a href="#cb24-7" aria-hidden="true" tabindex="-1"></a><span class="kw">lemma</span> Lemma_7_1_10c {a b : Nat}</span>
+<span id="cb24-8"><a href="#cb24-8" aria-hidden="true" tabindex="-1"></a>    (h1 : a ∣ b) (h2 : b ∣ a) : a = b := <span class="cn">sorry</span></span>
+<span id="cb24-9"><a href="#cb24-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-10"><a href="#cb24-10" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Exercise_7_1_10 (a b n : Nat) :</span>
+<span id="cb24-11"><a href="#cb24-11" aria-hidden="true" tabindex="-1"></a>    gcd (n * a) (n * b) = n * gcd a b := <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 </section>
