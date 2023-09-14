@@ -956,9 +956,9 @@ theorem rel_prime_symm {a b : Nat} (h : rel_prime a b) :
 
 ::: {.numex arguments="5"}
 ```lean
-lemma in_prime_factorization_iff_prime_dvd {a : Nat} {l : List Nat}
+lemma in_prime_factorization_iff_prime_factor {a : Nat} {l : List Nat}
     (h1 : prime_factorization a l) (p : Nat) :
-    p ∈ l ↔ prime p ∧ p ∣ a := sorry
+    p ∈ l ↔ prime_factor p a := sorry
 ```
 :::
 
