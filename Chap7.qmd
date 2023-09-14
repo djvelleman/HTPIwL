@@ -307,8 +307,8 @@ theorem gcd_comm (a b : Nat) : gcd a b = gcd b a := sorry
 
 ::: {.numex arguments="3"}
 ```lean
-theorem Exercise_7_1_5 (a b d : Nat) (n : Int) (h1 : gcd a b = d) :
-    (∃ (s t : Int), s * a + t * b = n) ↔ (↑d : Int) ∣ n := sorry
+theorem Exercise_7_1_5 (a b : Nat) (n : Int) :
+    (∃ (s t : Int), s * a + t * b = n) ↔ (↑(gcd a b) : Int) ∣ n := sorry
 ```
 :::
 
