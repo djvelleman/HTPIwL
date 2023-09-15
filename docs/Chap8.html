@@ -1556,7 +1556,7 @@ $$
 <span id="cb69-20"><a href="#cb69-20" aria-hidden="true" tabindex="-1"></a>  <span class="kw">rewrite</span> [←congr_iff_mod_eq_Nat, ←congr_iff_mod_eq_Nat] <span class="kw">at</span> h5</span>
 <span id="cb69-21"><a href="#cb69-21" aria-hidden="true" tabindex="-1"></a>      <span class="co">--h5 : ↑a1 ≡ ↑a2 (MOD m) ∧ ↑a1 ≡ ↑a2 (MOD n)</span></span>
 <span id="cb69-22"><a href="#cb69-22" aria-hidden="true" tabindex="-1"></a>  <span class="kw">rewrite</span> [←Lemma_7_4_5 _ _ h1] <span class="kw">at</span> h5  <span class="co">--h5 : ↑a1 ≡ ↑a2 (MOD m * n)</span></span>
-<span id="cb69-23"><a href="#cb69-23" aria-hidden="true" tabindex="-1"></a>  <span class="kw">rewrite</span> [congr_iff_mod_eq_Nat] <span class="kw">at</span> h5     <span class="co">--h5 : a1 % (m * n) = a2 % (m * n)</span></span>
+<span id="cb69-23"><a href="#cb69-23" aria-hidden="true" tabindex="-1"></a>  <span class="kw">rewrite</span> [congr_iff_mod_eq_Nat] <span class="kw">at</span> h5 <span class="co">--h5 : a1 % (m * n) = a2 % (m * n)</span></span>
 <span id="cb69-24"><a href="#cb69-24" aria-hidden="true" tabindex="-1"></a>  <span class="kw">rewrite</span> [Nat.mod_eq_of_lt h2.right, Nat.mod_eq_of_lt h3.right] <span class="kw">at</span> h5</span>
 <span id="cb69-25"><a href="#cb69-25" aria-hidden="true" tabindex="-1"></a>  <span class="kw">show</span> a1 = a2 <span class="kw">from</span> h5</span>
 <span id="cb69-26"><a href="#cb69-26" aria-hidden="true" tabindex="-1"></a>  <span class="kw">done</span></span>
