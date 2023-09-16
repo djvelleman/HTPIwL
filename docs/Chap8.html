@@ -2052,36 +2052,41 @@ $$
 <span id="cb98-13"><a href="#cb98-13" aria-hidden="true" tabindex="-1"></a>  <span class="kw">rewrite</span> [←Lemma_8_2_4_3 A]</span>
 <span id="cb98-14"><a href="#cb98-14" aria-hidden="true" tabindex="-1"></a>  <span class="kw">show</span> ctble (⋃₀ sbl_set A) <span class="kw">from</span> Theorem_8_2_2 h2 h3</span>
 <span id="cb98-15"><a href="#cb98-15" aria-hidden="true" tabindex="-1"></a>  <span class="kw">done</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>There is a set-theoretic operation that can produce an uncountable set from a countable set: the power set operation. <em>HTPI</em> demonstrates this by proving Cantor’s theorem (Theorem 8.2.5), which says that <span class="math inline">\(\mathscr{P}(\mathbb{Z}^+)\)</span> is uncountable. The strategy for this proof is tricky; it involves defining a set <span class="math inline">\(D\)</span> using a method called <em>diagonalization</em>. For an explanation of the motivation behind this strategy, see <em>HTPI</em>. Here we will use this strategy to prove that <code>Univ (Set Nat)</code> is uncountable.</p>
-<div class="sourceCode" id="cb99"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb99-1"><a href="#cb99-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Cantor's_theorem : ¬ctble (Univ (Set Nat)) := <span class="kw">by</span></span>
+<p>There is a set-theoretic operation that can produce an uncountable set from a countable set: the power set operation. <em>HTPI</em> demonstrates this by proving Cantor’s theorem (Theorem 8.2.5), which says that <span class="math inline">\(\mathscr{P}(\mathbb{Z}^+)\)</span> is uncountable. The strategy for this proof is tricky; it involves defining a set <span class="math inline">\(D\)</span> using a method called <em>diagonalization</em>. For an explanation of the motivation behind this strategy, see <em>HTPI</em>. Here we will use this strategy to prove that <code>𝒫 (Univ Nat)</code> is uncountable.</p>
+<div class="sourceCode" id="cb99"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb99-1"><a href="#cb99-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Cantor's_theorem : ¬ctble (𝒫 (Univ Nat)) := <span class="kw">by</span></span>
 <span id="cb99-2"><a href="#cb99-2" aria-hidden="true" tabindex="-1"></a>  <span class="kw">by_contra</span> h1</span>
 <span id="cb99-3"><a href="#cb99-3" aria-hidden="true" tabindex="-1"></a>  <span class="kw">rewrite</span> [Theorem_8_1_5_2] <span class="kw">at</span> h1</span>
 <span id="cb99-4"><a href="#cb99-4" aria-hidden="true" tabindex="-1"></a>  <span class="kw">obtain</span> (R : Rel Nat (Set Nat))</span>
-<span id="cb99-5"><a href="#cb99-5" aria-hidden="true" tabindex="-1"></a>    (h2 : fcnl_onto_from_nat R (Univ (Set Nat))) <span class="kw">from</span> h1</span>
+<span id="cb99-5"><a href="#cb99-5" aria-hidden="true" tabindex="-1"></a>    (h2 : fcnl_onto_from_nat R (𝒫 (Univ Nat))) <span class="kw">from</span> h1</span>
 <span id="cb99-6"><a href="#cb99-6" aria-hidden="true" tabindex="-1"></a>  <span class="kw">define</span> <span class="kw">at</span> h2</span>
 <span id="cb99-7"><a href="#cb99-7" aria-hidden="true" tabindex="-1"></a>  <span class="kw">have</span> h3 : unique_val_on_N R := h2.left</span>
-<span id="cb99-8"><a href="#cb99-8" aria-hidden="true" tabindex="-1"></a>  <span class="kw">have</span> h4 : nat_rel_onto R (Univ (Set Nat)) := h2.right</span>
+<span id="cb99-8"><a href="#cb99-8" aria-hidden="true" tabindex="-1"></a>  <span class="kw">have</span> h4 : nat_rel_onto R (𝒫 (Univ Nat)) := h2.right</span>
 <span id="cb99-9"><a href="#cb99-9" aria-hidden="true" tabindex="-1"></a>  <span class="kw">set</span> D : Set Nat := { n : Nat | ∃ (X : Set Nat), R n X ∧ n ∉ X }</span>
-<span id="cb99-10"><a href="#cb99-10" aria-hidden="true" tabindex="-1"></a>  <span class="kw">have</span> h5 : D ∈ Univ (Set Nat) := elt_Univ D</span>
-<span id="cb99-11"><a href="#cb99-11" aria-hidden="true" tabindex="-1"></a>  <span class="kw">define</span> <span class="kw">at</span> h4</span>
-<span id="cb99-12"><a href="#cb99-12" aria-hidden="true" tabindex="-1"></a>  <span class="kw">obtain</span> (n : Nat) (h6 : R n D) <span class="kw">from</span> h4 h5</span>
-<span id="cb99-13"><a href="#cb99-13" aria-hidden="true" tabindex="-1"></a>  <span class="kw">by_cases</span> h7 : n ∈ D</span>
-<span id="cb99-14"><a href="#cb99-14" aria-hidden="true" tabindex="-1"></a>  · <span class="co">-- Case 1. h7 : n ∈ D</span></span>
-<span id="cb99-15"><a href="#cb99-15" aria-hidden="true" tabindex="-1"></a>    <span class="kw">contradict</span> h7</span>
-<span id="cb99-16"><a href="#cb99-16" aria-hidden="true" tabindex="-1"></a>    <span class="kw">define</span> <span class="kw">at</span> h7</span>
-<span id="cb99-17"><a href="#cb99-17" aria-hidden="true" tabindex="-1"></a>    <span class="kw">obtain</span> (X : Set Nat) (h8 : R n X ∧ ¬n ∈ X) <span class="kw">from</span> h7</span>
-<span id="cb99-18"><a href="#cb99-18" aria-hidden="true" tabindex="-1"></a>    <span class="kw">define</span> <span class="kw">at</span> h3</span>
-<span id="cb99-19"><a href="#cb99-19" aria-hidden="true" tabindex="-1"></a>    <span class="kw">have</span> h9 : D = X := h3 h6 h8.left</span>
-<span id="cb99-20"><a href="#cb99-20" aria-hidden="true" tabindex="-1"></a>    <span class="kw">rewrite</span> [h9]</span>
-<span id="cb99-21"><a href="#cb99-21" aria-hidden="true" tabindex="-1"></a>    <span class="kw">show</span> ¬n ∈ X <span class="kw">from</span> h8.right</span>
-<span id="cb99-22"><a href="#cb99-22" aria-hidden="true" tabindex="-1"></a>    <span class="kw">done</span></span>
-<span id="cb99-23"><a href="#cb99-23" aria-hidden="true" tabindex="-1"></a>  · <span class="co">-- Case 2. h7 : n ∉ D</span></span>
-<span id="cb99-24"><a href="#cb99-24" aria-hidden="true" tabindex="-1"></a>    <span class="kw">contradict</span> h7</span>
-<span id="cb99-25"><a href="#cb99-25" aria-hidden="true" tabindex="-1"></a>    <span class="kw">define</span></span>
-<span id="cb99-26"><a href="#cb99-26" aria-hidden="true" tabindex="-1"></a>    <span class="kw">show</span> ∃ (X : Set Nat), R n X ∧ ¬n ∈ X <span class="kw">from</span></span>
-<span id="cb99-27"><a href="#cb99-27" aria-hidden="true" tabindex="-1"></a>      Exists.intro D (And.intro h6 h7)</span>
-<span id="cb99-28"><a href="#cb99-28" aria-hidden="true" tabindex="-1"></a>    <span class="kw">done</span></span>
-<span id="cb99-29"><a href="#cb99-29" aria-hidden="true" tabindex="-1"></a>  <span class="kw">done</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb99-10"><a href="#cb99-10" aria-hidden="true" tabindex="-1"></a>  <span class="kw">have</span> h5 : D ∈ 𝒫 (Univ Nat) := <span class="kw">by</span></span>
+<span id="cb99-11"><a href="#cb99-11" aria-hidden="true" tabindex="-1"></a>    <span class="kw">define</span></span>
+<span id="cb99-12"><a href="#cb99-12" aria-hidden="true" tabindex="-1"></a>    <span class="kw">fix</span> n : Nat</span>
+<span id="cb99-13"><a href="#cb99-13" aria-hidden="true" tabindex="-1"></a>    <span class="kw">assume</span> h5 : n ∈ D</span>
+<span id="cb99-14"><a href="#cb99-14" aria-hidden="true" tabindex="-1"></a>    <span class="kw">show</span> n ∈ Univ Nat <span class="kw">from</span> elt_Univ n</span>
+<span id="cb99-15"><a href="#cb99-15" aria-hidden="true" tabindex="-1"></a>    <span class="kw">done</span></span>
+<span id="cb99-16"><a href="#cb99-16" aria-hidden="true" tabindex="-1"></a>  <span class="kw">define</span> <span class="kw">at</span> h4</span>
+<span id="cb99-17"><a href="#cb99-17" aria-hidden="true" tabindex="-1"></a>  <span class="kw">obtain</span> (n : Nat) (h6 : R n D) <span class="kw">from</span> h4 h5</span>
+<span id="cb99-18"><a href="#cb99-18" aria-hidden="true" tabindex="-1"></a>  <span class="kw">by_cases</span> h7 : n ∈ D</span>
+<span id="cb99-19"><a href="#cb99-19" aria-hidden="true" tabindex="-1"></a>  · <span class="co">-- Case 1. h7 : n ∈ D</span></span>
+<span id="cb99-20"><a href="#cb99-20" aria-hidden="true" tabindex="-1"></a>    <span class="kw">contradict</span> h7</span>
+<span id="cb99-21"><a href="#cb99-21" aria-hidden="true" tabindex="-1"></a>    <span class="kw">define</span> <span class="kw">at</span> h7</span>
+<span id="cb99-22"><a href="#cb99-22" aria-hidden="true" tabindex="-1"></a>    <span class="kw">obtain</span> (X : Set Nat) (h8 : R n X ∧ ¬n ∈ X) <span class="kw">from</span> h7</span>
+<span id="cb99-23"><a href="#cb99-23" aria-hidden="true" tabindex="-1"></a>    <span class="kw">define</span> <span class="kw">at</span> h3</span>
+<span id="cb99-24"><a href="#cb99-24" aria-hidden="true" tabindex="-1"></a>    <span class="kw">have</span> h9 : D = X := h3 h6 h8.left</span>
+<span id="cb99-25"><a href="#cb99-25" aria-hidden="true" tabindex="-1"></a>    <span class="kw">rewrite</span> [h9]</span>
+<span id="cb99-26"><a href="#cb99-26" aria-hidden="true" tabindex="-1"></a>    <span class="kw">show</span> ¬n ∈ X <span class="kw">from</span> h8.right</span>
+<span id="cb99-27"><a href="#cb99-27" aria-hidden="true" tabindex="-1"></a>    <span class="kw">done</span></span>
+<span id="cb99-28"><a href="#cb99-28" aria-hidden="true" tabindex="-1"></a>  · <span class="co">-- Case 2. h7 : n ∉ D</span></span>
+<span id="cb99-29"><a href="#cb99-29" aria-hidden="true" tabindex="-1"></a>    <span class="kw">contradict</span> h7</span>
+<span id="cb99-30"><a href="#cb99-30" aria-hidden="true" tabindex="-1"></a>    <span class="kw">define</span></span>
+<span id="cb99-31"><a href="#cb99-31" aria-hidden="true" tabindex="-1"></a>    <span class="kw">show</span> ∃ (X : Set Nat), R n X ∧ ¬n ∈ X <span class="kw">from</span></span>
+<span id="cb99-32"><a href="#cb99-32" aria-hidden="true" tabindex="-1"></a>      Exists.intro D (And.intro h6 h7)</span>
+<span id="cb99-33"><a href="#cb99-33" aria-hidden="true" tabindex="-1"></a>    <span class="kw">done</span></span>
+<span id="cb99-34"><a href="#cb99-34" aria-hidden="true" tabindex="-1"></a>  <span class="kw">done</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>As a consequence of Theorem 8.2.5, <em>HTPI</em> shows that <span class="math inline">\(\mathbb{R}\)</span> is uncountable. The proof is not hard, but it requires facts about the decimal expansions of real numbers. Developing those facts in Lean would take us too far afield, so we will skip the proof.</p>
 <section id="exercises-2" class="level3">
 <h3 class="anchored" data-anchor-id="exercises-2">Exercises</h3>
