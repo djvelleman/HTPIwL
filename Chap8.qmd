@@ -2572,7 +2572,7 @@ def Part (A : Type) : Set (Set (Set A)) :=
   { P : Set (Set A) | partition P }
 
 def EqRelExt (A : Type) : Set (Set (A × A)) :=
-  { E : Set (A × A) | ∃ (R : BinRel A), equiv_rel R ∧ extension R = E}
+  { E : Set (A × A) | ∃ (R : BinRel A), equiv_rel R ∧ extension R = E }
 
 def shift_and_zero (X : Set Nat) : Set Nat :=
   { x + 2 | x ∈ X } ∪ {0}

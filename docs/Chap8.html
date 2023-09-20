@@ -2380,7 +2380,7 @@ $$
 <span id="cb119-5"><a href="#cb119-5" aria-hidden="true" tabindex="-1"></a>  { P : Set (Set A) | partition P }</span>
 <span id="cb119-6"><a href="#cb119-6" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb119-7"><a href="#cb119-7" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> EqRelExt (A : <span class="kw">Type</span>) : Set (Set (A × A)) :=</span>
-<span id="cb119-8"><a href="#cb119-8" aria-hidden="true" tabindex="-1"></a>  { E : Set (A × A) | ∃ (R : BinRel A), equiv_rel R ∧ extension R = E}</span>
+<span id="cb119-8"><a href="#cb119-8" aria-hidden="true" tabindex="-1"></a>  { E : Set (A × A) | ∃ (R : BinRel A), equiv_rel R ∧ extension R = E }</span>
 <span id="cb119-9"><a href="#cb119-9" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb119-10"><a href="#cb119-10" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> shift_and_zero (X : Set Nat) : Set Nat :=</span>
 <span id="cb119-11"><a href="#cb119-11" aria-hidden="true" tabindex="-1"></a>  { x + 2 | x ∈ X } ∪ {0}</span>
