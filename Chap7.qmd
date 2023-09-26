@@ -1297,8 +1297,8 @@ theorem Exercise_7_3_4b {m : Nat} (X Y1 Y2 : ZMod m)
 
 ::: {.numex arguments="6"}
 ```lean
-theorem Theorem_7_3_10 (m a d : Nat) (b : Int) (h1 : d = gcd m a) :
-    ¬(↑d : Int) ∣ b → ¬∃ (x : Int), a * x ≡ b (MOD m) := sorry
+theorem Theorem_7_3_10 (m a : Nat) (b : Int) :
+    ¬(↑(gcd m a) : Int) ∣ b → ¬∃ (x : Int), a * x ≡ b (MOD m) := sorry
 ```
 :::
 
