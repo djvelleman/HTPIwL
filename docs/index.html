@@ -230,6 +230,7 @@ $$
 </section>
 <section id="installing-lean" class="level2">
 <h2 class="anchored" data-anchor-id="installing-lean">Installing Lean</h2>
+<p>These instructions are based on the installation procedure that is describe <a href="https://lean-lang.org/lean4/doc/quickstart.html">here</a>.</p>
 <p>We will be using Visual Studio Code to run Lean, so you will need to install VS Code first. VS Code is free and can be downloaded <a href="https://code.visualstudio.com">here</a>.</p>
 <p>You will also need the Lean package that accompanies this book, which can be downloaded from <a href="https://github.com/djvelleman/HTPILeanPackage">https://github.com/djvelleman/HTPILeanPackage</a>. After following the link, click on the green “Code” button and, in the pop-up menu, select “Download ZIP”. Open the downloaded zip file to create a folder containing the HTPI Lean package. You can put this folder wherever you want on your computer.</p>
 <p>Now open VS Code. You should see a window that looks something like this:</p>
@@ -247,7 +248,8 @@ $$
 <p><img src="Images/Install-elan.png" class="img-fluid figure-img"></p>
 </figure>
 </div>
-<p>Click on the “Install Lean using Elan” button, and the Lean server should be installed. Then Lean should “build” the HTPI Lean package. This may take a while, but it only has to be done once. If anything goes wrong, try quitting VS Code and restarting. Eventually your window should look like this:</p>
+<p>Click on the “Install Lean using Elan” button, and Lean should be installed. Then Lean should “build” the HTPI Lean package. This may take a while, but it only has to be done once. If you are comfortable giving commands at a command line in a terminal window, you can speed up this process as follows: In VS Code, select “New Terminal” from the Terminal menu. At the command line, type <code>lake exe cache get</code>. You will see a number of messages about files being dowloaded.</p>
+<p>If anything goes wrong, try quitting VS Code and restarting. Eventually your window should look like this:</p>
 <p><img src="Images/Ready.png" class="img-fluid"></p>
 <p>If you don’t see the Infoview pane on the right side of the window, click on the icon circled in red in the image above, and the Infoview pane should appear.</p>
 <p>Your installation is now complete.</p>

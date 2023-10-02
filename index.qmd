@@ -19,6 +19,7 @@ If you are reading this book online, then at the end of the title in the left ma
 Of course, to make this possible, you must type your proof in a format that Lean understands.  Much of this book will be taken up with explaining how to write a proof so that Lean will understand it.
 
 ## Installing Lean
+These instructions are based on the installation procedure that is describe [here](https://lean-lang.org/lean4/doc/quickstart.html).
 
 We will be using Visual Studio Code to run Lean, so you will need to install VS Code first.  VS Code is free and can be downloaded [here](https://code.visualstudio.com).
 
@@ -46,7 +47,9 @@ Click on the file "Blank.lean" in the file list.  You should see a warning that 
 
 ![](Images/Install-elan.png){fig-align="center"}
 
-Click on the "Install Lean using Elan" button, and the Lean server should be installed.  Then Lean should "build" the HTPI Lean package.  This may take a while, but it only has to be done once.  If anything goes wrong, try quitting VS Code and restarting.  Eventually your window should look like this:
+Click on the "Install Lean using Elan" button, and Lean should be installed.  Then Lean should "build" the HTPI Lean package.  This may take a while, but it only has to be done once.  If you are comfortable giving commands at a command line in a terminal window, you can speed up this process as follows:  In VS Code, select "New Terminal" from the Terminal menu.  At the command line, type `lake exe cache get`.  You will see a number of messages about files being dowloaded.
+
+If anything goes wrong, try quitting VS Code and restarting.  Eventually your window should look like this:
 
 ![](Images/Ready.png)
 
