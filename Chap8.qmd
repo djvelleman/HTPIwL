@@ -503,7 +503,7 @@ theorem Theorem_8_1_3_3 {U V W : Type} {A : Set U} {B : Set V} {C : Set W}
   done
 ```
 
-Now that we have a basic understanding of the concept of equinumerous sets, we can use this concept to make a number of definitions.  For any natural number $n$, *HTPI* defines $I_n$ to be the set $\{1, 2, \ldots, n\}$, and then it defines a set to be *finite* if it is equinumerous with $I_n$, for some $n$.  In Lean, it is a bit more convenient to use the sets $\{0, 1, \ldots, n - 1\}$.  With that small change, we can repeat the definitions of finite, denumerable, and countable in *HTPI*.
+Now that we have a basic understanding of the concept of equinumerous sets, we can use this concept to make a number of definitions.  For any natural number $n$, *HTPI* defines $I_n$ to be the set $\{1, 2, \ldots, n\}$, and then it defines a set to be *finite* if it is equinumerous with $I_n$, for some $n$.  In Lean, it is a bit more convenient to use sets of the form $\{0, 1, \ldots, n - 1\}$.  With that small change, we can repeat the definitions of finite, denumerable, and countable in *HTPI*.
 
 ```lean
 def I (n : Nat) : Set Nat := { k : Nat | k < n }
