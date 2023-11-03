@@ -38,7 +38,7 @@ The next step of the proof in *HTPI* combines the statements $Q \to R$ and $\neg
 
 Now that you have seen an example of a proof in Lean, it is time for you to write your first proof.  Lean has two modes for writing proofs, called *term mode* and *tactic mode*.  The example above was written in tactic mode, and that is the mode we will use for most proofs in this book.  But before we study the construction of proofs in tactic mode, it will be helpful to learn a bit about term mode.  Term mode is best for simple proofs, so we begin with a few very short proofs.
 
-If you have not yet installed Lean on your computer, go back and follow the [instructions](#installing-lean) for installing it now.  Then in VS Code, open the folder containing the HTPI Lean Package that you downloaded, and click on the file Blank.lean.  The file starts with the line `import HTPIDefs`.  Click on the blank line at the end of the file; this is where you will be typing your first proofs.
+If you have not yet installed Lean on your computer, go back and follow the [instructions](#installing-lean) for installing it now.  Then in VS Code, open the folder containing the HTPI Lean Package that you downloaded, and click on the file Blank.lean.  The file starts with the line `import HTPILib.HTPIDefs`.  Click on the blank line at the end of the file; this is where you will be typing your first proofs.
 
 Now type in the following theorem and proof:
 
@@ -272,13 +272,13 @@ theorem Example_3_2_5_simple
 B C : Set ℕ
 a : ℕ
 h1 : a ∈ B
-h2 : ¬a ∈ B \ C
+h2 : a ∉ B \ C
 ⊢ a ∈ C
 ```
 :::
 :::
 
-The second line of this theorem statement declares that the variables `B` and `C` stand for sets of natural numbers, and `a` stands for a natural number.  The third line states the two hypotheses of the theorem, `a ∈ B` and `a ∉ B \ C`, and the conclusion, `a ∈ C`.  (Note that Lean occasionally writes things slightly differently in the tactic state.  In this case, Lean has written `ℕ` instead of `Nat`, and `¬a ∈ B \ C` instead of `a ∉ B \ C`.)
+The second line of this theorem statement declares that the variables `B` and `C` stand for sets of natural numbers, and `a` stands for a natural number.  The third line states the two hypotheses of the theorem, `a ∈ B` and `a ∉ B \ C`, and the conclusion, `a ∈ C`.  (Note that Lean occasionally writes things slightly differently in the tactic state.  In this case, Lean has written `ℕ` instead of `Nat`.)
 
 To figure out this proof, we'll imitate the reasoning in Example 3.2.5 in *HTPI*.  We begin by writing out the meaning of the given `h2`.  Fortunately, we have a tactic for that.  The tactic `define` writes out the definition of the goal, and as usual we can add `at` to apply the tactic to a given rather than the goal.  Here's the situation after using the tactic `define at h2`:
 
@@ -288,7 +288,7 @@ To figure out this proof, we'll imitate the reasoning in Example 3.2.5 in *HTPI*
 theorem Example_3_2_5_simple
     (B C : Set Nat) (a : Nat)
     (h1 : a ∈ B) (h2 : a ∉ B \ C) : a ∈ C := by
-  define at h2       --Now h2 : ¬(a ∈ B ∧ ¬a ∈ C)
+  define at h2       --Now h2 : ¬(a ∈ B ∧ a ∉ C)
   **done::
 ```
 :::
@@ -298,13 +298,13 @@ theorem Example_3_2_5_simple
 B C : Set ℕ
 a : ℕ
 h1 : a ∈ B
-h2 : ¬(a ∈ B ∧ ¬a ∈ C)
+h2 : ¬(a ∈ B ∧ a ∉ C)
 ⊢ a ∈ C
 ```
 :::
 :::
 
-Looking at the tactic state, we see that Lean has written out the meaning of set difference in `h2`.  And now we can see that, as in Example 3.2.5 in *HTPI*, we can put `h2` into a more useful form by applying first one of De Morgan's laws to rewrite it as `¬a ∈ B ∨ a ∈ C` and then a conditional law to change it to `a ∈ B → a ∈ C`:
+Looking at the tactic state, we see that Lean has written out the meaning of set difference in `h2`.  And now we can see that, as in Example 3.2.5 in *HTPI*, we can put `h2` into a more useful form by applying first one of De Morgan's laws to rewrite it as `a ∉ B ∨ a ∈ C` and then a conditional law to change it to `a ∈ B → a ∈ C`:
 
 ::: {.inout}
 ::: {.inpt}
@@ -312,8 +312,8 @@ Looking at the tactic state, we see that Lean has written out the meaning of set
 theorem Example_3_2_5_simple
     (B C : Set Nat) (a : Nat)
     (h1 : a ∈ B) (h2 : a ∉ B \ C) : a ∈ C := by
-  define at h2       --Now h2 : ¬(a ∈ B ∧ ¬a ∈ C)
-  demorgan at h2     --Now h2 : ¬a ∈ B ∨ a ∈ C
+  define at h2       --Now h2 : ¬(a ∈ B ∧ a ∉ C)
+  demorgan at h2     --Now h2 : a ∉ B ∨ a ∈ C
   conditional at h2  --Now h2 : a ∈ B → a ∈ C
   **done::
 ```
@@ -338,7 +338,7 @@ Occasionally, you may feel that the application of two tactics one after the oth
 theorem Example_3_2_5_simple
     (B C : Set Nat) (a : Nat)
     (h1 : a ∈ B) (h2 : a ∉ B \ C) : a ∈ C := by
-  define at h2       --Now h2 : ¬(a ∈ B ∧ ¬a ∈ C)
+  define at h2       --Now h2 : ¬(a ∈ B ∧ a ∉ C)
   demorgan at h2; conditional at h2
                      --Now h2 : a ∈ B → a ∈ C
   show a ∈ C from h2 h1

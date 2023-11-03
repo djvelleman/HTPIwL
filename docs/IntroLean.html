@@ -283,7 +283,7 @@ $$
 <section id="term-mode" class="level2">
 <h2 class="anchored" data-anchor-id="term-mode">Term Mode</h2>
 <p>Now that you have seen an example of a proof in Lean, it is time for you to write your first proof. Lean has two modes for writing proofs, called <em>term mode</em> and <em>tactic mode</em>. The example above was written in tactic mode, and that is the mode we will use for most proofs in this book. But before we study the construction of proofs in tactic mode, it will be helpful to learn a bit about term mode. Term mode is best for simple proofs, so we begin with a few very short proofs.</p>
-<p>If you have not yet installed Lean on your computer, go back and follow the <a href="index.html#installing-lean">instructions</a> for installing it now. Then in VS Code, open the folder containing the HTPI Lean Package that you downloaded, and click on the file Blank.lean. The file starts with the line <code>import HTPIDefs</code>. Click on the blank line at the end of the file; this is where you will be typing your first proofs.</p>
+<p>If you have not yet installed Lean on your computer, go back and follow the <a href="index.html#installing-lean">instructions</a> for installing it now. Then in VS Code, open the folder containing the HTPI Lean Package that you downloaded, and click on the file Blank.lean. The file starts with the line <code>import HTPILib.HTPIDefs</code>. Click on the blank line at the end of the file; this is where you will be typing your first proofs.</p>
 <p>Now type in the following theorem and proof:</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> extremely_easy (P : <span class="kw">Prop</span>) (h : P) : P := h</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>This theorem and proof are so short we have put everything on one line. In this theorem, the letter <code>P</code> is used to stand for a proposition. The theorem has one hypothesis, <code>P</code>, which has been given the identifier <code>h</code>, and the conclusion of the theorem is also <code>P</code>. The notation <code>:=</code> indicates that what follows will be a proof in term mode.</p>
@@ -558,36 +558,36 @@ $$
 <div class="sourceCode" id="cb18"><pre class="sourceCode state code-with-copy"><code class="sourceCode state"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="in">B C </span>: Set ℕ</span>
 <span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="in">a </span>: ℕ</span>
 <span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a><span class="in">h1 </span>: a ∈ B</span>
-<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a><span class="in">h2 </span>: ¬a ∈ B \ C</span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a><span class="in">h2 </span>: a ∉ B \ C</span>
 <span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>⊢ a ∈ C</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </div>
-<p>The second line of this theorem statement declares that the variables <code>B</code> and <code>C</code> stand for sets of natural numbers, and <code>a</code> stands for a natural number. The third line states the two hypotheses of the theorem, <code>a ∈ B</code> and <code>a ∉ B \ C</code>, and the conclusion, <code>a ∈ C</code>. (Note that Lean occasionally writes things slightly differently in the tactic state. In this case, Lean has written <code>ℕ</code> instead of <code>Nat</code>, and <code>¬a ∈ B \ C</code> instead of <code>a ∉ B \ C</code>.)</p>
+<p>The second line of this theorem statement declares that the variables <code>B</code> and <code>C</code> stand for sets of natural numbers, and <code>a</code> stands for a natural number. The third line states the two hypotheses of the theorem, <code>a ∈ B</code> and <code>a ∉ B \ C</code>, and the conclusion, <code>a ∈ C</code>. (Note that Lean occasionally writes things slightly differently in the tactic state. In this case, Lean has written <code>ℕ</code> instead of <code>Nat</code>.)</p>
 <p>To figure out this proof, we’ll imitate the reasoning in Example 3.2.5 in <em>HTPI</em>. We begin by writing out the meaning of the given <code>h2</code>. Fortunately, we have a tactic for that. The tactic <code>define</code> writes out the definition of the goal, and as usual we can add <code>at</code> to apply the tactic to a given rather than the goal. Here’s the situation after using the tactic <code>define at h2</code>:</p>
 <div class="inout">
 <div class="inpt">
 <div class="sourceCode" id="cb19"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Example_3_2_5_simple</span>
 <span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>    (B C : Set Nat) (a : Nat)</span>
 <span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>    (h1 : a ∈ B) (h2 : a ∉ B \ C) : a ∈ C := <span class="kw">by</span></span>
-<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>  <span class="kw">define</span> <span class="kw">at</span> h2       <span class="co">--Now h2 : ¬(a ∈ B ∧ ¬a ∈ C)</span></span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>  <span class="kw">define</span> <span class="kw">at</span> h2       <span class="co">--Now h2 : ¬(a ∈ B ∧ a ∉ C)</span></span>
 <span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a>  <span class="sc">**</span><span class="wa">done</span><span class="sc">::</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="outpt">
 <div class="sourceCode" id="cb20"><pre class="sourceCode state code-with-copy"><code class="sourceCode state"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="in">B C </span>: Set ℕ</span>
 <span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a><span class="in">a </span>: ℕ</span>
 <span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a><span class="in">h1 </span>: a ∈ B</span>
-<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a><span class="in">h2 </span>: ¬(a ∈ B ∧ ¬a ∈ C)</span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a><span class="in">h2 </span>: ¬(a ∈ B ∧ a ∉ C)</span>
 <span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a>⊢ a ∈ C</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </div>
-<p>Looking at the tactic state, we see that Lean has written out the meaning of set difference in <code>h2</code>. And now we can see that, as in Example 3.2.5 in <em>HTPI</em>, we can put <code>h2</code> into a more useful form by applying first one of De Morgan’s laws to rewrite it as <code>¬a ∈ B ∨ a ∈ C</code> and then a conditional law to change it to <code>a ∈ B → a ∈ C</code>:</p>
+<p>Looking at the tactic state, we see that Lean has written out the meaning of set difference in <code>h2</code>. And now we can see that, as in Example 3.2.5 in <em>HTPI</em>, we can put <code>h2</code> into a more useful form by applying first one of De Morgan’s laws to rewrite it as <code>a ∉ B ∨ a ∈ C</code> and then a conditional law to change it to <code>a ∈ B → a ∈ C</code>:</p>
 <div class="inout">
 <div class="inpt">
 <div class="sourceCode" id="cb21"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Example_3_2_5_simple</span>
 <span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>    (B C : Set Nat) (a : Nat)</span>
 <span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>    (h1 : a ∈ B) (h2 : a ∉ B \ C) : a ∈ C := <span class="kw">by</span></span>
-<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>  <span class="kw">define</span> <span class="kw">at</span> h2       <span class="co">--Now h2 : ¬(a ∈ B ∧ ¬a ∈ C)</span></span>
-<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a>  <span class="kw">demorgan</span> <span class="kw">at</span> h2     <span class="co">--Now h2 : ¬a ∈ B ∨ a ∈ C</span></span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>  <span class="kw">define</span> <span class="kw">at</span> h2       <span class="co">--Now h2 : ¬(a ∈ B ∧ a ∉ C)</span></span>
+<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a>  <span class="kw">demorgan</span> <span class="kw">at</span> h2     <span class="co">--Now h2 : a ∉ B ∨ a ∈ C</span></span>
 <span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a>  <span class="kw">conditional</span> <span class="kw">at</span> h2  <span class="co">--Now h2 : a ∈ B → a ∈ C</span></span>
 <span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a>  <span class="sc">**</span><span class="wa">done</span><span class="sc">::</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
@@ -605,7 +605,7 @@ $$
 <div class="sourceCode" id="cb23"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Example_3_2_5_simple</span>
 <span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>    (B C : Set Nat) (a : Nat)</span>
 <span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>    (h1 : a ∈ B) (h2 : a ∉ B \ C) : a ∈ C := <span class="kw">by</span></span>
-<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a>  <span class="kw">define</span> <span class="kw">at</span> h2       <span class="co">--Now h2 : ¬(a ∈ B ∧ ¬a ∈ C)</span></span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a>  <span class="kw">define</span> <span class="kw">at</span> h2       <span class="co">--Now h2 : ¬(a ∈ B ∧ a ∉ C)</span></span>
 <span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a>  <span class="kw">demorgan</span> <span class="kw">at</span> h2; <span class="kw">conditional</span> <span class="kw">at</span> h2</span>
 <span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a>                     <span class="co">--Now h2 : a ∈ B → a ∈ C</span></span>
 <span id="cb23-7"><a href="#cb23-7" aria-hidden="true" tabindex="-1"></a>  <span class="kw">show</span> a ∈ C <span class="kw">from</span> h2 h1</span>
