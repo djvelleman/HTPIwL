@@ -507,7 +507,7 @@ def minimalElt {A : Type} (R : BinRel A) (b : A) (B : Set A) : Prop :=
 
 Notice that, as in *HTPI*, in Lean we can write `∀ x ∈ B, P x` as an abbreviation for `∀ (x : A), x ∈ B → P x`, and `∃ x ∈ B, P x` as an abbreviation for `∃ (x : A), x ∈ B ∧ P x`.  According to these definitions, `smallestElt R b B` is the proposition that `b` is an `R`-smallest element of `B`, and `minimalElt R b B` means that `b` is an `R`-minimal element of `B`.
 
-Theorem 4.4.6 in *HTPI* asserts three statements about these concepts.  We'll prove the second and third, and leave the first as an exercise for you.  The first statement in Theorem 4.4.6 says that if `B` has an `R`-smallest element, then that `R`-smallest element is unique.  Thus, we can talk about *the* `R`-smallest element of `B` rather than *an* `R`-smallest element.  The second says that if `b` is the `R`-smallest element of `B`, then it is also an `R`-minimal element, and it is the only `R`-minimal element.  Here is how you might start the proof:
+Theorem 4.4.6 in *HTPI* asserts three statements about these concepts.  We'll prove the second and third, and leave the first as an exercise for you.  The first statement in Theorem 4.4.6 says that if `B` has an `R`-smallest element, then that `R`-smallest element is unique.  Thus, we can talk about *the* `R`-smallest element of `B` rather than *an* `R`-smallest element.  The second says that if `b` is the `R`-smallest element of `B`, then it is also an `R`-minimal element, and it is the only `R`-minimal element.  Here is how you might start the proof.  (Although Lean sometimes uses bounded quantifiers as abbreviations in the Infoview, we have written out the unabbreviated statements in the comments, to make the logic of some steps easier to follow.)
 
 ```lean
 theorem Theorem_4_4_6_2 {A : Type} (R : BinRel A) (B : Set A) (b : A)
@@ -591,7 +591,7 @@ theorem Theorem_4_4_6_3 {A : Type} (R : BinRel A) (B : Set A) (b : A)
   assume h3 : x ∈ B        --Goal : R b x
   by_cases h4 : x = b
   · -- Case 1. h4 : x = b
-    rewrite [h4]             --Goal : R b b
+    rewrite [h4]           --Goal : R b b
     have h5 : partial_order R := h1.left
     define at h5
     have h6 : reflexive R := h5.left
