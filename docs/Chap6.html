@@ -465,7 +465,7 @@ $$
 <div class="sourceCode" id="cb16"><pre class="sourceCode state code-with-copy"><code class="sourceCode state"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="re">case</span> Base_Case</span>
 <span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>⊢ 2 ^ 5 &gt; 5 ^ 2</span>
 <span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a><span class="re">case</span> Induction_Step</span>
-<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>⊢ ∀ (n : ℕ), n ≥ 5 →</span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>⊢ ∀ n ≥ 5,</span>
 <span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;&gt;</span>  2 ^ n &gt; n ^ 2 →</span>
 <span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;&gt;</span>  2 ^ (n + 1) &gt;</span>
 <span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;&gt;</span>      (n + 1) ^ 2</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -603,7 +603,7 @@ $$
 <span id="cb33-8"><a href="#cb33-8" aria-hidden="true" tabindex="-1"></a>    <span class="kw">rewrite</span> [one_elt_iff_singleton] <span class="kw">at</span> h2</span>
 <span id="cb33-9"><a href="#cb33-9" aria-hidden="true" tabindex="-1"></a>    <span class="kw">obtain</span> (b : A) (h3 : B = {b}) <span class="kw">from</span> h2</span>
 <span id="cb33-10"><a href="#cb33-10" aria-hidden="true" tabindex="-1"></a>    <span class="kw">apply</span> Exists.intro b</span>
-<span id="cb33-11"><a href="#cb33-11" aria-hidden="true" tabindex="-1"></a>    <span class="kw">define</span>         <span class="co">--Goal : b ∈ B ∧ ¬∃ (x : A), x ∈ B ∧ R x b ∧ x ≠ b</span></span>
+<span id="cb33-11"><a href="#cb33-11" aria-hidden="true" tabindex="-1"></a>    <span class="kw">define</span>         <span class="co">--Goal : b ∈ B ∧ ¬∃ x ∈ B, R x b ∧ x ≠ b</span></span>
 <span id="cb33-12"><a href="#cb33-12" aria-hidden="true" tabindex="-1"></a>    <span class="kw">apply</span> And.intro</span>
 <span id="cb33-13"><a href="#cb33-13" aria-hidden="true" tabindex="-1"></a>    · <span class="co">-- Proof that b ∈ B</span></span>
 <span id="cb33-14"><a href="#cb33-14" aria-hidden="true" tabindex="-1"></a>      <span class="kw">rewrite</span> [h3]    <span class="co">--Goal : b ∈ {b}</span></span>
@@ -629,9 +629,9 @@ $$
 <span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a>    (h1 : partial_order R) (h2 : b ∈ B) (h3 : minimalElt R c (B \ {b}))</span>
 <span id="cb34-3"><a href="#cb34-3" aria-hidden="true" tabindex="-1"></a>    (h4 : R b c) : minimalElt R b B := <span class="kw">by</span></span>
 <span id="cb34-4"><a href="#cb34-4" aria-hidden="true" tabindex="-1"></a>  <span class="kw">define</span> <span class="kw">at</span> h3</span>
-<span id="cb34-5"><a href="#cb34-5" aria-hidden="true" tabindex="-1"></a>    <span class="co">--h3 : c ∈ B \ {b} ∧ ¬∃ (x : A), x ∈ B \ {b} ∧ R x c ∧ x ≠ c</span></span>
-<span id="cb34-6"><a href="#cb34-6" aria-hidden="true" tabindex="-1"></a>  <span class="kw">define</span>  <span class="co">--Goal : b ∈ B ∧ ¬∃ (x : A), x ∈ B ∧ R x b ∧ x ≠ b</span></span>
-<span id="cb34-7"><a href="#cb34-7" aria-hidden="true" tabindex="-1"></a>  <span class="kw">apply</span> And.intro h2    <span class="co">--Goal : ¬∃ (x : A), x ∈ B ∧ R x b ∧ x ≠ b</span></span>
+<span id="cb34-5"><a href="#cb34-5" aria-hidden="true" tabindex="-1"></a>    <span class="co">--h3 : c ∈ B \ {b} ∧ ¬∃ x ∈ B \ {b}, R x c ∧ x ≠ c</span></span>
+<span id="cb34-6"><a href="#cb34-6" aria-hidden="true" tabindex="-1"></a>  <span class="kw">define</span>  <span class="co">--Goal : b ∈ B ∧ ¬∃ x ∈ B, R x b ∧ x ≠ b</span></span>
+<span id="cb34-7"><a href="#cb34-7" aria-hidden="true" tabindex="-1"></a>  <span class="kw">apply</span> And.intro h2    <span class="co">--Goal : ¬∃ x ∈ B, R x b ∧ x ≠ b</span></span>
 <span id="cb34-8"><a href="#cb34-8" aria-hidden="true" tabindex="-1"></a>  <span class="kw">contradict</span> h3.right <span class="kw">with</span> h5</span>
 <span id="cb34-9"><a href="#cb34-9" aria-hidden="true" tabindex="-1"></a>  <span class="kw">obtain</span> (x : A) (h6 : x ∈ B ∧ R x b ∧ x ≠ b) <span class="kw">from</span> h5</span>
 <span id="cb34-10"><a href="#cb34-10" aria-hidden="true" tabindex="-1"></a>  <span class="kw">apply</span> Exists.intro x  <span class="co">--Goal : x ∈ B \ {b} ∧ R x c ∧ x ≠ c</span></span>
@@ -892,7 +892,7 @@ $$
 <span id="cb54-16"><a href="#cb54-16" aria-hidden="true" tabindex="-1"></a>    <span class="kw">done</span></span>
 <span id="cb54-17"><a href="#cb54-17" aria-hidden="true" tabindex="-1"></a>  <span class="kw">done</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>There are two steps in the calculational proof at the end that require justification. The first says that <code>(n + 1) * fact n &gt; (n + 1) * 2 ^ n</code>, which should follow from the inductive hypothesis <code>ih : fact n &gt; 2 ^ n</code> by multiplying both sides by <code>n + 1</code>. Is there a theorem that would justify this inference?</p>
-<p>This may remind you of a step in <code>Example_6_1_3</code> where we used the theorem <code>Nat.mul_le_mul_right</code>, which says <code>∀ {n m : ℕ} (k : ℕ), n ≤ m → n * k ≤ m * k</code>. Our situation in this example is similar, but it involves a strict inequality (<code>&gt;</code> rather than <code>≥</code>) and it involves multiplying on the left rather than the right. Many theorems about inequalities in Lean’s library contain either <code>le</code> (for “less than or equal to”) or <code>lt</code> (for “less than”) in their names, but they can also be used to prove statements involving <code>≥</code> or <code>&gt;</code>. Perhaps the theorem we need is named something like <code>Nat.mul_lt_mul_left</code>. If you type <code>#check @Nat.mul_lt_mul</code> into VS Code, a pop-up window will appear listing several theorems that begin with <code>Nat.mul_lt_mul</code>. There is no <code>Nat.mul_lt_mul_left</code>, but there is a theorem called <code>Nat.mul_lt_mul_of_pos_left</code>, and its meaning is</p>
+<p>This may remind you of a step in <code>Example_6_1_3</code> where we used the theorem <code>Nat.mul_le_mul_right</code>, which says <code>∀ {n m : ℕ} (k : ℕ), n ≤ m → n * k ≤ m * k</code>. Our situation in this example is similar, but it involves a strict inequality (<code>&gt;</code> rather than <code>≥</code>) and it involves multiplying on the left rather than the right. Many theorems about inequalities in Lean’s library contain either <code>le</code> (for “less than or equal to”) or <code>lt</code> (for “less than”) in their names, but they can also be used to prove statements involving <code>≥</code> or <code>&gt;</code>. Perhaps the theorem we need is named something like <code>Nat.mul_lt_mul_left</code>. If you type <code>#check @Nat.mul_lt_mul_</code> into VS Code, a pop-up window will appear listing several theorems that begin with <code>Nat.mul_lt_mul_</code>. There is no <code>Nat.mul_lt_mul_left</code>, but there is a theorem called <code>Nat.mul_lt_mul_of_pos_left</code>, and its meaning is</p>
 <div class="ind">
 <pre><code>@Nat.mul_lt_mul_of_pos_left : ∀ {n m k : ℕ},
                                 n &lt; m → k &gt; 0 → k * n &lt; k * m</code></pre>
@@ -1317,7 +1317,7 @@ $$
 <div class="sourceCode" id="cb94"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb94-1"><a href="#cb94-1" aria-hidden="true" tabindex="-1"></a><span class="kw">example</span> : ∀ (n : Nat), Fib n &lt; 2 ^ n := <span class="kw">by</span></span>
 <span id="cb94-2"><a href="#cb94-2" aria-hidden="true" tabindex="-1"></a>  <span class="kw">by_strong_induc</span></span>
 <span id="cb94-3"><a href="#cb94-3" aria-hidden="true" tabindex="-1"></a>  <span class="kw">fix</span> n : Nat</span>
-<span id="cb94-4"><a href="#cb94-4" aria-hidden="true" tabindex="-1"></a>  <span class="kw">assume</span> ih : ∀ (n_1 : Nat), n_1 &lt; n → Fib n_1 &lt; 2 ^ n_1</span>
+<span id="cb94-4"><a href="#cb94-4" aria-hidden="true" tabindex="-1"></a>  <span class="kw">assume</span> ih : ∀ n_1 &lt; n, Fib n_1 &lt; 2 ^ n_1</span>
 <span id="cb94-5"><a href="#cb94-5" aria-hidden="true" tabindex="-1"></a>  <span class="kw">by_cases</span> h1 : n = 0</span>
 <span id="cb94-6"><a href="#cb94-6" aria-hidden="true" tabindex="-1"></a>  · <span class="co">-- Case 1. h1 : n = 0</span></span>
 <span id="cb94-7"><a href="#cb94-7" aria-hidden="true" tabindex="-1"></a>    <span class="kw">rewrite</span> [h1]   <span class="co">--Goal : Fib 0 &lt; 2 ^ 0</span></span>
@@ -1349,20 +1349,20 @@ $$
 <span id="cb94-33"><a href="#cb94-33" aria-hidden="true" tabindex="-1"></a>  <span class="kw">done</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>As with ordinary induction, strong induction can be useful for proving statements that do not at first seem to have the form <code>∀ (n : Nat), ...</code>. To illustrate this, we’ll prove the <em>well-ordering principle</em>, which says that if a set <code>S : Set Nat</code> is nonempty, then it has a smallest element. We’ll prove the contrapositive: if <code>S</code> has no smallest element, then it is empty. To say that <code>S</code> is empty means <code>∀ (n : Nat), n ∉ S</code>, and that’s the statement to which we will apply strong induction.</p>
 <div class="sourceCode" id="cb95"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb95-1"><a href="#cb95-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> well_ord_princ (S : Set Nat) : (∃ (n : Nat), n ∈ S) →</span>
-<span id="cb95-2"><a href="#cb95-2" aria-hidden="true" tabindex="-1"></a>    ∃ (n : Nat), n ∈ S ∧ ∀ (m : Nat), m ∈ S → n ≤ m := <span class="kw">by</span></span>
+<span id="cb95-2"><a href="#cb95-2" aria-hidden="true" tabindex="-1"></a>    ∃ n ∈ S, ∀ m ∈ S, n ≤ m := <span class="kw">by</span></span>
 <span id="cb95-3"><a href="#cb95-3" aria-hidden="true" tabindex="-1"></a>  <span class="kw">contrapos</span></span>
-<span id="cb95-4"><a href="#cb95-4" aria-hidden="true" tabindex="-1"></a>  <span class="kw">assume</span> h1 : ¬∃ (n : Nat), n ∈ S ∧ ∀ (m : Nat), m ∈ S → n ≤ m</span>
-<span id="cb95-5"><a href="#cb95-5" aria-hidden="true" tabindex="-1"></a>  <span class="kw">quant_neg</span>                   <span class="co">--Goal : ∀ (n : Nat), ¬n ∈ S</span></span>
+<span id="cb95-4"><a href="#cb95-4" aria-hidden="true" tabindex="-1"></a>  <span class="kw">assume</span> h1 : ¬∃ n ∈ S, ∀ m ∈ S, n ≤ m</span>
+<span id="cb95-5"><a href="#cb95-5" aria-hidden="true" tabindex="-1"></a>  <span class="kw">quant_neg</span>                   <span class="co">--Goal : ∀ (n : Nat), n ∉ S</span></span>
 <span id="cb95-6"><a href="#cb95-6" aria-hidden="true" tabindex="-1"></a>  <span class="kw">by_strong_induc</span></span>
 <span id="cb95-7"><a href="#cb95-7" aria-hidden="true" tabindex="-1"></a>  <span class="kw">fix</span> n : Nat</span>
-<span id="cb95-8"><a href="#cb95-8" aria-hidden="true" tabindex="-1"></a>  <span class="kw">assume</span> ih : ∀ (n_1 : Nat), n_1 &lt; n → ¬n_1 ∈ S  <span class="co">--Goal : ¬n ∈ S</span></span>
+<span id="cb95-8"><a href="#cb95-8" aria-hidden="true" tabindex="-1"></a>  <span class="kw">assume</span> ih : ∀ n_1 &lt; n, n_1 ∉ S  <span class="co">--Goal : n ∉ S</span></span>
 <span id="cb95-9"><a href="#cb95-9" aria-hidden="true" tabindex="-1"></a>  <span class="kw">contradict</span> h1 <span class="kw">with</span> h2       <span class="co">--h2 : n ∈ S</span></span>
-<span id="cb95-10"><a href="#cb95-10" aria-hidden="true" tabindex="-1"></a>    <span class="co">--Goal : ∃ (n : Nat), n ∈ S ∧ ∀ (m : Nat), m ∈ S → n ≤ m</span></span>
-<span id="cb95-11"><a href="#cb95-11" aria-hidden="true" tabindex="-1"></a>  <span class="kw">apply</span> Exists.intro n</span>
-<span id="cb95-12"><a href="#cb95-12" aria-hidden="true" tabindex="-1"></a>  <span class="kw">apply</span> And.intro h2          <span class="co">--Goal : ∀ (m : Nat), m ∈ S → n ≤ m</span></span>
+<span id="cb95-10"><a href="#cb95-10" aria-hidden="true" tabindex="-1"></a>    <span class="co">--Goal : ∃ n ∈ S, ∀ m ∈ S, n ≤ m</span></span>
+<span id="cb95-11"><a href="#cb95-11" aria-hidden="true" tabindex="-1"></a>  <span class="kw">apply</span> Exists.intro n        <span class="co">--Goal : n ∈ S ∧ ∀ m ∈ S, n ≤ m</span></span>
+<span id="cb95-12"><a href="#cb95-12" aria-hidden="true" tabindex="-1"></a>  <span class="kw">apply</span> And.intro h2          <span class="co">--Goal : ∀ m ∈ S, n ≤ m</span></span>
 <span id="cb95-13"><a href="#cb95-13" aria-hidden="true" tabindex="-1"></a>  <span class="kw">fix</span> m : Nat</span>
 <span id="cb95-14"><a href="#cb95-14" aria-hidden="true" tabindex="-1"></a>  <span class="kw">assume</span> h3 : m ∈ S</span>
-<span id="cb95-15"><a href="#cb95-15" aria-hidden="true" tabindex="-1"></a>  <span class="kw">have</span> h4 : m &lt; n → ¬m ∈ S := ih m</span>
+<span id="cb95-15"><a href="#cb95-15" aria-hidden="true" tabindex="-1"></a>  <span class="kw">have</span> h4 : m &lt; n → m ∉ S := ih m</span>
 <span id="cb95-16"><a href="#cb95-16" aria-hidden="true" tabindex="-1"></a>  <span class="kw">contrapos</span> <span class="kw">at</span> h4             <span class="co">--h4 : m ∈ S → ¬m &lt; n</span></span>
 <span id="cb95-17"><a href="#cb95-17" aria-hidden="true" tabindex="-1"></a>  <span class="kw">have</span> h5 : ¬m &lt; n := h4 h3</span>
 <span id="cb95-18"><a href="#cb95-18" aria-hidden="true" tabindex="-1"></a>  <span class="kw">linarith</span></span>
@@ -1394,45 +1394,44 @@ $$
 <span id="cb101-4"><a href="#cb101-4" aria-hidden="true" tabindex="-1"></a>    { q : Nat | ∃ (p : Nat), p * p = 2 * (q * q) ∧ q ≠ 0 }</span>
 <span id="cb101-5"><a href="#cb101-5" aria-hidden="true" tabindex="-1"></a>  <span class="kw">by_contra</span> h1</span>
 <span id="cb101-6"><a href="#cb101-6" aria-hidden="true" tabindex="-1"></a>  <span class="kw">have</span> h2 : ∃ (q : Nat), q ∈ S := h1</span>
-<span id="cb101-7"><a href="#cb101-7" aria-hidden="true" tabindex="-1"></a>  <span class="kw">have</span> h3 : ∃ (q : Nat), q ∈ S ∧ ∀ (r : Nat), r ∈ S → q ≤ r :=</span>
-<span id="cb101-8"><a href="#cb101-8" aria-hidden="true" tabindex="-1"></a>    well_ord_princ S h2</span>
-<span id="cb101-9"><a href="#cb101-9" aria-hidden="true" tabindex="-1"></a>  <span class="kw">obtain</span> (q : Nat) (h4 : q ∈ S ∧ ∀ (r : Nat), r ∈ S → q ≤ r) <span class="kw">from</span> h3</span>
-<span id="cb101-10"><a href="#cb101-10" aria-hidden="true" tabindex="-1"></a>  <span class="kw">have</span> qinS : q ∈ S := h4.left</span>
-<span id="cb101-11"><a href="#cb101-11" aria-hidden="true" tabindex="-1"></a>  <span class="kw">have</span> qleast : ∀ (r : ℕ), r ∈ S → q ≤ r := h4.right</span>
-<span id="cb101-12"><a href="#cb101-12" aria-hidden="true" tabindex="-1"></a>  <span class="kw">define</span> <span class="kw">at</span> qinS     <span class="co">--qinS : ∃ (p : Nat), p * p = 2 * (q * q) ∧ q ≠ 0</span></span>
-<span id="cb101-13"><a href="#cb101-13" aria-hidden="true" tabindex="-1"></a>  <span class="kw">obtain</span> (p : Nat) (h5 : p * p = 2 * (q * q) ∧ q ≠ 0) <span class="kw">from</span> qinS</span>
-<span id="cb101-14"><a href="#cb101-14" aria-hidden="true" tabindex="-1"></a>  <span class="kw">have</span> pqsqrt2 : p * p = 2 * (q * q) := h5.left</span>
-<span id="cb101-15"><a href="#cb101-15" aria-hidden="true" tabindex="-1"></a>  <span class="kw">have</span> qne0 : q ≠ 0 := h5.right</span>
-<span id="cb101-16"><a href="#cb101-16" aria-hidden="true" tabindex="-1"></a>  <span class="kw">have</span> h6 : nat_even (p * p) := Exists.intro (q * q) pqsqrt2</span>
-<span id="cb101-17"><a href="#cb101-17" aria-hidden="true" tabindex="-1"></a>  <span class="kw">rewrite</span> [sq_even_iff_even p] <span class="kw">at</span> h6    <span class="co">--h6 : nat_even p</span></span>
-<span id="cb101-18"><a href="#cb101-18" aria-hidden="true" tabindex="-1"></a>  <span class="kw">obtain</span> (p' : Nat) (p'halfp : p = 2 * p') <span class="kw">from</span> h6</span>
-<span id="cb101-19"><a href="#cb101-19" aria-hidden="true" tabindex="-1"></a>  <span class="kw">have</span> h7 : 2 * (2 * (p' * p')) = 2 * (q * q) := <span class="kw">by</span></span>
-<span id="cb101-20"><a href="#cb101-20" aria-hidden="true" tabindex="-1"></a>    <span class="kw">rewrite</span> [←pqsqrt2, p'halfp]</span>
-<span id="cb101-21"><a href="#cb101-21" aria-hidden="true" tabindex="-1"></a>    <span class="kw">ring</span></span>
-<span id="cb101-22"><a href="#cb101-22" aria-hidden="true" tabindex="-1"></a>    <span class="kw">done</span></span>
-<span id="cb101-23"><a href="#cb101-23" aria-hidden="true" tabindex="-1"></a>  <span class="kw">have</span> h8 : 2 &gt; 0 := <span class="kw">by</span> <span class="kw">norm_num</span></span>
-<span id="cb101-24"><a href="#cb101-24" aria-hidden="true" tabindex="-1"></a>  <span class="kw">rewrite</span> [mul_left_cancel_iff_of_pos h8] <span class="kw">at</span> h7</span>
-<span id="cb101-25"><a href="#cb101-25" aria-hidden="true" tabindex="-1"></a>    <span class="co">--h7 : 2 * (p' * p') = q * q</span></span>
-<span id="cb101-26"><a href="#cb101-26" aria-hidden="true" tabindex="-1"></a>  <span class="kw">have</span> h9 : nat_even (q * q) := Exists.intro (p' * p') h7.symm</span>
-<span id="cb101-27"><a href="#cb101-27" aria-hidden="true" tabindex="-1"></a>  <span class="kw">rewrite</span> [sq_even_iff_even q] <span class="kw">at</span> h9   <span class="co">--h9 : nat_even q</span></span>
-<span id="cb101-28"><a href="#cb101-28" aria-hidden="true" tabindex="-1"></a>  <span class="kw">obtain</span> (q' : Nat) (q'halfq : q = 2 * q') <span class="kw">from</span> h9</span>
-<span id="cb101-29"><a href="#cb101-29" aria-hidden="true" tabindex="-1"></a>  <span class="kw">have</span> h10 : 2 * (p' * p') = 2 * (2 * (q' * q')) := <span class="kw">by</span></span>
-<span id="cb101-30"><a href="#cb101-30" aria-hidden="true" tabindex="-1"></a>    <span class="kw">rewrite</span> [h7, q'halfq]</span>
-<span id="cb101-31"><a href="#cb101-31" aria-hidden="true" tabindex="-1"></a>    <span class="kw">ring</span></span>
-<span id="cb101-32"><a href="#cb101-32" aria-hidden="true" tabindex="-1"></a>    <span class="kw">done</span></span>
-<span id="cb101-33"><a href="#cb101-33" aria-hidden="true" tabindex="-1"></a>  <span class="kw">rewrite</span> [mul_left_cancel_iff_of_pos h8] <span class="kw">at</span> h10</span>
-<span id="cb101-34"><a href="#cb101-34" aria-hidden="true" tabindex="-1"></a>    <span class="co">--h10 : p' * p' = 2 * (q' * q')</span></span>
-<span id="cb101-35"><a href="#cb101-35" aria-hidden="true" tabindex="-1"></a>  <span class="kw">have</span> q'ne0 : q' ≠ 0 := <span class="kw">by</span></span>
-<span id="cb101-36"><a href="#cb101-36" aria-hidden="true" tabindex="-1"></a>    <span class="kw">contradict</span> qne0 <span class="kw">with</span> h11</span>
-<span id="cb101-37"><a href="#cb101-37" aria-hidden="true" tabindex="-1"></a>    <span class="kw">rewrite</span> [q'halfq, h11]</span>
-<span id="cb101-38"><a href="#cb101-38" aria-hidden="true" tabindex="-1"></a>    <span class="kw">rfl</span></span>
-<span id="cb101-39"><a href="#cb101-39" aria-hidden="true" tabindex="-1"></a>    <span class="kw">done</span></span>
-<span id="cb101-40"><a href="#cb101-40" aria-hidden="true" tabindex="-1"></a>  <span class="kw">have</span> q'inS : q' ∈ S := Exists.intro p' (And.intro h10 q'ne0)</span>
-<span id="cb101-41"><a href="#cb101-41" aria-hidden="true" tabindex="-1"></a>  <span class="kw">have</span> qleq' : q ≤ q' := qleast q' q'inS</span>
-<span id="cb101-42"><a href="#cb101-42" aria-hidden="true" tabindex="-1"></a>  <span class="kw">rewrite</span> [q'halfq] <span class="kw">at</span> qleq'        <span class="co">--qleq' : 2 * q' ≤ q'</span></span>
-<span id="cb101-43"><a href="#cb101-43" aria-hidden="true" tabindex="-1"></a>  <span class="kw">contradict</span> q'ne0</span>
-<span id="cb101-44"><a href="#cb101-44" aria-hidden="true" tabindex="-1"></a>  <span class="kw">linarith</span></span>
-<span id="cb101-45"><a href="#cb101-45" aria-hidden="true" tabindex="-1"></a>  <span class="kw">done</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb101-7"><a href="#cb101-7" aria-hidden="true" tabindex="-1"></a>  <span class="kw">have</span> h3 : ∃ q ∈ S, ∀ r ∈ S, q ≤ r := well_ord_princ S h2</span>
+<span id="cb101-8"><a href="#cb101-8" aria-hidden="true" tabindex="-1"></a>  <span class="kw">obtain</span> (q : Nat) (h4 : q ∈ S ∧ ∀ r ∈ S, q ≤ r) <span class="kw">from</span> h3</span>
+<span id="cb101-9"><a href="#cb101-9" aria-hidden="true" tabindex="-1"></a>  <span class="kw">have</span> qinS : q ∈ S := h4.left</span>
+<span id="cb101-10"><a href="#cb101-10" aria-hidden="true" tabindex="-1"></a>  <span class="kw">have</span> qleast : ∀ r ∈ S, q ≤ r := h4.right</span>
+<span id="cb101-11"><a href="#cb101-11" aria-hidden="true" tabindex="-1"></a>  <span class="kw">define</span> <span class="kw">at</span> qinS     <span class="co">--qinS : ∃ (p : Nat), p * p = 2 * (q * q) ∧ q ≠ 0</span></span>
+<span id="cb101-12"><a href="#cb101-12" aria-hidden="true" tabindex="-1"></a>  <span class="kw">obtain</span> (p : Nat) (h5 : p * p = 2 * (q * q) ∧ q ≠ 0) <span class="kw">from</span> qinS</span>
+<span id="cb101-13"><a href="#cb101-13" aria-hidden="true" tabindex="-1"></a>  <span class="kw">have</span> pqsqrt2 : p * p = 2 * (q * q) := h5.left</span>
+<span id="cb101-14"><a href="#cb101-14" aria-hidden="true" tabindex="-1"></a>  <span class="kw">have</span> qne0 : q ≠ 0 := h5.right</span>
+<span id="cb101-15"><a href="#cb101-15" aria-hidden="true" tabindex="-1"></a>  <span class="kw">have</span> h6 : nat_even (p * p) := Exists.intro (q * q) pqsqrt2</span>
+<span id="cb101-16"><a href="#cb101-16" aria-hidden="true" tabindex="-1"></a>  <span class="kw">rewrite</span> [sq_even_iff_even p] <span class="kw">at</span> h6    <span class="co">--h6 : nat_even p</span></span>
+<span id="cb101-17"><a href="#cb101-17" aria-hidden="true" tabindex="-1"></a>  <span class="kw">obtain</span> (p' : Nat) (p'halfp : p = 2 * p') <span class="kw">from</span> h6</span>
+<span id="cb101-18"><a href="#cb101-18" aria-hidden="true" tabindex="-1"></a>  <span class="kw">have</span> h7 : 2 * (2 * (p' * p')) = 2 * (q * q) := <span class="kw">by</span></span>
+<span id="cb101-19"><a href="#cb101-19" aria-hidden="true" tabindex="-1"></a>    <span class="kw">rewrite</span> [←pqsqrt2, p'halfp]</span>
+<span id="cb101-20"><a href="#cb101-20" aria-hidden="true" tabindex="-1"></a>    <span class="kw">ring</span></span>
+<span id="cb101-21"><a href="#cb101-21" aria-hidden="true" tabindex="-1"></a>    <span class="kw">done</span></span>
+<span id="cb101-22"><a href="#cb101-22" aria-hidden="true" tabindex="-1"></a>  <span class="kw">have</span> h8 : 2 &gt; 0 := <span class="kw">by</span> <span class="kw">norm_num</span></span>
+<span id="cb101-23"><a href="#cb101-23" aria-hidden="true" tabindex="-1"></a>  <span class="kw">rewrite</span> [mul_left_cancel_iff_of_pos h8] <span class="kw">at</span> h7</span>
+<span id="cb101-24"><a href="#cb101-24" aria-hidden="true" tabindex="-1"></a>    <span class="co">--h7 : 2 * (p' * p') = q * q</span></span>
+<span id="cb101-25"><a href="#cb101-25" aria-hidden="true" tabindex="-1"></a>  <span class="kw">have</span> h9 : nat_even (q * q) := Exists.intro (p' * p') h7.symm</span>
+<span id="cb101-26"><a href="#cb101-26" aria-hidden="true" tabindex="-1"></a>  <span class="kw">rewrite</span> [sq_even_iff_even q] <span class="kw">at</span> h9   <span class="co">--h9 : nat_even q</span></span>
+<span id="cb101-27"><a href="#cb101-27" aria-hidden="true" tabindex="-1"></a>  <span class="kw">obtain</span> (q' : Nat) (q'halfq : q = 2 * q') <span class="kw">from</span> h9</span>
+<span id="cb101-28"><a href="#cb101-28" aria-hidden="true" tabindex="-1"></a>  <span class="kw">have</span> h10 : 2 * (p' * p') = 2 * (2 * (q' * q')) := <span class="kw">by</span></span>
+<span id="cb101-29"><a href="#cb101-29" aria-hidden="true" tabindex="-1"></a>    <span class="kw">rewrite</span> [h7, q'halfq]</span>
+<span id="cb101-30"><a href="#cb101-30" aria-hidden="true" tabindex="-1"></a>    <span class="kw">ring</span></span>
+<span id="cb101-31"><a href="#cb101-31" aria-hidden="true" tabindex="-1"></a>    <span class="kw">done</span></span>
+<span id="cb101-32"><a href="#cb101-32" aria-hidden="true" tabindex="-1"></a>  <span class="kw">rewrite</span> [mul_left_cancel_iff_of_pos h8] <span class="kw">at</span> h10</span>
+<span id="cb101-33"><a href="#cb101-33" aria-hidden="true" tabindex="-1"></a>    <span class="co">--h10 : p' * p' = 2 * (q' * q')</span></span>
+<span id="cb101-34"><a href="#cb101-34" aria-hidden="true" tabindex="-1"></a>  <span class="kw">have</span> q'ne0 : q' ≠ 0 := <span class="kw">by</span></span>
+<span id="cb101-35"><a href="#cb101-35" aria-hidden="true" tabindex="-1"></a>    <span class="kw">contradict</span> qne0 <span class="kw">with</span> h11</span>
+<span id="cb101-36"><a href="#cb101-36" aria-hidden="true" tabindex="-1"></a>    <span class="kw">rewrite</span> [q'halfq, h11]</span>
+<span id="cb101-37"><a href="#cb101-37" aria-hidden="true" tabindex="-1"></a>    <span class="kw">rfl</span></span>
+<span id="cb101-38"><a href="#cb101-38" aria-hidden="true" tabindex="-1"></a>    <span class="kw">done</span></span>
+<span id="cb101-39"><a href="#cb101-39" aria-hidden="true" tabindex="-1"></a>  <span class="kw">have</span> q'inS : q' ∈ S := Exists.intro p' (And.intro h10 q'ne0)</span>
+<span id="cb101-40"><a href="#cb101-40" aria-hidden="true" tabindex="-1"></a>  <span class="kw">have</span> qleq' : q ≤ q' := qleast q' q'inS</span>
+<span id="cb101-41"><a href="#cb101-41" aria-hidden="true" tabindex="-1"></a>  <span class="kw">rewrite</span> [q'halfq] <span class="kw">at</span> qleq'        <span class="co">--qleq' : 2 * q' ≤ q'</span></span>
+<span id="cb101-42"><a href="#cb101-42" aria-hidden="true" tabindex="-1"></a>  <span class="kw">contradict</span> q'ne0</span>
+<span id="cb101-43"><a href="#cb101-43" aria-hidden="true" tabindex="-1"></a>  <span class="kw">linarith</span></span>
+<span id="cb101-44"><a href="#cb101-44" aria-hidden="true" tabindex="-1"></a>  <span class="kw">done</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
 <section id="exercises-3" class="level3">
 <h3 class="anchored" data-anchor-id="exercises-3">Exercises</h3>
@@ -1532,11 +1531,11 @@ $$
 <span id="cb116-12"><a href="#cb116-12" aria-hidden="true" tabindex="-1"></a>    <span class="kw">fix</span> x : A</span>
 <span id="cb116-13"><a href="#cb116-13" aria-hidden="true" tabindex="-1"></a>    <span class="kw">assume</span> h3 : x ∈ rep_image f (n + 1) B  <span class="co">--Goal : x ∈ D</span></span>
 <span id="cb116-14"><a href="#cb116-14" aria-hidden="true" tabindex="-1"></a>    <span class="kw">rewrite</span> [rep_image_step] <span class="kw">at</span> h3</span>
-<span id="cb116-15"><a href="#cb116-15" aria-hidden="true" tabindex="-1"></a>    <span class="kw">define</span> <span class="kw">at</span> h3    <span class="co">--h3 : ∃ (x_1 : A), x_1 ∈ rep_image f n B ∧ f x_1 = x</span></span>
+<span id="cb116-15"><a href="#cb116-15" aria-hidden="true" tabindex="-1"></a>    <span class="kw">define</span> <span class="kw">at</span> h3    <span class="co">--h3 : ∃ x_1 ∈ rep_image f n B, f x_1 = x</span></span>
 <span id="cb116-16"><a href="#cb116-16" aria-hidden="true" tabindex="-1"></a>    <span class="kw">obtain</span> (b : A) (h4 : b ∈ rep_image f n B ∧ f b = x) <span class="kw">from</span> h3</span>
 <span id="cb116-17"><a href="#cb116-17" aria-hidden="true" tabindex="-1"></a>    <span class="kw">rewrite</span> [←h4.right]   <span class="co">--Goal : f b ∈ D    </span></span>
 <span id="cb116-18"><a href="#cb116-18" aria-hidden="true" tabindex="-1"></a>    <span class="kw">have</span> h5 : b ∈ D := ih h4.left</span>
-<span id="cb116-19"><a href="#cb116-19" aria-hidden="true" tabindex="-1"></a>    <span class="kw">define</span> <span class="kw">at</span> h2          <span class="co">--h2 : ∀ (x : A), x ∈ D → f x ∈ D</span></span>
+<span id="cb116-19"><a href="#cb116-19" aria-hidden="true" tabindex="-1"></a>    <span class="kw">define</span> <span class="kw">at</span> h2          <span class="co">--h2 : ∀ x ∈ D, f x ∈ D</span></span>
 <span id="cb116-20"><a href="#cb116-20" aria-hidden="true" tabindex="-1"></a>    <span class="kw">show</span> f b ∈ D <span class="kw">from</span> h2 b h5</span>
 <span id="cb116-21"><a href="#cb116-21" aria-hidden="true" tabindex="-1"></a>    <span class="kw">done</span></span>
 <span id="cb116-22"><a href="#cb116-22" aria-hidden="true" tabindex="-1"></a>  <span class="kw">done</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -1565,7 +1564,7 @@ $$
 <span id="cb117-22"><a href="#cb117-22" aria-hidden="true" tabindex="-1"></a>      <span class="kw">define</span>     <span class="co">--Goal : ∃ (n : Nat), f x ∈ rep_image f n B</span></span>
 <span id="cb117-23"><a href="#cb117-23" aria-hidden="true" tabindex="-1"></a>      <span class="kw">apply</span> Exists.intro (m + 1) <span class="co">--Goal : f x ∈ rep_image f (m + 1) B</span></span>
 <span id="cb117-24"><a href="#cb117-24" aria-hidden="true" tabindex="-1"></a>      <span class="kw">rewrite</span> [rep_image_step]   <span class="co">--Goal : f x ∈ image f (rep_image f m B)</span></span>
-<span id="cb117-25"><a href="#cb117-25" aria-hidden="true" tabindex="-1"></a>      <span class="kw">define</span>     <span class="co">--Goal : ∃ (x_1 : A), x_1 ∈ rep_image f m B ∧ f x_1 = f x</span></span>
+<span id="cb117-25"><a href="#cb117-25" aria-hidden="true" tabindex="-1"></a>      <span class="kw">define</span>     <span class="co">--Goal : ∃ x_1 ∈ rep_image f m B, f x_1 = f x</span></span>
 <span id="cb117-26"><a href="#cb117-26" aria-hidden="true" tabindex="-1"></a>      <span class="kw">apply</span> Exists.intro x  <span class="co">--Goal : x ∈ rep_image f m B ∧ f x = f x</span></span>
 <span id="cb117-27"><a href="#cb117-27" aria-hidden="true" tabindex="-1"></a>      <span class="kw">apply</span> And.intro h2</span>
 <span id="cb117-28"><a href="#cb117-28" aria-hidden="true" tabindex="-1"></a>      <span class="kw">rfl</span></span>

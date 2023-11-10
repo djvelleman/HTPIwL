@@ -789,12 +789,12 @@ f^{-1}(Y) = \{a \in A \mid f(a) \in Y\}.
 <span id="cb66-2"><a href="#cb66-2" aria-hidden="true" tabindex="-1"></a>    image f (W ∩ X) ⊆ image f W ∩ image f X := <span class="kw">by</span></span>
 <span id="cb66-3"><a href="#cb66-3" aria-hidden="true" tabindex="-1"></a>  <span class="kw">fix</span> y : B</span>
 <span id="cb66-4"><a href="#cb66-4" aria-hidden="true" tabindex="-1"></a>  <span class="kw">assume</span> h1 : y ∈ image f (W ∩ X)  <span class="co">--Goal : y ∈ image f W ∩ image f X</span></span>
-<span id="cb66-5"><a href="#cb66-5" aria-hidden="true" tabindex="-1"></a>  <span class="kw">define</span> <span class="kw">at</span> h1                     <span class="co">--h1 : ∃ (x : A), x ∈ W ∩ X ∧ f x = y</span></span>
+<span id="cb66-5"><a href="#cb66-5" aria-hidden="true" tabindex="-1"></a>  <span class="kw">define</span> <span class="kw">at</span> h1                     <span class="co">--h1 : ∃ x ∈ W ∩ X, f x = y</span></span>
 <span id="cb66-6"><a href="#cb66-6" aria-hidden="true" tabindex="-1"></a>  <span class="kw">obtain</span> (x : A) (h2 : x ∈ W ∩ X ∧ f x = y) <span class="kw">from</span> h1</span>
 <span id="cb66-7"><a href="#cb66-7" aria-hidden="true" tabindex="-1"></a>  <span class="kw">define</span> : x ∈ W ∩ X <span class="kw">at</span> h2         <span class="co">--h2 : (x ∈ W ∧ x ∈ X) ∧ f x = y</span></span>
 <span id="cb66-8"><a href="#cb66-8" aria-hidden="true" tabindex="-1"></a>  <span class="kw">apply</span> And.intro</span>
 <span id="cb66-9"><a href="#cb66-9" aria-hidden="true" tabindex="-1"></a>  · <span class="co">-- Proof that y ∈ image f W</span></span>
-<span id="cb66-10"><a href="#cb66-10" aria-hidden="true" tabindex="-1"></a>    <span class="kw">define</span>                         <span class="co">--Goal : ∃ (x : A), x ∈ W ∧ f x = y</span></span>
+<span id="cb66-10"><a href="#cb66-10" aria-hidden="true" tabindex="-1"></a>    <span class="kw">define</span>                         <span class="co">--Goal : ∃ x ∈ W, f x = y</span></span>
 <span id="cb66-11"><a href="#cb66-11" aria-hidden="true" tabindex="-1"></a>    <span class="kw">show</span> ∃ (x : A), x ∈ W ∧ f x = y <span class="kw">from</span></span>
 <span id="cb66-12"><a href="#cb66-12" aria-hidden="true" tabindex="-1"></a>      Exists.intro x (And.intro h2.left.left h2.right)</span>
 <span id="cb66-13"><a href="#cb66-13" aria-hidden="true" tabindex="-1"></a>    <span class="kw">done</span></span>
@@ -817,7 +817,7 @@ f^{-1}(Y) = \{a \in A \mid f(a) \in Y\}.
 <span id="cb66-30"><a href="#cb66-30" aria-hidden="true" tabindex="-1"></a>    <span class="kw">assume</span> h2 : y ∈ image f W ∩ image f X  <span class="co">--Goal : y ∈ image f (W ∩ X)</span></span>
 <span id="cb66-31"><a href="#cb66-31" aria-hidden="true" tabindex="-1"></a>    <span class="kw">define</span> <span class="kw">at</span> h2                  <span class="co">--h2 : y ∈ image f W ∧ y ∈ image f X</span></span>
 <span id="cb66-32"><a href="#cb66-32" aria-hidden="true" tabindex="-1"></a>    <span class="kw">rewrite</span> [image_def, image_def] <span class="kw">at</span> h2</span>
-<span id="cb66-33"><a href="#cb66-33" aria-hidden="true" tabindex="-1"></a>          <span class="co">--h2 : (∃ (x : A), x ∈ W ∧ f x = y) ∧ ∃ (x : A), x ∈ X ∧ f x = y</span></span>
+<span id="cb66-33"><a href="#cb66-33" aria-hidden="true" tabindex="-1"></a>          <span class="co">--h2 : (∃ x ∈ W, f x = y) ∧ ∃ x ∈ X, f x = y</span></span>
 <span id="cb66-34"><a href="#cb66-34" aria-hidden="true" tabindex="-1"></a>    <span class="kw">obtain</span> (x1 : A) (h3 : x1 ∈ W ∧ f x1 = y) <span class="kw">from</span> h2.left</span>
 <span id="cb66-35"><a href="#cb66-35" aria-hidden="true" tabindex="-1"></a>    <span class="kw">obtain</span> (x2 : A) (h4 : x2 ∈ X ∧ f x2 = y) <span class="kw">from</span> h2.right</span>
 <span id="cb66-36"><a href="#cb66-36" aria-hidden="true" tabindex="-1"></a>    <span class="kw">have</span> h5 : f x2 = y := h4.right</span>
