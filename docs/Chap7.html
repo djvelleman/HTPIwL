@@ -333,33 +333,32 @@ $$
 <div class="sourceCode" id="cb10"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> gcd_dvd : ∀ (b a : Nat), (gcd a b) ∣ a ∧ (gcd a b) ∣ b := <span class="kw">by</span></span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>  <span class="kw">by_strong_induc</span></span>
 <span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>  <span class="kw">fix</span> b : Nat</span>
-<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>  <span class="kw">assume</span> ih : ∀ (b_1 : Nat), b_1 &lt; b →</span>
-<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>    ∀ (a : Nat), (gcd a b_1) ∣ a ∧ (gcd a b_1) ∣ b_1</span>
-<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>  <span class="kw">fix</span> a : Nat</span>
-<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>  <span class="kw">by_cases</span> h1 : b = 0</span>
-<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>  · <span class="co">-- Case 1. h1 : b = 0</span></span>
-<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>    <span class="kw">rewrite</span> [h1, gcd_base]   <span class="co">--Goal: a ∣ a ∧ a ∣ 0</span></span>
-<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>    <span class="kw">apply</span> And.intro (dvd_self a)</span>
-<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a>    <span class="kw">define</span></span>
-<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a>    <span class="kw">apply</span> Exists.intro 0</span>
-<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a>    <span class="kw">rfl</span></span>
-<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a>    <span class="kw">done</span></span>
-<span id="cb10-15"><a href="#cb10-15" aria-hidden="true" tabindex="-1"></a>  · <span class="co">-- Case 2. h1 : b ≠ 0</span></span>
-<span id="cb10-16"><a href="#cb10-16" aria-hidden="true" tabindex="-1"></a>    <span class="kw">rewrite</span> [gcd_nonzero a h1]</span>
-<span id="cb10-17"><a href="#cb10-17" aria-hidden="true" tabindex="-1"></a>      <span class="co">--Goal : gcd b (a % b) ∣ a ∧ gcd b (a % b) ∣ b</span></span>
-<span id="cb10-18"><a href="#cb10-18" aria-hidden="true" tabindex="-1"></a>    <span class="kw">have</span> h2 : a % b &lt; b := mod_nonzero_lt a h1</span>
-<span id="cb10-19"><a href="#cb10-19" aria-hidden="true" tabindex="-1"></a>    <span class="kw">have</span> h3 : (gcd b (a % b)) ∣ b ∧ (gcd b (a % b)) ∣ (a % b) :=</span>
-<span id="cb10-20"><a href="#cb10-20" aria-hidden="true" tabindex="-1"></a>      ih (a % b) h2 b</span>
-<span id="cb10-21"><a href="#cb10-21" aria-hidden="true" tabindex="-1"></a>    <span class="kw">apply</span> And.intro _ h3.left</span>
-<span id="cb10-22"><a href="#cb10-22" aria-hidden="true" tabindex="-1"></a>    <span class="kw">show</span> (gcd b (a % b)) ∣ a <span class="kw">from</span> dvd_a_of_dvd_b_mod h3.left h3.right</span>
-<span id="cb10-23"><a href="#cb10-23" aria-hidden="true" tabindex="-1"></a>    <span class="kw">done</span></span>
-<span id="cb10-24"><a href="#cb10-24" aria-hidden="true" tabindex="-1"></a>  <span class="kw">done</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>  <span class="kw">assume</span> ih : ∀ b_1 &lt; b, ∀ (a : Nat), (gcd a b_1) ∣ a ∧ (gcd a b_1) ∣ b_1</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>  <span class="kw">fix</span> a : Nat</span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>  <span class="kw">by_cases</span> h1 : b = 0</span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>  · <span class="co">-- Case 1. h1 : b = 0</span></span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>    <span class="kw">rewrite</span> [h1, gcd_base]   <span class="co">--Goal: a ∣ a ∧ a ∣ 0</span></span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>    <span class="kw">apply</span> And.intro (dvd_self a)</span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>    <span class="kw">define</span></span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a>    <span class="kw">apply</span> Exists.intro 0</span>
+<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a>    <span class="kw">rfl</span></span>
+<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a>    <span class="kw">done</span></span>
+<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a>  · <span class="co">-- Case 2. h1 : b ≠ 0</span></span>
+<span id="cb10-15"><a href="#cb10-15" aria-hidden="true" tabindex="-1"></a>    <span class="kw">rewrite</span> [gcd_nonzero a h1]</span>
+<span id="cb10-16"><a href="#cb10-16" aria-hidden="true" tabindex="-1"></a>      <span class="co">--Goal : gcd b (a % b) ∣ a ∧ gcd b (a % b) ∣ b</span></span>
+<span id="cb10-17"><a href="#cb10-17" aria-hidden="true" tabindex="-1"></a>    <span class="kw">have</span> h2 : a % b &lt; b := mod_nonzero_lt a h1</span>
+<span id="cb10-18"><a href="#cb10-18" aria-hidden="true" tabindex="-1"></a>    <span class="kw">have</span> h3 : (gcd b (a % b)) ∣ b ∧ (gcd b (a % b)) ∣ (a % b) :=</span>
+<span id="cb10-19"><a href="#cb10-19" aria-hidden="true" tabindex="-1"></a>      ih (a % b) h2 b</span>
+<span id="cb10-20"><a href="#cb10-20" aria-hidden="true" tabindex="-1"></a>    <span class="kw">apply</span> And.intro _ h3.left</span>
+<span id="cb10-21"><a href="#cb10-21" aria-hidden="true" tabindex="-1"></a>    <span class="kw">show</span> (gcd b (a % b)) ∣ a <span class="kw">from</span> dvd_a_of_dvd_b_mod h3.left h3.right</span>
+<span id="cb10-22"><a href="#cb10-22" aria-hidden="true" tabindex="-1"></a>    <span class="kw">done</span></span>
+<span id="cb10-23"><a href="#cb10-23" aria-hidden="true" tabindex="-1"></a>  <span class="kw">done</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>You may wonder why we didn’t start the proof like this:</p>
 <div class="sourceCode" id="cb11"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> gcd_dvd : ∀ (a b : Nat), (gcd a b) ∣ a ∧ (gcd a b) ∣ b := <span class="kw">by</span></span>
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>  <span class="kw">fix</span> a : Nat</span>
 <span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>  <span class="kw">by_strong_induc</span></span>
 <span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>  <span class="kw">fix</span> b : Nat</span>
-<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>  <span class="kw">assume</span> ih : ∀ (b_1 : Nat), b_1 &lt; b → (gcd a b_1) ∣ a ∧ (gcd a b_1) ∣ b_1</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>  <span class="kw">assume</span> ih : ∀ b_1 &lt; b, (gcd a b_1) ∣ a ∧ (gcd a b_1) ∣ b_1</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>In fact, this approach wouldn’t have worked. It is an interesting exercise to try to complete this version of the proof and see why it fails.</p>
 <p>Another interesting question is why we asserted both <code>(gcd a b) ∣ a</code> and <code>(gcd a b) ∣ b</code> in the same theorem. Wouldn’t it have been easier to give separate proofs of the statements <code>∀ (b a : Nat), (gcd a b) ∣ a</code> and <code>∀ (b a : Nat), (gcd a b) ∣ b</code>? Again, you might find it enlightening to see why that wouldn’t have worked. However, now that we have proven both divisibility statements, we can state them as separate theorems:</p>
 <div class="sourceCode" id="cb12"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> gcd_dvd_left (a b : Nat) : (gcd a b) ∣ a := (gcd_dvd b a).left</span>
@@ -412,7 +411,7 @@ s = t', \qquad t = s' - t'q.
 <span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>    (gcd_c1 a b) * ↑a + (gcd_c2 a b) * ↑b = ↑(gcd a b) := <span class="kw">by</span></span>
 <span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>  <span class="kw">by_strong_induc</span></span>
 <span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>  <span class="kw">fix</span> b : Nat</span>
-<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>  <span class="kw">assume</span> ih : ∀ (b_1 : Nat), b_1 &lt; b → ∀ (a : Nat),</span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>  <span class="kw">assume</span> ih : ∀ b_1 &lt; b, ∀ (a : Nat),</span>
 <span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>    (gcd_c1 a b_1) * ↑a + (gcd_c2 a b_1) * ↑b_1 = ↑(gcd a b_1)</span>
 <span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a>  <span class="kw">fix</span> a : Nat</span>
 <span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a>  <span class="kw">by_cases</span> h1 : b = 0</span>
@@ -518,45 +517,44 @@ s = t', \qquad t = s' - t'q.
 <span id="cb26-6"><a href="#cb26-6" aria-hidden="true" tabindex="-1"></a>    ∃ (p : Nat), prime_factor p n := <span class="kw">by</span></span>
 <span id="cb26-7"><a href="#cb26-7" aria-hidden="true" tabindex="-1"></a>  <span class="kw">by_strong_induc</span></span>
 <span id="cb26-8"><a href="#cb26-8" aria-hidden="true" tabindex="-1"></a>  <span class="kw">fix</span> n : Nat</span>
-<span id="cb26-9"><a href="#cb26-9" aria-hidden="true" tabindex="-1"></a>  <span class="kw">assume</span> ih : ∀ (n_1 : Nat), n_1 &lt; n →</span>
-<span id="cb26-10"><a href="#cb26-10" aria-hidden="true" tabindex="-1"></a>    2 ≤ n_1 → ∃ (p : Nat), prime_factor p n_1</span>
-<span id="cb26-11"><a href="#cb26-11" aria-hidden="true" tabindex="-1"></a>  <span class="kw">assume</span> h1 : 2 ≤ n</span>
-<span id="cb26-12"><a href="#cb26-12" aria-hidden="true" tabindex="-1"></a>  <span class="kw">by_cases</span> h2 : prime n</span>
-<span id="cb26-13"><a href="#cb26-13" aria-hidden="true" tabindex="-1"></a>  · <span class="co">-- Case 1. h2 : prime n</span></span>
-<span id="cb26-14"><a href="#cb26-14" aria-hidden="true" tabindex="-1"></a>    <span class="kw">apply</span> Exists.intro n</span>
-<span id="cb26-15"><a href="#cb26-15" aria-hidden="true" tabindex="-1"></a>    <span class="kw">define</span>            <span class="co">--Goal : prime n ∧ n ∣ n</span></span>
-<span id="cb26-16"><a href="#cb26-16" aria-hidden="true" tabindex="-1"></a>    <span class="kw">show</span> prime n ∧ n ∣ n <span class="kw">from</span> And.intro h2 (dvd_self n)</span>
-<span id="cb26-17"><a href="#cb26-17" aria-hidden="true" tabindex="-1"></a>    <span class="kw">done</span></span>
-<span id="cb26-18"><a href="#cb26-18" aria-hidden="true" tabindex="-1"></a>  · <span class="co">-- Case 2. h2 : ¬prime n</span></span>
-<span id="cb26-19"><a href="#cb26-19" aria-hidden="true" tabindex="-1"></a>    <span class="kw">define</span> <span class="kw">at</span> h2</span>
-<span id="cb26-20"><a href="#cb26-20" aria-hidden="true" tabindex="-1"></a>      <span class="co">--h2 : ¬(2 ≤ n ∧ ¬∃ (a b : Nat), a * b = n ∧ a &lt; n ∧ b &lt; n)</span></span>
-<span id="cb26-21"><a href="#cb26-21" aria-hidden="true" tabindex="-1"></a>    <span class="kw">demorgan</span> <span class="kw">at</span> h2</span>
-<span id="cb26-22"><a href="#cb26-22" aria-hidden="true" tabindex="-1"></a>    <span class="kw">disj_syll</span> h2 h1</span>
-<span id="cb26-23"><a href="#cb26-23" aria-hidden="true" tabindex="-1"></a>    <span class="kw">obtain</span> (a : Nat) (h3 : ∃ (b : Nat), a * b = n ∧ a &lt; n ∧ b &lt; n) <span class="kw">from</span> h2</span>
-<span id="cb26-24"><a href="#cb26-24" aria-hidden="true" tabindex="-1"></a>    <span class="kw">obtain</span> (b : Nat) (h4 : a * b = n ∧ a &lt; n ∧ b &lt; n) <span class="kw">from</span> h3</span>
-<span id="cb26-25"><a href="#cb26-25" aria-hidden="true" tabindex="-1"></a>    <span class="kw">have</span> h5 : 2 ≤ a := <span class="kw">by</span></span>
-<span id="cb26-26"><a href="#cb26-26" aria-hidden="true" tabindex="-1"></a>      <span class="kw">by_contra</span> h6</span>
-<span id="cb26-27"><a href="#cb26-27" aria-hidden="true" tabindex="-1"></a>      <span class="kw">have</span> h7 : a ≤ 1 := <span class="kw">by</span> <span class="kw">linarith</span></span>
-<span id="cb26-28"><a href="#cb26-28" aria-hidden="true" tabindex="-1"></a>      <span class="kw">have</span> h8 : n ≤ b :=</span>
-<span id="cb26-29"><a href="#cb26-29" aria-hidden="true" tabindex="-1"></a>        <span class="kw">calc</span> n</span>
-<span id="cb26-30"><a href="#cb26-30" aria-hidden="true" tabindex="-1"></a>          _ = a * b := h4.left.symm</span>
-<span id="cb26-31"><a href="#cb26-31" aria-hidden="true" tabindex="-1"></a>          _ ≤ 1 * b := <span class="kw">by</span> <span class="kw">rel</span> [h7]</span>
-<span id="cb26-32"><a href="#cb26-32" aria-hidden="true" tabindex="-1"></a>          _ = b := <span class="kw">by</span> <span class="kw">ring</span></span>
-<span id="cb26-33"><a href="#cb26-33" aria-hidden="true" tabindex="-1"></a>      <span class="kw">linarith</span>        <span class="co">--n ≤ b contradicts b &lt; n</span></span>
-<span id="cb26-34"><a href="#cb26-34" aria-hidden="true" tabindex="-1"></a>      <span class="kw">done</span></span>
-<span id="cb26-35"><a href="#cb26-35" aria-hidden="true" tabindex="-1"></a>    <span class="kw">have</span> h6 : ∃ (p : Nat), prime_factor p a := ih a h4.right.left h5</span>
-<span id="cb26-36"><a href="#cb26-36" aria-hidden="true" tabindex="-1"></a>    <span class="kw">obtain</span> (p : Nat) (h7 : prime_factor p a) <span class="kw">from</span> h6</span>
-<span id="cb26-37"><a href="#cb26-37" aria-hidden="true" tabindex="-1"></a>    <span class="kw">apply</span> Exists.intro p</span>
-<span id="cb26-38"><a href="#cb26-38" aria-hidden="true" tabindex="-1"></a>    <span class="kw">define</span>            <span class="co">--Goal : prime p ∧ p ∣ n</span></span>
-<span id="cb26-39"><a href="#cb26-39" aria-hidden="true" tabindex="-1"></a>    <span class="kw">define</span> <span class="kw">at</span> h7      <span class="co">--h7 : prime p ∧ p ∣ a</span></span>
-<span id="cb26-40"><a href="#cb26-40" aria-hidden="true" tabindex="-1"></a>    <span class="kw">apply</span> And.intro h7.left</span>
-<span id="cb26-41"><a href="#cb26-41" aria-hidden="true" tabindex="-1"></a>    <span class="kw">have</span> h8 : a ∣ n := <span class="kw">by</span></span>
-<span id="cb26-42"><a href="#cb26-42" aria-hidden="true" tabindex="-1"></a>      <span class="kw">apply</span> Exists.intro b</span>
-<span id="cb26-43"><a href="#cb26-43" aria-hidden="true" tabindex="-1"></a>      <span class="kw">show</span> n = a * b <span class="kw">from</span> (h4.left).symm</span>
-<span id="cb26-44"><a href="#cb26-44" aria-hidden="true" tabindex="-1"></a>      <span class="kw">done</span></span>
-<span id="cb26-45"><a href="#cb26-45" aria-hidden="true" tabindex="-1"></a>    <span class="kw">show</span> p ∣ n <span class="kw">from</span> dvd_trans h7.right h8</span>
-<span id="cb26-46"><a href="#cb26-46" aria-hidden="true" tabindex="-1"></a>    <span class="kw">done</span></span>
-<span id="cb26-47"><a href="#cb26-47" aria-hidden="true" tabindex="-1"></a>  <span class="kw">done</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb26-9"><a href="#cb26-9" aria-hidden="true" tabindex="-1"></a>  <span class="kw">assume</span> ih : ∀ n_1 &lt; n, 2 ≤ n_1 → ∃ (p : Nat), prime_factor p n_1</span>
+<span id="cb26-10"><a href="#cb26-10" aria-hidden="true" tabindex="-1"></a>  <span class="kw">assume</span> h1 : 2 ≤ n</span>
+<span id="cb26-11"><a href="#cb26-11" aria-hidden="true" tabindex="-1"></a>  <span class="kw">by_cases</span> h2 : prime n</span>
+<span id="cb26-12"><a href="#cb26-12" aria-hidden="true" tabindex="-1"></a>  · <span class="co">-- Case 1. h2 : prime n</span></span>
+<span id="cb26-13"><a href="#cb26-13" aria-hidden="true" tabindex="-1"></a>    <span class="kw">apply</span> Exists.intro n</span>
+<span id="cb26-14"><a href="#cb26-14" aria-hidden="true" tabindex="-1"></a>    <span class="kw">define</span>            <span class="co">--Goal : prime n ∧ n ∣ n</span></span>
+<span id="cb26-15"><a href="#cb26-15" aria-hidden="true" tabindex="-1"></a>    <span class="kw">show</span> prime n ∧ n ∣ n <span class="kw">from</span> And.intro h2 (dvd_self n)</span>
+<span id="cb26-16"><a href="#cb26-16" aria-hidden="true" tabindex="-1"></a>    <span class="kw">done</span></span>
+<span id="cb26-17"><a href="#cb26-17" aria-hidden="true" tabindex="-1"></a>  · <span class="co">-- Case 2. h2 : ¬prime n</span></span>
+<span id="cb26-18"><a href="#cb26-18" aria-hidden="true" tabindex="-1"></a>    <span class="kw">define</span> <span class="kw">at</span> h2</span>
+<span id="cb26-19"><a href="#cb26-19" aria-hidden="true" tabindex="-1"></a>      <span class="co">--h2 : ¬(2 ≤ n ∧ ¬∃ (a b : Nat), a * b = n ∧ a &lt; n ∧ b &lt; n)</span></span>
+<span id="cb26-20"><a href="#cb26-20" aria-hidden="true" tabindex="-1"></a>    <span class="kw">demorgan</span> <span class="kw">at</span> h2</span>
+<span id="cb26-21"><a href="#cb26-21" aria-hidden="true" tabindex="-1"></a>    <span class="kw">disj_syll</span> h2 h1</span>
+<span id="cb26-22"><a href="#cb26-22" aria-hidden="true" tabindex="-1"></a>    <span class="kw">obtain</span> (a : Nat) (h3 : ∃ (b : Nat), a * b = n ∧ a &lt; n ∧ b &lt; n) <span class="kw">from</span> h2</span>
+<span id="cb26-23"><a href="#cb26-23" aria-hidden="true" tabindex="-1"></a>    <span class="kw">obtain</span> (b : Nat) (h4 : a * b = n ∧ a &lt; n ∧ b &lt; n) <span class="kw">from</span> h3</span>
+<span id="cb26-24"><a href="#cb26-24" aria-hidden="true" tabindex="-1"></a>    <span class="kw">have</span> h5 : 2 ≤ a := <span class="kw">by</span></span>
+<span id="cb26-25"><a href="#cb26-25" aria-hidden="true" tabindex="-1"></a>      <span class="kw">by_contra</span> h6</span>
+<span id="cb26-26"><a href="#cb26-26" aria-hidden="true" tabindex="-1"></a>      <span class="kw">have</span> h7 : a ≤ 1 := <span class="kw">by</span> <span class="kw">linarith</span></span>
+<span id="cb26-27"><a href="#cb26-27" aria-hidden="true" tabindex="-1"></a>      <span class="kw">have</span> h8 : n ≤ b :=</span>
+<span id="cb26-28"><a href="#cb26-28" aria-hidden="true" tabindex="-1"></a>        <span class="kw">calc</span> n</span>
+<span id="cb26-29"><a href="#cb26-29" aria-hidden="true" tabindex="-1"></a>          _ = a * b := h4.left.symm</span>
+<span id="cb26-30"><a href="#cb26-30" aria-hidden="true" tabindex="-1"></a>          _ ≤ 1 * b := <span class="kw">by</span> <span class="kw">rel</span> [h7]</span>
+<span id="cb26-31"><a href="#cb26-31" aria-hidden="true" tabindex="-1"></a>          _ = b := <span class="kw">by</span> <span class="kw">ring</span></span>
+<span id="cb26-32"><a href="#cb26-32" aria-hidden="true" tabindex="-1"></a>      <span class="kw">linarith</span>        <span class="co">--n ≤ b contradicts b &lt; n</span></span>
+<span id="cb26-33"><a href="#cb26-33" aria-hidden="true" tabindex="-1"></a>      <span class="kw">done</span></span>
+<span id="cb26-34"><a href="#cb26-34" aria-hidden="true" tabindex="-1"></a>    <span class="kw">have</span> h6 : ∃ (p : Nat), prime_factor p a := ih a h4.right.left h5</span>
+<span id="cb26-35"><a href="#cb26-35" aria-hidden="true" tabindex="-1"></a>    <span class="kw">obtain</span> (p : Nat) (h7 : prime_factor p a) <span class="kw">from</span> h6</span>
+<span id="cb26-36"><a href="#cb26-36" aria-hidden="true" tabindex="-1"></a>    <span class="kw">apply</span> Exists.intro p</span>
+<span id="cb26-37"><a href="#cb26-37" aria-hidden="true" tabindex="-1"></a>    <span class="kw">define</span>            <span class="co">--Goal : prime p ∧ p ∣ n</span></span>
+<span id="cb26-38"><a href="#cb26-38" aria-hidden="true" tabindex="-1"></a>    <span class="kw">define</span> <span class="kw">at</span> h7      <span class="co">--h7 : prime p ∧ p ∣ a</span></span>
+<span id="cb26-39"><a href="#cb26-39" aria-hidden="true" tabindex="-1"></a>    <span class="kw">apply</span> And.intro h7.left</span>
+<span id="cb26-40"><a href="#cb26-40" aria-hidden="true" tabindex="-1"></a>    <span class="kw">have</span> h8 : a ∣ n := <span class="kw">by</span></span>
+<span id="cb26-41"><a href="#cb26-41" aria-hidden="true" tabindex="-1"></a>      <span class="kw">apply</span> Exists.intro b</span>
+<span id="cb26-42"><a href="#cb26-42" aria-hidden="true" tabindex="-1"></a>      <span class="kw">show</span> n = a * b <span class="kw">from</span> (h4.left).symm</span>
+<span id="cb26-43"><a href="#cb26-43" aria-hidden="true" tabindex="-1"></a>      <span class="kw">done</span></span>
+<span id="cb26-44"><a href="#cb26-44" aria-hidden="true" tabindex="-1"></a>    <span class="kw">show</span> p ∣ n <span class="kw">from</span> dvd_trans h7.right h8</span>
+<span id="cb26-45"><a href="#cb26-45" aria-hidden="true" tabindex="-1"></a>    <span class="kw">done</span></span>
+<span id="cb26-46"><a href="#cb26-46" aria-hidden="true" tabindex="-1"></a>  <span class="kw">done</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>Of course, by the well ordering principle, an immediate consequence of this lemma is that every number greater than or equal to 2 has a <em>smallest</em> prime factor.</p>
 <div class="sourceCode" id="cb27"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="kw">lemma</span> exists_least_prime_factor {n : Nat} (h : 2 ≤ n) :</span>
 <span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>    ∃ (p : Nat), prime_factor p n ∧</span>
@@ -573,7 +571,7 @@ s = t', \qquad t = s' - t'q.
 <p>If <code>l</code> has type <code>List U</code> and <code>a</code> has type <code>U</code>, then <code>a ∈ l</code> means that <code>a</code> is one of the entries in the list <code>l</code>. For example, <code>7 ∈ [3, 7, 1]</code>. Lean knows several theorems about this notation:</p>
 <div class="ind">
 <pre><code>@List.not_mem_nil : ∀ {α : Type u_1} (a : α),
-                        ¬a ∈ []
+                        a ∉ []
 
 @List.mem_cons : ∀ {α : Type u_1} {a b : α} {l : List α},
                         a ∈ b :: l ↔ a = b ∨ a ∈ l
@@ -586,12 +584,12 @@ s = t', \qquad t = s' - t'q.
 </div>
 <p>The first two theorems give the conditions under which something is a member of the <code>nil</code> list or a list constructed by <code>cons</code>, and the last two are easy consequences of the second.</p>
 <p>To define prime factorizations, we must define several concepts first. Some of these concepts are most easily defined recursively.</p>
-<div class="sourceCode" id="cb30"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> all_prime (l : List Nat) : <span class="kw">Prop</span> := ∀ (p : Nat), p ∈ l → prime p</span>
+<div class="sourceCode" id="cb30"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> all_prime (l : List Nat) : <span class="kw">Prop</span> := ∀ p ∈ l, prime p</span>
 <span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> nondec (l : List Nat) : <span class="kw">Prop</span> :=</span>
 <span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a>  <span class="kw">match</span> l <span class="kw">with</span></span>
 <span id="cb30-5"><a href="#cb30-5" aria-hidden="true" tabindex="-1"></a>    | [] =&gt; True   <span class="co">--Of course, True is a proposition that is always true</span></span>
-<span id="cb30-6"><a href="#cb30-6" aria-hidden="true" tabindex="-1"></a>    | n :: L =&gt; (∀ (m : Nat), m ∈ L → n ≤ m) ∧ nondec L</span>
+<span id="cb30-6"><a href="#cb30-6" aria-hidden="true" tabindex="-1"></a>    | n :: L =&gt; (∀ m ∈ L, n ≤ m) ∧ nondec L</span>
 <span id="cb30-7"><a href="#cb30-7" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb30-8"><a href="#cb30-8" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> nondec_prime_list (l : List Nat) : <span class="kw">Prop</span> := all_prime l ∧ nondec l</span>
 <span id="cb30-9"><a href="#cb30-9" aria-hidden="true" tabindex="-1"></a></span>
@@ -604,11 +602,11 @@ s = t', \qquad t = s' - t'q.
 <span id="cb30-16"><a href="#cb30-16" aria-hidden="true" tabindex="-1"></a>  nondec_prime_list l ∧ prod l = n</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>According to these definitions, <code>all_prime l</code> means that every member of the list <code>l</code> is prime, <code>nondec l</code> means that every member of <code>l</code> is less than or equal to all later members, <code>prod l</code> is the product of all members of <code>l</code>, and <code>prime_factorization n l</code> means that <code>l</code> is a nondecreasing list of prime numbers whose product is <code>n</code>. It will be convenient to spell out some consequences of these definitions in several lemmas:</p>
 <div class="sourceCode" id="cb31"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="kw">lemma</span> all_prime_nil : all_prime [] := <span class="kw">by</span></span>
-<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a>  <span class="kw">define</span>     <span class="co">--Goal : ∀ (p : Nat), p ∈ [] → prime p</span></span>
+<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a>  <span class="kw">define</span>     <span class="co">--Goal : ∀ p ∈ [], prime p</span></span>
 <span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a>  <span class="kw">fix</span> p : Nat</span>
-<span id="cb31-4"><a href="#cb31-4" aria-hidden="true" tabindex="-1"></a>  <span class="kw">contrapos</span>  <span class="co">--Goal : ¬prime p → ¬p ∈ []</span></span>
+<span id="cb31-4"><a href="#cb31-4" aria-hidden="true" tabindex="-1"></a>  <span class="kw">contrapos</span>  <span class="co">--Goal : ¬prime p → p ∉ []</span></span>
 <span id="cb31-5"><a href="#cb31-5" aria-hidden="true" tabindex="-1"></a>  <span class="kw">assume</span> h1 : ¬prime p</span>
-<span id="cb31-6"><a href="#cb31-6" aria-hidden="true" tabindex="-1"></a>  <span class="kw">show</span> ¬p ∈ [] <span class="kw">from</span> List.not_mem_nil p</span>
+<span id="cb31-6"><a href="#cb31-6" aria-hidden="true" tabindex="-1"></a>  <span class="kw">show</span> p ∉ [] <span class="kw">from</span> List.not_mem_nil p</span>
 <span id="cb31-7"><a href="#cb31-7" aria-hidden="true" tabindex="-1"></a>  <span class="kw">done</span></span>
 <span id="cb31-8"><a href="#cb31-8" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb31-9"><a href="#cb31-9" aria-hidden="true" tabindex="-1"></a><span class="kw">lemma</span> all_prime_cons (n : Nat) (L : List Nat) :</span>
@@ -616,9 +614,9 @@ s = t', \qquad t = s' - t'q.
 <span id="cb31-11"><a href="#cb31-11" aria-hidden="true" tabindex="-1"></a>  <span class="kw">apply</span> Iff.intro</span>
 <span id="cb31-12"><a href="#cb31-12" aria-hidden="true" tabindex="-1"></a>  · <span class="co">-- (→)</span></span>
 <span id="cb31-13"><a href="#cb31-13" aria-hidden="true" tabindex="-1"></a>    <span class="kw">assume</span> h1 : all_prime (n :: L)  <span class="co">--Goal : prime n ∧ all_prime L</span></span>
-<span id="cb31-14"><a href="#cb31-14" aria-hidden="true" tabindex="-1"></a>    <span class="kw">define</span> <span class="kw">at</span> h1  <span class="co">--h1 : ∀ (p : Nat), p ∈ n :: L → prime p</span></span>
+<span id="cb31-14"><a href="#cb31-14" aria-hidden="true" tabindex="-1"></a>    <span class="kw">define</span> <span class="kw">at</span> h1  <span class="co">--h1 : ∀ p ∈ n :: L, prime p</span></span>
 <span id="cb31-15"><a href="#cb31-15" aria-hidden="true" tabindex="-1"></a>    <span class="kw">apply</span> And.intro (h1 n (List.mem_cons_self n L))</span>
-<span id="cb31-16"><a href="#cb31-16" aria-hidden="true" tabindex="-1"></a>    <span class="kw">define</span>        <span class="co">--Goal : ∀ (p : Nat), p ∈ L → prime p</span></span>
+<span id="cb31-16"><a href="#cb31-16" aria-hidden="true" tabindex="-1"></a>    <span class="kw">define</span>        <span class="co">--Goal : ∀ p ∈ L, prime p</span></span>
 <span id="cb31-17"><a href="#cb31-17" aria-hidden="true" tabindex="-1"></a>    <span class="kw">fix</span> p : Nat</span>
 <span id="cb31-18"><a href="#cb31-18" aria-hidden="true" tabindex="-1"></a>    <span class="kw">assume</span> h2 : p ∈ L</span>
 <span id="cb31-19"><a href="#cb31-19" aria-hidden="true" tabindex="-1"></a>    <span class="kw">show</span> prime p <span class="kw">from</span> h1 p (List.mem_cons_of_mem n h2)</span>
@@ -647,7 +645,7 @@ s = t', \qquad t = s' - t'q.
 <span id="cb31-42"><a href="#cb31-42" aria-hidden="true" tabindex="-1"></a>  <span class="kw">done</span></span>
 <span id="cb31-43"><a href="#cb31-43" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb31-44"><a href="#cb31-44" aria-hidden="true" tabindex="-1"></a><span class="kw">lemma</span> nondec_cons (n : Nat) (L : List Nat) :</span>
-<span id="cb31-45"><a href="#cb31-45" aria-hidden="true" tabindex="-1"></a>    nondec (n :: L) ↔ (∀ (m : Nat), m ∈ L → n ≤ m) ∧ nondec L := <span class="kw">by</span> <span class="kw">rfl</span></span>
+<span id="cb31-45"><a href="#cb31-45" aria-hidden="true" tabindex="-1"></a>    nondec (n :: L) ↔ (∀ m ∈ L, n ≤ m) ∧ nondec L := <span class="kw">by</span> <span class="kw">rfl</span></span>
 <span id="cb31-46"><a href="#cb31-46" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb31-47"><a href="#cb31-47" aria-hidden="true" tabindex="-1"></a><span class="kw">lemma</span> prod_nil : prod [] = 1 := <span class="kw">by</span> <span class="kw">rfl</span></span>
 <span id="cb31-48"><a href="#cb31-48" aria-hidden="true" tabindex="-1"></a></span>
@@ -678,7 +676,7 @@ s = t', \qquad t = s' - t'q.
 <span id="cb34-8"><a href="#cb34-8" aria-hidden="true" tabindex="-1"></a>    <span class="kw">rewrite</span> [h1]                            <span class="co">--Goal : a ∈ [] → a ∣ prod []</span></span>
 <span id="cb34-9"><a href="#cb34-9" aria-hidden="true" tabindex="-1"></a>    <span class="kw">contrapos</span></span>
 <span id="cb34-10"><a href="#cb34-10" aria-hidden="true" tabindex="-1"></a>    <span class="kw">assume</span> h2 : ¬a ∣ prod []</span>
-<span id="cb34-11"><a href="#cb34-11" aria-hidden="true" tabindex="-1"></a>    <span class="kw">show</span> ¬a ∈ [] <span class="kw">from</span> List.not_mem_nil a</span>
+<span id="cb34-11"><a href="#cb34-11" aria-hidden="true" tabindex="-1"></a>    <span class="kw">show</span> a ∉ [] <span class="kw">from</span> List.not_mem_nil a</span>
 <span id="cb34-12"><a href="#cb34-12" aria-hidden="true" tabindex="-1"></a>    <span class="kw">done</span></span>
 <span id="cb34-13"><a href="#cb34-13" aria-hidden="true" tabindex="-1"></a>  · <span class="co">-- Induction Step</span></span>
 <span id="cb34-14"><a href="#cb34-14" aria-hidden="true" tabindex="-1"></a>    <span class="kw">fix</span> n : Nat</span>
@@ -720,8 +718,8 @@ s = t', \qquad t = s' - t'q.
 <span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a>    ∃ (l : List Nat), prime_factorization n l := <span class="kw">by</span></span>
 <span id="cb35-3"><a href="#cb35-3" aria-hidden="true" tabindex="-1"></a>  <span class="kw">by_strong_induc</span></span>
 <span id="cb35-4"><a href="#cb35-4" aria-hidden="true" tabindex="-1"></a>  <span class="kw">fix</span> n : Nat</span>
-<span id="cb35-5"><a href="#cb35-5" aria-hidden="true" tabindex="-1"></a>  <span class="kw">assume</span> ih : ∀ (n_1 : Nat), n_1 &lt; n →</span>
-<span id="cb35-6"><a href="#cb35-6" aria-hidden="true" tabindex="-1"></a>    n_1 ≥ 1 → ∃ (l : List Nat), prime_factorization n_1 l</span>
+<span id="cb35-5"><a href="#cb35-5" aria-hidden="true" tabindex="-1"></a>  <span class="kw">assume</span> ih : ∀ n_1 &lt; n, n_1 ≥ 1 →</span>
+<span id="cb35-6"><a href="#cb35-6" aria-hidden="true" tabindex="-1"></a>    ∃ (l : List Nat), prime_factorization n_1 l</span>
 <span id="cb35-7"><a href="#cb35-7" aria-hidden="true" tabindex="-1"></a>  <span class="kw">assume</span> h1 : n ≥ 1</span>
 <span id="cb35-8"><a href="#cb35-8" aria-hidden="true" tabindex="-1"></a>  <span class="kw">by_cases</span> h2 : n = 1</span>
 <span id="cb35-9"><a href="#cb35-9" aria-hidden="true" tabindex="-1"></a>  · <span class="co">-- Case 1. h2 : n = 1</span></span>
@@ -862,19 +860,19 @@ s = t', \qquad t = s' - t'q.
 <span id="cb37-3"><a href="#cb37-3" aria-hidden="true" tabindex="-1"></a><span class="kw">lemma</span> prime_not_one {p : Nat} (h : prime p) : p ≠ 1 := <span class="cn">sorry</span></span>
 <span id="cb37-4"><a href="#cb37-4" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb37-5"><a href="#cb37-5" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Theorem_7_2_4 {p : Nat} (h1 : prime p) :</span>
-<span id="cb37-6"><a href="#cb37-6" aria-hidden="true" tabindex="-1"></a>    ∀ (l : List Nat), p ∣ prod l → ∃ (a : Nat), a ∈ l ∧ p ∣ a := <span class="kw">by</span></span>
+<span id="cb37-6"><a href="#cb37-6" aria-hidden="true" tabindex="-1"></a>    ∀ (l : List Nat), p ∣ prod l → ∃ a ∈ l, p ∣ a := <span class="kw">by</span></span>
 <span id="cb37-7"><a href="#cb37-7" aria-hidden="true" tabindex="-1"></a>  <span class="kw">apply</span> List.rec</span>
-<span id="cb37-8"><a href="#cb37-8" aria-hidden="true" tabindex="-1"></a>  · <span class="co">-- Base Case.  Goal : p ∣ prod [] → ∃ (a : Nat), a ∈ [] ∧ p ∣ a</span></span>
+<span id="cb37-8"><a href="#cb37-8" aria-hidden="true" tabindex="-1"></a>  · <span class="co">-- Base Case.  Goal : p ∣ prod [] → ∃ a ∈ [], p ∣ a</span></span>
 <span id="cb37-9"><a href="#cb37-9" aria-hidden="true" tabindex="-1"></a>    <span class="kw">rewrite</span> [prod_nil]</span>
 <span id="cb37-10"><a href="#cb37-10" aria-hidden="true" tabindex="-1"></a>    <span class="kw">assume</span> h2 : p ∣ 1</span>
-<span id="cb37-11"><a href="#cb37-11" aria-hidden="true" tabindex="-1"></a>    <span class="kw">show</span> ∃ (a : Nat), a ∈ [] ∧ p ∣ a <span class="kw">from</span></span>
+<span id="cb37-11"><a href="#cb37-11" aria-hidden="true" tabindex="-1"></a>    <span class="kw">show</span> ∃ a ∈ [], p ∣ a <span class="kw">from</span></span>
 <span id="cb37-12"><a href="#cb37-12" aria-hidden="true" tabindex="-1"></a>      absurd (eq_one_of_dvd_one h2) (prime_not_one h1)</span>
 <span id="cb37-13"><a href="#cb37-13" aria-hidden="true" tabindex="-1"></a>    <span class="kw">done</span></span>
 <span id="cb37-14"><a href="#cb37-14" aria-hidden="true" tabindex="-1"></a>  · <span class="co">-- Induction Step</span></span>
 <span id="cb37-15"><a href="#cb37-15" aria-hidden="true" tabindex="-1"></a>    <span class="kw">fix</span> b : Nat</span>
 <span id="cb37-16"><a href="#cb37-16" aria-hidden="true" tabindex="-1"></a>    <span class="kw">fix</span> L : List Nat</span>
-<span id="cb37-17"><a href="#cb37-17" aria-hidden="true" tabindex="-1"></a>    <span class="kw">assume</span> ih : p ∣ prod L → ∃ (a : Nat), a ∈ L ∧ p ∣ a</span>
-<span id="cb37-18"><a href="#cb37-18" aria-hidden="true" tabindex="-1"></a>      <span class="co">--Goal : p ∣ prod (b :: L) → ∃ (a : Nat), a ∈ b :: L ∧ p ∣ a</span></span>
+<span id="cb37-17"><a href="#cb37-17" aria-hidden="true" tabindex="-1"></a>    <span class="kw">assume</span> ih : p ∣ prod L → ∃ a ∈ L, p ∣ a</span>
+<span id="cb37-18"><a href="#cb37-18" aria-hidden="true" tabindex="-1"></a>      <span class="co">--Goal : p ∣ prod (b :: L) → ∃ a ∈ b :: L, p ∣ a</span></span>
 <span id="cb37-19"><a href="#cb37-19" aria-hidden="true" tabindex="-1"></a>    <span class="kw">assume</span> h2 : p ∣ prod (b :: L)</span>
 <span id="cb37-20"><a href="#cb37-20" aria-hidden="true" tabindex="-1"></a>    <span class="kw">rewrite</span> [prod_cons] <span class="kw">at</span> h2</span>
 <span id="cb37-21"><a href="#cb37-21" aria-hidden="true" tabindex="-1"></a>    <span class="kw">have</span> h3 : p ∣ b ∨ p ∣ prod L := Theorem_7_2_3 h1 h2</span>
@@ -925,7 +923,7 @@ s = t', \qquad t = s' - t'q.
 <span id="cb39-19"><a href="#cb39-19" aria-hidden="true" tabindex="-1"></a>    <span class="kw">linarith</span></span>
 <span id="cb39-20"><a href="#cb39-20" aria-hidden="true" tabindex="-1"></a>    <span class="kw">done</span></span>
 <span id="cb39-21"><a href="#cb39-21" aria-hidden="true" tabindex="-1"></a>  · <span class="co">-- Case 2. h6 : q ∈ l</span></span>
-<span id="cb39-22"><a href="#cb39-22" aria-hidden="true" tabindex="-1"></a>    <span class="kw">have</span> h8 : ∀ (m : Nat), m ∈ l → p ≤ m := h7.left</span>
+<span id="cb39-22"><a href="#cb39-22" aria-hidden="true" tabindex="-1"></a>    <span class="kw">have</span> h8 : ∀ m ∈ l, p ≤ m := h7.left</span>
 <span id="cb39-23"><a href="#cb39-23" aria-hidden="true" tabindex="-1"></a>    <span class="kw">show</span> p ≤ q <span class="kw">from</span> h8 q h6</span>
 <span id="cb39-24"><a href="#cb39-24" aria-hidden="true" tabindex="-1"></a>    <span class="kw">done</span></span>
 <span id="cb39-25"><a href="#cb39-25" aria-hidden="true" tabindex="-1"></a>  <span class="kw">done</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -1017,7 +1015,7 @@ s = t', \qquad t = s' - t'q.
 <div class="sourceCode" id="cb43"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a><span class="co">--Hints:  Start with apply List.rec.</span></span>
 <span id="cb43-2"><a href="#cb43-2" aria-hidden="true" tabindex="-1"></a><span class="co">--You may find the theorem mul_ne_zero useful.</span></span>
 <span id="cb43-3"><a href="#cb43-3" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> prod_nonzero_nonzero : ∀ (l : List Nat),</span>
-<span id="cb43-4"><a href="#cb43-4" aria-hidden="true" tabindex="-1"></a>    (∀ (a : Nat), a ∈ l → a ≠ 0) → prod l ≠ 0 := <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb43-4"><a href="#cb43-4" aria-hidden="true" tabindex="-1"></a>    (∀ a ∈ l, a ≠ 0) → prod l ≠ 0 := <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="numex" data-arguments="3">
 <div class="sourceCode" id="cb44"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> rel_prime_iff_no_common_factor (a b : Nat) :</span>
@@ -1612,7 +1610,7 @@ Int.emod_nonneg : ∀ (a : ℤ) {b : ℤ}, b ≠ 0 → 0 ≤ a % b</code></pre>
 <span id="cb95-20"><a href="#cb95-20" aria-hidden="true" tabindex="-1"></a><span class="kw">#eval</span> 7 ^ phi 10   <span class="co">--Answer: 2401, which is congruent to 1 mod 10.</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>We now turn to the two lemmas whose proofs we skipped over, <code>G_perm_below</code> and <code>perm_prod</code>. To prove <code>G_perm_below</code>, we must prove three facts: <code>maps_below m (G m a)</code>, <code>one_one_below m (G m a)</code>, and <code>onto_below m (G m a)</code>. The first is straightforward:</p>
 <div class="sourceCode" id="cb96"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb96-1"><a href="#cb96-1" aria-hidden="true" tabindex="-1"></a><span class="kw">lemma</span> G_maps_below (m a : Nat) [NeZero m] : maps_below m (G m a) := <span class="kw">by</span></span>
-<span id="cb96-2"><a href="#cb96-2" aria-hidden="true" tabindex="-1"></a>  <span class="kw">define</span>             <span class="co">--Goal : ∀ (i : Nat), i &lt; m → G m a i &lt; m</span></span>
+<span id="cb96-2"><a href="#cb96-2" aria-hidden="true" tabindex="-1"></a>  <span class="kw">define</span>             <span class="co">--Goal : ∀ i &lt; m, G m a i &lt; m</span></span>
 <span id="cb96-3"><a href="#cb96-3" aria-hidden="true" tabindex="-1"></a>  <span class="kw">fix</span> i : Nat</span>
 <span id="cb96-4"><a href="#cb96-4" aria-hidden="true" tabindex="-1"></a>  <span class="kw">assume</span> h1 : i &lt; m</span>
 <span id="cb96-5"><a href="#cb96-5" aria-hidden="true" tabindex="-1"></a>  <span class="kw">rewrite</span> [G_def]    <span class="co">--Goal : a * i % m &lt; m</span></span>
@@ -1860,7 +1858,7 @@ Int.emod_nonneg : ∀ (a : ℤ) {b : ℤ}, b ≠ 0 → 0 ≤ a % b</code></pre>
 <p>For an explanation of how the RSA system works and why <code>Theorem_7_5_1</code> justifies it, see <em>HTPI</em>. Here we will focus on proving the theorem in Lean.</p>
 <p>We will be applying Euler’s theorem to the prime numbers <code>p</code> and <code>q</code>, so we will need to know how to compute <code>phi p</code> and <code>phi q</code>. Fortunately, there is a simple formula we can use.</p>
 <div class="sourceCode" id="cb120"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb120-1"><a href="#cb120-1" aria-hidden="true" tabindex="-1"></a><span class="kw">lemma</span> num_rp_prime {p : Nat} (h1 : prime p) :</span>
-<span id="cb120-2"><a href="#cb120-2" aria-hidden="true" tabindex="-1"></a>    ∀ (k : Nat), k &lt; p → num_rp_below p (k + 1) = k := <span class="cn">sorry</span></span>
+<span id="cb120-2"><a href="#cb120-2" aria-hidden="true" tabindex="-1"></a>    ∀ k &lt; p, num_rp_below p (k + 1) = k := <span class="cn">sorry</span></span>
 <span id="cb120-3"><a href="#cb120-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb120-4"><a href="#cb120-4" aria-hidden="true" tabindex="-1"></a><span class="kw">lemma</span> phi_prime {p : Nat} (h1 : prime p) : phi p = p - 1 := <span class="kw">by</span></span>
 <span id="cb120-5"><a href="#cb120-5" aria-hidden="true" tabindex="-1"></a>  <span class="kw">have</span> h2 : 1 ≤ p := prime_pos h1</span>
@@ -2036,7 +2034,7 @@ Int.natAbs_ofNat : ∀ (n : ℕ), Int.natAbs ↑n = n</code></pre>
 <div class="numex" data-arguments="1">
 <div class="sourceCode" id="cb127"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb127-1"><a href="#cb127-1" aria-hidden="true" tabindex="-1"></a><span class="co">--Hint:  Use induction.</span></span>
 <span id="cb127-2"><a href="#cb127-2" aria-hidden="true" tabindex="-1"></a><span class="kw">lemma</span> num_rp_prime {p : Nat} (h1 : prime p) :</span>
-<span id="cb127-3"><a href="#cb127-3" aria-hidden="true" tabindex="-1"></a>    ∀ (k : Nat), k &lt; p → num_rp_below p (k + 1) = k := <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb127-3"><a href="#cb127-3" aria-hidden="true" tabindex="-1"></a>    ∀ k &lt; p, num_rp_below p (k + 1) = k := <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="numex" data-arguments="2">
 <div class="sourceCode" id="cb128"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb128-1"><a href="#cb128-1" aria-hidden="true" tabindex="-1"></a><span class="kw">lemma</span> three_prime : prime 3 := <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
