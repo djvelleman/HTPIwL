@@ -451,7 +451,7 @@ $$
 <span id="cb17-14"><a href="#cb17-14" aria-hidden="true" tabindex="-1"></a>    <span class="kw">define</span> <span class="kw">at</span> h3       <span class="co">--h3 : x ∈ A ∧ f x = y</span></span>
 <span id="cb17-15"><a href="#cb17-15" aria-hidden="true" tabindex="-1"></a>    <span class="kw">apply</span> And.intro h3.left</span>
 <span id="cb17-16"><a href="#cb17-16" aria-hidden="true" tabindex="-1"></a>    <span class="kw">define</span></span>
-<span id="cb17-17"><a href="#cb17-17" aria-hidden="true" tabindex="-1"></a>    <span class="kw">show</span> ∃ (x : U), x ∈ A ∧ f x = y <span class="kw">from</span> Exists.intro x h3</span>
+<span id="cb17-17"><a href="#cb17-17" aria-hidden="true" tabindex="-1"></a>    <span class="kw">show</span> ∃ x ∈ A, f x = y <span class="kw">from</span> Exists.intro x h3</span>
 <span id="cb17-18"><a href="#cb17-18" aria-hidden="true" tabindex="-1"></a>    <span class="kw">done</span></span>
 <span id="cb17-19"><a href="#cb17-19" aria-hidden="true" tabindex="-1"></a>  · <span class="co">-- Proofs of fcnl_ons</span></span>
 <span id="cb17-20"><a href="#cb17-20" aria-hidden="true" tabindex="-1"></a>    <span class="kw">apply</span> And.intro</span>
@@ -698,35 +698,35 @@ $$
 <span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>    ∀ (n : Nat), ∃ (s : Nat), num_elts_below A n s := <span class="cn">sorry</span></span>
 <span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a><span class="kw">lemma</span> bdd_subset_nat_match {A : Set Nat} {m s : Nat}</span>
-<span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a>    (h1 : ∀ (n : Nat), n ∈ A → n &lt; m) (h2 : num_elts_below A m s) :</span>
+<span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a>    (h1 : ∀ n ∈ A, n &lt; m) (h2 : num_elts_below A m s) :</span>
 <span id="cb25-6"><a href="#cb25-6" aria-hidden="true" tabindex="-1"></a>    matching (enum A) (I s) A := <span class="cn">sorry</span></span>
 <span id="cb25-7"><a href="#cb25-7" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb25-8"><a href="#cb25-8" aria-hidden="true" tabindex="-1"></a><span class="kw">lemma</span> bdd_subset_nat {A : Set Nat} {m s : Nat}</span>
-<span id="cb25-9"><a href="#cb25-9" aria-hidden="true" tabindex="-1"></a>    (h1 : ∀ (n : Nat), n ∈ A → n &lt; m) (h2 : num_elts_below A m s) :</span>
+<span id="cb25-9"><a href="#cb25-9" aria-hidden="true" tabindex="-1"></a>    (h1 : ∀ n ∈ A, n &lt; m) (h2 : num_elts_below A m s) :</span>
 <span id="cb25-10"><a href="#cb25-10" aria-hidden="true" tabindex="-1"></a>    I s ∼ A := Exists.intro (enum A) (bdd_subset_nat_match h1 h2)</span>
 <span id="cb25-11"><a href="#cb25-11" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb25-12"><a href="#cb25-12" aria-hidden="true" tabindex="-1"></a><span class="kw">lemma</span> unbdd_subset_nat_match {A : Set Nat}</span>
-<span id="cb25-13"><a href="#cb25-13" aria-hidden="true" tabindex="-1"></a>    (h1 : ∀ (m : Nat), ∃ (n : Nat), n ∈ A ∧ n ≥ m) :</span>
+<span id="cb25-13"><a href="#cb25-13" aria-hidden="true" tabindex="-1"></a>    (h1 : ∀ (m : Nat), ∃ n ∈ A, n ≥ m) :</span>
 <span id="cb25-14"><a href="#cb25-14" aria-hidden="true" tabindex="-1"></a>    matching (enum A) (Univ Nat) A := <span class="cn">sorry</span></span>
 <span id="cb25-15"><a href="#cb25-15" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb25-16"><a href="#cb25-16" aria-hidden="true" tabindex="-1"></a><span class="kw">lemma</span> unbdd_subset_nat {A : Set Nat}</span>
-<span id="cb25-17"><a href="#cb25-17" aria-hidden="true" tabindex="-1"></a>    (h1 : ∀ (m : Nat), ∃ (n : Nat), n ∈ A ∧ n ≥ m) :</span>
+<span id="cb25-17"><a href="#cb25-17" aria-hidden="true" tabindex="-1"></a>    (h1 : ∀ (m : Nat), ∃ n ∈ A, n ≥ m) :</span>
 <span id="cb25-18"><a href="#cb25-18" aria-hidden="true" tabindex="-1"></a>    denum A := Exists.intro (enum A) (unbdd_subset_nat_match h1)</span>
 <span id="cb25-19"><a href="#cb25-19" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb25-20"><a href="#cb25-20" aria-hidden="true" tabindex="-1"></a><span class="kw">lemma</span> subset_nat_ctble (A : Set Nat) : ctble A := <span class="kw">by</span></span>
 <span id="cb25-21"><a href="#cb25-21" aria-hidden="true" tabindex="-1"></a>  <span class="kw">define</span>          <span class="co">--Goal : finite A ∨ denum A</span></span>
-<span id="cb25-22"><a href="#cb25-22" aria-hidden="true" tabindex="-1"></a>  <span class="kw">by_cases</span> h1 : ∃ (m : Nat), ∀ (n : Nat), n ∈ A → n &lt; m</span>
-<span id="cb25-23"><a href="#cb25-23" aria-hidden="true" tabindex="-1"></a>  · <span class="co">-- Case 1. h1 : ∃ (m : Nat), ∀ (n : Nat), n ∈ A → n &lt; m</span></span>
+<span id="cb25-22"><a href="#cb25-22" aria-hidden="true" tabindex="-1"></a>  <span class="kw">by_cases</span> h1 : ∃ (m : Nat), ∀ n ∈ A, n &lt; m</span>
+<span id="cb25-23"><a href="#cb25-23" aria-hidden="true" tabindex="-1"></a>  · <span class="co">-- Case 1. h1 : ∃ (m : Nat), ∀ n ∈ A, n &lt; m</span></span>
 <span id="cb25-24"><a href="#cb25-24" aria-hidden="true" tabindex="-1"></a>    <span class="kw">apply</span> Or.inl  <span class="co">--Goal : finite A</span></span>
-<span id="cb25-25"><a href="#cb25-25" aria-hidden="true" tabindex="-1"></a>    <span class="kw">obtain</span> (m : Nat) (h2 : ∀ (n : Nat), n ∈ A → n &lt; m) <span class="kw">from</span> h1</span>
+<span id="cb25-25"><a href="#cb25-25" aria-hidden="true" tabindex="-1"></a>    <span class="kw">obtain</span> (m : Nat) (h2 : ∀ n ∈ A, n &lt; m) <span class="kw">from</span> h1</span>
 <span id="cb25-26"><a href="#cb25-26" aria-hidden="true" tabindex="-1"></a>    <span class="kw">obtain</span> (s : Nat) (h3 : num_elts_below A m s) <span class="kw">from</span> neb_exists A m</span>
 <span id="cb25-27"><a href="#cb25-27" aria-hidden="true" tabindex="-1"></a>    <span class="kw">apply</span> Exists.intro s</span>
 <span id="cb25-28"><a href="#cb25-28" aria-hidden="true" tabindex="-1"></a>    <span class="kw">show</span> I s ∼ A <span class="kw">from</span> bdd_subset_nat h2 h3</span>
 <span id="cb25-29"><a href="#cb25-29" aria-hidden="true" tabindex="-1"></a>    <span class="kw">done</span></span>
-<span id="cb25-30"><a href="#cb25-30" aria-hidden="true" tabindex="-1"></a>  · <span class="co">-- Case 2. h1 : ¬∃ (m : Nat), ∀ (n : Nat), n ∈ A → n &lt; m</span></span>
+<span id="cb25-30"><a href="#cb25-30" aria-hidden="true" tabindex="-1"></a>  · <span class="co">-- Case 2. h1 : ¬∃ (m : Nat), ∀ n ∈ A, n &lt; m</span></span>
 <span id="cb25-31"><a href="#cb25-31" aria-hidden="true" tabindex="-1"></a>    <span class="kw">apply</span> Or.inr  <span class="co">--Goal : denum A</span></span>
 <span id="cb25-32"><a href="#cb25-32" aria-hidden="true" tabindex="-1"></a>    <span class="kw">push_neg</span> <span class="kw">at</span> h1</span>
-<span id="cb25-33"><a href="#cb25-33" aria-hidden="true" tabindex="-1"></a>      <span class="co">--This tactic converts h1 to ∀ (m : Nat), ∃ (n : Nat), n ∈ A ∧ m ≤ n</span></span>
+<span id="cb25-33"><a href="#cb25-33" aria-hidden="true" tabindex="-1"></a>      <span class="co">--This tactic converts h1 to ∀ (m : Nat), ∃ n ∈ A, m ≤ n</span></span>
 <span id="cb25-34"><a href="#cb25-34" aria-hidden="true" tabindex="-1"></a>    <span class="kw">show</span> denum A <span class="kw">from</span> unbdd_subset_nat h1</span>
 <span id="cb25-35"><a href="#cb25-35" aria-hidden="true" tabindex="-1"></a>    <span class="kw">done</span></span>
 <span id="cb25-36"><a href="#cb25-36" aria-hidden="true" tabindex="-1"></a>  <span class="kw">done</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -969,7 +969,7 @@ $$
 <span id="cb33-17"><a href="#cb33-17" aria-hidden="true" tabindex="-1"></a>  <span class="kw">done</span></span>
 <span id="cb33-18"><a href="#cb33-18" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb33-19"><a href="#cb33-19" aria-hidden="true" tabindex="-1"></a><span class="kw">lemma</span> image_fqn_unbdd :</span>
-<span id="cb33-20"><a href="#cb33-20" aria-hidden="true" tabindex="-1"></a>    ∀ (m : Nat), ∃ (n : Nat), n ∈ image fqn (Univ Rat) ∧ n ≥ m := <span class="kw">by</span></span>
+<span id="cb33-20"><a href="#cb33-20" aria-hidden="true" tabindex="-1"></a>    ∀ (m : Nat), ∃ n ∈ image fqn (Univ Rat), n ≥ m := <span class="kw">by</span></span>
 <span id="cb33-21"><a href="#cb33-21" aria-hidden="true" tabindex="-1"></a>  <span class="kw">fix</span> m : Nat</span>
 <span id="cb33-22"><a href="#cb33-22" aria-hidden="true" tabindex="-1"></a>  <span class="kw">set</span> n : Nat := fqn ↑m</span>
 <span id="cb33-23"><a href="#cb33-23" aria-hidden="true" tabindex="-1"></a>  <span class="kw">apply</span> Exists.intro n</span>
@@ -1024,7 +1024,7 @@ $$
 </div>
 <p>The next four exercises use the following definition:</p>
 <div class="sourceCode" id="cb40"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> Rel_image {U V : <span class="kw">Type</span>} (R : Rel U V) (A : Set U) : Set V :=</span>
-<span id="cb40-2"><a href="#cb40-2" aria-hidden="true" tabindex="-1"></a>  { y : V | ∃ (x : U), x ∈ A ∧ R x y }</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb40-2"><a href="#cb40-2" aria-hidden="true" tabindex="-1"></a>  { y : V | ∃ x ∈ A, R x y }</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>Note that if <code>R</code> has type <code>Rel U V</code>, then <code>Rel_image R</code> has type <code>Set U → Set V</code>.</p>
 <div class="numex" data-arguments="7">
 <div class="sourceCode" id="cb41"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a><span class="kw">lemma</span> Rel_image_on_power_set {U V : <span class="kw">Type</span>} {R : Rel U V}</span>

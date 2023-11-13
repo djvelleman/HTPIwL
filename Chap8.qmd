@@ -264,7 +264,7 @@ theorem equinum_image {U V : Type} {A : Set U} {B : Set V} {f : U → V}
     define at h3       --h3 : x ∈ A ∧ f x = y
     apply And.intro h3.left
     define
-    show ∃ (x : U), x ∈ A ∧ f x = y from Exists.intro x h3
+    show ∃ x ∈ A, f x = y from Exists.intro x h3
     done
   · -- Proofs of fcnl_ons
     apply And.intro
@@ -545,35 +545,35 @@ lemma neb_exists (A : Set Nat) :
     ∀ (n : Nat), ∃ (s : Nat), num_elts_below A n s := sorry
 
 lemma bdd_subset_nat_match {A : Set Nat} {m s : Nat}
-    (h1 : ∀ (n : Nat), n ∈ A → n < m) (h2 : num_elts_below A m s) :
+    (h1 : ∀ n ∈ A, n < m) (h2 : num_elts_below A m s) :
     matching (enum A) (I s) A := sorry
 
 lemma bdd_subset_nat {A : Set Nat} {m s : Nat}
-    (h1 : ∀ (n : Nat), n ∈ A → n < m) (h2 : num_elts_below A m s) :
+    (h1 : ∀ n ∈ A, n < m) (h2 : num_elts_below A m s) :
     I s ∼ A := Exists.intro (enum A) (bdd_subset_nat_match h1 h2)
 
 lemma unbdd_subset_nat_match {A : Set Nat}
-    (h1 : ∀ (m : Nat), ∃ (n : Nat), n ∈ A ∧ n ≥ m) :
+    (h1 : ∀ (m : Nat), ∃ n ∈ A, n ≥ m) :
     matching (enum A) (Univ Nat) A := sorry
 
 lemma unbdd_subset_nat {A : Set Nat}
-    (h1 : ∀ (m : Nat), ∃ (n : Nat), n ∈ A ∧ n ≥ m) :
+    (h1 : ∀ (m : Nat), ∃ n ∈ A, n ≥ m) :
     denum A := Exists.intro (enum A) (unbdd_subset_nat_match h1)
 
 lemma subset_nat_ctble (A : Set Nat) : ctble A := by
   define          --Goal : finite A ∨ denum A
-  by_cases h1 : ∃ (m : Nat), ∀ (n : Nat), n ∈ A → n < m
-  · -- Case 1. h1 : ∃ (m : Nat), ∀ (n : Nat), n ∈ A → n < m
+  by_cases h1 : ∃ (m : Nat), ∀ n ∈ A, n < m
+  · -- Case 1. h1 : ∃ (m : Nat), ∀ n ∈ A, n < m
     apply Or.inl  --Goal : finite A
-    obtain (m : Nat) (h2 : ∀ (n : Nat), n ∈ A → n < m) from h1
+    obtain (m : Nat) (h2 : ∀ n ∈ A, n < m) from h1
     obtain (s : Nat) (h3 : num_elts_below A m s) from neb_exists A m
     apply Exists.intro s
     show I s ∼ A from bdd_subset_nat h2 h3
     done
-  · -- Case 2. h1 : ¬∃ (m : Nat), ∀ (n : Nat), n ∈ A → n < m
+  · -- Case 2. h1 : ¬∃ (m : Nat), ∀ n ∈ A, n < m
     apply Or.inr  --Goal : denum A
     push_neg at h1
-      --This tactic converts h1 to ∀ (m : Nat), ∃ (n : Nat), n ∈ A ∧ m ≤ n
+      --This tactic converts h1 to ∀ (m : Nat), ∃ n ∈ A, m ≤ n
     show denum A from unbdd_subset_nat h1
     done
   done
@@ -850,7 +850,7 @@ lemma fqn_one_one : one_to_one fqn := by
   done
 
 lemma image_fqn_unbdd :
-    ∀ (m : Nat), ∃ (n : Nat), n ∈ image fqn (Univ Rat) ∧ n ≥ m := by
+    ∀ (m : Nat), ∃ n ∈ image fqn (Univ Rat), n ≥ m := by
   fix m : Nat
   set n : Nat := fqn ↑m
   apply Exists.intro n
@@ -927,7 +927,7 @@ The next four exercises use the following definition:
 
 ```lean
 def Rel_image {U V : Type} (R : Rel U V) (A : Set U) : Set V :=
-  { y : V | ∃ (x : U), x ∈ A ∧ R x y }
+  { y : V | ∃ x ∈ A, R x y }
 ```
 
 Note that if `R` has type `Rel U V`, then `Rel_image R` has type `Set U → Set V`.
