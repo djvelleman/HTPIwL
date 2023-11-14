@@ -1202,7 +1202,7 @@ $$
 <span id="cb55-22"><a href="#cb55-22" aria-hidden="true" tabindex="-1"></a><span class="kw">lemma</span> remove_one_iff {U V : <span class="kw">Type</span>}</span>
 <span id="cb55-23"><a href="#cb55-23" aria-hidden="true" tabindex="-1"></a>    {A : Set U} {B : Set V} {R : Rel U V} (h1 : matching R A B)</span>
 <span id="cb55-24"><a href="#cb55-24" aria-hidden="true" tabindex="-1"></a>    {u : U} (h2 : u ∈ A) (v : V) {x : U} (h3 : x ∈ A \ {u}) :</span>
-<span id="cb55-25"><a href="#cb55-25" aria-hidden="true" tabindex="-1"></a>    ∃ (w : U), w ∈ A ∧ ∀ (y : V), remove_one R u v x y ↔ R w y := <span class="cn">sorry</span></span>
+<span id="cb55-25"><a href="#cb55-25" aria-hidden="true" tabindex="-1"></a>    ∃ w ∈ A, ∀ (y : V), remove_one R u v x y ↔ R w y := <span class="cn">sorry</span></span>
 <span id="cb55-26"><a href="#cb55-26" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb55-27"><a href="#cb55-27" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> remove_one_fcnl {U V : <span class="kw">Type</span>}</span>
 <span id="cb55-28"><a href="#cb55-28" aria-hidden="true" tabindex="-1"></a>    {R : Rel U V} {A : Set U} {B : Set V} {u : U}</span>
@@ -1385,7 +1385,7 @@ $$
 <span id="cb59-17"><a href="#cb59-17" aria-hidden="true" tabindex="-1"></a><span class="kw">lemma</span> phi_is_numElts (m : Nat) :</span>
 <span id="cb59-18"><a href="#cb59-18" aria-hidden="true" tabindex="-1"></a>    numElts (Set_rp_below m) (phi m) := <span class="kw">by</span></span>
 <span id="cb59-19"><a href="#cb59-19" aria-hidden="true" tabindex="-1"></a>  <span class="kw">rewrite</span> [numElts_def]    <span class="co">--Goal : I (phi m) ∼ Set_rp_below m</span></span>
-<span id="cb59-20"><a href="#cb59-20" aria-hidden="true" tabindex="-1"></a>  <span class="kw">have</span> h1 : ∀ (n : Nat), n ∈ Set_rp_below m → n &lt; m := <span class="kw">by</span></span>
+<span id="cb59-20"><a href="#cb59-20" aria-hidden="true" tabindex="-1"></a>  <span class="kw">have</span> h1 : ∀ n ∈ Set_rp_below m, n &lt; m := <span class="kw">by</span></span>
 <span id="cb59-21"><a href="#cb59-21" aria-hidden="true" tabindex="-1"></a>    <span class="kw">fix</span> n : Nat</span>
 <span id="cb59-22"><a href="#cb59-22" aria-hidden="true" tabindex="-1"></a>    <span class="kw">assume</span> h2 : n ∈ Set_rp_below m</span>
 <span id="cb59-23"><a href="#cb59-23" aria-hidden="true" tabindex="-1"></a>    <span class="kw">define</span> <span class="kw">at</span> h2</span>
@@ -1660,7 +1660,7 @@ $$
 <div class="sourceCode" id="cb71"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb71-1"><a href="#cb71-1" aria-hidden="true" tabindex="-1"></a><span class="kw">lemma</span> remove_one_iff {U V : <span class="kw">Type</span>}</span>
 <span id="cb71-2"><a href="#cb71-2" aria-hidden="true" tabindex="-1"></a>    {A : Set U} {B : Set V} {R : Rel U V} (h1 : matching R A B)</span>
 <span id="cb71-3"><a href="#cb71-3" aria-hidden="true" tabindex="-1"></a>    {u : U} (h2 : u ∈ A) (v : V) {x : U} (h3 : x ∈ A \ {u}) :</span>
-<span id="cb71-4"><a href="#cb71-4" aria-hidden="true" tabindex="-1"></a>    ∃ (w : U), w ∈ A ∧ ∀ (y : V), remove_one R u v x y ↔ R w y := <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb71-4"><a href="#cb71-4" aria-hidden="true" tabindex="-1"></a>    ∃ w ∈ A, ∀ (y : V), remove_one R u v x y ↔ R w y := <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="numex" data-arguments="2">
 <div class="sourceCode" id="cb72"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb72-1"><a href="#cb72-1" aria-hidden="true" tabindex="-1"></a><span class="kw">lemma</span> inv_one_match {U V : <span class="kw">Type</span>} (a : U) (b : V) :</span>
