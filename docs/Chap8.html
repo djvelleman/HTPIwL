@@ -321,7 +321,7 @@ $$
 <p>We’ll give one more example: a one-to-one, onto function <code>fnnn</code> from <code>Nat × Nat</code> to <code>Nat</code>, whose definition is modeled on a function from <span class="math inline">\(\mathbb{Z}^+ \times \mathbb{Z}^+\)</span> to <span class="math inline">\(\mathbb{Z}^+\)</span> in <em>HTPI</em>. The definition of <code>fnnn</code> will use numbers of the form <code>k * (k + 1) / 2</code>. These numbers are sometimes called <em>triangular numbers</em>, because they count the number of objects in a triangular grid with <code>k</code> rows.</p>
 <div class="sourceCode" id="cb7"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> tri (k : Nat) : Nat := k * (k + 1) / 2</span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> fnnn (p : Nat × Nat) : Nat := tri (p.fst + p.snd) + p.fst</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> fnnn (p : Nat × Nat) : Nat := tri (p.1 + p.2) + p.1</span>
 <span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="kw">lemma</span> fnnn_def (a b : Nat) : fnnn (a, b) = tri (a + b) + a := <span class="kw">by</span> <span class="kw">rfl</span></span>
 <span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a></span>
@@ -1459,7 +1459,7 @@ $$
 <span id="cb62-3"><a href="#cb62-3" aria-hidden="true" tabindex="-1"></a>    (h1 : A ∼ B) (h2 : C ∼ D) : A ×ₛ C ∼ B ×ₛ D</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>To see how to prove this theorem, suppose that <code>R</code> is a matching from <code>A</code> to <code>B</code> and <code>S</code> is a matching from <code>C</code> to <code>D</code>. We must produce a matching from <code>A ×ₛ C</code> to <code>B ×ₛ D</code>. The following definition is motivated by the proof in <em>HTPI</em>:</p>
 <div class="sourceCode" id="cb63"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb63-1"><a href="#cb63-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> Rel_prod {U V W X : <span class="kw">Type</span>} (R : Rel U V) (S : Rel W X)</span>
-<span id="cb63-2"><a href="#cb63-2" aria-hidden="true" tabindex="-1"></a>  (p : U × W) (q : V × X) : <span class="kw">Prop</span> := R p.fst q.fst ∧ S p.snd q.snd</span>
+<span id="cb63-2"><a href="#cb63-2" aria-hidden="true" tabindex="-1"></a>  (p : U × W) (q : V × X) : <span class="kw">Prop</span> := R p.1 q.1 ∧ S p.2 q.2</span>
 <span id="cb63-3"><a href="#cb63-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb63-4"><a href="#cb63-4" aria-hidden="true" tabindex="-1"></a><span class="kw">notation</span>:75 R:75 <span class="st">" ×ᵣ "</span> S:75 =&gt; Rel_prod R S</span>
 <span id="cb63-5"><a href="#cb63-5" aria-hidden="true" tabindex="-1"></a></span>
@@ -1764,7 +1764,7 @@ $$
 <div class="sourceCode" id="cb88"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb88-1"><a href="#cb88-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> enum_union_fam {U : <span class="kw">Type</span>}</span>
 <span id="cb88-2"><a href="#cb88-2" aria-hidden="true" tabindex="-1"></a>  (F : Set (Set U)) (f : Set U → Rel Nat U) (R : Rel Nat (Set U))</span>
 <span id="cb88-3"><a href="#cb88-3" aria-hidden="true" tabindex="-1"></a>  (n : Nat) (a : U) : <span class="kw">Prop</span> := ∃ (p : Nat × Nat), fnnn p = n ∧</span>
-<span id="cb88-4"><a href="#cb88-4" aria-hidden="true" tabindex="-1"></a>    ∃ (A : Set U), A ∈ F ∧ R p.fst A ∧ (f A) p.snd a</span>
+<span id="cb88-4"><a href="#cb88-4" aria-hidden="true" tabindex="-1"></a>    ∃ A ∈ F, R p.1 A ∧ (f A) p.2 a</span>
 <span id="cb88-5"><a href="#cb88-5" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb88-6"><a href="#cb88-6" aria-hidden="true" tabindex="-1"></a><span class="kw">lemma</span> Lemma_8_2_2_1 {U : <span class="kw">Type</span>} {F : Set (Set U)} {f : Set U → Rel Nat U}</span>
 <span id="cb88-7"><a href="#cb88-7" aria-hidden="true" tabindex="-1"></a>    (h1 : ctble F) (h2 : ∀ A ∈ F, fcnl_onto_from_nat (f A) A) :</span>
@@ -1786,11 +1786,11 @@ $$
 <span id="cb88-23"><a href="#cb88-23" aria-hidden="true" tabindex="-1"></a>    <span class="kw">assume</span> Sna2 : S n a2         <span class="co">--Goal : a1 = a2</span></span>
 <span id="cb88-24"><a href="#cb88-24" aria-hidden="true" tabindex="-1"></a>    <span class="kw">define</span> <span class="kw">at</span> Sna1; <span class="kw">define</span> <span class="kw">at</span> Sna2</span>
 <span id="cb88-25"><a href="#cb88-25" aria-hidden="true" tabindex="-1"></a>    <span class="kw">obtain</span> ((i1, j1) : Nat × Nat) (h4 : fnnn (i1, j1) = n ∧</span>
-<span id="cb88-26"><a href="#cb88-26" aria-hidden="true" tabindex="-1"></a>      ∃ (A : Set U), A ∈ F ∧ R i1 A ∧ f A j1 a1) <span class="kw">from</span> Sna1</span>
+<span id="cb88-26"><a href="#cb88-26" aria-hidden="true" tabindex="-1"></a>      ∃ A ∈ F, R i1 A ∧ f A j1 a1) <span class="kw">from</span> Sna1</span>
 <span id="cb88-27"><a href="#cb88-27" aria-hidden="true" tabindex="-1"></a>    <span class="kw">obtain</span> (A1 : Set U) (Aija1 : A1 ∈ F ∧ R i1 A1 ∧ f A1 j1 a1)</span>
 <span id="cb88-28"><a href="#cb88-28" aria-hidden="true" tabindex="-1"></a>      <span class="kw">from</span> h4.right</span>
 <span id="cb88-29"><a href="#cb88-29" aria-hidden="true" tabindex="-1"></a>    <span class="kw">obtain</span> ((i2, j2) : Nat × Nat) (h5 : fnnn (i2, j2) = n ∧</span>
-<span id="cb88-30"><a href="#cb88-30" aria-hidden="true" tabindex="-1"></a>      ∃ (A : Set U), A ∈ F ∧ R i2 A ∧ f A j2 a2) <span class="kw">from</span> Sna2</span>
+<span id="cb88-30"><a href="#cb88-30" aria-hidden="true" tabindex="-1"></a>      ∃ A ∈ F, R i2 A ∧ f A j2 a2) <span class="kw">from</span> Sna2</span>
 <span id="cb88-31"><a href="#cb88-31" aria-hidden="true" tabindex="-1"></a>    <span class="kw">obtain</span> (A2 : Set U) (Aija2 : A2 ∈ F ∧ R i2 A2 ∧ f A2 j2 a2)</span>
 <span id="cb88-32"><a href="#cb88-32" aria-hidden="true" tabindex="-1"></a>      <span class="kw">from</span> h5.right</span>
 <span id="cb88-33"><a href="#cb88-33" aria-hidden="true" tabindex="-1"></a>    <span class="kw">rewrite</span> [←h5.left] <span class="kw">at</span> h4</span>
@@ -1823,20 +1823,19 @@ $$
 <span id="cb88-60"><a href="#cb88-60" aria-hidden="true" tabindex="-1"></a>    <span class="kw">obtain</span> (j : Nat) (h7 : f A j x) <span class="kw">from</span> fAonto h5.right</span>
 <span id="cb88-61"><a href="#cb88-61" aria-hidden="true" tabindex="-1"></a>    <span class="kw">apply</span> Exists.intro (fnnn (i, j))</span>
 <span id="cb88-62"><a href="#cb88-62" aria-hidden="true" tabindex="-1"></a>    <span class="kw">define</span>    <span class="co">--Goal : ∃ (p : Nat × Nat), fnnn p = fnnn (i, j) ∧</span></span>
-<span id="cb88-63"><a href="#cb88-63" aria-hidden="true" tabindex="-1"></a>              <span class="co">--       ∃ (A : Set U), A ∈ F ∧ R p.fst A ∧ f A p.snd x</span></span>
+<span id="cb88-63"><a href="#cb88-63" aria-hidden="true" tabindex="-1"></a>              <span class="co">--       ∃ A ∈ F, R p.1 A ∧ f A p.2 x</span></span>
 <span id="cb88-64"><a href="#cb88-64" aria-hidden="true" tabindex="-1"></a>    <span class="kw">apply</span> Exists.intro (i, j)</span>
 <span id="cb88-65"><a href="#cb88-65" aria-hidden="true" tabindex="-1"></a>    <span class="kw">apply</span> And.intro</span>
 <span id="cb88-66"><a href="#cb88-66" aria-hidden="true" tabindex="-1"></a>    · <span class="co">-- Proof that fnnn (i, j) = fnnn (i, j)</span></span>
 <span id="cb88-67"><a href="#cb88-67" aria-hidden="true" tabindex="-1"></a>      <span class="kw">rfl</span></span>
 <span id="cb88-68"><a href="#cb88-68" aria-hidden="true" tabindex="-1"></a>      <span class="kw">done</span></span>
-<span id="cb88-69"><a href="#cb88-69" aria-hidden="true" tabindex="-1"></a>    · <span class="co">-- Proof that ∃ (A : Set U), A ∈ F ∧</span></span>
-<span id="cb88-70"><a href="#cb88-70" aria-hidden="true" tabindex="-1"></a>      <span class="co">--            R (i, j).fst A ∧ f A (i, j).snd x</span></span>
-<span id="cb88-71"><a href="#cb88-71" aria-hidden="true" tabindex="-1"></a>      <span class="kw">apply</span> Exists.intro A</span>
-<span id="cb88-72"><a href="#cb88-72" aria-hidden="true" tabindex="-1"></a>      <span class="kw">show</span> A ∈ F ∧ R (i, j).fst A ∧ f A (i, j).snd x <span class="kw">from</span></span>
-<span id="cb88-73"><a href="#cb88-73" aria-hidden="true" tabindex="-1"></a>        And.intro h5.left (And.intro h6 h7)</span>
-<span id="cb88-74"><a href="#cb88-74" aria-hidden="true" tabindex="-1"></a>      <span class="kw">done</span></span>
-<span id="cb88-75"><a href="#cb88-75" aria-hidden="true" tabindex="-1"></a>    <span class="kw">done</span></span>
-<span id="cb88-76"><a href="#cb88-76" aria-hidden="true" tabindex="-1"></a>  <span class="kw">done</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb88-69"><a href="#cb88-69" aria-hidden="true" tabindex="-1"></a>    · <span class="co">-- Proof that ∃ A ∈ F, R (i, j).1 A ∧ f A (i, j).2 x</span></span>
+<span id="cb88-70"><a href="#cb88-70" aria-hidden="true" tabindex="-1"></a>      <span class="kw">apply</span> Exists.intro A</span>
+<span id="cb88-71"><a href="#cb88-71" aria-hidden="true" tabindex="-1"></a>      <span class="kw">show</span> A ∈ F ∧ R (i, j).1 A ∧ f A (i, j).2 x <span class="kw">from</span></span>
+<span id="cb88-72"><a href="#cb88-72" aria-hidden="true" tabindex="-1"></a>        And.intro h5.left (And.intro h6 h7)</span>
+<span id="cb88-73"><a href="#cb88-73" aria-hidden="true" tabindex="-1"></a>      <span class="kw">done</span></span>
+<span id="cb88-74"><a href="#cb88-74" aria-hidden="true" tabindex="-1"></a>    <span class="kw">done</span></span>
+<span id="cb88-75"><a href="#cb88-75" aria-hidden="true" tabindex="-1"></a>  <span class="kw">done</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>How can we use <code>Lemma_8_2_2_1</code> to prove <code>Theorem_8_2_2</code>? We must use the hypothesis <code>h2 : ∀ A ∈ F, ctble A</code> in <code>Theorem_8_2_2</code> to produce the function <code>f</code> required in <code>Lemma_8_2_2_1</code>. As we have already observed, <code>Theorem_8_1_5_2</code> guarantees that for each <code>A ∈ F</code>, an appropriate relation <code>SA : Rel Nat U</code> exists. We need a function <code>f</code> that will <em>choose</em> such a relation <code>SA</code> for each <code>A</code>. A function with this property is often called a <em>choice function</em>. And now we come to a delicate point that was skipped over in <em>HTPI</em>: to prove the existence of a choice function, we must use a statement called the <em>axiom of choice</em>.<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a></p>
 <p>The distinction between the existence of an appropriate relation <code>SA</code> for each <code>A</code> and the existence of a function that chooses such a relation for each <code>A</code> is a subtle one. Perhaps for this reason, many people find the axiom of choice to be intuitively obvious. <em>HTPI</em> took advantage of this intuition to skip over this step in the proof without comment. But of course Lean won’t let us skip anything!</p>
 <p>To implement the axiom of choice, Lean uses a function called <code>Classical.choose</code>. Given a proof <code>h</code> of a statement of the form <code>∃ (x : U), P x</code>, the expression <code>Classical.choose h</code> produces (“chooses”) some <code>u : U</code> such that <code>P u</code> is true. There is also a theorem <code>Classical.choose_spec</code> that guarantees that the <code>Classical.choose</code> function meets its specification—that is, <code>P (Classical.choose h)</code> is true. Using these, we can prove a lemma that will bridge the gap between <code>Lemma_8_2_2_1</code> and <code>Theorem_8_2_2</code>.</p>
@@ -1869,8 +1868,8 @@ $$
 <p>We now have everything in place to prove <code>Theorem_8_2_2</code>:</p>
 <div class="sourceCode" id="cb90"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb90-1"><a href="#cb90-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Theorem_8_2_2 {U : <span class="kw">Type</span>} {F : Set (Set U)}</span>
 <span id="cb90-2"><a href="#cb90-2" aria-hidden="true" tabindex="-1"></a>    (h1 : ctble F) (h2 : ∀ A ∈ F, ctble A) : ctble (⋃₀ F) := <span class="kw">by</span></span>
-<span id="cb90-3"><a href="#cb90-3" aria-hidden="true" tabindex="-1"></a>  <span class="kw">obtain</span> (f : Set U → Rel Nat U) (h3 : ∀ (A : Set U), A ∈ F →</span>
-<span id="cb90-4"><a href="#cb90-4" aria-hidden="true" tabindex="-1"></a>    fcnl_onto_from_nat (f A) A) <span class="kw">from</span> Lemma_8_2_2_2 h2</span>
+<span id="cb90-3"><a href="#cb90-3" aria-hidden="true" tabindex="-1"></a>  <span class="kw">obtain</span> (f : Set U → Rel Nat U) (h3 : ∀ A ∈ F, fcnl_onto_from_nat (f A) A)</span>
+<span id="cb90-4"><a href="#cb90-4" aria-hidden="true" tabindex="-1"></a>    <span class="kw">from</span> Lemma_8_2_2_2 h2</span>
 <span id="cb90-5"><a href="#cb90-5" aria-hidden="true" tabindex="-1"></a>  <span class="kw">show</span> ctble (⋃₀ F) <span class="kw">from</span> Lemma_8_2_2_1 h1 h3</span>
 <span id="cb90-6"><a href="#cb90-6" aria-hidden="true" tabindex="-1"></a>  <span class="kw">done</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>By the way, we can now explain a mystery from Section 5.1. The reason we skipped the proof of the right-to-left direction of <code>func_from_graph</code> is that the proof uses <code>Classical.choose</code> and <code>Classical.choose_spec</code>. Now that you know about this function and theorem, we can show you the proof.</p>
@@ -1906,10 +1905,10 @@ $$
 <span id="cb91-30"><a href="#cb91-30" aria-hidden="true" tabindex="-1"></a>  <span class="kw">done</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>There is one more theorem in Section 8.2 of <em>HTPI</em> showing that a set-theoretic operation, when applied to a countable set, gives a countable result. Theorem 8.2.4 says that if a set <span class="math inline">\(A\)</span> is countable, then the set of all finite sequences of elements of <span class="math inline">\(A\)</span> is also countable. In <em>HTPI</em>, finite sequences are represented by functions, but in Lean it is easier to use lists. Thus, if <code>A</code> has type <code>Set U</code>, then we define a <em>finite sequence of elements of <code>A</code></em> to be a list <code>l : List U</code> with the property that every entry of <code>l</code> is an element of <code>A</code>. Letting <code>seq A</code> denote the set of all finite sequences of elements of <code>A</code>, our version of Theorem 8.2.4 will say that if <code>A</code> is countable, then so is <code>seq A</code>.</p>
 <div class="sourceCode" id="cb92"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb92-1"><a href="#cb92-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> seq {U : <span class="kw">Type</span>} (A : Set U) : Set (List U) :=</span>
-<span id="cb92-2"><a href="#cb92-2" aria-hidden="true" tabindex="-1"></a>  { l : List U | ∀ (x : U), x ∈ l → x ∈ A }</span>
+<span id="cb92-2"><a href="#cb92-2" aria-hidden="true" tabindex="-1"></a>  { l : List U | ∀ x ∈ l, x ∈ A }</span>
 <span id="cb92-3"><a href="#cb92-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb92-4"><a href="#cb92-4" aria-hidden="true" tabindex="-1"></a><span class="kw">lemma</span> seq_def {U : <span class="kw">Type</span>} (A : Set U) (l : List U) :</span>
-<span id="cb92-5"><a href="#cb92-5" aria-hidden="true" tabindex="-1"></a>    l ∈ seq A ↔ ∀ (x : U), x ∈ l → x ∈ A := <span class="kw">by</span> <span class="kw">rfl</span></span>
+<span id="cb92-5"><a href="#cb92-5" aria-hidden="true" tabindex="-1"></a>    l ∈ seq A ↔ ∀ x ∈ l, x ∈ A := <span class="kw">by</span> <span class="kw">rfl</span></span>
 <span id="cb92-6"><a href="#cb92-6" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb92-7"><a href="#cb92-7" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Theorem_8_2_4 {U : <span class="kw">Type</span>} {A : Set U}</span>
 <span id="cb92-8"><a href="#cb92-8" aria-hidden="true" tabindex="-1"></a>    (h1 : ctble A) : ctble (seq A)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -1933,16 +1932,16 @@ $$
 <span id="cb93-17"><a href="#cb93-17" aria-hidden="true" tabindex="-1"></a>    <span class="kw">define</span> <span class="kw">at</span> h1     <span class="co">--h1 : l = []</span></span>
 <span id="cb93-18"><a href="#cb93-18" aria-hidden="true" tabindex="-1"></a>    <span class="kw">define</span>           <span class="co">--Goal : l ∈ seq A ∧ List.length l = 0</span></span>
 <span id="cb93-19"><a href="#cb93-19" aria-hidden="true" tabindex="-1"></a>    <span class="kw">apply</span> And.intro _ (List.length_eq_zero.rtl h1)</span>
-<span id="cb93-20"><a href="#cb93-20" aria-hidden="true" tabindex="-1"></a>    <span class="kw">define</span>           <span class="co">--Goal : ∀ (x : U), x ∈ l → x ∈ A</span></span>
+<span id="cb93-20"><a href="#cb93-20" aria-hidden="true" tabindex="-1"></a>    <span class="kw">define</span>           <span class="co">--Goal : ∀ x ∈ l, x ∈ A</span></span>
 <span id="cb93-21"><a href="#cb93-21" aria-hidden="true" tabindex="-1"></a>    <span class="kw">fix</span> x : U</span>
 <span id="cb93-22"><a href="#cb93-22" aria-hidden="true" tabindex="-1"></a>    <span class="kw">assume</span> h2 : x ∈ l</span>
 <span id="cb93-23"><a href="#cb93-23" aria-hidden="true" tabindex="-1"></a>    <span class="kw">contradict</span> h2 <span class="kw">with</span> h3</span>
 <span id="cb93-24"><a href="#cb93-24" aria-hidden="true" tabindex="-1"></a>    <span class="kw">rewrite</span> [h1]</span>
-<span id="cb93-25"><a href="#cb93-25" aria-hidden="true" tabindex="-1"></a>    <span class="kw">show</span> ¬x ∈ [] <span class="kw">from</span> List.not_mem_nil x</span>
+<span id="cb93-25"><a href="#cb93-25" aria-hidden="true" tabindex="-1"></a>    <span class="kw">show</span> x ∉ [] <span class="kw">from</span> List.not_mem_nil x</span>
 <span id="cb93-26"><a href="#cb93-26" aria-hidden="true" tabindex="-1"></a>    <span class="kw">done</span></span>
 <span id="cb93-27"><a href="#cb93-27" aria-hidden="true" tabindex="-1"></a>  <span class="kw">done</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>For the induction step, the key idea is that <code>A ×ₛ (seq_by_length A n) ∼ seq_by_length A (n + 1)</code>. To prove this, we define a function <code>seq_cons U</code> that matches up <code>A ×ₛ (seq_by_length A n)</code> with <code>seq_by_length A (n + 1)</code>.</p>
-<div class="sourceCode" id="cb94"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb94-1"><a href="#cb94-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> seq_cons (U : <span class="kw">Type</span>) (p : U × (List U)) : List U := p.fst :: p.snd</span>
+<div class="sourceCode" id="cb94"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb94-1"><a href="#cb94-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> seq_cons (U : <span class="kw">Type</span>) (p : U × (List U)) : List U := p.1 :: p.2</span>
 <span id="cb94-2"><a href="#cb94-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb94-3"><a href="#cb94-3" aria-hidden="true" tabindex="-1"></a><span class="kw">lemma</span> seq_cons_def {U : <span class="kw">Type</span>} (x : U) (l : List U) :</span>
 <span id="cb94-4"><a href="#cb94-4" aria-hidden="true" tabindex="-1"></a>    seq_cons U (x, l) = x :: l := <span class="kw">by</span> <span class="kw">rfl</span></span>
@@ -2076,16 +2075,16 @@ $$
 <span id="cb99-21"><a href="#cb99-21" aria-hidden="true" tabindex="-1"></a>  · <span class="co">-- Case 1. h7 : n ∈ D</span></span>
 <span id="cb99-22"><a href="#cb99-22" aria-hidden="true" tabindex="-1"></a>    <span class="kw">contradict</span> h7</span>
 <span id="cb99-23"><a href="#cb99-23" aria-hidden="true" tabindex="-1"></a>    <span class="kw">define</span> <span class="kw">at</span> h7</span>
-<span id="cb99-24"><a href="#cb99-24" aria-hidden="true" tabindex="-1"></a>    <span class="kw">obtain</span> (X : Set Nat) (h8 : R n X ∧ ¬n ∈ X) <span class="kw">from</span> h7</span>
+<span id="cb99-24"><a href="#cb99-24" aria-hidden="true" tabindex="-1"></a>    <span class="kw">obtain</span> (X : Set Nat) (h8 : R n X ∧ n ∉ X) <span class="kw">from</span> h7</span>
 <span id="cb99-25"><a href="#cb99-25" aria-hidden="true" tabindex="-1"></a>    <span class="kw">define</span> <span class="kw">at</span> h3</span>
 <span id="cb99-26"><a href="#cb99-26" aria-hidden="true" tabindex="-1"></a>    <span class="kw">have</span> h9 : D = X := h3 h6 h8.left</span>
 <span id="cb99-27"><a href="#cb99-27" aria-hidden="true" tabindex="-1"></a>    <span class="kw">rewrite</span> [h9]</span>
-<span id="cb99-28"><a href="#cb99-28" aria-hidden="true" tabindex="-1"></a>    <span class="kw">show</span> ¬n ∈ X <span class="kw">from</span> h8.right</span>
+<span id="cb99-28"><a href="#cb99-28" aria-hidden="true" tabindex="-1"></a>    <span class="kw">show</span> n ∉ X <span class="kw">from</span> h8.right</span>
 <span id="cb99-29"><a href="#cb99-29" aria-hidden="true" tabindex="-1"></a>    <span class="kw">done</span></span>
 <span id="cb99-30"><a href="#cb99-30" aria-hidden="true" tabindex="-1"></a>  · <span class="co">-- Case 2. h7 : n ∉ D</span></span>
 <span id="cb99-31"><a href="#cb99-31" aria-hidden="true" tabindex="-1"></a>    <span class="kw">contradict</span> h7</span>
 <span id="cb99-32"><a href="#cb99-32" aria-hidden="true" tabindex="-1"></a>    <span class="kw">define</span></span>
-<span id="cb99-33"><a href="#cb99-33" aria-hidden="true" tabindex="-1"></a>    <span class="kw">show</span> ∃ (X : Set Nat), R n X ∧ ¬n ∈ X <span class="kw">from</span></span>
+<span id="cb99-33"><a href="#cb99-33" aria-hidden="true" tabindex="-1"></a>    <span class="kw">show</span> ∃ (X : Set Nat), R n X ∧ n ∉ X <span class="kw">from</span></span>
 <span id="cb99-34"><a href="#cb99-34" aria-hidden="true" tabindex="-1"></a>      Exists.intro D (And.intro h6 h7)</span>
 <span id="cb99-35"><a href="#cb99-35" aria-hidden="true" tabindex="-1"></a>    <span class="kw">done</span></span>
 <span id="cb99-36"><a href="#cb99-36" aria-hidden="true" tabindex="-1"></a>  <span class="kw">done</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -2121,7 +2120,7 @@ $$
 </div>
 <div class="numex" data-arguments="7">
 <div class="sourceCode" id="cb106"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb106-1"><a href="#cb106-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Like_Exercise_8_2_7 : ∃ (P : Set (Set Nat)),</span>
-<span id="cb106-2"><a href="#cb106-2" aria-hidden="true" tabindex="-1"></a>    partition P ∧ ctble P ∧ ∀ X ∈ P, ctble X := <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb106-2"><a href="#cb106-2" aria-hidden="true" tabindex="-1"></a>    partition P ∧ denum P ∧ ∀ X ∈ P, denum X := <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="numex" data-arguments="8">
 <div class="sourceCode" id="cb107"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb107-1"><a href="#cb107-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> unctbly_many_inf_set_nat :</span>
