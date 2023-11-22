@@ -2148,13 +2148,13 @@ $$
 <span id="cb111-2"><a href="#cb111-2" aria-hidden="true" tabindex="-1"></a>  {U V : <span class="kw">Type</span>} (R S : Rel U V) (X0 : Set U) (n : Nat) : Set U :=</span>
 <span id="cb111-3"><a href="#cb111-3" aria-hidden="true" tabindex="-1"></a>  <span class="kw">match</span> n <span class="kw">with</span></span>
 <span id="cb111-4"><a href="#cb111-4" aria-hidden="true" tabindex="-1"></a>    | 0 =&gt; X0</span>
-<span id="cb111-5"><a href="#cb111-5" aria-hidden="true" tabindex="-1"></a>    | m + 1 =&gt; { a : U | ∃ (x : U),</span>
-<span id="cb111-6"><a href="#cb111-6" aria-hidden="true" tabindex="-1"></a>                x ∈ rep_common_image R S X0 m ∧ ∃ (y : V), R x y ∧ S a y }</span>
+<span id="cb111-5"><a href="#cb111-5" aria-hidden="true" tabindex="-1"></a>    | m + 1 =&gt; { a : U | ∃ x ∈ rep_common_image R S X0 m,</span>
+<span id="cb111-6"><a href="#cb111-6" aria-hidden="true" tabindex="-1"></a>                          ∃ (y : V), R x y ∧ S a y }</span>
 <span id="cb111-7"><a href="#cb111-7" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb111-8"><a href="#cb111-8" aria-hidden="true" tabindex="-1"></a><span class="kw">lemma</span> rep_common_image_step</span>
 <span id="cb111-9"><a href="#cb111-9" aria-hidden="true" tabindex="-1"></a>    {U V : <span class="kw">Type</span>} (R S : Rel U V) (X0 : Set U) (m : Nat) (a : U) :</span>
-<span id="cb111-10"><a href="#cb111-10" aria-hidden="true" tabindex="-1"></a>    a ∈ rep_common_image R S X0 (m + 1) ↔ ∃ (x : U),</span>
-<span id="cb111-11"><a href="#cb111-11" aria-hidden="true" tabindex="-1"></a>      x ∈ rep_common_image R S X0 m ∧ ∃ (y : V), R x y ∧ S a y := <span class="kw">by</span> <span class="kw">rfl</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb111-10"><a href="#cb111-10" aria-hidden="true" tabindex="-1"></a>    a ∈ rep_common_image R S X0 (m + 1) ↔</span>
+<span id="cb111-11"><a href="#cb111-11" aria-hidden="true" tabindex="-1"></a>    ∃ x ∈ rep_common_image R S X0 m, ∃ (y : V), R x y ∧ S a y := <span class="kw">by</span> <span class="kw">rfl</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>The sets <code>rep_common_image R S X0 n</code> correspond to the sets <span class="math inline">\(A_n\)</span> in <em>HTPI</em>. As in <em>HTPI</em>, to define <code>X</code> we take the union of these sets.</p>
 <div class="sourceCode" id="cb112"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb112-1"><a href="#cb112-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> cum_rep_image {U V : <span class="kw">Type</span>} (R S : Rel U V) (X0 : Set U) : Set U :=</span>
 <span id="cb112-2"><a href="#cb112-2" aria-hidden="true" tabindex="-1"></a>  { a : U | ∃ (n : Nat), a ∈ rep_common_image R S X0 n }</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -2170,7 +2170,7 @@ $$
 <span id="cb114-5"><a href="#cb114-5" aria-hidden="true" tabindex="-1"></a>  · <span class="co">-- Case 1. h1 : x ∈ cum_rep_image R S X0 ∧ R x y</span></span>
 <span id="cb114-6"><a href="#cb114-6" aria-hidden="true" tabindex="-1"></a>    <span class="kw">show</span> R x y <span class="kw">from</span> h1.right</span>
 <span id="cb114-7"><a href="#cb114-7" aria-hidden="true" tabindex="-1"></a>    <span class="kw">done</span></span>
-<span id="cb114-8"><a href="#cb114-8" aria-hidden="true" tabindex="-1"></a>  · <span class="co">-- Case 2. h1 : ¬x ∈ cum_rep_image R S X0 ∧ S x y</span></span>
+<span id="cb114-8"><a href="#cb114-8" aria-hidden="true" tabindex="-1"></a>  · <span class="co">-- Case 2. h1 : x ∉ cum_rep_image R S X0 ∧ S x y</span></span>
 <span id="cb114-9"><a href="#cb114-9" aria-hidden="true" tabindex="-1"></a>    <span class="kw">show</span> R x y <span class="kw">from</span> absurd h2 h1.left</span>
 <span id="cb114-10"><a href="#cb114-10" aria-hidden="true" tabindex="-1"></a>    <span class="kw">done</span></span>
 <span id="cb114-11"><a href="#cb114-11" aria-hidden="true" tabindex="-1"></a>  <span class="kw">done</span></span>
@@ -2215,11 +2215,11 @@ $$
 <span id="cb116-15"><a href="#cb116-15" aria-hidden="true" tabindex="-1"></a>  <span class="kw">have</span> A_not_X_in_C : A \ X ⊆ C := <span class="kw">by</span></span>
 <span id="cb116-16"><a href="#cb116-16" aria-hidden="true" tabindex="-1"></a>    <span class="kw">fix</span> a : U</span>
 <span id="cb116-17"><a href="#cb116-17" aria-hidden="true" tabindex="-1"></a>    <span class="kw">assume</span> h5 : a ∈ A \ X</span>
-<span id="cb116-18"><a href="#cb116-18" aria-hidden="true" tabindex="-1"></a>    <span class="kw">contradict</span> h5.right <span class="kw">with</span> h6  <span class="co">--h6 : ¬a ∈ C;  Goal : a ∈ X</span></span>
+<span id="cb116-18"><a href="#cb116-18" aria-hidden="true" tabindex="-1"></a>    <span class="kw">contradict</span> h5.right <span class="kw">with</span> h6  <span class="co">--h6 : a ∉ C;  Goal : a ∈ X</span></span>
 <span id="cb116-19"><a href="#cb116-19" aria-hidden="true" tabindex="-1"></a>    <span class="kw">define</span>  <span class="co">--Goal : ∃ (n : Nat), a ∈ rep_common_image R S X0 n</span></span>
 <span id="cb116-20"><a href="#cb116-20" aria-hidden="true" tabindex="-1"></a>    <span class="kw">apply</span> Exists.intro 0 </span>
 <span id="cb116-21"><a href="#cb116-21" aria-hidden="true" tabindex="-1"></a>    <span class="kw">define</span></span>
-<span id="cb116-22"><a href="#cb116-22" aria-hidden="true" tabindex="-1"></a>    <span class="kw">show</span> a ∈ A ∧ ¬a ∈ C <span class="kw">from</span> And.intro h5.left h6</span>
+<span id="cb116-22"><a href="#cb116-22" aria-hidden="true" tabindex="-1"></a>    <span class="kw">show</span> a ∈ A ∧ a ∉ C <span class="kw">from</span> And.intro h5.left h6</span>
 <span id="cb116-23"><a href="#cb116-23" aria-hidden="true" tabindex="-1"></a>    <span class="kw">done</span></span>
 <span id="cb116-24"><a href="#cb116-24" aria-hidden="true" tabindex="-1"></a>  <span class="kw">define</span>    <span class="co">--Goal : ∃ (R : Rel U V), matching R A B</span></span>
 <span id="cb116-25"><a href="#cb116-25" aria-hidden="true" tabindex="-1"></a>  <span class="kw">apply</span> Exists.intro T</span>
@@ -2229,7 +2229,7 @@ $$
 <span id="cb116-29"><a href="#cb116-29" aria-hidden="true" tabindex="-1"></a>    <span class="kw">define</span></span>
 <span id="cb116-30"><a href="#cb116-30" aria-hidden="true" tabindex="-1"></a>    <span class="kw">fix</span> a : U; <span class="kw">fix</span> b : V</span>
 <span id="cb116-31"><a href="#cb116-31" aria-hidden="true" tabindex="-1"></a>    <span class="kw">assume</span> h5 : T a b</span>
-<span id="cb116-32"><a href="#cb116-32" aria-hidden="true" tabindex="-1"></a>    <span class="kw">rewrite</span> [Tdef] <span class="kw">at</span> h5   <span class="co">--h5 : a ∈ X ∧ R a b ∨ ¬a ∈ X ∧ S a b</span></span>
+<span id="cb116-32"><a href="#cb116-32" aria-hidden="true" tabindex="-1"></a>    <span class="kw">rewrite</span> [Tdef] <span class="kw">at</span> h5   <span class="co">--h5 : a ∈ X ∧ R a b ∨ a ∉ X ∧ S a b</span></span>
 <span id="cb116-33"><a href="#cb116-33" aria-hidden="true" tabindex="-1"></a>    <span class="kw">by_cases</span> <span class="kw">on</span> h5</span>
 <span id="cb116-34"><a href="#cb116-34" aria-hidden="true" tabindex="-1"></a>    · <span class="co">-- Case 1. h5 : a ∈ X ∧ R a b</span></span>
 <span id="cb116-35"><a href="#cb116-35" aria-hidden="true" tabindex="-1"></a>      <span class="kw">have</span> h6 : a ∈ A ∧ b ∈ D := R_match_AD.left h5.right</span>
@@ -2254,7 +2254,7 @@ $$
 <span id="cb116-54"><a href="#cb116-54" aria-hidden="true" tabindex="-1"></a>            fcnl_exists R_match_AD.right.left aA</span>
 <span id="cb116-55"><a href="#cb116-55" aria-hidden="true" tabindex="-1"></a>          <span class="kw">apply</span> Exists.intro b</span>
 <span id="cb116-56"><a href="#cb116-56" aria-hidden="true" tabindex="-1"></a>          <span class="kw">rewrite</span> [Tdef]</span>
-<span id="cb116-57"><a href="#cb116-57" aria-hidden="true" tabindex="-1"></a>          <span class="kw">show</span> a ∈ X ∧ R a b ∨ ¬a ∈ X ∧ S a b <span class="kw">from</span></span>
+<span id="cb116-57"><a href="#cb116-57" aria-hidden="true" tabindex="-1"></a>          <span class="kw">show</span> a ∈ X ∧ R a b ∨ a ∉ X ∧ S a b <span class="kw">from</span></span>
 <span id="cb116-58"><a href="#cb116-58" aria-hidden="true" tabindex="-1"></a>            Or.inl (And.intro h5 Rab)</span>
 <span id="cb116-59"><a href="#cb116-59" aria-hidden="true" tabindex="-1"></a>          <span class="kw">done</span></span>
 <span id="cb116-60"><a href="#cb116-60" aria-hidden="true" tabindex="-1"></a>        · <span class="co">-- Case 2. h5 : a ∉ X</span></span>
@@ -2263,7 +2263,7 @@ $$
 <span id="cb116-63"><a href="#cb116-63" aria-hidden="true" tabindex="-1"></a>            fcnl_exists S_match_CB.right.left aC</span>
 <span id="cb116-64"><a href="#cb116-64" aria-hidden="true" tabindex="-1"></a>          <span class="kw">apply</span> Exists.intro b</span>
 <span id="cb116-65"><a href="#cb116-65" aria-hidden="true" tabindex="-1"></a>          <span class="kw">rewrite</span> [Tdef]</span>
-<span id="cb116-66"><a href="#cb116-66" aria-hidden="true" tabindex="-1"></a>          <span class="kw">show</span> a ∈ X ∧ R a b ∨ ¬a ∈ X ∧ S a b <span class="kw">from</span></span>
+<span id="cb116-66"><a href="#cb116-66" aria-hidden="true" tabindex="-1"></a>          <span class="kw">show</span> a ∈ X ∧ R a b ∨ a ∉ X ∧ S a b <span class="kw">from</span></span>
 <span id="cb116-67"><a href="#cb116-67" aria-hidden="true" tabindex="-1"></a>            Or.inr (And.intro h5 Sab)</span>
 <span id="cb116-68"><a href="#cb116-68" aria-hidden="true" tabindex="-1"></a>          <span class="kw">done</span></span>
 <span id="cb116-69"><a href="#cb116-69" aria-hidden="true" tabindex="-1"></a>        <span class="kw">done</span></span>
@@ -2278,7 +2278,7 @@ $$
 <span id="cb116-78"><a href="#cb116-78" aria-hidden="true" tabindex="-1"></a>          <span class="kw">show</span> b1 = b2 <span class="kw">from</span></span>
 <span id="cb116-79"><a href="#cb116-79" aria-hidden="true" tabindex="-1"></a>            fcnl_unique R_match_AD.right.left aA Rab1 Rab2</span>
 <span id="cb116-80"><a href="#cb116-80" aria-hidden="true" tabindex="-1"></a>          <span class="kw">done</span></span>
-<span id="cb116-81"><a href="#cb116-81" aria-hidden="true" tabindex="-1"></a>        · <span class="co">-- Case 2. h5 : ¬a ∈ X</span></span>
+<span id="cb116-81"><a href="#cb116-81" aria-hidden="true" tabindex="-1"></a>        · <span class="co">-- Case 2. h5 : a ∉ X</span></span>
 <span id="cb116-82"><a href="#cb116-82" aria-hidden="true" tabindex="-1"></a>          <span class="kw">have</span> Sab1 : S a b1 := csb_match_not_cri Tab1 h5</span>
 <span id="cb116-83"><a href="#cb116-83" aria-hidden="true" tabindex="-1"></a>          <span class="kw">have</span> Sab2 : S a b2 := csb_match_not_cri Tab2 h5</span>
 <span id="cb116-84"><a href="#cb116-84" aria-hidden="true" tabindex="-1"></a>          <span class="kw">have</span> aC : a ∈ C := A_not_X_in_C (And.intro aA h5)</span>
@@ -2303,7 +2303,7 @@ $$
 <span id="cb116-103"><a href="#cb116-103" aria-hidden="true" tabindex="-1"></a>          <span class="kw">have</span> h7 : n ≠ 0 := <span class="kw">by</span></span>
 <span id="cb116-104"><a href="#cb116-104" aria-hidden="true" tabindex="-1"></a>            <span class="kw">by_contra</span> h7</span>
 <span id="cb116-105"><a href="#cb116-105" aria-hidden="true" tabindex="-1"></a>            <span class="kw">rewrite</span> [h7] <span class="kw">at</span> h6</span>
-<span id="cb116-106"><a href="#cb116-106" aria-hidden="true" tabindex="-1"></a>            <span class="kw">define</span> <span class="kw">at</span> h6       <span class="co">--h6 : c ∈ A ∧ ¬c ∈ C</span></span>
+<span id="cb116-106"><a href="#cb116-106" aria-hidden="true" tabindex="-1"></a>            <span class="kw">define</span> <span class="kw">at</span> h6       <span class="co">--h6 : c ∈ A ∧ c ∉ C</span></span>
 <span id="cb116-107"><a href="#cb116-107" aria-hidden="true" tabindex="-1"></a>            <span class="kw">show</span> False <span class="kw">from</span> h6.right cC</span>
 <span id="cb116-108"><a href="#cb116-108" aria-hidden="true" tabindex="-1"></a>            <span class="kw">done</span></span>
 <span id="cb116-109"><a href="#cb116-109" aria-hidden="true" tabindex="-1"></a>          <span class="kw">obtain</span> (m : Nat) (h8 : n = m + 1) <span class="kw">from</span></span>
@@ -2324,7 +2324,7 @@ $$
 <span id="cb116-124"><a href="#cb116-124" aria-hidden="true" tabindex="-1"></a>          <span class="kw">show</span> ∃ (n : Nat), a ∈ rep_common_image R S X0 n <span class="kw">from</span></span>
 <span id="cb116-125"><a href="#cb116-125" aria-hidden="true" tabindex="-1"></a>            Exists.intro m h9.left</span>
 <span id="cb116-126"><a href="#cb116-126" aria-hidden="true" tabindex="-1"></a>          <span class="kw">done</span></span>
-<span id="cb116-127"><a href="#cb116-127" aria-hidden="true" tabindex="-1"></a>        · <span class="co">-- Case 2. h5 : ¬c ∈ X</span></span>
+<span id="cb116-127"><a href="#cb116-127" aria-hidden="true" tabindex="-1"></a>        · <span class="co">-- Case 2. h5 : c ∉ X</span></span>
 <span id="cb116-128"><a href="#cb116-128" aria-hidden="true" tabindex="-1"></a>          <span class="kw">apply</span> Exists.intro c</span>
 <span id="cb116-129"><a href="#cb116-129" aria-hidden="true" tabindex="-1"></a>          <span class="kw">rewrite</span> [invRel_def, Tdef]</span>
 <span id="cb116-130"><a href="#cb116-130" aria-hidden="true" tabindex="-1"></a>          <span class="kw">show</span> c ∈ X ∧ R c b ∨ c ∉ X ∧ S c b <span class="kw">from</span></span>
