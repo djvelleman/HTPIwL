@@ -471,7 +471,7 @@ $$
 <span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;&gt;</span>      (n + 1) ^ 2</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </div>
-<p>To complete this proof we’ll use two tactics we haven’t used before: <code>norm_num</code> and <code>linarith</code>. The base case can be proven by simply doing the arithmetic necessary to check that the inequality holds when <code>n = 5</code>. The tactic <code>norm_num</code> does such numerical calculations, and it proves the base case.</p>
+<p>To complete this proof we’ll use two tactics we haven’t used before: <code>decide</code> and <code>linarith</code>. The truth or falsity of the inequality in the base case can be decided by simply doing the necessary arithmetic. The tactic <code>decide</code> can do such calculations, and it proves the base case.</p>
 <p>For the induction step, we introduce an arbitrary natural number <code>n</code>, assume <code>n ≥ 5</code>, and assume the inductive hypothesis, <code>2 ^ n &gt; n ^ 2</code>. Then we use a calculational proof to imitate the reasoning at the end of the <em>HTPI</em> proof. The tactic <code>linarith</code> makes inferences that involve combining linear equations and inequalities. It is able to prove almost all of the inequalities in the calculational proof. The exception is <code>n * n ≥ 5 * n</code> (which is not linear because of the term <code>n * n</code>). So we prove that inequality separately, using a theorem from Lean’s library, <code>Nat.mul_le_mul_right</code>. The command <code>#check @Nat.mul_le_mul_right</code> tells us the meaning of that theorem:</p>
 <div class="ind">
 <pre><code>@Nat.mul_le_mul_right : ∀ {n m : ℕ} (k : ℕ), n ≤ m → n * k ≤ m * k</code></pre>
@@ -480,7 +480,7 @@ $$
 <div class="sourceCode" id="cb18"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Example_6_1_3 : ∀ n ≥ 5, 2 ^ n &gt; n ^ 2 := <span class="kw">by</span></span>
 <span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>  <span class="kw">by_induc</span></span>
 <span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>  · <span class="co">-- Base Case</span></span>
-<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>    <span class="kw">norm_num</span></span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>    decide</span>
 <span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>    <span class="kw">done</span></span>
 <span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a>  · <span class="co">-- Induction Step</span></span>
 <span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a>    <span class="kw">fix</span> n : Nat</span>
@@ -877,7 +877,7 @@ $$
 <div class="sourceCode" id="cb54"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb54-1"><a href="#cb54-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> <span class="sc">??</span><span class="an">Example_6_3_1</span><span class="sc">::</span> : ∀ n ≥ 4, fact n &gt; 2 ^ n := <span class="kw">by</span></span>
 <span id="cb54-2"><a href="#cb54-2" aria-hidden="true" tabindex="-1"></a>  <span class="kw">by_induc</span></span>
 <span id="cb54-3"><a href="#cb54-3" aria-hidden="true" tabindex="-1"></a>  · <span class="co">-- Base Case</span></span>
-<span id="cb54-4"><a href="#cb54-4" aria-hidden="true" tabindex="-1"></a>    <span class="kw">norm_num</span></span>
+<span id="cb54-4"><a href="#cb54-4" aria-hidden="true" tabindex="-1"></a>    decide</span>
 <span id="cb54-5"><a href="#cb54-5" aria-hidden="true" tabindex="-1"></a>    <span class="kw">done</span></span>
 <span id="cb54-6"><a href="#cb54-6" aria-hidden="true" tabindex="-1"></a>  · <span class="co">-- Induction Step</span></span>
 <span id="cb54-7"><a href="#cb54-7" aria-hidden="true" tabindex="-1"></a>    <span class="kw">fix</span> n : Nat</span>
@@ -910,7 +910,7 @@ $$
 <div class="sourceCode" id="cb58"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb58-1"><a href="#cb58-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Example_6_3_1 : ∀ n ≥ 4, fact n &gt; 2 ^ n := <span class="kw">by</span></span>
 <span id="cb58-2"><a href="#cb58-2" aria-hidden="true" tabindex="-1"></a>  <span class="kw">by_induc</span></span>
 <span id="cb58-3"><a href="#cb58-3" aria-hidden="true" tabindex="-1"></a>  · <span class="co">-- Base Case</span></span>
-<span id="cb58-4"><a href="#cb58-4" aria-hidden="true" tabindex="-1"></a>    <span class="kw">norm_num</span></span>
+<span id="cb58-4"><a href="#cb58-4" aria-hidden="true" tabindex="-1"></a>    decide</span>
 <span id="cb58-5"><a href="#cb58-5" aria-hidden="true" tabindex="-1"></a>    <span class="kw">done</span></span>
 <span id="cb58-6"><a href="#cb58-6" aria-hidden="true" tabindex="-1"></a>  · <span class="co">-- Induction Step</span></span>
 <span id="cb58-7"><a href="#cb58-7" aria-hidden="true" tabindex="-1"></a>    <span class="kw">fix</span> n : Nat</span>
@@ -932,7 +932,7 @@ $$
 <div class="sourceCode" id="cb59"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb59-1"><a href="#cb59-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Example_6_3_1 : ∀ n ≥ 4, fact n &gt; 2 ^ n := <span class="kw">by</span></span>
 <span id="cb59-2"><a href="#cb59-2" aria-hidden="true" tabindex="-1"></a>  <span class="kw">by_induc</span></span>
 <span id="cb59-3"><a href="#cb59-3" aria-hidden="true" tabindex="-1"></a>  · <span class="co">-- Base Case</span></span>
-<span id="cb59-4"><a href="#cb59-4" aria-hidden="true" tabindex="-1"></a>    <span class="kw">norm_num</span></span>
+<span id="cb59-4"><a href="#cb59-4" aria-hidden="true" tabindex="-1"></a>    decide</span>
 <span id="cb59-5"><a href="#cb59-5" aria-hidden="true" tabindex="-1"></a>    <span class="kw">done</span></span>
 <span id="cb59-6"><a href="#cb59-6" aria-hidden="true" tabindex="-1"></a>  · <span class="co">-- Induction Step</span></span>
 <span id="cb59-7"><a href="#cb59-7" aria-hidden="true" tabindex="-1"></a>    <span class="kw">fix</span> n : Nat</span>
@@ -1321,13 +1321,13 @@ $$
 <span id="cb94-5"><a href="#cb94-5" aria-hidden="true" tabindex="-1"></a>  <span class="kw">by_cases</span> h1 : n = 0</span>
 <span id="cb94-6"><a href="#cb94-6" aria-hidden="true" tabindex="-1"></a>  · <span class="co">-- Case 1. h1 : n = 0</span></span>
 <span id="cb94-7"><a href="#cb94-7" aria-hidden="true" tabindex="-1"></a>    <span class="kw">rewrite</span> [h1]   <span class="co">--Goal : Fib 0 &lt; 2 ^ 0</span></span>
-<span id="cb94-8"><a href="#cb94-8" aria-hidden="true" tabindex="-1"></a>    <span class="kw">norm_num</span></span>
+<span id="cb94-8"><a href="#cb94-8" aria-hidden="true" tabindex="-1"></a>    decide</span>
 <span id="cb94-9"><a href="#cb94-9" aria-hidden="true" tabindex="-1"></a>    <span class="kw">done</span></span>
 <span id="cb94-10"><a href="#cb94-10" aria-hidden="true" tabindex="-1"></a>  · <span class="co">-- Case 2. h1 : ¬n = 0</span></span>
 <span id="cb94-11"><a href="#cb94-11" aria-hidden="true" tabindex="-1"></a>    <span class="kw">by_cases</span> h2 : n = 1</span>
 <span id="cb94-12"><a href="#cb94-12" aria-hidden="true" tabindex="-1"></a>    · <span class="co">-- Case 2.1. h2 : n = 1</span></span>
 <span id="cb94-13"><a href="#cb94-13" aria-hidden="true" tabindex="-1"></a>      <span class="kw">rewrite</span> [h2]</span>
-<span id="cb94-14"><a href="#cb94-14" aria-hidden="true" tabindex="-1"></a>      <span class="kw">norm_num</span></span>
+<span id="cb94-14"><a href="#cb94-14" aria-hidden="true" tabindex="-1"></a>      decide</span>
 <span id="cb94-15"><a href="#cb94-15" aria-hidden="true" tabindex="-1"></a>      <span class="kw">done</span></span>
 <span id="cb94-16"><a href="#cb94-16" aria-hidden="true" tabindex="-1"></a>    · <span class="co">-- Case 2.2. h2 : ¬n = 1</span></span>
 <span id="cb94-17"><a href="#cb94-17" aria-hidden="true" tabindex="-1"></a>      <span class="kw">obtain</span> (k : Nat) (h3 : n = k + 2) <span class="kw">from</span></span>
@@ -1409,7 +1409,7 @@ $$
 <span id="cb101-19"><a href="#cb101-19" aria-hidden="true" tabindex="-1"></a>    <span class="kw">rewrite</span> [←pqsqrt2, p'halfp]</span>
 <span id="cb101-20"><a href="#cb101-20" aria-hidden="true" tabindex="-1"></a>    <span class="kw">ring</span></span>
 <span id="cb101-21"><a href="#cb101-21" aria-hidden="true" tabindex="-1"></a>    <span class="kw">done</span></span>
-<span id="cb101-22"><a href="#cb101-22" aria-hidden="true" tabindex="-1"></a>  <span class="kw">have</span> h8 : 2 &gt; 0 := <span class="kw">by</span> <span class="kw">norm_num</span></span>
+<span id="cb101-22"><a href="#cb101-22" aria-hidden="true" tabindex="-1"></a>  <span class="kw">have</span> h8 : 2 &gt; 0 := <span class="kw">by</span> decide</span>
 <span id="cb101-23"><a href="#cb101-23" aria-hidden="true" tabindex="-1"></a>  <span class="kw">rewrite</span> [mul_left_cancel_iff_of_pos h8] <span class="kw">at</span> h7</span>
 <span id="cb101-24"><a href="#cb101-24" aria-hidden="true" tabindex="-1"></a>    <span class="co">--h7 : 2 * (p' * p') = q * q</span></span>
 <span id="cb101-25"><a href="#cb101-25" aria-hidden="true" tabindex="-1"></a>  <span class="kw">have</span> h9 : nat_even (q * q) := Exists.intro (p' * p') h7.symm</span>

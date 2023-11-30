@@ -299,7 +299,7 @@ case Induction_Step
 :::
 :::
 
-To complete this proof we'll use two tactics we haven't used before: `norm_num` and `linarith`.  The base case can be proven by simply doing the arithmetic necessary to check that the inequality holds when `n = 5`.  The tactic `norm_num` does such numerical calculations, and it proves the base case.
+To complete this proof we'll use two tactics we haven't used before: `decide` and `linarith`.  The truth or falsity of the inequality in the base case can be decided by simply doing the necessary arithmetic.  The tactic `decide` can do such calculations, and it proves the base case.
 
 For the induction step, we introduce an arbitrary natural number `n`, assume `n ≥ 5`, and assume the inductive hypothesis, `2 ^ n > n ^ 2`.  Then we use a calculational proof to imitate the reasoning at the end of the *HTPI* proof.  The tactic `linarith` makes inferences that involve combining linear equations and inequalities.  It is able to prove almost all of the inequalities in the calculational proof.  The exception is `n * n ≥ 5 * n` (which is not linear because of the term `n * n`).  So we prove that inequality separately, using a theorem from Lean's library, `Nat.mul_le_mul_right`.  The command `#check @Nat.mul_le_mul_right` tells us the meaning of that theorem:
 
@@ -315,7 +315,7 @@ Thus, `Nat.mul_le_mul_right n` can be used to prove the statement `5 ≤ n → 5
 theorem Example_6_1_3 : ∀ n ≥ 5, 2 ^ n > n ^ 2 := by
   by_induc
   · -- Base Case
-    norm_num
+    decide
     done
   · -- Induction Step
     fix n : Nat
@@ -851,7 +851,7 @@ This style of definition is called a *recursive* definition.  If a function is d
 theorem ??Example_6_3_1:: : ∀ n ≥ 4, fact n > 2 ^ n := by
   by_induc
   · -- Base Case
-    norm_num
+    decide
     done
   · -- Induction Step
     fix n : Nat
@@ -904,7 +904,7 @@ That means that we can use `Nat.pos_pow_of_pos` to prove `2 ^ n > 0`, but first 
 theorem Example_6_3_1 : ∀ n ≥ 4, fact n > 2 ^ n := by
   by_induc
   · -- Base Case
-    norm_num
+    decide
     done
   · -- Induction Step
     fix n : Nat
@@ -930,7 +930,7 @@ But there is an easier way.  Look at the two ">" steps in the calculational proo
 theorem Example_6_3_1 : ∀ n ≥ 4, fact n > 2 ^ n := by
   by_induc
   · -- Base Case
-    norm_num
+    decide
     done
   · -- Induction Step
     fix n : Nat
@@ -1457,13 +1457,13 @@ example : ∀ (n : Nat), Fib n < 2 ^ n := by
   by_cases h1 : n = 0
   · -- Case 1. h1 : n = 0
     rewrite [h1]   --Goal : Fib 0 < 2 ^ 0
-    norm_num
+    decide
     done
   · -- Case 2. h1 : ¬n = 0
     by_cases h2 : n = 1
     · -- Case 2.1. h2 : n = 1
       rewrite [h2]
-      norm_num
+      decide
       done
     · -- Case 2.2. h2 : ¬n = 1
       obtain (k : Nat) (h3 : n = k + 2) from
@@ -1573,7 +1573,7 @@ theorem Theorem_6_4_5 :
     rewrite [←pqsqrt2, p'halfp]
     ring
     done
-  have h8 : 2 > 0 := by norm_num
+  have h8 : 2 > 0 := by decide
   rewrite [mul_left_cancel_iff_of_pos h8] at h7
     --h7 : 2 * (p' * p') = q * q
   have h9 : nat_even (q * q) := Exists.intro (p' * p') h7.symm

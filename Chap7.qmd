@@ -232,7 +232,7 @@ theorem gcd_lin_comb : ∀ (b a : Nat),
   · -- Case 1. h1 : b = 0
     rewrite [h1, gcd_c1_base, gcd_c2_base, gcd_base]
       --Goal : 1 * ↑a + 0 * ↑0 = ↑a
-    norm_num
+    ring
     done
   · -- Case 2. h1 : b ≠ 0
     rewrite [gcd_c1_nonzero a h1, gcd_c2_nonzero a h1, gcd_nonzero a h1]
@@ -642,7 +642,7 @@ lemma exists_prime_factorization : ∀ (n : Nat), n ≥ 1 →
           _ = p * 0 := by rw [h6]
           _ = 0 := by ring
       rewrite [h7]
-      norm_num
+      decide
       done
     have m_pos : 0 < m := Nat.pos_of_ne_zero h5
     have m_lt_n : m < n := by
