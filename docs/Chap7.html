@@ -1593,7 +1593,7 @@ Int.emod_nonneg : ∀ (a : ℤ) {b : ℤ}, b ≠ 0 → 0 ≤ a % b</code></pre>
 <span id="cb95-3"><a href="#cb95-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb95-4"><a href="#cb95-4" aria-hidden="true" tabindex="-1"></a><span class="kw">lemma</span> Exercise_7_4_5_Nat (m a n : Nat) :</span>
 <span id="cb95-5"><a href="#cb95-5" aria-hidden="true" tabindex="-1"></a>    [a]_m ^ n = [a ^ n]_m := <span class="kw">by</span></span>
-<span id="cb95-6"><a href="#cb95-6" aria-hidden="true" tabindex="-1"></a>  <span class="kw">rewrite</span> [Exercise_7_4_5_Int, Nat.cast_pow]</span>
+<span id="cb95-6"><a href="#cb95-6" aria-hidden="true" tabindex="-1"></a>  <span class="kw">rewrite</span> [Exercise_7_4_5_Int]</span>
 <span id="cb95-7"><a href="#cb95-7" aria-hidden="true" tabindex="-1"></a>  <span class="kw">rfl</span></span>
 <span id="cb95-8"><a href="#cb95-8" aria-hidden="true" tabindex="-1"></a>  <span class="kw">done</span></span>
 <span id="cb95-9"><a href="#cb95-9" aria-hidden="true" tabindex="-1"></a></span>
@@ -1601,7 +1601,7 @@ Int.emod_nonneg : ∀ (a : ℤ) {b : ℤ}, b ≠ 0 → 0 ≤ a % b</code></pre>
 <span id="cb95-11"><a href="#cb95-11" aria-hidden="true" tabindex="-1"></a>    (h1 : rel_prime m a) : a ^ (phi m) ≡ 1 (MOD m) := <span class="kw">by</span></span>
 <span id="cb95-12"><a href="#cb95-12" aria-hidden="true" tabindex="-1"></a>  <span class="kw">have</span> h2 : [a]_m ^ (phi m) = [1]_m := Theorem_7_4_2 h1</span>
 <span id="cb95-13"><a href="#cb95-13" aria-hidden="true" tabindex="-1"></a>  <span class="kw">rewrite</span> [Exercise_7_4_5_Nat m a (phi m)] <span class="kw">at</span> h2</span>
-<span id="cb95-14"><a href="#cb95-14" aria-hidden="true" tabindex="-1"></a>    <span class="co">--h2 : [↑(a ^ phi m)]_m = [1]_m</span></span>
+<span id="cb95-14"><a href="#cb95-14" aria-hidden="true" tabindex="-1"></a>    <span class="co">--h2 : [a ^ phi m]_m = [1]_m</span></span>
 <span id="cb95-15"><a href="#cb95-15" aria-hidden="true" tabindex="-1"></a>  <span class="kw">show</span> a ^ (phi m) ≡ 1 (MOD m) <span class="kw">from</span> (cc_eq_iff_congr _ _ _).ltr h2</span>
 <span id="cb95-16"><a href="#cb95-16" aria-hidden="true" tabindex="-1"></a>  <span class="kw">done</span></span>
 <span id="cb95-17"><a href="#cb95-17" aria-hidden="true" tabindex="-1"></a></span>
@@ -1917,13 +1917,14 @@ Int.natAbs_ofNat : ∀ (n : ℕ), Int.natAbs ↑n = n</code></pre>
 <span id="cb123-28"><a href="#cb123-28" aria-hidden="true" tabindex="-1"></a>    <span class="kw">have</span> h5 : ↑n ∣ j := Theorem_7_2_2_Int h4 h1</span>
 <span id="cb123-29"><a href="#cb123-29" aria-hidden="true" tabindex="-1"></a>    <span class="kw">obtain</span> (k : Int) (h6 : j = n * k) <span class="kw">from</span> h5</span>
 <span id="cb123-30"><a href="#cb123-30" aria-hidden="true" tabindex="-1"></a>    <span class="kw">apply</span> Exists.intro k    <span class="co">--Goal : a - b = ↑(m * n) * k</span></span>
-<span id="cb123-31"><a href="#cb123-31" aria-hidden="true" tabindex="-1"></a>    <span class="kw">show</span> a - b = (m * n) * k <span class="kw">from</span></span>
-<span id="cb123-32"><a href="#cb123-32" aria-hidden="true" tabindex="-1"></a>      <span class="kw">calc</span> a - b</span>
-<span id="cb123-33"><a href="#cb123-33" aria-hidden="true" tabindex="-1"></a>        _ = m * j := h3</span>
-<span id="cb123-34"><a href="#cb123-34" aria-hidden="true" tabindex="-1"></a>        _ = m * (n * k) := <span class="kw">by</span> <span class="kw">rw</span> [h6]</span>
-<span id="cb123-35"><a href="#cb123-35" aria-hidden="true" tabindex="-1"></a>        _ = (m * n) * k := <span class="kw">by</span> <span class="kw">ring</span></span>
-<span id="cb123-36"><a href="#cb123-36" aria-hidden="true" tabindex="-1"></a>    <span class="kw">done</span></span>
-<span id="cb123-37"><a href="#cb123-37" aria-hidden="true" tabindex="-1"></a>  <span class="kw">done</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb123-31"><a href="#cb123-31" aria-hidden="true" tabindex="-1"></a>    <span class="kw">rewrite</span> [Nat.cast_mul]  <span class="co">--Goal : a - b = ↑m * ↑n * k</span></span>
+<span id="cb123-32"><a href="#cb123-32" aria-hidden="true" tabindex="-1"></a>    <span class="kw">show</span> a - b = (m * n) * k <span class="kw">from</span></span>
+<span id="cb123-33"><a href="#cb123-33" aria-hidden="true" tabindex="-1"></a>      <span class="kw">calc</span> a - b</span>
+<span id="cb123-34"><a href="#cb123-34" aria-hidden="true" tabindex="-1"></a>        _ = m * j := h3</span>
+<span id="cb123-35"><a href="#cb123-35" aria-hidden="true" tabindex="-1"></a>        _ = m * (n * k) := <span class="kw">by</span> <span class="kw">rw</span> [h6]</span>
+<span id="cb123-36"><a href="#cb123-36" aria-hidden="true" tabindex="-1"></a>        _ = (m * n) * k := <span class="kw">by</span> <span class="kw">ring</span></span>
+<span id="cb123-37"><a href="#cb123-37" aria-hidden="true" tabindex="-1"></a>    <span class="kw">done</span></span>
+<span id="cb123-38"><a href="#cb123-38" aria-hidden="true" tabindex="-1"></a>  <span class="kw">done</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>Finally, we will need an exercise from Section 7.2, and we will need to know <code>NeZero p</code> for prime numbers <code>p</code>:</p>
 <div class="sourceCode" id="cb124"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb124-1"><a href="#cb124-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> rel_prime_symm {a b : Nat} (h : rel_prime a b) :</span>
 <span id="cb124-2"><a href="#cb124-2" aria-hidden="true" tabindex="-1"></a>    rel_prime b a := <span class="cn">sorry</span></span>
@@ -1936,7 +1937,7 @@ Int.natAbs_ofNat : ∀ (n : ℕ), Int.natAbs ↑n = n</code></pre>
 <p>Much of the reasoning about modular arithmetic that we need for the proof of <code>Theorem_7_5_1</code> is contained in a technical lemma:</p>
 <div class="sourceCode" id="cb125"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb125-1"><a href="#cb125-1" aria-hidden="true" tabindex="-1"></a><span class="kw">lemma</span> Lemma_7_5_1 {p e d m c s : Nat} {t : Int}</span>
 <span id="cb125-2"><a href="#cb125-2" aria-hidden="true" tabindex="-1"></a>    (h1 : prime p) (h2 : e * d = (p - 1) * s + 1)</span>
-<span id="cb125-3"><a href="#cb125-3" aria-hidden="true" tabindex="-1"></a>    (h3 : ↑(m ^ e) - ↑c = ↑p * t) :</span>
+<span id="cb125-3"><a href="#cb125-3" aria-hidden="true" tabindex="-1"></a>    (h3 : m ^ e - c = p * t) :</span>
 <span id="cb125-4"><a href="#cb125-4" aria-hidden="true" tabindex="-1"></a>    c ^ d ≡ m (MOD p) := <span class="kw">by</span></span>
 <span id="cb125-5"><a href="#cb125-5" aria-hidden="true" tabindex="-1"></a>  <span class="kw">have</span> h4 : m ^ e ≡ c (MOD p) := Exists.intro t h3</span>
 <span id="cb125-6"><a href="#cb125-6" aria-hidden="true" tabindex="-1"></a>  <span class="kw">have</span> h5 : [m ^ e]_p = [c]_p := (cc_eq_iff_congr _ _ _).rtl h4</span>
@@ -1997,14 +1998,14 @@ Int.natAbs_ofNat : ∀ (n : ℕ), Int.natAbs ↑n = n</code></pre>
 <span id="cb126-6"><a href="#cb126-6" aria-hidden="true" tabindex="-1"></a>    <span class="co">--h1 : m ^ e ≡ c (MOD n)</span></span>
 <span id="cb126-7"><a href="#cb126-7" aria-hidden="true" tabindex="-1"></a>  <span class="kw">rewrite</span> [Exercise_7_4_5_Nat, cc_eq_iff_congr]</span>
 <span id="cb126-8"><a href="#cb126-8" aria-hidden="true" tabindex="-1"></a>    <span class="co">--Goal : c ^ d ≡ m (MOD n)</span></span>
-<span id="cb126-9"><a href="#cb126-9" aria-hidden="true" tabindex="-1"></a>  <span class="kw">obtain</span> (j : Int) (h2 : ↑(m ^ e) - ↑c = ↑n * j) <span class="kw">from</span> h1</span>
+<span id="cb126-9"><a href="#cb126-9" aria-hidden="true" tabindex="-1"></a>  <span class="kw">obtain</span> (j : Int) (h2 : m ^ e - c = n * j) <span class="kw">from</span> h1</span>
 <span id="cb126-10"><a href="#cb126-10" aria-hidden="true" tabindex="-1"></a>  <span class="kw">rewrite</span> [n_pq, Nat.cast_mul] <span class="kw">at</span> h2</span>
-<span id="cb126-11"><a href="#cb126-11" aria-hidden="true" tabindex="-1"></a>    <span class="co">--h2 : ↑(m ^ e) - ↑c = ↑p * ↑q * j</span></span>
+<span id="cb126-11"><a href="#cb126-11" aria-hidden="true" tabindex="-1"></a>    <span class="co">--h2 : m ^ e - c = p * q * j</span></span>
 <span id="cb126-12"><a href="#cb126-12" aria-hidden="true" tabindex="-1"></a>  <span class="kw">have</span> h3 : e * d = (p - 1) * (k * (q - 1)) + 1 := <span class="kw">by</span></span>
 <span id="cb126-13"><a href="#cb126-13" aria-hidden="true" tabindex="-1"></a>    <span class="kw">rewrite</span> [ed_congr_1]</span>
 <span id="cb126-14"><a href="#cb126-14" aria-hidden="true" tabindex="-1"></a>    <span class="kw">ring</span></span>
 <span id="cb126-15"><a href="#cb126-15" aria-hidden="true" tabindex="-1"></a>    <span class="kw">done</span></span>
-<span id="cb126-16"><a href="#cb126-16" aria-hidden="true" tabindex="-1"></a>  <span class="kw">have</span> h4 : ↑(m ^ e) - ↑c = ↑p * (↑q * j) := <span class="kw">by</span></span>
+<span id="cb126-16"><a href="#cb126-16" aria-hidden="true" tabindex="-1"></a>  <span class="kw">have</span> h4 : m ^ e - c = p * (q * j) := <span class="kw">by</span></span>
 <span id="cb126-17"><a href="#cb126-17" aria-hidden="true" tabindex="-1"></a>    <span class="kw">rewrite</span> [h2]</span>
 <span id="cb126-18"><a href="#cb126-18" aria-hidden="true" tabindex="-1"></a>    <span class="kw">ring</span></span>
 <span id="cb126-19"><a href="#cb126-19" aria-hidden="true" tabindex="-1"></a>    <span class="kw">done</span></span>
@@ -2013,7 +2014,7 @@ Int.natAbs_ofNat : ∀ (n : ℕ), Int.natAbs ↑n = n</code></pre>
 <span id="cb126-22"><a href="#cb126-22" aria-hidden="true" tabindex="-1"></a>    <span class="kw">rewrite</span> [ed_congr_1]</span>
 <span id="cb126-23"><a href="#cb126-23" aria-hidden="true" tabindex="-1"></a>    <span class="kw">ring</span></span>
 <span id="cb126-24"><a href="#cb126-24" aria-hidden="true" tabindex="-1"></a>    <span class="kw">done</span></span>
-<span id="cb126-25"><a href="#cb126-25" aria-hidden="true" tabindex="-1"></a>  <span class="kw">have</span> h6 : ↑(m ^ e) - ↑c = ↑q * (↑p * j) := <span class="kw">by</span></span>
+<span id="cb126-25"><a href="#cb126-25" aria-hidden="true" tabindex="-1"></a>  <span class="kw">have</span> h6 : m ^ e - c = q * (p * j) := <span class="kw">by</span></span>
 <span id="cb126-26"><a href="#cb126-26" aria-hidden="true" tabindex="-1"></a>    <span class="kw">rewrite</span> [h2]</span>
 <span id="cb126-27"><a href="#cb126-27" aria-hidden="true" tabindex="-1"></a>    <span class="kw">ring</span></span>
 <span id="cb126-28"><a href="#cb126-28" aria-hidden="true" tabindex="-1"></a>    <span class="kw">done</span></span>
@@ -2042,7 +2043,7 @@ Int.natAbs_ofNat : ∀ (n : ℕ), Int.natAbs ↑n = n</code></pre>
 <div class="numex" data-arguments="3">
 <div class="sourceCode" id="cb129"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb129-1"><a href="#cb129-1" aria-hidden="true" tabindex="-1"></a><span class="co">--Hint:  Use the previous exercise, Exercise_7_2_7, and Theorem_7_4_2.</span></span>
 <span id="cb129-2"><a href="#cb129-2" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Exercise_7_5_13a (a : Nat) (h1 : rel_prime 561 a) :</span>
-<span id="cb129-3"><a href="#cb129-3" aria-hidden="true" tabindex="-1"></a>    ↑(a ^ 560) ≡ 1 (MOD 3) := <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb129-3"><a href="#cb129-3" aria-hidden="true" tabindex="-1"></a>    a ^ 560 ≡ 1 (MOD 3) := <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="numex" data-arguments="4">
 <div class="sourceCode" id="cb130"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb130-1"><a href="#cb130-1" aria-hidden="true" tabindex="-1"></a><span class="co">--Hint:  Imitate the way Theorem_7_2_2_Int was proven from Theorem_7_2_2.</span></span>
