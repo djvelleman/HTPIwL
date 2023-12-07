@@ -847,7 +847,7 @@ $$
 <div class="numex" data-arguments="8">
 <div class="sourceCode" id="cb50"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb50-1"><a href="#cb50-1" aria-hidden="true" tabindex="-1"></a><span class="co">--Hint:  Use Exercise_6_2_2.</span></span>
 <span id="cb50-2"><a href="#cb50-2" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Example_6_2_2 {A : <span class="kw">Type</span>} (R : BinRel A)</span>
-<span id="cb50-3"><a href="#cb50-3" aria-hidden="true" tabindex="-1"></a>    (h1 : ∃ (n : Nat), numElts { x : A | x = x } n)</span>
+<span id="cb50-3"><a href="#cb50-3" aria-hidden="true" tabindex="-1"></a>    (h1 : ∃ (n : Nat), numElts {x : A | x = x} n)</span>
 <span id="cb50-4"><a href="#cb50-4" aria-hidden="true" tabindex="-1"></a>    (h2 : partial_order R) : ∃ (T : BinRel A),</span>
 <span id="cb50-5"><a href="#cb50-5" aria-hidden="true" tabindex="-1"></a>      total_order T ∧ ∀ (x y : A), R x y → T x y := <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
@@ -1385,13 +1385,13 @@ $$
 </div>
 <p>We proceed by contradiction. If this statement were false, then the set</p>
 <div class="quote">
-<pre><code>S = { q : Nat | ∃ (p : Nat), p * p = 2 * (q * q) ∧ q ≠ 0 }</code></pre>
+<pre><code>S = {q : Nat | ∃ (p : Nat), p * p = 2 * (q * q) ∧ q ≠ 0}</code></pre>
 </div>
 <p>would be nonempty, and therefore, by the well ordering principle, it would have a smallest element. We then show that this leads to a contradiction. Here is the proof.</p>
 <div class="sourceCode" id="cb101"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb101-1"><a href="#cb101-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Theorem_6_4_5 :</span>
 <span id="cb101-2"><a href="#cb101-2" aria-hidden="true" tabindex="-1"></a>    ¬∃ (q p : Nat), p * p = 2 * (q * q) ∧ q ≠ 0 := <span class="kw">by</span></span>
 <span id="cb101-3"><a href="#cb101-3" aria-hidden="true" tabindex="-1"></a>  <span class="kw">set</span> S : Set Nat :=</span>
-<span id="cb101-4"><a href="#cb101-4" aria-hidden="true" tabindex="-1"></a>    { q : Nat | ∃ (p : Nat), p * p = 2 * (q * q) ∧ q ≠ 0 }</span>
+<span id="cb101-4"><a href="#cb101-4" aria-hidden="true" tabindex="-1"></a>    {q : Nat | ∃ (p : Nat), p * p = 2 * (q * q) ∧ q ≠ 0}</span>
 <span id="cb101-5"><a href="#cb101-5" aria-hidden="true" tabindex="-1"></a>  <span class="kw">by_contra</span> h1</span>
 <span id="cb101-6"><a href="#cb101-6" aria-hidden="true" tabindex="-1"></a>  <span class="kw">have</span> h2 : ∃ (q : Nat), q ∈ S := h1</span>
 <span id="cb101-7"><a href="#cb101-7" aria-hidden="true" tabindex="-1"></a>  <span class="kw">have</span> h3 : ∃ q ∈ S, ∀ r ∈ S, q ≤ r := well_ord_princ S h2</span>
@@ -1515,7 +1515,7 @@ $$
 <span id="cb114-5"><a href="#cb114-5" aria-hidden="true" tabindex="-1"></a>    rep_image f (n + 1) B = image f (rep_image f n B) := <span class="kw">by</span> <span class="kw">rfl</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>We will prove that the closure of <code>B</code> under <code>f</code> is the union of the sets <code>rep_image f n B</code>. We will call this the <em>cumulative image</em> of <code>B</code> under <code>f</code>, and we define it as follows:</p>
 <div class="sourceCode" id="cb115"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb115-1"><a href="#cb115-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> cumul_image {A : <span class="kw">Type</span>} (f : A → A) (B : Set A) : Set A :=</span>
-<span id="cb115-2"><a href="#cb115-2" aria-hidden="true" tabindex="-1"></a>  { x : A | ∃ (n : Nat), x ∈ rep_image f n B }</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb115-2"><a href="#cb115-2" aria-hidden="true" tabindex="-1"></a>  {x : A | ∃ (n : Nat), x ∈ rep_image f n B}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>To prove that <code>cumul_image f B</code> is the closure of <code>B</code> under <code>f</code>, we first prove a lemma saying that if <code>B ⊆ D</code> and <code>D</code> is closed under <code>f</code>, then for every natural number <code>n</code>, <code>rep_image f n B ⊆ D</code>. We prove it by induction.</p>
 <div class="sourceCode" id="cb116"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb116-1"><a href="#cb116-1" aria-hidden="true" tabindex="-1"></a><span class="kw">lemma</span> rep_image_sub_closed {A : <span class="kw">Type</span>} {f : A → A} {B D : Set A}</span>
 <span id="cb116-2"><a href="#cb116-2" aria-hidden="true" tabindex="-1"></a>    (h1 : B ⊆ D) (h2 : closed f D) :</span>
@@ -1544,7 +1544,7 @@ $$
 <span id="cb117-2"><a href="#cb117-2" aria-hidden="true" tabindex="-1"></a>    closure f B (cumul_image f B) := <span class="kw">by</span></span>
 <span id="cb117-3"><a href="#cb117-3" aria-hidden="true" tabindex="-1"></a>  <span class="kw">define</span></span>
 <span id="cb117-4"><a href="#cb117-4" aria-hidden="true" tabindex="-1"></a>  <span class="kw">apply</span> And.intro</span>
-<span id="cb117-5"><a href="#cb117-5" aria-hidden="true" tabindex="-1"></a>  · <span class="co">-- Proof that cumul_image f B ∈ { D : Set A | B ⊆ D ∧ closed f D }</span></span>
+<span id="cb117-5"><a href="#cb117-5" aria-hidden="true" tabindex="-1"></a>  · <span class="co">-- Proof that cumul_image f B ∈ {D : Set A | B ⊆ D ∧ closed f D}</span></span>
 <span id="cb117-6"><a href="#cb117-6" aria-hidden="true" tabindex="-1"></a>    <span class="kw">define</span>  <span class="co">--Goal : B ⊆ cumul_image f B ∧ closed f (cumul_image f B)</span></span>
 <span id="cb117-7"><a href="#cb117-7" aria-hidden="true" tabindex="-1"></a>    <span class="kw">apply</span> And.intro</span>
 <span id="cb117-8"><a href="#cb117-8" aria-hidden="true" tabindex="-1"></a>    · <span class="co">-- Proof that B ⊆ cumul_image f B</span></span>
@@ -1572,7 +1572,7 @@ $$
 <span id="cb117-30"><a href="#cb117-30" aria-hidden="true" tabindex="-1"></a>    <span class="kw">done</span></span>
 <span id="cb117-31"><a href="#cb117-31" aria-hidden="true" tabindex="-1"></a>  · <span class="co">-- Proof that cumul_image f B is smallest</span></span>
 <span id="cb117-32"><a href="#cb117-32" aria-hidden="true" tabindex="-1"></a>    <span class="kw">fix</span> D : Set A</span>
-<span id="cb117-33"><a href="#cb117-33" aria-hidden="true" tabindex="-1"></a>    <span class="kw">assume</span> h1 : D ∈ { D : Set A | B ⊆ D ∧ closed f D }</span>
+<span id="cb117-33"><a href="#cb117-33" aria-hidden="true" tabindex="-1"></a>    <span class="kw">assume</span> h1 : D ∈ {D : Set A | B ⊆ D ∧ closed f D}</span>
 <span id="cb117-34"><a href="#cb117-34" aria-hidden="true" tabindex="-1"></a>    <span class="kw">define</span> <span class="kw">at</span> h1  <span class="co">--h1 : B ⊆ D ∧ closed f D</span></span>
 <span id="cb117-35"><a href="#cb117-35" aria-hidden="true" tabindex="-1"></a>    <span class="kw">define</span>   <span class="co">--Goal : ∀ ⦃a : A⦄, a ∈ cumul_image f B → a ∈ D</span></span>
 <span id="cb117-36"><a href="#cb117-36" aria-hidden="true" tabindex="-1"></a>    <span class="kw">fix</span> x : A</span>
@@ -1591,18 +1591,18 @@ $$
 <span id="cb118-2"><a href="#cb118-2" aria-hidden="true" tabindex="-1"></a>  ∀ f ∈ F, closed f C</span>
 <span id="cb118-3"><a href="#cb118-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb118-4"><a href="#cb118-4" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> closure_family {A : <span class="kw">Type</span>} (F : Set (A → A)) (B C : Set A) : <span class="kw">Prop</span> :=</span>
-<span id="cb118-5"><a href="#cb118-5" aria-hidden="true" tabindex="-1"></a>  smallestElt (sub A) C { D : Set A | B ⊆ D ∧ closed_family F D }</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb118-5"><a href="#cb118-5" aria-hidden="true" tabindex="-1"></a>  smallestElt (sub A) C {D : Set A | B ⊆ D ∧ closed_family F D}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>These definitions say that a set is closed under a family of functions if it is closed under all of the functions in the family, and the closure of a set <code>B</code> under a family of functions is the smallest set containing <code>B</code> that is closed under the family.</p>
 <p>In this exercise we will use the following additional definitions:</p>
 <div class="sourceCode" id="cb119"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb119-1"><a href="#cb119-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> rep_image_family {A : <span class="kw">Type</span>}</span>
 <span id="cb119-2"><a href="#cb119-2" aria-hidden="true" tabindex="-1"></a>    (F : Set (A → A)) (n : Nat) (B : Set A) : Set A :=</span>
 <span id="cb119-3"><a href="#cb119-3" aria-hidden="true" tabindex="-1"></a>  <span class="kw">match</span> n <span class="kw">with</span></span>
 <span id="cb119-4"><a href="#cb119-4" aria-hidden="true" tabindex="-1"></a>    | 0 =&gt; B</span>
-<span id="cb119-5"><a href="#cb119-5" aria-hidden="true" tabindex="-1"></a>    | k + 1 =&gt; { x : A | ∃ f ∈ F, x ∈ image f (rep_image_family F k B) }</span>
+<span id="cb119-5"><a href="#cb119-5" aria-hidden="true" tabindex="-1"></a>    | k + 1 =&gt; {x : A | ∃ f ∈ F, x ∈ image f (rep_image_family F k B)}</span>
 <span id="cb119-6"><a href="#cb119-6" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb119-7"><a href="#cb119-7" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> cumul_image_family {A : <span class="kw">Type</span>}</span>
 <span id="cb119-8"><a href="#cb119-8" aria-hidden="true" tabindex="-1"></a>    (F : Set (A → A)) (B : Set A) : Set A :=</span>
-<span id="cb119-9"><a href="#cb119-9" aria-hidden="true" tabindex="-1"></a>  { x : A | ∃ (n : Nat), x ∈ rep_image_family F n B }</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb119-9"><a href="#cb119-9" aria-hidden="true" tabindex="-1"></a>  {x : A | ∃ (n : Nat), x ∈ rep_image_family F n B}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>The following theorems establish that if <code>F : Set (A → A)</code> and <code>B : Set A</code>, then <code>cumul_image_family F B</code> is the closure of <code>B</code> under <code>F</code>. The first two are proven by <code>rfl</code>; the other two are for you to prove.</p>
 <div class="sourceCode" id="cb120"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb120-1"><a href="#cb120-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> rep_image_family_base {A : <span class="kw">Type</span>}</span>
 <span id="cb120-2"><a href="#cb120-2" aria-hidden="true" tabindex="-1"></a>    (F : Set (A → A)) (B : Set A) : rep_image_family F 0 B = B := <span class="kw">by</span> <span class="kw">rfl</span></span>
@@ -1610,7 +1610,7 @@ $$
 <span id="cb120-4"><a href="#cb120-4" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> rep_image_family_step {A : <span class="kw">Type</span>}</span>
 <span id="cb120-5"><a href="#cb120-5" aria-hidden="true" tabindex="-1"></a>    (F : Set (A → A)) (n : Nat) (B : Set A) :</span>
 <span id="cb120-6"><a href="#cb120-6" aria-hidden="true" tabindex="-1"></a>    rep_image_family F (n + 1) B =</span>
-<span id="cb120-7"><a href="#cb120-7" aria-hidden="true" tabindex="-1"></a>    { x : A | ∃ f ∈ F, x ∈ image f (rep_image_family F n B) } := <span class="kw">by</span> <span class="kw">rfl</span></span>
+<span id="cb120-7"><a href="#cb120-7" aria-hidden="true" tabindex="-1"></a>    {x : A | ∃ f ∈ F, x ∈ image f (rep_image_family F n B)} := <span class="kw">by</span> <span class="kw">rfl</span></span>
 <span id="cb120-8"><a href="#cb120-8" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb120-9"><a href="#cb120-9" aria-hidden="true" tabindex="-1"></a><span class="kw">lemma</span> rep_image_family_sub_closed {A : <span class="kw">Type</span>}</span>
 <span id="cb120-10"><a href="#cb120-10" aria-hidden="true" tabindex="-1"></a>    (F : Set (A → A)) (B D : Set A)</span>
@@ -1627,10 +1627,10 @@ $$
 <span id="cb121-2"><a href="#cb121-2" aria-hidden="true" tabindex="-1"></a>  ∀ x ∈ C, ∀ y ∈ C, f x y ∈ C</span>
 <span id="cb121-3"><a href="#cb121-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb121-4"><a href="#cb121-4" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> closure2 {A : <span class="kw">Type</span>} (f : A → A → A) (B C : Set A) : <span class="kw">Prop</span> := </span>
-<span id="cb121-5"><a href="#cb121-5" aria-hidden="true" tabindex="-1"></a>  smallestElt (sub A) C { D : Set A | B ⊆ D ∧ closed2 f D }</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb121-5"><a href="#cb121-5" aria-hidden="true" tabindex="-1"></a>  smallestElt (sub A) C {D : Set A | B ⊆ D ∧ closed2 f D}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>They also use the following definition, which extends the idea of the image of a set under a function to functions of two variables:</p>
 <div class="sourceCode" id="cb122"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb122-1"><a href="#cb122-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> image2 {A : <span class="kw">Type</span>} (f : A → A → A) (B : Set A) : Set A :=</span>
-<span id="cb122-2"><a href="#cb122-2" aria-hidden="true" tabindex="-1"></a>  { z : A | ∃ (x y : A), x ∈ B ∧ y ∈ B ∧ z = f x y }</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb122-2"><a href="#cb122-2" aria-hidden="true" tabindex="-1"></a>  {z : A | ∃ (x y : A), x ∈ B ∧ y ∈ B ∧ z = f x y}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>2. A natural way to try to find the closure of a set under a function of two variables would be to use the following definitions and theorems:</p>
 <div class="sourceCode" id="cb123"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb123-1"><a href="#cb123-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> rep_image2 {A : <span class="kw">Type</span>}</span>
 <span id="cb123-2"><a href="#cb123-2" aria-hidden="true" tabindex="-1"></a>    (f : A → A → A) (n : Nat) (B : Set A) : Set A :=</span>
@@ -1646,7 +1646,7 @@ $$
 <span id="cb123-12"><a href="#cb123-12" aria-hidden="true" tabindex="-1"></a>    rep_image2 f (n + 1) B = image2 f (rep_image2 f n B) := <span class="kw">by</span> <span class="kw">rfl</span></span>
 <span id="cb123-13"><a href="#cb123-13" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb123-14"><a href="#cb123-14" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> cumul_image2 {A : <span class="kw">Type</span>} (f : A → A → A) (B : Set A) : Set A :=</span>
-<span id="cb123-15"><a href="#cb123-15" aria-hidden="true" tabindex="-1"></a>  { x : A | ∃ (n : Nat), x ∈ rep_image2 f n B }</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb123-15"><a href="#cb123-15" aria-hidden="true" tabindex="-1"></a>  {x : A | ∃ (n : Nat), x ∈ rep_image2 f n B}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>We could now try to prove that if <code>f : A → A → A</code> and <code>B : Set A</code>, then <code>cumul_image2 f B</code> is the closure of <code>B</code> under <code>f</code>. However, this approach doesn’t work, because <code>cumul_image2 f B</code> might not be closed under <code>f</code>.</p>
 <p>Here is an incorrect informal argument that <code>cumul_image2 f B</code> is closed under <code>f</code>. Suppose <code>x</code> and <code>y</code> are elements of <code>cumul_image2 f B</code>. This means that we can choose some natural number <code>n</code> such that <code>x ∈ rep_image2 f n B</code> and <code>y ∈ rep_image2 f n B</code>. This implies that <code>f x y ∈ image2 f (rep_image2 f n B) = rep_image2 f (n + 1) B</code>, so <code>f x y ∈ cumul_image2 f B</code>.</p>
 <p>Find the mistake in this informal argument by trying to turn it into a proof in Lean:</p>
@@ -1673,7 +1673,7 @@ $$
 <span id="cb125-17"><a href="#cb125-17" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb125-18"><a href="#cb125-18" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> cumul_un_image2 {A : <span class="kw">Type</span>}</span>
 <span id="cb125-19"><a href="#cb125-19" aria-hidden="true" tabindex="-1"></a>    (f : A → A → A) (B : Set A) : Set A :=</span>
-<span id="cb125-20"><a href="#cb125-20" aria-hidden="true" tabindex="-1"></a>  { x : A | ∃ (n : Nat), x ∈ rep_un_image2 f n B }</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb125-20"><a href="#cb125-20" aria-hidden="true" tabindex="-1"></a>  {x : A | ∃ (n : Nat), x ∈ rep_un_image2 f n B}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>Now prove that if <code>f : A → A → A</code> and <code>B : Set A</code>, then <code>cumul_un_image2 f B</code> is the closure of <code>B</code> under <code>f</code> by completing the following proofs:</p>
 <div class="sourceCode" id="cb126"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb126-1"><a href="#cb126-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Exercise_6_5_8a {A : <span class="kw">Type</span>} (f : A → A → A) (B : Set A) :</span>
 <span id="cb126-2"><a href="#cb126-2" aria-hidden="true" tabindex="-1"></a>    ∀ (m n : Nat), m ≤ n →</span>
@@ -1695,7 +1695,7 @@ $$
 
 </div>
 <p>The remaining exercises in this section use the following definitions:</p>
-<div class="sourceCode" id="cb127"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb127-1"><a href="#cb127-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> idExt (A : <span class="kw">Type</span>) : Set (A × A) := { (x, y) : A × A | x = y }</span>
+<div class="sourceCode" id="cb127"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb127-1"><a href="#cb127-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> idExt (A : <span class="kw">Type</span>) : Set (A × A) := {(x, y) : A × A | x = y}</span>
 <span id="cb127-2"><a href="#cb127-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb127-3"><a href="#cb127-3" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> rep_comp {A : <span class="kw">Type</span>} (R : Set (A × A)) (n : Nat) : Set (A × A) :=</span>
 <span id="cb127-4"><a href="#cb127-4" aria-hidden="true" tabindex="-1"></a>  <span class="kw">match</span> n <span class="kw">with</span></span>
@@ -1703,7 +1703,7 @@ $$
 <span id="cb127-6"><a href="#cb127-6" aria-hidden="true" tabindex="-1"></a>    | k + 1 =&gt; comp (rep_comp R k) R</span>
 <span id="cb127-7"><a href="#cb127-7" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb127-8"><a href="#cb127-8" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> cumul_comp {A : <span class="kw">Type</span>} (R : Set (A × A)) : Set (A × A) :=</span>
-<span id="cb127-9"><a href="#cb127-9" aria-hidden="true" tabindex="-1"></a>  { (x, y) : A × A | ∃ n ≥ 1, (x, y) ∈ rep_comp R n }</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb127-9"><a href="#cb127-9" aria-hidden="true" tabindex="-1"></a>  {(x, y) : A × A | ∃ n ≥ 1, (x, y) ∈ rep_comp R n}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="numex" data-arguments="4">
 <div class="sourceCode" id="cb128"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb128-1"><a href="#cb128-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> rep_comp_one {A : <span class="kw">Type</span>} (R : Set (A × A)) :</span>
 <span id="cb128-2"><a href="#cb128-2" aria-hidden="true" tabindex="-1"></a>    rep_comp R 1 = R := <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -1721,7 +1721,7 @@ $$
 <div class="numex" data-arguments="7">
 <div class="sourceCode" id="cb131"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb131-1"><a href="#cb131-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Exercise_6_5_14 {A : <span class="kw">Type</span>} (R : Set (A × A)) :</span>
 <span id="cb131-2"><a href="#cb131-2" aria-hidden="true" tabindex="-1"></a>    smallestElt (sub (A × A)) (cumul_comp R)</span>
-<span id="cb131-3"><a href="#cb131-3" aria-hidden="true" tabindex="-1"></a>    { S : Set (A × A) | R ⊆ S ∧ transitive (RelFromExt S) } := <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb131-3"><a href="#cb131-3" aria-hidden="true" tabindex="-1"></a>    {S : Set (A × A) | R ⊆ S ∧ transitive (RelFromExt S)} := <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 
 

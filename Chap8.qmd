@@ -223,7 +223,7 @@ notation:50  A:50 " ∼ " B:50 => equinum A B
 Can the examples at the beginning of this section be used to establish that `Int ∼ Nat` and `Nat × Nat ∼ Nat`?  Not quite, because `Int`, `Nat`, and `Nat × Nat` are types, not sets.  We must talk about the sets of all objects of those types, not the types themselves, so we introduce another definition.
 
 ```lean
-def Univ (U : Type) : Set U := { x : U | True }
+def Univ (U : Type) : Set U := {x : U | True}
 
 lemma elt_Univ {U : Type} (u : U) :
     u ∈ Univ U := by trivial
@@ -506,7 +506,7 @@ theorem Theorem_8_1_3_3 {U V W : Type} {A : Set U} {B : Set V} {C : Set W}
 Now that we have a basic understanding of the concept of equinumerous sets, we can use this concept to make a number of definitions.  For any natural number $n$, *HTPI* defines $I_n$ to be the set $\{1, 2, \ldots, n\}$, and then it defines a set to be *finite* if it is equinumerous with $I_n$, for some $n$.  In Lean, it is a bit more convenient to use sets of the form $\{0, 1, \ldots, n - 1\}$.  With that small change, we can repeat the definitions of finite, denumerable, and countable in *HTPI*.
 
 ```lean
-def I (n : Nat) : Set Nat := { k : Nat | k < n }
+def I (n : Nat) : Set Nat := {k : Nat | k < n}
 
 lemma I_def (k n : Nat) : k ∈ I n ↔ k < n := by rfl
 
@@ -678,7 +678,7 @@ def least_rel_to {U : Type} (S : Rel Nat U) (x : U) (n : Nat) : Prop :=
 
 lemma exists_least_rel_to {U : Type} {S : Rel Nat U} {x : U}
     (h1 : ∃ (n : Nat), S n x) : ∃ (n : Nat), least_rel_to S x n := by
-  set W : Set Nat := { n : Nat | S n x }
+  set W : Set Nat := {n : Nat | S n x}
   have h2 : ∃ (n : Nat), n ∈ W := h1
   show ∃ (n : Nat), least_rel_to S x n from well_ord_princ W h2
   done
@@ -739,7 +739,7 @@ theorem Theorem_8_1_5_3_to_1 {U : Type} {A : Set U}
                 --x1 ∈ A ∧ S x1 n → x2 ∈ A ∧ S x2 n → x1 = x2
   rewrite [ctble_iff_equinum_set_nat]  --Goal : ∃ (I : Set Nat), I ∼ A
   set R : Rel Nat U := invRel (restrict_to S A)
-  set I : Set Nat := { n : Nat | ∃ (x : U), R n x }
+  set I : Set Nat := {n : Nat | ∃ (x : U), R n x}
   apply Exists.intro I
   define        --Goal : ∃ (R : Rel Nat U), matching R I A
   apply Exists.intro R
@@ -916,7 +916,7 @@ lemma ctble_of_equinum_ctble {U V : Type} {A : Set U} {B : Set V}
 
 ::: {.numex arguments="6"}
 ```lean
-theorem Exercise_8_1_1_b : denum { n : Int | even n } := sorry
+theorem Exercise_8_1_1_b : denum {n : Int | even n} := sorry
 ```
 :::
 
@@ -927,7 +927,7 @@ The next four exercises use the following definition:
 
 ```lean
 def Rel_image {U V : Type} (R : Rel U V) (A : Set U) : Set V :=
-  { y : V | ∃ x ∈ A, R x y }
+  {y : V | ∃ x ∈ A, R x y}
 ```
 
 Note that if `R` has type `Rel U V`, then `Rel_image R` has type `Set U → Set V`.
@@ -1340,7 +1340,7 @@ To define the totient function in Lean, in Chapter 7 we defined `phi m` to be `n
 We have already remarked that the definition of `num_elts_below` in this chapter bears some resemblance to the definition of `num_rp_below` in Chapter 7.  It should not be surprising, therefore, that these two counting methods give results that agree.
 
 ```lean
-def Set_rp_below (m : Nat) : Set Nat := { n : Nat | rel_prime m n ∧ n < m }
+def Set_rp_below (m : Nat) : Set Nat := {n : Nat | rel_prime m n ∧ n < m}
 
 lemma Set_rp_below_def (a m : Nat) :
     a ∈ Set_rp_below m ↔ rel_prime m a ∧ a < m := by rfl
@@ -1429,7 +1429,7 @@ The next fact we need is part 1 of Theorem 8.1.2 in *HTPI*, which says that if $
 
 ```lean
 def Set_prod {U V : Type} (A : Set U) (B : Set V) : Set (U × V) :=
-  { (a, b) : U × V | a ∈ A ∧ b ∈ B }
+  {(a, b) : U × V | a ∈ A ∧ b ∈ B}
 
 notation:75 A:75 " ×ₛ " B:75 => Set_prod A B
 
@@ -2000,7 +2000,7 @@ There is one more theorem in Section 8.2 of *HTPI* showing that a set-theoretic 
 
 ```lean
 def seq {U : Type} (A : Set U) : Set (List U) :=
-  { l : List U | ∀ x ∈ l, x ∈ A }
+  {l : List U | ∀ x ∈ l, x ∈ A}
 
 lemma seq_def {U : Type} (A : Set U) (l : List U) :
     l ∈ seq A ↔ ∀ x ∈ l, x ∈ A := by rfl
@@ -2013,7 +2013,7 @@ Our proof of `Theorem_8_2_4` will use exactly the same strategy as the proof in 
 
 ```lean
 def seq_by_length {U : Type} (A : Set U) (n : Nat) : Set (List U) :=
-  { l : List U | l ∈ seq A ∧ l.length = n }
+  {l : List U | l ∈ seq A ∧ l.length = n}
 
 lemma sbl_base {U : Type} (A : Set U) : seq_by_length A 0 = {[]} := by
   apply Set.ext
@@ -2097,7 +2097,7 @@ Our next step is to show that the union of all of the sets `seq_by_length A n`, 
 
 ```lean
 def sbl_set {U : Type} (A : Set U) : Set (Set (List U)) :=
-  { S : Set (List U) | ∃ (n : Nat), seq_by_length A n = S }
+  {S : Set (List U) | ∃ (n : Nat), seq_by_length A n = S}
 
 lemma Lemma_8_2_4_3 {U : Type} (A : Set U) : ⋃₀ (sbl_set A) = seq A := by
   apply Set.ext
@@ -2190,7 +2190,7 @@ theorem Cantor's_theorem : ¬ctble (𝒫 (Univ Nat)) := by
   define at h2
   have h3 : unique_val_on_N R := h2.left
   have h4 : nat_rel_onto R (𝒫 (Univ Nat)) := h2.right
-  set D : Set Nat := { n : Nat | ∃ (X : Set Nat), R n X ∧ n ∉ X }
+  set D : Set Nat := {n : Nat | ∃ (X : Set Nat), R n X ∧ n ∉ X}
   have h5 : D ∈ 𝒫 (Univ Nat) := set_elt_powerset_univ D
   define at h4
   obtain (n : Nat) (h6 : R n D) from h4 h5
@@ -2251,7 +2251,7 @@ lemma set_to_list {U : Type} {A : Set U} (h : finite A) :
 ```lean
 --Hint:  Use the previous exercise and Theorem_8_2_4
 theorem Like_Exercise_8_2_4 {U : Type} {A : Set U} (h : ctble A) :
-    ctble { X : Set U | X ⊆ A ∧ finite X } := sorry
+    ctble {X : Set U | X ⊆ A ∧ finite X} := sorry
 ```
 :::
 
@@ -2272,7 +2272,7 @@ theorem Like_Exercise_8_2_7 : ∃ (P : Set (Set Nat)),
 ::: {.numex arguments="8"}
 ```lean
 theorem unctbly_many_inf_set_nat :
-    ¬ctble { X : Set Nat | ¬finite X } := sorry
+    ¬ctble {X : Set Nat | ¬finite X} := sorry
 ```
 :::
 
@@ -2310,8 +2310,8 @@ def rep_common_image
   {U V : Type} (R S : Rel U V) (X0 : Set U) (n : Nat) : Set U :=
   match n with
     | 0 => X0
-    | m + 1 => { a : U | ∃ x ∈ rep_common_image R S X0 m,
-                          ∃ (y : V), R x y ∧ S a y }
+    | m + 1 => {a : U | ∃ x ∈ rep_common_image R S X0 m,
+                          ∃ (y : V), R x y ∧ S a y}
 
 lemma rep_common_image_step
     {U V : Type} (R S : Rel U V) (X0 : Set U) (m : Nat) (a : U) :
@@ -2323,7 +2323,7 @@ The sets `rep_common_image R S X0 n` correspond to the sets $A_n$ in *HTPI*.  As
 
 ```lean
 def cum_rep_image {U V : Type} (R S : Rel U V) (X0 : Set U) : Set U :=
-  { a : U | ∃ (n : Nat), a ∈ rep_common_image R S X0 n }
+  {a : U | ∃ (n : Nat), a ∈ rep_common_image R S X0 n}
 ```
 
 In our proof of the Cantor--Schröder--Bernstein theorem, we will define `X` to be the set `cum_rep_image R S X0`, and therefore the matching `T` will be the relation `csb_match R S X0` defined as follows:
@@ -2554,7 +2554,7 @@ theorem CSB_func {U V : Type} {f : U → V} {g : V → U}
 ::: {.numex arguments="2"}
 ```lean
 theorem intervals_equinum :
-    { x : Real | 0 < x ∧ x < 1 } ∼ { x : Real | 0 < x ∧ x ≤ 1 } := sorry
+    {x : Real | 0 < x ∧ x < 1} ∼ {x : Real | 0 < x ∧ x ≤ 1} := sorry
 ```
 :::
 
@@ -2565,19 +2565,19 @@ The next six exercises lead up to a proof that the set of all equivalence relati
 
 ```lean
 def EqRel (A : Type) : Set (BinRel A) :=
-  { R : BinRel A | equiv_rel R }
+  {R : BinRel A | equiv_rel R}
 
 def Part (A : Type) : Set (Set (Set A)) :=
-  { P : Set (Set A) | partition P }
+  {P : Set (Set A) | partition P}
 
 def EqRelExt (A : Type) : Set (Set (A × A)) :=
-  { E : Set (A × A) | ∃ (R : BinRel A), equiv_rel R ∧ extension R = E }
+  {E : Set (A × A) | ∃ (R : BinRel A), equiv_rel R ∧ extension R = E}
 
 def shift_and_zero (X : Set Nat) : Set Nat :=
-  { x + 2 | x ∈ X } ∪ {0}
+  {x + 2 | x ∈ X} ∪ {0}
 
 def saz_pair (X : Set Nat) : Set (Set Nat) :=
-  { shift_and_zero X, (Univ Nat) \ (shift_and_zero X) }
+  {shift_and_zero X, (Univ Nat) \ (shift_and_zero X)}
 ```
 
 ::: {.numex arguments="3"}

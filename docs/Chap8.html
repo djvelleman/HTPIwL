@@ -423,7 +423,7 @@ $$
 <span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a><span class="kw">notation</span>:50  A:50 <span class="st">" ∼ "</span> B:50 =&gt; equinum A B</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>Can the examples at the beginning of this section be used to establish that <code>Int ∼ Nat</code> and <code>Nat × Nat ∼ Nat</code>? Not quite, because <code>Int</code>, <code>Nat</code>, and <code>Nat × Nat</code> are types, not sets. We must talk about the sets of all objects of those types, not the types themselves, so we introduce another definition.</p>
-<div class="sourceCode" id="cb14"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> Univ (U : <span class="kw">Type</span>) : Set U := { x : U | True }</span>
+<div class="sourceCode" id="cb14"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> Univ (U : <span class="kw">Type</span>) : Set U := {x : U | True}</span>
 <span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="kw">lemma</span> elt_Univ {U : <span class="kw">Type</span>} (u : U) :</span>
 <span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>    u ∈ Univ U := <span class="kw">by</span> <span class="kw">trivial</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -669,7 +669,7 @@ $$
 <span id="cb22-82"><a href="#cb22-82" aria-hidden="true" tabindex="-1"></a>  <span class="kw">show</span> matching (compRel S R) A C <span class="kw">from</span> comp_match h3 h4</span>
 <span id="cb22-83"><a href="#cb22-83" aria-hidden="true" tabindex="-1"></a>  <span class="kw">done</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>Now that we have a basic understanding of the concept of equinumerous sets, we can use this concept to make a number of definitions. For any natural number <span class="math inline">\(n\)</span>, <em>HTPI</em> defines <span class="math inline">\(I_n\)</span> to be the set <span class="math inline">\(\{1, 2, \ldots, n\}\)</span>, and then it defines a set to be <em>finite</em> if it is equinumerous with <span class="math inline">\(I_n\)</span>, for some <span class="math inline">\(n\)</span>. In Lean, it is a bit more convenient to use sets of the form <span class="math inline">\(\{0, 1, \ldots, n - 1\}\)</span>. With that small change, we can repeat the definitions of finite, denumerable, and countable in <em>HTPI</em>.</p>
-<div class="sourceCode" id="cb23"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> I (n : Nat) : Set Nat := { k : Nat | k &lt; n }</span>
+<div class="sourceCode" id="cb23"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> I (n : Nat) : Set Nat := {k : Nat | k &lt; n}</span>
 <span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a><span class="kw">lemma</span> I_def (k n : Nat) : k ∈ I n ↔ k &lt; n := <span class="kw">by</span> <span class="kw">rfl</span></span>
 <span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a></span>
@@ -810,7 +810,7 @@ $$
 <span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a><span class="kw">lemma</span> exists_least_rel_to {U : <span class="kw">Type</span>} {S : Rel Nat U} {x : U}</span>
 <span id="cb30-5"><a href="#cb30-5" aria-hidden="true" tabindex="-1"></a>    (h1 : ∃ (n : Nat), S n x) : ∃ (n : Nat), least_rel_to S x n := <span class="kw">by</span></span>
-<span id="cb30-6"><a href="#cb30-6" aria-hidden="true" tabindex="-1"></a>  <span class="kw">set</span> W : Set Nat := { n : Nat | S n x }</span>
+<span id="cb30-6"><a href="#cb30-6" aria-hidden="true" tabindex="-1"></a>  <span class="kw">set</span> W : Set Nat := {n : Nat | S n x}</span>
 <span id="cb30-7"><a href="#cb30-7" aria-hidden="true" tabindex="-1"></a>  <span class="kw">have</span> h2 : ∃ (n : Nat), n ∈ W := h1</span>
 <span id="cb30-8"><a href="#cb30-8" aria-hidden="true" tabindex="-1"></a>  <span class="kw">show</span> ∃ (n : Nat), least_rel_to S x n <span class="kw">from</span> well_ord_princ W h2</span>
 <span id="cb30-9"><a href="#cb30-9" aria-hidden="true" tabindex="-1"></a>  <span class="kw">done</span></span>
@@ -867,7 +867,7 @@ $$
 <span id="cb31-9"><a href="#cb31-9" aria-hidden="true" tabindex="-1"></a>                <span class="co">--x1 ∈ A ∧ S x1 n → x2 ∈ A ∧ S x2 n → x1 = x2</span></span>
 <span id="cb31-10"><a href="#cb31-10" aria-hidden="true" tabindex="-1"></a>  <span class="kw">rewrite</span> [ctble_iff_equinum_set_nat]  <span class="co">--Goal : ∃ (I : Set Nat), I ∼ A</span></span>
 <span id="cb31-11"><a href="#cb31-11" aria-hidden="true" tabindex="-1"></a>  <span class="kw">set</span> R : Rel Nat U := invRel (restrict_to S A)</span>
-<span id="cb31-12"><a href="#cb31-12" aria-hidden="true" tabindex="-1"></a>  <span class="kw">set</span> I : Set Nat := { n : Nat | ∃ (x : U), R n x }</span>
+<span id="cb31-12"><a href="#cb31-12" aria-hidden="true" tabindex="-1"></a>  <span class="kw">set</span> I : Set Nat := {n : Nat | ∃ (x : U), R n x}</span>
 <span id="cb31-13"><a href="#cb31-13" aria-hidden="true" tabindex="-1"></a>  <span class="kw">apply</span> Exists.intro I</span>
 <span id="cb31-14"><a href="#cb31-14" aria-hidden="true" tabindex="-1"></a>  <span class="kw">define</span>        <span class="co">--Goal : ∃ (R : Rel Nat U), matching R I A</span></span>
 <span id="cb31-15"><a href="#cb31-15" aria-hidden="true" tabindex="-1"></a>  <span class="kw">apply</span> Exists.intro R</span>
@@ -1017,14 +1017,14 @@ $$
 <span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a>    (h1 : A ∼ B) (h2 : ctble A) : ctble B := <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="numex" data-arguments="6">
-<div class="sourceCode" id="cb39"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Exercise_8_1_1_b : denum { n : Int | even n } := <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb39"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Exercise_8_1_1_b : denum {n : Int | even n} := <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="mdsk">
 
 </div>
 <p>The next four exercises use the following definition:</p>
 <div class="sourceCode" id="cb40"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> Rel_image {U V : <span class="kw">Type</span>} (R : Rel U V) (A : Set U) : Set V :=</span>
-<span id="cb40-2"><a href="#cb40-2" aria-hidden="true" tabindex="-1"></a>  { y : V | ∃ x ∈ A, R x y }</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb40-2"><a href="#cb40-2" aria-hidden="true" tabindex="-1"></a>  {y : V | ∃ x ∈ A, R x y}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>Note that if <code>R</code> has type <code>Rel U V</code>, then <code>Rel_image R</code> has type <code>Set U → Set V</code>.</p>
 <div class="numex" data-arguments="7">
 <div class="sourceCode" id="cb41"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a><span class="kw">lemma</span> Rel_image_on_power_set {U V : <span class="kw">Type</span>} {R : Rel U V}</span>
@@ -1366,7 +1366,7 @@ $$
 <p>Next, we turn to our promise, at the end of Section 7.4, to prove Theorem 7.4.4 of <em>HTPI</em>, which says that the totient function <span class="math inline">\(\varphi\)</span> is multiplicative.</p>
 <p>To define the totient function in Lean, in Chapter 7 we defined <code>phi m</code> to be <code>num_rp_below m m</code>, where <code>num_rp_below m k</code> is the number of natural numbers less than <code>k</code> that are relatively prime to <code>m</code>. But in this chapter we have developed new methods for counting things. Our first task is to show that these new methods agree with the method used in Chapter 7.</p>
 <p>We have already remarked that the definition of <code>num_elts_below</code> in this chapter bears some resemblance to the definition of <code>num_rp_below</code> in Chapter 7. It should not be surprising, therefore, that these two counting methods give results that agree.</p>
-<div class="sourceCode" id="cb59"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb59-1"><a href="#cb59-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> Set_rp_below (m : Nat) : Set Nat := { n : Nat | rel_prime m n ∧ n &lt; m }</span>
+<div class="sourceCode" id="cb59"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb59-1"><a href="#cb59-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> Set_rp_below (m : Nat) : Set Nat := {n : Nat | rel_prime m n ∧ n &lt; m}</span>
 <span id="cb59-2"><a href="#cb59-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb59-3"><a href="#cb59-3" aria-hidden="true" tabindex="-1"></a><span class="kw">lemma</span> Set_rp_below_def (a m : Nat) :</span>
 <span id="cb59-4"><a href="#cb59-4" aria-hidden="true" tabindex="-1"></a>    a ∈ Set_rp_below m ↔ rel_prime m a ∧ a &lt; m := <span class="kw">by</span> <span class="kw">rfl</span></span>
@@ -1446,7 +1446,7 @@ $$
 <span id="cb60-48"><a href="#cb60-48" aria-hidden="true" tabindex="-1"></a>  <span class="kw">done</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>The next fact we need is part 1 of Theorem 8.1.2 in <em>HTPI</em>, which says that if <span class="math inline">\(A\)</span>, <span class="math inline">\(B\)</span>, <span class="math inline">\(C\)</span>, and <span class="math inline">\(D\)</span> are sets such that <span class="math inline">\(A \sim B\)</span> and <span class="math inline">\(C \sim D\)</span>, then <span class="math inline">\(A \times C \sim B \times D\)</span>. We would like to prove this in Lean, but how do we state the theorem? In Lean, Cartesian product is an operation on types, not sets. However, we can define a Cartesian product operation on sets:</p>
 <div class="sourceCode" id="cb61"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb61-1"><a href="#cb61-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> Set_prod {U V : <span class="kw">Type</span>} (A : Set U) (B : Set V) : Set (U × V) :=</span>
-<span id="cb61-2"><a href="#cb61-2" aria-hidden="true" tabindex="-1"></a>  { (a, b) : U × V | a ∈ A ∧ b ∈ B }</span>
+<span id="cb61-2"><a href="#cb61-2" aria-hidden="true" tabindex="-1"></a>  {(a, b) : U × V | a ∈ A ∧ b ∈ B}</span>
 <span id="cb61-3"><a href="#cb61-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb61-4"><a href="#cb61-4" aria-hidden="true" tabindex="-1"></a><span class="kw">notation</span>:75 A:75 <span class="st">" ×ₛ "</span> B:75 =&gt; Set_prod A B</span>
 <span id="cb61-5"><a href="#cb61-5" aria-hidden="true" tabindex="-1"></a></span>
@@ -1905,7 +1905,7 @@ $$
 <span id="cb91-30"><a href="#cb91-30" aria-hidden="true" tabindex="-1"></a>  <span class="kw">done</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>There is one more theorem in Section 8.2 of <em>HTPI</em> showing that a set-theoretic operation, when applied to a countable set, gives a countable result. Theorem 8.2.4 says that if a set <span class="math inline">\(A\)</span> is countable, then the set of all finite sequences of elements of <span class="math inline">\(A\)</span> is also countable. In <em>HTPI</em>, finite sequences are represented by functions, but in Lean it is easier to use lists. Thus, if <code>A</code> has type <code>Set U</code>, then we define a <em>finite sequence of elements of <code>A</code></em> to be a list <code>l : List U</code> with the property that every entry of <code>l</code> is an element of <code>A</code>. Letting <code>seq A</code> denote the set of all finite sequences of elements of <code>A</code>, our version of Theorem 8.2.4 will say that if <code>A</code> is countable, then so is <code>seq A</code>.</p>
 <div class="sourceCode" id="cb92"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb92-1"><a href="#cb92-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> seq {U : <span class="kw">Type</span>} (A : Set U) : Set (List U) :=</span>
-<span id="cb92-2"><a href="#cb92-2" aria-hidden="true" tabindex="-1"></a>  { l : List U | ∀ x ∈ l, x ∈ A }</span>
+<span id="cb92-2"><a href="#cb92-2" aria-hidden="true" tabindex="-1"></a>  {l : List U | ∀ x ∈ l, x ∈ A}</span>
 <span id="cb92-3"><a href="#cb92-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb92-4"><a href="#cb92-4" aria-hidden="true" tabindex="-1"></a><span class="kw">lemma</span> seq_def {U : <span class="kw">Type</span>} (A : Set U) (l : List U) :</span>
 <span id="cb92-5"><a href="#cb92-5" aria-hidden="true" tabindex="-1"></a>    l ∈ seq A ↔ ∀ x ∈ l, x ∈ A := <span class="kw">by</span> <span class="kw">rfl</span></span>
@@ -1914,7 +1914,7 @@ $$
 <span id="cb92-8"><a href="#cb92-8" aria-hidden="true" tabindex="-1"></a>    (h1 : ctble A) : ctble (seq A)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>Our proof of <code>Theorem_8_2_4</code> will use exactly the same strategy as the proof in <em>HTPI</em>. We begin by showing that, for every natural number <code>n</code>, the set of sequences of elements of <code>A</code> of length <code>n</code> is countable. The proof is by mathematical induction. The base case is easy, because the only sequence of length <code>0</code> is the <code>nil</code> list.</p>
 <div class="sourceCode" id="cb93"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb93-1"><a href="#cb93-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> seq_by_length {U : <span class="kw">Type</span>} (A : Set U) (n : Nat) : Set (List U) :=</span>
-<span id="cb93-2"><a href="#cb93-2" aria-hidden="true" tabindex="-1"></a>  { l : List U | l ∈ seq A ∧ l.length = n }</span>
+<span id="cb93-2"><a href="#cb93-2" aria-hidden="true" tabindex="-1"></a>  {l : List U | l ∈ seq A ∧ l.length = n}</span>
 <span id="cb93-3"><a href="#cb93-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb93-4"><a href="#cb93-4" aria-hidden="true" tabindex="-1"></a><span class="kw">lemma</span> sbl_base {U : <span class="kw">Type</span>} (A : Set U) : seq_by_length A 0 = {[]} := <span class="kw">by</span></span>
 <span id="cb93-5"><a href="#cb93-5" aria-hidden="true" tabindex="-1"></a>  <span class="kw">apply</span> Set.ext</span>
@@ -1986,7 +1986,7 @@ $$
 <span id="cb95-20"><a href="#cb95-20" aria-hidden="true" tabindex="-1"></a>  <span class="kw">done</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>Our next step is to show that the union of all of the sets <code>seq_by_length A n</code>, for <code>n : Nat</code>, is <code>seq A</code>.</p>
 <div class="sourceCode" id="cb96"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb96-1"><a href="#cb96-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> sbl_set {U : <span class="kw">Type</span>} (A : Set U) : Set (Set (List U)) :=</span>
-<span id="cb96-2"><a href="#cb96-2" aria-hidden="true" tabindex="-1"></a>  { S : Set (List U) | ∃ (n : Nat), seq_by_length A n = S }</span>
+<span id="cb96-2"><a href="#cb96-2" aria-hidden="true" tabindex="-1"></a>  {S : Set (List U) | ∃ (n : Nat), seq_by_length A n = S}</span>
 <span id="cb96-3"><a href="#cb96-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb96-4"><a href="#cb96-4" aria-hidden="true" tabindex="-1"></a><span class="kw">lemma</span> Lemma_8_2_4_3 {U : <span class="kw">Type</span>} (A : Set U) : ⋃₀ (sbl_set A) = seq A := <span class="kw">by</span></span>
 <span id="cb96-5"><a href="#cb96-5" aria-hidden="true" tabindex="-1"></a>  <span class="kw">apply</span> Set.ext</span>
@@ -2067,7 +2067,7 @@ $$
 <span id="cb99-13"><a href="#cb99-13" aria-hidden="true" tabindex="-1"></a>  <span class="kw">define</span> <span class="kw">at</span> h2</span>
 <span id="cb99-14"><a href="#cb99-14" aria-hidden="true" tabindex="-1"></a>  <span class="kw">have</span> h3 : unique_val_on_N R := h2.left</span>
 <span id="cb99-15"><a href="#cb99-15" aria-hidden="true" tabindex="-1"></a>  <span class="kw">have</span> h4 : nat_rel_onto R (𝒫 (Univ Nat)) := h2.right</span>
-<span id="cb99-16"><a href="#cb99-16" aria-hidden="true" tabindex="-1"></a>  <span class="kw">set</span> D : Set Nat := { n : Nat | ∃ (X : Set Nat), R n X ∧ n ∉ X }</span>
+<span id="cb99-16"><a href="#cb99-16" aria-hidden="true" tabindex="-1"></a>  <span class="kw">set</span> D : Set Nat := {n : Nat | ∃ (X : Set Nat), R n X ∧ n ∉ X}</span>
 <span id="cb99-17"><a href="#cb99-17" aria-hidden="true" tabindex="-1"></a>  <span class="kw">have</span> h5 : D ∈ 𝒫 (Univ Nat) := set_elt_powerset_univ D</span>
 <span id="cb99-18"><a href="#cb99-18" aria-hidden="true" tabindex="-1"></a>  <span class="kw">define</span> <span class="kw">at</span> h4</span>
 <span id="cb99-19"><a href="#cb99-19" aria-hidden="true" tabindex="-1"></a>  <span class="kw">obtain</span> (n : Nat) (h6 : R n D) <span class="kw">from</span> h4 h5</span>
@@ -2112,7 +2112,7 @@ $$
 <div class="numex" data-arguments="5">
 <div class="sourceCode" id="cb104"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb104-1"><a href="#cb104-1" aria-hidden="true" tabindex="-1"></a><span class="co">--Hint:  Use the previous exercise and Theorem_8_2_4</span></span>
 <span id="cb104-2"><a href="#cb104-2" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Like_Exercise_8_2_4 {U : <span class="kw">Type</span>} {A : Set U} (h : ctble A) :</span>
-<span id="cb104-3"><a href="#cb104-3" aria-hidden="true" tabindex="-1"></a>    ctble { X : Set U | X ⊆ A ∧ finite X } := <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb104-3"><a href="#cb104-3" aria-hidden="true" tabindex="-1"></a>    ctble {X : Set U | X ⊆ A ∧ finite X} := <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="numex" data-arguments="6">
 <div class="sourceCode" id="cb105"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb105-1"><a href="#cb105-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Exercise_8_2_6b (A B C : <span class="kw">Type</span>) :</span>
@@ -2124,7 +2124,7 @@ $$
 </div>
 <div class="numex" data-arguments="8">
 <div class="sourceCode" id="cb107"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb107-1"><a href="#cb107-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> unctbly_many_inf_set_nat :</span>
-<span id="cb107-2"><a href="#cb107-2" aria-hidden="true" tabindex="-1"></a>    ¬ctble { X : Set Nat | ¬finite X } := <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb107-2"><a href="#cb107-2" aria-hidden="true" tabindex="-1"></a>    ¬ctble {X : Set Nat | ¬finite X} := <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="numex" data-arguments="9">
 <div class="sourceCode" id="cb108"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb108-1"><a href="#cb108-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Exercise_8_2_8 {U : <span class="kw">Type</span>} {A B : Set U}</span>
@@ -2148,8 +2148,8 @@ $$
 <span id="cb111-2"><a href="#cb111-2" aria-hidden="true" tabindex="-1"></a>  {U V : <span class="kw">Type</span>} (R S : Rel U V) (X0 : Set U) (n : Nat) : Set U :=</span>
 <span id="cb111-3"><a href="#cb111-3" aria-hidden="true" tabindex="-1"></a>  <span class="kw">match</span> n <span class="kw">with</span></span>
 <span id="cb111-4"><a href="#cb111-4" aria-hidden="true" tabindex="-1"></a>    | 0 =&gt; X0</span>
-<span id="cb111-5"><a href="#cb111-5" aria-hidden="true" tabindex="-1"></a>    | m + 1 =&gt; { a : U | ∃ x ∈ rep_common_image R S X0 m,</span>
-<span id="cb111-6"><a href="#cb111-6" aria-hidden="true" tabindex="-1"></a>                          ∃ (y : V), R x y ∧ S a y }</span>
+<span id="cb111-5"><a href="#cb111-5" aria-hidden="true" tabindex="-1"></a>    | m + 1 =&gt; {a : U | ∃ x ∈ rep_common_image R S X0 m,</span>
+<span id="cb111-6"><a href="#cb111-6" aria-hidden="true" tabindex="-1"></a>                          ∃ (y : V), R x y ∧ S a y}</span>
 <span id="cb111-7"><a href="#cb111-7" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb111-8"><a href="#cb111-8" aria-hidden="true" tabindex="-1"></a><span class="kw">lemma</span> rep_common_image_step</span>
 <span id="cb111-9"><a href="#cb111-9" aria-hidden="true" tabindex="-1"></a>    {U V : <span class="kw">Type</span>} (R S : Rel U V) (X0 : Set U) (m : Nat) (a : U) :</span>
@@ -2157,7 +2157,7 @@ $$
 <span id="cb111-11"><a href="#cb111-11" aria-hidden="true" tabindex="-1"></a>    ∃ x ∈ rep_common_image R S X0 m, ∃ (y : V), R x y ∧ S a y := <span class="kw">by</span> <span class="kw">rfl</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>The sets <code>rep_common_image R S X0 n</code> correspond to the sets <span class="math inline">\(A_n\)</span> in <em>HTPI</em>. As in <em>HTPI</em>, to define <code>X</code> we take the union of these sets.</p>
 <div class="sourceCode" id="cb112"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb112-1"><a href="#cb112-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> cum_rep_image {U V : <span class="kw">Type</span>} (R S : Rel U V) (X0 : Set U) : Set U :=</span>
-<span id="cb112-2"><a href="#cb112-2" aria-hidden="true" tabindex="-1"></a>  { a : U | ∃ (n : Nat), a ∈ rep_common_image R S X0 n }</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb112-2"><a href="#cb112-2" aria-hidden="true" tabindex="-1"></a>  {a : U | ∃ (n : Nat), a ∈ rep_common_image R S X0 n}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>In our proof of the Cantor–Schröder–Bernstein theorem, we will define <code>X</code> to be the set <code>cum_rep_image R S X0</code>, and therefore the matching <code>T</code> will be the relation <code>csb_match R S X0</code> defined as follows:</p>
 <div class="sourceCode" id="cb113"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb113-1"><a href="#cb113-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> csb_match {U V : <span class="kw">Type</span>} (R S : Rel U V) (X0 : Set U)</span>
 <span id="cb113-2"><a href="#cb113-2" aria-hidden="true" tabindex="-1"></a>  (x : U) (y : V) : <span class="kw">Prop</span> := x ∈ cum_rep_image R S X0 ∧ R x y ∨</span>
@@ -2366,26 +2366,26 @@ $$
 </div>
 <div class="numex" data-arguments="2">
 <div class="sourceCode" id="cb118"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb118-1"><a href="#cb118-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> intervals_equinum :</span>
-<span id="cb118-2"><a href="#cb118-2" aria-hidden="true" tabindex="-1"></a>    { x : Real | 0 &lt; x ∧ x &lt; 1 } ∼ { x : Real | 0 &lt; x ∧ x ≤ 1 } := <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb118-2"><a href="#cb118-2" aria-hidden="true" tabindex="-1"></a>    {x : Real | 0 &lt; x ∧ x &lt; 1} ∼ {x : Real | 0 &lt; x ∧ x ≤ 1} := <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="mdsk">
 
 </div>
 <p>The next six exercises lead up to a proof that the set of all equivalence relations on the natural numbers is equinumerous with the power set of the natural numbers. These exercises use the following definitions:</p>
 <div class="sourceCode" id="cb119"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb119-1"><a href="#cb119-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> EqRel (A : <span class="kw">Type</span>) : Set (BinRel A) :=</span>
-<span id="cb119-2"><a href="#cb119-2" aria-hidden="true" tabindex="-1"></a>  { R : BinRel A | equiv_rel R }</span>
+<span id="cb119-2"><a href="#cb119-2" aria-hidden="true" tabindex="-1"></a>  {R : BinRel A | equiv_rel R}</span>
 <span id="cb119-3"><a href="#cb119-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb119-4"><a href="#cb119-4" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> Part (A : <span class="kw">Type</span>) : Set (Set (Set A)) :=</span>
-<span id="cb119-5"><a href="#cb119-5" aria-hidden="true" tabindex="-1"></a>  { P : Set (Set A) | partition P }</span>
+<span id="cb119-5"><a href="#cb119-5" aria-hidden="true" tabindex="-1"></a>  {P : Set (Set A) | partition P}</span>
 <span id="cb119-6"><a href="#cb119-6" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb119-7"><a href="#cb119-7" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> EqRelExt (A : <span class="kw">Type</span>) : Set (Set (A × A)) :=</span>
-<span id="cb119-8"><a href="#cb119-8" aria-hidden="true" tabindex="-1"></a>  { E : Set (A × A) | ∃ (R : BinRel A), equiv_rel R ∧ extension R = E }</span>
+<span id="cb119-8"><a href="#cb119-8" aria-hidden="true" tabindex="-1"></a>  {E : Set (A × A) | ∃ (R : BinRel A), equiv_rel R ∧ extension R = E}</span>
 <span id="cb119-9"><a href="#cb119-9" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb119-10"><a href="#cb119-10" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> shift_and_zero (X : Set Nat) : Set Nat :=</span>
-<span id="cb119-11"><a href="#cb119-11" aria-hidden="true" tabindex="-1"></a>  { x + 2 | x ∈ X } ∪ {0}</span>
+<span id="cb119-11"><a href="#cb119-11" aria-hidden="true" tabindex="-1"></a>  {x + 2 | x ∈ X} ∪ {0}</span>
 <span id="cb119-12"><a href="#cb119-12" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb119-13"><a href="#cb119-13" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> saz_pair (X : Set Nat) : Set (Set Nat) :=</span>
-<span id="cb119-14"><a href="#cb119-14" aria-hidden="true" tabindex="-1"></a>  { shift_and_zero X, (Univ Nat) \ (shift_and_zero X) }</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb119-14"><a href="#cb119-14" aria-hidden="true" tabindex="-1"></a>  {shift_and_zero X, (Univ Nat) \ (shift_and_zero X)}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="numex" data-arguments="3">
 <div class="sourceCode" id="cb120"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb120-1"><a href="#cb120-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> EqRel_equinum_Part (A : <span class="kw">Type</span>) : EqRel A ∼ Part A := <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>

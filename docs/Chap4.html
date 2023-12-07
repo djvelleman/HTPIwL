@@ -287,17 +287,17 @@ $$
 <p>There are several examples in <em>HTPI</em> that illustrate these definitions. We will focus here on seeing how to work with these concepts in Lean.</p>
 <p>We can write corresponding definitions in Lean as follows:</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> Dom {A B : <span class="kw">Type</span>} (R : Set (A × B)) : Set A :=</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>  { a : A | ∃ (b : B), (a, b) ∈ R }</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>  {a : A | ∃ (b : B), (a, b) ∈ R}</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> Ran {A B : <span class="kw">Type</span>} (R : Set (A × B)) : Set B :=</span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>  { b : B | ∃ (a : A), (a, b) ∈ R }</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>  {b : B | ∃ (a : A), (a, b) ∈ R}</span>
 <span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> inv {A B : <span class="kw">Type</span>} (R : Set (A × B)) : Set (B × A) :=</span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>  { (b, a) : B × A | (a, b) ∈ R }</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>  {(b, a) : B × A | (a, b) ∈ R}</span>
 <span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> comp {A B C : <span class="kw">Type</span>}</span>
 <span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>    (S : Set (B × C)) (R : Set (A × B)) : Set (A × C) :=</span>
-<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>  { (a, c) : A × C | ∃ (x : B), (a, x) ∈ R ∧ (x, c) ∈ S }</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>  {(a, c) : A × C | ∃ (x : B), (a, x) ∈ R ∧ (x, c) ∈ S}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>Definitions in Lean are introduced with the keyword <code>def</code>. In the definition of <code>Dom</code>, we have declared that <code>A</code> and <code>B</code> are implicit arguments and <code>R</code> is an explicit argument. That means that, in a Lean file containing these definitions, if we have <code>R : Set (A × B)</code>, then we can just write <code>Dom R</code> for the domain of <code>R</code>, and Lean will figure out for itself what <code>A</code> and <code>B</code> are. After the list of arguments there is a colon and then the type of <code>Dom R</code>, which is <code>Set A</code>. This is followed by <code>:=</code> and then the definition of <code>Dom R</code>. The definition says that <code>Dom R</code> is the set of all objects <code>a</code> of type <code>A</code> such that there is some <code>b</code> of type <code>B</code> with <code>(a, b) ∈ R</code>. This is a direct translation, into Lean’s type-theory language, of the first part of Definition 4.2.3. The other three definitions are similar; they define <code>Ran R</code> to be the range of <code>R</code>, <code>inv R</code> to be the inverse of <code>R</code>, and <code>comp S R</code> to be the composition of <code>S</code> and <code>R</code>.</p>
 <p>Here is the main theorem about these concepts, as stated in <em>HTPI</em> (<em>HTPI</em> p.&nbsp;187):</p>
 <div class="nthm" data-arguments="Theorem 4.2.5">
@@ -472,7 +472,7 @@ $$
 <p>Notice that in <em>HTPI</em>, the same variable <span class="math inline">\(R\)</span> is used in both the notation <span class="math inline">\(aRb\)</span> and <span class="math inline">\((a, b) \in R\)</span>. But in Lean, the notation <code>R a b</code> is used when <code>R</code> has type <code>Rel A B</code>, and the notation <code>(a, b) ∈ R</code> is used when <code>R</code> has type <code>Set (A × B)</code>. The types <code>Rel A B</code> and <code>Set (A × B)</code> are different, so we cannot use the same variable <code>R</code> in the two notations. However, there is a correspondence between the two types. Suppose <code>R</code> has type <code>Rel A B</code>. If we let <code>R'</code> denote the set of all ordered pairs <code>(a, b) : A × B</code> such that the proposition <code>R a b</code> is true, then <code>R'</code> has type <code>Set (A × B)</code>. And there is then a simple relationship between <code>R</code> and <code>R'</code>: for any objects <code>a : A</code> and <code>b : B</code>, the propositions <code>R a b</code> and <code>(a, b) ∈ R'</code> are equivalent. For our work in Lean, we will say that <code>R</code> is a <em>relation</em> from <code>A</code> to <code>B</code>, and <code>R'</code> is the <em>extension</em> of <code>R</code>.</p>
 <p>We can define the extension of a relation, and state the correspondence between a relation and its extension, in Lean as follows:</p>
 <div class="sourceCode" id="cb15"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> extension {A B : <span class="kw">Type</span>} (R : Rel A B) : Set (A × B) :=</span>
-<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>  { (a, b) : A × B | R a b }</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>  {(a, b) : A × B | R a b}</span>
 <span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> ext_def {A B : <span class="kw">Type</span>} (R : Rel A B) (a : A) (b : B) :</span>
 <span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>    (a, b) ∈ extension R ↔ R a b := <span class="kw">by</span> <span class="kw">rfl</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -522,7 +522,7 @@ $$
 <p>We’ll leave the proofs of the other two statements in Theorem 4.3.4 as exercises for you.</p>
 <p>For any types <code>A</code> and <code>B</code>, if we want to define a particular relation <code>R</code> from <code>A</code> to <code>B</code>, we can do it by specifying, for any <code>a : A</code> and <code>b : B</code>, what proposition is represented by <code>R a b</code>. For example, for any type <code>A</code>, we can define a relation <code>elementhood A</code> from <code>A</code> to <code>Set A</code> as follows:</p>
 <div class="sourceCode" id="cb18"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> elementhood (A : <span class="kw">Type</span>) (a : A) (X : Set A) : <span class="kw">Prop</span> := a ∈ X</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>This definition says that if <code>A</code> is a type, <code>a</code> has type <code>A</code>, and <code>X</code> has type <code>Set A</code>, then <code>elementhood A a X</code> is the proposition <code>a ∈ X</code>. Thus, if <code>elementhood A</code> is followed by objects of type <code>A</code> and <code>Set A</code>, the result is a proposition, so <code>elementhood A</code> is functioning as a relation from <code>A</code> to <code>Set A</code>. For example, <code>elementhood Int</code> is a relation from integers to sets of integers, and <code>elementhood Int 6 { n : Int | ∃ (k : Int), n = 2 * k }</code> is the (true) statement that <code>6</code> is an element of the set of even integers. (You are asked to prove it in the exercises.)</p>
+<p>This definition says that if <code>A</code> is a type, <code>a</code> has type <code>A</code>, and <code>X</code> has type <code>Set A</code>, then <code>elementhood A a X</code> is the proposition <code>a ∈ X</code>. Thus, if <code>elementhood A</code> is followed by objects of type <code>A</code> and <code>Set A</code>, the result is a proposition, so <code>elementhood A</code> is functioning as a relation from <code>A</code> to <code>Set A</code>. For example, <code>elementhood Int</code> is a relation from integers to sets of integers, and <code>elementhood Int 6 {n : Int | ∃ (k : Int), n = 2 * k}</code> is the (true) statement that <code>6</code> is an element of the set of even integers. (You are asked to prove it in the exercises.)</p>
 <p>We can also use this method to define an operation that reverses the process of forming the extension of a relation. If <code>R</code> has type <code>Set (A × B)</code>, then we define <code>RelFromExt R</code> to be the relation whose extension is <code>R</code>. A few simple theorems, which follow directly from the definition, clarify the meaning of <code>RelFromExt R</code>.</p>
 <div class="sourceCode" id="cb19"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> RelFromExt {A B : <span class="kw">Type</span>}</span>
 <span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>    (R : Set (A × B)) (a : A) (b : B) : <span class="kw">Prop</span> := (a, b) ∈ R</span>
@@ -540,11 +540,11 @@ $$
 <h3 class="anchored" data-anchor-id="exercises-1">Exercises</h3>
 <div class="numex" data-arguments="1">
 <div class="sourceCode" id="cb20"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="kw">example</span> :</span>
-<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>    elementhood Int 6 { n : Int | ∃ (k : Int), n = 2 * k } := <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>    elementhood Int 6 {n : Int | ∃ (k : Int), n = 2 * k} := <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="numex" data-arguments="2">
 <div class="sourceCode" id="cb21"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Theorem_4_3_4_1 {A : <span class="kw">Type</span>} (R : BinRel A) :</span>
-<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>    reflexive R ↔ { (x, y) : A × A | x = y } ⊆ extension R := <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>    reflexive R ↔ {(x, y) : A × A | x = y} ⊆ extension R := <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="numex" data-arguments="3">
 <div class="sourceCode" id="cb22"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Theorem_4_3_4_3 {A : <span class="kw">Type</span>} (R : BinRel A) :</span>
@@ -714,7 +714,7 @@ $$
 <span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a>  ∀ x ∈ B, R x a</span>
 <span id="cb37-3"><a href="#cb37-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb37-4"><a href="#cb37-4" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> lub {A : <span class="kw">Type</span>} (R : BinRel A) (a : A) (B : Set A) : <span class="kw">Prop</span> :=</span>
-<span id="cb37-5"><a href="#cb37-5" aria-hidden="true" tabindex="-1"></a>  smallestElt R a { c : A | upperBd R c B }</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb37-5"><a href="#cb37-5" aria-hidden="true" tabindex="-1"></a>  smallestElt R a {c : A | upperBd R c B}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>As usual, we will let you consult <em>HTPI</em> for examples of these concepts. But we will mention one example: If <code>A</code> is a type and <code>F</code> has type <code>Set (Set A)</code>—that is, <code>F</code> is a set whose elements are sets of objects of type <code>A</code>—then the least upper bound of <code>F</code>, with respect to the partial order <code>sub A</code>, is <code>⋃₀ F</code>. We leave the proof of this fact as an exercise.</p>
 <section id="exercises-2" class="level3">
 <h3 class="anchored" data-anchor-id="exercises-2">Exercises</h3>
@@ -775,7 +775,7 @@ $$
 <div class="numex" data-arguments="10">
 <div class="sourceCode" id="cb47"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Exercise_4_4_24 {A : <span class="kw">Type</span>} (R : Set (A × A)) :</span>
 <span id="cb47-2"><a href="#cb47-2" aria-hidden="true" tabindex="-1"></a>    smallestElt (sub (A × A)) (R ∪ (inv R))</span>
-<span id="cb47-3"><a href="#cb47-3" aria-hidden="true" tabindex="-1"></a>    { T : Set (A × A) | R ⊆ T ∧ symmetric (RelFromExt T) } := <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb47-3"><a href="#cb47-3" aria-hidden="true" tabindex="-1"></a>    {T : Set (A × A) | R ⊆ T ∧ symmetric (RelFromExt T)} := <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 </section>
@@ -791,11 +791,11 @@ A/R = \{[x]_R \mid x \in A\}.
 <span id="cb48-2"><a href="#cb48-2" aria-hidden="true" tabindex="-1"></a>  reflexive R ∧ symmetric R ∧ transitive R</span>
 <span id="cb48-3"><a href="#cb48-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb48-4"><a href="#cb48-4" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> equivClass {A : <span class="kw">Type</span>} (R : BinRel A) (x : A) : Set A :=</span>
-<span id="cb48-5"><a href="#cb48-5" aria-hidden="true" tabindex="-1"></a>  { y : A | R y x }</span>
+<span id="cb48-5"><a href="#cb48-5" aria-hidden="true" tabindex="-1"></a>  {y : A | R y x}</span>
 <span id="cb48-6"><a href="#cb48-6" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb48-7"><a href="#cb48-7" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> mod (A : <span class="kw">Type</span>) (R : BinRel A) : Set (Set A) :=</span>
-<span id="cb48-8"><a href="#cb48-8" aria-hidden="true" tabindex="-1"></a>  { equivClass R x | x : A }</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>Thus, <code>equiv_rel R</code> is the proposition that <code>R</code> is an equivalence relation, <code>equivClass R x</code> is the equivalence class of <code>x</code> with respect to <code>R</code>, and <code>mod A R</code> is <code>A</code> mod <code>R</code>. Note that <code>equivClass R x</code> has type <code>Set A</code>, while <code>mod A R</code> has type <code>Set (Set A)</code>. The definition of <code>mod A R</code> is shorthand for <code>{ X : Set A | ∃ (x : A), equivClass R x = X }</code>.</p>
+<span id="cb48-8"><a href="#cb48-8" aria-hidden="true" tabindex="-1"></a>  {equivClass R x | x : A}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Thus, <code>equiv_rel R</code> is the proposition that <code>R</code> is an equivalence relation, <code>equivClass R x</code> is the equivalence class of <code>x</code> with respect to <code>R</code>, and <code>mod A R</code> is <code>A</code> mod <code>R</code>. Note that <code>equivClass R x</code> has type <code>Set A</code>, while <code>mod A R</code> has type <code>Set (Set A)</code>. The definition of <code>mod A R</code> is shorthand for <code>{X : Set A | ∃ (x : A), equivClass R x = X}</code>.</p>
 <p><em>HTPI</em> gives several examples of equivalence relations, and these examples illustrate that equivalence classes always have certain properties. The most important of these are that each equivalence class is a nonempty set, the equivalence classes do not overlap, and their union is all of <code>A</code>. We say that the equivalence classes form a <em>partition</em> of <code>A</code>. To state and prove these properties in Lean we will need some definitions. We start with these:</p>
 <div class="sourceCode" id="cb49"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb49-1"><a href="#cb49-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> empty {A : <span class="kw">Type</span>} (X : Set A) : <span class="kw">Prop</span> := ¬∃ (x : A), x ∈ X </span>
 <span id="cb49-2"><a href="#cb49-2" aria-hidden="true" tabindex="-1"></a></span>
@@ -1000,7 +1000,7 @@ A/R = \{[x]_R \mid x \in A\}.
 </div>
 <p>The next three exercises use the following definitions:</p>
 <div class="sourceCode" id="cb68"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb68-1"><a href="#cb68-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> dot {A : <span class="kw">Type</span>} (F G : Set (Set A)) : Set (Set A) :=</span>
-<span id="cb68-2"><a href="#cb68-2" aria-hidden="true" tabindex="-1"></a>  { Z : Set A | ¬empty Z ∧ ∃ X ∈ F, ∃ Y ∈ G, Z = X ∩ Y }</span>
+<span id="cb68-2"><a href="#cb68-2" aria-hidden="true" tabindex="-1"></a>  {Z : Set A | ¬empty Z ∧ ∃ X ∈ F, ∃ Y ∈ G, Z = X ∩ Y}</span>
 <span id="cb68-3"><a href="#cb68-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb68-4"><a href="#cb68-4" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> conj {A : <span class="kw">Type</span>} (R S : BinRel A) (x y : A) : <span class="kw">Prop</span> :=</span>
 <span id="cb68-5"><a href="#cb68-5" aria-hidden="true" tabindex="-1"></a>  R x y ∧ S x y</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>

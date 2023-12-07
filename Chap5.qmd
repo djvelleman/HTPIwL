@@ -10,7 +10,7 @@ We will take a similar approach to functions in this chapter.  For any types `A`
 
 ```lean
 def graph {A B : Type} (f : A → B) : Set (A × B) :=
-  { (a, b) : A × B | f a = b }
+  {(a, b) : A × B | f a = b}
 
 theorem graph_def {A B : Type} (f : A → B) (a : A) (b : B) :
     (a, b) ∈ graph f ↔ f a = b := by rfl
@@ -63,7 +63,7 @@ example {A B : Type} (f g : A → B) :
   done
 ```
 
-The axiom of extensionality for sets says that a set is completely determined by its elements.  This is what justifies our usual method of defining a set: we specify what its elements are, using notation like `{0, 1, 2}` or `{ x : Nat | x < 3 }`.  Similarly, the axiom of extensionality for functions says that a function is completely determined by its values, and therefore we can define a function by specifying its values.  For instance, we can define a function from `Nat` to `Nat` by specifying, for any `n : Nat`, the result of applying the function to `n`.  As an example of this, we could define the "squaring function" from `Nat` to `Nat` to be the function that, when applied to any `n : Nat`, produces the result `n ^ 2`.  Here are two ways to define this function in Lean:
+The axiom of extensionality for sets says that a set is completely determined by its elements.  This is what justifies our usual method of defining a set: we specify what its elements are, using notation like `{0, 1, 2}` or `{x : Nat | x < 3}`.  Similarly, the axiom of extensionality for functions says that a function is completely determined by its values, and therefore we can define a function by specifying its values.  For instance, we can define a function from `Nat` to `Nat` by specifying, for any `n : Nat`, the result of applying the function to `n`.  As an example of this, we could define the "squaring function" from `Nat` to `Nat` to be the function that, when applied to any `n : Nat`, produces the result `n ^ 2`.  Here are two ways to define this function in Lean:
 
 ```lean
 def square1 (n : Nat) : Nat := n ^ 2
@@ -325,7 +325,7 @@ theorem Exercise_5_2_11b {A B C : Type} (f: A → B) (g : B → C) :
 ::: {.numex arguments="5"}
 ```lean
 theorem Exercise_5_2_12 {A B : Type} (f : A → B) (g : B → Set A)
-    (h : ∀ (b : B), g b = { a : A | f a = b }) :
+    (h : ∀ (b : B), g b = {a : A | f a = b}) :
     onto f → one_to_one g := sorry
 ```
 :::
@@ -577,11 +577,11 @@ Suppose we have `f : A → A` and `C : Set A`.  We say that `C` is *closed* unde
 def closed {A : Type} (f : A → A) (C : Set A) : Prop := ∀ x ∈ C, f x ∈ C
 ```
 
-According to this definition, `closed f C` means that `C` is closed under `f`.  Sometimes, if we have a set `B` of type `Set A` that is not closed under `f`, we are interested in adding more elements to the set to make it closed.  The *closure* of `B` under `f` is the smallest set containing `B` that is closed under `f`.  That is, it is the smallest element of `{ D : Set A | B ⊆ D ∧ closed f D }`, where we use the subset partial ordering on `Set A` to determine which element is smallest.  We will write `closure f B C` to mean that the closure of `B` under `f` is `C`.  We can define this as follows:
+According to this definition, `closed f C` means that `C` is closed under `f`.  Sometimes, if we have a set `B` of type `Set A` that is not closed under `f`, we are interested in adding more elements to the set to make it closed.  The *closure* of `B` under `f` is the smallest set containing `B` that is closed under `f`.  That is, it is the smallest element of `{D : Set A | B ⊆ D ∧ closed f D}`, where we use the subset partial ordering on `Set A` to determine which element is smallest.  We will write `closure f B C` to mean that the closure of `B` under `f` is `C`.  We can define this as follows:
 
 ```lean
 def closure {A : Type} (f : A → A) (B C : Set A) : Prop :=
-  smallestElt (sub A) C { D : Set A | B ⊆ D ∧ closed f D }
+  smallestElt (sub A) C {D : Set A | B ⊆ D ∧ closed f D}
 ```
 
 We know that smallest elements, when they exist, are unique, so it makes sense to talk about *the* closure of `B` under `f`.  But not every set has a smallest element.  Does every set have a closure?  Theorem 5.4.5 in *HTPI* says that the answer is yes.  The idea behind the proof is that, for any family of sets `F`, if `F` has a smallest element under the subset partial order, then that smallest element is equal to `⋂₀ F`.  (We'll ask you to prove this in the exercises.)
@@ -589,7 +589,7 @@ We know that smallest elements, when they exist, are unique, so it makes sense t
 ```lean
 theorem Theorem_5_4_5 {A : Type} (f : A → A) (B : Set A) :
     ∃ (C : Set A), closure f B C := by
-  set F : Set (Set A) := { D : Set A | B ⊆ D ∧ closed f D }
+  set F : Set (Set A) := {D : Set A | B ⊆ D ∧ closed f D}
   set C : Set A := ⋂₀ F
   apply Exists.intro C    --Goal : closure f B C
   define                  --Goal : C ∈ F ∧ ∀ x ∈ F, C ⊆ x
@@ -668,7 +668,7 @@ def closed2 {A : Type} (f : A → A → A) (C : Set A) : Prop :=
   ∀ x ∈ C, ∀ y ∈ C, f x y ∈ C
 
 def closure2 {A : Type} (f : A → A → A) (B C : Set A) : Prop := 
-  smallestElt (sub A) C { D : Set A | B ⊆ D ∧ closed2 f D }
+  smallestElt (sub A) C {D : Set A | B ⊆ D ∧ closed2 f D}
 ```
 
 We will leave it as an exercise for you to prove that closures under functions of two variables also exist.
@@ -687,10 +687,10 @@ example {A : Type} (F : Set (Set A)) (B : Set A) :
 ```
 :::
 
-2\. If `B` has type `Set A`, then `complement B` is the set `{ a : A | a ∉ B }`.  Thus, for any `a` of type `A`, `a ∈ complement B` if and only if `a ∉ B`:
+2\. If `B` has type `Set A`, then `complement B` is the set `{a : A | a ∉ B}`.  Thus, for any `a` of type `A`, `a ∈ complement B` if and only if `a ∉ B`:
 
 ```lean
-def complement {A : Type} (B : Set A) : Set A := { a : A | a ∉ B }
+def complement {A : Type} (B : Set A) : Set A := {a : A | a ∉ B}
 ```
 
 Use this definition to prove the following theorem:
@@ -737,7 +737,7 @@ def closed_family {A : Type} (F : Set (A → A)) (C : Set A) : Prop :=
   ∀ f ∈ F, closed f C
 
 def closure_family {A : Type} (F : Set (A → A)) (B C : Set A) : Prop :=
-  smallestElt (sub A) C { D : Set A | B ⊆ D ∧ closed_family F D }
+  smallestElt (sub A) C {D : Set A | B ⊆ D ∧ closed_family F D}
 ```
 
 Prove that the closure of a set under a family of functions always exists:
@@ -762,10 +762,10 @@ Here are definitions of these concepts in Lean:
 
 ```lean
 def image {A B : Type} (f : A → B) (X : Set A) : Set B :=
-  { f x | x ∈ X }
+  {f x | x ∈ X}
 
 def inverse_image {A B : Type} (f : A → B) (Y : Set B) : Set A :=
-  { a : A | f a ∈ Y }
+  {a : A | f a ∈ Y}
 
 --The following theorems illustrate the meaning of these definitions:
 theorem image_def {A B : Type} (f : A → B) (X : Set A) (b : B) :

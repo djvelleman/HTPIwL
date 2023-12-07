@@ -802,7 +802,7 @@ theorem Like_Exercise_6_2_16 {A : Type} (f : A → A)
 ```lean
 --Hint:  Use Exercise_6_2_2.
 theorem Example_6_2_2 {A : Type} (R : BinRel A)
-    (h1 : ∃ (n : Nat), numElts { x : A | x = x } n)
+    (h1 : ∃ (n : Nat), numElts {x : A | x = x} n)
     (h2 : partial_order R) : ∃ (T : BinRel A),
       total_order T ∧ ∀ (x y : A), R x y → T x y := sorry
 ```
@@ -1545,7 +1545,7 @@ We proceed by contradiction.  If this statement were false, then the set
 
 ::: {.quote}
 ```
-S = { q : Nat | ∃ (p : Nat), p * p = 2 * (q * q) ∧ q ≠ 0 }
+S = {q : Nat | ∃ (p : Nat), p * p = 2 * (q * q) ∧ q ≠ 0}
 ```
 :::
 
@@ -1555,7 +1555,7 @@ would be nonempty, and therefore, by the well ordering principle, it would have 
 theorem Theorem_6_4_5 :
     ¬∃ (q p : Nat), p * p = 2 * (q * q) ∧ q ≠ 0 := by
   set S : Set Nat :=
-    { q : Nat | ∃ (p : Nat), p * p = 2 * (q * q) ∧ q ≠ 0 }
+    {q : Nat | ∃ (p : Nat), p * p = 2 * (q * q) ∧ q ≠ 0}
   by_contra h1
   have h2 : ∃ (q : Nat), q ∈ S := h1
   have h3 : ∃ q ∈ S, ∀ r ∈ S, q ≤ r := well_ord_princ S h2
@@ -1722,7 +1722,7 @@ We will prove that the closure of `B` under `f` is the union of the sets `rep_im
 
 ```lean
 def cumul_image {A : Type} (f : A → A) (B : Set A) : Set A :=
-  { x : A | ∃ (n : Nat), x ∈ rep_image f n B }
+  {x : A | ∃ (n : Nat), x ∈ rep_image f n B}
 ```
 
 To prove that `cumul_image f B` is the closure of `B` under `f`, we first prove a lemma saying that if `B ⊆ D` and `D` is closed under `f`, then for every natural number `n`, `rep_image f n B ⊆ D`.  We prove it by induction.
@@ -1759,7 +1759,7 @@ theorem Theorem_6_5_1 {A : Type} (f : A → A) (B : Set A) :
     closure f B (cumul_image f B) := by
   define
   apply And.intro
-  · -- Proof that cumul_image f B ∈ { D : Set A | B ⊆ D ∧ closed f D }
+  · -- Proof that cumul_image f B ∈ {D : Set A | B ⊆ D ∧ closed f D}
     define  --Goal : B ⊆ cumul_image f B ∧ closed f (cumul_image f B)
     apply And.intro
     · -- Proof that B ⊆ cumul_image f B
@@ -1787,7 +1787,7 @@ theorem Theorem_6_5_1 {A : Type} (f : A → A) (B : Set A) :
     done
   · -- Proof that cumul_image f B is smallest
     fix D : Set A
-    assume h1 : D ∈ { D : Set A | B ⊆ D ∧ closed f D }
+    assume h1 : D ∈ {D : Set A | B ⊆ D ∧ closed f D}
     define at h1  --h1 : B ⊆ D ∧ closed f D
     define   --Goal : ∀ ⦃a : A⦄, a ∈ cumul_image f B → a ∈ D
     fix x : A
@@ -1810,7 +1810,7 @@ def closed_family {A : Type} (F : Set (A → A)) (C : Set A) : Prop :=
   ∀ f ∈ F, closed f C
 
 def closure_family {A : Type} (F : Set (A → A)) (B C : Set A) : Prop :=
-  smallestElt (sub A) C { D : Set A | B ⊆ D ∧ closed_family F D }
+  smallestElt (sub A) C {D : Set A | B ⊆ D ∧ closed_family F D}
 ```
 
 These definitions say that a set is closed under a family of functions if it is closed under all of the functions in the family, and the closure of a set `B` under a family of functions is the smallest set containing `B` that is closed under the family.
@@ -1822,11 +1822,11 @@ def rep_image_family {A : Type}
     (F : Set (A → A)) (n : Nat) (B : Set A) : Set A :=
   match n with
     | 0 => B
-    | k + 1 => { x : A | ∃ f ∈ F, x ∈ image f (rep_image_family F k B) }
+    | k + 1 => {x : A | ∃ f ∈ F, x ∈ image f (rep_image_family F k B)}
 
 def cumul_image_family {A : Type}
     (F : Set (A → A)) (B : Set A) : Set A :=
-  { x : A | ∃ (n : Nat), x ∈ rep_image_family F n B }
+  {x : A | ∃ (n : Nat), x ∈ rep_image_family F n B}
 ```
 
 The following theorems establish that if `F : Set (A → A)` and `B : Set A`, then `cumul_image_family F B` is the closure of `B` under `F`.  The first two are proven by `rfl`; the other two are for you to prove.
@@ -1838,7 +1838,7 @@ theorem rep_image_family_base {A : Type}
 theorem rep_image_family_step {A : Type}
     (F : Set (A → A)) (n : Nat) (B : Set A) :
     rep_image_family F (n + 1) B =
-    { x : A | ∃ f ∈ F, x ∈ image f (rep_image_family F n B) } := by rfl
+    {x : A | ∃ f ∈ F, x ∈ image f (rep_image_family F n B)} := by rfl
 
 lemma rep_image_family_sub_closed {A : Type}
     (F : Set (A → A)) (B D : Set A)
@@ -1859,14 +1859,14 @@ def closed2 {A : Type} (f : A → A → A) (C : Set A) : Prop :=
   ∀ x ∈ C, ∀ y ∈ C, f x y ∈ C
 
 def closure2 {A : Type} (f : A → A → A) (B C : Set A) : Prop := 
-  smallestElt (sub A) C { D : Set A | B ⊆ D ∧ closed2 f D }
+  smallestElt (sub A) C {D : Set A | B ⊆ D ∧ closed2 f D}
 ```
 
 They also use the following definition, which extends the idea of the image of a set under a function to functions of two variables:
 
 ```lean
 def image2 {A : Type} (f : A → A → A) (B : Set A) : Set A :=
-  { z : A | ∃ (x y : A), x ∈ B ∧ y ∈ B ∧ z = f x y }
+  {z : A | ∃ (x y : A), x ∈ B ∧ y ∈ B ∧ z = f x y}
 ```
 
 2\. A natural way to try to find the closure of a set under a function of two variables would be to use the following definitions and theorems:
@@ -1886,7 +1886,7 @@ theorem rep_image2_step {A : Type}
     rep_image2 f (n + 1) B = image2 f (rep_image2 f n B) := by rfl
 
 def cumul_image2 {A : Type} (f : A → A → A) (B : Set A) : Set A :=
-  { x : A | ∃ (n : Nat), x ∈ rep_image2 f n B }
+  {x : A | ∃ (n : Nat), x ∈ rep_image2 f n B}
 ```
 
 We could now try to prove that if `f : A → A → A` and `B : Set A`, then `cumul_image2 f B` is the closure of `B` under `f`.  However, this approach doesn't work, because `cumul_image2 f B` might not be closed under `f`.
@@ -1923,7 +1923,7 @@ theorem rep_un_image2_step {A : Type}
 
 def cumul_un_image2 {A : Type}
     (f : A → A → A) (B : Set A) : Set A :=
-  { x : A | ∃ (n : Nat), x ∈ rep_un_image2 f n B }
+  {x : A | ∃ (n : Nat), x ∈ rep_un_image2 f n B}
 ```
 
 Now prove that if `f : A → A → A` and `B : Set A`, then `cumul_un_image2 f B` is the closure of `B` under `f` by completing the following proofs:
@@ -1953,7 +1953,7 @@ theorem Exercise_6_5_8b {A : Type} (f : A → A → A) (B : Set A) :
 The remaining exercises in this section use the following definitions:
 
 ```lean
-def idExt (A : Type) : Set (A × A) := { (x, y) : A × A | x = y }
+def idExt (A : Type) : Set (A × A) := {(x, y) : A × A | x = y}
 
 def rep_comp {A : Type} (R : Set (A × A)) (n : Nat) : Set (A × A) :=
   match n with
@@ -1961,7 +1961,7 @@ def rep_comp {A : Type} (R : Set (A × A)) (n : Nat) : Set (A × A) :=
     | k + 1 => comp (rep_comp R k) R
 
 def cumul_comp {A : Type} (R : Set (A × A)) : Set (A × A) :=
-  { (x, y) : A × A | ∃ n ≥ 1, (x, y) ∈ rep_comp R n }
+  {(x, y) : A × A | ∃ n ≥ 1, (x, y) ∈ rep_comp R n}
 ```
 
 ::: {.numex arguments="4"}
@@ -1991,6 +1991,6 @@ lemma rep_comp_sub_trans {A : Type} {R S : Set (A × A)}
 ```lean
 theorem Exercise_6_5_14 {A : Type} (R : Set (A × A)) :
     smallestElt (sub (A × A)) (cumul_comp R)
-    { S : Set (A × A) | R ⊆ S ∧ transitive (RelFromExt S) } := sorry
+    {S : Set (A × A) | R ⊆ S ∧ transitive (RelFromExt S)} := sorry
 ```
 :::

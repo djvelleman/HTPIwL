@@ -559,7 +559,7 @@ s = t', \qquad t = s' - t'q.
 <div class="sourceCode" id="cb27"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="kw">lemma</span> exists_least_prime_factor {n : Nat} (h : 2 ≤ n) :</span>
 <span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>    ∃ (p : Nat), prime_factor p n ∧</span>
 <span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a>    ∀ (q : Nat), prime_factor q n → p ≤ q := <span class="kw">by</span></span>
-<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a>  <span class="kw">set</span> S : Set Nat := { p : Nat | prime_factor p n }</span>
+<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a>  <span class="kw">set</span> S : Set Nat := {p : Nat | prime_factor p n}</span>
 <span id="cb27-5"><a href="#cb27-5" aria-hidden="true" tabindex="-1"></a>  <span class="kw">have</span> h2 : ∃ (p : Nat), p ∈ S := exists_prime_factor n h</span>
 <span id="cb27-6"><a href="#cb27-6" aria-hidden="true" tabindex="-1"></a>  <span class="kw">show</span> ∃ (p : Nat), prime_factor p n ∧</span>
 <span id="cb27-7"><a href="#cb27-7" aria-hidden="true" tabindex="-1"></a>    ∀ (q : Nat), prime_factor q n → p ≤ q <span class="kw">from</span> well_ord_princ S h2</span>

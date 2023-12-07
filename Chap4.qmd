@@ -42,17 +42,17 @@ We can write corresponding definitions in Lean as follows:
 
 ```lean
 def Dom {A B : Type} (R : Set (A × B)) : Set A :=
-  { a : A | ∃ (b : B), (a, b) ∈ R }
+  {a : A | ∃ (b : B), (a, b) ∈ R}
 
 def Ran {A B : Type} (R : Set (A × B)) : Set B :=
-  { b : B | ∃ (a : A), (a, b) ∈ R }
+  {b : B | ∃ (a : A), (a, b) ∈ R}
 
 def inv {A B : Type} (R : Set (A × B)) : Set (B × A) :=
-  { (b, a) : B × A | (a, b) ∈ R }
+  {(b, a) : B × A | (a, b) ∈ R}
 
 def comp {A B C : Type}
     (S : Set (B × C)) (R : Set (A × B)) : Set (A × C) :=
-  { (a, c) : A × C | ∃ (x : B), (a, x) ∈ R ∧ (x, c) ∈ S }
+  {(a, c) : A × C | ∃ (x : B), (a, x) ∈ R ∧ (x, c) ∈ S}
 ```
 
 Definitions in Lean are introduced with the keyword `def`.  In the definition of `Dom`, we have declared that `A` and `B` are implicit arguments and `R` is an explicit argument.  That means that, in a Lean file containing these definitions, if we have `R : Set (A × B)`, then we can just write `Dom R` for the domain of `R`, and Lean will figure out for itself what `A` and `B` are.  After the list of arguments there is a colon and then the type of `Dom R`, which is `Set A`.  This is followed by `:=` and then the definition of `Dom R`.  The definition says that `Dom R` is the set of all objects `a` of type `A` such that there is some `b` of type `B` with `(a, b) ∈ R`.  This is a direct translation, into Lean's type-theory language, of the first part of Definition 4.2.3.  The other three definitions are similar; they define `Ran R` to be the range of `R`, `inv R` to be the inverse of `R`, and `comp S R` to be the composition of `S` and `R`.
@@ -293,7 +293,7 @@ We can define the extension of a relation, and state the correspondence between 
 
 ```lean
 def extension {A B : Type} (R : Rel A B) : Set (A × B) :=
-  { (a, b) : A × B | R a b }
+  {(a, b) : A × B | R a b}
 
 theorem ext_def {A B : Type} (R : Rel A B) (a : A) (b : B) :
     (a, b) ∈ extension R ↔ R a b := by rfl
@@ -360,7 +360,7 @@ For any types `A` and `B`, if we want to define a particular relation `R` from `
 def elementhood (A : Type) (a : A) (X : Set A) : Prop := a ∈ X
 ```
 
-This definition says that if `A` is a type, `a` has type `A`, and `X` has type `Set A`, then `elementhood A a X` is the proposition `a ∈ X`.  Thus, if `elementhood A` is followed by objects of type `A` and `Set A`, the result is a proposition, so `elementhood A` is functioning as a relation from `A` to `Set A`.  For example, `elementhood Int` is a relation from integers to sets of integers, and `elementhood Int 6 { n : Int | ∃ (k : Int), n = 2 * k }` is the (true) statement that `6` is an element of the set of even integers.  (You are asked to prove it in the exercises.)
+This definition says that if `A` is a type, `a` has type `A`, and `X` has type `Set A`, then `elementhood A a X` is the proposition `a ∈ X`.  Thus, if `elementhood A` is followed by objects of type `A` and `Set A`, the result is a proposition, so `elementhood A` is functioning as a relation from `A` to `Set A`.  For example, `elementhood Int` is a relation from integers to sets of integers, and `elementhood Int 6 {n : Int | ∃ (k : Int), n = 2 * k}` is the (true) statement that `6` is an element of the set of even integers.  (You are asked to prove it in the exercises.)
 
 We can also use this method to define an operation that reverses the process of forming the extension of a relation.  If `R` has type `Set (A × B)`, then we define `RelFromExt R` to be the relation whose extension is `R`.  A few simple theorems, which follow directly from the definition, clarify the meaning of `RelFromExt R`.
 
@@ -384,14 +384,14 @@ example {A B : Type} (R : Set (A × B)) :
 ::: {.numex arguments="1"}
 ```lean
 example :
-    elementhood Int 6 { n : Int | ∃ (k : Int), n = 2 * k } := sorry
+    elementhood Int 6 {n : Int | ∃ (k : Int), n = 2 * k} := sorry
 ```
 :::
 
 ::: {.numex arguments="2"}
 ```lean
 theorem Theorem_4_3_4_1 {A : Type} (R : BinRel A) :
-    reflexive R ↔ { (x, y) : A × A | x = y } ⊆ extension R := sorry
+    reflexive R ↔ {(x, y) : A × A | x = y} ⊆ extension R := sorry
 ```
 :::
 
@@ -621,7 +621,7 @@ def upperBd {A : Type} (R : BinRel A) (a : A) (B : Set A) : Prop :=
   ∀ x ∈ B, R x a
 
 def lub {A : Type} (R : BinRel A) (a : A) (B : Set A) : Prop :=
-  smallestElt R a { c : A | upperBd R c B }
+  smallestElt R a {c : A | upperBd R c B}
 ```
 
 As usual, we will let you consult *HTPI* for examples of these concepts.  But we will mention one example:  If `A` is a type and `F` has type `Set (Set A)`---that is, `F` is a set whose elements are sets of objects of type `A`---then the least upper bound of `F`, with respect to the partial order `sub A`, is `⋃₀ F`.  We leave the proof of this fact as an exercise.
@@ -713,7 +713,7 @@ theorem Exercise_4_4_22 {A : Type}
 ```lean
 theorem Exercise_4_4_24 {A : Type} (R : Set (A × A)) :
     smallestElt (sub (A × A)) (R ∪ (inv R))
-    { T : Set (A × A) | R ⊆ T ∧ symmetric (RelFromExt T) } := sorry
+    {T : Set (A × A) | R ⊆ T ∧ symmetric (RelFromExt T)} := sorry
 ```
 :::
 
@@ -736,13 +736,13 @@ def equiv_rel {A : Type} (R : BinRel A) : Prop :=
   reflexive R ∧ symmetric R ∧ transitive R
 
 def equivClass {A : Type} (R : BinRel A) (x : A) : Set A :=
-  { y : A | R y x }
+  {y : A | R y x}
 
 def mod (A : Type) (R : BinRel A) : Set (Set A) :=
-  { equivClass R x | x : A }
+  {equivClass R x | x : A}
 ```
 
-Thus, `equiv_rel R` is the proposition that `R` is an equivalence relation, `equivClass R x` is the equivalence class of `x` with respect to `R`, and `mod A R` is `A` mod `R`.  Note that `equivClass R x` has type `Set A`, while `mod A R` has type `Set (Set A)`.  The definition of `mod A R` is shorthand for `{ X : Set A | ∃ (x : A), equivClass R x = X }`.
+Thus, `equiv_rel R` is the proposition that `R` is an equivalence relation, `equivClass R x` is the equivalence class of `x` with respect to `R`, and `mod A R` is `A` mod `R`.  Note that `equivClass R x` has type `Set A`, while `mod A R` has type `Set (Set A)`.  The definition of `mod A R` is shorthand for `{X : Set A | ∃ (x : A), equivClass R x = X}`.
 
 *HTPI* gives several examples of equivalence relations, and these examples illustrate that equivalence classes always have certain properties.  The most important of these are that each equivalence class is a nonempty set, the equivalence classes do not overlap, and their union is all of `A`.  We say that the equivalence classes form a *partition* of `A`.  To state and prove these properties in Lean we will need some definitions.  We start with these:
 
@@ -1021,7 +1021,7 @@ The next three exercises use the following definitions:
 
 ```lean
 def dot {A : Type} (F G : Set (Set A)) : Set (Set A) :=
-  { Z : Set A | ¬empty Z ∧ ∃ X ∈ F, ∃ Y ∈ G, Z = X ∩ Y }
+  {Z : Set A | ¬empty Z ∧ ∃ X ∈ F, ∃ Y ∈ G, Z = X ∩ Y}
 
 def conj {A : Type} (R S : BinRel A) (x y : A) : Prop :=
   R x y ∧ S x y
