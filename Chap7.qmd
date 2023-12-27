@@ -1406,7 +1406,7 @@ lemma num_rp_below_step_not_rp {m j : Nat} (h : ¬rel_prime m j) :
 We can now use `num_rp_below` to define the totient function.
 
 ```lean
-def phi (m : Nat) := num_rp_below m m
+def phi (m : Nat) : Nat := num_rp_below m m
 
 lemma phi_def (m : Nat) : phi m = num_rp_below m m := by rfl
 

@@ -1354,7 +1354,7 @@ Int.emod_nonneg : ∀ (a : ℤ) {b : ℤ}, b ≠ 0 → 0 ≤ a % b</code></pre>
 <span id="cb79-23"><a href="#cb79-23" aria-hidden="true" tabindex="-1"></a>  <span class="kw">show</span> num_rp_below m (j + 1) = num_rp_below m j <span class="kw">from</span> h1</span>
 <span id="cb79-24"><a href="#cb79-24" aria-hidden="true" tabindex="-1"></a>  <span class="kw">done</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>We can now use <code>num_rp_below</code> to define the totient function.</p>
-<div class="sourceCode" id="cb80"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb80-1"><a href="#cb80-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> phi (m : Nat) := num_rp_below m m</span>
+<div class="sourceCode" id="cb80"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb80-1"><a href="#cb80-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> phi (m : Nat) : Nat := num_rp_below m m</span>
 <span id="cb80-2"><a href="#cb80-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb80-3"><a href="#cb80-3" aria-hidden="true" tabindex="-1"></a><span class="kw">lemma</span> phi_def (m : Nat) : phi m = num_rp_below m m := <span class="kw">by</span> <span class="kw">rfl</span></span>
 <span id="cb80-4"><a href="#cb80-4" aria-hidden="true" tabindex="-1"></a></span>
