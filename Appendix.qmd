@@ -41,9 +41,127 @@ Tactics marked with an asterisk (*) are defined in the file `HTPIDefs.lean` in t
 | `ring` | [Section 3.7](Chap3.html#more-examples-of-proofs) |
 | `rw` | [Section 3.7](Chap3.html#more-examples-of-proofs) |
 | `set` | [Section 4.5](Chap4.html#equivalence-relations) |
-| `show` | [Introduction to Lean: A First Example](IntroLean.html#a-first-example) |
+| `show`* | [Introduction to Lean: A First Example](IntroLean.html#a-first-example) |
 | `trivial` | [Section 7.2](Chap7.html#prime-factorization) |
 :::
+
+## Transitioning to Standard Lean
+
+If you want to continue to use Lean to write mathematical proofs, you may want to learn more about Lean.  A good place to start is the [Lean Community website](https://leanprover-community.github.io/index.html).  The resources there use "standard" Lean, which is somewhat different from the Lean in this book.  In particular, the tactics marked with an asterisk in the table above are not a part of standard Lean.  If you want to learn to write proofs in standard Lean, you'll need to learn replacements for those tactics.  We discuss some such replacements in this section.  Some of these tactics are built into Lean, and some are defined in Lean's mathematics library, `mathlib`.
+
+* #### `assume`, `fix`
+
+If you are proving `P → Q` and you want to begin by assuming `h : P`, in standard Lean you would begin your proof by writing `intro h`.  You don't need to specify that `h` is an identifier for the assumption `P`; Lean will figure that out on its own.
+
+If you are proving `∀ (x : U), P x` and you want to begin by introducing the variable `x` to stand for an arbitrary object of type `U`, in standard Lean you would begin your proof by writing `intro x`.  Again, you don't need to specify the type of `x`, because Lean will figure it out.
+
+Thus, the tactic `intro` does the job of both `assume` and `fix`.  Furthermore, you can introduce multiple assumptions or objects with a single use of the `intro` tactic: `intro a b c` is equivalent to `intro a; intro b; intro c`.
+
+* #### `bicond_neg`, `demorgan`, `double_neg`, `quant_neg`
+
+We have mostly used these tactics to reexpress negative statements as more useful positive statements.  The tactic `push_neg` can be used for this purpose.
+
+* #### `by_cases on`
+
+If you have `h : P ∨ Q`, then you can break your proof into cases by using the tactic `cases' h with hP hQ`.  In case 1, `h : P ∨ Q` will be replaced by `hP : P`, and in case 2 it will be replaced by `hQ : Q`.  In both cases, you have to prove the original goal.  You may also want to learn about the tactics `cases` and `rcases`.
+
+* #### `by_induc`, `by_strong_induc`
+
+We saw in Section 7.2 that if you are proving a statement of the form `∀ (l : List U), ...`, then you can begin a proof by induction on the length of `l` by using the tactic `apply List.rec`.  Similarly, if you are proving `∀ (n : Nat), ...`, you can begin a proof by induction by using the tactic `apply Nat.recAux`.  For strong induction, you can use `apply Nat.strongRec`.
+
+There are also tactics `induction` and `induction'` that you may want to learn about.
+
+* #### `conditional`
+
+The command `#check @imp_iff_not_or` produces the result
+
+::: {.ind}
+```
+@imp_iff_not_or : ∀ {a b : Prop}, a → b ↔ ¬a ∨ b
+```
+:::
+
+Thus, `rewrite [imp_iff_not_or]` will convert a statement of the form `P → Q` into `¬P ∨ Q`, and `rewrite [←imp_iff_not_or]` will go in the other direction.
+
+* #### `contradict`
+
+Suppose your goal is `False` (as it would be if you are doing a proof by contradiction), and you have `h : ¬P`.  Recall that Lean treats `¬P` as meaning the same thing as `P → False`, and therefore `h _` will prove the goal, if the blank is filled in which a proof of `P`.  It follows that `apply h` will set `P` as the goal.  In other words, in this situation `apply h` has the same effect as `contradict h`.
+
+You could also get the same effect with the tactic `suffices hP : P from h hP`.  Think of this as meaning "it would suffice now to prove `P`, because if `hP` were a proof of `P`, then `h hP` would prove the goal."  Lean therefore sets `P` to be the goal.
+
+Similarly, in a proof by contradiction, if you have `h : P`, then `suffices hnP : ¬P from hnP h` will set `¬P` as the goal.
+
+* #### `contrapos`
+
+If your goal is a conditional statement, then the tactics `contrapose` and `contrapose!` will replace the goal with its contrapositive (`contrapose!` also uses `push_neg` to try to simplify the negated statements that arise when forming a contrapositive).  You may also find the theorem `not_imp_not` useful:
+
+::: {.ind}
+```
+@not_imp_not : ∀ {a b : Prop}, ¬a → ¬b ↔ b → a
+```
+:::
+
+* #### `define`
+
+Unfortunately, there is no standard Lean tactic that does exactly the same thing as `define`.  However, you may find the tactics `dsimp` and `unfold` useful in some situations.
+
+Another way to write out definitions is to prove a lemma stating the definition and then use that lemma as a rewriting rule in the `rewrite` tactic.  See, for example, the use of the theorem `inv_def` in [Section 4.2](Chap4.html#relations).
+
+* #### `disj_syll`
+
+The following theorems can be useful:
+
+::: {.ind}
+```
+@Or.resolve_left : ∀ {a b : Prop}, a ∨ b → ¬a → b
+@Or.resolve_right : ∀ {a b : Prop}, a ∨ b → ¬b → a
+@Or.neg_resolve_left : ∀ {a b : Prop}, ¬a ∨ b → a → b
+@Or.neg_resolve_right : ∀ {a b : Prop}, a ∨ ¬b → b → a
+```
+:::
+
+For example, if you have `h1 : P ∨ Q` and `h2 : ¬P`, then `Or.resolve_left h1 h2` is a proof of `Q`.
+
+* #### `exists_unique`
+
+If your goal is `∃! (x : U), P x` and you think that `a` is the unique value of `x` that makes `P x` true, then you can use the tactic `apply ExistsUnique.intro a`.  This will leave you with two goals to prove, `P a` and `∀ (y : U), P y → y = a`.
+
+* #### `obtain`
+
+There is an `obtain` tactic in standard Lean, but it is slightly different from the one used in this book.  If you have `h : ∃ (x : U), P x`, then the tactic `obtain ⟨u, h1⟩ := h` will introduce both `u : U` and `h1 : P u` into the tactic state.  Note that `u` and `h1` must be enclosed in angle brackets, `⟨ ⟩`.  To enter those brackets, type `\<` and `\>`.
+
+If you have `h : ∃! (x : U), P x`, then `obtain ⟨u, h1, h2⟩ := h` will also introduce `u : U` and `h1 : P u` into the tactic state.  In addition, it will introduce `h2` as an identifier for a statement that is equivalent to `∀ (y : U), P y → y = u`.  (Unfortunately, the statement introduced is more complicated.)
+
+You may also find the theorems `ExistsUnique.exists` and `ExistsUnique.unique` useful:
+
+::: {.ind}
+```
+@ExistsUnique.exists : ∀ {α : Sort u_1} {p : α → Prop},
+              (∃! (x : α), p x) → ∃ (x : α), p x
+@ExistsUnique.unique : ∀ {α : Sort u_1} {p : α → Prop},
+              (∃! (x : α), p x) → ∀ {y₁ y₂ : α}, p y₁ → p y₂ → y₁ = y₂
+```
+:::
+
+* #### `or_left`, `or_right`
+
+If your goal is `P ∨ Q`, then the tactics `or_left` and `or_right` let you assume that one of `P` and `Q` is false and prove the other.  Perhaps the easiest way to do that in standard Lean is to use proof by cases.  For example, to assume `P` is false and prove `Q` you might proceed as follows:
+
+```lean
+  -- Goal is P ∨ Q
+  by_cases hP : P
+  · -- Case 1. hP : P
+    exact Or.inl hP
+    done
+  · -- Case 2. hP : ¬P
+    apply Or.inr
+    --We now have hP : ¬P, and goal is Q
+    **done::
+```
+
+* #### `show`
+
+There is a `show` tactic in standard Lean, but it works a little differently from the `show` tactic we have used in this book.  When our goal was a statement `P` and we had an expression `t` that was a proof of `P`, we usually completed the proof by writing `show P from t`.  In standard Lean you can complete the proof by writing `exact t`, as explained near the end of [Section 3.6](Chap3.html#existence-and-uniqueness-proofs).
 
 ## Typing Symbols
 
@@ -90,4 +208,6 @@ Tactics marked with an asterisk (*) are defined in the file `HTPIDefs.lean` in t
 | `∼` | `\sim` or `\~` |
 | `ₛ` | `\_s` |
 | `ᵣ` | `\_r` |
+| `⟨` | `\<` |
+| `⟩` | `\>` |
 :::

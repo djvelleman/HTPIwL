@@ -20,6 +20,69 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1.6em;
   vertical-align: middle;
 }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
 </style>
 
 
@@ -161,6 +224,7 @@ ul.task-list li input[type="checkbox"] {
    
   <ul class="collapse">
   <li><a href="#tactics-used" id="toc-tactics-used" class="nav-link active" data-scroll-target="#tactics-used">Tactics Used</a></li>
+  <li><a href="#transitioning-to-standard-lean" id="toc-transitioning-to-standard-lean" class="nav-link" data-scroll-target="#transitioning-to-standard-lean">Transitioning to Standard Lean</a></li>
   <li><a href="#typing-symbols" id="toc-typing-symbols" class="nav-link" data-scroll-target="#typing-symbols">Typing Symbols</a></li>
   </ul>
 </nav>
@@ -335,7 +399,7 @@ $$
 <td style="text-align: left;"><a href="Chap4.html#equivalence-relations">Section 4.5</a></td>
 </tr>
 <tr class="even">
-<td style="text-align: left;"><code>show</code></td>
+<td style="text-align: left;"><code>show</code>*</td>
 <td style="text-align: left;"><a href="IntroLean.html#a-first-example">Introduction to Lean: A First Example</a></td>
 </tr>
 <tr class="odd">
@@ -345,6 +409,99 @@ $$
 </tbody>
 </table>
 </div>
+</section>
+<section id="transitioning-to-standard-lean" class="level2">
+<h2 class="anchored" data-anchor-id="transitioning-to-standard-lean">Transitioning to Standard Lean</h2>
+<p>If you want to continue to use Lean to write mathematical proofs, you may want to learn more about Lean. A good place to start is the <a href="https://leanprover-community.github.io/index.html">Lean Community website</a>. The resources there use “standard” Lean, which is somewhat different from the Lean in this book. In particular, the tactics marked with an asterisk in the table above are not a part of standard Lean. If you want to learn to write proofs in standard Lean, you’ll need to learn replacements for those tactics. We discuss some such replacements in this section. Some of these tactics are built into Lean, and some are defined in Lean’s mathematics library, <code>mathlib</code>.</p>
+<ul>
+<li><h4 id="assume-fix" class="anchored"><code>assume</code>, <code>fix</code></h4></li>
+</ul>
+<p>If you are proving <code>P → Q</code> and you want to begin by assuming <code>h : P</code>, in standard Lean you would begin your proof by writing <code>intro h</code>. You don’t need to specify that <code>h</code> is an identifier for the assumption <code>P</code>; Lean will figure that out on its own.</p>
+<p>If you are proving <code>∀ (x : U), P x</code> and you want to begin by introducing the variable <code>x</code> to stand for an arbitrary object of type <code>U</code>, in standard Lean you would begin your proof by writing <code>intro x</code>. Again, you don’t need to specify the type of <code>x</code>, because Lean will figure it out.</p>
+<p>Thus, the tactic <code>intro</code> does the job of both <code>assume</code> and <code>fix</code>. Furthermore, you can introduce multiple assumptions or objects with a single use of the <code>intro</code> tactic: <code>intro a b c</code> is equivalent to <code>intro a; intro b; intro c</code>.</p>
+<ul>
+<li><h4 id="bicond_neg-demorgan-double_neg-quant_neg" class="anchored"><code>bicond_neg</code>, <code>demorgan</code>, <code>double_neg</code>, <code>quant_neg</code></h4></li>
+</ul>
+<p>We have mostly used these tactics to reexpress negative statements as more useful positive statements. The tactic <code>push_neg</code> can be used for this purpose.</p>
+<ul>
+<li><h4 id="by_cases-on" class="anchored"><code>by_cases on</code></h4></li>
+</ul>
+<p>If you have <code>h : P ∨ Q</code>, then you can break your proof into cases by using the tactic <code>cases' h with hP hQ</code>. In case 1, <code>h : P ∨ Q</code> will be replaced by <code>hP : P</code>, and in case 2 it will be replaced by <code>hQ : Q</code>. In both cases, you have to prove the original goal. You may also want to learn about the tactics <code>cases</code> and <code>rcases</code>.</p>
+<ul>
+<li><h4 id="by_induc-by_strong_induc" class="anchored"><code>by_induc</code>, <code>by_strong_induc</code></h4></li>
+</ul>
+<p>We saw in Section 7.2 that if you are proving a statement of the form <code>∀ (l : List U), ...</code>, then you can begin a proof by induction on the length of <code>l</code> by using the tactic <code>apply List.rec</code>. Similarly, if you are proving <code>∀ (n : Nat), ...</code>, you can begin a proof by induction by using the tactic <code>apply Nat.recAux</code>. For strong induction, you can use <code>apply Nat.strongRec</code>.</p>
+<p>There are also tactics <code>induction</code> and <code>induction'</code> that you may want to learn about.</p>
+<ul>
+<li><h4 id="conditional" class="anchored"><code>conditional</code></h4></li>
+</ul>
+<p>The command <code>#check @imp_iff_not_or</code> produces the result</p>
+<div class="ind">
+<pre><code>@imp_iff_not_or : ∀ {a b : Prop}, a → b ↔ ¬a ∨ b</code></pre>
+</div>
+<p>Thus, <code>rewrite [imp_iff_not_or]</code> will convert a statement of the form <code>P → Q</code> into <code>¬P ∨ Q</code>, and <code>rewrite [←imp_iff_not_or]</code> will go in the other direction.</p>
+<ul>
+<li><h4 id="contradict" class="anchored"><code>contradict</code></h4></li>
+</ul>
+<p>Suppose your goal is <code>False</code> (as it would be if you are doing a proof by contradiction), and you have <code>h : ¬P</code>. Recall that Lean treats <code>¬P</code> as meaning the same thing as <code>P → False</code>, and therefore <code>h _</code> will prove the goal, if the blank is filled in which a proof of <code>P</code>. It follows that <code>apply h</code> will set <code>P</code> as the goal. In other words, in this situation <code>apply h</code> has the same effect as <code>contradict h</code>.</p>
+<p>You could also get the same effect with the tactic <code>suffices hP : P from h hP</code>. Think of this as meaning “it would suffice now to prove <code>P</code>, because if <code>hP</code> were a proof of <code>P</code>, then <code>h hP</code> would prove the goal.” Lean therefore sets <code>P</code> to be the goal.</p>
+<p>Similarly, in a proof by contradiction, if you have <code>h : P</code>, then <code>suffices hnP : ¬P from hnP h</code> will set <code>¬P</code> as the goal.</p>
+<ul>
+<li><h4 id="contrapos" class="anchored"><code>contrapos</code></h4></li>
+</ul>
+<p>If your goal is a conditional statement, then the tactics <code>contrapose</code> and <code>contrapose!</code> will replace the goal with its contrapositive (<code>contrapose!</code> also uses <code>push_neg</code> to try to simplify the negated statements that arise when forming a contrapositive). You may also find the theorem <code>not_imp_not</code> useful:</p>
+<div class="ind">
+<pre><code>@not_imp_not : ∀ {a b : Prop}, ¬a → ¬b ↔ b → a</code></pre>
+</div>
+<ul>
+<li><h4 id="define" class="anchored"><code>define</code></h4></li>
+</ul>
+<p>Unfortunately, there is no standard Lean tactic that does exactly the same thing as <code>define</code>. However, you may find the tactics <code>dsimp</code> and <code>unfold</code> useful in some situations.</p>
+<p>Another way to write out definitions is to prove a lemma stating the definition and then use that lemma as a rewriting rule in the <code>rewrite</code> tactic. See, for example, the use of the theorem <code>inv_def</code> in <a href="Chap4.html#relations">Section 4.2</a>.</p>
+<ul>
+<li><h4 id="disj_syll" class="anchored"><code>disj_syll</code></h4></li>
+</ul>
+<p>The following theorems can be useful:</p>
+<div class="ind">
+<pre><code>@Or.resolve_left : ∀ {a b : Prop}, a ∨ b → ¬a → b
+@Or.resolve_right : ∀ {a b : Prop}, a ∨ b → ¬b → a
+@Or.neg_resolve_left : ∀ {a b : Prop}, ¬a ∨ b → a → b
+@Or.neg_resolve_right : ∀ {a b : Prop}, a ∨ ¬b → b → a</code></pre>
+</div>
+<p>For example, if you have <code>h1 : P ∨ Q</code> and <code>h2 : ¬P</code>, then <code>Or.resolve_left h1 h2</code> is a proof of <code>Q</code>.</p>
+<ul>
+<li><h4 id="exists_unique" class="anchored"><code>exists_unique</code></h4></li>
+</ul>
+<p>If your goal is <code>∃! (x : U), P x</code> and you think that <code>a</code> is the unique value of <code>x</code> that makes <code>P x</code> true, then you can use the tactic <code>apply ExistsUnique.intro a</code>. This will leave you with two goals to prove, <code>P a</code> and <code>∀ (y : U), P y → y = a</code>.</p>
+<ul>
+<li><h4 id="obtain" class="anchored"><code>obtain</code></h4></li>
+</ul>
+<p>There is an <code>obtain</code> tactic in standard Lean, but it is slightly different from the one used in this book. If you have <code>h : ∃ (x : U), P x</code>, then the tactic <code>obtain ⟨u, h1⟩ := h</code> will introduce both <code>u : U</code> and <code>h1 : P u</code> into the tactic state. Note that <code>u</code> and <code>h1</code> must be enclosed in angle brackets, <code>⟨ ⟩</code>. To enter those brackets, type <code>\&lt;</code> and <code>\&gt;</code>.</p>
+<p>If you have <code>h : ∃! (x : U), P x</code>, then <code>obtain ⟨u, h1, h2⟩ := h</code> will also introduce <code>u : U</code> and <code>h1 : P u</code> into the tactic state. In addition, it will introduce <code>h2</code> as an identifier for a statement that is equivalent to <code>∀ (y : U), P y → y = u</code>. (Unfortunately, the statement introduced is more complicated.)</p>
+<p>You may also find the theorems <code>ExistsUnique.exists</code> and <code>ExistsUnique.unique</code> useful:</p>
+<div class="ind">
+<pre><code>@ExistsUnique.exists : ∀ {α : Sort u_1} {p : α → Prop},
+              (∃! (x : α), p x) → ∃ (x : α), p x
+@ExistsUnique.unique : ∀ {α : Sort u_1} {p : α → Prop},
+              (∃! (x : α), p x) → ∀ {y₁ y₂ : α}, p y₁ → p y₂ → y₁ = y₂</code></pre>
+</div>
+<ul>
+<li><h4 id="or_left-or_right" class="anchored"><code>or_left</code>, <code>or_right</code></h4></li>
+</ul>
+<p>If your goal is <code>P ∨ Q</code>, then the tactics <code>or_left</code> and <code>or_right</code> let you assume that one of <code>P</code> and <code>Q</code> is false and prove the other. Perhaps the easiest way to do that in standard Lean is to use proof by cases. For example, to assume <code>P</code> is false and prove <code>Q</code> you might proceed as follows:</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>  <span class="co">-- Goal is P ∨ Q</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  <span class="kw">by_cases</span> hP : P</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  · <span class="co">-- Case 1. hP : P</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>    <span class="kw">exact</span> Or.inl hP</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>    <span class="kw">done</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>  · <span class="co">-- Case 2. hP : ¬P</span></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>    <span class="kw">apply</span> Or.inr</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>    <span class="co">--We now have hP : ¬P, and goal is Q</span></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>    <span class="sc">**</span><span class="wa">done</span><span class="sc">::</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<ul>
+<li><h4 id="show" class="anchored"><code>show</code></h4></li>
+</ul>
+<p>There is a <code>show</code> tactic in standard Lean, but it works a little differently from the <code>show</code> tactic we have used in this book. When our goal was a statement <code>P</code> and we had an expression <code>t</code> that was a proof of <code>P</code>, we usually completed the proof by writing <code>show P from t</code>. In standard Lean you can complete the proof by writing <code>exact t</code>, as explained near the end of <a href="Chap3.html#existence-and-uniqueness-proofs">Section 3.6</a>.</p>
 </section>
 <section id="typing-symbols" class="level2">
 <h2 class="anchored" data-anchor-id="typing-symbols">Typing Symbols</h2>
@@ -516,6 +673,14 @@ $$
 <tr class="even">
 <td style="text-align: center;"><code>ᵣ</code></td>
 <td style="text-align: center;"><code>\_r</code></td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;"><code>⟨</code></td>
+<td style="text-align: center;"><code>\&lt;</code></td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"><code>⟩</code></td>
+<td style="text-align: center;"><code>\&gt;</code></td>
 </tr>
 </tbody>
 </table>
