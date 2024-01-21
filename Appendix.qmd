@@ -103,7 +103,8 @@ If your goal is a conditional statement, then the tactics `contrapose` and `cont
 
 * #### `define`
 
-Unfortunately, there is no standard Lean tactic that does exactly the same thing as `define`.  However, you may find the tactics `dsimp` and `unfold` useful in some situations.
+The tactic `whnf` (which stands for "weak head normal form") is similar to `define`, although it sometimes produces results that
+are a little confusing.
 
 Another way to write out definitions is to prove a lemma stating the definition and then use that lemma as a rewriting rule in the `rewrite` tactic.  See, for example, the use of the theorem `inv_def` in [Section 4.2](Chap4.html#relations).
 

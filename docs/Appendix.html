@@ -456,7 +456,7 @@ $$
 <ul>
 <li><h4 id="define" class="anchored"><code>define</code></h4></li>
 </ul>
-<p>Unfortunately, there is no standard Lean tactic that does exactly the same thing as <code>define</code>. However, you may find the tactics <code>dsimp</code> and <code>unfold</code> useful in some situations.</p>
+<p>The tactic <code>whnf</code> (which stands for “weak head normal form”) is similar to <code>define</code>, although it sometimes produces results that are a little confusing.</p>
 <p>Another way to write out definitions is to prove a lemma stating the definition and then use that lemma as a rewriting rule in the <code>rewrite</code> tactic. See, for example, the use of the theorem <code>inv_def</code> in <a href="Chap4.html#relations">Section 4.2</a>.</p>
 <ul>
 <li><h4 id="disj_syll" class="anchored"><code>disj_syll</code></h4></li>
