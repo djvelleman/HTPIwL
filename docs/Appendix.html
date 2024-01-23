@@ -412,7 +412,9 @@ $$
 </section>
 <section id="transitioning-to-standard-lean" class="level2">
 <h2 class="anchored" data-anchor-id="transitioning-to-standard-lean">Transitioning to Standard Lean</h2>
-<p>If you want to continue to use Lean to write mathematical proofs, you may want to learn more about Lean. A good place to start is the <a href="https://leanprover-community.github.io/index.html">Lean Community website</a>. The resources there use “standard” Lean, which is somewhat different from the Lean in this book. In particular, the tactics marked with an asterisk in the table above are not a part of standard Lean. If you want to learn to write proofs in standard Lean, you’ll need to learn replacements for those tactics. We discuss some such replacements in this section. Some of these tactics are built into Lean, and some are defined in Lean’s mathematics library, <code>mathlib</code>.</p>
+<p>If you want to continue to use Lean to write mathematical proofs, you may want to learn more about Lean. A good place to start is the <a href="https://leanprover-community.github.io/index.html">Lean Community website</a>. The resources there use “standard” Lean, which is somewhat different from the Lean in this book.</p>
+<p>In a few cases we have used notation in this book that differs from standard Lean notation. For example, if <code>h</code> is a proof of <code>P ↔︎ Q</code>, then we have used <code>h.ltr</code> and <code>h.rtl</code> to denote proofs of the left-to-right and right-to-left directions of the biconditional. The standard Lean notation for these is <code>h.mp</code> and <code>h.mpr</code>, respectively (“mp” and “mpr” stand for “modus ponens” and “modus ponens reverse”). As explained at the end of <a href="Chap5.html#closures">Section 5.4</a>, the notations <code>Pred U</code> and <code>Rel A B</code> denote the types <code>U → Prop</code> and <code>A → B → Prop</code>, respectively. Although <code>Rel</code> is standard notation (defined in Lean’s math library <code>mathlib</code>), <code>Pred</code> is not; the notation <code>BinRel A</code> is also not standard Lean. In place of <code>Pred U</code> you should use <code>U → Prop</code>, and in place of <code>BinRel A</code> you should use <code>Rel A A</code>.</p>
+<p>However, the biggest difference between the Lean in this book and standard Lean is that the tactics marked with an asterisk in the table above are not a part of standard Lean. If you want to learn to write proofs in standard Lean, you’ll need to learn replacements for those tactics. We discuss some such replacements below. Some of these replacements are built into Lean, and some are defined in <code>mathlib</code>.</p>
 <ul>
 <li><h4 id="assume-fix" class="anchored"><code>assume</code>, <code>fix</code></h4></li>
 </ul>
@@ -435,11 +437,12 @@ $$
 <ul>
 <li><h4 id="conditional" class="anchored"><code>conditional</code></h4></li>
 </ul>
-<p>The command <code>#check @imp_iff_not_or</code> produces the result</p>
+<p>The commands <code>#check @imp_iff_not_or</code> and <code>#check @not_imp</code> produce the results</p>
 <div class="ind">
-<pre><code>@imp_iff_not_or : ∀ {a b : Prop}, a → b ↔ ¬a ∨ b</code></pre>
+<pre><code>@imp_iff_not_or : ∀ {a b : Prop}, a → b ↔ ¬a ∨ b
+@not_imp : ∀ {a b : Prop}, ¬(a → b) ↔ a ∧ ¬b</code></pre>
 </div>
-<p>Thus, <code>rewrite [imp_iff_not_or]</code> will convert a statement of the form <code>P → Q</code> into <code>¬P ∨ Q</code>, and <code>rewrite [←imp_iff_not_or]</code> will go in the other direction.</p>
+<p>Thus, <code>rewrite [imp_iff_not_or]</code> will convert a statement of the form <code>P → Q</code> into <code>¬P ∨ Q</code>, and <code>rewrite [←imp_iff_not_or]</code> will go in the other direction. Similarly, <code>rewrite [not_imp]</code> will convert a statement of the form <code>¬(P → Q)</code> into <code>P ∧ ¬Q</code>, and <code>rewrite [←not_imp]</code> will go in the other direction.</p>
 <ul>
 <li><h4 id="contradict" class="anchored"><code>contradict</code></h4></li>
 </ul>

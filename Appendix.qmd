@@ -47,7 +47,11 @@ Tactics marked with an asterisk (*) are defined in the file `HTPIDefs.lean` in t
 
 ## Transitioning to Standard Lean
 
-If you want to continue to use Lean to write mathematical proofs, you may want to learn more about Lean.  A good place to start is the [Lean Community website](https://leanprover-community.github.io/index.html).  The resources there use "standard" Lean, which is somewhat different from the Lean in this book.  In particular, the tactics marked with an asterisk in the table above are not a part of standard Lean.  If you want to learn to write proofs in standard Lean, you'll need to learn replacements for those tactics.  We discuss some such replacements in this section.  Some of these tactics are built into Lean, and some are defined in Lean's mathematics library, `mathlib`.
+If you want to continue to use Lean to write mathematical proofs, you may want to learn more about Lean.  A good place to start is the [Lean Community website](https://leanprover-community.github.io/index.html).  The resources there use "standard" Lean, which is somewhat different from the Lean in this book.
+
+In a few cases we have used notation in this book that differs from standard Lean notation.  For example, if `h` is a proof of `P ↔ Q`, then we have used `h.ltr` and `h.rtl` to denote proofs of the left-to-right and right-to-left directions of the biconditional.  The standard Lean notation for these is `h.mp` and `h.mpr`, respectively ("mp" and "mpr" stand for "modus ponens" and "modus ponens reverse").  As explained at the end of [Section 5.4](Chap5.html#closures), the notations `Pred U` and `Rel A B` denote the types `U → Prop` and `A → B → Prop`, respectively.  Although `Rel` is standard notation (defined in Lean's math library `mathlib`), `Pred` is not; the notation `BinRel A` is also not standard Lean.  In place of `Pred U` you should use `U → Prop`, and in place of `BinRel A` you should use `Rel A A`.
+
+However, the biggest difference between the Lean in this book and standard Lean is that the tactics marked with an asterisk in the table above are not a part of standard Lean.  If you want to learn to write proofs in standard Lean, you'll need to learn replacements for those tactics.  We discuss some such replacements below.  Some of these replacements are built into Lean, and some are defined in `mathlib`.
 
 * #### `assume`, `fix`
 
@@ -73,15 +77,16 @@ There are also tactics `induction` and `induction'` that you may want to learn a
 
 * #### `conditional`
 
-The command `#check @imp_iff_not_or` produces the result
+The commands `#check @imp_iff_not_or` and `#check @not_imp` produce the results
 
 ::: {.ind}
 ```
 @imp_iff_not_or : ∀ {a b : Prop}, a → b ↔ ¬a ∨ b
+@not_imp : ∀ {a b : Prop}, ¬(a → b) ↔ a ∧ ¬b
 ```
 :::
 
-Thus, `rewrite [imp_iff_not_or]` will convert a statement of the form `P → Q` into `¬P ∨ Q`, and `rewrite [←imp_iff_not_or]` will go in the other direction.
+Thus, `rewrite [imp_iff_not_or]` will convert a statement of the form `P → Q` into `¬P ∨ Q`, and `rewrite [←imp_iff_not_or]` will go in the other direction.  Similarly, `rewrite [not_imp]` will convert a statement of the form `¬(P → Q)` into `P ∧ ¬Q`, and `rewrite [←not_imp]` will go in the other direction.
 
 * #### `contradict`
 
