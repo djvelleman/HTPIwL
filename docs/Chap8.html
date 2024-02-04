@@ -1298,7 +1298,7 @@ $$
 <span id="cb57-18"><a href="#cb57-18" aria-hidden="true" tabindex="-1"></a>  <span class="kw">apply</span> Iff.intro</span>
 <span id="cb57-19"><a href="#cb57-19" aria-hidden="true" tabindex="-1"></a>  · <span class="co">-- (→)</span></span>
 <span id="cb57-20"><a href="#cb57-20" aria-hidden="true" tabindex="-1"></a>    <span class="kw">assume</span> h1 : numElts A 1  <span class="co">--Goal : ∃ (x : U), A = {x}</span></span>
-<span id="cb57-21"><a href="#cb57-21" aria-hidden="true" tabindex="-1"></a>    <span class="kw">have</span> h2 : 1 &gt; 0 := <span class="kw">by</span> decide</span>
+<span id="cb57-21"><a href="#cb57-21" aria-hidden="true" tabindex="-1"></a>    <span class="kw">have</span> h2 : 1 &gt; 0 := <span class="kw">by</span> <span class="kw">decide</span></span>
 <span id="cb57-22"><a href="#cb57-22" aria-hidden="true" tabindex="-1"></a>    <span class="kw">obtain</span> (x : U) (h3 : x ∈ A) <span class="kw">from</span> nonempty_of_pos_numElts h1 h2</span>
 <span id="cb57-23"><a href="#cb57-23" aria-hidden="true" tabindex="-1"></a>    <span class="kw">have</span> h4 : numElts (A \ {x}) 0 := remove_one_numElts h1 h3</span>
 <span id="cb57-24"><a href="#cb57-24" aria-hidden="true" tabindex="-1"></a>    <span class="kw">rewrite</span> [zero_elts_iff_empty] <span class="kw">at</span> h4</span>
