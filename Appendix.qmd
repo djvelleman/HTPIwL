@@ -96,6 +96,8 @@ You could also get the same effect with the tactic `suffices hP : P from h hP`. 
 
 Similarly, in a proof by contradiction, if you have `h : P`, then `suffices hnP : ¬P from hnP h` will set `¬P` as the goal.
 
+Yet another possibility is `contrapose! h`.  (This is a variant on the `contrapose!` tactic, discussed in the next section.)
+
 * #### `contrapos`
 
 If your goal is a conditional statement, then the tactics `contrapose` and `contrapose!` will replace the goal with its contrapositive (`contrapose!` also uses `push_neg` to try to simplify the negated statements that arise when forming a contrapositive).  You may also find the theorem `not_imp_not` useful:
