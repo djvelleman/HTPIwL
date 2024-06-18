@@ -237,7 +237,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div class="hidden">
 $$
 \newcommand{\setmin}{\mathbin{\backslash}}
-\newcommand{\symmdiff}{\bigtriangleup}
+\newcommand{\symmdiff}{\mathbin{∆}}
 $$
 </div>
 
@@ -804,7 +804,7 @@ $$
 <span id="cb29-23"><a href="#cb29-23" aria-hidden="true" tabindex="-1"></a>    <span class="kw">show</span> ∃ (n : Nat), R n x <span class="kw">from</span> fcnl_exists h3.right.right h4</span>
 <span id="cb29-24"><a href="#cb29-24" aria-hidden="true" tabindex="-1"></a>    <span class="kw">done</span></span>
 <span id="cb29-25"><a href="#cb29-25" aria-hidden="true" tabindex="-1"></a>  <span class="kw">done</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>For the proof of 2 → 3, suppose we have <code>A : Set U</code> and <code>S : Rel Nat U</code>, and the statement <code>fcnl_onto_from_nat S A</code> is true. We need to come up with a relation <code>R : Rel U Nat</code> for which we can prove <code>fcnl_one_one_to_nat R A</code>. You might be tempted to try <code>R = invRel S</code>, but there is a problem with this choice: if <code>x ∈ A</code>, there might be multiple natural numbers <code>n</code> such that <code>S n x</code> holds, but we must make sure that there is only one <code>n</code> for which <code>R x n</code> holds. Our solution to this problem will be to define <code>R x n</code> to mean that <code>n</code> is the smallest natural number for which <code>S n x</code> holds. (The proof in <em>HTPI</em> uses a similar idea.) The well ordering principle guarantees that there always is such a smallest element.</p>
+<p>For the proof of 2 → 3, suppose we have <code>A : Set U</code> and <code>S : Rel Nat U</code>, and the statement <code>fcnl_onto_from_nat S A</code> is true. We need to come up with a relation <code>R : Rel U Nat</code> for which we can prove <code>fcnl_one_one_to_nat R A</code>. You might be tempted to try <code>R = invRel S</code>, but there is a problem with this choice: if <code>x ∈ A</code>, there might be multiple natural numbers <code>n</code> such that <code>S n x</code> holds, but we must make sure that there is only one <code>n</code> for which <code>R x n</code> holds. Our solution to this problem will be to define <code>R x n</code> to mean that <code>n</code> is the smallest natural number for which <code>S n x</code> holds. (The proof in <em>HTPI</em> uses a similar idea.) The well-ordering principle guarantees that there always is such a smallest element.</p>
 <div class="sourceCode" id="cb30"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> least_rel_to {U : <span class="kw">Type</span>} (S : Rel Nat U) (x : U) (n : Nat) : <span class="kw">Prop</span> :=</span>
 <span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a>  S n x ∧ ∀ (m : Nat), S m x → n ≤ m</span>
 <span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -965,7 +965,7 @@ $$
 <span id="cb33-13"><a href="#cb33-13" aria-hidden="true" tabindex="-1"></a>  <span class="kw">have</span> h3 : fzn q1.num = fzn q2.num ∧ q1.den = q2.den :=</span>
 <span id="cb33-14"><a href="#cb33-14" aria-hidden="true" tabindex="-1"></a>    Prod.mk.inj h2</span>
 <span id="cb33-15"><a href="#cb33-15" aria-hidden="true" tabindex="-1"></a>  <span class="kw">have</span> h4 : q1.num = q2.num := fzn_one_one _ _ h3.left</span>
-<span id="cb33-16"><a href="#cb33-16" aria-hidden="true" tabindex="-1"></a>  <span class="kw">show</span> q1 = q2 <span class="kw">from</span> Rat.ext q1 q2 h4 h3.right</span>
+<span id="cb33-16"><a href="#cb33-16" aria-hidden="true" tabindex="-1"></a>  <span class="kw">show</span> q1 = q2 <span class="kw">from</span> Rat.ext h4 h3.right</span>
 <span id="cb33-17"><a href="#cb33-17" aria-hidden="true" tabindex="-1"></a>  <span class="kw">done</span></span>
 <span id="cb33-18"><a href="#cb33-18" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb33-19"><a href="#cb33-19" aria-hidden="true" tabindex="-1"></a><span class="kw">lemma</span> image_fqn_unbdd :</span>

@@ -890,7 +890,7 @@ How can we prove `2 ^ n > 0`?  It is often helpful to think about whether there 
 example (m n : Nat) (h : m > 0) : m ^ n > 0 := by ++apply?::
 ```
 
-The `apply?` tactic comes up with `exact Nat.pos_pow_of_pos n h`, and `#check @pos_pow_of_pos` gives the result
+The `apply?` tactic comes up with `exact Nat.pos_pow_of_pos n h`, and `#check @Nat.pos_pow_of_pos` gives the result
 
 ::: {.ind}
 ```
@@ -947,7 +947,7 @@ theorem Example_6_3_1 : ∀ n ≥ 4, fact n > 2 ^ n := by
   done
 ```
 
-The next example in *HTPI* is a proof of one of the laws of exponents:  `a ^ (m + n) = a ^ m * a ^ n`.  Lean's definition of exponentiation with natural number exponents is recursive.  For some reason, the definitions are slightly different for different kinds of bases.  The definitions Lean uses are essentially as follows:
+The next example in *HTPI* is a proof of one of the laws of exponents:  `a ^ (m + n) = a ^ m * a ^ n`.  Lean's definition of exponentiation with natural number exponents is recursive.  The definitions Lean uses are essentially as follows:
 
 ```lean
 --For natural numbers b and k, b ^ k = nat_pow b k:
@@ -960,7 +960,7 @@ def nat_pow (b k : Nat) : Nat :=
 def real_pow (b : Real) (k : Nat) : Real :=
   match k with
     | 0 => 1
-    | n + 1 => b * (real_pow b n)
+    | n + 1 => (real_pow b n) * b
 ```
 
 Let's prove the addition law for exponents:
@@ -994,10 +994,9 @@ theorem Example_6_3_2 : ∀ (a : Real) (m n : Nat),
     show a ^ (m + (n + 1)) = a ^ m * a ^ (n + 1) from
       calc a ^ (m + (n + 1))
         _ = a ^ ((m + n) + 1) := by rw [add_assoc]
-        _ = a * a ^ (m + n) := by rfl
-        _ = a * (a ^ m * a ^ n) := by rw [ih]
-        _ = a ^ m * (a * a ^ n) := by
-              rw [←mul_assoc, mul_comm a, mul_assoc]
+        _ = a ^ (m + n) * a := by rfl
+        _ = (a ^ m * a ^ n) * a := by rw [ih]
+        _ = a ^ m * (a ^ n * a) := by rw [mul_assoc]
         _ = a ^ m * (a ^ (n + 1)) := by rfl
     done
   done
@@ -1116,10 +1115,10 @@ theorem ??Example_6_3_4:: : ∀ (x : Real), x > -1 →
     rewrite [Nat.cast_succ]
     show (1 + x) ^ (n + 1) ≥ 1 + (n + 1) * x from
       calc (1 + x) ^ (n + 1)
-        _ = (1 + x) * (1 + x) ^ n := by rfl
-        _ ≥ (1 + x) * (1 + n * x) := sorry
-        _ = 1 + x + n * x + n * x ^ 2 := by ring
-        _ ≥ 1 + x + n * x + 0 := sorry
+        _ = (1 + x) ^ n * (1 + x) := by rfl
+        _ ≥ (1 + n * x) * (1 + x) := sorry
+        _ = 1 + n * x + x + n * x ^ 2 := by ring
+        _ ≥ 1 + n * x + x + 0 := sorry
         _ = 1 + (n + 1) * x := by ring
     done
   done
@@ -1146,10 +1145,10 @@ theorem ??Example_6_3_4:: : ∀ (x : Real), x > -1 →
     have h2 : 0 ≤ 1 + x := by linarith
     show (1 + x) ^ (n + 1) ≥ 1 + (n + 1) * x from
       calc (1 + x) ^ (n + 1)
-        _ = (1 + x) * (1 + x) ^ n := by rfl
-        _ ≥ (1 + x) * (1 + n * x) := by rel [ih]
-        _ = 1 + x + n * x + n * x ^ 2 := by ring
-        _ ≥ 1 + x + n * x + 0 := sorry
+        _ = (1 + x) ^ n * (1 + x) := by rfl
+        _ ≥ (1 + n * x) * (1 + x) := by rel [ih]
+        _ = 1 + n * x + x + n * x ^ 2 := by ring
+        _ ≥ 1 + n * x + x + 0 := sorry
         _ = 1 + (n + 1) * x := by ring
     done
   done
@@ -1159,8 +1158,9 @@ For the second `sorry` step, we'll need to know that `n * x ^ 2 ≥ 0`.  To prov
 
 ::: {.ind}
 ```
-@sq_nonneg : ∀ {R : Type u_1} [inst : LinearOrderedRing R]
-              (a : R), 0 ≤ a ^ 2
+@sq_nonneg : ∀ {α : Type u_1} [inst : LinearOrderedSemiring α]
+              [inst_1 : ExistsAddOfLE α]
+              (a : α), 0 ≤ a ^ 2
 ```
 :::
 
@@ -1188,10 +1188,10 @@ theorem Example_6_3_4 : ∀ (x : Real), x > -1 →
         _ = 0 := by ring
     show (1 + x) ^ (n + 1) ≥ 1 + (n + 1) * x from
       calc (1 + x) ^ (n + 1)
-        _ = (1 + x) * (1 + x) ^ n := by rfl
-        _ ≥ (1 + x) * (1 + n * x) := by rel [ih]
-        _ = 1 + x + n * x + n * x ^ 2 := by ring
-        _ ≥ 1 + x + n * x + 0 := by rel [h4]
+        _ = (1 + x) ^ n * (1 + x) := by rfl
+        _ ≥ (1 + n * x) * (1 + x) := by rel [ih]
+        _ = 1 + n * x + x + n * x ^ 2 := by ring
+        _ ≥ 1 + n * x + x + 0 := by rel [h4]
         _ = 1 + (n + 1) * x := by ring
     done
   done
@@ -1509,7 +1509,7 @@ theorem well_ord_princ (S : Set Nat) : (∃ (n : Nat), n ∈ S) →
   done
 ```
 
-Section 6.4 of *HTPI* ends with an example of an application of the well ordering principle.  The example gives a proof that $\sqrt{2}$ is irrational.  If $\sqrt{2}$ were rational, then there would be natural numbers $p$ and $q$ such that $q \ne 0$ and $p/q = \sqrt{2}$, and therefore $p^2 = 2q^2$.  So we can prove that $\sqrt{2}$ is irrational by showing that there do not exist natural numbers $p$ and $q$ such that $q \ne 0$ and $p^2 = 2q^2$.
+Section 6.4 of *HTPI* ends with an example of an application of the well-ordering principle.  The example gives a proof that $\sqrt{2}$ is irrational.  If $\sqrt{2}$ were rational, then there would be natural numbers $p$ and $q$ such that $q \ne 0$ and $p/q = \sqrt{2}$, and therefore $p^2 = 2q^2$.  So we can prove that $\sqrt{2}$ is irrational by showing that there do not exist natural numbers $p$ and $q$ such that $q \ne 0$ and $p^2 = 2q^2$.
 
 The proof uses a definition from the exercises of Section 6.1:
 
@@ -1529,7 +1529,7 @@ And we'll need another theorem that we haven't seen before:
 ```
 @mul_left_cancel_iff_of_pos : ∀ {α : Type u_1} {a b c : α}
                     [inst : MulZeroClass α] [inst_1 : PartialOrder α]
-                    [inst_2 : PosMulMonoRev α],
+                    [inst_2 : PosMulReflectLE α],
                     0 < a → (a * b = a * c ↔ b = c)
 ```
 :::
@@ -1549,7 +1549,7 @@ S = {q : Nat | ∃ (p : Nat), p * p = 2 * (q * q) ∧ q ≠ 0}
 ```
 :::
 
-would be nonempty, and therefore, by the well ordering principle, it would have a smallest element.  We then show that this leads to a contradiction.  Here is the proof.
+would be nonempty, and therefore, by the well-ordering principle, it would have a smallest element.  We then show that this leads to a contradiction.  Here is the proof.
 
 ```lean
 theorem Theorem_6_4_5 :

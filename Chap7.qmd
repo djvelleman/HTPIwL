@@ -32,13 +32,13 @@ theorem dvd_a_of_dvd_b_mod {a b d : Nat}
 These theorems tell us that the gcd of `a` and `b` is the same as the gcd of `b` and `a % b`, which suggests that the following recursive definition should compute the gcd of `a` and `b`:
 
 ```lean
-def **gcd:: (a b : Nat) : Nat :=
+def gcd (a b : Nat) : Nat :=
   match b with
     | 0 => a
-    | n + 1 => gcd (n + 1) (a % (n + 1))
+    | n + 1 => **gcd (n + 1) (a % (n + 1))::
 ```
 
-Unfortunately, Lean puts a red squiggle under `gcd`, and it displays in the Infoview a long error message that begins `fail to show termination`.  What is Lean complaining about?
+Unfortunately, Lean puts a red squiggle under `gcd (n + 1) (a % (n + 1))`, and it displays in the Infoview a long error message that begins `fail to show termination`.  What is Lean complaining about?
 
 The problem is that recursive definitions are dangerous.  To understand the danger, consider the following recursive definition:
 
@@ -58,17 +58,17 @@ Clearly this calculation will go on forever and will never produce an answer.  S
 
 Lean insists that recursive definitions must avoid such nonterminating calculations.  Why did it accept all of our previous recursive definitions?  The reason is that in each case, the definition of the value of the function at a natural number `n` referred only to values of the function at numbers smaller than `n`.  Since a decreasing list of natural numbers cannot go on forever, such definitions lead to calculations that are guaranteed to terminate.
 
-What about our recursive definition of `gcd a b`?  This function has two arguments, `a` and `b`, and when `b = n + 1`, the definition asks us to compute `gcd (n + 1) (a % (n + 1))`.  The first argument here could actually be larger than the first argument in the value we are trying to compute, `gcd a b`.  But the second argument will always be smaller, and that will suffice to guarantee that the calculation terminates.  We can tell Lean to focus on the second argument by adding a `termination_by` clause to the end of our recursive definition:
+What about our recursive definition of `gcd a b`?  This function has two arguments, `a` and `b`, and when `b = n + 1`, the definition asks us to compute `gcd (n + 1) (a % (n + 1))`.  The first argument here could actually be larger than the first argument in the value we are trying to compute, `gcd a b`.  But the second argument will always be smaller, and that will suffice to guarantee that the calculation terminates.  We can tell Lean to focus on the second argument `b` by adding a `termination_by` clause to the end of our recursive definition:
 
 ```lean
 def gcd (a b : Nat) : Nat :=
   match b with
     | 0 => a
     | n + 1 => **gcd (n + 1) (a % (n + 1))::
-  termination_by gcd a b => b
+  termination_by b
 ```
 
-Unfortunately, Lean still isn't satisfied, but the error message this time is more helpful.  The message says that Lean failed to prove termination, and at the end of the message it says that the goal it failed to prove is `a % (n + 1) < Nat.succ n`.  Here `Nat.succ n` denotes the successor of `n`---that is, `n + 1`---so Lean was trying to prove that `a % (n + 1) < n + 1`, which is precisely what is needed to show that the second argument of `gcd (n + 1) (a % (n + 1))` is smaller than the second argument of `gcd a b` when `b = n + 1`.  We'll need to provide a proof of this goal to convince Lean to accept our recursive definition.  Fortunately, it's not hard to prove:
+Unfortunately, Lean still isn't satisfied, but the error message this time is more helpful.  The message says that Lean failed to prove termination, and at the end of the message it says that the goal it failed to prove is `a % (n + 1) < n + 1`, which is precisely what is needed to show that the second argument of `gcd (n + 1) (a % (n + 1))` is smaller than the second argument of `gcd a b` when `b = n + 1`.  We'll need to provide a proof of this goal to convince Lean to accept our recursive definition.  Fortunately, it's not hard to prove:
 
 ```lean
 lemma mod_succ_lt (a n : Nat) : a % (n + 1) < n + 1 := by
@@ -86,7 +86,7 @@ def gcd (a b : Nat) : Nat :=
     | n + 1 =>
       have : a % (n + 1) < n + 1 := mod_succ_lt a n
       gcd (n + 1) (a % (n + 1))
-  termination_by gcd a b => b
+  termination_by b
 ```
 
 Notice that in the `have` expression, we have not bothered to specify an identifier for the assertion being proven, since we never need to refer to it.  Let's try out our `gcd` function:
@@ -183,10 +183,11 @@ mutual
   def gcd_c1 (a b : Nat) : Int :=
     match b with
       | 0 => 1
-      | n + 1 => 
+      | n + 1 =>
         have : a % (n + 1) < n + 1 := mod_succ_lt a n
         gcd_c2 (n + 1) (a % (n + 1))
-          --Corresponds to s = t' in (*)
+          --Corresponds to s = t'
+    termination_by b
 
   def gcd_c2 (a b : Nat) : Int :=
     match b with
@@ -195,11 +196,9 @@ mutual
         have : a % (n + 1) < n + 1 := mod_succ_lt a n
         gcd_c1 (n + 1) (a % (n + 1)) -
           (gcd_c2 (n + 1) (a % (n + 1))) * ↑(a / (n + 1))
-          --Corresponds to t = s' - t'q in (*)
+          --Corresponds to t = s' - t'q
+    termination_by b
 end
-  termination_by
-    gcd_c1 a b => b
-    gcd_c2 a b => b
 ```
 
 Notice that in the definition of `gcd_c2`, the quotient `a / (n + 1)` is computed using natural-number division, but it is then coerced to be an integer so that it can be multiplied by the integer `gcd_c2 (n + 1) (a % (n + 1))`.
@@ -265,12 +264,12 @@ We can try out the functions `gcd_c1` and `gcd_c2` as follows:
   --Note 6 * 672 - 25 * 161 = 4032 - 4025 = 7 = gcd 672 161
 ```
 
-Finally, we turn to Theorem 7.1.6 in *HTPI*, which expresses one of the senses in which `gcd a b` is the *greatest* common divisor of `a` and `b`.  Our proof follows the strategy of the proof in *HTPI*, with one additional step: we begin by using the theorem `Int.coe_nat_dvd` to change the goal from `d ∣ gcd a b` to `↑d ∣ ↑(gcd a b)` (where the coercions are from `Nat` to `Int`), so that the rest of the proof can work with integer algebra rather than natural-number algebra.
+Finally, we turn to Theorem 7.1.6 in *HTPI*, which expresses one of the senses in which `gcd a b` is the *greatest* common divisor of `a` and `b`.  Our proof follows the strategy of the proof in *HTPI*, with one additional step: we begin by using the theorem `Int.natCast_dvd_natCast` to change the goal from `d ∣ gcd a b` to `↑d ∣ ↑(gcd a b)` (where the coercions are from `Nat` to `Int`), so that the rest of the proof can work with integer algebra rather than natural-number algebra.
 
 ```lean
 theorem Theorem_7_1_6 {d a b : Nat} (h1 : d ∣ a) (h2 : d ∣ b) :
     d ∣ gcd a b := by
-  rewrite [←Int.coe_nat_dvd]    --Goal : ↑d ∣ ↑(gcd a b)
+  rewrite [←Int.natCast_dvd_natCast]    --Goal : ↑d ∣ ↑(gcd a b)
   set s : Int := gcd_c1 a b
   set t : Int := gcd_c2 a b
   have h3 : s * ↑a + t * ↑b = ↑(gcd a b) := gcd_lin_comb b a
@@ -408,7 +407,7 @@ lemma exists_prime_factor : ∀ (n : Nat), 2 ≤ n →
   done
 ```
 
-Of course, by the well ordering principle, an immediate consequence of this lemma is that every number greater than or equal to 2 has a *smallest* prime factor.
+Of course, by the well-ordering principle, an immediate consequence of this lemma is that every number greater than or equal to 2 has a *smallest* prime factor.
 
 ```lean
 lemma exists_least_prime_factor {n : Nat} (h : 2 ≤ n) :
@@ -535,7 +534,7 @@ Before we can prove the existence of prime factorizations, we will need one more
                       List.length (a :: as) = Nat.succ (List.length as)
 
 @List.exists_cons_of_ne_nil : ∀ {α : Type u_1} {l : List α},
-                      l ≠ [] → ∃ (b : α), ∃ (L : List α), l = b :: L
+                      l ≠ [] → ∃ (b : α) (L : List α), l = b :: L
 ```
 :::
 
@@ -704,7 +703,7 @@ def rel_prime (a b : Nat) : Prop := gcd a b = 1
 
 theorem Theorem_7_2_2 {a b c : Nat}
     (h1 : c ∣ a * b) (h2 : rel_prime a c) : c ∣ b := by
-  rewrite [←Int.coe_nat_dvd]  --Goal : ↑c ∣ ↑b
+  rewrite [←Int.natCast_dvd_natCast]  --Goal : ↑c ∣ ↑b
   define at h1; define at h2; define
   obtain (j : Nat) (h3 : a * b = c * j) from h1
   set s : Int := gcd_c1 a c
@@ -2085,7 +2084,7 @@ We will also need to use Lemma 7.4.5 from *HTPI*.  To prove that lemma in Lean, 
 
 ::: {.ind}
 ```
-@Int.coe_nat_dvd_left : ∀ {n : ℕ} {z : ℤ}, ↑n ∣ z ↔ n ∣ Int.natAbs z
+@Int.natCast_dvd : ∀ {n : ℤ} {m : ℕ}, ↑m ∣ n ↔ m ∣ Int.natAbs n
 
 Int.natAbs_mul : ∀ (a b : ℤ),
                   Int.natAbs (a * b) = Int.natAbs a * Int.natAbs b
@@ -2099,9 +2098,9 @@ With the help of these theorems, our extended version of `Theorem_7_2_2` follows
 ```lean
 theorem Theorem_7_2_2_Int {a c : Nat} {b : Int}
     (h1 : ↑c ∣ ↑a * b) (h2 : rel_prime a c) : ↑c ∣ b := by
-  rewrite [Int.coe_nat_dvd_left, Int.natAbs_mul,
+  rewrite [Int.natCast_dvd, Int.natAbs_mul,
     Int.natAbs_ofNat] at h1        --h1 : c ∣ a * Int.natAbs b
-  rewrite [Int.coe_nat_dvd_left]   --Goal : c ∣ Int.natAbs b
+  rewrite [Int.natCast_dvd]        --Goal : c ∣ Int.natAbs b
   show c ∣ Int.natAbs b from Theorem_7_2_2 h1 h2
   done
 ```
@@ -2181,10 +2180,9 @@ lemma Lemma_7_5_1 {p e d m c s : Nat} {t : Int}
       ring
       done
     have h8 : [m]_p = [0]_p := (cc_eq_iff_congr _ _ _).rtl h7
-    have h9 : 0 < (e * d) := by
+    have h9 : e * d ≠ 0 := by
       rewrite [h2]
-      have h10 : 0 ≤ (p - 1) * s := Nat.zero_le _
-      linarith
+      show (p - 1) * s + 1 ≠ 0 from Nat.add_one_ne_zero _
       done
     have h10 : (0 : Int) ^ (e * d) = 0 := zero_pow h9
     have h11 : [c ^ d]_p = [m]_p :=
@@ -2196,7 +2194,7 @@ lemma Lemma_7_5_1 {p e d m c s : Nat} {t : Int}
         _ = [0 ^ (e * d)]_p := Exercise_7_4_5_Int _ _ _
         _ = [0]_p := by rw [h10]
         _ = [m]_p := by rw [h8]
-    show c ^ d ≡ m (MOD p)  from (cc_eq_iff_congr _ _ _).ltr h11
+    show c ^ d ≡ m (MOD p) from (cc_eq_iff_congr _ _ _).ltr h11
     done
   · -- Case 2. h6 : ¬p ∣ m
     have h7 : rel_prime m p := rel_prime_of_prime_not_dvd h1 h6
@@ -2216,7 +2214,7 @@ lemma Lemma_7_5_1 {p e d m c s : Nat} {t : Int}
         _ = [1]_p * [m]_p := by rw [h10]
         _ = [m]_p * [1]_p := by ring
         _ = [m]_p := Theorem_7_3_6_7 _
-    show c ^ d ≡ m (MOD p)  from (cc_eq_iff_congr _ _ _).ltr h11
+    show c ^ d ≡ m (MOD p) from (cc_eq_iff_congr _ _ _).ltr h11
     done
   done
 ```

@@ -496,7 +496,7 @@ You may plug in any value of type `U`, say `a`, for `x` and use this given to co
 
 This strategy says that if you have `h : ∀ (x : U), P x` and `a : U`, then you can infer `P a`.  Indeed, in this situation Lean will recognize `h a` as a proof of `P a`.  For example, you can write `have h' : P a := h a` in a Lean tactic-mode proof, and Lean will add `h' : P a` to the tactic state.  Note that `a` here need not be simply a variable; it can be any expression denoting an object of type `U`.
 
-Let's try these strategies out in a Lean proof.  In Lean, if you don't want to give a theorem a name, you can simply call it an `example` rather than a `theorem`, and then there is no need to give it a name.  In the following theorem, you can enter the symbol `∀` by typing `\forall` or `\all`, and you can enter `∃` by typing `\exists` or `\ex`.
+Let's try these strategies out in a Lean proof.  In Lean, if you don't want to give a theorem a name, you can simply call it an `example` rather than a `theorem`, and then there is no need to give it a name.  In the following example, you can enter the symbol `∀` by typing `\forall` or `\all`, and you can enter `∃` by typing `\exists` or `\ex`.
 
 ::: {.inout}
 ::: {.inpt}
@@ -657,7 +657,7 @@ Our next example is a theorem of set theory.  You already know how to type a few
 | `∪` | `\union` or `\cup` |
 | `∩` | `\inter` or `\cap` |
 | `\` | `\\` |
-| `△` | `\bigtriangleup` |
+| `∆` | `\symmdiff` |
 | `∅` | `\emptyset` |
 | `𝒫` | `\powerset` |
 :::
@@ -3135,7 +3135,7 @@ theorem Exercise_3_5_18 (U : Type) (F G H : Set (Set U))
 ::: {.numex arguments="7"}
 ```lean
 theorem Exercise_3_5_24a (U : Type) (A B C : Set U) :
-    (A ∪ B) △ C ⊆ (A △ C) ∪ (B △ C) := sorry
+    (A ∪ B) ∆ C ⊆ (A ∆ C) ∪ (B ∆ C) := sorry
 ```
 :::
 
@@ -4007,15 +4007,15 @@ theorem union_comm {U : Type} (X Y : Set U) :
   done
 ```
 
-It takes a few seconds for Lean to search its library of theorems, but eventually a blue squiggle appears under `apply?`, indicating that the tactic has produced an answer.  You will find the answer in the Infoview pane:  `Try this: exact or_comm`.  The word `exact` is the name of a tactic that we have not discussed; it is a shorthand for `show _ from`, where the blank gets filled in with the goal.  Thus, you can think of `apply?`'s answer as a shortened form of the tactic
+It takes a few seconds for Lean to search its library of theorems, but eventually a blue squiggle appears under `apply?`, indicating that the tactic has produced an answer.  You will find the answer in the Infoview pane:  `Try this: exact Or.comm`.  The word `exact` is the name of a tactic that we have not discussed; it is a shorthand for `show _ from`, where the blank gets filled in with the goal.  Thus, you can think of `apply?`'s answer as a shortened form of the tactic
 
 ::: {.ind}
 ```
-show x ∈ X ∨ x ∈ Y ↔ x ∈ Y ∨ x ∈ X from or_comm
+show x ∈ X ∨ x ∈ Y ↔ x ∈ Y ∨ x ∈ X from Or.comm
 ```
 :::
 
-Of course, this is precisely the step we used earlier to complete the proof.
+The command `#check @Or.comm` will tell you that `Or.comm` is just an alternative name for the theorem `or_comm`.  So the step suggested by the `apply?` tactic is essentially the same as the step we used earlier to complete the proof.
 
 Usually your proof will be more readable if you use the `show` tactic to state explicitly the goal that is being proven.  This also gives Lean a chance to correct you if you have become confused about what goal you are proving.  But sometimes---for example, if the goal is very long---it is convenient to use the `exact` tactic instead.  You might think of `exact` as meaning "the following is a term-mode proof that is exactly what is needed to prove the goal."
 
@@ -4039,6 +4039,7 @@ theorem Exercise_3_5_9 (U : Type) (A B : Set U)
     (h1 : 𝒫 (A ∪ B) = 𝒫 A ∪ 𝒫 B) : A ⊆ B ∨ B ⊆ A := by
   --Hint:  Start like this:
   have h2 : A ∪ B ∈ 𝒫 (A ∪ B) := sorry
+  
   **done::
 ```
 :::

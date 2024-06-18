@@ -238,7 +238,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div class="hidden">
 $$
 \newcommand{\setmin}{\mathbin{\backslash}}
-\newcommand{\symmdiff}{\bigtriangleup}
+\newcommand{\symmdiff}{\mathbin{∆}}
 $$
 </div>
 
@@ -282,11 +282,11 @@ $$
 <span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> dvd_a_of_dvd_b_mod {a b d : Nat}</span>
 <span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>    (h1 : d ∣ b) (h2 : d ∣ (a % b)) : d ∣ a := <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>These theorems tell us that the gcd of <code>a</code> and <code>b</code> is the same as the gcd of <code>b</code> and <code>a % b</code>, which suggests that the following recursive definition should compute the gcd of <code>a</code> and <code>b</code>:</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> <span class="sc">**</span><span class="er">gcd</span><span class="sc">::</span> (a b : Nat) : Nat :=</span>
+<div class="sourceCode" id="cb2"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> gcd (a b : Nat) : Nat :=</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>  <span class="kw">match</span> b <span class="kw">with</span></span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>    | 0 =&gt; a</span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>    | n + 1 =&gt; gcd (n + 1) (a % (n + 1))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>Unfortunately, Lean puts a red squiggle under <code>gcd</code>, and it displays in the Infoview a long error message that begins <code>fail to show termination</code>. What is Lean complaining about?</p>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>    | n + 1 =&gt; <span class="sc">**</span><span class="er">gcd (n + 1) (a % (n + 1))</span><span class="sc">::</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Unfortunately, Lean puts a red squiggle under <code>gcd (n + 1) (a % (n + 1))</code>, and it displays in the Infoview a long error message that begins <code>fail to show termination</code>. What is Lean complaining about?</p>
 <p>The problem is that recursive definitions are dangerous. To understand the danger, consider the following recursive definition:</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> loop (n : Nat) : Nat := loop (n + 1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>Suppose we try to use this definition to compute <code>loop 3</code>. The definition would lead us to perform the following calculation:</p>
@@ -295,13 +295,13 @@ $$
 </div>
 <p>Clearly this calculation will go on forever and will never produce an answer. So the definition of <code>loop</code> does not actually succeed in defining a function from <code>Nat</code> to <code>Nat</code>.</p>
 <p>Lean insists that recursive definitions must avoid such nonterminating calculations. Why did it accept all of our previous recursive definitions? The reason is that in each case, the definition of the value of the function at a natural number <code>n</code> referred only to values of the function at numbers smaller than <code>n</code>. Since a decreasing list of natural numbers cannot go on forever, such definitions lead to calculations that are guaranteed to terminate.</p>
-<p>What about our recursive definition of <code>gcd a b</code>? This function has two arguments, <code>a</code> and <code>b</code>, and when <code>b = n + 1</code>, the definition asks us to compute <code>gcd (n + 1) (a % (n + 1))</code>. The first argument here could actually be larger than the first argument in the value we are trying to compute, <code>gcd a b</code>. But the second argument will always be smaller, and that will suffice to guarantee that the calculation terminates. We can tell Lean to focus on the second argument by adding a <code>termination_by</code> clause to the end of our recursive definition:</p>
+<p>What about our recursive definition of <code>gcd a b</code>? This function has two arguments, <code>a</code> and <code>b</code>, and when <code>b = n + 1</code>, the definition asks us to compute <code>gcd (n + 1) (a % (n + 1))</code>. The first argument here could actually be larger than the first argument in the value we are trying to compute, <code>gcd a b</code>. But the second argument will always be smaller, and that will suffice to guarantee that the calculation terminates. We can tell Lean to focus on the second argument <code>b</code> by adding a <code>termination_by</code> clause to the end of our recursive definition:</p>
 <div class="sourceCode" id="cb5"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> gcd (a b : Nat) : Nat :=</span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  <span class="kw">match</span> b <span class="kw">with</span></span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>    | 0 =&gt; a</span>
 <span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>    | n + 1 =&gt; <span class="sc">**</span><span class="er">gcd (n + 1) (a % (n + 1))</span><span class="sc">::</span></span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>  <span class="kw">termination_by</span> gcd a b =&gt; b</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>Unfortunately, Lean still isn’t satisfied, but the error message this time is more helpful. The message says that Lean failed to prove termination, and at the end of the message it says that the goal it failed to prove is <code>a % (n + 1) &lt; Nat.succ n</code>. Here <code>Nat.succ n</code> denotes the successor of <code>n</code>—that is, <code>n + 1</code>—so Lean was trying to prove that <code>a % (n + 1) &lt; n + 1</code>, which is precisely what is needed to show that the second argument of <code>gcd (n + 1) (a % (n + 1))</code> is smaller than the second argument of <code>gcd a b</code> when <code>b = n + 1</code>. We’ll need to provide a proof of this goal to convince Lean to accept our recursive definition. Fortunately, it’s not hard to prove:</p>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>  <span class="kw">termination_by</span> b</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Unfortunately, Lean still isn’t satisfied, but the error message this time is more helpful. The message says that Lean failed to prove termination, and at the end of the message it says that the goal it failed to prove is <code>a % (n + 1) &lt; n + 1</code>, which is precisely what is needed to show that the second argument of <code>gcd (n + 1) (a % (n + 1))</code> is smaller than the second argument of <code>gcd a b</code> when <code>b = n + 1</code>. We’ll need to provide a proof of this goal to convince Lean to accept our recursive definition. Fortunately, it’s not hard to prove:</p>
 <div class="sourceCode" id="cb6"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="kw">lemma</span> mod_succ_lt (a n : Nat) : a % (n + 1) &lt; n + 1 := <span class="kw">by</span></span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  <span class="kw">have</span> h : n + 1 &gt; 0 := Nat.succ_pos n</span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>  <span class="kw">show</span> a % (n + 1) &lt; n + 1 <span class="kw">from</span> Nat.mod_lt a h</span>
@@ -313,7 +313,7 @@ $$
 <span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>    | n + 1 =&gt;</span>
 <span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>      <span class="kw">have</span> : a % (n + 1) &lt; n + 1 := mod_succ_lt a n</span>
 <span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>      gcd (n + 1) (a % (n + 1))</span>
-<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>  <span class="kw">termination_by</span> gcd a b =&gt; b</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>  <span class="kw">termination_by</span> b</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>Notice that in the <code>have</code> expression, we have not bothered to specify an identifier for the assertion being proven, since we never need to refer to it. Let’s try out our <code>gcd</code> function:</p>
 <div class="sourceCode" id="cb8"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="sc">++</span><span class="do">#eval</span><span class="sc">::</span> gcd 672 161    <span class="co">--Answer: 7.  Note 672 = 7 * 96 and 161 = 7 * 23.</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>To establish the main properties of <code>gcd a b</code> we’ll need several lemmas. We prove some of them and leave others as exercises.</p>
@@ -378,23 +378,22 @@ s = t', \qquad t = s' - t'q.
 <span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>  <span class="kw">def</span> gcd_c1 (a b : Nat) : Int :=</span>
 <span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>    <span class="kw">match</span> b <span class="kw">with</span></span>
 <span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>      | 0 =&gt; 1</span>
-<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>      | n + 1 =&gt; </span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>      | n + 1 =&gt;</span>
 <span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>        <span class="kw">have</span> : a % (n + 1) &lt; n + 1 := mod_succ_lt a n</span>
 <span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>        gcd_c2 (n + 1) (a % (n + 1))</span>
-<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a>          <span class="co">--Corresponds to s = t' in (*)</span></span>
-<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a>  <span class="kw">def</span> gcd_c2 (a b : Nat) : Int :=</span>
-<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a>    <span class="kw">match</span> b <span class="kw">with</span></span>
-<span id="cb13-12"><a href="#cb13-12" aria-hidden="true" tabindex="-1"></a>      | 0 =&gt; 0</span>
-<span id="cb13-13"><a href="#cb13-13" aria-hidden="true" tabindex="-1"></a>      | n + 1 =&gt;</span>
-<span id="cb13-14"><a href="#cb13-14" aria-hidden="true" tabindex="-1"></a>        <span class="kw">have</span> : a % (n + 1) &lt; n + 1 := mod_succ_lt a n</span>
-<span id="cb13-15"><a href="#cb13-15" aria-hidden="true" tabindex="-1"></a>        gcd_c1 (n + 1) (a % (n + 1)) -</span>
-<span id="cb13-16"><a href="#cb13-16" aria-hidden="true" tabindex="-1"></a>          (gcd_c2 (n + 1) (a % (n + 1))) * ↑(a / (n + 1))</span>
-<span id="cb13-17"><a href="#cb13-17" aria-hidden="true" tabindex="-1"></a>          <span class="co">--Corresponds to t = s' - t'q in (*)</span></span>
-<span id="cb13-18"><a href="#cb13-18" aria-hidden="true" tabindex="-1"></a><span class="kw">end</span></span>
-<span id="cb13-19"><a href="#cb13-19" aria-hidden="true" tabindex="-1"></a>  <span class="kw">termination_by</span></span>
-<span id="cb13-20"><a href="#cb13-20" aria-hidden="true" tabindex="-1"></a>    gcd_c1 a b =&gt; b</span>
-<span id="cb13-21"><a href="#cb13-21" aria-hidden="true" tabindex="-1"></a>    gcd_c2 a b =&gt; b</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a>          <span class="co">--Corresponds to s = t'</span></span>
+<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a>    <span class="kw">termination_by</span> b</span>
+<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a>  <span class="kw">def</span> gcd_c2 (a b : Nat) : Int :=</span>
+<span id="cb13-12"><a href="#cb13-12" aria-hidden="true" tabindex="-1"></a>    <span class="kw">match</span> b <span class="kw">with</span></span>
+<span id="cb13-13"><a href="#cb13-13" aria-hidden="true" tabindex="-1"></a>      | 0 =&gt; 0</span>
+<span id="cb13-14"><a href="#cb13-14" aria-hidden="true" tabindex="-1"></a>      | n + 1 =&gt;</span>
+<span id="cb13-15"><a href="#cb13-15" aria-hidden="true" tabindex="-1"></a>        <span class="kw">have</span> : a % (n + 1) &lt; n + 1 := mod_succ_lt a n</span>
+<span id="cb13-16"><a href="#cb13-16" aria-hidden="true" tabindex="-1"></a>        gcd_c1 (n + 1) (a % (n + 1)) -</span>
+<span id="cb13-17"><a href="#cb13-17" aria-hidden="true" tabindex="-1"></a>          (gcd_c2 (n + 1) (a % (n + 1))) * ↑(a / (n + 1))</span>
+<span id="cb13-18"><a href="#cb13-18" aria-hidden="true" tabindex="-1"></a>          <span class="co">--Corresponds to t = s' - t'q</span></span>
+<span id="cb13-19"><a href="#cb13-19" aria-hidden="true" tabindex="-1"></a>    <span class="kw">termination_by</span> b</span>
+<span id="cb13-20"><a href="#cb13-20" aria-hidden="true" tabindex="-1"></a><span class="kw">end</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>Notice that in the definition of <code>gcd_c2</code>, the quotient <code>a / (n + 1)</code> is computed using natural-number division, but it is then coerced to be an integer so that it can be multiplied by the integer <code>gcd_c2 (n + 1) (a % (n + 1))</code>.</p>
 <p>Our main theorem about these functions is that they give the coefficients needed to write <code>gcd a b</code> as a linear combination of <code>a</code> and <code>b</code>. As usual, stating a few lemmas first helps with the proof. We leave the proofs of two of them as exercises for you (hint: imitate the proof of <code>gcd_nonzero</code> above).</p>
 <div class="sourceCode" id="cb14"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="kw">lemma</span> gcd_c1_base (a : Nat) : gcd_c1 a 0 = 1 := <span class="kw">by</span> <span class="kw">rfl</span></span>
@@ -444,10 +443,10 @@ s = t', \qquad t = s' - t'q.
 <div class="sourceCode" id="cb16"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="sc">++</span><span class="do">#eval</span><span class="sc">::</span> gcd_c1 672 161  <span class="co">--Answer: 6</span></span>
 <span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="sc">++</span><span class="do">#eval</span><span class="sc">::</span> gcd_c2 672 161  <span class="co">--Answer: -25</span></span>
 <span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>  <span class="co">--Note 6 * 672 - 25 * 161 = 4032 - 4025 = 7 = gcd 672 161</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>Finally, we turn to Theorem 7.1.6 in <em>HTPI</em>, which expresses one of the senses in which <code>gcd a b</code> is the <em>greatest</em> common divisor of <code>a</code> and <code>b</code>. Our proof follows the strategy of the proof in <em>HTPI</em>, with one additional step: we begin by using the theorem <code>Int.coe_nat_dvd</code> to change the goal from <code>d ∣ gcd a b</code> to <code>↑d ∣ ↑(gcd a b)</code> (where the coercions are from <code>Nat</code> to <code>Int</code>), so that the rest of the proof can work with integer algebra rather than natural-number algebra.</p>
+<p>Finally, we turn to Theorem 7.1.6 in <em>HTPI</em>, which expresses one of the senses in which <code>gcd a b</code> is the <em>greatest</em> common divisor of <code>a</code> and <code>b</code>. Our proof follows the strategy of the proof in <em>HTPI</em>, with one additional step: we begin by using the theorem <code>Int.natCast_dvd_natCast</code> to change the goal from <code>d ∣ gcd a b</code> to <code>↑d ∣ ↑(gcd a b)</code> (where the coercions are from <code>Nat</code> to <code>Int</code>), so that the rest of the proof can work with integer algebra rather than natural-number algebra.</p>
 <div class="sourceCode" id="cb17"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Theorem_7_1_6 {d a b : Nat} (h1 : d ∣ a) (h2 : d ∣ b) :</span>
 <span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>    d ∣ gcd a b := <span class="kw">by</span></span>
-<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>  <span class="kw">rewrite</span> [←Int.coe_nat_dvd]    <span class="co">--Goal : ↑d ∣ ↑(gcd a b)</span></span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>  <span class="kw">rewrite</span> [←Int.natCast_dvd_natCast]    <span class="co">--Goal : ↑d ∣ ↑(gcd a b)</span></span>
 <span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>  <span class="kw">set</span> s : Int := gcd_c1 a b</span>
 <span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>  <span class="kw">set</span> t : Int := gcd_c2 a b</span>
 <span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>  <span class="kw">have</span> h3 : s * ↑a + t * ↑b = ↑(gcd a b) := gcd_lin_comb b a</span>
@@ -555,7 +554,7 @@ s = t', \qquad t = s' - t'q.
 <span id="cb26-44"><a href="#cb26-44" aria-hidden="true" tabindex="-1"></a>    <span class="kw">show</span> p ∣ n <span class="kw">from</span> dvd_trans h7.right h8</span>
 <span id="cb26-45"><a href="#cb26-45" aria-hidden="true" tabindex="-1"></a>    <span class="kw">done</span></span>
 <span id="cb26-46"><a href="#cb26-46" aria-hidden="true" tabindex="-1"></a>  <span class="kw">done</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>Of course, by the well ordering principle, an immediate consequence of this lemma is that every number greater than or equal to 2 has a <em>smallest</em> prime factor.</p>
+<p>Of course, by the well-ordering principle, an immediate consequence of this lemma is that every number greater than or equal to 2 has a <em>smallest</em> prime factor.</p>
 <div class="sourceCode" id="cb27"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="kw">lemma</span> exists_least_prime_factor {n : Nat} (h : 2 ≤ n) :</span>
 <span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>    ∃ (p : Nat), prime_factor p n ∧</span>
 <span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a>    ∀ (q : Nat), prime_factor q n → p ≤ q := <span class="kw">by</span></span>
@@ -659,7 +658,7 @@ s = t', \qquad t = s' - t'q.
                       List.length (a :: as) = Nat.succ (List.length as)
 
 @List.exists_cons_of_ne_nil : ∀ {α : Type u_1} {l : List α},
-                      l ≠ [] → ∃ (b : α), ∃ (L : List α), l = b :: L</code></pre>
+                      l ≠ [] → ∃ (b : α) (L : List α), l = b :: L</code></pre>
 </div>
 <p>And we’ll need one more lemma, which follows from the three theorems above; we leave the proof as an exercise for you:</p>
 <div class="sourceCode" id="cb33"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="kw">lemma</span> exists_cons_of_length_eq_succ {A : <span class="kw">Type</span>}</span>
@@ -812,7 +811,7 @@ s = t', \qquad t = s' - t'q.
 <span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb36-3"><a href="#cb36-3" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Theorem_7_2_2 {a b c : Nat}</span>
 <span id="cb36-4"><a href="#cb36-4" aria-hidden="true" tabindex="-1"></a>    (h1 : c ∣ a * b) (h2 : rel_prime a c) : c ∣ b := <span class="kw">by</span></span>
-<span id="cb36-5"><a href="#cb36-5" aria-hidden="true" tabindex="-1"></a>  <span class="kw">rewrite</span> [←Int.coe_nat_dvd]  <span class="co">--Goal : ↑c ∣ ↑b</span></span>
+<span id="cb36-5"><a href="#cb36-5" aria-hidden="true" tabindex="-1"></a>  <span class="kw">rewrite</span> [←Int.natCast_dvd_natCast]  <span class="co">--Goal : ↑c ∣ ↑b</span></span>
 <span id="cb36-6"><a href="#cb36-6" aria-hidden="true" tabindex="-1"></a>  <span class="kw">define</span> <span class="kw">at</span> h1; <span class="kw">define</span> <span class="kw">at</span> h2; <span class="kw">define</span></span>
 <span id="cb36-7"><a href="#cb36-7" aria-hidden="true" tabindex="-1"></a>  <span class="kw">obtain</span> (j : Nat) (h3 : a * b = c * j) <span class="kw">from</span> h1</span>
 <span id="cb36-8"><a href="#cb36-8" aria-hidden="true" tabindex="-1"></a>  <span class="kw">set</span> s : Int := gcd_c1 a c</span>
@@ -1871,7 +1870,7 @@ Int.emod_nonneg : ∀ (a : ℤ) {b : ℤ}, b ≠ 0 → 0 ≤ a % b</code></pre>
 <span id="cb120-12"><a href="#cb120-12" aria-hidden="true" tabindex="-1"></a>  <span class="kw">done</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>We will also need to use Lemma 7.4.5 from <em>HTPI</em>. To prove that lemma in Lean, we will use <code>Theorem_7_2_2</code>, which says that for natural numbers <code>a</code>, <code>b</code>, and <code>c</code>, if <code>c ∣ a * b</code> and <code>c</code> and <code>a</code> are relatively prime, then <code>c ∣ b</code>. But we will need to extend the theorem to allow <code>b</code> to be an integer rather than a natural number. To prove this extension, we use the Lean function <code>Int.natAbs : Int → Nat</code>, which computes the absolute value of an integer. Lean knows several theorems about this function:</p>
 <div class="ind">
-<pre><code>@Int.coe_nat_dvd_left : ∀ {n : ℕ} {z : ℤ}, ↑n ∣ z ↔ n ∣ Int.natAbs z
+<pre><code>@Int.natCast_dvd : ∀ {n : ℤ} {m : ℕ}, ↑m ∣ n ↔ m ∣ Int.natAbs n
 
 Int.natAbs_mul : ∀ (a b : ℤ),
                   Int.natAbs (a * b) = Int.natAbs a * Int.natAbs b
@@ -1881,9 +1880,9 @@ Int.natAbs_ofNat : ∀ (n : ℕ), Int.natAbs ↑n = n</code></pre>
 <p>With the help of these theorems, our extended version of <code>Theorem_7_2_2</code> follows easily from the original version:</p>
 <div class="sourceCode" id="cb122"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb122-1"><a href="#cb122-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Theorem_7_2_2_Int {a c : Nat} {b : Int}</span>
 <span id="cb122-2"><a href="#cb122-2" aria-hidden="true" tabindex="-1"></a>    (h1 : ↑c ∣ ↑a * b) (h2 : rel_prime a c) : ↑c ∣ b := <span class="kw">by</span></span>
-<span id="cb122-3"><a href="#cb122-3" aria-hidden="true" tabindex="-1"></a>  <span class="kw">rewrite</span> [Int.coe_nat_dvd_left, Int.natAbs_mul,</span>
+<span id="cb122-3"><a href="#cb122-3" aria-hidden="true" tabindex="-1"></a>  <span class="kw">rewrite</span> [Int.natCast_dvd, Int.natAbs_mul,</span>
 <span id="cb122-4"><a href="#cb122-4" aria-hidden="true" tabindex="-1"></a>    Int.natAbs_ofNat] <span class="kw">at</span> h1        <span class="co">--h1 : c ∣ a * Int.natAbs b</span></span>
-<span id="cb122-5"><a href="#cb122-5" aria-hidden="true" tabindex="-1"></a>  <span class="kw">rewrite</span> [Int.coe_nat_dvd_left]   <span class="co">--Goal : c ∣ Int.natAbs b</span></span>
+<span id="cb122-5"><a href="#cb122-5" aria-hidden="true" tabindex="-1"></a>  <span class="kw">rewrite</span> [Int.natCast_dvd]        <span class="co">--Goal : c ∣ Int.natAbs b</span></span>
 <span id="cb122-6"><a href="#cb122-6" aria-hidden="true" tabindex="-1"></a>  <span class="kw">show</span> c ∣ Int.natAbs b <span class="kw">from</span> Theorem_7_2_2 h1 h2</span>
 <span id="cb122-7"><a href="#cb122-7" aria-hidden="true" tabindex="-1"></a>  <span class="kw">done</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>With that preparation, we can now prove <code>Lemma_7_4_5</code>.</p>
@@ -1951,44 +1950,43 @@ Int.natAbs_ofNat : ∀ (n : ℕ), Int.natAbs ↑n = n</code></pre>
 <span id="cb125-14"><a href="#cb125-14" aria-hidden="true" tabindex="-1"></a>      <span class="kw">ring</span></span>
 <span id="cb125-15"><a href="#cb125-15" aria-hidden="true" tabindex="-1"></a>      <span class="kw">done</span></span>
 <span id="cb125-16"><a href="#cb125-16" aria-hidden="true" tabindex="-1"></a>    <span class="kw">have</span> h8 : [m]_p = [0]_p := (cc_eq_iff_congr _ _ _).rtl h7</span>
-<span id="cb125-17"><a href="#cb125-17" aria-hidden="true" tabindex="-1"></a>    <span class="kw">have</span> h9 : 0 &lt; (e * d) := <span class="kw">by</span></span>
+<span id="cb125-17"><a href="#cb125-17" aria-hidden="true" tabindex="-1"></a>    <span class="kw">have</span> h9 : e * d ≠ 0 := <span class="kw">by</span></span>
 <span id="cb125-18"><a href="#cb125-18" aria-hidden="true" tabindex="-1"></a>      <span class="kw">rewrite</span> [h2]</span>
-<span id="cb125-19"><a href="#cb125-19" aria-hidden="true" tabindex="-1"></a>      <span class="kw">have</span> h10 : 0 ≤ (p - 1) * s := Nat.zero_le _</span>
-<span id="cb125-20"><a href="#cb125-20" aria-hidden="true" tabindex="-1"></a>      <span class="kw">linarith</span></span>
-<span id="cb125-21"><a href="#cb125-21" aria-hidden="true" tabindex="-1"></a>      <span class="kw">done</span></span>
-<span id="cb125-22"><a href="#cb125-22" aria-hidden="true" tabindex="-1"></a>    <span class="kw">have</span> h10 : (0 : Int) ^ (e * d) = 0 := zero_pow h9</span>
-<span id="cb125-23"><a href="#cb125-23" aria-hidden="true" tabindex="-1"></a>    <span class="kw">have</span> h11 : [c ^ d]_p = [m]_p :=</span>
-<span id="cb125-24"><a href="#cb125-24" aria-hidden="true" tabindex="-1"></a>      <span class="kw">calc</span> [c ^ d]_p</span>
-<span id="cb125-25"><a href="#cb125-25" aria-hidden="true" tabindex="-1"></a>        _ = [c]_p ^ d := <span class="kw">by</span> <span class="kw">rw</span> [Exercise_7_4_5_Nat]</span>
-<span id="cb125-26"><a href="#cb125-26" aria-hidden="true" tabindex="-1"></a>        _ = ([m]_p ^ e) ^ d := <span class="kw">by</span> <span class="kw">rw</span> [h5]</span>
-<span id="cb125-27"><a href="#cb125-27" aria-hidden="true" tabindex="-1"></a>        _ = [m]_p ^ (e * d) := <span class="kw">by</span> <span class="kw">ring</span></span>
-<span id="cb125-28"><a href="#cb125-28" aria-hidden="true" tabindex="-1"></a>        _ = [0]_p ^ (e * d) := <span class="kw">by</span> <span class="kw">rw</span> [h8]</span>
-<span id="cb125-29"><a href="#cb125-29" aria-hidden="true" tabindex="-1"></a>        _ = [0 ^ (e * d)]_p := Exercise_7_4_5_Int _ _ _</span>
-<span id="cb125-30"><a href="#cb125-30" aria-hidden="true" tabindex="-1"></a>        _ = [0]_p := <span class="kw">by</span> <span class="kw">rw</span> [h10]</span>
-<span id="cb125-31"><a href="#cb125-31" aria-hidden="true" tabindex="-1"></a>        _ = [m]_p := <span class="kw">by</span> <span class="kw">rw</span> [h8]</span>
-<span id="cb125-32"><a href="#cb125-32" aria-hidden="true" tabindex="-1"></a>    <span class="kw">show</span> c ^ d ≡ m (MOD p)  <span class="kw">from</span> (cc_eq_iff_congr _ _ _).ltr h11</span>
-<span id="cb125-33"><a href="#cb125-33" aria-hidden="true" tabindex="-1"></a>    <span class="kw">done</span></span>
-<span id="cb125-34"><a href="#cb125-34" aria-hidden="true" tabindex="-1"></a>  · <span class="co">-- Case 2. h6 : ¬p ∣ m</span></span>
-<span id="cb125-35"><a href="#cb125-35" aria-hidden="true" tabindex="-1"></a>    <span class="kw">have</span> h7 : rel_prime m p := rel_prime_of_prime_not_dvd h1 h6</span>
-<span id="cb125-36"><a href="#cb125-36" aria-hidden="true" tabindex="-1"></a>    <span class="kw">have</span> h8 : rel_prime p m := rel_prime_symm h7</span>
-<span id="cb125-37"><a href="#cb125-37" aria-hidden="true" tabindex="-1"></a>    <span class="kw">have</span> h9 : NeZero p := prime_NeZero h1</span>
-<span id="cb125-38"><a href="#cb125-38" aria-hidden="true" tabindex="-1"></a>    <span class="kw">have</span> h10 : (1 : Int) ^ s = 1 := <span class="kw">by</span> <span class="kw">ring</span></span>
-<span id="cb125-39"><a href="#cb125-39" aria-hidden="true" tabindex="-1"></a>    <span class="kw">have</span> h11 : [c ^ d]_p = [m]_p :=</span>
-<span id="cb125-40"><a href="#cb125-40" aria-hidden="true" tabindex="-1"></a>      <span class="kw">calc</span> [c ^ d]_p</span>
-<span id="cb125-41"><a href="#cb125-41" aria-hidden="true" tabindex="-1"></a>        _ = [c]_p ^ d := <span class="kw">by</span> <span class="kw">rw</span> [Exercise_7_4_5_Nat]</span>
-<span id="cb125-42"><a href="#cb125-42" aria-hidden="true" tabindex="-1"></a>        _ = ([m]_p ^ e) ^ d := <span class="kw">by</span> <span class="kw">rw</span> [h5]</span>
-<span id="cb125-43"><a href="#cb125-43" aria-hidden="true" tabindex="-1"></a>        _ = [m]_p ^ (e * d) := <span class="kw">by</span> <span class="kw">ring</span></span>
-<span id="cb125-44"><a href="#cb125-44" aria-hidden="true" tabindex="-1"></a>        _ = [m]_p ^ ((p - 1) * s + 1) := <span class="kw">by</span> <span class="kw">rw</span> [h2]</span>
-<span id="cb125-45"><a href="#cb125-45" aria-hidden="true" tabindex="-1"></a>        _ = ([m]_p ^ (p - 1)) ^ s * [m]_p := <span class="kw">by</span> <span class="kw">ring</span></span>
-<span id="cb125-46"><a href="#cb125-46" aria-hidden="true" tabindex="-1"></a>        _ = ([m]_p ^ (phi p)) ^ s * [m]_p := <span class="kw">by</span> <span class="kw">rw</span> [phi_prime h1]</span>
-<span id="cb125-47"><a href="#cb125-47" aria-hidden="true" tabindex="-1"></a>        _ = [1]_p ^ s * [m]_p := <span class="kw">by</span> <span class="kw">rw</span> [Theorem_7_4_2 h8]</span>
-<span id="cb125-48"><a href="#cb125-48" aria-hidden="true" tabindex="-1"></a>        _ = [1 ^ s]_p * [m]_p := <span class="kw">by</span> <span class="kw">rw</span> [Exercise_7_4_5_Int]</span>
-<span id="cb125-49"><a href="#cb125-49" aria-hidden="true" tabindex="-1"></a>        _ = [1]_p * [m]_p := <span class="kw">by</span> <span class="kw">rw</span> [h10]</span>
-<span id="cb125-50"><a href="#cb125-50" aria-hidden="true" tabindex="-1"></a>        _ = [m]_p * [1]_p := <span class="kw">by</span> <span class="kw">ring</span></span>
-<span id="cb125-51"><a href="#cb125-51" aria-hidden="true" tabindex="-1"></a>        _ = [m]_p := Theorem_7_3_6_7 _</span>
-<span id="cb125-52"><a href="#cb125-52" aria-hidden="true" tabindex="-1"></a>    <span class="kw">show</span> c ^ d ≡ m (MOD p)  <span class="kw">from</span> (cc_eq_iff_congr _ _ _).ltr h11</span>
-<span id="cb125-53"><a href="#cb125-53" aria-hidden="true" tabindex="-1"></a>    <span class="kw">done</span></span>
-<span id="cb125-54"><a href="#cb125-54" aria-hidden="true" tabindex="-1"></a>  <span class="kw">done</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb125-19"><a href="#cb125-19" aria-hidden="true" tabindex="-1"></a>      <span class="kw">show</span> (p - 1) * s + 1 ≠ 0 <span class="kw">from</span> Nat.add_one_ne_zero _</span>
+<span id="cb125-20"><a href="#cb125-20" aria-hidden="true" tabindex="-1"></a>      <span class="kw">done</span></span>
+<span id="cb125-21"><a href="#cb125-21" aria-hidden="true" tabindex="-1"></a>    <span class="kw">have</span> h10 : (0 : Int) ^ (e * d) = 0 := zero_pow h9</span>
+<span id="cb125-22"><a href="#cb125-22" aria-hidden="true" tabindex="-1"></a>    <span class="kw">have</span> h11 : [c ^ d]_p = [m]_p :=</span>
+<span id="cb125-23"><a href="#cb125-23" aria-hidden="true" tabindex="-1"></a>      <span class="kw">calc</span> [c ^ d]_p</span>
+<span id="cb125-24"><a href="#cb125-24" aria-hidden="true" tabindex="-1"></a>        _ = [c]_p ^ d := <span class="kw">by</span> <span class="kw">rw</span> [Exercise_7_4_5_Nat]</span>
+<span id="cb125-25"><a href="#cb125-25" aria-hidden="true" tabindex="-1"></a>        _ = ([m]_p ^ e) ^ d := <span class="kw">by</span> <span class="kw">rw</span> [h5]</span>
+<span id="cb125-26"><a href="#cb125-26" aria-hidden="true" tabindex="-1"></a>        _ = [m]_p ^ (e * d) := <span class="kw">by</span> <span class="kw">ring</span></span>
+<span id="cb125-27"><a href="#cb125-27" aria-hidden="true" tabindex="-1"></a>        _ = [0]_p ^ (e * d) := <span class="kw">by</span> <span class="kw">rw</span> [h8]</span>
+<span id="cb125-28"><a href="#cb125-28" aria-hidden="true" tabindex="-1"></a>        _ = [0 ^ (e * d)]_p := Exercise_7_4_5_Int _ _ _</span>
+<span id="cb125-29"><a href="#cb125-29" aria-hidden="true" tabindex="-1"></a>        _ = [0]_p := <span class="kw">by</span> <span class="kw">rw</span> [h10]</span>
+<span id="cb125-30"><a href="#cb125-30" aria-hidden="true" tabindex="-1"></a>        _ = [m]_p := <span class="kw">by</span> <span class="kw">rw</span> [h8]</span>
+<span id="cb125-31"><a href="#cb125-31" aria-hidden="true" tabindex="-1"></a>    <span class="kw">show</span> c ^ d ≡ m (MOD p) <span class="kw">from</span> (cc_eq_iff_congr _ _ _).ltr h11</span>
+<span id="cb125-32"><a href="#cb125-32" aria-hidden="true" tabindex="-1"></a>    <span class="kw">done</span></span>
+<span id="cb125-33"><a href="#cb125-33" aria-hidden="true" tabindex="-1"></a>  · <span class="co">-- Case 2. h6 : ¬p ∣ m</span></span>
+<span id="cb125-34"><a href="#cb125-34" aria-hidden="true" tabindex="-1"></a>    <span class="kw">have</span> h7 : rel_prime m p := rel_prime_of_prime_not_dvd h1 h6</span>
+<span id="cb125-35"><a href="#cb125-35" aria-hidden="true" tabindex="-1"></a>    <span class="kw">have</span> h8 : rel_prime p m := rel_prime_symm h7</span>
+<span id="cb125-36"><a href="#cb125-36" aria-hidden="true" tabindex="-1"></a>    <span class="kw">have</span> h9 : NeZero p := prime_NeZero h1</span>
+<span id="cb125-37"><a href="#cb125-37" aria-hidden="true" tabindex="-1"></a>    <span class="kw">have</span> h10 : (1 : Int) ^ s = 1 := <span class="kw">by</span> <span class="kw">ring</span></span>
+<span id="cb125-38"><a href="#cb125-38" aria-hidden="true" tabindex="-1"></a>    <span class="kw">have</span> h11 : [c ^ d]_p = [m]_p :=</span>
+<span id="cb125-39"><a href="#cb125-39" aria-hidden="true" tabindex="-1"></a>      <span class="kw">calc</span> [c ^ d]_p</span>
+<span id="cb125-40"><a href="#cb125-40" aria-hidden="true" tabindex="-1"></a>        _ = [c]_p ^ d := <span class="kw">by</span> <span class="kw">rw</span> [Exercise_7_4_5_Nat]</span>
+<span id="cb125-41"><a href="#cb125-41" aria-hidden="true" tabindex="-1"></a>        _ = ([m]_p ^ e) ^ d := <span class="kw">by</span> <span class="kw">rw</span> [h5]</span>
+<span id="cb125-42"><a href="#cb125-42" aria-hidden="true" tabindex="-1"></a>        _ = [m]_p ^ (e * d) := <span class="kw">by</span> <span class="kw">ring</span></span>
+<span id="cb125-43"><a href="#cb125-43" aria-hidden="true" tabindex="-1"></a>        _ = [m]_p ^ ((p - 1) * s + 1) := <span class="kw">by</span> <span class="kw">rw</span> [h2]</span>
+<span id="cb125-44"><a href="#cb125-44" aria-hidden="true" tabindex="-1"></a>        _ = ([m]_p ^ (p - 1)) ^ s * [m]_p := <span class="kw">by</span> <span class="kw">ring</span></span>
+<span id="cb125-45"><a href="#cb125-45" aria-hidden="true" tabindex="-1"></a>        _ = ([m]_p ^ (phi p)) ^ s * [m]_p := <span class="kw">by</span> <span class="kw">rw</span> [phi_prime h1]</span>
+<span id="cb125-46"><a href="#cb125-46" aria-hidden="true" tabindex="-1"></a>        _ = [1]_p ^ s * [m]_p := <span class="kw">by</span> <span class="kw">rw</span> [Theorem_7_4_2 h8]</span>
+<span id="cb125-47"><a href="#cb125-47" aria-hidden="true" tabindex="-1"></a>        _ = [1 ^ s]_p * [m]_p := <span class="kw">by</span> <span class="kw">rw</span> [Exercise_7_4_5_Int]</span>
+<span id="cb125-48"><a href="#cb125-48" aria-hidden="true" tabindex="-1"></a>        _ = [1]_p * [m]_p := <span class="kw">by</span> <span class="kw">rw</span> [h10]</span>
+<span id="cb125-49"><a href="#cb125-49" aria-hidden="true" tabindex="-1"></a>        _ = [m]_p * [1]_p := <span class="kw">by</span> <span class="kw">ring</span></span>
+<span id="cb125-50"><a href="#cb125-50" aria-hidden="true" tabindex="-1"></a>        _ = [m]_p := Theorem_7_3_6_7 _</span>
+<span id="cb125-51"><a href="#cb125-51" aria-hidden="true" tabindex="-1"></a>    <span class="kw">show</span> c ^ d ≡ m (MOD p) <span class="kw">from</span> (cc_eq_iff_congr _ _ _).ltr h11</span>
+<span id="cb125-52"><a href="#cb125-52" aria-hidden="true" tabindex="-1"></a>    <span class="kw">done</span></span>
+<span id="cb125-53"><a href="#cb125-53" aria-hidden="true" tabindex="-1"></a>  <span class="kw">done</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>Here, finally, is the proof of <code>Theorem_7_5_1</code>:</p>
 <div class="sourceCode" id="cb126"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb126-1"><a href="#cb126-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Theorem_7_5_1 (p q n e d k m c : Nat)</span>
 <span id="cb126-2"><a href="#cb126-2" aria-hidden="true" tabindex="-1"></a>    (p_prime : prime p) (q_prime : prime q) (p_ne_q : p ≠ q)</span>

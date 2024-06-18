@@ -239,7 +239,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div class="hidden">
 $$
 \newcommand{\setmin}{\mathbin{\backslash}}
-\newcommand{\symmdiff}{\bigtriangleup}
+\newcommand{\symmdiff}{\mathbin{∆}}
 $$
 </div>
 
@@ -643,7 +643,7 @@ $$
 <p>You may plug in any value of type <code>U</code>, say <code>a</code>, for <code>x</code> and use this given to conclude that <code>P a</code> is true.</p>
 </div>
 <p>This strategy says that if you have <code>h : ∀ (x : U), P x</code> and <code>a : U</code>, then you can infer <code>P a</code>. Indeed, in this situation Lean will recognize <code>h a</code> as a proof of <code>P a</code>. For example, you can write <code>have h' : P a := h a</code> in a Lean tactic-mode proof, and Lean will add <code>h' : P a</code> to the tactic state. Note that <code>a</code> here need not be simply a variable; it can be any expression denoting an object of type <code>U</code>.</p>
-<p>Let’s try these strategies out in a Lean proof. In Lean, if you don’t want to give a theorem a name, you can simply call it an <code>example</code> rather than a <code>theorem</code>, and then there is no need to give it a name. In the following theorem, you can enter the symbol <code>∀</code> by typing <code>\forall</code> or <code>\all</code>, and you can enter <code>∃</code> by typing <code>\exists</code> or <code>\ex</code>.</p>
+<p>Let’s try these strategies out in a Lean proof. In Lean, if you don’t want to give a theorem a name, you can simply call it an <code>example</code> rather than a <code>theorem</code>, and then there is no need to give it a name. In the following example, you can enter the symbol <code>∀</code> by typing <code>\forall</code> or <code>\all</code>, and you can enter <code>∃</code> by typing <code>\exists</code> or <code>\ex</code>.</p>
 <div class="inout">
 <div class="inpt">
 <div class="sourceCode" id="cb35"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="kw">example</span> (U : <span class="kw">Type</span>) (P Q : Pred U)</span>
@@ -824,8 +824,8 @@ $$
 <td style="text-align: center;"><code>\\</code></td>
 </tr>
 <tr class="even">
-<td style="text-align: center;"><code>△</code></td>
-<td style="text-align: center;"><code>\bigtriangleup</code></td>
+<td style="text-align: center;"><code>∆</code></td>
+<td style="text-align: center;"><code>\symmdiff</code></td>
 </tr>
 <tr class="odd">
 <td style="text-align: center;"><code>∅</code></td>
@@ -2714,7 +2714,7 @@ x \in A \cap (B \setmin C) &amp;\text{ iff } x \in A \wedge x \in B \setmin C\\
 </div>
 <div class="numex" data-arguments="7">
 <div class="sourceCode" id="cb203"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb203-1"><a href="#cb203-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Exercise_3_5_24a (U : <span class="kw">Type</span>) (A B C : Set U) :</span>
-<span id="cb203-2"><a href="#cb203-2" aria-hidden="true" tabindex="-1"></a>    (A ∪ B) △ C ⊆ (A △ C) ∪ (B △ C) := <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb203-2"><a href="#cb203-2" aria-hidden="true" tabindex="-1"></a>    (A ∪ B) ∆ C ⊆ (A ∆ C) ∪ (B ∆ C) := <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 </section>
@@ -3392,11 +3392,11 @@ x \in A \cap (B \setmin C) &amp;\text{ iff } x \in A \wedge x \in B \setmin C\\
 <span id="cb253-6"><a href="#cb253-6" aria-hidden="true" tabindex="-1"></a>  <span class="kw">define</span> : x ∈ Y ∪ X</span>
 <span id="cb253-7"><a href="#cb253-7" aria-hidden="true" tabindex="-1"></a>  <span class="sc">++</span><span class="do">apply?</span><span class="sc">::</span></span>
 <span id="cb253-8"><a href="#cb253-8" aria-hidden="true" tabindex="-1"></a>  <span class="kw">done</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>It takes a few seconds for Lean to search its library of theorems, but eventually a blue squiggle appears under <code>apply?</code>, indicating that the tactic has produced an answer. You will find the answer in the Infoview pane: <code>Try this: exact or_comm</code>. The word <code>exact</code> is the name of a tactic that we have not discussed; it is a shorthand for <code>show _ from</code>, where the blank gets filled in with the goal. Thus, you can think of <code>apply?</code>’s answer as a shortened form of the tactic</p>
+<p>It takes a few seconds for Lean to search its library of theorems, but eventually a blue squiggle appears under <code>apply?</code>, indicating that the tactic has produced an answer. You will find the answer in the Infoview pane: <code>Try this: exact Or.comm</code>. The word <code>exact</code> is the name of a tactic that we have not discussed; it is a shorthand for <code>show _ from</code>, where the blank gets filled in with the goal. Thus, you can think of <code>apply?</code>’s answer as a shortened form of the tactic</p>
 <div class="ind">
-<pre><code>show x ∈ X ∨ x ∈ Y ↔ x ∈ Y ∨ x ∈ X from or_comm</code></pre>
+<pre><code>show x ∈ X ∨ x ∈ Y ↔ x ∈ Y ∨ x ∈ X from Or.comm</code></pre>
 </div>
-<p>Of course, this is precisely the step we used earlier to complete the proof.</p>
+<p>The command <code>#check @Or.comm</code> will tell you that <code>Or.comm</code> is just an alternative name for the theorem <code>or_comm</code>. So the step suggested by the <code>apply?</code> tactic is essentially the same as the step we used earlier to complete the proof.</p>
 <p>Usually your proof will be more readable if you use the <code>show</code> tactic to state explicitly the goal that is being proven. This also gives Lean a chance to correct you if you have become confused about what goal you are proving. But sometimes—for example, if the goal is very long—it is convenient to use the <code>exact</code> tactic instead. You might think of <code>exact</code> as meaning “the following is a term-mode proof that is exactly what is needed to prove the goal.”</p>
 <p>The <code>apply?</code> tactic has not only come up with a suggested tactic, it has applied that tactic, and the proof is now complete. You can confirm that the tactic completes the proof by replacing the line <code>apply?</code> in the proof with <code>apply?</code>’s suggested <code>exact</code> tactic.</p>
 <p>The <code>apply?</code> tactic is somewhat unpredictable; sometimes it is able to find the right theorem in the library, and sometimes it isn’t. But it is always worth a try. Another way to try to find theorems is to visit the documentation page for Lean’s mathematics library, which can be found at <a href="https://leanprover-community.github.io/mathlib4_docs/">https://leanprover-community.github.io/mathlib4_docs/</a>.</p>
@@ -3413,7 +3413,8 @@ x \in A \cap (B \setmin C) &amp;\text{ iff } x \in A \wedge x \in B \setmin C\\
 <span id="cb256-2"><a href="#cb256-2" aria-hidden="true" tabindex="-1"></a>    (h1 : 𝒫 (A ∪ B) = 𝒫 A ∪ 𝒫 B) : A ⊆ B ∨ B ⊆ A := <span class="kw">by</span></span>
 <span id="cb256-3"><a href="#cb256-3" aria-hidden="true" tabindex="-1"></a>  <span class="co">--Hint:  Start like this:</span></span>
 <span id="cb256-4"><a href="#cb256-4" aria-hidden="true" tabindex="-1"></a>  <span class="kw">have</span> h2 : A ∪ B ∈ 𝒫 (A ∪ B) := <span class="cn">sorry</span></span>
-<span id="cb256-5"><a href="#cb256-5" aria-hidden="true" tabindex="-1"></a>  <span class="sc">**</span><span class="wa">done</span><span class="sc">::</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb256-5"><a href="#cb256-5" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb256-6"><a href="#cb256-6" aria-hidden="true" tabindex="-1"></a>  <span class="sc">**</span><span class="wa">done</span><span class="sc">::</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="numex" data-arguments="3">
 <div class="sourceCode" id="cb257"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb257-1"><a href="#cb257-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Exercise_3_6_6b (U : <span class="kw">Type</span>) :</span>

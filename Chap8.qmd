@@ -670,7 +670,7 @@ theorem Theorem_8_1_5_1_to_2 {U : Type} {A : Set U} (h1 : ctble A) :
   done
 ```
 
-For the proof of 2 → 3, suppose we have `A : Set U` and `S : Rel Nat U`, and the statement `fcnl_onto_from_nat S A` is true.  We need to come up with a relation `R : Rel U Nat` for which we can prove `fcnl_one_one_to_nat R A`.  You might be tempted to try `R = invRel S`, but there is a problem with this choice:  if `x ∈ A`, there might be multiple natural numbers `n` such that `S n x` holds, but we must make sure that there is only one `n` for which `R x n` holds.  Our solution to this problem will be to define `R x n` to mean that `n` is the smallest natural number for which `S n x` holds.  (The proof in *HTPI* uses a similar idea.)  The well ordering principle guarantees that there always is such a smallest element.
+For the proof of 2 → 3, suppose we have `A : Set U` and `S : Rel Nat U`, and the statement `fcnl_onto_from_nat S A` is true.  We need to come up with a relation `R : Rel U Nat` for which we can prove `fcnl_one_one_to_nat R A`.  You might be tempted to try `R = invRel S`, but there is a problem with this choice:  if `x ∈ A`, there might be multiple natural numbers `n` such that `S n x` holds, but we must make sure that there is only one `n` for which `R x n` holds.  Our solution to this problem will be to define `R x n` to mean that `n` is the smallest natural number for which `S n x` holds.  (The proof in *HTPI* uses a similar idea.)  The well-ordering principle guarantees that there always is such a smallest element.
 
 ```lean
 def least_rel_to {U : Type} (S : Rel Nat U) (x : U) (n : Nat) : Prop :=
@@ -846,7 +846,7 @@ lemma fqn_one_one : one_to_one fqn := by
   have h3 : fzn q1.num = fzn q2.num ∧ q1.den = q2.den :=
     Prod.mk.inj h2
   have h4 : q1.num = q2.num := fzn_one_one _ _ h3.left
-  show q1 = q2 from Rat.ext q1 q2 h4 h3.right
+  show q1 = q2 from Rat.ext h4 h3.right
   done
 
 lemma image_fqn_unbdd :
