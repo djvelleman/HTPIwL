@@ -32,13 +32,13 @@ theorem dvd_a_of_dvd_b_mod {a b d : Nat}
 These theorems tell us that the gcd of `a` and `b` is the same as the gcd of `b` and `a % b`, which suggests that the following recursive definition should compute the gcd of `a` and `b`:
 
 ```lean
-def gcd (a b : Nat) : Nat :=
+def **gcd:: (a b : Nat) : Nat :=
   match b with
     | 0 => a
-    | n + 1 => **gcd (n + 1) (a % (n + 1))::
+    | n + 1 => gcd (n + 1) (a % (n + 1))
 ```
 
-Unfortunately, Lean puts a red squiggle under `gcd (n + 1) (a % (n + 1))`, and it displays in the Infoview a long error message that begins `fail to show termination`.  What is Lean complaining about?
+Unfortunately, Lean puts a red squiggle under `gcd`, and it displays in the Infoview a long error message that begins `fail to show termination`.  What is Lean complaining about?
 
 The problem is that recursive definitions are dangerous.  To understand the danger, consider the following recursive definition:
 
@@ -77,9 +77,10 @@ lemma mod_succ_lt (a n : Nat) : a % (n + 1) < n + 1 := by
   done
 ```
 
-Lean's error message suggests several ways to fix the problem with our recursive definition.  We'll use the first suggestion:  ``Use `have` expressions to prove the remaining goals``.  Here, finally, is the definition of `gcd` that Lean is willing to accept:
+Lean's error message suggests several ways to fix the problem with our recursive definition.  We'll use the first suggestion:  ``Use `have`-expressions to prove the remaining goals``.  Here, finally, is the definition of `gcd` that Lean is willing to accept.  (You can ignore the initial line `@[semireducible]`.  For technical reasons that we won't go into, this line is needed to make this complicated recursive definition work in proofs the same way that our previous, simpler recursive definitions did.)
 
 ```lean
+@[semireducible]
 def gcd (a b : Nat) : Nat :=
   match b with
     | 0 => a
@@ -180,6 +181,7 @@ The functions `gcd_c1` and `gcd_c2` will be *mutually recursive*; in other words
 
 ```lean
 mutual
+  @[semireducible]
   def gcd_c1 (a b : Nat) : Int :=
     match b with
       | 0 => 1
@@ -189,6 +191,7 @@ mutual
           --Corresponds to s = t'
     termination_by b
 
+  @[semireducible]
   def gcd_c2 (a b : Nat) : Int :=
     match b with
       | 0 => 0
@@ -528,10 +531,10 @@ Before we can prove the existence of prime factorizations, we will need one more
 ::: {.ind}
 ```
 @List.length_eq_zero : ∀ {α : Type u_1} {l : List α},
-                      List.length l = 0 ↔ l = []
+                      l.length = 0 ↔ l = []
 
 @List.length_cons : ∀ {α : Type u_1} (a : α) (as : List α),
-                      List.length (a :: as) = Nat.succ (List.length as)
+                      (a :: as).length = as.length + 1
 
 @List.exists_cons_of_ne_nil : ∀ {α : Type u_1} {l : List α},
                       l ≠ [] → ∃ (b : α) (L : List α), l = b :: L
@@ -563,7 +566,7 @@ lemma list_elt_dvd_prod_by_length (a : Nat) : ∀ (n : Nat),
     done
   · -- Induction Step
     fix n : Nat
-    assume ih : ∀ (l : List Nat), List.length l = n → a ∈ l → a ∣ prod l
+    assume ih : ∀ (l : List Nat), l.length = n → a ∈ l → a ∣ prod l
     fix l : List Nat
     assume h1 : l.length = n + 1            --Goal : a ∈ l → a ∣ prod l
     obtain (b : Nat) (h2 : ∃ (L : List Nat),

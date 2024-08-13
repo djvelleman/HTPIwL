@@ -1922,7 +1922,7 @@ $$
 <span id="cb93-7"><a href="#cb93-7" aria-hidden="true" tabindex="-1"></a>  <span class="kw">apply</span> Iff.intro</span>
 <span id="cb93-8"><a href="#cb93-8" aria-hidden="true" tabindex="-1"></a>  · <span class="co">-- (→)</span></span>
 <span id="cb93-9"><a href="#cb93-9" aria-hidden="true" tabindex="-1"></a>    <span class="kw">assume</span> h1 : l ∈ seq_by_length A 0</span>
-<span id="cb93-10"><a href="#cb93-10" aria-hidden="true" tabindex="-1"></a>    <span class="kw">define</span> <span class="kw">at</span> h1   <span class="co">--h1 : l ∈ seq A ∧ List.length l = 0</span></span>
+<span id="cb93-10"><a href="#cb93-10" aria-hidden="true" tabindex="-1"></a>    <span class="kw">define</span> <span class="kw">at</span> h1   <span class="co">--h1 : l ∈ seq A ∧ l.length = 0</span></span>
 <span id="cb93-11"><a href="#cb93-11" aria-hidden="true" tabindex="-1"></a>    <span class="kw">rewrite</span> [List.length_eq_zero] <span class="kw">at</span> h1</span>
 <span id="cb93-12"><a href="#cb93-12" aria-hidden="true" tabindex="-1"></a>    <span class="kw">define</span></span>
 <span id="cb93-13"><a href="#cb93-13" aria-hidden="true" tabindex="-1"></a>    <span class="kw">show</span> l = [] <span class="kw">from</span> h1.right</span>
@@ -1930,7 +1930,7 @@ $$
 <span id="cb93-15"><a href="#cb93-15" aria-hidden="true" tabindex="-1"></a>  · <span class="co">-- (←)</span></span>
 <span id="cb93-16"><a href="#cb93-16" aria-hidden="true" tabindex="-1"></a>    <span class="kw">assume</span> h1 : l ∈ {[]}</span>
 <span id="cb93-17"><a href="#cb93-17" aria-hidden="true" tabindex="-1"></a>    <span class="kw">define</span> <span class="kw">at</span> h1     <span class="co">--h1 : l = []</span></span>
-<span id="cb93-18"><a href="#cb93-18" aria-hidden="true" tabindex="-1"></a>    <span class="kw">define</span>           <span class="co">--Goal : l ∈ seq A ∧ List.length l = 0</span></span>
+<span id="cb93-18"><a href="#cb93-18" aria-hidden="true" tabindex="-1"></a>    <span class="kw">define</span>           <span class="co">--Goal : l ∈ seq A ∧ l.length = 0</span></span>
 <span id="cb93-19"><a href="#cb93-19" aria-hidden="true" tabindex="-1"></a>    <span class="kw">apply</span> And.intro _ (List.length_eq_zero.rtl h1)</span>
 <span id="cb93-20"><a href="#cb93-20" aria-hidden="true" tabindex="-1"></a>    <span class="kw">define</span>           <span class="co">--Goal : ∀ x ∈ l, x ∈ A</span></span>
 <span id="cb93-21"><a href="#cb93-21" aria-hidden="true" tabindex="-1"></a>    <span class="kw">fix</span> x : U</span>
