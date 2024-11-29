@@ -267,7 +267,7 @@ $$
 <div class="proof">
 <p><span class="proof-title"><em>Proof</em>. </span>Suppose <span class="math inline">\(\neg R\)</span>. Suppose <span class="math inline">\(P\)</span>. Since <span class="math inline">\(P\)</span> and <span class="math inline">\(P \to (Q \to R)\)</span>, it follows that <span class="math inline">\(Q \to R\)</span>. But then, since <span class="math inline">\(\neg R\)</span>, we can conclude <span class="math inline">\(\neg Q\)</span>. Thus, <span class="math inline">\(P \to \neg Q\)</span>. Therefore <span class="math inline">\(\neg R \to (P \to \neg Q)\)</span>. <span class="excl">&nbsp;□</span></p>
 </div>
-<p>And here is how we would write the proof in Lean. (If you are reading this book online, then Lean examples like the one below will appear in gray boxes. You can copy the example to your clipboard by clicking in the upper-right corner of the box, and then you can paste it into a file in VS Code to try it out.)</p>
+<p>And here is how we would write the proof in Lean.<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> (If you are reading this book online, then Lean examples like the one below will appear in gray boxes. You can copy the example to your clipboard by clicking in the upper-right corner of the box, and then you can paste it into a file in VS Code to try it out.)</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Example_3_2_4</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>    (P Q R : <span class="kw">Prop</span>) (h : P → (Q → R)) : ¬R → (P → ¬Q) := <span class="kw">by</span></span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>  <span class="kw">assume</span> h2 : ¬R</span>
@@ -622,6 +622,12 @@ $$
 <p>In this version of the theorem, we have introduced a new variable <code>U</code>, whose type is … <code>Type</code>! So <code>U</code> can stand for any type. You can think of the variable <code>U</code> as playing the role of the universe of discourse, an idea that was introduced in Section 1.3 of <em>HTPI</em>. The sets <code>B</code> and <code>C</code> contain elements from that universe of discourse, and <code>a</code> belongs to the universe. You can prove the new version of the theorem by using exactly the same sequence of tactics as before.</p>
 
 
+</section>
+<section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes">
+<hr>
+<ol>
+<li id="fn1"><p>Experienced Lean users will notice that the Lean proofs in this book look somewhat different from standard Lean proofs. This is because our proofs use a number of custom tactics. These tactics are designed to make our Lean proofs more readable and to bring Lean into closer agreement with <em>HTPI</em>. These custom tactics are defined in the file “HTPIDefs.lean”, which is in the folder “HTPILib” in the Lean package that accompanies this book. The appendix includes advice about transitioning from the Lean in this book to standard Lean.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol>
 </section>
 
 </main> <!-- /main -->
