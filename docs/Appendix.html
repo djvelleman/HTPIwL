@@ -428,7 +428,7 @@ $$
 <ul>
 <li><h4 id="by_cases-on" class="anchored"><code>by_cases on</code></h4></li>
 </ul>
-<p>If you have <code>h : P ∨ Q</code>, then you can break your proof into cases by using the tactic <code>cases' h with hP hQ</code>. In case 1, <code>h : P ∨ Q</code> will be replaced by <code>hP : P</code>, and in case 2 it will be replaced by <code>hQ : Q</code>. In both cases, you have to prove the original goal. You may also want to learn about the tactics <code>cases</code> and <code>rcases</code>.</p>
+<p>If you have <code>h : P ∨ Q</code>, then you can break your proof into cases by using the tactic <code>obtain hP | hQ := h</code>. In case 1, <code>h : P ∨ Q</code> will be replaced by <code>hP : P</code>, and in case 2 it will be replaced by <code>hQ : Q</code>. In both cases, you have to prove the original goal. You may also want to learn about the tactics <code>cases</code> and <code>rcases</code>.</p>
 <ul>
 <li><h4 id="by_induc-by_strong_induc" class="anchored"><code>by_induc</code>, <code>by_strong_induc</code></h4></li>
 </ul>
@@ -480,7 +480,7 @@ $$
 <ul>
 <li><h4 id="obtain" class="anchored"><code>obtain</code></h4></li>
 </ul>
-<p>There is an <code>obtain</code> tactic in standard Lean, but it is slightly different from the one used in this book. If you have <code>h : ∃ (x : U), P x</code>, then the tactic <code>obtain ⟨u, h1⟩ := h</code> will introduce both <code>u : U</code> and <code>h1 : P u</code> into the tactic state. Note that <code>u</code> and <code>h1</code> must be enclosed in angle brackets, <code>⟨ ⟩</code>. To enter those brackets, type <code>\&lt;</code> and <code>\&gt;</code>.</p>
+<p>If you have <code>h : ∃ (x : U), P x</code>, then the tactic <code>obtain ⟨u, h1⟩ := h</code> will introduce both <code>u : U</code> and <code>h1 : P u</code> into the tactic state. Note that <code>u</code> and <code>h1</code> must be enclosed in angle brackets, <code>⟨ ⟩</code>. To enter those brackets, type <code>\&lt;</code> and <code>\&gt;</code>.</p>
 <p>If you have <code>h : ∃! (x : U), P x</code>, then <code>obtain ⟨u, h1, h2⟩ := h</code> will also introduce <code>u : U</code> and <code>h1 : P u</code> into the tactic state. In addition, it will introduce <code>h2</code> as an identifier for a statement that is equivalent to <code>∀ (y : U), P y → y = u</code>. (Unfortunately, the statement introduced is more complicated.)</p>
 <p>You may also find the theorems <code>ExistsUnique.exists</code> and <code>ExistsUnique.unique</code> useful:</p>
 <div class="ind">
