@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>How To Prove It With Lean - Appendix</title>
+<title>How To Prove It with Lean - Appendix</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -146,9 +146,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   <nav id="quarto-sidebar" class="sidebar collapse sidebar-navigation floating overflow-auto">
     <div class="pt-lg-2 mt-2 text-left sidebar-header">
     <div class="sidebar-title mb-0 py-0">
-      <a href="./">How To Prove It With Lean</a> 
+      <a href="./">How To Prove It with Lean</a> 
         <div class="sidebar-tools-main">
-    <a href="./How-To-Prove-It-With-Lean.pdf" title="Download PDF" class="sidebar-tool px-1"><i class="bi bi-file-pdf"></i></a>
+    <a href="./How-To-Prove-It-with-Lean.pdf" title="Download PDF" class="sidebar-tool px-1"><i class="bi bi-file-pdf"></i></a>
 </div>
     </div>
       </div>
@@ -428,7 +428,7 @@ $$
 <ul>
 <li><h4 id="by_cases-on" class="anchored"><code>by_cases on</code></h4></li>
 </ul>
-<p>If you have <code>h : P ∨ Q</code>, then you can break your proof into cases by using the tactic <code>obtain hP | hQ := h</code>. In case 1, <code>h : P ∨ Q</code> will be replaced by <code>hP : P</code>, and in case 2 it will be replaced by <code>hQ : Q</code>. In both cases, you have to prove the original goal. You may also want to learn about the tactics <code>cases</code> and <code>rcases</code>.</p>
+<p>If you have <code>h : P ∨ Q</code>, then you can break your proof into cases by using the tactic <code>rcases h with hP | hQ</code>. In case 1, <code>h : P ∨ Q</code> will be replaced by <code>hP : P</code>, and in case 2 it will be replaced by <code>hQ : Q</code>. In both cases, you have to prove the original goal.</p>
 <ul>
 <li><h4 id="by_induc-by_strong_induc" class="anchored"><code>by_induc</code>, <code>by_strong_induc</code></h4></li>
 </ul>
@@ -675,14 +675,10 @@ $$
 <td style="text-align: center;"><code>\_s</code></td>
 </tr>
 <tr class="even">
-<td style="text-align: center;"><code>ᵣ</code></td>
-<td style="text-align: center;"><code>\_r</code></td>
-</tr>
-<tr class="odd">
 <td style="text-align: center;"><code>⟨</code></td>
 <td style="text-align: center;"><code>\&lt;</code></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td style="text-align: center;"><code>⟩</code></td>
 <td style="text-align: center;"><code>\&gt;</code></td>
 </tr>
@@ -804,7 +800,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </div> <!-- /content -->
 <footer class="footer">
   <div class="nav-footer">
-      <div class="nav-footer-center">© 2023 Daniel J. Velleman.<br>Short excerpts from Daniel J. Velleman, <a href="https://doi.org/10.1017/9781108539890"><i>How To Prove It: A Structured Approach, 3rd Edition</i></a><br>© Daniel J. Velleman 2019, published by Cambridge University Press, reprinted with permission.</div>
+      <div class="nav-footer-center">© 2023-2025 Daniel J. Velleman.<br>Short excerpts from Daniel J. Velleman, <a href="https://doi.org/10.1017/9781108539890"><i>How To Prove It: A Structured Approach, 3rd Edition</i></a><br>© Daniel J. Velleman 2019, published by Cambridge University Press, reprinted with permission.</div>
   </div>
 </footer>
 

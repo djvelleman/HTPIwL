@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>How To Prove It With Lean - Introduction to Lean</title>
+<title>How To Prove It with Lean - Introduction to Lean</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -148,9 +148,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   <nav id="quarto-sidebar" class="sidebar collapse sidebar-navigation floating overflow-auto">
     <div class="pt-lg-2 mt-2 text-left sidebar-header">
     <div class="sidebar-title mb-0 py-0">
-      <a href="./">How To Prove It With Lean</a> 
+      <a href="./">How To Prove It with Lean</a> 
         <div class="sidebar-tools-main">
-    <a href="./How-To-Prove-It-With-Lean.pdf" title="Download PDF" class="sidebar-tool px-1"><i class="bi bi-file-pdf"></i></a>
+    <a href="./How-To-Prove-It-with-Lean.pdf" title="Download PDF" class="sidebar-tool px-1"><i class="bi bi-file-pdf"></i></a>
 </div>
     </div>
       </div>
@@ -286,12 +286,12 @@ $$
 <p>If you have not yet installed Lean on your computer, go back and follow the <a href="index.html#installing-lean">instructions</a> for installing it now. Then in VS Code, open the folder containing the HTPI Lean Package that you downloaded, and click on the file Blank.lean. The file starts with the line <code>import HTPILib.HTPIDefs</code>. Click on the blank line at the end of the file; this is where you will be typing your first proofs.</p>
 <p>Now type in the following theorem and proof:</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> extremely_easy (P : <span class="kw">Prop</span>) (h : P) : P := h</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>This theorem and proof are so short we have put everything on one line. In this theorem, the letter <code>P</code> is used to stand for a proposition. The theorem has one hypothesis, <code>P</code>, which has been given the identifier <code>h</code>, and the conclusion of the theorem is also <code>P</code>. The notation <code>:=</code> indicates that what follows will be a proof in term mode.</p>
+<p>If you have typed this correctly, Lean will put a check mark in the margin to the left of the theorem, indicating that the proof is correct. This theorem and proof are so short that we have put everything on one line. In this theorem, the letter <code>P</code> is used to stand for a proposition. The theorem has one hypothesis, <code>P</code>, which has been given the identifier <code>h</code>, and the conclusion of the theorem is also <code>P</code>. The notation <code>:=</code> indicates that what follows will be a proof in term mode.</p>
 <p>Of course, the proof of the theorem is extremely easy: to prove <code>P</code>, we just have to point out that it is given as the hypothesis <code>h</code>. And so the proof in Lean consists of just one letter: <code>h</code>.</p>
 <p>Even though this example is a triviality, there are some things to be learned from it. First of all, although we have been describing the letter <code>h</code> as an <em>identifier</em> for the hypothesis <code>P</code>, this example illustrates that Lean also considers <code>h</code> to be a <em>proof</em> of <code>P</code>. In general, when we see <code>h : P</code> in a Lean proof, where <code>P</code> is a proposition, we can think of it as meaning, not just that <code>h</code> is an identifier for the statement <code>P</code>, but also that <code>h</code> is a proof of <code>P</code>.</p>
 <p>We can learn something else from this example by changing it slightly. If you change the final <code>h</code> to a different letter—say, <code>f</code>—you will see that Lean puts a red squiggly line under the <code>f</code>, like this:</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> extremely_easy (P : <span class="kw">Prop</span>) (h : P) : P := <span class="sc">**</span><span class="er">f</span><span class="sc">::</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>This indicates that Lean has detected an error in the proof. Lean always indicates errors by putting a red squiggle under the offending text. Lean also puts a message in the Lean Infoview pane explaining what the error is. (If you don’t see the Infoview pane on the right side of the window, click on the “<span class="math inline">\(\forall\)</span>” icon near the top of the window and select “Infoview: Toggle Infoview” from the popup menu to make the Infoview pane appear.) In this case, the message is <code>unknown identifier 'f'</code>. The message is introduced by a heading, in red, that identifies the file, the line number, and the character position on that line where the error appears. If you change <code>f</code> back to <code>h</code>, the red squiggle and error message go away.</p>
+<p>This indicates that Lean has detected an error in the proof. Lean always indicates errors by putting a red squiggle under the offending text. Lean also puts a red X with a circle around it in the left margin next to the line with the error, and it puts a message in the Lean Infoview pane explaining what the error is. (If you don’t see the Infoview pane on the right side of the window, click on the “<span class="math inline">\(\forall\)</span>” icon near the top of the window and select “Infoview: Toggle Infoview” from the popup menu to make the Infoview pane appear.) In this case, the message is <code>unknown identifier 'f'</code>. The message is introduced by a heading, in red, that identifies the file, the line number, and the character position on that line where the error appears. If you change <code>f</code> back to <code>h</code>, the red X with the circle around it, red squiggle, and error message go away, and Lean returns the check mark to the left margin next to the theorem.</p>
 <p>Let’s try a slightly less trivial example. You can type the next theorem below the previous one, leaving a blank line between them to keep them visually separate. To type the <code>→</code> symbol in the next example, type <code>\to</code> and then hit either the space bar or the tab key; when you type either space or tab, the <code>\to</code> will change to <code>→</code>. Alternatively, you can type <code>\r</code> (short for “right arrow”) or <code>\imp</code> (short for “implies”), again followed by either space or tab. Or, you can type <code>-&gt;</code>, and Lean will interpret it as <code>→</code>. (There is a list in the appendix showing how to type all of the symbols used in this book.)</p>
 <div class="sourceCode" id="cb4"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> very_easy</span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>    (P Q : <span class="kw">Prop</span>) (h1 : P → Q) (h2 : P) : Q := h1 h2</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -375,7 +375,7 @@ $$
 <span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>⊢ ¬R</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </div>
-<p>Finally, to complete the proof, we can infer the goal <code>¬R</code> from <code>h2 : Q → ¬R</code> and <code>h4 : Q</code>, using the term-mode proof <code>h2 h4</code>. Type <code>show ¬R from h2 h4</code> to complete the proof. You’ll notice two changes in the display: the red squiggle will disappear from the word <code>done</code>, and the tactic state will say “No goals” to indicate that there is nothing left to prove:</p>
+<p>Finally, to complete the proof, we can infer the goal <code>¬R</code> from <code>h2 : Q → ¬R</code> and <code>h4 : Q</code>, using the term-mode proof <code>h2 h4</code>. Type <code>show ¬R from h2 h4</code> to complete the proof. You’ll notice several changes in the display: the error will disappear from the word <code>done</code>, a check mark will appear in the left margin next to the theorem, and the tactic state will say “No goals” to indicate that there is nothing left to prove:</p>
 <div class="inout">
 <div class="inpt">
 <div class="sourceCode" id="cb15"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> two_imp (P Q R : <span class="kw">Prop</span>)</span>
@@ -744,7 +744,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </div> <!-- /content -->
 <footer class="footer">
   <div class="nav-footer">
-      <div class="nav-footer-center">© 2023 Daniel J. Velleman.<br>Short excerpts from Daniel J. Velleman, <a href="https://doi.org/10.1017/9781108539890"><i>How To Prove It: A Structured Approach, 3rd Edition</i></a><br>© Daniel J. Velleman 2019, published by Cambridge University Press, reprinted with permission.</div>
+      <div class="nav-footer-center">© 2023-2025 Daniel J. Velleman.<br>Short excerpts from Daniel J. Velleman, <a href="https://doi.org/10.1017/9781108539890"><i>How To Prove It: A Structured Approach, 3rd Edition</i></a><br>© Daniel J. Velleman 2019, published by Cambridge University Press, reprinted with permission.</div>
   </div>
 </footer>
 

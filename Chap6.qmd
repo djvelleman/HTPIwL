@@ -775,7 +775,7 @@ lemma extendPO_is_antisymm {A : Type} (R : BinRel A) (b : A)
 
 ::: {.numex arguments="5"}
 ```lean
-theorem Exercise_6_2_3 (A : Type) (R : BinRel A)
+theorem Exercise_6_2_3 {A : Type} (R : BinRel A)
     (h : total_order R) : ∀ n ≥ 1, ∀ (B : Set A),
     numElts B n → ∃ (b : A), smallestElt R b B := sorry
 ```
@@ -1602,7 +1602,7 @@ theorem Theorem_6_4_5 :
 
 ::: {.numex arguments="1"}
 ```lean
---Hint: Use Exercise_6_1_16a1 and Exercise_6_1_16a2
+--Hint: Use Exercise_6_1_16a1 and Exercise_6_1_16a2.
 --from the exercises of Section 6.1.
 lemma sq_even_iff_even (n : Nat) :
     nat_even (n * n) ↔ nat_even n := sorry

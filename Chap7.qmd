@@ -435,13 +435,13 @@ If `l` has type `List U` and `a` has type `U`, then `a ∈ l` means that `a` is 
 
 ::: {.ind}
 ```
-@List.not_mem_nil : ∀ {α : Type u_1} (a : α),
+@List.not_mem_nil : ∀ {α : Type u_1} {a : α},
                         a ∉ []
 
-@List.mem_cons : ∀ {α : Type u_1} {a b : α} {l : List α},
+@List.mem_cons : ∀ {α : Type u_1} {b : α} {l : List α} {a : α},
                         a ∈ b :: l ↔ a = b ∨ a ∈ l
 
-@List.mem_cons_self : ∀ {α : Type u_1} (a : α) (l : List α),
+@List.mem_cons_self : ∀ {α : Type u_1} {a : α} {l : List α},
                         a ∈ a :: l
 
 @List.mem_cons_of_mem : ∀ {α : Type u_1} (y : α) {a : α} {l : List α},
@@ -480,7 +480,7 @@ lemma all_prime_nil : all_prime [] := by
   fix p : Nat
   contrapos  --Goal : ¬prime p → p ∉ []
   assume h1 : ¬prime p
-  show p ∉ [] from List.not_mem_nil p
+  show p ∉ [] from List.not_mem_nil
   done
 
 lemma all_prime_cons (n : Nat) (L : List Nat) :
@@ -489,7 +489,7 @@ lemma all_prime_cons (n : Nat) (L : List Nat) :
   · -- (→)
     assume h1 : all_prime (n :: L)  --Goal : prime n ∧ all_prime L
     define at h1  --h1 : ∀ p ∈ n :: L, prime p
-    apply And.intro (h1 n (List.mem_cons_self n L))
+    apply And.intro (h1 n List.mem_cons_self)
     define        --Goal : ∀ p ∈ L, prime p
     fix p : Nat
     assume h2 : p ∈ L
@@ -530,14 +530,14 @@ Before we can prove the existence of prime factorizations, we will need one more
 
 ::: {.ind}
 ```
-@List.length_eq_zero : ∀ {α : Type u_1} {l : List α},
+@List.length_eq_zero_iff : ∀ {α : Type u_1} {l : List α},
                       l.length = 0 ↔ l = []
 
-@List.length_cons : ∀ {α : Type u_1} (a : α) (as : List α),
+@List.length_cons : ∀ {α : Type u_1} {a : α} {as : List α},
                       (a :: as).length = as.length + 1
 
 @List.exists_cons_of_ne_nil : ∀ {α : Type u_1} {l : List α},
-                      l ≠ [] → ∃ (b : α) (L : List α), l = b :: L
+                      l ≠ [] → ∃ (b : α) (l' : List α), l = b :: l'
 ```
 :::
 
@@ -558,11 +558,11 @@ lemma list_elt_dvd_prod_by_length (a : Nat) : ∀ (n : Nat),
   · --Base Case
     fix l : List Nat
     assume h1 : l.length = 0
-    rewrite [List.length_eq_zero] at h1     --h1 : l = []
+    rewrite [List.length_eq_zero_iff] at h1     --h1 : l = []
     rewrite [h1]                            --Goal : a ∈ [] → a ∣ prod []
     contrapos
     assume h2 : ¬a ∣ prod []
-    show a ∉ [] from List.not_mem_nil a
+    show a ∉ [] from List.not_mem_nil
     done
   · -- Induction Step
     fix n : Nat
@@ -779,7 +779,7 @@ theorem Theorem_7_2_4 {p : Nat} (h1 : prime p) :
     · -- Case 1. h3 : p ∣ b
       apply Exists.intro b
       show b ∈ b :: L ∧ p ∣ b from
-        And.intro (List.mem_cons_self b L) h3
+        And.intro List.mem_cons_self h3
       done
     · -- Case 2. h3 : p ∣ prod L
       obtain (a : Nat) (h4 : a ∈ L ∧ p ∣ a) from ih h3
@@ -1376,33 +1376,17 @@ This is the first time we have used an `if ... then ... else` expression in a Le
 ```
 :::
 
-Ignoring the implicit arguments, this tells us that if `h` is a proof of a proposition `c`, then `if_pos h` is a proof of `(if c then t else e) = t`, and if `h` is a proof of `¬c`, then `if_neg h` is a proof of `(if c then t else e) = e`.  (Technically, the implicit arguments say that `c` must be a "decidable" proposition, but we won't worry about that detail.)  We often use these theorems with the `rewrite` tactic to rewrite an expression of the form `if c then t else e` as either `t` or `e`, depending on whether `c` is true or false.
+Ignoring the implicit arguments, this tells us that if `hc` is a proof of a proposition `c`, then `if_pos hc` is a proof of `(if c then t else e) = t`, and if `hnc` is a proof of `¬c`, then `if_neg hnc` is a proof of `(if c then t else e) = e`.  (Technically, the implicit arguments say that `c` must be a "decidable" proposition, but we won't worry about that detail.)  We often use these theorems to evaluate an expression of the form `if c then t else e` as either `t` or `e`, depending on whether `c` is true or false.
 
 ```lean
 lemma num_rp_below_base {m : Nat} :
     num_rp_below m 0 = 0 := by rfl
 
 lemma num_rp_below_step_rp {m j : Nat} (h : rel_prime m j) :
-    num_rp_below m (j + 1) = (num_rp_below m j) + 1 := by
-  have h1 : num_rp_below m (j + 1) =
-    if gcd m j = 1 then (num_rp_below m j) + 1
-    else num_rp_below m j := by rfl
-  define at h     --h : gcd m j = 1
-  rewrite [if_pos h] at h1
-                  --h1 : num_rp_below m (j + 1) = num_rp_below m j + 1
-  show num_rp_below m (j + 1) = num_rp_below m j + 1 from h1
-  done
+    num_rp_below m (j + 1) = (num_rp_below m j) + 1 := if_pos h
 
 lemma num_rp_below_step_not_rp {m j : Nat} (h : ¬rel_prime m j) :
-    num_rp_below m (j + 1) = num_rp_below m j := by
-  have h1 : num_rp_below m (j +1) =
-    if gcd m j = 1 then (num_rp_below m j) + 1
-    else num_rp_below m j := by rfl
-  define at h     --h : ¬gcd m j = 1
-  rewrite [if_neg h] at h1
-                  --h1 : num_rp_below m (j + 1) = num_rp_below m j
-  show num_rp_below m (j + 1) = num_rp_below m j from h1
-  done
+    num_rp_below m (j + 1) = num_rp_below m j := if_neg h
 ```
 
 We can now use `num_rp_below` to define the totient function.
@@ -1456,15 +1440,10 @@ One of the key ideas in the proof of Theorem 7.4.2 in *HTPI* involves computing 
 def F (m i : Nat) : ZMod m := if gcd m i = 1 then [i]_m else [1]_m
 
 lemma F_rp_def {m i : Nat} (h : rel_prime m i) :
-    F m i = [i]_m := by
-  have h1 : F m i = if gcd m i = 1 then [i]_m else [1]_m := by rfl
-  define at h      --h : gcd m i = 1
-  rewrite [if_pos h] at h1
-  show F m i = [i]_m from h1
-  done
+    F m i = [i]_m := if_pos h
 
 lemma F_not_rp_def {m i : Nat} (h : ¬rel_prime m i) :
-    F m i = [1]_m := sorry
+    F m i = [1]_m := if_neg h
 ```
 
 Note that `F` is defined as a function of two natural numbers, `m` and `i`, but as we discussed in Section 5.4, it follows that the partial application `F m` is a function from `Nat` to `ZMod m`.

@@ -8,7 +8,7 @@
 
 <meta name="author" content="Daniel J. Velleman">
 
-<title>How To Prove It With Lean</title>
+<title>How To Prove It with Lean</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -72,7 +72,7 @@ ul.task-list li input[type="checkbox"] {
   <header id="quarto-header" class="headroom fixed-top">
   <nav class="quarto-secondary-nav" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
     <div class="container-fluid d-flex justify-content-between">
-      <h1 class="quarto-secondary-nav-title">How To Prove It With Lean</h1>
+      <h1 class="quarto-secondary-nav-title">How To Prove It with Lean</h1>
       <button type="button" class="quarto-btn-toggle btn" aria-label="Show secondary navigation">
         <i class="bi bi-chevron-right"></i>
       </button>
@@ -85,9 +85,9 @@ ul.task-list li input[type="checkbox"] {
   <nav id="quarto-sidebar" class="sidebar collapse sidebar-navigation floating overflow-auto">
     <div class="pt-lg-2 mt-2 text-left sidebar-header">
     <div class="sidebar-title mb-0 py-0">
-      <a href="./">How To Prove It With Lean</a> 
+      <a href="./">How To Prove It with Lean</a> 
         <div class="sidebar-tools-main">
-    <a href="./How-To-Prove-It-With-Lean.pdf" title="Download PDF" class="sidebar-tool px-1"><i class="bi bi-file-pdf"></i></a>
+    <a href="./How-To-Prove-It-with-Lean.pdf" title="Download PDF" class="sidebar-tool px-1"><i class="bi bi-file-pdf"></i></a>
 </div>
     </div>
       </div>
@@ -167,7 +167,7 @@ ul.task-list li input[type="checkbox"] {
   <li><a href="#about-this-book" id="toc-about-this-book" class="nav-link" data-scroll-target="#about-this-book">About This Book</a></li>
   <li><a href="#about-lean" id="toc-about-lean" class="nav-link" data-scroll-target="#about-lean">About Lean</a></li>
   <li><a href="#installing-lean" id="toc-installing-lean" class="nav-link" data-scroll-target="#installing-lean">Installing Lean</a></li>
-  <li><a href="#using-gitpod" id="toc-using-gitpod" class="nav-link" data-scroll-target="#using-gitpod">Using Gitpod</a></li>
+  <li><a href="#using-github-codespaces" id="toc-using-github-codespaces" class="nav-link" data-scroll-target="#using-github-codespaces">Using GitHub Codespaces</a></li>
   <li><a href="#about-the-htpi-lean-package" id="toc-about-the-htpi-lean-package" class="nav-link" data-scroll-target="#about-the-htpi-lean-package">About the HTPI Lean Package</a></li>
   <li><a href="#license" id="toc-license" class="nav-link" data-scroll-target="#license">License</a></li>
   <li><a href="#acknowledgments" id="toc-acknowledgments" class="nav-link" data-scroll-target="#acknowledgments">Acknowledgments</a></li>
@@ -186,13 +186,13 @@ $$
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title d-none d-lg-block">How To Prove It With Lean</h1>
+<h1 class="title d-none d-lg-block">How To Prove It with Lean</h1>
 </div>
 
 
 <div class="quarto-title-meta-author">
   <div class="quarto-title-meta-heading">Author</div>
-  <div class="quarto-title-meta-heading">Affiliations</div>
+  <div class="quarto-title-meta-heading">Affiliation</div>
   
     <div class="quarto-title-meta-contents">
     Daniel J. Velleman <a href="https://orcid.org/0000-0003-4632-1742" class="quarto-title-author-orcid"> <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAA2ZpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMC1jMDYwIDYxLjEzNDc3NywgMjAxMC8wMi8xMi0xNzozMjowMCAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wTU09Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9tbS8iIHhtbG5zOnN0UmVmPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvc1R5cGUvUmVzb3VyY2VSZWYjIiB4bWxuczp4bXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8iIHhtcE1NOk9yaWdpbmFsRG9jdW1lbnRJRD0ieG1wLmRpZDo1N0NEMjA4MDI1MjA2ODExOTk0QzkzNTEzRjZEQTg1NyIgeG1wTU06RG9jdW1lbnRJRD0ieG1wLmRpZDozM0NDOEJGNEZGNTcxMUUxODdBOEVCODg2RjdCQ0QwOSIgeG1wTU06SW5zdGFuY2VJRD0ieG1wLmlpZDozM0NDOEJGM0ZGNTcxMUUxODdBOEVCODg2RjdCQ0QwOSIgeG1wOkNyZWF0b3JUb29sPSJBZG9iZSBQaG90b3Nob3AgQ1M1IE1hY2ludG9zaCI+IDx4bXBNTTpEZXJpdmVkRnJvbSBzdFJlZjppbnN0YW5jZUlEPSJ4bXAuaWlkOkZDN0YxMTc0MDcyMDY4MTE5NUZFRDc5MUM2MUUwNEREIiBzdFJlZjpkb2N1bWVudElEPSJ4bXAuZGlkOjU3Q0QyMDgwMjUyMDY4MTE5OTRDOTM1MTNGNkRBODU3Ii8+IDwvcmRmOkRlc2NyaXB0aW9uPiA8L3JkZjpSREY+IDwveDp4bXBtZXRhPiA8P3hwYWNrZXQgZW5kPSJyIj8+84NovQAAAR1JREFUeNpiZEADy85ZJgCpeCB2QJM6AMQLo4yOL0AWZETSqACk1gOxAQN+cAGIA4EGPQBxmJA0nwdpjjQ8xqArmczw5tMHXAaALDgP1QMxAGqzAAPxQACqh4ER6uf5MBlkm0X4EGayMfMw/Pr7Bd2gRBZogMFBrv01hisv5jLsv9nLAPIOMnjy8RDDyYctyAbFM2EJbRQw+aAWw/LzVgx7b+cwCHKqMhjJFCBLOzAR6+lXX84xnHjYyqAo5IUizkRCwIENQQckGSDGY4TVgAPEaraQr2a4/24bSuoExcJCfAEJihXkWDj3ZAKy9EJGaEo8T0QSxkjSwORsCAuDQCD+QILmD1A9kECEZgxDaEZhICIzGcIyEyOl2RkgwAAhkmC+eAm0TAAAAABJRU5ErkJggg=="></a>
@@ -200,9 +200,6 @@ $$
     <div class="quarto-title-meta-contents">
         <p class="affiliation">
             Amherst College
-          </p>
-        <p class="affiliation">
-            University of Vermont
           </p>
       </div>
     </div>
@@ -221,7 +218,7 @@ $$
 <section id="about-this-book" class="level2">
 <h2 class="anchored" data-anchor-id="about-this-book">About This Book</h2>
 <p>This book is intended to accompany my book <a href="https://doi.org/10.1017/9781108539890"><em>How To Prove It: A Structured Approach, 3rd edition</em></a> (henceforth called <em>HTPI</em>), which is published by Cambridge University Press. Although this book is self-contained, we will sometimes have occasion to refer to passages in <em>HTPI</em>, so this book will be easiest to understand if you have a copy of <em>HTPI</em> available to you.</p>
-<p><em>HTPI</em> explains a systematic approach to constructing mathematical proofs. The purpose of this book is to show you how to use a computer software package called <em>Lean</em> to help you master the techniques presented in <em>HTPI</em>. Lean is free software that is available for Windows, MacOS, and Unix computers. To get the most out of this book, you will need to download and install Lean on your computer. We will explain how to do that below. An alternative is to run Lean on the web using Gitpod; we also explain how to do that below.</p>
+<p><em>HTPI</em> explains a systematic approach to constructing mathematical proofs. The purpose of this book is to show you how to use a computer software package called <em>Lean</em> to help you master the techniques presented in <em>HTPI</em>. Lean is free software that is available for Windows, MacOS, and Unix computers. To get the most out of this book, you will need to download and install Lean on your computer. We will explain how to do that below. An alternative is to run Lean on the web using GitHub Codespaces; we also explain how to do that below.</p>
 <p>The chapters and sections of this book are numbered to match the sections of <em>HTPI</em> to which they correspond. The first two chapters of <em>HTPI</em> cover preliminary topics in elementary logic and set theory that are needed to understand the proof techniques presented in later chapters. We assume that you are already familiar with that material (if not, go read those chapters in <em>HTPI</em>!), so Chapters 1 and 2 of this book will just briefly summarize the most important points. Those chapters are followed by an introduction to Lean that explains the basics of using Lean to write proofs. The presentation of proof techniques in <em>HTPI</em> begins in earnest in Chapter 3, so that is where we will begin to discuss how Lean can be used to master those techniques.</p>
 <p>If you are reading this book online, then at the end of the title in the left margin you will find an icon that is a link to a pdf version of the book. Below that is a search box, which you can use to search for any word or phrase anywhere in the book. Below the search box is a list of the chapters of the book. Click on any chapter to go to that chapter. Within each chapter, a table of contents in the right margin lists the sections in that chapter. Again, you can go to any section by clicking on it. At the end of each chapter there are links to take you to the next or previous chapter.</p>
 </section>
@@ -257,10 +254,10 @@ $$
 <p>If you don’t see the Infoview pane on the right side of the window, click on the “<span class="math inline">\(\forall\)</span>” icon circled in red in the image above and select “Infoview: Toggle Infoview” from the popup menu.</p>
 <p>Your installation is now complete.</p>
 </section>
-<section id="using-gitpod" class="level2">
-<h2 class="anchored" data-anchor-id="using-gitpod">Using Gitpod</h2>
-<p>To open the Lean package that accompanies this book in Gitpod, click <a href="https://gitpod.io/#https://github.com/djvelleman/HTPILeanPackage" target="_blank">here</a>.</p>
-<p>You will be prompted to create a Gitpod account if you don’t already have one; a free account gives you 50 hours of use per month. Then you will be asked to create a “workspace”. Click on “Continue”. It will take some time to create your workspace and initialize Lean, but this only needs to be done once. You will see messages about “cloning”, “building”, “downloading”, and “decompressing”. Then there will be messages about “building” files for the chapters of this book. (There will be some warning messages during this process, which you can ignore.) The last message will be “building HTPILib”. When that process is complete, you can click on the “X” on the right side of the lower part of the window to close the terminal pane containing the messages. You should see the HTPI Lean package, as described in the previous section. Later, you can return to the workspace you just created from your <a href="https://gitpod.io/workspaces" target="_blank">Gitpod user page</a>.</p>
+<section id="using-github-codespaces" class="level2">
+<h2 class="anchored" data-anchor-id="using-github-codespaces">Using GitHub Codespaces</h2>
+<p>To open the Lean package that accompanies this book in GitHub Codespaces, click <a href="https://codespaces.new/djvelleman/HTPILeanPackage" target="_blank">here</a>.</p>
+<p>You will be prompted to create a GitHub account if you don’t already have one; a free account gives you 120 hours of use per month. Then you will be given various options for the creation of your codespace; you can use the default options. Click on the green “Create codespace” button. It will take several minutes to create your codespace, but this only needs to be done once; be patient. When that process is complete, you should see the HTPI Lean package, as described in the previous section. You can click on the “X” on the right side of the lower part of the window to close the terminal pane. GitHub will give your codespace a whimsical name and save it for you. Later, you can return to the codespace you just created from your <a href="https://github.com/codespaces" target="_blank">GitHub Codespaces page</a>.</p>
 </section>
 <section id="about-the-htpi-lean-package" class="level2">
 <h2 class="anchored" data-anchor-id="about-the-htpi-lean-package">About the HTPI Lean Package</h2>
@@ -390,7 +387,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </div> <!-- /content -->
 <footer class="footer">
   <div class="nav-footer">
-      <div class="nav-footer-center">© 2023 Daniel J. Velleman.<br>Short excerpts from Daniel J. Velleman, <a href="https://doi.org/10.1017/9781108539890"><i>How To Prove It: A Structured Approach, 3rd Edition</i></a><br>© Daniel J. Velleman 2019, published by Cambridge University Press, reprinted with permission.</div>
+      <div class="nav-footer-center">© 2023-2025 Daniel J. Velleman.<br>Short excerpts from Daniel J. Velleman, <a href="https://doi.org/10.1017/9781108539890"><i>How To Prove It: A Structured Approach, 3rd Edition</i></a><br>© Daniel J. Velleman 2019, published by Cambridge University Press, reprinted with permission.</div>
   </div>
 </footer>
 

@@ -2315,6 +2315,15 @@ theorem Exercise_3_4_4 (U : Type) (A B C : Set U)
 
 ::: {.numex arguments="3"}
 ```lean
+theorem Exercise_3_3_12 (U : Type)
+    (F G : Set (Set U)) : F ⊆ G → ⋃₀ F ⊆ ⋃₀ G := by
+
+  **done::
+```
+:::
+
+::: {.numex arguments="4"}
+```lean
 theorem Exercise_3_3_16 (U : Type) (B : Set U)
     (F : Set (Set U)) : F ⊆ 𝒫 B → ⋃₀ F ⊆ B := by
   
@@ -2322,7 +2331,7 @@ theorem Exercise_3_3_16 (U : Type) (B : Set U)
 ```
 :::
 
-::: {.numex arguments="4"}
+::: {.numex arguments="5"}
 ```lean
 theorem Exercise_3_3_17 (U : Type) (F G : Set (Set U))
     (h1 : ∀ (A : Set U), A ∈ F → ∀ (B : Set U), B ∈ G → A ⊆ B) :
@@ -2332,7 +2341,7 @@ theorem Exercise_3_3_17 (U : Type) (F G : Set (Set U))
 ```
 :::
 
-::: {.numex arguments="5"}
+::: {.numex arguments="6"}
 ```lean
 theorem Exercise_3_4_7 (U : Type) (A B : Set U) :
     𝒫 (A ∩ B) = 𝒫 A ∩ 𝒫 B := by
@@ -2341,7 +2350,7 @@ theorem Exercise_3_4_7 (U : Type) (A B : Set U) :
 ```
 :::
 
-::: {.numex arguments="6"}
+::: {.numex arguments="7"}
 ```lean
 theorem Exercise_3_4_17 (U : Type) (A : Set U) : A = ⋃₀ (𝒫 A) := by
 
@@ -2349,7 +2358,7 @@ theorem Exercise_3_4_17 (U : Type) (A : Set U) : A = ⋃₀ (𝒫 A) := by
 ```
 :::
 
-::: {.numex arguments="7"}
+::: {.numex arguments="8"}
 ```lean
 theorem Exercise_3_4_18a (U : Type) (F G : Set (Set U)) :
     ⋃₀ (F ∩ G) ⊆ (⋃₀ F) ∩ (⋃₀ G) := by
@@ -2358,7 +2367,7 @@ theorem Exercise_3_4_18a (U : Type) (F G : Set (Set U)) :
 ```
 :::
 
-::: {.numex arguments="8"}
+::: {.numex arguments="9"}
 ```lean
 theorem Exercise_3_4_19 (U : Type) (F G : Set (Set U)) :
     (⋃₀ F) ∩ (⋃₀ G) ⊆ ⋃₀ (F ∩ G) ↔
@@ -2972,7 +2981,7 @@ No goals
 :::
 :::
 
-We have introduced a new idea in this proof.  The justification we have given for introducing `h5 : a ∉ B` is `sorry`.  You might think of this as meaning "Sorry, I'm not going to give a justification for this statement, but please accept it anyway."  Of course, this is cheating; in a complete proof, every step must be justified.  Lean accepts `sorry` as a proof of any statement, but it displays it in red to warn you that you're cheating.  It also puts a brown squiggle under the keyword `example` and it puts the message `declaration uses 'sorry'` in the Infoview, to warn you that, although the proof has reached the goal, it is not fully justified.
+We have introduced a new idea in this proof.  The justification we have given for introducing `h5 : a ∉ B` is `sorry`.  You might think of this as meaning "Sorry, I'm not going to give a justification for this statement, but please accept it anyway."  Of course, this is cheating; in a complete proof, every step must be justified.  Lean accepts `sorry` as a proof of any statement, but it displays it in red to warn you that you're cheating.  It also puts a brown squiggle under the keyword `example` and a warning symbol in the left margin, and it puts the message `declaration uses 'sorry'` in the Infoview, to warn you that, although the proof has reached the goal, it is not fully justified.
 
 Although writing the proof this way is cheating, it is a convenient way to see that our plan of attack for this proof is reasonable.  Lean has accepted the proof, except for the warning that we have used `sorry`.  So now we know that if we go back and replace `sorry` with a proof of `a ∉ B`, then we will have a complete proof.
 
@@ -3079,7 +3088,7 @@ No goals
 :::
 :::
 
-The red squiggle has disappeared from the word `done`, indicating that the proof is complete.
+The error has disappeared from the word `done` and a check mark has appeared in the left margin next to `example`, indicating that the proof is complete.
 
 It was not really necessary for us to use `sorry` when writing this proof.  We could have simply written the steps in order,  exactly as they appear above.  Any time you use the `have` tactic with a conclusion that is difficult to justify, you have a choice.  You can establish the `have` with `sorry`, complete the proof, and then return and fill in a justification for the `have`, as we did in the example above.  Or, you can justify the `have` right away by typing `by` after `:=` and then plunging into the "proof within in a proof."  Once you complete the inner proof, you can continue with the original proof.
 

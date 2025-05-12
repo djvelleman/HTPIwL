@@ -67,7 +67,7 @@ We have mostly used these tactics to reexpress negative statements as more usefu
 
 * #### `by_cases on`
 
-If you have `h : P ∨ Q`, then you can break your proof into cases by using the tactic `obtain hP | hQ := h`.  In case 1, `h : P ∨ Q` will be replaced by `hP : P`, and in case 2 it will be replaced by `hQ : Q`.  In both cases, you have to prove the original goal.  You may also want to learn about the tactics `cases` and `rcases`.
+If you have `h : P ∨ Q`, then you can break your proof into cases by using the tactic `rcases h with hP | hQ`.  In case 1, `h : P ∨ Q` will be replaced by `hP : P`, and in case 2 it will be replaced by `hQ : Q`.  In both cases, you have to prove the original goal.
 
 * #### `by_induc`, `by_strong_induc`
 
@@ -215,7 +215,6 @@ There is a `show` tactic in standard Lean, but it works a little differently fro
 | `≡` | `\==` |
 | `∼` | `\sim` or `\~` |
 | `ₛ` | `\_s` |
-| `ᵣ` | `\_r` |
 | `⟨` | `\<` |
 | `⟩` | `\>` |
 :::

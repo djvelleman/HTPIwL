@@ -46,7 +46,7 @@ Now type in the following theorem and proof:
 theorem extremely_easy (P : Prop) (h : P) : P := h
 ```
 
-This theorem and proof are so short we have put everything on one line.  In this theorem, the letter `P` is used to stand for a proposition.  The theorem has one hypothesis, `P`, which has been given the identifier `h`, and the conclusion of the theorem is also `P`.  The notation `:=` indicates that what follows will be a proof in term mode.
+If you have typed this correctly, Lean will put a check mark in the margin to the left of the theorem, indicating that the proof is correct.  This theorem and proof are so short that we have put everything on one line.  In this theorem, the letter `P` is used to stand for a proposition.  The theorem has one hypothesis, `P`, which has been given the identifier `h`, and the conclusion of the theorem is also `P`.  The notation `:=` indicates that what follows will be a proof in term mode.
 
 Of course, the proof of the theorem is extremely easy: to prove `P`, we just have to point out that it is given as the hypothesis `h`.  And so the proof in Lean consists of just one letter: `h`.
 
@@ -58,7 +58,7 @@ We can learn something else from this example by changing it slightly.  If you c
 theorem extremely_easy (P : Prop) (h : P) : P := **f::
 ```
 
-This indicates that Lean has detected an error in the proof.  Lean always indicates errors by putting a red squiggle under the offending text.  Lean also puts a message in the Lean Infoview pane explaining what the error is.  (If you don't see the Infoview pane on the right side of the window, click on the "$\forall$" icon near the top of the window and select "Infoview: Toggle Infoview" from the popup menu to make the Infoview pane appear.)  In this case, the message is `unknown identifier 'f'`.  The message is introduced by a heading, in red, that identifies the file, the line number, and the character position on that line where the error appears.  If you change `f` back to `h`, the red squiggle and error message go away.
+This indicates that Lean has detected an error in the proof.  Lean always indicates errors by putting a red squiggle under the offending text.  Lean also puts a red X with a circle around it in the left margin next to the line with the error, and it puts a message in the Lean Infoview pane explaining what the error is.  (If you don't see the Infoview pane on the right side of the window, click on the "$\forall$" icon near the top of the window and select "Infoview: Toggle Infoview" from the popup menu to make the Infoview pane appear.)  In this case, the message is `unknown identifier 'f'`.  The message is introduced by a heading, in red, that identifies the file, the line number, and the character position on that line where the error appears.  If you change `f` back to `h`, the red X with the circle around it, red squiggle, and error message go away, and Lean returns the check mark to the left margin next to the theorem.
 
 Let's try a slightly less trivial example.  You can type the next theorem below the previous one, leaving a blank line between them to keep them visually separate.  To type the `→` symbol in the next example, type `\to` and then hit either the space bar or the tab key; when you type either space or tab, the `\to` will change to `→`.  Alternatively, you can type `\r` (short for "right arrow") or `\imp` (short for "implies"), again followed by either space or tab.  Or, you can type `->`, and Lean will interpret it as `→`.  (There is a list in the appendix showing how to type all of the symbols used in this book.)
 
@@ -187,7 +187,7 @@ h4 : Q
 :::
 :::
 
-Finally, to complete the proof, we can infer the goal `¬R` from `h2 : Q → ¬R` and `h4 : Q`, using the term-mode proof `h2 h4`.  Type `show ¬R from h2 h4` to complete the proof.  You'll notice two changes in the display: the red squiggle will disappear from the word `done`, and the tactic state will say "No goals" to indicate that there is nothing left to prove:
+Finally, to complete the proof, we can infer the goal `¬R` from `h2 : Q → ¬R` and `h4 : Q`, using the term-mode proof `h2 h4`.  Type `show ¬R from h2 h4` to complete the proof.  You'll notice several changes in the display: the error will disappear from the word `done`, a check mark will appear in the left margin next to the theorem, and the tactic state will say "No goals" to indicate that there is nothing left to prove:
 
 ::: {.inout}
 ::: {.inpt}
