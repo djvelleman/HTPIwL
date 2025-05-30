@@ -405,7 +405,7 @@ This means that, in the context of the proof of `Theorem_5_3_1`, `func_from_grap
 ```
 :::
 
-Therefore the tactic `rewrite [func_from_graph (inv (graph f))]` will change the goal to `is_func_graph (inv (func f))`.  In fact, we can just use `rewrite [func_from_graph]`, and Lean will figure out how to apply the theorem to rewrite the goal.  The rest of the proof is straightforward.
+Therefore the tactic `rewrite [func_from_graph (inv (graph f))]` will change the goal to `is_func_graph (inv (graph f))`.  In fact, we can just use `rewrite [func_from_graph]`, and Lean will figure out how to apply the theorem to rewrite the goal.  The rest of the proof is straightforward.
 
 ```lean
 theorem Theorem_5_3_1 {A B : Type}

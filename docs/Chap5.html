@@ -525,7 +525,7 @@ $$
 <div class="ind">
 <pre><code>∃ (g : B → A), graph g = inv (graph f) ↔ is_func_graph (inv (graph f)).</code></pre>
 </div>
-<p>Therefore the tactic <code>rewrite [func_from_graph (inv (graph f))]</code> will change the goal to <code>is_func_graph (inv (func f))</code>. In fact, we can just use <code>rewrite [func_from_graph]</code>, and Lean will figure out how to apply the theorem to rewrite the goal. The rest of the proof is straightforward.</p>
+<p>Therefore the tactic <code>rewrite [func_from_graph (inv (graph f))]</code> will change the goal to <code>is_func_graph (inv (graph f))</code>. In fact, we can just use <code>rewrite [func_from_graph]</code>, and Lean will figure out how to apply the theorem to rewrite the goal. The rest of the proof is straightforward.</p>
 <div class="sourceCode" id="cb36"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Theorem_5_3_1 {A B : <span class="kw">Type</span>}</span>
 <span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a>    (f : A → B) (h1 : one_to_one f) (h2 : onto f) :</span>
 <span id="cb36-3"><a href="#cb36-3" aria-hidden="true" tabindex="-1"></a>    ∃ (g : B → A), graph g = inv (graph f) := <span class="kw">by</span></span>

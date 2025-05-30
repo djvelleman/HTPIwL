@@ -391,7 +391,7 @@ theorem equinum_range {U V : Type} {f : U → V}
   done
 ```
 
-We have seen that, given a function `f : U → V`, we can turn `f` into an onto function by replacing `V` with a subtype of `V`.  (This is similar to an idea that is mentioned briefly in *HTPI*; see Exercise 23 in Section 5.2 of *HTPI*.)  It is perhaps not surprising that we can sometimes turn `f` into a one-to-one function by replacing `U` with a subtype of `U`.  If `A` has type `Set U`, then the *restriction* of `f` to `A` is a function from `A` to `V`.    It has the same values as `f`, but only when applied to elements of `A`.  (This idea is also mention in *HTPI*; see Exercise 7 in Section 5.2 of *HTPI*.)  We can define the restriction of `f` to `A` in Lean as follows:
+We have seen that, given a function `f : U → V`, we can turn `f` into an onto function by replacing `V` with a subtype of `V`.  (This is similar to an idea that is mentioned briefly in *HTPI*; see Exercise 23 in Section 5.2 of *HTPI*.)  It is perhaps not surprising that we can sometimes turn `f` into a one-to-one function by replacing `U` with a subtype of `U`.  If `A` has type `Set U`, then the *restriction* of `f` to `A` is a function from `A` to `V`.    It has the same values as `f`, but only when applied to elements of `A`.  (This idea is also mentioned in *HTPI*; see Exercise 7 in Section 5.2 of *HTPI*.)  We can define the restriction of `f` to `A` in Lean as follows:
 
 ```lean
 def func_restrict {U V : Type}
@@ -799,7 +799,7 @@ theorem Theorem_8_1_5_3 {U : Type} (A : Set U) :
     ctble A ↔ ∃ (f : U → Nat), one_one_on f A := sorry
 ```
 
-We end this section with a proof of Theorem 8.1.6 in *HTPI*, which says that the set of rational numbers is denumerable.  Our strategy is to define a one-to-one function from `Rat` (the type of rational numbers) to `Nat`.  We will need to know a little bit about the way rational numbers are represented in Lean.  If `q` has type `Rat`, then `q.num` is the numerator of `q`, which is an integer, and `q.den` is the denominator, which is a nonzero natural number.  The theorem `Rat.ext` says that if two rational numbers have the same numerator and denominator, then they are equal.  And we will also use the theorem `Prod.mk.inj`, which says that if two ordered pairs are equal, then their first coordinates are equal, as are their second coordinates.
+We end this section with a proof of Theorem 8.1.6 in *HTPI*, which says that the set of rational numbers is denumerable.  Our strategy is to define a one-to-one function from `Rat` (the type of rational numbers) to `Nat`.  We will need to know a little bit about the way rational numbers are represented in Lean.  If `q` has type `Rat`, then when `q` is written in lowest terms, `q.num` is the numerator, which is an integer, and `q.den` is the denominator, which is a nonzero natural number.  The theorem `Rat.ext` says that if two rational numbers have the same numerator and denominator, then they are equal.  And we will also use the theorem `Prod.mk.inj`, which says that if two ordered pairs are equal, then their first coordinates are equal, as are their second coordinates.
 
 ```lean
 def fqn (q : Rat) : Nat := fnnn (fzn q.num, q.den)

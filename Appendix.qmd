@@ -90,7 +90,7 @@ Thus, `rewrite [imp_iff_not_or]` will convert a statement of the form `P → Q` 
 
 * #### `contradict`
 
-Suppose your goal is `False` (as it would be if you are doing a proof by contradiction), and you have `h : ¬P`.  Recall that Lean treats `¬P` as meaning the same thing as `P → False`, and therefore `h _` will prove the goal, if the blank is filled in which a proof of `P`.  It follows that `apply h` will set `P` as the goal.  In other words, in this situation `apply h` has the same effect as `contradict h`.
+Suppose your goal is `False` (as it would be if you are doing a proof by contradiction), and you have `h : ¬P`.  Recall that Lean treats `¬P` as meaning the same thing as `P → False`, and therefore `h _` will prove the goal, if the blank is filled in with a proof of `P`.  It follows that `apply h` will set `P` as the goal.  In other words, in this situation `apply h` has the same effect as `contradict h`.
 
 You could also get the same effect with the tactic `suffices hP : P from h hP`.  Think of this as meaning "it would suffice now to prove `P`, because if `hP` were a proof of `P`, then `h hP` would prove the goal."  Lean therefore sets `P` to be the goal.
 

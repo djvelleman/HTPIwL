@@ -584,7 +584,7 @@ $$
 </section>
 <section id="exercises" class="level3">
 <h3 class="anchored" data-anchor-id="exercises">Exercises</h3>
-<p>Fill in proofs of the following theorems. All of them are based on exercises in <em>HTPI</em>.</p>
+<p>Fill in proofs of the following theorems. All of them are based on exercises in <em>HTPI</em>. You can find these exercises in the file <code>Chap3Ex.lean</code> in the HTPI Lean package, and you can enter your solutions in that file.</p>
 <div class="numex" data-arguments="1">
 <div class="sourceCode" id="cb29"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Exercise_3_2_1a (P Q R : <span class="kw">Prop</span>)</span>
 <span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>    (h1 : P → Q) (h2 : Q → R) : P → R := <span class="kw">by</span></span>
@@ -3419,8 +3419,7 @@ x \in A \cap (B \setmin C) &amp;\text{ iff } x \in A \wedge x \in B \setmin C\\
 <span id="cb257-2"><a href="#cb257-2" aria-hidden="true" tabindex="-1"></a>    (h1 : 𝒫 (A ∪ B) = 𝒫 A ∪ 𝒫 B) : A ⊆ B ∨ B ⊆ A := <span class="kw">by</span></span>
 <span id="cb257-3"><a href="#cb257-3" aria-hidden="true" tabindex="-1"></a>  <span class="co">--Hint:  Start like this:</span></span>
 <span id="cb257-4"><a href="#cb257-4" aria-hidden="true" tabindex="-1"></a>  <span class="kw">have</span> h2 : A ∪ B ∈ 𝒫 (A ∪ B) := <span class="cn">sorry</span></span>
-<span id="cb257-5"><a href="#cb257-5" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb257-6"><a href="#cb257-6" aria-hidden="true" tabindex="-1"></a>  <span class="sc">**</span><span class="wa">done</span><span class="sc">::</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb257-5"><a href="#cb257-5" aria-hidden="true" tabindex="-1"></a>  <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="numex" data-arguments="3">
 <div class="sourceCode" id="cb258"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb258-1"><a href="#cb258-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Exercise_3_6_6b (U : <span class="kw">Type</span>) :</span>
@@ -3442,8 +3441,7 @@ x \in A \cap (B \setmin C) &amp;\text{ iff } x \in A \wedge x \in B \setmin C\\
 <span id="cb261-5"><a href="#cb261-5" aria-hidden="true" tabindex="-1"></a>  <span class="kw">set</span> F0 : Set (Set U) := {X : Set U | X ⊆ A ∧ ∃! (x : U), x ∈ X}</span>
 <span id="cb261-6"><a href="#cb261-6" aria-hidden="true" tabindex="-1"></a>  <span class="co">--Now F0 is in the tactic state, with the definition above</span></span>
 <span id="cb261-7"><a href="#cb261-7" aria-hidden="true" tabindex="-1"></a>  <span class="kw">have</span> h2 : ⋃₀ F0 = A := <span class="cn">sorry</span></span>
-<span id="cb261-8"><a href="#cb261-8" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb261-9"><a href="#cb261-9" aria-hidden="true" tabindex="-1"></a>  <span class="sc">**</span><span class="wa">done</span><span class="sc">::</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb261-8"><a href="#cb261-8" aria-hidden="true" tabindex="-1"></a>  <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 </section>
