@@ -6,7 +6,7 @@
 
 This book is intended to accompany my book [*How To Prove It: A Structured Approach, 3rd edition*](https://doi.org/10.1017/9781108539890) (henceforth called *HTPI*), which is published by Cambridge University Press.  Although this book is self-contained, we will sometimes have occasion to refer to passages in *HTPI*, so this book will be easiest to understand if you have a copy of *HTPI* available to you.
 
-*HTPI* explains a systematic approach to constructing mathematical proofs.  The purpose of this book is to show you how to use a computer software package called *Lean* to help you master the techniques presented in *HTPI*.  Lean is free software that is available for Windows, MacOS, and Unix computers.  It is also possible to run Lean in a web browser using GitHub Codespaces.  We will explain below how to get started using Lean.
+*HTPI* explains a systematic approach to constructing mathematical proofs.  The purpose of this book is to show you how to use a computer software package called *Lean* to help you master the techniques presented in *HTPI*.  Lean is free software that is available for Windows, MacOS, and Unix computers.  It is also possible to run Lean in a web browser using GitHub Codespaces.  We will explain below how to set up Lean on your computer; in a later chapter we'll explain how to get started using Lean.
 
 The chapters and sections of this book are numbered to match the sections of *HTPI* to which they correspond.  The first two chapters of *HTPI* cover preliminary topics in elementary logic and set theory that are needed to understand the proof techniques presented in later chapters.  We assume that you are already familiar with that material (if not, go read those chapters in *HTPI*!), so Chapters 1 and 2 of this book will just briefly summarize the most important points.  Those chapters are followed by an introduction to Lean that explains the basics of using Lean to write proofs.  The presentation of proof techniques in *HTPI* begins in earnest in Chapter 3, so that is where we will begin to discuss how Lean can be used to master those techniques.
 
@@ -20,32 +20,37 @@ Of course, to make this possible, you must type your proof in a format that Lean
 
 Note that this book uses a customized version of Lean.  The customization is designed to make Lean proofs more readable and to bring Lean into closer agreement with *HTPI*.  The appendix of this book includes [advice about transitioning from the Lean in this book to standard Lean](#transitioning-to-standard-lean).
 
-## The HTPI Lean Package
+## Setting Up The HTPI Lean Package
 
-This book comes with a Lean "package" (or "project"), which is a folder containing a collection of files to be used with Lean.  For each chapter, starting with "Introduction to Lean," the package has a file containing all Lean definitions and theorems from that chapter.  There are also files containing all the exercises; you will enter your solutions to the exercises in those files.  In the exercise file for a chapter, all definitions and theorems from that chapter and all earlier chapters are available for use in solving the exercises.
+This book comes with a Lean "package" (or "project"), which is a folder containing a collection of files to be used with Lean.  We will be using a software package called [Visual Studio Code](https://code.visualstudio.com) (VS Code) to access the files in the HTPI Lean Package.  There are two ways to do this: by using GitHub Codespaces, or by installing Lean on your computer.
 
-The chapter files are inside a folder called "HTPILib" in the Lean package.  There is also one other file in that folder that defines the customization mentioned earlier.  All of these files are needed to make the package work.  *Do not edit the files in the HTPILib folder*.
-
-## Using GitHub Codespaces
-
-The easiest way to get started using Lean is to use GitHub Codespaces in your web browser.
-To open the HTPI Lean package in Codespaces, click [here](https://codespaces.new/djvelleman/HTPILeanPackage){target="_blank"}.
+#### Using GitHub Codespaces
+The easiest way to get started with Lean is to use GitHub Codespaces in your web browser.
+To open the HTPI Lean Package in Codespaces, click [here](https://codespaces.new/djvelleman/HTPILeanPackage){target="_blank"}.
 
 You will be prompted to create a GitHub account if you don't already have one; a free account gives you 120 hours of use per month.  Then you will be given various options for the creation of your codespace; you can use the default options.  Click on the green "Create codespace" button.  It will take several minutes to create your codespace, but this only needs to be done once; be patient.  When that process is complete, you should see a window that looks something like this:
 
 ![](Images/Codespaces.png)
 
-This image shows a version of the software package [Visual Studio Code](https://code.visualstudio.com) (VS Code), running in your codespace.  VS Code is used as an editor for writing Lean files.  You can access the menus for VS Code by clicking on the "$\equiv$" symbol at the top of the left sidebar.
+This image shows a version of VS Code, running in your codespace.  You can access the menus for VS Code by clicking on the "$\equiv$" symbol at the top of the left sidebar.  To the right of this sidebar, under the heading "Explorer," you will see a list of the files and folders in the HTPI Lean Package.  You can now click on the “X” on the right side of the lower part of the window (circled in red above) to close the terminal pane, since we won't be using that pane.
 
-You can now click on the “X” on the right side of the lower part of the window (circled in red above) to close the terminal pane.  GitHub will give your codespace a whimsical name and save it for you.  Later, you can return to the codespace you just created from your GitHub Codespaces page at [https://github.com/codespaces](https://github.com/codespaces){target="_blank"}.
-
-## Installing Lean
+#### Installing Lean
 
 If you prefer to run Lean on your computer, you can find instructions for installing Lean [here](https://lean-lang.org/lean4/doc/quickstart.html).  These instructions will lead you through installing VS Code, installing the Lean 4 extension in VS Code, and then opening the Lean 4 setup guide.  The setup guide will then tell you how to install Lean dependencies and the Lean version manager.  There is no need to consult the recommended books and documentation at this time---this book will tell you everything you need to know to use Lean with *HTPI*.  (But later, if you want to learn more about Lean, you may find those resources useful.)  And there is no need to follow the instructions for setting up a Lean project, because you will be using the HTPI Lean package.
 
-You can download the HTPI Lean package from [https://github.com/djvelleman/HTPILeanPackage](https://github.com/djvelleman/HTPILeanPackage).  After following the link, click on the green "Code" button and, in the pop-up menu, select "Download ZIP".  Once the zip file has been downloaded, extract the contents of the file into a folder.  You can put this folder wherever you want on your computer.
+You can download the HTPI Lean Package from [https://github.com/djvelleman/HTPILeanPackage](https://github.com/djvelleman/HTPILeanPackage).  After following the link, click on the green "Code" button and, in the pop-up menu, select "Download ZIP".  Once the zip file has been downloaded, extract the contents of the file into a folder.  You can put this folder wherever you want on your computer.
 
-Next, in VS Code, select "Open Folder ..." from the File menu and open the folder containing the HTPI Lean package that you downloaded.  (If VS Code asks if you want to open the package in a "container", it is probably best to say no.)  Under the heading "Explorer" on the left side of the window, you should see a list of the files in the package.  (If you don't see the list, try clicking on the *Explorer* icon at the top of the left sidebar.)  Your screen should look similar to the image above in the section about using GitHub Codespaces.  Click on the file "Blank.lean" in the file list.  Then click on the "$\forall$" icon, and in the pop-up menu select "Project Actions ... > Project: Build Project".  Lean should "build" the HTPI Lean package.  You'll see a number of messages, including some warnings that you can ignore.  Eventually you should see the message "Project built successfully."  Your installation is now complete.
+Next, in VS Code, select "Open Folder ..." from the File menu and open the folder containing the HTPI Lean Package that you downloaded.  (If VS Code asks if you want to open the package in a "container", it is probably best to say no.)  Under the heading "Explorer" on the left side of the window, you should see a list of the files in the package.  (If you don't see the list, try clicking on the *Explorer* icon at the top of the left sidebar; it looks like this: ![](Images/Explorer.png).)  Your screen should look similar to the image above in the section about using GitHub Codespaces.  Click on the file "Blank.lean" in the file list.  Then click on the "$\forall$" icon, and in the pop-up menu select "Project Actions ... > Project: Build Project".  Lean should "build" the HTPI Lean Package.  You'll see a number of messages, including some warnings that you can ignore.  Eventually you should see the message "Project built successfully."  Your installation is now complete.
+
+## VS Code and The HTPI Lean Package
+
+When you view the HTPI Lean Package in VS Code, you will see a list of the files and folders in the package under the "Explorer" heading.  The folders are listed first, with a "$>$" symbol in front of each; click on a folder to see the files inside it.
+
+You won't need to use most of the files in the package.  In the chapter "Introduction to Lean," you will learn how to edit the file "Blank.lean" to write your first proofs. The files "Chap3Ex.lean" through "Chap8Ex.lean" contain all of the exercises; you will enter your solutions to the exercises in those files.  In the exercise file for a chapter, all definitions and theorems from that chapter and all earlier chapters are available for use in solving the exercises.
+
+The only other files that you may need to look at are in the HTPILib folder.  That folder includes files containing all Lean definitions and theorems in all the chapters, starting with "Introduction to Lean."  There is also a file in that folder that defines the customization mentioned earlier.  All of these files are needed to make the package work.  *Do not edit the files in the HTPILib folder*.
+
+Since you won't be using the HTPI Lean Package right away, you can close it for now.  If you opened it in GitHub Codespaces, then you can close the browser tab or window containing your codespace.  GitHub will have given your codespace a whimsical name and saved it for you.  When you are ready to start using Lean, you can return to your codespace from the GitHub Codespaces page at [https://github.com/codespaces](https://github.com/codespaces){target="_blank"}.  If you installed VS Code and Lean on your computer, then you can quit VS Code and open it again when you are ready to start using Lean.
 
 ## License
 
@@ -53,4 +58,4 @@ This book is licensed under a [Creative Commons Attribution-ShareAlike 4.0 Inter
 
 ## Acknowledgments
 
-A number of people have provided advice, encouragement, and feedback about this project.  In particular, I would like to thank Jeremy Avigad, Clayton Cafiero, François Dorais, Charles Hoskinson, Heather Macbeth, Pietro Monticone, and Ketil Wright.
+A number of people have provided advice, encouragement, and feedback about this project.  In particular, I would like to thank Jeremy Avigad, Clayton Cafiero, Nathan Carter, François Dorais, Charles Hoskinson, Heather Macbeth, Pietro Monticone, and Ketil Wright.
