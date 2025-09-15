@@ -224,6 +224,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
    
   <ul class="collapse">
   <li><a href="#tactics-used" id="toc-tactics-used" class="nav-link active" data-scroll-target="#tactics-used">Tactics Used</a></li>
+  <li><a href="#summary-of-proof-techniques-in-lean" id="toc-summary-of-proof-techniques-in-lean" class="nav-link" data-scroll-target="#summary-of-proof-techniques-in-lean">Summary of Proof Techniques in Lean</a></li>
   <li><a href="#transitioning-to-standard-lean" id="toc-transitioning-to-standard-lean" class="nav-link" data-scroll-target="#transitioning-to-standard-lean">Transitioning to Standard Lean</a></li>
   <li><a href="#typing-symbols" id="toc-typing-symbols" class="nav-link" data-scroll-target="#typing-symbols">Typing Symbols</a></li>
   </ul>
@@ -410,32 +411,168 @@ $$
 </table>
 </div>
 </section>
+<section id="summary-of-proof-techniques-in-lean" class="level2">
+<h2 class="anchored" data-anchor-id="summary-of-proof-techniques-in-lean">Summary of Proof Techniques in Lean</h2>
+<section id="to-prove-a-goal-of-the-form" class="level3">
+<h3 class="anchored" data-anchor-id="to-prove-a-goal-of-the-form">To Prove a Goal of the Form …</h3>
+<section id="p" class="level4">
+<h4 class="anchored" data-anchor-id="p"><code>¬P</code></h4>
+<p>The tactic <code>by_contra h</code> will initiate a proof by contradiction by introducing the new given <code>h : P</code> and setting the goal to be <code>False</code>. (See also the tactics for reexpressing negative statements under the <a href="#reex">Reexpressing Statements</a> heading below. There is also further information about <a href="#contrad">proof by contradiction</a> below.)</p>
+</section>
+<section id="p-q" class="level4">
+<h4 class="anchored" data-anchor-id="p-q"><code>P → Q</code></h4>
+<p>The tactic <code>assume h : P</code> will introduce the new given <code>h : P</code> and set the goal to be <code>Q</code>. (See also the <code>contrapos</code> tactic under the <a href="#reex">Reexpressing Statements</a> heading below.)</p>
+</section>
+<section id="p-q-1" class="level4">
+<h4 class="anchored" data-anchor-id="p-q-1"><code>P ∧ Q</code></h4>
+<p>If you have <code>h1 : P</code> and <code>h2 : Q</code>, then <code>And.intro h1 h2</code> is a proof of <code>P ∧ Q</code>. If you have <code>h : P</code>, then the tactic <code>apply And.intro h</code> will set the goal to be <code>Q</code>, and if you have <code>h : Q</code>, then <code>apply And.intro _ h</code> will set the goal to be <code>P</code>. If you don’t already have a proof of either <code>P</code> or <code>Q</code>, then <code>apply And.intro</code> will set <code>P</code> and <code>Q</code> as separate goals.</p>
+</section>
+<section id="p-q-2" class="level4">
+<h4 class="anchored" data-anchor-id="p-q-2"><code>P ∨ Q</code></h4>
+<p>If you have <code>h : P</code>, then <code>Or.intro_left Q h</code> is a proof of <code>P ∨ Q</code>. Usually there is no need to specify <code>Q</code>, and <code>Or.inl h</code> will be recognized as a proof of <code>P ∨ Q</code>. Similarly, if you have <code>h : Q</code>, then <code>Or.intro_right P h</code> and <code>Or.inr h</code> are proofs of <code>P ∨ Q</code>.</p>
+<p>If you don’t already have a proof of either <code>P</code> or <code>Q</code>, then the tactic <code>apply Or.inl</code> will set the goal to be <code>P</code>, and <code>apply Or.inr</code> will set the goal to be <code>Q</code>. Also, the tactic <code>or_left with h</code> will introduce the new given <code>h : ¬Q</code> and set the goal to be <code>P</code>, and <code>or_right with h</code> will introduce the new given <code>h : ¬P</code> and set the goal to be <code>Q</code>.</p>
+<p>Proof by cases is sometimes useful for proving disjunctions. There is further information about <a href="#cases">proof by cases</a> below.</p>
+</section>
+<section id="p-q-3" class="level4">
+<h4 class="anchored" data-anchor-id="p-q-3"><code>P ↔︎ Q</code></h4>
+<p>If you have <code>h1 : P → Q</code> and <code>h2 : Q → P</code>, then <code>Iff.intro h1 h2</code> is a proof of <code>P ↔︎ Q</code>. If you have <code>h : P → Q</code>, then the tactic <code>apply Iff.intro h</code> will set the goal to be <code>Q → P</code>, and if you have <code>h : Q → P</code>, then <code>apply Iff.intro _ h</code> will set the goal to be <code>P → Q</code>. If you don’t already have a proof of either <code>P → Q</code> or <code>Q → P</code>, then <code>apply Iff.intro</code> will set <code>P → Q</code> and <code>Q → P</code> as separate goals.</p>
+</section>
+<section id="x-u-p-x" class="level4">
+<h4 class="anchored" data-anchor-id="x-u-p-x"><code>∀ (x : U), P x</code></h4>
+<p>The tactic <code>fix x : U</code> will introduce the new variable <code>x : U</code> and set the goal to be <code>P x</code>.</p>
+</section>
+<section id="x-u-p-x-1" class="level4">
+<h4 class="anchored" data-anchor-id="x-u-p-x-1"><code>∃ (x : U), P x</code></h4>
+<p>If you have <code>a : U</code> and <code>h : P a</code>, then <code>Exists.intro a h</code> is a proof of <code>∃ (x : U), P x</code>. If you have <code>a : U</code> but you don’t have a proof of <code>P a</code>, then the tactic <code>apply Exists.intro a</code> will set the goal to be <code>P a</code>.</p>
+</section>
+<section id="x-u-p-x-2" class="level4">
+<h4 class="anchored" data-anchor-id="x-u-p-x-2"><code>∃! (x : U), P x</code></h4>
+<p>The tactic <code>exists_unique</code> will set <code>∃ (x : U), P x</code> and <code>∀ (x_1 x_2 : U), P x_1 → P x_2 → x_1 = x_2</code> as separate goals.</p>
+</section>
+<section id="n-nat-p-n" class="level4">
+<h4 class="anchored" data-anchor-id="n-nat-p-n"><code>∀ (n : Nat), P n</code></h4>
+<p>The tactic <code>by_induc</code> will set <code>P 0</code> and <code>∀ (n : Nat), P n → P (n + 1)</code> as separate goals. (If the goal is <code>∀ n ≥ k, P n</code>, then the <code>by_induc</code> tactic will use <code>k</code> as the base case rather than <code>0</code>.) The tactic <code>by_strong_induc</code> will set the goal to be <code>∀ (n : Nat), (∀ n_1 &lt; n, P n_1) → P n</code>.</p>
+</section>
+</section>
+<section id="to-use-a-given-of-the-form" class="level3">
+<h3 class="anchored" data-anchor-id="to-use-a-given-of-the-form">To Use a Given of the Form …</h3>
+<section id="h-p" class="level4">
+<h4 class="anchored" data-anchor-id="h-p"><code>h : ¬P</code></h4>
+<p>If you also have <code>h1 : P</code>, then both <code>h h1</code> and <code>absurd h1 h</code> are proofs of <code>False</code>. If your goal is <code>False</code>, then <code>contradict h</code> will set the goal to be <code>P</code>. (See also the tactics for reexpressing negative statements under the <a href="#reex">Reexpressing Statements</a> heading below. There is also further information about <a href="#contrad">proof by contradiction</a> below.)</p>
+</section>
+<section id="h-p-q" class="level4">
+<h4 class="anchored" data-anchor-id="h-p-q"><code>h : P → Q</code></h4>
+<p>If you also have <code>h1 : P</code>, then <code>h h1</code> is a proof of <code>Q</code>. (See also the <code>contrapos</code> tactic under the <a href="#reex">Reexpressing Statements</a> heading below.)</p>
+</section>
+<section id="h-p-q-1" class="level4">
+<h4 class="anchored" data-anchor-id="h-p-q-1"><code>h : P ∧ Q</code></h4>
+<p><code>h.left</code> is a proof of <code>P</code>, and <code>h.right</code> is a proof of <code>Q</code>.</p>
+</section>
+<section id="h-p-q-2" class="level4">
+<h4 class="anchored" data-anchor-id="h-p-q-2"><code>h : P ∨ Q</code></h4>
+<p>The tactic <code>by_cases on h</code> will initiate a proof by cases; in case 1, <code>h</code> will be changed to <code>h : P</code>, and in case 2 it will be changed to <code>h : Q</code>. If you want to preserve the original <code>h</code>, then <code>by_cases on h with h1</code> will introduce new givens <code>h1 : P</code> in case 1 and <code>h1 : Q</code> in case 2; <code>by_cases on h with h1, h2</code> will will introduce new givens <code>h1 : P</code> in case 1 and <code>h2 : Q</code> in case 2. (There is further information about <a href="#cases">proof by cases</a> below.)</p>
+<p>If you have <code>h1 : ¬P</code>, then <code>disj_syll h h1</code> will change <code>h</code> to <code>h : Q</code>; if you want to preserve the original <code>h</code>, then <code>disj_syll h h1 with h2</code> will introduce the new given <code>h2 : Q</code>. Similarly, if you have <code>h1 : ¬Q</code>, then <code>disj_syll h h1</code> will change <code>h</code> to <code>h : P</code>, and <code>disj_syll h h1 with h2</code> will introduce the new given <code>h2 : P</code>.</p>
+</section>
+<section id="h-p-q-3" class="level4">
+<h4 class="anchored" data-anchor-id="h-p-q-3"><code>h : P ↔︎ Q</code></h4>
+<p><code>h.ltr</code> is a proof of <code>P → Q</code> and <code>h.rtl</code> is a proof of <code>Q → P</code>. (See also the <code>rewrite</code> tactic under the <a href="#reex">Reexpressing Statements</a> heading below.)</p>
+</section>
+<section id="h-x-u-p-x" class="level4">
+<h4 class="anchored" data-anchor-id="h-x-u-p-x"><code>h : ∀ (x : U), P x</code></h4>
+<p>If you have <code>a : U</code>, then <code>h a</code> is a proof of <code>P a</code>.</p>
+</section>
+<section id="h-x-u-p-x-1" class="level4">
+<h4 class="anchored" data-anchor-id="h-x-u-p-x-1"><code>h : ∃ (x : U), P x</code></h4>
+<p>The tactic <code>obtain (a : U) (h1 : P a) from h</code> will introduce both the new object <code>a : U</code> and the new given <code>h1 : P a</code>.</p>
+</section>
+<section id="h-x-u-p-x-2" class="level4">
+<h4 class="anchored" data-anchor-id="h-x-u-p-x-2"><code>h : ∃! (x : U), P x</code></h4>
+<p>The tactic <code>obtain (a : U) (h1 : P a)</code> <code>(h2 : ∀ (x_1 x_2 : U), P x_1 → P x_2 → x_1 = x_2)</code> <code>from h</code> will introduce the new object <code>a : U</code> and new givens <code>h1 : P a</code> and <code>h2 : ∀ (x_1 x_2 : U), P x_1 → P x_2 → x_1 = x_2</code>.</p>
+</section>
+</section>
+<section id="other-techniques-that-can-be-used-in-any-proof" class="level3">
+<h3 class="anchored" data-anchor-id="other-techniques-that-can-be-used-in-any-proof">Other Techniques That Can Be Used in Any Proof</h3>
+<section id="contrad" class="level4">
+<h4 class="anchored" data-anchor-id="contrad">Proof by Contradiction</h4>
+<p>The tactic <code>by_contra h</code> will introduce a new given <code>h</code> that is the negation of the goal, and set the goal to be <code>False</code>. Usually you will complete a proof by contradiction by proving contradictory statements <code>h1 : Q</code> and <code>h2 : ¬Q</code>. Once you have proven such contradictory statements, either <code>h2 h1</code> or <code>absurd h1 h2</code> can be used as a proof of <code>False</code>.</p>
+<p>If you are doing a proof by contradiction (so your goal is <code>False</code>) and you plan to complete the proof by contradicting some hypothesis <code>h1</code>, then the tactic <code>contradict h1</code> will set the goal to be the negation of <code>h1</code>.</p>
+<p>The tactic <code>contradict h1 with h</code> is shorthand for <code>by_contra h; contradict h1</code>.</p>
+</section>
+<section id="cases" class="level4">
+<h4 class="anchored" data-anchor-id="cases">Proof by Cases</h4>
+<p>If you have <code>h : P ∨ Q</code>, then the tactic <code>by_cases on h</code> will break your proof into two cases based on <code>h</code>. In case 1, <code>h</code> will be changed to <code>h : P</code>, and in case 2, it will be changed to <code>h : Q</code>. The tactic <code>by_cases on h with h1</code> will introduce new givens <code>h1 : P</code> in case 1 and <code>h1 : Q</code> in case 2. The tactic <code>by cases on h with h1, h2</code> will introduce new givens <code>h1 : P</code> in case 1 and <code>h2 : Q</code> in case 2.</p>
+<p>Another way to initiate a proof by cases is with the tactic <code>by_cases h : P</code>, which will introduce the new givens <code>h : P</code> in case 1 and <code>h : ¬P</code> in case 2.</p>
+</section>
+</section>
+<section id="working-backwards" class="level3">
+<h3 class="anchored" data-anchor-id="working-backwards">Working Backwards</h3>
+<p>If the expression <code>t _</code> would prove the goal if the blank were replaced with a proof of some statement <code>P</code>, then the tactic <code>apply t</code> will set the goal to be <code>P</code>. More generally, if <code>t _ _ ... _</code> would prove the goal if the blanks were replaced with proofs of several statements, then <code>apply t</code> will set all of those statements to be separate goals. The expression <code>t</code> can also contain blanks within it that will generate additional goals. For example, if the goal is <code>P ∧ Q</code> and you have <code>h : Q</code>, then <code>apply And.intro _ h</code> will set the goal to be <code>P</code>.</p>
+</section>
+<section id="making-assertions" class="level3">
+<h3 class="anchored" data-anchor-id="making-assertions">Making Assertions</h3>
+<p>If <code>t</code> is a term-mode proof of a statement <code>P</code>, then the tactic <code>have h : P := t</code> will introduce the new given <code>h : P</code>. If you want to give a tactic-mode proof to justify <code>h</code>, then you can write <code>have h : P := by</code> and then write a tactic-mode proof of <code>P</code>. The tactic-mode proof should be indented to set it off from the surrounding proof.</p>
+<p>If <code>t</code> is a term-mode proof of a statement <code>P</code> and <code>P</code> is the goal, then the tactic <code>show P from t</code> will complete the proof. The tactic <code>exact t</code> will also complete the proof.</p>
+</section>
+<section id="reex" class="level3">
+<h3 class="anchored" data-anchor-id="reex">Reexpressing Statements</h3>
+<p>All of the tactics in this section apply by default to the goal; they can be applied to a given <code>h</code> by adding <code>at h</code>.</p>
+<p>If <code>t</code> is a proof of <code>a = b</code>, then the tactic <code>rewrite [t]</code> will replace <code>a</code> anywhere it appears with <code>b</code>, and <code>rewrite [←t]</code> will replace <code>b</code> with <code>a</code>. Similarly, if <code>t</code> is a proof of <code>P ↔︎ Q</code>, then <code>rewrite [t]</code> will replace <code>P</code> with <code>Q</code> and <code>rewrite [←t]</code> will replace <code>Q</code> with <code>P</code>. If <code>t</code> contains blanks, Lean will try to fill them in to produce a proof that can be used as a rewriting rule; as with the <code>apply</code> tactic, blanks at the end of a proof can be left out. You can put a list of rewriting rules in the brackets (for example, <code>rewrite [t1, ←t2, t3]</code>), and the replacements will be performed one after another.</p>
+<p>The tactic <code>rw</code> is the same as <code>rewrite</code>, except that after doing the rewriting, it tries to prove the goal by using the <code>rfl</code> tactic (see <a href="#easy">Easy Proofs</a> below).</p>
+<p>The tactic <code>define</code> will write out the definition of a statement. If you want to define just a subexpression of the statement, then you can write <code>define : [subexpression]</code>. For example, if the goal is <code>x ∈ A ∩ B → x ∈ C</code>, then <code>define : x ∈ A ∩ B</code> will change the goal to <code>x ∈ A ∧ x ∈ B → x ∈ C</code>.</p>
+<p>The tactics <code>contrapos</code>, <code>demorgan</code>, <code>conditional</code>, <code>double_neg</code>, <code>bicond_neg</code>, and <code>quant_neg</code> rewrite statements by applying various logical laws; for details, see the tables about laws of <a href="IntroLean.html#prop-tacs">sentential</a> and <a href="Chap3.html#quantneg-tac">quantificational</a> logic. As with the <code>define</code> tactic, you can add <code>: [subexpression]</code> to apply the law to the subexpression. For example, if the goal is <code>P ∧ (Q → ¬R)</code>, then the tactic <code>contrapos : Q → ¬R</code> will change it to <code>P ∧ (R → ¬Q)</code>.</p>
+<p>If the goal is a negative statement, then the tactic <code>push_neg</code> will apply multiple laws about negations to “push” the negation as far as possible into the statement.</p>
+<p>If <code>e</code> is an expression of type <code>U</code>, and you want to give it the name <code>n</code> in your proof, then the tactic <code>set n : U := e</code> will introduce the variable <code>n</code> to stand for <code>e</code>.</p>
+</section>
+<section id="easy" class="level3">
+<h3 class="anchored" data-anchor-id="easy">Easy Proofs</h3>
+<p>The tactic <code>rfl</code> proves statements of the form <code>a = a'</code> or <code>a ↔︎ a'</code>, if <code>a</code> and <code>a'</code> are definitionally equal.</p>
+<p>The tactic <code>decide</code> proves statements that can be verified to be true by means of a calculation.</p>
+<p>The tactic <code>trivial</code> proves some “obviously” true statements.</p>
+<p>There is some overlap among these tactics; for example, all three could be used to prove <code>2 + 2 = 4</code>.</p>
+</section>
+<section id="algebra" class="level3">
+<h3 class="anchored" data-anchor-id="algebra">Algebra</h3>
+<p>The tactic <code>ring</code> will try to prove a goal that is an equation by combining algebraic laws involving addition, subtraction, multiplication, and exponentiation with natural number exponents.</p>
+<p>The tactic <code>linarith</code> will try to combine givens that are linear equations or inequalities to prove a goal that is a linear equation or equality, or to prove the goal <code>False</code> if the givens contradict each other.</p>
+<p>If <code>t</code> is a proof of a statement asserting a relationship between two quantities, then the tactic <code>rel [t]</code> will try to prove a goal that can be obtained from that relationship by applying the same operation to both sides. The tactic will try to find a theorem in Lean’s library that says that the operation preserves the relationship, and if the theorem requires auxiliary positivity facts, it will try to prove those facts as well.</p>
+</section>
+<section id="calculational-proofs" class="level3">
+<h3 class="anchored" data-anchor-id="calculational-proofs">Calculational Proofs</h3>
+<p>If <code>P</code>, <code>Q</code>, <code>R</code>, and <code>S</code> are statements, then you can prove <code>P ↔︎ S</code> by proving <code>P ↔︎ Q</code>, <code>Q ↔︎ R</code>, and <code>R ↔︎ S</code>. Such proofs can conveniently be written as calculational proofs. We often use calculational proofs with the <code>have</code> and <code>show</code> tactics. For example, we might write:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>  <span class="kw">have</span> h : P ↔ S :=</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">calc</span> P</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>      _ ↔ Q := [proof of P ↔ Q]</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>      _ ↔ R := [proof of Q ↔ R]</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>      _ ↔ S := [proof of R ↔ S]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>The proofs of the individual lines can be either term-mode proofs or tactic-mode proofs (introduced with <code>by</code>). Calculational proofs can also be used to string together equations or inequalities to prove an equation or inequality.</p>
+</section>
+</section>
 <section id="transitioning-to-standard-lean" class="level2">
 <h2 class="anchored" data-anchor-id="transitioning-to-standard-lean">Transitioning to Standard Lean</h2>
 <p>If you want to continue to use Lean to write mathematical proofs, you may want to learn more about Lean. A good place to start is the <a href="https://leanprover-community.github.io/index.html">Lean Community website</a>. The resources there use “standard” Lean, which is somewhat different from the Lean in this book.</p>
 <p>In a few cases we have used notation in this book that differs from standard Lean notation. For example, if <code>h</code> is a proof of <code>P ↔︎ Q</code>, then we have used <code>h.ltr</code> and <code>h.rtl</code> to denote proofs of the left-to-right and right-to-left directions of the biconditional. The standard Lean notation for these is <code>h.mp</code> and <code>h.mpr</code>, respectively (“mp” and “mpr” stand for “modus ponens” and “modus ponens reverse”). As explained at the end of <a href="Chap5.html#closures">Section 5.4</a>, the notations <code>Pred U</code> and <code>Rel A B</code> denote the types <code>U → Prop</code> and <code>A → B → Prop</code>, respectively. Although <code>Rel</code> is standard notation (defined in Lean’s math library <code>mathlib</code>), <code>Pred</code> is not; the notation <code>BinRel A</code> is also not standard Lean. In place of <code>Pred U</code> you should use <code>U → Prop</code>, and in place of <code>BinRel A</code> you should use <code>Rel A A</code>.</p>
 <p>However, the biggest difference between the Lean in this book and standard Lean is that the tactics marked with an asterisk in the table above are not a part of standard Lean. If you want to learn to write proofs in standard Lean, you’ll need to learn replacements for those tactics. We discuss some such replacements below. Some of these replacements are built into Lean, and some are defined in <code>mathlib</code>.</p>
 <ul>
-<li><h4 id="assume-fix" class="anchored"><code>assume</code>, <code>fix</code></h4></li>
+<li><span class="lrg"><code>assume</code>, <code>fix</code></span></li>
 </ul>
 <p>If you are proving <code>P → Q</code> and you want to begin by assuming <code>h : P</code>, in standard Lean you would begin your proof by writing <code>intro h</code>. You don’t need to specify that <code>h</code> is an identifier for the assumption <code>P</code>; Lean will figure that out on its own.</p>
 <p>If you are proving <code>∀ (x : U), P x</code> and you want to begin by introducing the variable <code>x</code> to stand for an arbitrary object of type <code>U</code>, in standard Lean you would begin your proof by writing <code>intro x</code>. Again, you don’t need to specify the type of <code>x</code>, because Lean will figure it out.</p>
 <p>Thus, the tactic <code>intro</code> does the job of both <code>assume</code> and <code>fix</code>. Furthermore, you can introduce multiple assumptions or objects with a single use of the <code>intro</code> tactic: <code>intro a b c</code> is equivalent to <code>intro a; intro b; intro c</code>.</p>
 <ul>
-<li><h4 id="bicond_neg-demorgan-double_neg-quant_neg" class="anchored"><code>bicond_neg</code>, <code>demorgan</code>, <code>double_neg</code>, <code>quant_neg</code></h4></li>
+<li><span class="lrg"><code>bicond_neg</code>, <code>demorgan</code>, <code>double_neg</code>, <code>quant_neg</code></span></li>
 </ul>
 <p>We have mostly used these tactics to reexpress negative statements as more useful positive statements. The tactic <code>push_neg</code> can be used for this purpose.</p>
 <ul>
-<li><h4 id="by_cases-on" class="anchored"><code>by_cases on</code></h4></li>
+<li><span class="lrg"><code>by_cases on</code></span></li>
 </ul>
 <p>If you have <code>h : P ∨ Q</code>, then you can break your proof into cases by using the tactic <code>rcases h with hP | hQ</code>. In case 1, <code>h : P ∨ Q</code> will be replaced by <code>hP : P</code>, and in case 2 it will be replaced by <code>hQ : Q</code>. In both cases, you have to prove the original goal.</p>
 <ul>
-<li><h4 id="by_induc-by_strong_induc" class="anchored"><code>by_induc</code>, <code>by_strong_induc</code></h4></li>
+<li><span class="lrg"><code>by_induc</code>, <code>by_strong_induc</code></span></li>
 </ul>
 <p>We saw in Section 7.2 that if you are proving a statement of the form <code>∀ (l : List U), ...</code>, then you can begin a proof by induction on the length of <code>l</code> by using the tactic <code>apply List.rec</code>. Similarly, if you are proving <code>∀ (n : Nat), ...</code>, you can begin a proof by induction by using the tactic <code>apply Nat.recAux</code>. For strong induction, you can use <code>apply Nat.strongRec</code>.</p>
-<p>There are also tactics <code>induction</code> and <code>induction'</code> that you may want to learn about.</p>
+<p>There is also a tactic <code>induction</code> that you may want to learn about.</p>
 <ul>
-<li><h4 id="conditional" class="anchored"><code>conditional</code></h4></li>
+<li><span class="lrg"><code>conditional</code></span></li>
 </ul>
 <p>The commands <code>#check @imp_iff_not_or</code> and <code>#check @not_imp</code> produce the results</p>
 <div class="ind">
@@ -444,29 +581,29 @@ $$
 </div>
 <p>Thus, <code>rewrite [imp_iff_not_or]</code> will convert a statement of the form <code>P → Q</code> into <code>¬P ∨ Q</code>, and <code>rewrite [←imp_iff_not_or]</code> will go in the other direction. Similarly, <code>rewrite [not_imp]</code> will convert a statement of the form <code>¬(P → Q)</code> into <code>P ∧ ¬Q</code>, and <code>rewrite [←not_imp]</code> will go in the other direction.</p>
 <ul>
-<li><h4 id="contradict" class="anchored"><code>contradict</code></h4></li>
+<li><span class="lrg"><code>contradict</code></span></li>
 </ul>
 <p>Suppose your goal is <code>False</code> (as it would be if you are doing a proof by contradiction), and you have <code>h : ¬P</code>. Recall that Lean treats <code>¬P</code> as meaning the same thing as <code>P → False</code>, and therefore <code>h _</code> will prove the goal, if the blank is filled in with a proof of <code>P</code>. It follows that <code>apply h</code> will set <code>P</code> as the goal. In other words, in this situation <code>apply h</code> has the same effect as <code>contradict h</code>.</p>
 <p>You could also get the same effect with the tactic <code>suffices hP : P from h hP</code>. Think of this as meaning “it would suffice now to prove <code>P</code>, because if <code>hP</code> were a proof of <code>P</code>, then <code>h hP</code> would prove the goal.” Lean therefore sets <code>P</code> to be the goal.</p>
 <p>Similarly, in a proof by contradiction, if you have <code>h : P</code>, then <code>suffices hnP : ¬P from hnP h</code> will set <code>¬P</code> as the goal.</p>
 <p>Yet another possibility is <code>contrapose! h</code>. (This is a variant on the <code>contrapose!</code> tactic, discussed in the next section.)</p>
 <ul>
-<li><h4 id="contrapos" class="anchored"><code>contrapos</code></h4></li>
+<li><span class="lrg"><code>contrapos</code></span></li>
 </ul>
 <p>If your goal is a conditional statement, then the tactics <code>contrapose</code> and <code>contrapose!</code> will replace the goal with its contrapositive (<code>contrapose!</code> also uses <code>push_neg</code> to try to simplify the negated statements that arise when forming a contrapositive). You may also find the theorem <code>not_imp_not</code> useful:</p>
 <div class="ind">
 <pre><code>@not_imp_not : ∀ {a b : Prop}, ¬a → ¬b ↔ b → a</code></pre>
 </div>
 <ul>
-<li><h4 id="define" class="anchored"><code>define</code></h4></li>
+<li><span class="lrg"><code>define</code></span></li>
 </ul>
 <p>The tactic <code>whnf</code> (which stands for “weak head normal form”) is similar to <code>define</code>, although it sometimes produces results that are a little confusing.</p>
 <p>Another way to write out definitions is to prove a lemma stating the definition and then use that lemma as a rewriting rule in the <code>rewrite</code> tactic. See, for example, the use of the theorem <code>inv_def</code> in <a href="Chap4.html#relations">Section 4.2</a>.</p>
 <ul>
-<li><h4 id="disj_syll" class="anchored"><code>disj_syll</code></h4></li>
+<li><span class="lrg"><code>disj_syll</code></span></li>
 </ul>
 <p>The following theorems can be useful:</p>
-<div class="ind">
+<div id="resolves" class="ind">
 <pre><code>@Or.resolve_left : ∀ {a b : Prop}, a ∨ b → ¬a → b
 @Or.resolve_right : ∀ {a b : Prop}, a ∨ b → ¬b → a
 @Or.neg_resolve_left : ∀ {a b : Prop}, ¬a ∨ b → a → b
@@ -474,11 +611,11 @@ $$
 </div>
 <p>For example, if you have <code>h1 : P ∨ Q</code> and <code>h2 : ¬P</code>, then <code>Or.resolve_left h1 h2</code> is a proof of <code>Q</code>.</p>
 <ul>
-<li><h4 id="exists_unique" class="anchored"><code>exists_unique</code></h4></li>
+<li><span class="lrg"><code>exists_unique</code></span></li>
 </ul>
 <p>If your goal is <code>∃! (x : U), P x</code> and you think that <code>a</code> is the unique value of <code>x</code> that makes <code>P x</code> true, then you can use the tactic <code>apply ExistsUnique.intro a</code>. This will leave you with two goals to prove, <code>P a</code> and <code>∀ (y : U), P y → y = a</code>.</p>
 <ul>
-<li><h4 id="obtain" class="anchored"><code>obtain</code></h4></li>
+<li><span class="lrg"><code>obtain</code></span></li>
 </ul>
 <p>If you have <code>h : ∃ (x : U), P x</code>, then the tactic <code>obtain ⟨u, h1⟩ := h</code> will introduce both <code>u : U</code> and <code>h1 : P u</code> into the tactic state. Note that <code>u</code> and <code>h1</code> must be enclosed in angle brackets, <code>⟨ ⟩</code>. To enter those brackets, type <code>\&lt;</code> and <code>\&gt;</code>.</p>
 <p>If you have <code>h : ∃! (x : U), P x</code>, then <code>obtain ⟨u, h1, h2⟩ := h</code> will also introduce <code>u : U</code> and <code>h1 : P u</code> into the tactic state. In addition, it will introduce <code>h2</code> as an identifier for a statement that is equivalent to <code>∀ (y : U), P y → y = u</code>. (Unfortunately, the statement introduced is more complicated.)</p>
@@ -490,20 +627,21 @@ $$
               (∃! (x : α), p x) → ∀ {y₁ y₂ : α}, p y₁ → p y₂ → y₁ = y₂</code></pre>
 </div>
 <ul>
-<li><h4 id="or_left-or_right" class="anchored"><code>or_left</code>, <code>or_right</code></h4></li>
+<li><span class="lrg"><code>or_left</code>, <code>or_right</code></span></li>
 </ul>
-<p>If your goal is <code>P ∨ Q</code>, then the tactics <code>or_left</code> and <code>or_right</code> let you assume that one of <code>P</code> and <code>Q</code> is false and prove the other. Perhaps the easiest way to do that in standard Lean is to use proof by cases. For example, to assume <code>P</code> is false and prove <code>Q</code> you might proceed as follows:</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>  <span class="co">-- Goal is P ∨ Q</span></span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  <span class="kw">by_cases</span> hP : P</span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  · <span class="co">-- Case 1. hP : P</span></span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>    <span class="kw">exact</span> Or.inl hP</span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>    <span class="kw">done</span></span>
-<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>  · <span class="co">-- Case 2. hP : ¬P</span></span>
-<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>    <span class="kw">apply</span> Or.inr</span>
-<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>    <span class="co">--We now have hP : ¬P, and goal is Q</span></span>
-<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>    <span class="sc">**</span><span class="wa">done</span><span class="sc">::</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>If your goal is <code>P ∨ Q</code>, then the tactics <code>or_left</code> and <code>or_right</code> let you assume that one of <code>P</code> and <code>Q</code> is false and prove the other. One way to do that in standard Lean is to use proof by cases. For example, to assume <code>P</code> is false and prove <code>Q</code> you might proceed as follows:</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>  <span class="co">-- Goal is P ∨ Q</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  <span class="kw">by_cases</span> hP : P</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>  · <span class="co">-- Case 1. hP : P</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>    <span class="kw">exact</span> Or.inl hP</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>    <span class="kw">done</span></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>  · <span class="co">-- Case 2. hP : ¬P</span></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>    <span class="kw">apply</span> Or.inr</span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>    <span class="co">--We now have hP : ¬P, and goal is Q</span></span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>    <span class="sc">**</span><span class="wa">done</span><span class="sc">::</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Another possibility is to use one of the <a href="#resolves">theorems</a> <code>Or.resolve_left</code>, <code>Or.resolve_right</code>, <code>Or.neg_resolve_left</code>, or <code>Or.neg_resolve_right</code> (described under <code>disj_syll</code> above) to convert the goal to an implication.</p>
 <ul>
-<li><h4 id="show" class="anchored"><code>show</code></h4></li>
+<li><span class="lrg"><code>show</code></span></li>
 </ul>
 <p>There is a <code>show</code> tactic in standard Lean, but it works a little differently from the <code>show</code> tactic we have used in this book. When our goal was a statement <code>P</code> and we had an expression <code>t</code> that was a proof of <code>P</code>, we usually completed the proof by writing <code>show P from t</code>. In standard Lean you can complete the proof by writing <code>exact t</code>, as explained near the end of <a href="Chap3.html#existence-and-uniqueness-proofs">Section 3.6</a>.</p>
 </section>

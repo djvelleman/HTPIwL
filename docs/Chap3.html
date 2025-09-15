@@ -663,7 +663,7 @@ $$
 </div>
 <p>To use the givens <code>h1</code> and <code>h2</code>, we will probably want to use universal instantiation. But to do that we would need an object of type <code>U</code> to plug in for <code>x</code> in <code>h1</code> and <code>h2</code>, and there is no object of type <code>U</code> in the tactic state. So at this point, we can’t apply universal instantiation to <code>h1</code> and <code>h2</code>. We should watch for an object of type <code>U</code> to come up in the course of the proof, and consider applying universal instantiation if one does. Until then, we turn our attention to the goal.</p>
 <p>The goal is a negative statement, so we begin by reexpressing it as an equivalent positive statement, using a quantifier negation law. The tactic <code>quant_neg</code> applies a quantifier negation law to rewrite the goal. As with the other tactics for applying logical equivalences, you can write <code>quant_neg at h</code> if you want to apply a quantifier negation law to a given <code>h</code>. The effect of the tactic can be summarized as follows:</p>
-<div style="margin: 0% 10%">
+<div id="quantneg-tac" style="margin: 0% 10%">
 <table class="table">
 <thead>
 <tr class="header">

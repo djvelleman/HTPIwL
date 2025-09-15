@@ -525,7 +525,7 @@ To use the givens `h1` and `h2`, we will probably want to use universal instanti
 
 The goal is a negative statement, so we begin by reexpressing it as an equivalent positive statement, using a quantifier negation law.  The tactic `quant_neg` applies a quantifier negation law to rewrite the goal.  As with the other tactics for applying logical equivalences, you can write `quant_neg at h` if you want to apply a quantifier negation law to a given `h`.  The effect of the tactic can be summarized as follows:
 
-::: {style="margin: 0% 10%"}
+::: {style="margin: 0% 10%" id="quantneg-tac"}
 | | `quant_neg` Tactic | |
 |:--:|:--:|:--:|
 | `¬∀ (x : U), P x` | is changed to | `∃ (x : U), ¬P x` |
