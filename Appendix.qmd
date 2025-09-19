@@ -73,6 +73,8 @@ Proof by cases is sometimes useful for proving disjunctions.  There is further i
 
 If you have `h1 : P → Q` and `h2 : Q → P`, then `Iff.intro h1 h2` is a proof of `P ↔ Q`.  If you have `h : P → Q`, then the tactic `apply Iff.intro h` will set the goal to be `Q → P`, and if you have `h : Q → P`, then `apply Iff.intro _ h` will set the goal to be `P → Q`.  If you don't already have a proof of either `P → Q` or `Q → P`, then `apply Iff.intro` will set `P → Q` and `Q → P` as separate goals.
 
+If `P` and `Q` are definitionally equal, then the tactic `rfl` will prove `P ↔ Q`.
+
 #### `∀ (x : U), P x`
 
 The tactic `fix x : U` will introduce the new variable `x : U` and set the goal to be `P x`.

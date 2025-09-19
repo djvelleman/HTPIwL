@@ -436,6 +436,7 @@ $$
 <section id="p-q-3" class="level4">
 <h4 class="anchored" data-anchor-id="p-q-3"><code>P ↔︎ Q</code></h4>
 <p>If you have <code>h1 : P → Q</code> and <code>h2 : Q → P</code>, then <code>Iff.intro h1 h2</code> is a proof of <code>P ↔︎ Q</code>. If you have <code>h : P → Q</code>, then the tactic <code>apply Iff.intro h</code> will set the goal to be <code>Q → P</code>, and if you have <code>h : Q → P</code>, then <code>apply Iff.intro _ h</code> will set the goal to be <code>P → Q</code>. If you don’t already have a proof of either <code>P → Q</code> or <code>Q → P</code>, then <code>apply Iff.intro</code> will set <code>P → Q</code> and <code>Q → P</code> as separate goals.</p>
+<p>If <code>P</code> and <code>Q</code> are definitionally equal, then the tactic <code>rfl</code> will prove <code>P ↔︎ Q</code>.</p>
 </section>
 <section id="x-u-p-x" class="level4">
 <h4 class="anchored" data-anchor-id="x-u-p-x"><code>∀ (x : U), P x</code></h4>
