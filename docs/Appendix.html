@@ -459,7 +459,7 @@ $$
 <h3 class="anchored" data-anchor-id="to-use-a-given-of-the-form">To Use a Given of the Form …</h3>
 <section id="h-p" class="level4">
 <h4 class="anchored" data-anchor-id="h-p"><code>h : ¬P</code></h4>
-<p>If you also have <code>h1 : P</code>, then both <code>h h1</code> and <code>absurd h1 h</code> are proofs of <code>False</code>. If your goal is <code>False</code>, then <code>contradict h</code> will set the goal to be <code>P</code>. (See also the tactics for reexpressing negative statements under the <a href="#reex">Reexpressing Statements</a> heading below. There is also further information about <a href="#contrad">proof by contradiction</a> below.)</p>
+<p>If you also have <code>h1 : P</code>, then <code>h h1</code> is a proof of <code>False</code> and <code>absurd h1 h</code> will be recognized as a proof of any statement. If your goal is <code>False</code>, then <code>contradict h</code> will set the goal to be <code>P</code>. (See also the tactics for reexpressing negative statements under the <a href="#reex">Reexpressing Statements</a> heading below. There is also further information about <a href="#contrad">proof by contradiction</a> below.)</p>
 </section>
 <section id="h-p-q" class="level4">
 <h4 class="anchored" data-anchor-id="h-p-q"><code>h : P → Q</code></h4>

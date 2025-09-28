@@ -95,7 +95,7 @@ The tactic `by_induc` will set `P 0` and `∀ (n : Nat), P n → P (n + 1)` as s
 
 #### `h : ¬P`
 
-If you also have `h1 : P`, then both `h h1` and `absurd h1 h` are proofs of `False`.  If your goal is `False`, then `contradict h` will set the goal to be `P`.  (See also the tactics for reexpressing negative statements under the [Reexpressing Statements](#reex) heading below.  There is also further information about [proof by contradiction](#contrad) below.)
+If you also have `h1 : P`, then `h h1` is a proof of `False` and `absurd h1 h` will be recognized as a proof of any statement.  If your goal is `False`, then `contradict h` will set the goal to be `P`.  (See also the tactics for reexpressing negative statements under the [Reexpressing Statements](#reex) heading below.  There is also further information about [proof by contradiction](#contrad) below.)
 
 #### `h : P → Q`
 
