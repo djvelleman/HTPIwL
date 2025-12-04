@@ -6,9 +6,8 @@ book:
   title: "How To Prove It with Lean"
   author:
     - name: Daniel J. Velleman
+      affiliation: Amherst College
       orcid: 0000-0003-4632-1742
-      affiliations:
-        - name: Amherst College
   page-footer: "© 2023-2025 Daniel J. Velleman.<br>Short excerpts from Daniel J. Velleman, <a href='https://doi.org/10.1017/9781108539890'><i>How To Prove It: A Structured Approach, 3rd Edition</i></a><br>© Daniel J. Velleman 2019, published by Cambridge University Press, reprinted with permission."
   downloads: pdf
   chapters:
@@ -34,6 +33,7 @@ format:
     number-depth: 0
     include-before-body: mathjaxdefs.tex
   pdf:
+    pdf-engine: xelatex
     documentclass: scrreprt
     toc-depth: 2
     number-depth: 0
@@ -42,7 +42,6 @@ format:
     include-before-body: thmdefs.tex
     monofont: JuliaMono
     keep-tex: true
-    date: \small Amherst College
 
 filters:
   - latex-environment

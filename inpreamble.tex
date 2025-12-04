@@ -3,6 +3,7 @@
 \usepackage{myunixode}
 \usepackage[normalem]{ulem}
 \usepackage{scrlayer-scrpage}
+\usepackage[most]{tcolorbox}
 \automark{section}
 \newcommand{\copyrightnotice}{\footnotesize\copyright\ 2023--2025 Daniel J. Velleman.  Short excerpts from
 \href{https://doi.org/10.1017/9781108539890}{\textit{How To Prove It}},\\
@@ -44,8 +45,8 @@ Short excerpts from Daniel J. Velleman,
 
 %redefines Shaded so it can't break
 \newcommand{\nobreakShaded}{\renewenvironment{Shaded}
-	{\begin{tcolorbox}[frame hidden, enhanced, interior hidden, boxrule=0pt,
-		borderline west={3pt}{0pt}{shadecolor}, sharp corners]}
+	{\begin{tcolorbox}[frame hidden, boxrule=0pt, colback=shadecolor,
+		sharp corners, left=0pt, right=0pt, top=0pt, bottom=0pt]}
 	{\end{tcolorbox}}}
 
 %Make end of environment ignore pars that come after it
@@ -81,7 +82,7 @@ Short excerpts from Daniel J. Velleman,
 	{\end{minipage}}
 
 \newenvironment{numex}[1]
-	{\begin{minipage}[t]{0.04\textwidth}\vspace{8pt}{#1}.
+	{\begin{minipage}[t]{0.04\textwidth}\vspace{3pt}{#1}.
 		\end{minipage}\nobreakShaded\begin{minipage}[t]{0.96\textwidth}\vspace{0pt}}
 	{\end{minipage}}
 
@@ -104,3 +105,8 @@ Short excerpts from Daniel J. Velleman,
 
 \pagenumbering{roman}  %So front matter uses roman numerals.  Switch back to arabic at beginning of preface.
 \publishers{\longcopyrightnotice}
+
+\usepackage{authblk}
+\renewcommand\Affilfont{\small}
+\author{Daniel J. Velleman}
+\affil{Amherst College}

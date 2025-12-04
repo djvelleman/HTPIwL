@@ -2,12 +2,12 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.1.189">
+<meta name="generator" content="quarto-1.8.26">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>How To Prove It with Lean - 5&nbsp; Functions</title>
+<title>5&nbsp; Functions – How To Prove It with Lean</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -17,9 +17,11 @@ div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
 ul.task-list{list-style: none;}
 ul.task-list li input[type="checkbox"] {
   width: 0.8em;
-  margin: 0 0.8em 0.2em -1.6em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
 pre > code.sourceCode { white-space: pre; position: relative; }
 pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
 pre > code.sourceCode > span:empty { height: 1.2em; }
@@ -46,43 +48,13 @@ pre.numberSource code > span > a:first-child::before
     -khtml-user-select: none; -moz-user-select: none;
     -ms-user-select: none; user-select: none;
     padding: 0 4px; width: 4em;
-    color: #aaaaaa;
   }
-pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
 div.sourceCode
   {   }
 @media screen {
 pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
-code span.al { color: #ff0000; font-weight: bold; } /* Alert */
-code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
-code span.at { color: #7d9029; } /* Attribute */
-code span.bn { color: #40a070; } /* BaseN */
-code span.bu { color: #008000; } /* BuiltIn */
-code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
-code span.ch { color: #4070a0; } /* Char */
-code span.cn { color: #880000; } /* Constant */
-code span.co { color: #60a0b0; font-style: italic; } /* Comment */
-code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
-code span.do { color: #ba2121; font-style: italic; } /* Documentation */
-code span.dt { color: #902000; } /* DataType */
-code span.dv { color: #40a070; } /* DecVal */
-code span.er { color: #ff0000; font-weight: bold; } /* Error */
-code span.ex { } /* Extension */
-code span.fl { color: #40a070; } /* Float */
-code span.fu { color: #06287e; } /* Function */
-code span.im { color: #008000; font-weight: bold; } /* Import */
-code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
-code span.kw { color: #007020; font-weight: bold; } /* Keyword */
-code span.op { color: #666666; } /* Operator */
-code span.ot { color: #007020; } /* Other */
-code span.pp { color: #bc7a00; } /* Preprocessor */
-code span.sc { color: #4070a0; } /* SpecialChar */
-code span.ss { color: #bb6688; } /* SpecialString */
-code span.st { color: #4070a0; } /* String */
-code span.va { color: #19177c; } /* Variable */
-code span.vs { color: #4070a0; } /* VerbatimString */
-code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
 </style>
 
 
@@ -95,22 +67,30 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <meta name="quarto:offset" content="./">
 <link href="./Chap6.html" rel="next">
 <link href="./Chap4.html" rel="prev">
-<script src="site_libs/quarto-html/quarto.js"></script>
+<script src="site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="site_libs/quarto-html/axe/axe-check.js" type="module"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="site_libs/quarto-html/anchor.min.js"></script>
 <link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-587c61ba64f3a5504c4d52d930310e48.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-27c261d06b905028a18691de25d09dde.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
   "collapse-after": 3,
   "panel-placement": "start",
   "type": "textbox",
-  "limit": 20,
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
   "language": {
     "search-no-results-text": "No results",
     "search-matching-documents-text": "matching documents",
@@ -119,25 +99,60 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
     "search-more-match-text": "more match in this document",
     "search-more-matches-text": "more matches in this document",
     "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
     "search-detached-cancel-button-title": "Cancel",
-    "search-submit-button-title": "Submit"
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
   }
 }</script>
 
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
   <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
 
 <link rel="stylesheet" href="HTPIwLstyles.css">
 </head>
 
-<body class="nav-sidebar floating">
+<body class="nav-sidebar floating quarto-light">
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top">
-  <nav class="quarto-secondary-nav" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
-    <div class="container-fluid d-flex justify-content-between">
-      <h1 class="quarto-secondary-nav-title"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Functions</span></h1>
-      <button type="button" class="quarto-btn-toggle btn" aria-label="Show secondary navigation">
-        <i class="bi bi-chevron-right"></i>
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./Chap5.html"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Functions</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
       </button>
     </div>
   </nav>
@@ -145,80 +160,92 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <!-- content -->
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
 <!-- sidebar -->
-  <nav id="quarto-sidebar" class="sidebar collapse sidebar-navigation floating overflow-auto">
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
     <div class="pt-lg-2 mt-2 text-left sidebar-header">
     <div class="sidebar-title mb-0 py-0">
       <a href="./">How To Prove It with Lean</a> 
         <div class="sidebar-tools-main">
-    <a href="./How-To-Prove-It-with-Lean.pdf" title="Download PDF" class="sidebar-tool px-1"><i class="bi bi-file-pdf"></i></a>
+    <a href="./How-To-Prove-It-with-Lean.pdf" title="Download PDF" class="quarto-navigation-tool px-1" aria-label="Download PDF"><i class="bi bi-file-pdf"></i></a>
 </div>
     </div>
       </div>
-      <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="mt-2 flex-shrink-0 align-items-center">
         <div class="sidebar-search">
         <div id="quarto-search" class="" title="Search"></div>
         </div>
-      </div>
+        </div>
     <div class="sidebar-menu-container"> 
     <ul class="list-unstyled mt-1">
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./index.html" class="sidebar-item-text sidebar-link">Preface</a>
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Preface</span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./Chap1.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Sentential Logic</span></a>
+  <a href="./Chap1.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Sentential Logic</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./Chap2.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Quantificational Logic</span></a>
+  <a href="./Chap2.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Quantificational Logic</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./IntroLean.html" class="sidebar-item-text sidebar-link">Introduction to Lean</a>
+  <a href="./IntroLean.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Introduction to Lean</span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./Chap3.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Proofs</span></a>
+  <a href="./Chap3.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Proofs</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./Chap4.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Relations</span></a>
+  <a href="./Chap4.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Relations</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./Chap5.html" class="sidebar-item-text sidebar-link active"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Functions</span></a>
+  <a href="./Chap5.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Functions</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./Chap6.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Mathematical Induction</span></a>
+  <a href="./Chap6.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Mathematical Induction</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./Chap7.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Number Theory</span></a>
+  <a href="./Chap7.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Number Theory</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./Chap8.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Infinite Sets</span></a>
+  <a href="./Chap8.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Infinite Sets</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./Appendix.html" class="sidebar-item-text sidebar-link">Appendix</a>
+  <a href="./Appendix.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Appendix</span></a>
   </div>
 </li>
     </ul>
     </div>
 </nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
         <nav id="TOC" role="doc-toc" class="toc-active">
@@ -244,7 +271,7 @@ $$
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title d-none d-lg-block"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Functions</span></h1>
+<h1 class="title"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Functions</span></h1>
 </div>
 
 
@@ -252,38 +279,41 @@ $$
 <div class="quarto-title-meta">
 
     
+  
     
   </div>
   
 
+
 </header>
+
 
 <section id="functions" class="level2">
 <h2 class="anchored" data-anchor-id="functions">5.1. Functions</h2>
 <p>The first definition in Chapter 5 of <em>HTPI</em> says that if <span class="math inline">\(F \subseteq A \times B\)</span>, then <span class="math inline">\(F\)</span> is called a <em>function</em> from <span class="math inline">\(A\)</span> to <span class="math inline">\(B\)</span> if for every <span class="math inline">\(a \in A\)</span> there is exactly one <span class="math inline">\(b \in B\)</span> such that <span class="math inline">\((a, b) \in F\)</span>. The notation <span class="math inline">\(F : A \to B\)</span> means that <span class="math inline">\(F\)</span> is a function from <span class="math inline">\(A\)</span> to <span class="math inline">\(B\)</span>. If <span class="math inline">\(F\)</span> is a function from <span class="math inline">\(A\)</span> to <span class="math inline">\(B\)</span> and <span class="math inline">\(a \in A\)</span>, then <em>HTPI</em> introduces the notation <span class="math inline">\(F(a)\)</span> for the unique <span class="math inline">\(b \in B\)</span> such that <span class="math inline">\((a, b) \in F\)</span>. Thus, if <span class="math inline">\(F : A \to B\)</span>, <span class="math inline">\(a \in A\)</span>, and <span class="math inline">\(b \in B\)</span>, then <span class="math inline">\(F(a) = b\)</span> means the same thing as <span class="math inline">\((a, b) \in F\)</span>. We sometimes think of <span class="math inline">\(F\)</span> as representing an operation that can be applied to an element <span class="math inline">\(a\)</span> of <span class="math inline">\(A\)</span> to produce a corresponding element <span class="math inline">\(F(a)\)</span> of <span class="math inline">\(B\)</span>, and we call <span class="math inline">\(F(a)\)</span> the <em>value of <span class="math inline">\(F\)</span> at <span class="math inline">\(a\)</span></em>, or the <em>result of applying <span class="math inline">\(F\)</span> to <span class="math inline">\(a\)</span></em>.</p>
 <p>This might remind you of the situation we faced in Chapter 4. If <span class="math inline">\(R \subseteq A \times B\)</span>, <span class="math inline">\(a \in A\)</span>, and <span class="math inline">\(b \in B\)</span>, then Chapter 4 of <em>HTPI</em> uses the notation <span class="math inline">\(aRb\)</span> to mean the same thing as <span class="math inline">\((a, b) \in R\)</span>. But in Lean, we found it necessary to change this notation. Instead of using <em>HTPI</em>’s notation <span class="math inline">\(aRb\)</span>, we introduced the notation <code>R a b</code>, which we use when <code>R</code> has type <code>Rel A B</code>, <code>a</code> has type <code>A</code>, and <code>b</code> has type <code>B</code>. (The notation <code>(a, b) ∈ R</code>, in contrast, can be used only when <code>R</code> has type <code>Set (A × B)</code>.) If <code>R</code> has type <code>Rel A B</code>, then we think of <code>R</code> as representing some relationship that might hold between <code>a</code> and <code>b</code>, and <code>R a b</code> as the proposition saying that this relationship holds. And although <code>R</code> is not a set of ordered pairs, there is a corresponding set, <code>extension R</code>, of type <code>Set (A × B)</code>, with the property that <code>(a, b) ∈ extension R</code> if and only if <code>R a b</code>.</p>
 <p>We will take a similar approach to functions in this chapter. For any types <code>A</code> and <code>B</code>, we introduce a new type <code>A → B</code>. If <code>f</code> has type <code>A → B</code>, then we think of <code>f</code> as representing some operation that can be applied to an object of type <code>A</code> to produce a corresponding object of type <code>B</code>. We will say that <code>f</code> is a <em>function</em> from <code>A</code> to <code>B</code>, and <code>A</code> is the <em>domain</em> of <code>f</code>. If <code>a</code> has type <code>A</code>, then we write <code>f a</code> (with a space but no parentheses) for the result of applying the operation represented by <code>f</code> to the object <code>a</code>. Thus, if we have <code>f : A → B</code> and <code>a : A</code>, then <code>f a</code> has type <code>B</code>. As with relations, if <code>f</code> has type <code>A → B</code>, then <code>f</code> is not a set of ordered pairs. But there is a corresponding set of ordered pairs, which we will call the <em>graph</em> of <code>f</code>, whose elements are the ordered pairs <code>(a, b)</code> for which <code>f a = b</code>:</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> graph {A B : <span class="kw">Type</span>} (f : A → B) : Set (A × B) :=</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> graph {A B : <span class="kw">Type</span>} (f : A → B) : Set (A × B) :=</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>  {(a, b) : A × B | f a = b}</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> graph_def {A B : <span class="kw">Type</span>} (f : A → B) (a : A) (b : B) :</span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>    (a, b) ∈ graph f ↔ f a = b := <span class="kw">by</span> <span class="kw">rfl</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>    (a, b) ∈ graph f ↔ f a = b := <span class="kw">by</span> <span class="kw">rfl</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Every set of type <code>Set (A × B)</code> is the extension of some relation from <code>A</code> to <code>B</code>, but not every such set is the graph of a function from <code>A</code> to <code>B</code>. To be the graph of a function, it must have the property that was used to define functions in <em>HTPI</em>: each object of type <code>A</code> must be paired in the set with exactly one object of type <code>B</code>. Let’s give this property a name:</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> is_func_graph {A B : <span class="kw">Type</span>} (F : Set (A × B)) : <span class="kw">Prop</span> :=</span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>  ∀ (x : A), ∃! (y : B), (x, y) ∈ F</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> is_func_graph {A B : <span class="kw">Type</span>} (F : Set (A × B)) : <span class="kw">Prop</span> :=</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>  ∀ (x : A), ∃! (y : B), (x, y) ∈ F</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>And now we can say that the sets of type <code>Set (A × B)</code> that are graphs of functions from <code>A</code> to <code>B</code> are precisely the ones that have the property <code>is_func_graph</code>:</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> func_from_graph {A B : <span class="kw">Type</span>} (F : Set (A × B)) :</span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>    (∃ (f : A → B), graph f = F) ↔ is_func_graph F</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> func_from_graph {A B : <span class="kw">Type</span>} (F : Set (A × B)) :</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>    (∃ (f : A → B), graph f = F) ↔ is_func_graph F</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>We will ask you to prove the left-to-right direction of this theorem in the exercises. The proof of the right-to-left direction in Lean is tricky; it requires an idea that we won’t introduce until Section 8.2. We’ll give the proof then, but we’ll go ahead and use the theorem in this chapter when we find it useful.</p>
 <p>Section 5.1 of <em>HTPI</em> proves two theorems about functions. The first gives a convenient way of proving that two functions are equal (<em>HTPI</em> p.&nbsp;232):</p>
 <div class="nthm" data-arguments="Theorem 5.1.4">
 <p>Suppose <span class="math inline">\(f\)</span> and <span class="math inline">\(g\)</span> are functions from <span class="math inline">\(A\)</span> to <span class="math inline">\(B\)</span>. If <span class="math inline">\(\forall a \in A(f(a) = g(a))\)</span>, then <span class="math inline">\(f = g\)</span>.</p>
 </div>
 <p>The proof of this theorem in <em>HTPI</em> is based on the axiom of extensionality for sets. But in Lean, functions aren’t sets of ordered pairs, so this method of proof won’t work. Fortunately, Lean has a similar axiom of extensionality for functions. The axiom is called <code>funext</code>, and it proves Theorem 5.1.4.</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Theorem_5_1_4 {A B : <span class="kw">Type</span>} (f g : A → B) :</span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>    (∀ (a : A), f a = g a) → f = g := funext</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Theorem_5_1_4 {A B : <span class="kw">Type</span>} (f g : A → B) :</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>    (∀ (a : A), f a = g a) → f = g := funext</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>We saw previously that if we are trying to prove <code>X = Y</code>, where <code>X</code> and <code>Y</code> both have type <code>Set U</code>, then often the best first step is the tactic <code>apply Set.ext</code>, which converts the goal to <code>∀ (x : U), x ∈ X ↔︎ x ∈ Y</code>. Similarly, if we are trying to prove <code>f = g</code>, where <code>f</code> and <code>g</code> both have type <code>A → B</code>, then we will usually start with the tactic <code>apply funext</code>, which will convert the goal to <code>∀ (x : A), f x = g x</code>. By Theorem_5_1_4, this implies the original goal <code>f = g</code>. For example, here is a proof that if two functions have the same graph, then they are equal:</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="kw">example</span> {A B : <span class="kw">Type</span>} (f g : A → B) :</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="kw">example</span> {A B : <span class="kw">Type</span>} (f g : A → B) :</span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>    graph f = graph g → f = g := <span class="kw">by</span></span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  <span class="kw">assume</span> h1 : graph f = graph g  <span class="co">--Goal : f = g</span></span>
 <span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>  <span class="kw">apply</span> funext                   <span class="co">--Goal : ∀ (x : A), f x = g x</span></span>
@@ -295,17 +325,17 @@ $$
 <span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>  <span class="kw">rewrite</span> [h1] <span class="kw">at</span> h2             <span class="co">--h2 : (x, f x) ∈ graph g</span></span>
 <span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>  <span class="kw">define</span> <span class="kw">at</span> h2                   <span class="co">--h2 : g x = f x</span></span>
 <span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>  <span class="kw">show</span> f x = g x <span class="kw">from</span> h2.symm</span>
-<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>  <span class="kw">done</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>  <span class="kw">done</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>The axiom of extensionality for sets says that a set is completely determined by its elements. This is what justifies our usual method of defining a set: we specify what its elements are, using notation like <code>{0, 1, 2}</code> or <code>{x : Nat | x &lt; 3}</code>. Similarly, the axiom of extensionality for functions says that a function is completely determined by its values, and therefore we can define a function by specifying its values. For instance, we can define a function from <code>Nat</code> to <code>Nat</code> by specifying, for any <code>n : Nat</code>, the result of applying the function to <code>n</code>. As an example of this, we could define the “squaring function” from <code>Nat</code> to <code>Nat</code> to be the function that, when applied to any <code>n : Nat</code>, produces the result <code>n ^ 2</code>. Here are two ways to define this function in Lean:</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> square1 (n : Nat) : Nat := n ^ 2</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> square1 (n : Nat) : Nat := n ^ 2</span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> square2 : Nat → Nat := fun (n : Nat) =&gt; n ^ 2</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> square2 : Nat → Nat := fun (n : Nat) =&gt; n ^ 2</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>The first of these definitions uses notation we have used before; it says that if <code>n</code> has type <code>Nat</code>, then the expression <code>square1 n</code> also has type <code>Nat</code>, and it is definitionally equal to <code>n ^ 2</code>. The second definition introduces new Lean notation. It says that <code>square2</code> has type <code>Nat → Nat</code>, and it defines it to be the function that, when applied to any <code>n</code> of type <code>Nat</code>, yields the result <code>n ^ 2</code>. Of course, this also means that <code>square2 n</code> is definitionally equal to <code>n ^ 2</code>. In general, the notation <code>fun (x : A) =&gt; ...</code> means “the function which, when applied to any <code>x</code> of type <code>A</code>, yields the result …” The two definitions above are equivalent. You can ask Lean to confirm this, and try out the squaring function, as follows (the <code>#eval</code> command asks Lean to evaluate an expression):</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="kw">example</span> : square1 = square2 := <span class="kw">by</span> <span class="kw">rfl</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="kw">example</span> : square1 = square2 := <span class="kw">by</span> <span class="kw">rfl</span></span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="sc">++</span><span class="do">#eval</span><span class="sc">::</span> square1 7     <span class="co">--Answer: 49</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="sc">++</span><span class="do">#eval</span><span class="sc">::</span> square1 7     <span class="co">--Answer: 49</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>There is one more theorem in Section 5.1 of <em>HTPI</em>. Theorem 5.1.5 says that if <span class="math inline">\(f\)</span> is a function from <span class="math inline">\(A\)</span> to <span class="math inline">\(B\)</span> and <span class="math inline">\(g\)</span> is a function from <span class="math inline">\(B\)</span> to <span class="math inline">\(C\)</span>, then the composition of <span class="math inline">\(g\)</span> and <span class="math inline">\(f\)</span> is a function from <span class="math inline">\(A\)</span> to <span class="math inline">\(C\)</span>. To state this theorem in Lean, we will have to make adjustments for the differences between the treatment of functions in <em>HTPI</em> and Lean. In Chapter 4, we defined <code>comp S R</code> to be the composition of <code>S</code> and <code>R</code>, where <code>R</code> has type <code>Set (A × B)</code> and <code>S</code> had type <code>Set (B × C)</code>. But functions in Lean are not sets of ordered pairs, so we cannot apply the operation <code>comp</code> to them. We can, however, apply it to their graphs. So the theorem corresponding to Theorem 5.1.5 in <em>HTPI</em> is this:</p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Theorem_5_1_5 {A B C : <span class="kw">Type</span>} (f : A → B) (g : B → C) :</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Theorem_5_1_5 {A B C : <span class="kw">Type</span>} (f : A → B) (g : B → C) :</span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>    ∃ (h : A → C), graph h = comp (graph g) (graph f) := <span class="kw">by</span></span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>  <span class="kw">set</span> h : A → C := fun (x : A) =&gt; g (f x)</span>
 <span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>  <span class="kw">apply</span> Exists.intro h</span>
@@ -339,32 +369,32 @@ $$
 <span id="cb8-32"><a href="#cb8-32" aria-hidden="true" tabindex="-1"></a>    <span class="kw">rewrite</span> [←h3] <span class="kw">at</span> h4   <span class="co">--h4 : g (f a) = c</span></span>
 <span id="cb8-33"><a href="#cb8-33" aria-hidden="true" tabindex="-1"></a>    <span class="kw">show</span> h a = c <span class="kw">from</span> h4</span>
 <span id="cb8-34"><a href="#cb8-34" aria-hidden="true" tabindex="-1"></a>    <span class="kw">done</span></span>
-<span id="cb8-35"><a href="#cb8-35" aria-hidden="true" tabindex="-1"></a>  <span class="kw">done</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb8-35"><a href="#cb8-35" aria-hidden="true" tabindex="-1"></a>  <span class="kw">done</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Notice that the proof of <code>Theorem_5_1_5</code> begins by defining the function <code>h</code> for which <code>graph h = comp (graph g) (graph f)</code>. The definition says that for all <code>x</code> of type <code>A</code>, <code>h x = g (f x)</code>. This function <code>h</code> is called the <em>composition</em> of <code>g</code> and <code>f</code>, and it is denoted <code>g ∘ f</code>. (To type <code>∘</code> in VS Code, type <code>\comp</code> or <code>\circ</code>.) In other words, <code>g ∘ f</code> has type <code>A → C</code>, and for all <code>x</code> of type <code>A</code>, <code>(g ∘ f) x</code> is definitionally equal to <code>g (f x)</code>. In <em>HTPI</em>, functions are sets of ordered pairs, and the operation of composition of functions is literally the same as the operation <code>comp</code> that we used in Chapter 4. But in Lean, we distinguish among functions, relations, and sets of ordered pairs, so all we can say is that the operation of composition of functions corresponds to the operation <code>comp</code> from Chapter 4. The correspondence is that, as shown in the proof of <code>Theorem_5_1_5</code>, if <code>h = g ∘ f</code>, then <code>graph h = comp (graph g) (graph f)</code>.</p>
 <p>We saw in part 4 of Theorem 4.2.5 that composition of relations is associative. Composition of functions is also associative. In fact, if <code>f : A → B</code>, <code>g : B → C</code>, and <code>h : C → D</code>, then <code>h ∘ (g ∘ f)</code> and <code>(h ∘ g) ∘ f</code> are definitionally equal, since they both mean the same thing as <code>fun (x : A) =&gt; h (g (f a))</code>. As a result, the tactic <code>rfl</code> proves the associativity of composition of functions:</p>
-<div class="sourceCode" id="cb9"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="kw">example</span> {A B C D : <span class="kw">Type</span>} (f : A → B) (g : B → C) (h : C → D) :</span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>    h ∘ (g ∘ f) = (h ∘ g) ∘ f := <span class="kw">by</span> <span class="kw">rfl</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="kw">example</span> {A B C D : <span class="kw">Type</span>} (f : A → B) (g : B → C) (h : C → D) :</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>    h ∘ (g ∘ f) = (h ∘ g) ∘ f := <span class="kw">by</span> <span class="kw">rfl</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p><em>HTPI</em> defines the identity function on a set <span class="math inline">\(A\)</span> to be the function <span class="math inline">\(i_A\)</span> from <span class="math inline">\(A\)</span> to <span class="math inline">\(A\)</span> such that <span class="math inline">\(\forall x \in A(i_A(x) = x)\)</span>, and Exercise 9 from Section 4.3 of <em>HTPI</em> implies that if <span class="math inline">\(f : A \to B\)</span>, then <span class="math inline">\(f \circ i_A = f\)</span> and <span class="math inline">\(i_B \circ f = f\)</span>. We say, therefore, that the identity functions are <em>identity elements</em> for composition of functions. Similarly, in Lean, for each type <code>A</code> there is an identity function from <code>A</code> to <code>A</code>. This identity function is denoted <code>id</code>; there is no need to specify <code>A</code> in the notation, because <code>A</code> is an implicit argument to <code>id</code>. Thus, when you use <code>id</code> to denote an identity function, Lean will figure out what type <code>A</code> to use as the domain of the function. (If, for some reason, you want to specify that the domain is some type <code>A</code>, you can write <code>@id A</code> instead of <code>id</code>.) For any <code>x</code>, of any type, <code>id x</code> is definitionally equal to <code>x</code>, and as a result the proof that <code>id</code> is an identity element for composition of functions can also be done with the <code>rfl</code> tactic:</p>
-<div class="sourceCode" id="cb10"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="kw">example</span> {A B : <span class="kw">Type</span>} (f : A → B) : f ∘ id = f := <span class="kw">by</span> <span class="kw">rfl</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="kw">example</span> {A B : <span class="kw">Type</span>} (f : A → B) : f ∘ id = f := <span class="kw">by</span> <span class="kw">rfl</span></span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="kw">example</span> {A B : <span class="kw">Type</span>} (f : A → B) : id ∘ f = f := <span class="kw">by</span> <span class="kw">rfl</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="kw">example</span> {A B : <span class="kw">Type</span>} (f : A → B) : id ∘ f = f := <span class="kw">by</span> <span class="kw">rfl</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <section id="exercises" class="level3">
 <h3 class="anchored" data-anchor-id="exercises">Exercises</h3>
 <div class="numex" data-arguments="1">
-<div class="sourceCode" id="cb11"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> func_from_graph_ltr {A B : <span class="kw">Type</span>} (F : Set (A × B)) :</span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>    (∃ (f : A → B), graph f = F) → is_func_graph F := <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> func_from_graph_ltr {A B : <span class="kw">Type</span>} (F : Set (A × B)) :</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>    (∃ (f : A → B), graph f = F) → is_func_graph F := <span class="cn">sorry</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div class="numex" data-arguments="2">
-<div class="sourceCode" id="cb12"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Exercise_5_1_13a</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb12"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Exercise_5_1_13a</span>
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>    {A B C : <span class="kw">Type</span>} (R : Set (A × B)) (S : Set (B × C)) (f : A → C)</span>
 <span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>    (h1 : ∀ (b : B), b ∈ Ran R ∧ b ∈ Dom S) (h2 : graph f = comp S R) :</span>
-<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>    is_func_graph S := <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>    is_func_graph S := <span class="cn">sorry</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div class="numex" data-arguments="3">
-<div class="sourceCode" id="cb13"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Exercise_5_1_14a</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb13"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Exercise_5_1_14a</span>
 <span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>    {A B : <span class="kw">Type</span>} (f : A → B) (R : BinRel A) (S : BinRel B)</span>
 <span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>    (h : ∀ (x y : A), R x y ↔ S (f x) (f y)) :</span>
-<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>    reflexive S → reflexive R := <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>    reflexive S → reflexive R := <span class="cn">sorry</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>4. Here is a putative theorem:</p>
 <div class="nthm" data-arguments="Theorem?">
@@ -373,11 +403,11 @@ $$
 \]</span> If <span class="math inline">\(R\)</span> is reflexive then <span class="math inline">\(S\)</span> is reflexive.</p>
 </div>
 <p>Is the theorem correct? Try to prove it in Lean. If you can’t prove it, see if you can find a counterexample.</p>
-<div class="sourceCode" id="cb14"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co">--You might not be able to complete this proof</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb14"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co">--You might not be able to complete this proof</span></span>
 <span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Exercise_5_1_15a</span>
 <span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>    {A B : <span class="kw">Type</span>} (f : A → B) (R : BinRel A) (S : BinRel B)</span>
 <span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>    (h : ∀ (x y : B), S x y ↔ ∃ (u v : A), f u = x ∧ f v = y ∧ R u v) :</span>
-<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>    reflexive R → reflexive S := <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>    reflexive R → reflexive S := <span class="cn">sorry</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>5. Here is a putative theorem with an incorrect proof:</p>
 <div class="nthm" data-arguments="Theorem?">
 <p>Suppose <span class="math inline">\(f : A \to B\)</span>, <span class="math inline">\(R\)</span> is a binary relation on <span class="math inline">\(A\)</span>, and <span class="math inline">\(S\)</span> is the binary relation on <span class="math inline">\(B\)</span> defined as follows: <span class="math display">\[
@@ -388,38 +418,38 @@ $$
 <p>Suppose <span class="math inline">\(R\)</span> is transitive. Let <span class="math inline">\(x\)</span>, <span class="math inline">\(y\)</span>, and <span class="math inline">\(z\)</span> be arbitrary elements of <span class="math inline">\(B\)</span>. Assume that <span class="math inline">\(xSy\)</span> and <span class="math inline">\(ySz\)</span>. By the definition of <span class="math inline">\(S\)</span>, this means that there are <span class="math inline">\(u\)</span>, <span class="math inline">\(v\)</span>, and <span class="math inline">\(w\)</span> in <span class="math inline">\(A\)</span> such that <span class="math inline">\(f(u) = x\)</span>, <span class="math inline">\(f(v) = y\)</span>, <span class="math inline">\(f(w) = z\)</span>, <span class="math inline">\(uRv\)</span>, and <span class="math inline">\(vRw\)</span>. Since <span class="math inline">\(R\)</span> is transitive, it follows that <span class="math inline">\(uRw\)</span>. Since <span class="math inline">\(f(u) = x\)</span>, <span class="math inline">\(f(w) = z\)</span>, and <span class="math inline">\(uRw\)</span>, <span class="math inline">\(xSz\)</span>. Therefore <span class="math inline">\(S\)</span> is transitive. <span class="excl">&nbsp;□</span></p>
 </div>
 <p>Find the mistake in the proof by attempting to write the proof in Lean. Is the theorem correct?</p>
-<div class="sourceCode" id="cb15"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co">--You might not be able to complete this proof</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb15"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co">--You might not be able to complete this proof</span></span>
 <span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Exercise_5_1_15c</span>
 <span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>    {A B : <span class="kw">Type</span>} (f : A → B) (R : BinRel A) (S : BinRel B)</span>
 <span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>    (h : ∀ (x y : B), S x y ↔ ∃ (u v : A), f u = x ∧ f v = y ∧ R u v) :</span>
-<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>    transitive R → transitive S := <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>    transitive R → transitive S := <span class="cn">sorry</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="numex" data-arguments="6">
-<div class="sourceCode" id="cb16"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Exercise_5_1_16b</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb16"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Exercise_5_1_16b</span>
 <span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>    {A B : <span class="kw">Type</span>} (R : BinRel B) (S : BinRel (A → B))</span>
 <span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>    (h : ∀ (f g : A → B), S f g ↔ ∀ (x : A), R (f x) (g x)) :</span>
-<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>    symmetric R → symmetric S := <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>    symmetric R → symmetric S := <span class="cn">sorry</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div class="numex" data-arguments="7">
-<div class="sourceCode" id="cb17"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Exercise_5_1_17a {A : <span class="kw">Type</span>} (f : A → A) (a : A)</span>
-<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>    (h : ∀ (x : A), f x = a) : ∀ (g : A → A), f ∘ g = f := <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb17"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Exercise_5_1_17a {A : <span class="kw">Type</span>} (f : A → A) (a : A)</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>    (h : ∀ (x : A), f x = a) : ∀ (g : A → A), f ∘ g = f := <span class="cn">sorry</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div class="numex" data-arguments="8">
-<div class="sourceCode" id="cb18"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Exercise_5_1_17b {A : <span class="kw">Type</span>} (f : A → A) (a : A)</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb18"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Exercise_5_1_17b {A : <span class="kw">Type</span>} (f : A → A) (a : A)</span>
 <span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>    (h : ∀ (g : A → A), f ∘ g = f) :</span>
-<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>    ∃ (y : A), ∀ (x : A), f x = y := <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>    ∃ (y : A), ∀ (x : A), f x = y := <span class="cn">sorry</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
 </section>
 <section id="one-to-one-and-onto" class="level2">
 <h2 class="anchored" data-anchor-id="one-to-one-and-onto">5.2. One-to-One and Onto</h2>
 <p>Section 5.2 of <em>HTPI</em> introduces two important properties that a function might have. A function <code>f : A → B</code> is called <em>onto</em> if for every <code>b</code> of type <code>B</code> there is at least one <code>a</code> of type <code>A</code> such that <code>f a = b</code>:</p>
-<div class="sourceCode" id="cb19"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> onto {A B : <span class="kw">Type</span>} (f : A → B) : <span class="kw">Prop</span> :=</span>
-<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>  ∀ (y : B), ∃ (x : A), f x = y</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb19"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> onto {A B : <span class="kw">Type</span>} (f : A → B) : <span class="kw">Prop</span> :=</span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>  ∀ (y : B), ∃ (x : A), f x = y</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>It is called <em>one-to-one</em> if there do <em>not</em> exist distinct <code>a1</code> and <code>a2</code> of type <code>A</code> such that <code>f a1 = f a2</code>. This phrasing of the definition makes it clear what is at issue: Are there distinct objects in the domain to which the function assigns the same value? But it is a negative statement, and that would make it difficult to work with it in proofs. Fortunately, it is not hard to rephrase the definition as an equivalent positive statement, using quantifier negation, De Morgan, and conditional laws. The resulting equivalent positive statement is given in Theorem 5.2.3 of <em>HTPI</em>, and we take it as our official definition of <code>one_to_one</code> in Lean:</p>
-<div class="sourceCode" id="cb20"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> one_to_one {A B : <span class="kw">Type</span>} (f : A → B) : <span class="kw">Prop</span> :=</span>
-<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>  ∀ (x1 x2 : A), f x1 = f x2 → x1 = x2</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb20"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> one_to_one {A B : <span class="kw">Type</span>} (f : A → B) : <span class="kw">Prop</span> :=</span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>  ∀ (x1 x2 : A), f x1 = f x2 → x1 = x2</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>There is only one more theorem about these properties in Section 5.2 of <em>HTPI</em>. It says that a composition of one-to-one functions is one-to-one, and a composition of onto functions is onto. It is straightforward to carry out these proofs in Lean by simply applying the definitions of the relevant concepts.</p>
-<div class="sourceCode" id="cb21"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Theorem_5_2_5_1 {A B C : <span class="kw">Type</span>} (f : A → B) (g : B → C) :</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb21"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Theorem_5_2_5_1 {A B C : <span class="kw">Type</span>} (f : A → B) (g : B → C) :</span>
 <span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>    one_to_one f → one_to_one g → one_to_one (g ∘ f) := <span class="kw">by</span></span>
 <span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>  <span class="kw">assume</span> h1 : one_to_one f</span>
 <span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>  <span class="kw">assume</span> h2 : one_to_one g</span>
@@ -433,10 +463,10 @@ $$
 <span id="cb21-12"><a href="#cb21-12" aria-hidden="true" tabindex="-1"></a>  <span class="kw">assume</span> h3 : g (f a1) = g (f a2)</span>
 <span id="cb21-13"><a href="#cb21-13" aria-hidden="true" tabindex="-1"></a>  <span class="kw">have</span> h4 : f a1 = f a2 := h2 (f a1) (f a2) h3</span>
 <span id="cb21-14"><a href="#cb21-14" aria-hidden="true" tabindex="-1"></a>  <span class="kw">show</span> a1 = a2 <span class="kw">from</span> h1 a1 a2 h4</span>
-<span id="cb21-15"><a href="#cb21-15" aria-hidden="true" tabindex="-1"></a>  <span class="kw">done</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb21-15"><a href="#cb21-15" aria-hidden="true" tabindex="-1"></a>  <span class="kw">done</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Notice that the tactic <code>define : (g ∘ f) a1</code> replaces <code>(g ∘ f) a1</code> with its definition, <code>g (f a1)</code>. As usual, this step isn’t really needed—Lean will apply the definition on its own when necessary, without being told. But using this tactic makes the proof easier to read. Also, notice that <code>define : g ∘ f</code> produces a result that is much less useful. As we have observed before, the <code>define</code> tactic works best when applied to a complete expression, rather than just a part of an expression.</p>
 <p>An alternative way to apply the definition of composition of functions is to prove a lemma that can be used in the <code>rewrite</code> tactic. We try out this approach for the second part of the theorem.</p>
-<div class="sourceCode" id="cb22"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="kw">lemma</span> comp_def {A B C : <span class="kw">Type</span>} (f : A → B) (g : B → C) (x : A) :</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb22"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="kw">lemma</span> comp_def {A B C : <span class="kw">Type</span>} (f : A → B) (g : B → C) (x : A) :</span>
 <span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>    (g ∘ f) x = g (f x) := <span class="kw">by</span> <span class="kw">rfl</span></span>
 <span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Theorem_5_2_5_2 {A B C : <span class="kw">Type</span>} (f : A → B) (g : B → C) :</span>
@@ -453,56 +483,56 @@ $$
 <span id="cb22-15"><a href="#cb22-15" aria-hidden="true" tabindex="-1"></a>  <span class="kw">rewrite</span> [comp_def]     <span class="co">--Goal : g (f a) = c</span></span>
 <span id="cb22-16"><a href="#cb22-16" aria-hidden="true" tabindex="-1"></a>  <span class="kw">rewrite</span> [←h4] <span class="kw">at</span> h3</span>
 <span id="cb22-17"><a href="#cb22-17" aria-hidden="true" tabindex="-1"></a>  <span class="kw">show</span> g (f a) = c <span class="kw">from</span> h3</span>
-<span id="cb22-18"><a href="#cb22-18" aria-hidden="true" tabindex="-1"></a>  <span class="kw">done</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb22-18"><a href="#cb22-18" aria-hidden="true" tabindex="-1"></a>  <span class="kw">done</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <section id="exercises-1" class="level3">
 <h3 class="anchored" data-anchor-id="exercises-1">Exercises</h3>
 <div class="numex" data-arguments="1">
-<div class="sourceCode" id="cb23"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Exercise_5_2_10a {A B C : <span class="kw">Type</span>} (f: A → B) (g : B → C) :</span>
-<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>    onto (g ∘ f) → onto g := <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb23"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Exercise_5_2_10a {A B C : <span class="kw">Type</span>} (f: A → B) (g : B → C) :</span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>    onto (g ∘ f) → onto g := <span class="cn">sorry</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div class="numex" data-arguments="2">
-<div class="sourceCode" id="cb24"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Exercise_5_2_10b {A B C : <span class="kw">Type</span>} (f: A → B) (g : B → C) :</span>
-<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>    one_to_one (g ∘ f) → one_to_one f := <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb24"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Exercise_5_2_10b {A B C : <span class="kw">Type</span>} (f: A → B) (g : B → C) :</span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>    one_to_one (g ∘ f) → one_to_one f := <span class="cn">sorry</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div class="numex" data-arguments="3">
-<div class="sourceCode" id="cb25"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Exercise_5_2_11a {A B C : <span class="kw">Type</span>} (f: A → B) (g : B → C) :</span>
-<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>    onto f → ¬(one_to_one g) → ¬(one_to_one (g ∘ f)) := <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb25"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Exercise_5_2_11a {A B C : <span class="kw">Type</span>} (f: A → B) (g : B → C) :</span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>    onto f → ¬(one_to_one g) → ¬(one_to_one (g ∘ f)) := <span class="cn">sorry</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div class="numex" data-arguments="4">
-<div class="sourceCode" id="cb26"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Exercise_5_2_11b {A B C : <span class="kw">Type</span>} (f: A → B) (g : B → C) :</span>
-<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>    ¬(onto f) → one_to_one g → ¬(onto (g ∘ f)) := <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb26"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Exercise_5_2_11b {A B C : <span class="kw">Type</span>} (f: A → B) (g : B → C) :</span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>    ¬(onto f) → one_to_one g → ¬(onto (g ∘ f)) := <span class="cn">sorry</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div class="numex" data-arguments="5">
-<div class="sourceCode" id="cb27"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Exercise_5_2_12 {A B : <span class="kw">Type</span>} (f : A → B) (g : B → Set A)</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb27"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Exercise_5_2_12 {A B : <span class="kw">Type</span>} (f : A → B) (g : B → Set A)</span>
 <span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>    (h : ∀ (b : B), g b = {a : A | f a = b}) :</span>
-<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a>    onto f → one_to_one g := <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a>    onto f → one_to_one g := <span class="cn">sorry</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div class="numex" data-arguments="6">
-<div class="sourceCode" id="cb28"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Exercise_5_2_16 {A B C : <span class="kw">Type</span>}</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb28"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Exercise_5_2_16 {A B C : <span class="kw">Type</span>}</span>
 <span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>    (R : Set (A × B)) (S : Set (B × C)) (f : A → C) (g : B → C)</span>
 <span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a>    (h1 : graph f = comp S R) (h2 : graph g = S) (h3 : one_to_one g) :</span>
-<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a>    is_func_graph R := <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a>    is_func_graph R := <span class="cn">sorry</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div class="numex" data-arguments="7">
-<div class="sourceCode" id="cb29"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Exercise_5_2_17a</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb29"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Exercise_5_2_17a</span>
 <span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>    {A B : <span class="kw">Type</span>} (f : A → B) (R : BinRel A) (S : BinRel B)</span>
 <span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a>    (h1 : ∀ (x y : B), S x y ↔ ∃ (u v : A), f u = x ∧ f v = y ∧ R u v)</span>
-<span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a>    (h2 : onto f) : reflexive R → reflexive S := <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a>    (h2 : onto f) : reflexive R → reflexive S := <span class="cn">sorry</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div class="numex" data-arguments="8">
-<div class="sourceCode" id="cb30"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Exercise_5_2_17b</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb30"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Exercise_5_2_17b</span>
 <span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a>    {A B : <span class="kw">Type</span>} (f : A → B) (R : BinRel A) (S : BinRel B)</span>
 <span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a>    (h1 : ∀ (x y : B), S x y ↔ ∃ (u v : A), f u = x ∧ f v = y ∧ R u v)</span>
-<span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a>    (h2 : one_to_one f) : transitive R → transitive S := <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a>    (h2 : one_to_one f) : transitive R → transitive S := <span class="cn">sorry</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div class="numex" data-arguments="9">
-<div class="sourceCode" id="cb31"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Exercise_5_2_21a {A B C : <span class="kw">Type</span>} (f : B → C) (g h : A → B)</span>
-<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a>    (h1 : one_to_one f) (h2 : f ∘ g = f ∘ h) : g = h := <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb31"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Exercise_5_2_21a {A B C : <span class="kw">Type</span>} (f : B → C) (g h : A → B)</span>
+<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a>    (h1 : one_to_one f) (h2 : f ∘ g = f ∘ h) : g = h := <span class="cn">sorry</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div class="numex" data-arguments="10">
-<div class="sourceCode" id="cb32"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Exercise_5_2_21b {A B C : <span class="kw">Type</span>} (f : B → C) (a : A)</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb32"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Exercise_5_2_21b {A B C : <span class="kw">Type</span>} (f : B → C) (a : A)</span>
 <span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a>    (h1 : ∀ (g h : A → B), f ∘ g = f ∘ h → g = h) :</span>
-<span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a>    one_to_one f := <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a>    one_to_one f := <span class="cn">sorry</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
 </section>
@@ -513,9 +543,9 @@ $$
 <p>Suppose <span class="math inline">\(f : A \to B\)</span>. If <span class="math inline">\(f\)</span> is one-to-one and onto, then <span class="math inline">\(f^{-1} : B \to A\)</span>.</p>
 </div>
 <p>Of course, we will have to rephrase this theorem slightly to prove it in Lean. If <code>f</code> has type <code>A → B</code>, then the inverse operation <code>inv</code> cannot be applied to <code>f</code>, but it can be applied to <code>graph f</code>. So we must rephrase the theorem like this:</p>
-<div class="sourceCode" id="cb33"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Theorem_5_3_1 {A B : <span class="kw">Type</span>}</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb33"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Theorem_5_3_1 {A B : <span class="kw">Type</span>}</span>
 <span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a>    (f : A → B) (h1 : one_to_one f) (h2 : onto f) :</span>
-<span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a>    ∃ (g : B → A), graph g = inv (graph f)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a>    ∃ (g : B → A), graph g = inv (graph f)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>To prove this theorem, we will use the theorem <code>func_from_graph</code> that was stated in Section 5.1. We can remind ourselves of what that theorem says by using the command <code>#check @func_from_graph</code>, which gives the result:</p>
 <div class="ind">
 <pre><code>@func_from_graph : ∀ {A B : Type} (F : Set (A × B)),
@@ -526,7 +556,7 @@ $$
 <pre><code>∃ (g : B → A), graph g = inv (graph f) ↔ is_func_graph (inv (graph f)).</code></pre>
 </div>
 <p>Therefore the tactic <code>rewrite [func_from_graph (inv (graph f))]</code> will change the goal to <code>is_func_graph (inv (graph f))</code>. In fact, we can just use <code>rewrite [func_from_graph]</code>, and Lean will figure out how to apply the theorem to rewrite the goal. The rest of the proof is straightforward.</p>
-<div class="sourceCode" id="cb36"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Theorem_5_3_1 {A B : <span class="kw">Type</span>}</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb36"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Theorem_5_3_1 {A B : <span class="kw">Type</span>}</span>
 <span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a>    (f : A → B) (h1 : one_to_one f) (h2 : onto f) :</span>
 <span id="cb36-3"><a href="#cb36-3" aria-hidden="true" tabindex="-1"></a>    ∃ (g : B → A), graph g = inv (graph f) := <span class="kw">by</span></span>
 <span id="cb36-4"><a href="#cb36-4" aria-hidden="true" tabindex="-1"></a>  <span class="kw">rewrite</span> [func_from_graph]   <span class="co">--Goal : is_func_graph (inv (graph f))</span></span>
@@ -550,9 +580,9 @@ $$
 <span id="cb36-22"><a href="#cb36-22" aria-hidden="true" tabindex="-1"></a>    <span class="kw">define</span> <span class="kw">at</span> h1          <span class="co">--h1 : ∀ (x1 x2 : A), f x1 = f x2 → x1 = x2</span></span>
 <span id="cb36-23"><a href="#cb36-23" aria-hidden="true" tabindex="-1"></a>    <span class="kw">show</span> a1 = a2 <span class="kw">from</span> h1 a1 a2 h3</span>
 <span id="cb36-24"><a href="#cb36-24" aria-hidden="true" tabindex="-1"></a>    <span class="kw">done</span></span>
-<span id="cb36-25"><a href="#cb36-25" aria-hidden="true" tabindex="-1"></a>  <span class="kw">done</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb36-25"><a href="#cb36-25" aria-hidden="true" tabindex="-1"></a>  <span class="kw">done</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Suppose, now, that we have <code>f : A → B</code>, <code>g : B → A</code>, and <code>graph g = inv (graph f)</code>, as in <code>Theorem_5_3_1</code>. What can we say about the relationship between <code>f</code> and <code>g</code>? One answer is that <code>g ∘ f = id</code> and <code>f ∘ g = id</code>, as shown in Theorem 5.3.2 of <em>HTPI</em>. We’ll prove one of these facts, and leave the other as an exercise for you.</p>
-<div class="sourceCode" id="cb37"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Theorem_5_3_2_1 {A B : <span class="kw">Type</span>} (f : A → B) (g : B → A)</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb37"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Theorem_5_3_2_1 {A B : <span class="kw">Type</span>} (f : A → B) (g : B → A)</span>
 <span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a>    (h1 : graph g = inv (graph f)) : g ∘ f = id := <span class="kw">by</span></span>
 <span id="cb37-3"><a href="#cb37-3" aria-hidden="true" tabindex="-1"></a>  <span class="kw">apply</span> funext           <span class="co">--Goal : ∀ (x : A), (g ∘ f) x = id x</span></span>
 <span id="cb37-4"><a href="#cb37-4" aria-hidden="true" tabindex="-1"></a>  <span class="kw">fix</span> a : A              <span class="co">--Goal : (g ∘ f) a = id a</span></span>
@@ -566,9 +596,9 @@ $$
 <span id="cb37-12"><a href="#cb37-12" aria-hidden="true" tabindex="-1"></a>  <span class="kw">done</span></span>
 <span id="cb37-13"><a href="#cb37-13" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb37-14"><a href="#cb37-14" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Theorem_5_3_2_2 {A B : <span class="kw">Type</span>} (f : A → B) (g : B → A)</span>
-<span id="cb37-15"><a href="#cb37-15" aria-hidden="true" tabindex="-1"></a>    (h1 : graph g = inv (graph f)) : f ∘ g = id := <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb37-15"><a href="#cb37-15" aria-hidden="true" tabindex="-1"></a>    (h1 : graph g = inv (graph f)) : f ∘ g = id := <span class="cn">sorry</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Combining the theorems above, we have shown that if <code>f</code> is one-to-one and onto, then there is a function <code>g</code> such that <code>g ∘ f = id</code> and <code>f ∘ g = id</code>. In fact, the converse is true as well: if such a function <code>g</code> exists, then <code>f</code> must be one-to-one and onto. Again, we’ll prove one statement and leave the second as an exercise.</p>
-<div class="sourceCode" id="cb38"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Theorem_5_3_3_1 {A B : <span class="kw">Type</span>} (f : A → B) (g : B → A)</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb38"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Theorem_5_3_3_1 {A B : <span class="kw">Type</span>} (f : A → B) (g : B → A)</span>
 <span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a>    (h1 : g ∘ f = id) : one_to_one f := <span class="kw">by</span></span>
 <span id="cb38-3"><a href="#cb38-3" aria-hidden="true" tabindex="-1"></a>  <span class="kw">define</span>              <span class="co">--Goal : ∀ (x1 x2 : A), f x1 = f x2 → x1 = x2</span></span>
 <span id="cb38-4"><a href="#cb38-4" aria-hidden="true" tabindex="-1"></a>  <span class="kw">fix</span> a1 : A; <span class="kw">fix</span> a2 : A</span>
@@ -585,9 +615,9 @@ $$
 <span id="cb38-15"><a href="#cb38-15" aria-hidden="true" tabindex="-1"></a>  <span class="kw">done</span></span>
 <span id="cb38-16"><a href="#cb38-16" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb38-17"><a href="#cb38-17" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Theorem_5_3_3_2 {A B : <span class="kw">Type</span>} (f : A → B) (g : B → A)</span>
-<span id="cb38-18"><a href="#cb38-18" aria-hidden="true" tabindex="-1"></a>    (h1 : f ∘ g = id) : onto f := <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb38-18"><a href="#cb38-18" aria-hidden="true" tabindex="-1"></a>    (h1 : f ∘ g = id) : onto f := <span class="cn">sorry</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>We can combine the theorems above to show that if we have <code>f : A → B</code>, <code>g : B → A</code>, <code>g ∘ f = id</code>, and <code>f ∘ g = id</code>, then <code>graph g</code> must be the inverse of <code>graph f</code>. Compare the proof below to the proof of Theorem 5.3.5 in <em>HTPI</em>.</p>
-<div class="sourceCode" id="cb39"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Theorem_5_3_5 {A B : <span class="kw">Type</span>} (f : A → B) (g : B → A)</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb39"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Theorem_5_3_5 {A B : <span class="kw">Type</span>} (f : A → B) (g : B → A)</span>
 <span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a>    (h1 : g ∘ f = id) (h2 : f ∘ g = id) : graph g = inv (graph f) := <span class="kw">by</span></span>
 <span id="cb39-3"><a href="#cb39-3" aria-hidden="true" tabindex="-1"></a>  <span class="kw">have</span> h3 : one_to_one f := Theorem_5_3_3_1 f g h1</span>
 <span id="cb39-4"><a href="#cb39-4" aria-hidden="true" tabindex="-1"></a>  <span class="kw">have</span> h4 : onto f := Theorem_5_3_3_2 f g h2</span>
@@ -603,59 +633,59 @@ $$
 <span id="cb39-14"><a href="#cb39-14" aria-hidden="true" tabindex="-1"></a>      _ = g' := <span class="kw">by</span> <span class="kw">rfl</span></span>
 <span id="cb39-15"><a href="#cb39-15" aria-hidden="true" tabindex="-1"></a>  <span class="kw">rewrite</span> [←h7] <span class="kw">at</span> h5</span>
 <span id="cb39-16"><a href="#cb39-16" aria-hidden="true" tabindex="-1"></a>  <span class="kw">show</span> graph g = inv (graph f) <span class="kw">from</span> h5</span>
-<span id="cb39-17"><a href="#cb39-17" aria-hidden="true" tabindex="-1"></a>  <span class="kw">done</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb39-17"><a href="#cb39-17" aria-hidden="true" tabindex="-1"></a>  <span class="kw">done</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <section id="exercises-2" class="level3">
 <h3 class="anchored" data-anchor-id="exercises-2">Exercises</h3>
 <div class="numex" data-arguments="1">
-<div class="sourceCode" id="cb40"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Theorem_5_3_2_2 {A B : <span class="kw">Type</span>} (f : A → B) (g : B → A)</span>
-<span id="cb40-2"><a href="#cb40-2" aria-hidden="true" tabindex="-1"></a>    (h1 : graph g = inv (graph f)) : f ∘ g = id := <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb40"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Theorem_5_3_2_2 {A B : <span class="kw">Type</span>} (f : A → B) (g : B → A)</span>
+<span id="cb40-2"><a href="#cb40-2" aria-hidden="true" tabindex="-1"></a>    (h1 : graph g = inv (graph f)) : f ∘ g = id := <span class="cn">sorry</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div class="numex" data-arguments="2">
-<div class="sourceCode" id="cb41"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Theorem_5_3_3_2 {A B : <span class="kw">Type</span>} (f : A → B) (g : B → A)</span>
-<span id="cb41-2"><a href="#cb41-2" aria-hidden="true" tabindex="-1"></a>    (h1 : f ∘ g = id) : onto f := <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb41"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Theorem_5_3_3_2 {A B : <span class="kw">Type</span>} (f : A → B) (g : B → A)</span>
+<span id="cb41-2"><a href="#cb41-2" aria-hidden="true" tabindex="-1"></a>    (h1 : f ∘ g = id) : onto f := <span class="cn">sorry</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div class="numex" data-arguments="3">
-<div class="sourceCode" id="cb42"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Exercise_5_3_11a {A B : <span class="kw">Type</span>} (f : A → B) (g : B → A) :</span>
-<span id="cb42-2"><a href="#cb42-2" aria-hidden="true" tabindex="-1"></a>    one_to_one f → f ∘ g = id → graph g = inv (graph f) := <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb42"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Exercise_5_3_11a {A B : <span class="kw">Type</span>} (f : A → B) (g : B → A) :</span>
+<span id="cb42-2"><a href="#cb42-2" aria-hidden="true" tabindex="-1"></a>    one_to_one f → f ∘ g = id → graph g = inv (graph f) := <span class="cn">sorry</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div class="numex" data-arguments="4">
-<div class="sourceCode" id="cb43"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Exercise_5_3_11b {A B : <span class="kw">Type</span>} (f : A → B) (g : B → A) :</span>
-<span id="cb43-2"><a href="#cb43-2" aria-hidden="true" tabindex="-1"></a>    onto f → g ∘ f = id → graph g = inv (graph f) := <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb43"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Exercise_5_3_11b {A B : <span class="kw">Type</span>} (f : A → B) (g : B → A) :</span>
+<span id="cb43-2"><a href="#cb43-2" aria-hidden="true" tabindex="-1"></a>    onto f → g ∘ f = id → graph g = inv (graph f) := <span class="cn">sorry</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div class="numex" data-arguments="5">
-<div class="sourceCode" id="cb44"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Exercise_5_3_14a {A B : <span class="kw">Type</span>} (f : A → B) (g : B → A)</span>
-<span id="cb44-2"><a href="#cb44-2" aria-hidden="true" tabindex="-1"></a>    (h : f ∘ g = id) : ∀ x ∈ Ran (graph g), g (f x) = x := <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb44"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Exercise_5_3_14a {A B : <span class="kw">Type</span>} (f : A → B) (g : B → A)</span>
+<span id="cb44-2"><a href="#cb44-2" aria-hidden="true" tabindex="-1"></a>    (h : f ∘ g = id) : ∀ x ∈ Ran (graph g), g (f x) = x := <span class="cn">sorry</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div class="numex" data-arguments="6">
-<div class="sourceCode" id="cb45"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Exercise_5_3_18 {A B C : <span class="kw">Type</span>} (f : A → C) (g : B → C)</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb45"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Exercise_5_3_18 {A B C : <span class="kw">Type</span>} (f : A → C) (g : B → C)</span>
 <span id="cb45-2"><a href="#cb45-2" aria-hidden="true" tabindex="-1"></a>    (h1 : one_to_one g) (h2 : onto g) :</span>
-<span id="cb45-3"><a href="#cb45-3" aria-hidden="true" tabindex="-1"></a>    ∃ (h : A → B), g ∘ h = f := <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb45-3"><a href="#cb45-3" aria-hidden="true" tabindex="-1"></a>    ∃ (h : A → B), g ∘ h = f := <span class="cn">sorry</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div class="mdsk">
 
 </div>
 <p>The next two exercises will use the following definition:</p>
-<div class="sourceCode" id="cb46"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> conjugate (A : <span class="kw">Type</span>) (f1 f2 : A → A) : <span class="kw">Prop</span> :=</span>
-<span id="cb46-2"><a href="#cb46-2" aria-hidden="true" tabindex="-1"></a>  ∃ (g g' : A → A), (f1 = g' ∘ f2 ∘ g) ∧ (g ∘ g' = id) ∧ (g' ∘ g = id)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb46"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> conjugate (A : <span class="kw">Type</span>) (f1 f2 : A → A) : <span class="kw">Prop</span> :=</span>
+<span id="cb46-2"><a href="#cb46-2" aria-hidden="true" tabindex="-1"></a>  ∃ (g g' : A → A), (f1 = g' ∘ f2 ∘ g) ∧ (g ∘ g' = id) ∧ (g' ∘ g = id)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="numex" data-arguments="7">
-<div class="sourceCode" id="cb47"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Exercise_5_3_17a {A : <span class="kw">Type</span>} : symmetric (conjugate A) := <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb47"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Exercise_5_3_17a {A : <span class="kw">Type</span>} : symmetric (conjugate A) := <span class="cn">sorry</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div class="numex" data-arguments="8">
-<div class="sourceCode" id="cb48"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Exercise_5_3_17b {A : <span class="kw">Type</span>} (f1 f2 : A → A)</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb48"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Exercise_5_3_17b {A : <span class="kw">Type</span>} (f1 f2 : A → A)</span>
 <span id="cb48-2"><a href="#cb48-2" aria-hidden="true" tabindex="-1"></a>    (h1 : conjugate A f1 f2) (h2 : ∃ (a : A), f1 a = a) :</span>
-<span id="cb48-3"><a href="#cb48-3" aria-hidden="true" tabindex="-1"></a>    ∃ (a : A), f2 a = a := <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb48-3"><a href="#cb48-3" aria-hidden="true" tabindex="-1"></a>    ∃ (a : A), f2 a = a := <span class="cn">sorry</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
 </section>
 <section id="closures" class="level2">
 <h2 class="anchored" data-anchor-id="closures">5.4. Closures</h2>
 <p>Suppose we have <code>f : A → A</code> and <code>C : Set A</code>. We say that <code>C</code> is <em>closed</em> under <code>f</code> if the value of <code>f</code> at any element of <code>C</code> is again an element of <code>C</code>:</p>
-<div class="sourceCode" id="cb49"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb49-1"><a href="#cb49-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> closed {A : <span class="kw">Type</span>} (f : A → A) (C : Set A) : <span class="kw">Prop</span> := ∀ x ∈ C, f x ∈ C</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb49"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb49-1"><a href="#cb49-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> closed {A : <span class="kw">Type</span>} (f : A → A) (C : Set A) : <span class="kw">Prop</span> := ∀ x ∈ C, f x ∈ C</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>According to this definition, <code>closed f C</code> means that <code>C</code> is closed under <code>f</code>. Sometimes, if we have a set <code>B</code> of type <code>Set A</code> that is not closed under <code>f</code>, we are interested in adding more elements to the set to make it closed. The <em>closure</em> of <code>B</code> under <code>f</code> is the smallest set containing <code>B</code> that is closed under <code>f</code>. That is, it is the smallest element of <code>{D : Set A | B ⊆ D ∧ closed f D}</code>, where we use the subset partial ordering on <code>Set A</code> to determine which element is smallest. We will write <code>closure f B C</code> to mean that the closure of <code>B</code> under <code>f</code> is <code>C</code>. We can define this as follows:</p>
-<div class="sourceCode" id="cb50"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb50-1"><a href="#cb50-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> closure {A : <span class="kw">Type</span>} (f : A → A) (B C : Set A) : <span class="kw">Prop</span> :=</span>
-<span id="cb50-2"><a href="#cb50-2" aria-hidden="true" tabindex="-1"></a>  smallestElt (sub A) C {D : Set A | B ⊆ D ∧ closed f D}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb50"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb50-1"><a href="#cb50-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> closure {A : <span class="kw">Type</span>} (f : A → A) (B C : Set A) : <span class="kw">Prop</span> :=</span>
+<span id="cb50-2"><a href="#cb50-2" aria-hidden="true" tabindex="-1"></a>  smallestElt (sub A) C {D : Set A | B ⊆ D ∧ closed f D}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>We know that smallest elements, when they exist, are unique, so it makes sense to talk about <em>the</em> closure of <code>B</code> under <code>f</code>. But not every set has a smallest element. Does every set have a closure? Theorem 5.4.5 in <em>HTPI</em> says that the answer is yes. The idea behind the proof is that, for any family of sets <code>F</code>, if <code>F</code> has a smallest element under the subset partial order, then that smallest element is equal to <code>⋂₀ F</code>. (We’ll ask you to prove this in the exercises.)</p>
-<div class="sourceCode" id="cb51"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb51-1"><a href="#cb51-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Theorem_5_4_5 {A : <span class="kw">Type</span>} (f : A → A) (B : Set A) :</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb51"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb51-1"><a href="#cb51-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Theorem_5_4_5 {A : <span class="kw">Type</span>} (f : A → A) (B : Set A) :</span>
 <span id="cb51-2"><a href="#cb51-2" aria-hidden="true" tabindex="-1"></a>    ∃ (C : Set A), closure f B C := <span class="kw">by</span></span>
 <span id="cb51-3"><a href="#cb51-3" aria-hidden="true" tabindex="-1"></a>  <span class="kw">set</span> F : Set (Set A) := {D : Set A | B ⊆ D ∧ closed f D}</span>
 <span id="cb51-4"><a href="#cb51-4" aria-hidden="true" tabindex="-1"></a>  <span class="kw">set</span> C : Set A := ⋂₀ F</span>
@@ -698,70 +728,70 @@ $$
 <span id="cb51-41"><a href="#cb51-41" aria-hidden="true" tabindex="-1"></a>    <span class="kw">define</span> <span class="kw">at</span> h2            <span class="co">--h2 : ∀ t ∈ F, a ∈ t</span></span>
 <span id="cb51-42"><a href="#cb51-42" aria-hidden="true" tabindex="-1"></a>    <span class="kw">show</span> a ∈ D <span class="kw">from</span> h2 D h1</span>
 <span id="cb51-43"><a href="#cb51-43" aria-hidden="true" tabindex="-1"></a>    <span class="kw">done</span></span>
-<span id="cb51-44"><a href="#cb51-44" aria-hidden="true" tabindex="-1"></a>  <span class="kw">done</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb51-44"><a href="#cb51-44" aria-hidden="true" tabindex="-1"></a>  <span class="kw">done</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>The idea of the closure of a set under a function can also be applied to functions of two variables. One way to represent a function of two variables on a type <code>A</code> would be to use a function <code>g</code> of type <code>(A × A) → A</code>. If <code>a</code> and <code>b</code> have type <code>A</code>, then <code>(a, b)</code> has type <code>A × A</code>, and the result of applying the function <code>g</code> to the pair of values <code>a</code> and <code>b</code> would be written <code>g (a, b)</code>.</p>
 <p>However, there is another way to represent a function of two variables that turns out to be more convenient in Lean. Suppose <code>f</code> has type <code>A → A → A</code>. As with the arrow used in conditional propositions, the arrow for function types groups to the right, so <code>A → A → A</code> means <code>A → (A → A)</code>. Thus, if <code>a</code> has type <code>A</code>, then <code>f a</code> has type <code>A → A</code>. In other words, <code>f a</code> is a function from <code>A</code> to <code>A</code>, and therefore if <code>b</code> has type <code>A</code> then <code>f a b</code> has type <code>A</code>. The upshot is that if <code>f</code> is followed by two objects of type <code>A</code>, then the resulting expression has type <code>A</code>, so <code>f</code> can be thought of as a function that applies to a pair of objects of type <code>A</code> and gives a value of type <code>A</code>.</p>
 <p>For example, we can think of addition of integers as a function of two variables. Here are three ways to define this function in Lean.</p>
-<div class="sourceCode" id="cb52"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb52-1"><a href="#cb52-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> plus (m n : Int) : Int := m + n</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb52"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb52-1"><a href="#cb52-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> plus (m n : Int) : Int := m + n</span>
 <span id="cb52-2"><a href="#cb52-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb52-3"><a href="#cb52-3" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> plus' : Int → Int → Int := fun (m n : Int) =&gt; m + n</span>
 <span id="cb52-4"><a href="#cb52-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb52-5"><a href="#cb52-5" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> plus'' : Int → Int → Int := fun (m : Int) =&gt; (fun (n : Int) =&gt; m + n)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb52-5"><a href="#cb52-5" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> plus'' : Int → Int → Int := fun (m : Int) =&gt; (fun (n : Int) =&gt; m + n)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>The third definition matches the description above most closely: <code>plus''</code> is a function that, when applied to an integer <code>m</code>, produces a new function <code>plus'' m : Int → Int</code>. The function <code>plus'' m</code> is defined to be the function that, when applied to an integer <code>n</code>, produces the value <code>m + n</code>. In other words, <code>plus'' m n = m + n</code>. The first two definitions are more convenient ways of defining exactly the same function. Let’s have Lean confirm this, and try out the function:</p>
-<div class="sourceCode" id="cb53"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb53-1"><a href="#cb53-1" aria-hidden="true" tabindex="-1"></a><span class="kw">example</span> : plus = plus'' := <span class="kw">by</span> <span class="kw">rfl</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb53"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb53-1"><a href="#cb53-1" aria-hidden="true" tabindex="-1"></a><span class="kw">example</span> : plus = plus'' := <span class="kw">by</span> <span class="kw">rfl</span></span>
 <span id="cb53-2"><a href="#cb53-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb53-3"><a href="#cb53-3" aria-hidden="true" tabindex="-1"></a><span class="kw">example</span> : plus' = plus'' := <span class="kw">by</span> <span class="kw">rfl</span></span>
 <span id="cb53-4"><a href="#cb53-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb53-5"><a href="#cb53-5" aria-hidden="true" tabindex="-1"></a><span class="sc">++</span><span class="do">#eval</span><span class="sc">::</span> plus 3 2     <span class="co">--Answer: 5</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb53-5"><a href="#cb53-5" aria-hidden="true" tabindex="-1"></a><span class="sc">++</span><span class="do">#eval</span><span class="sc">::</span> plus 3 2     <span class="co">--Answer: 5</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>There are two reasons why this way of representing functions of two variables in Lean is more convenient. First, it saves us the trouble of grouping the arguments of the function together into an ordered pair before applying the function. If we have <code>f : A → A → A</code> and <code>a b : A</code>, then to apply the function <code>f</code> to the arguments <code>a</code> and <code>b</code> we can just write <code>f a b</code>. Second, it allows for the possibility of “partially applying” the function <code>f</code>. The expression <code>f a</code> is meaningful, and denotes the function that, when applied to any <code>b : A</code>, produces the result <code>f a b</code>. For example, if <code>m</code> is an integer, then <code>plus m</code> denotes the function that, when applied to an integer <code>n</code>, produces the result <code>m + n</code>. We might call <code>plus m</code> the “add to <code>m</code>” function.</p>
 <p>We have actually been using these ideas for a long time. In Chapter 3, we introduced the type <code>Pred U</code> of predicates applying to objects of type <code>U</code>, but we did not explain how such predicates are represented internally in Lean. In fact, <code>Pred U</code> is defined to be the type <code>U → Prop</code>, so if <code>P</code> has type <code>Pred U</code>, then <code>P</code> is a function from <code>U</code> to <code>Prop</code>, and if <code>x</code> has type <code>U</code>, then the proposition <code>P x</code> is the result of applying the function <code>P</code> to <code>x</code>. Similarly, <code>Rel A B</code> stands for <code>A → B → Prop</code>, so if <code>R</code> has type <code>Rel A B</code>, then <code>R</code> is a function of two variables, one of type <code>A</code> and one of type <code>B</code>. Earlier in this section, we defined <code>closed f C</code> to be the proposition asserting that <code>C</code> is closed under <code>f</code>. This means that <code>closed</code> is a function of two variables, the first a function <code>f</code> of type <code>A → A</code> and the second a set <code>C</code> of type <code>Set A</code> (where the type <code>A</code> is an implicit argument of <code>closed</code>). But that means that the partial application <code>closed f</code> denotes a function from <code>Set A</code> to <code>Prop</code>. In other words, <code>closed f</code> is a predicate applying to sets of type <code>Set A</code>; we could think of it as the “is closed under <code>f</code>” predicate. Similarly, in Section 4.4 we defined <code>sub</code> to be a function of three variables: if <code>A</code> is a type and <code>X</code> and <code>Y</code> have type <code>Set A</code>, then <code>sub A X Y</code> is the proposition <code>X ⊆ Y</code>. Since then, we have used the partial application <code>sub A</code>, which is the subset relation on <code>Set A</code>. For example, we used it earlier in this section in the definition of <code>closure</code>.</p>
 <p>Returning to the subject of closures, here’s how we can extend the idea of closures to functions of two variables:</p>
-<div class="sourceCode" id="cb54"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb54-1"><a href="#cb54-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> closed2 {A : <span class="kw">Type</span>} (f : A → A → A) (C : Set A) : <span class="kw">Prop</span> :=</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb54"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb54-1"><a href="#cb54-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> closed2 {A : <span class="kw">Type</span>} (f : A → A → A) (C : Set A) : <span class="kw">Prop</span> :=</span>
 <span id="cb54-2"><a href="#cb54-2" aria-hidden="true" tabindex="-1"></a>  ∀ x ∈ C, ∀ y ∈ C, f x y ∈ C</span>
 <span id="cb54-3"><a href="#cb54-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb54-4"><a href="#cb54-4" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> closure2 {A : <span class="kw">Type</span>} (f : A → A → A) (B C : Set A) : <span class="kw">Prop</span> := </span>
-<span id="cb54-5"><a href="#cb54-5" aria-hidden="true" tabindex="-1"></a>  smallestElt (sub A) C {D : Set A | B ⊆ D ∧ closed2 f D}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb54-5"><a href="#cb54-5" aria-hidden="true" tabindex="-1"></a>  smallestElt (sub A) C {D : Set A | B ⊆ D ∧ closed2 f D}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>We will leave it as an exercise for you to prove that closures under functions of two variables also exist.</p>
-<div class="sourceCode" id="cb55"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb55-1"><a href="#cb55-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Theorem_5_4_9 {A : <span class="kw">Type</span>} (f : A → A → A) (B : Set A) :</span>
-<span id="cb55-2"><a href="#cb55-2" aria-hidden="true" tabindex="-1"></a>    ∃ (C : Set A), closure2 f B C := <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb55"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb55-1"><a href="#cb55-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Theorem_5_4_9 {A : <span class="kw">Type</span>} (f : A → A → A) (B : Set A) :</span>
+<span id="cb55-2"><a href="#cb55-2" aria-hidden="true" tabindex="-1"></a>    ∃ (C : Set A), closure2 f B C := <span class="cn">sorry</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <section id="exercises-3" class="level3">
 <h3 class="anchored" data-anchor-id="exercises-3">Exercises</h3>
 <div class="numex" data-arguments="1">
-<div class="sourceCode" id="cb56"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb56-1"><a href="#cb56-1" aria-hidden="true" tabindex="-1"></a><span class="kw">example</span> {A : <span class="kw">Type</span>} (F : Set (Set A)) (B : Set A) :</span>
-<span id="cb56-2"><a href="#cb56-2" aria-hidden="true" tabindex="-1"></a>    smallestElt (sub A) B F → B = ⋂₀ F := <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb56"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb56-1"><a href="#cb56-1" aria-hidden="true" tabindex="-1"></a><span class="kw">example</span> {A : <span class="kw">Type</span>} (F : Set (Set A)) (B : Set A) :</span>
+<span id="cb56-2"><a href="#cb56-2" aria-hidden="true" tabindex="-1"></a>    smallestElt (sub A) B F → B = ⋂₀ F := <span class="cn">sorry</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>2. If <code>B</code> has type <code>Set A</code>, then <code>complement B</code> is the set <code>{a : A | a ∉ B}</code>. Thus, for any <code>a</code> of type <code>A</code>, <code>a ∈ complement B</code> if and only if <code>a ∉ B</code>:</p>
-<div class="sourceCode" id="cb57"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb57-1"><a href="#cb57-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> complement {A : <span class="kw">Type</span>} (B : Set A) : Set A := {a : A | a ∉ B}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb57"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb57-1"><a href="#cb57-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> complement {A : <span class="kw">Type</span>} (B : Set A) : Set A := {a : A | a ∉ B}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Use this definition to prove the following theorem:</p>
-<div class="sourceCode" id="cb58"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb58-1"><a href="#cb58-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Exercise_5_4_7 {A : <span class="kw">Type</span>} (f g : A → A) (C : Set A)</span>
-<span id="cb58-2"><a href="#cb58-2" aria-hidden="true" tabindex="-1"></a>    (h1 : f ∘ g = id) (h2 : closed f C) : closed g (complement C) := <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb58"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb58-1"><a href="#cb58-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Exercise_5_4_7 {A : <span class="kw">Type</span>} (f g : A → A) (C : Set A)</span>
+<span id="cb58-2"><a href="#cb58-2" aria-hidden="true" tabindex="-1"></a>    (h1 : f ∘ g = id) (h2 : closed f C) : closed g (complement C) := <span class="cn">sorry</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="numex" data-arguments="3">
-<div class="sourceCode" id="cb59"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb59-1"><a href="#cb59-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Exercise_5_4_9a {A : <span class="kw">Type</span>} (f : A → A) (C1 C2 : Set A)</span>
-<span id="cb59-2"><a href="#cb59-2" aria-hidden="true" tabindex="-1"></a>    (h1 : closed f C1) (h2 : closed f C2) : closed f (C1 ∪ C2) := <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb59"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb59-1"><a href="#cb59-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Exercise_5_4_9a {A : <span class="kw">Type</span>} (f : A → A) (C1 C2 : Set A)</span>
+<span id="cb59-2"><a href="#cb59-2" aria-hidden="true" tabindex="-1"></a>    (h1 : closed f C1) (h2 : closed f C2) : closed f (C1 ∪ C2) := <span class="cn">sorry</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div class="numex" data-arguments="4">
-<div class="sourceCode" id="cb60"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb60-1"><a href="#cb60-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Exercise_5_4_10a {A : <span class="kw">Type</span>} (f : A → A) (B1 B2 C1 C2 : Set A)</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb60"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb60-1"><a href="#cb60-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Exercise_5_4_10a {A : <span class="kw">Type</span>} (f : A → A) (B1 B2 C1 C2 : Set A)</span>
 <span id="cb60-2"><a href="#cb60-2" aria-hidden="true" tabindex="-1"></a>    (h1 : closure f B1 C1) (h2 : closure f B2 C2) :</span>
-<span id="cb60-3"><a href="#cb60-3" aria-hidden="true" tabindex="-1"></a>    B1 ⊆ B2 → C1 ⊆ C2 := <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb60-3"><a href="#cb60-3" aria-hidden="true" tabindex="-1"></a>    B1 ⊆ B2 → C1 ⊆ C2 := <span class="cn">sorry</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div class="numex" data-arguments="5">
-<div class="sourceCode" id="cb61"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb61-1"><a href="#cb61-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Exercise_5_4_10b {A : <span class="kw">Type</span>} (f : A → A) (B1 B2 C1 C2 : Set A)</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb61"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb61-1"><a href="#cb61-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Exercise_5_4_10b {A : <span class="kw">Type</span>} (f : A → A) (B1 B2 C1 C2 : Set A)</span>
 <span id="cb61-2"><a href="#cb61-2" aria-hidden="true" tabindex="-1"></a>    (h1 : closure f B1 C1) (h2 : closure f B2 C2) :</span>
-<span id="cb61-3"><a href="#cb61-3" aria-hidden="true" tabindex="-1"></a>    closure f (B1 ∪ B2) (C1 ∪ C2) := <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb61-3"><a href="#cb61-3" aria-hidden="true" tabindex="-1"></a>    closure f (B1 ∪ B2) (C1 ∪ C2) := <span class="cn">sorry</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div class="numex" data-arguments="6">
-<div class="sourceCode" id="cb62"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb62-1"><a href="#cb62-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Theorem_5_4_9 {A : <span class="kw">Type</span>} (f : A → A → A) (B : Set A) :</span>
-<span id="cb62-2"><a href="#cb62-2" aria-hidden="true" tabindex="-1"></a>    ∃ (C : Set A), closure2 f B C := <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb62"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb62-1"><a href="#cb62-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Theorem_5_4_9 {A : <span class="kw">Type</span>} (f : A → A → A) (B : Set A) :</span>
+<span id="cb62-2"><a href="#cb62-2" aria-hidden="true" tabindex="-1"></a>    ∃ (C : Set A), closure2 f B C := <span class="cn">sorry</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>7. Suppose we define a set to be closed under a family of functions if it is closed under all of the functions in the family. Of course, the closure of a set <code>B</code> under a family of functions is the smallest set containing <code>B</code> that is closed under the family.</p>
-<div class="sourceCode" id="cb63"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb63-1"><a href="#cb63-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> closed_family {A : <span class="kw">Type</span>} (F : Set (A → A)) (C : Set A) : <span class="kw">Prop</span> :=</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb63"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb63-1"><a href="#cb63-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> closed_family {A : <span class="kw">Type</span>} (F : Set (A → A)) (C : Set A) : <span class="kw">Prop</span> :=</span>
 <span id="cb63-2"><a href="#cb63-2" aria-hidden="true" tabindex="-1"></a>  ∀ f ∈ F, closed f C</span>
 <span id="cb63-3"><a href="#cb63-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb63-4"><a href="#cb63-4" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> closure_family {A : <span class="kw">Type</span>} (F : Set (A → A)) (B C : Set A) : <span class="kw">Prop</span> :=</span>
-<span id="cb63-5"><a href="#cb63-5" aria-hidden="true" tabindex="-1"></a>  smallestElt (sub A) C {D : Set A | B ⊆ D ∧ closed_family F D}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb63-5"><a href="#cb63-5" aria-hidden="true" tabindex="-1"></a>  smallestElt (sub A) C {D : Set A | B ⊆ D ∧ closed_family F D}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Prove that the closure of a set under a family of functions always exists:</p>
-<div class="sourceCode" id="cb64"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb64-1"><a href="#cb64-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Exercise_5_4_13a {A : <span class="kw">Type</span>} (F : Set (A → A)) (B : Set A) :</span>
-<span id="cb64-2"><a href="#cb64-2" aria-hidden="true" tabindex="-1"></a>    ∃ (C : Set A), closure_family F B C := <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb64"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb64-1"><a href="#cb64-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Exercise_5_4_13a {A : <span class="kw">Type</span>} (F : Set (A → A)) (B : Set A) :</span>
+<span id="cb64-2"><a href="#cb64-2" aria-hidden="true" tabindex="-1"></a>    ∃ (C : Set A), closure_family F B C := <span class="cn">sorry</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
 </section>
 <section id="images-and-inverse-images-a-research-project" class="level2">
@@ -772,7 +802,7 @@ f(X) = \{f(x) \mid x \in X\} = \{b \in B \mid \exists x \in X(f(x) = b)\}.
 f^{-1}(Y) = \{a \in A \mid f(a) \in Y\}.
 \]</span></p>
 <p>Here are definitions of these concepts in Lean:</p>
-<div class="sourceCode" id="cb65"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb65-1"><a href="#cb65-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> image {A B : <span class="kw">Type</span>} (f : A → B) (X : Set A) : Set B :=</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb65"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb65-1"><a href="#cb65-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> image {A B : <span class="kw">Type</span>} (f : A → B) (X : Set A) : Set B :=</span>
 <span id="cb65-2"><a href="#cb65-2" aria-hidden="true" tabindex="-1"></a>  {f x | x ∈ X}</span>
 <span id="cb65-3"><a href="#cb65-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb65-4"><a href="#cb65-4" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> inverse_image {A B : <span class="kw">Type</span>} (f : A → B) (Y : Set B) : Set A :=</span>
@@ -783,9 +813,9 @@ f^{-1}(Y) = \{a \in A \mid f(a) \in Y\}.
 <span id="cb65-9"><a href="#cb65-9" aria-hidden="true" tabindex="-1"></a>    b ∈ image f X ↔ ∃ x ∈ X, f x = b := <span class="kw">by</span> <span class="kw">rfl</span></span>
 <span id="cb65-10"><a href="#cb65-10" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb65-11"><a href="#cb65-11" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> inverse_image_def {A B : <span class="kw">Type</span>} (f : A → B) (Y : Set B) (a : A) :</span>
-<span id="cb65-12"><a href="#cb65-12" aria-hidden="true" tabindex="-1"></a>    a ∈ inverse_image f Y ↔ f a ∈ Y := <span class="kw">by</span> <span class="kw">rfl</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb65-12"><a href="#cb65-12" aria-hidden="true" tabindex="-1"></a>    a ∈ inverse_image f Y ↔ f a ∈ Y := <span class="kw">by</span> <span class="kw">rfl</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>It is natural to wonder how these concepts interact with familiar operations on sets. <em>HTPI</em> gives an example of such an interaction in Theorem 5.5.2. The theorem makes two assertions. Here are proofs of the two parts of the theorem in Lean.</p>
-<div class="sourceCode" id="cb66"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb66-1"><a href="#cb66-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Theorem_5_5_2_1 {A B : <span class="kw">Type</span>} (f : A → B) (W X : Set A) :</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb66"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb66-1"><a href="#cb66-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Theorem_5_5_2_1 {A B : <span class="kw">Type</span>} (f : A → B) (W X : Set A) :</span>
 <span id="cb66-2"><a href="#cb66-2" aria-hidden="true" tabindex="-1"></a>    image f (W ∩ X) ⊆ image f W ∩ image f X := <span class="kw">by</span></span>
 <span id="cb66-3"><a href="#cb66-3" aria-hidden="true" tabindex="-1"></a>  <span class="kw">fix</span> y : B</span>
 <span id="cb66-4"><a href="#cb66-4" aria-hidden="true" tabindex="-1"></a>  <span class="kw">assume</span> h1 : y ∈ image f (W ∩ X)  <span class="co">--Goal : y ∈ image f W ∩ image f X</span></span>
@@ -828,9 +858,9 @@ f^{-1}(Y) = \{a \in A \mid f(a) \in Y\}.
 <span id="cb66-41"><a href="#cb66-41" aria-hidden="true" tabindex="-1"></a>    <span class="kw">show</span> y ∈ image f (W ∩ X) <span class="kw">from</span></span>
 <span id="cb66-42"><a href="#cb66-42" aria-hidden="true" tabindex="-1"></a>      Exists.intro x1 (And.intro (And.intro h3.left h4.left) h3.right)</span>
 <span id="cb66-43"><a href="#cb66-43" aria-hidden="true" tabindex="-1"></a>    <span class="kw">done</span></span>
-<span id="cb66-44"><a href="#cb66-44" aria-hidden="true" tabindex="-1"></a>  <span class="kw">done</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb66-44"><a href="#cb66-44" aria-hidden="true" tabindex="-1"></a>  <span class="kw">done</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>The rest of Section 5.5 of <em>HTPI</em> consists of statements for you to try to prove. Here are the statements, written as examples in Lean. Some are correct and some are not; some can be made correct by adding additional hypotheses or weakening the conclusion. Prove as much as you can.</p>
-<div class="sourceCode" id="cb67"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb67-1"><a href="#cb67-1" aria-hidden="true" tabindex="-1"></a><span class="co">--Warning!  Not all of these examples are correct!</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb67"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb67-1"><a href="#cb67-1" aria-hidden="true" tabindex="-1"></a><span class="co">--Warning!  Not all of these examples are correct!</span></span>
 <span id="cb67-2"><a href="#cb67-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb67-3"><a href="#cb67-3" aria-hidden="true" tabindex="-1"></a><span class="kw">example</span> {A B : <span class="kw">Type</span>} (f : A → B) (W X : Set A) :</span>
 <span id="cb67-4"><a href="#cb67-4" aria-hidden="true" tabindex="-1"></a>    image f (W ∪ X) = image f W ∪ image f X := <span class="cn">sorry</span></span>
@@ -873,118 +903,420 @@ f^{-1}(Y) = \{a \in A \mid f(a) \in Y\}.
 <span id="cb67-41"><a href="#cb67-41" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb67-42"><a href="#cb67-42" aria-hidden="true" tabindex="-1"></a><span class="kw">example</span> {A B : <span class="kw">Type</span>} (f : A → B) (g : B → A) (Y : Set B)</span>
 <span id="cb67-43"><a href="#cb67-43" aria-hidden="true" tabindex="-1"></a>    (h1 : f ∘ g = id) (h2 : g ∘ f = id) :</span>
-<span id="cb67-44"><a href="#cb67-44" aria-hidden="true" tabindex="-1"></a>    inverse_image f Y = image g Y := <span class="cn">sorry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb67-44"><a href="#cb67-44" aria-hidden="true" tabindex="-1"></a>    inverse_image f Y = image g Y := <span class="cn">sorry</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 
 
 </section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
-window.document.addEventListener("DOMContentLoaded", function (event) {
-  const toggleBodyColorMode = (bsSheetEl) => {
-    const mode = bsSheetEl.getAttribute("data-mode");
-    const bodyEl = window.document.querySelector("body");
-    if (mode === "dark") {
-      bodyEl.classList.add("quarto-dark");
-      bodyEl.classList.remove("quarto-light");
-    } else {
-      bodyEl.classList.add("quarto-light");
-      bodyEl.classList.remove("quarto-dark");
-    }
-  }
-  const toggleBodyColorPrimary = () => {
-    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
-    if (bsSheetEl) {
-      toggleBodyColorMode(bsSheetEl);
-    }
-  }
-  toggleBodyColorPrimary();  
-  const icon = "";
-  const anchorJS = new window.AnchorJS();
-  anchorJS.options = {
-    placement: 'right',
-    icon: icon
-  };
-  anchorJS.add('.anchored');
-  const clipboard = new window.ClipboardJS('.code-copy-button', {
-    target: function(trigger) {
-      return trigger.previousElementSibling;
-    }
-  });
-  clipboard.on('success', function(e) {
-    // button target
-    const button = e.trigger;
-    // don't keep focus
-    button.blur();
-    // flash "checked"
-    button.classList.add('code-copy-button-checked');
-    var currentTitle = button.getAttribute("title");
-    button.setAttribute("title", "Copied!");
-    setTimeout(function() {
-      button.setAttribute("title", currentTitle);
-      button.classList.remove('code-copy-button-checked');
-    }, 1000);
-    // clear code selection
-    e.clearSelection();
-  });
-  function tippyHover(el, contentFn) {
-    const config = {
-      allowHTML: true,
-      content: contentFn,
-      maxWidth: 500,
-      delay: 100,
-      arrow: false,
-      appendTo: function(el) {
-          return el.parentElement;
-      },
-      interactive: true,
-      interactiveBorder: 10,
-      theme: 'quarto',
-      placement: 'bottom-start'
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
     };
-    window.tippy(el, config); 
-  }
-  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
-  for (var i=0; i<noterefs.length; i++) {
-    const ref = noterefs[i];
-    tippyHover(ref, function() {
-      // use id or data attribute instead here
-      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
-      try { href = new URL(href).hash; } catch {}
-      const id = href.replace(/^#\/?/, "");
-      const note = window.document.getElementById(id);
-      return note.innerHTML;
-    });
-  }
-  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
-  for (var i=0; i<bibliorefs.length; i++) {
-    const ref = bibliorefs[i];
-    const cites = ref.parentNode.getAttribute('data-cites').split(' ');
-    tippyHover(ref, function() {
-      var popup = window.document.createElement('div');
-      cites.forEach(function(cite) {
-        var citeDiv = window.document.createElement('div');
-        citeDiv.classList.add('hanging-indent');
-        citeDiv.classList.add('csl-entry');
-        var biblioDiv = window.document.getElementById('ref-' + cite);
-        if (biblioDiv) {
-          citeDiv.innerHTML = biblioDiv.innerHTML;
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
         }
-        popup.appendChild(citeDiv);
-      });
-      return popup.innerHTML;
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
     });
-  }
-});
-</script>
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="./Chap4.html" class="pagination-link">
+      <a href="./Chap4.html" class="pagination-link" aria-label="Relations">
         <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Relations</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="./Chap6.html" class="pagination-link">
+      <a href="./Chap6.html" class="pagination-link" aria-label="Mathematical Induction">
         <span class="nav-page-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Mathematical Induction</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
@@ -992,9 +1324,18 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </div> <!-- /content -->
 <footer class="footer">
   <div class="nav-footer">
-      <div class="nav-footer-center">© 2023-2025 Daniel J. Velleman.<br>Short excerpts from Daniel J. Velleman, <a href="https://doi.org/10.1017/9781108539890"><i>How To Prove It: A Structured Approach, 3rd Edition</i></a><br>© Daniel J. Velleman 2019, published by Cambridge University Press, reprinted with permission.</div>
+    <div class="nav-footer-left">
+      &nbsp;
+    </div>   
+    <div class="nav-footer-center">
+<p>© 2023-2025 Daniel J. Velleman.<br>Short excerpts from Daniel J. Velleman, <a href="https://doi.org/10.1017/9781108539890"><i>How To Prove It: A Structured Approach, 3rd Edition</i></a><br>© Daniel J. Velleman 2019, published by Cambridge University Press, reprinted with permission.</p>
+</div>
+    <div class="nav-footer-right">
+      &nbsp;
+    </div>
   </div>
 </footer>
+
 
 
 
