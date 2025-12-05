@@ -685,7 +685,7 @@ h2 : ∀ x ∈ A, x ∉ B
 :::
 :::
 
-Notice that in the Infoview, Lean has written `h2` as `∀ x ∈ A, x ∉ B`, using a bounded quantifier.  As explained in Section 2.2 of *HTPI* (see p. 72), this is a shorter way of writing the statement `∀ (x : U), x ∈ A → x ∉ B`.  We begin by using the `define` tactic to write out the definition of the goal.
+Notice that in the InfoView, Lean has written `h2` as `∀ x ∈ A, x ∉ B`, using a bounded quantifier.  As explained in Section 2.2 of *HTPI* (see p. 72), this is a shorter way of writing the statement `∀ (x : U), x ∈ A → x ∉ B`.  We begin by using the `define` tactic to write out the definition of the goal.
 
 ::: {.inout}
 ::: {.inpt}
@@ -834,7 +834,7 @@ h5 : y ∈ B ∪ C
 
 If Lean was able to figure out that `y` should be plugged in for `a` in `h1` in this step, couldn't it have figured out that `y` should be plugged in for `x` in `h2` in the previous `have` step?  The answer is yes.  Of course, in `h2`, `x` was not an implicit argument, so Lean wouldn't *automatically* figure out what to plug in for `x`.  But we could have asked it to figure it out by writing the proof in the previous step as `h2 _ h3` rather than `h2 y h3`.  In a term-mode proof, an underscore represents a blank to be filled in by Lean.  Try changing the earlier step of the proof to `have h4 : y ∉ B := h2 _ h3` and you will see that Lean will accept it.  Of course, in this case this doesn't save us any typing, but in some situations it is useful to let Lean figure out some part of a proof.
 
-Lean's ability to fill in blanks in term-mode proofs is limited.  For example, if you try changing the previous step to `have h4 : y ∉ B := h2 y _`, you'll get a red squiggle under the blank, and the error message in the Infoview pane will say `don't know how to synthesize placeholder`.  In other words, Lean was unable to figure out how to fill in the blank in this case.  In future proofs you might try replacing some expressions with blanks to get a feel for what Lean can and cannot figure out for itself.
+Lean's ability to fill in blanks in term-mode proofs is limited.  For example, if you try changing the previous step to `have h4 : y ∉ B := h2 y _`, you'll get a red squiggle under the blank, and the error message in the InfoView pane will say `don't know how to synthesize placeholder`.  In other words, Lean was unable to figure out how to fill in the blank in this case.  In future proofs you might try replacing some expressions with blanks to get a feel for what Lean can and cannot figure out for itself.
 
 Continuing with the proof, we see that we're almost done, because we can combine `h4` and `h5` to reach our goal.  To see how, we first write out the definition of `h5`.
 
@@ -1739,9 +1739,9 @@ h3 : x ∈ A ∧ x ∈ C
 :::
 :::
 
-Of course, there are red squiggles under both new occurrences of `done`, since neither goal has yet been achieved.  We can work on the goals in either order by positioning the cursor on either blank line, and the Infoview pane will show the tactic state for the goal at the position of the cursor.  In the display above, we have positioned the cursor on the first blank line, so the Infoview shows the tactic state for the first goal.
+Of course, there are red squiggles under both new occurrences of `done`, since neither goal has yet been achieved.  We can work on the goals in either order by positioning the cursor on either blank line, and the InfoView pane will show the tactic state for the goal at the position of the cursor.  In the display above, we have positioned the cursor on the first blank line, so the InfoView shows the tactic state for the first goal.
 
-This first goal is easy:  We have `h1 : A ⊆ B` and, as explained above, `h3.left : x ∈ A`.  As we have seen in several previous examples, the tactic `define at h1` will rewrite `h1` as `∀ ⦃a : U⦄, a ∈ A → a ∈ B`, and then `h1 h3.left` will be a proof of `x ∈ B`.  And now we'll let you in on a little secret: usually the `define` tactic isn't really necessary.  *You* may find the `define` tactic to be useful in many situations, because it helps you see what a statement means.  But *Lean* doesn't need to be told to work out what the statement means; it will do that automatically.  So we can skip the define tactic and just give `h1 h3.left` as a proof of `x ∈ B`.  In general, if you have `h1 : A ⊆ B` and `h2 : x ∈ A`, then Lean will recognize `h1 h2` as a proof of `x ∈ B`.  Thus, the tactic `show x ∈ B from h1 h3.left` will complete the first goal.  Once we type this (indented to the same position as the `done` for the first goal), the red squiggle disappears from the first `done`, and the tactic state shows the `No goals` message.  If we then click on the blank line for the second goal, the Infoview pane shows the tactic state for that goal:
+This first goal is easy:  We have `h1 : A ⊆ B` and, as explained above, `h3.left : x ∈ A`.  As we have seen in several previous examples, the tactic `define at h1` will rewrite `h1` as `∀ ⦃a : U⦄, a ∈ A → a ∈ B`, and then `h1 h3.left` will be a proof of `x ∈ B`.  And now we'll let you in on a little secret: usually the `define` tactic isn't really necessary.  *You* may find the `define` tactic to be useful in many situations, because it helps you see what a statement means.  But *Lean* doesn't need to be told to work out what the statement means; it will do that automatically.  So we can skip the define tactic and just give `h1 h3.left` as a proof of `x ∈ B`.  In general, if you have `h1 : A ⊆ B` and `h2 : x ∈ A`, then Lean will recognize `h1 h2` as a proof of `x ∈ B`.  Thus, the tactic `show x ∈ B from h1 h3.left` will complete the first goal.  Once we type this (indented to the same position as the `done` for the first goal), the red squiggle disappears from the first `done`, and the tactic state shows the `No goals` message.  If we then click on the blank line for the second goal, the InfoView pane shows the tactic state for that goal:
 
 ::: {.inout}
 ::: {.inpt}
@@ -2234,7 +2234,7 @@ The name of the axiom of extensionality in Lean is `Set.ext`, and it is applied 
 
 The proof of the biconditional is called a *calculational proof*, and it is introduced by the keyword `calc`.  The calculational proof consists of a string of biconditional statements, each of which is provided with a proof.  You can think of the underscore on the left side of each biconditional as standing for the right side of the previous biconditional (or, in the case of the first biconditional, the statement after `calc`).
 
-The proofs of the individual biconditionals in the calculational proof require some explanation.  Lean has a large library of theorems that it knows, and you can use those theorems in your proofs.  In particular, `Iff.refl` and `and_assoc` are names of theorems in Lean's library.  You can find out what any theorem says by using the Lean command `#check`.  (Commands that ask Lean for a response generally start with the character `#`.)  If you type `#check Iff.refl` in a Lean file, you will see Lean's response in the Infoview pane:  `Iff.refl (a : Prop) : a ↔ a`.  What this tells us is that Lean already knows the theorem
+The proofs of the individual biconditionals in the calculational proof require some explanation.  Lean has a large library of theorems that it knows, and you can use those theorems in your proofs.  In particular, `Iff.refl` and `and_assoc` are names of theorems in Lean's library.  You can find out what any theorem says by using the Lean command `#check`.  (Commands that ask Lean for a response generally start with the character `#`.)  If you type `#check Iff.refl` in a Lean file, you will see Lean's response in the InfoView pane:  `Iff.refl (a : Prop) : a ↔ a`.  What this tells us is that Lean already knows the theorem
 
 ```lean
 theorem Iff.refl (a : Prop) : a ↔ a
@@ -2981,7 +2981,7 @@ No goals
 :::
 :::
 
-We have introduced a new idea in this proof.  The justification we have given for introducing `h5 : a ∉ B` is `sorry`.  You might think of this as meaning "Sorry, I'm not going to give a justification for this statement, but please accept it anyway."  Of course, this is cheating; in a complete proof, every step must be justified.  Lean accepts `sorry` as a proof of any statement, but it displays it in red to warn you that you're cheating.  It also puts a brown squiggle under the keyword `example` and a warning symbol in the left margin, and it puts the message `declaration uses 'sorry'` in the Infoview, to warn you that, although the proof has reached the goal, it is not fully justified.
+We have introduced a new idea in this proof.  The justification we have given for introducing `h5 : a ∉ B` is `sorry`.  You might think of this as meaning "Sorry, I'm not going to give a justification for this statement, but please accept it anyway."  Of course, this is cheating; in a complete proof, every step must be justified.  Lean accepts `sorry` as a proof of any statement, but it displays it in red to warn you that you're cheating.  It also puts a brown squiggle under the keyword `example` and a warning symbol in the left margin, and it puts the message `declaration uses 'sorry'` in the InfoView, to warn you that, although the proof has reached the goal, it is not fully justified.
 
 Although writing the proof this way is cheating, it is a convenient way to see that our plan of attack for this proof is reasonable.  Lean has accepted the proof, except for the warning that we have used `sorry`.  So now we know that if we go back and replace `sorry` with a proof of `a ∉ B`, then we will have a complete proof.
 
@@ -4016,7 +4016,7 @@ theorem union_comm {U : Type} (X Y : Set U) :
   done
 ```
 
-It takes a few seconds for Lean to search its library of theorems, but eventually a blue squiggle appears under `apply?`, indicating that the tactic has produced an answer.  You will find the answer in the Infoview pane:  `Try this: exact Or.comm`.  The word `exact` is the name of a tactic that we have not discussed; it is a shorthand for `show _ from`, where the blank gets filled in with the goal.  Thus, you can think of `apply?`'s answer as a shortened form of the tactic
+It takes a few seconds for Lean to search its library of theorems, but eventually a blue squiggle appears under `apply?`, indicating that the tactic has produced an answer.  You will find the answer in the InfoView pane:  `Try this: exact Or.comm`.  The word `exact` is the name of a tactic that we have not discussed; it is a shorthand for `show _ from`, where the blank gets filled in with the goal.  Thus, you can think of `apply?`'s answer as a shortened form of the tactic
 
 ::: {.ind}
 ```

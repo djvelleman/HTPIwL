@@ -316,7 +316,7 @@ $$
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>  <span class="kw">match</span> b <span class="kw">with</span></span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>    | 0 =&gt; a</span>
 <span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>    | n + 1 =&gt; gcd (n + 1) (a % (n + 1))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>Unfortunately, Lean puts a red squiggle under <code>gcd</code>, and it displays in the Infoview a long error message that begins <code>fail to show termination</code>. What is Lean complaining about?</p>
+<p>Unfortunately, Lean puts a red squiggle under <code>gcd</code>, and it displays in the InfoView a long error message that begins <code>fail to show termination</code>. What is Lean complaining about?</p>
 <p>The problem is that recursive definitions are dangerous. To understand the danger, consider the following recursive definition:</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> loop (n : Nat) : Nat := loop (n + 1)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Suppose we try to use this definition to compute <code>loop 3</code>. The definition would lead us to perform the following calculation:</p>

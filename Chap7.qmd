@@ -38,7 +38,7 @@ def **gcd:: (a b : Nat) : Nat :=
     | n + 1 => gcd (n + 1) (a % (n + 1))
 ```
 
-Unfortunately, Lean puts a red squiggle under `gcd`, and it displays in the Infoview a long error message that begins `fail to show termination`.  What is Lean complaining about?
+Unfortunately, Lean puts a red squiggle under `gcd`, and it displays in the InfoView a long error message that begins `fail to show termination`.  What is Lean complaining about?
 
 The problem is that recursive definitions are dangerous.  To understand the danger, consider the following recursive definition:
 
