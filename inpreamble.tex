@@ -106,7 +106,5 @@ Short excerpts from Daniel J. Velleman,
 \pagenumbering{roman}  %So front matter uses roman numerals.  Switch back to arabic at beginning of preface.
 \publishers{\longcopyrightnotice}
 
-\usepackage{authblk}
-\renewcommand\Affilfont{\small}
-\author{Daniel J. Velleman}
-\affil{Amherst College}
+\author{Daniel J. Velleman\\{\small Amherst College}}
+\renewcommand{\author}[1]{}  %So Quarto won't change author to "Daniel J. Velleman"
