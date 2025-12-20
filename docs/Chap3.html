@@ -4109,7 +4109,7 @@ x \in A \cap (B \setmin C) &amp;\text{ iff } x \in A \wedge x \in B \setmin C\\
 <p>The implicit arguments say that these theorems apply in any number system with the appropriate algebraic properties. We’ll use the third theorem in our next example, which involves algebraic reasoning about real numbers. You can use the <code>#check</code> command to find the meanings of the other theorems we use in this proof.</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb310"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb310-1"><a href="#cb310-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Example_3_5_4 (x : Real) (h1 : x ≤ x ^ 2) : x ≤ 0 ∨ 1 ≤ x := <span class="kw">by</span></span>
 <span id="cb310-2"><a href="#cb310-2" aria-hidden="true" tabindex="-1"></a>  <span class="kw">or_right</span> <span class="kw">with</span> h2     <span class="co">--h2 : ¬x ≤ 0;  Goal : 1 ≤ x</span></span>
-<span id="cb310-3"><a href="#cb310-3" aria-hidden="true" tabindex="-1"></a>  <span class="kw">have</span> h3 : 0 &lt; x := lt_of_not_le h2</span>
+<span id="cb310-3"><a href="#cb310-3" aria-hidden="true" tabindex="-1"></a>  <span class="kw">have</span> h3 : 0 &lt; x := lt_of_not_ge h2</span>
 <span id="cb310-4"><a href="#cb310-4" aria-hidden="true" tabindex="-1"></a>  <span class="kw">have</span> h4 : 1 * x ≤ x * x :=</span>
 <span id="cb310-5"><a href="#cb310-5" aria-hidden="true" tabindex="-1"></a>    <span class="kw">calc</span> 1 * x</span>
 <span id="cb310-6"><a href="#cb310-6" aria-hidden="true" tabindex="-1"></a>      _ = x := one_mul x</span>

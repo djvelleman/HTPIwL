@@ -77,10 +77,9 @@ lemma mod_succ_lt (a n : Nat) : a % (n + 1) < n + 1 := by
   done
 ```
 
-Lean's error message suggests several ways to fix the problem with our recursive definition.  We'll use the first suggestion:  ``Use `have`-expressions to prove the remaining goals``.  Here, finally, is the definition of `gcd` that Lean is willing to accept.  (You can ignore the initial line `@[semireducible]`.  For technical reasons that we won't go into, this line is needed to make this complicated recursive definition work in proofs the same way that our previous, simpler recursive definitions did.)
+Lean's error message suggests several ways to fix the problem with our recursive definition.  We'll use the first suggestion:  ``Use `have`-expressions to prove the remaining goals``.  Here, finally, is the definition of `gcd` that Lean is willing to accept.
 
 ```lean
-@[semireducible]
 def gcd (a b : Nat) : Nat :=
   match b with
     | 0 => a
@@ -96,15 +95,20 @@ Notice that in the `have` expression, we have not bothered to specify an identif
 ++#eval:: gcd 672 161    --Answer: 7.  Note 672 = 7 * 96 and 161 = 7 * 23.
 ```
 
-To establish the main properties of `gcd a b` we'll need several lemmas.  We prove some of them and leave others as exercises.
+To establish the main properties of `gcd a b` we'll need several lemmas.  We prove some of them and leave others as exercises.  In the first lemma below, you might think that the `rfl` tactic would prove the goal, because our definition of `gcd` says that if `a` is a natural number, then `gcd a 0` means `a`.  However, for technical reasons that we won't go into here, our definition of `gcd` is complicated enough that Lean doesn't automatically recognize `gcd a 0` as meaning the same thing as `a`.  Fortunately, there is a variant of the `rewrite` tactic that solves the problem.  The tactic `rewrite [gcd]` causes Lean to rewrite `gcd a 0` as `a`, and then the `rfl` tactic can complete the proof. 
 
 ```lean
-lemma gcd_base (a : Nat) : gcd a 0 = a := by rfl
+lemma gcd_base (a : Nat) : gcd a 0 = a := by
+  rewrite [gcd]    --Goal : a = a
+  rfl
+  done
 
 lemma gcd_nonzero (a : Nat) {b : Nat} (h : b ≠ 0) :
     gcd a b = gcd b (a % b) := by
   obtain (n : Nat) (h2 : b = n + 1) from exists_eq_add_one_of_ne_zero h
   rewrite [h2]   --Goal : gcd a (n + 1) = gcd (n + 1) (a % (n + 1))
+  rewrite [gcd]
+      --Goal : gcd (n + 1) (a % (n + 1)) = gcd (n + 1) (a % (n + 1))
   rfl
   done
 
@@ -123,7 +127,7 @@ theorem gcd_dvd : ∀ (b a : Nat), (gcd a b) ∣ a ∧ (gcd a b) ∣ b := by
   fix a : Nat
   by_cases h1 : b = 0
   · -- Case 1. h1 : b = 0
-    rewrite [h1, gcd_base]   --Goal: a ∣ a ∧ a ∣ 0
+    rewrite [h1, gcd_base]   --Goal : a ∣ a ∧ a ∣ 0
     apply And.intro (dvd_self a)
     define
     apply Exists.intro 0
@@ -181,7 +185,6 @@ The functions `gcd_c1` and `gcd_c2` will be *mutually recursive*; in other words
 
 ```lean
 mutual
-  @[semireducible]
   def gcd_c1 (a b : Nat) : Int :=
     match b with
       | 0 => 1
@@ -191,7 +194,6 @@ mutual
           --Corresponds to s = t'
     termination_by b
 
-  @[semireducible]
   def gcd_c2 (a b : Nat) : Int :=
     match b with
       | 0 => 0
@@ -206,15 +208,18 @@ end
 
 Notice that in the definition of `gcd_c2`, the quotient `a / (n + 1)` is computed using natural-number division, but it is then coerced to be an integer so that it can be multiplied by the integer `gcd_c2 (n + 1) (a % (n + 1))`.
 
-Our main theorem about these functions is that they give the coefficients needed to write `gcd a b` as a linear combination of `a` and `b`.  As usual, stating a few lemmas first helps with the proof.  We leave the proofs of two of them as exercises for you (hint: imitate the proof of `gcd_nonzero` above).
+Our main theorem about these functions is that they give the coefficients needed to write `gcd a b` as a linear combination of `a` and `b`.  As usual, stating a few lemmas first helps with the proof.  We leave the proofs of three of them as exercises for you (hint: imitate the proofs about `gcd` above).
 
 ```lean
-lemma gcd_c1_base (a : Nat) : gcd_c1 a 0 = 1 := by rfl
+lemma gcd_c1_base (a : Nat) : gcd_c1 a 0 = 1 := by
+  rewrite [gcd_c1]
+  rfl
+  done
 
 lemma gcd_c1_nonzero (a : Nat) {b : Nat} (h : b ≠ 0) :
     gcd_c1 a b = gcd_c2 b (a % b) := sorry
 
-lemma gcd_c2_base (a : Nat) : gcd_c2 a 0 = 0 := by rfl
+lemma gcd_c2_base (a : Nat) : gcd_c2 a 0 = 0 := sorry
 
 lemma gcd_c2_nonzero (a : Nat) {b : Nat} (h : b ≠ 0) :
     gcd_c2 a b = gcd_c1 b (a % b) - (gcd_c2 b (a % b)) * ↑(a / b) := sorry
@@ -1100,7 +1105,7 @@ The proof of Theorem 7.3.1 makes use of the quotient and remainder when `a` is d
 
 ::: {.ind}
 ```
-Int.ediv_add_emod : ∀ (a b : ℤ), b * (a / b) + a % b = a
+Int.mul_ediv_add_emod : ∀ (a b : ℤ), b * (a / b) + a % b = a
 
 Int.emod_lt_of_pos : ∀ (a : ℤ) {b : ℤ}, 0 < b → a % b < b
 
@@ -1120,7 +1125,7 @@ lemma mod_lt (m : Nat) [NeZero m] (a : Int) : a % m < m := sorry
 
 lemma congr_mod_mod (m : Nat) (a : Int) : a ≡ a % m (MOD m) := by
   define
-  have h1 : m * (a / m) + a % m = a := Int.ediv_add_emod a m
+  have h1 : m * (a / m) + a % m = a := Int.mul_ediv_add_emod a m
   apply Exists.intro (a / m)
   show a - a % m = m * (a / m) from
     calc a - (a % m)
@@ -2071,7 +2076,7 @@ We will also need to use Lemma 7.4.5 from *HTPI*.  To prove that lemma in Lean, 
 Int.natAbs_mul : ∀ (a b : ℤ),
                   Int.natAbs (a * b) = Int.natAbs a * Int.natAbs b
 
-Int.natAbs_ofNat : ∀ (n : ℕ), Int.natAbs ↑n = n
+Int.natAbs_natCast : ∀ (n : ℕ), Int.natAbs ↑n = n
 ```
 :::
 
@@ -2081,7 +2086,7 @@ With the help of these theorems, our extended version of `Theorem_7_2_2` follows
 theorem Theorem_7_2_2_Int {a c : Nat} {b : Int}
     (h1 : ↑c ∣ ↑a * b) (h2 : rel_prime a c) : ↑c ∣ b := by
   rewrite [Int.natCast_dvd, Int.natAbs_mul,
-    Int.natAbs_ofNat] at h1        --h1 : c ∣ a * Int.natAbs b
+    Int.natAbs_natCast] at h1      --h1 : c ∣ a * Int.natAbs b
   rewrite [Int.natCast_dvd]        --Goal : c ∣ Int.natAbs b
   show c ∣ Int.natAbs b from Theorem_7_2_2 h1 h2
   done
