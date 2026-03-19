@@ -3127,10 +3127,12 @@ theorem Exercise_3_5_8 (U : Type) (A B : Set U) :
 :::
 
 ::: {.numex arguments="5"}
+Note:  In this problem, the notation `{x : U | ∀ (A : Set U), A ∈ F → x ∈ B ∪ A}` denotes the set of all `x` of type `U` such that the statement `∀ (A : Set U), A ∈ F → x ∈ B ∪ A` is true.
 ```lean
 theorem Exercise_3_5_17b (U : Type) (F : Set (Set U)) (B : Set U) :
     B ∪ (⋂₀ F) = {x : U | ∀ (A : Set U), A ∈ F → x ∈ B ∪ A} := sorry
 ```
+
 :::
 
 ::: {.numex arguments="6"}
