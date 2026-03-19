@@ -2739,11 +2739,9 @@ x \in A \cap (B \setmin C) &amp;\text{ iff } x \in A \wedge x \in B \setmin C\\
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb201"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb201-1"><a href="#cb201-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Exercise_3_5_8 (U : <span class="kw">Type</span>) (A B : Set U) :</span>
 <span id="cb201-2"><a href="#cb201-2" aria-hidden="true" tabindex="-1"></a>    𝒫 A ∪ 𝒫 B ⊆ 𝒫 (A ∪ B) := <span class="cn">sorry</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<div class="numex" data-arguments="5">
-<p>Note: In this problem, the notation <code>{x : U | ∀ (A : Set U), A ∈ F → x ∈ B ∪ A}</code> denotes the set of all <code>x</code> of type <code>U</code> such that the statement <code>∀ (A : Set U), A ∈ F → x ∈ B ∪ A</code> is true.</p>
+<p>5. Note: In this problem, the notation <code>{x : U | ∀ (A : Set U), A ∈ F → x ∈ B ∪ A}</code> denotes the set of all <code>x</code> of type <code>U</code> such that the statement <code>∀ (A : Set U), A ∈ F → x ∈ B ∪ A</code> is true.</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb202"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb202-1"><a href="#cb202-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Exercise_3_5_17b (U : <span class="kw">Type</span>) (F : Set (Set U)) (B : Set U) :</span>
 <span id="cb202-2"><a href="#cb202-2" aria-hidden="true" tabindex="-1"></a>    B ∪ (⋂₀ F) = {x : U | ∀ (A : Set U), A ∈ F → x ∈ B ∪ A} := <span class="cn">sorry</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div>
 <div class="numex" data-arguments="6">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb203"><pre class="sourceCode lean code-with-copy"><code class="sourceCode lean"><span id="cb203-1"><a href="#cb203-1" aria-hidden="true" tabindex="-1"></a><span class="kw">theorem</span> Exercise_3_5_18 (U : <span class="kw">Type</span>) (F G H : Set (Set U))</span>
 <span id="cb203-2"><a href="#cb203-2" aria-hidden="true" tabindex="-1"></a>    (h1 : ∀ (A : Set U), A ∈ F → ∀ (B : Set U), B ∈ G → A ∪ B ∈ H) :</span>

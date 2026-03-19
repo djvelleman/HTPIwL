@@ -108,3 +108,7 @@ Short excerpts from Daniel J. Velleman,
 
 \author{Daniel J. Velleman\\{\small Amherst College}}
 \renewcommand{\author}[1]{}  %So Quarto won't change author to "Daniel J. Velleman"
+
+%Adds gray background to inline code, but inline code won't break across lines.
+%\let\oldtexttt\texttt
+%\renewcommand{\texttt}[1]{\colorbox{shadecolor}{\oldtexttt{#1}}}
