@@ -370,7 +370,7 @@ $$
 <td style="text-align: left;"><a href="Chap3.html#proofs-involving-disjunctions">Section 3.5</a></td>
 </tr>
 <tr class="even">
-<td style="text-align: left;"><code>push_neg</code></td>
+<td style="text-align: left;"><code>push Not</code></td>
 <td style="text-align: left;"><a href="Chap8.html#equinumerous-sets">Section 8.1</a></td>
 </tr>
 <tr class="odd">
@@ -523,7 +523,7 @@ $$
 <p>The tactic <code>rw</code> is the same as <code>rewrite</code>, except that after doing the rewriting, it tries to prove the goal by using the <code>rfl</code> tactic (see <a href="#easy">Easy Proofs</a> below).</p>
 <p>The tactic <code>define</code> will write out the definition of a statement. If you want to define just a subexpression of the statement, then you can write <code>define : [subexpression]</code>. For example, if the goal is <code>x ∈ A ∩ B → x ∈ C</code>, then <code>define : x ∈ A ∩ B</code> will change the goal to <code>x ∈ A ∧ x ∈ B → x ∈ C</code>.</p>
 <p>The tactics <code>contrapos</code>, <code>demorgan</code>, <code>conditional</code>, <code>double_neg</code>, <code>bicond_neg</code>, and <code>quant_neg</code> rewrite statements by applying various logical laws; for details, see the tables about laws of <a href="IntroLean.html#prop-tacs">sentential</a> and <a href="Chap3.html#quantneg-tac">quantificational</a> logic. As with the <code>define</code> tactic, you can add <code>: [subexpression]</code> to apply the law to the subexpression. For example, if the goal is <code>P ∧ (Q → ¬R)</code>, then the tactic <code>contrapos : Q → ¬R</code> will change it to <code>P ∧ (R → ¬Q)</code>.</p>
-<p>If the goal is a negative statement, then the tactic <code>push_neg</code> will apply multiple laws about negations to “push” the negation as far as possible into the statement.</p>
+<p>If the goal is a negative statement, then the tactic <code>push Not</code> will apply multiple laws about negations to “push” the negation as far as possible into the statement.</p>
 <p>If <code>e</code> is an expression of type <code>U</code>, and you want to give it the name <code>n</code> in your proof, then the tactic <code>set n : U := e</code> will introduce the variable <code>n</code> to stand for <code>e</code>.</p>
 </section>
 <section id="easy" class="level3">
@@ -564,7 +564,7 @@ $$
 <ul>
 <li><span class="lrg"><code>bicond_neg</code>, <code>demorgan</code>, <code>double_neg</code>, <code>quant_neg</code></span></li>
 </ul>
-<p>We have mostly used these tactics to reexpress negative statements as more useful positive statements. The tactic <code>push_neg</code> can be used for this purpose.</p>
+<p>We have mostly used these tactics to reexpress negative statements as more useful positive statements. The tactic <code>push Not</code> can be used for this purpose.</p>
 <ul>
 <li><span class="lrg"><code>by_cases on</code></span></li>
 </ul>
@@ -593,7 +593,7 @@ $$
 <ul>
 <li><span class="lrg"><code>contrapos</code></span></li>
 </ul>
-<p>If your goal is a conditional statement, then the tactics <code>contrapose</code> and <code>contrapose!</code> will replace the goal with its contrapositive (<code>contrapose!</code> also uses <code>push_neg</code> to try to simplify the negated statements that arise when forming a contrapositive). You may also find the theorem <code>not_imp_not</code> useful:</p>
+<p>If your goal is a conditional statement, then the tactics <code>contrapose</code> and <code>contrapose!</code> will replace the goal with its contrapositive (<code>contrapose!</code> also uses <code>push Not</code> to try to simplify the negated statements that arise when forming a contrapositive). You may also find the theorem <code>not_imp_not</code> useful:</p>
 <div class="ind">
 <pre><code>@not_imp_not : ∀ {a b : Prop}, ¬a → ¬b ↔ b → a</code></pre>
 </div>

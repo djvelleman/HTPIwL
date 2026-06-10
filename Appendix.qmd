@@ -33,7 +33,7 @@ Tactics marked with an asterisk (*) are defined in the file `HTPIDefs.lean` in t
 | `obtain`* | [Section 3.3](Chap3.html#proofs-involving-quantifiers) |
 | `or_left`* | [Section 3.5](Chap3.html#proofs-involving-disjunctions) |
 | `or_right`* | [Section 3.5](Chap3.html#proofs-involving-disjunctions) |
-| `push_neg` | [Section 8.1](Chap8.html#equinumerous-sets) |
+| `push Not` | [Section 8.1](Chap8.html#equinumerous-sets) |
 | `quant_neg`* | [Section 3.3](Chap3.html#proofs-involving-quantifiers) |
 | `rel` | [Section 6.3](Chap6.html#recursion) |
 | `rewrite` | [Section 3.6](Chap3.html#existence-and-uniqueness-proofs) |
@@ -165,7 +165,7 @@ The tactic `define` will write out the definition of a statement.  If you want t
 
 The tactics `contrapos`, `demorgan`, `conditional`, `double_neg`, `bicond_neg`, and `quant_neg` rewrite statements by applying various logical laws; for details, see the tables about laws of [sentential](IntroLean.html#prop-tacs) and [quantificational](Chap3.html#quantneg-tac) logic.  As with the `define` tactic, you can add `: [subexpression]` to apply the law to the subexpression.  For example, if the goal is `P ∧ (Q → ¬R)`, then the tactic `contrapos : Q → ¬R` will change it to `P ∧ (R → ¬Q)`.
 
-If the goal is a negative statement, then the tactic `push_neg` will apply multiple laws about negations to "push" the negation as far as possible into the statement.
+If the goal is a negative statement, then the tactic `push Not` will apply multiple laws about negations to "push" the negation as far as possible into the statement.
 
 If `e` is an expression of type `U`, and you want to give it the name `n` in your proof, then the tactic `set n : U := e` will introduce the variable `n` to stand for `e`.
 
@@ -217,7 +217,7 @@ Thus, the tactic `intro` does the job of both `assume` and `fix`.  Furthermore, 
 
 * [`bicond_neg`, `demorgan`, `double_neg`, `quant_neg`]{.lrg}
 
-We have mostly used these tactics to reexpress negative statements as more useful positive statements.  The tactic `push_neg` can be used for this purpose.
+We have mostly used these tactics to reexpress negative statements as more useful positive statements.  The tactic `push Not` can be used for this purpose.
 
 * [`by_cases on`]{.lrg}
 
@@ -254,7 +254,7 @@ Yet another possibility is `contrapose! h`.  (This is a variant on the `contrapo
 
 * [`contrapos`]{.lrg}
 
-If your goal is a conditional statement, then the tactics `contrapose` and `contrapose!` will replace the goal with its contrapositive (`contrapose!` also uses `push_neg` to try to simplify the negated statements that arise when forming a contrapositive).  You may also find the theorem `not_imp_not` useful:
+If your goal is a conditional statement, then the tactics `contrapose` and `contrapose!` will replace the goal with its contrapositive (`contrapose!` also uses `push Not` to try to simplify the negated statements that arise when forming a contrapositive).  You may also find the theorem `not_imp_not` useful:
 
 ::: {.ind}
 ```

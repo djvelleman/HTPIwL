@@ -674,7 +674,7 @@ $$
 <span id="cb30-40"><a href="#cb30-40" aria-hidden="true" tabindex="-1"></a>    <span class="kw">done</span></span>
 <span id="cb30-41"><a href="#cb30-41" aria-hidden="true" tabindex="-1"></a>  · <span class="co">-- Case 2. h1 : ¬∃ (m : Nat), ∀ n ∈ A, n &lt; m</span></span>
 <span id="cb30-42"><a href="#cb30-42" aria-hidden="true" tabindex="-1"></a>    <span class="kw">apply</span> Or.inr  <span class="co">--Goal : denum A</span></span>
-<span id="cb30-43"><a href="#cb30-43" aria-hidden="true" tabindex="-1"></a>    <span class="kw">push_neg</span> <span class="kw">at</span> h1</span>
+<span id="cb30-43"><a href="#cb30-43" aria-hidden="true" tabindex="-1"></a>    <span class="kw">push</span> Not <span class="kw">at</span> h1</span>
 <span id="cb30-44"><a href="#cb30-44" aria-hidden="true" tabindex="-1"></a>      <span class="co">--This tactic converts h1 to ∀ (m : Nat), ∃ n ∈ A, m ≤ n</span></span>
 <span id="cb30-45"><a href="#cb30-45" aria-hidden="true" tabindex="-1"></a>    <span class="kw">show</span> denum A <span class="kw">from</span> unbdd_subset_nat h1</span>
 <span id="cb30-46"><a href="#cb30-46" aria-hidden="true" tabindex="-1"></a>    <span class="kw">done</span></span>

@@ -516,7 +516,7 @@ theorem set_nat_ctble (A : Set Nat) : ctble A := by
     done
   · -- Case 2. h1 : ¬∃ (m : Nat), ∀ n ∈ A, n < m
     apply Or.inr  --Goal : denum A
-    push_neg at h1
+    push Not at h1
       --This tactic converts h1 to ∀ (m : Nat), ∃ n ∈ A, m ≤ n
     show denum A from unbdd_subset_nat h1
     done
