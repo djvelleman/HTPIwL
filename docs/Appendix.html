@@ -569,6 +569,7 @@ $$
 <li><span class="lrg"><code>by_cases on</code></span></li>
 </ul>
 <p>If you have <code>h : P ∨ Q</code>, then you can break your proof into cases by using the tactic <code>rcases h with hP | hQ</code>. In case 1, <code>h : P ∨ Q</code> will be replaced by <code>hP : P</code>, and in case 2 it will be replaced by <code>hQ : Q</code>. In both cases, you have to prove the original goal.</p>
+<p>Note that <code>by_cases h : P</code> is standard Lean. It is only the use of <code>on</code> after <code>by_cases</code> that is nonstandard.</p>
 <ul>
 <li><span class="lrg"><code>by_induc</code>, <code>by_strong_induc</code></span></li>
 </ul>
